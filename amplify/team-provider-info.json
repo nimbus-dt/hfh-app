@@ -1,0 +1,20 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-hfhapp-staging-10900-authRole",
+      "UnauthRoleArn": "arn:aws:iam::719959370210:role/amplify-hfhapp-staging-10900-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::719959370210:role/amplify-hfhapp-staging-10900-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-hfhapp-staging-10900-deployment",
+      "UnauthRoleName": "amplify-hfhapp-staging-10900-unauthRole",
+      "StackName": "amplify-hfhapp-staging-10900",
+      "StackId": "arn:aws:cloudformation:us-east-1:719959370210:stack/amplify-hfhapp-staging-10900/94492930-f061-11ed-8aef-127de6d08e5f",
+      "AmplifyAppId": "dgfg84wx7ntah"
+    },
+    "categories": {
+      "api": {
+        "hfhapp": {}
+      }
+    }
+  }
+}

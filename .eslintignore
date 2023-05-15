@@ -1,0 +1,4 @@
+src/models
+src/ui-components
+src/aws-exports.js
+amplify-codegen-temp/models

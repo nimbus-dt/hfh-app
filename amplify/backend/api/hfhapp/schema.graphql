@@ -1,0 +1,121 @@
+type UserProps @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  ownerID: String
+  firstName: String
+  lastName: String
+  dob: AWSDate
+  sex: SexTypes
+  phone: AWSPhone
+  props: AWSJSON
+}
+
+enum ApplicationSubmittedStatus {
+  ACCEPTED
+  PENDING
+  REJECTED
+}
+
+enum DebtTypes {
+  MEDICAL
+  STUDENT_LOANS
+  COLLECTIONS
+  CAR
+  PERSONAL_LOANS
+  INSTALLMENT_LOANS
+  CREDIT_CARD
+  CHILD_SUPPORT
+  ALIMONY
+  OTHER
+}
+
+type DebtRecord @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  ownerID: String
+  monthlyRecurrence: Boolean
+  typeOfDebt: DebtTypes
+  estimatedAmount: Float
+  applicationID: ID! @index(name: "byApplication")
+}
+
+type SavingRecord @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  ownerID: ID
+  institution: String
+  estimatedAmou: Float
+  applicationID: ID! @index(name: "byApplication")
+}
+
+enum IncomeTypes {
+  SALARIED_EMPLOYMENT
+  HOURLY_EMPLOYMENT
+  SELF_EMPLOYMENT
+  OTHER
+}
+
+type IncomeRecord @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  ownerID: ID
+  typeOfIncome: IncomeTypes
+  employer: String
+  estimatedMonthlyIncome: Float
+  proofOfIncome: [ID]
+  applicationID: ID! @index(name: "byApplication")
+}
+
+type HouseholdMember @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  name: String
+  lastName: String
+  dateOfBirth: AWSDate
+  sex: SexTypes
+  relationship: RelationshipTypes
+  isCoapplicant: Boolean
+  applicationID: ID! @index(name: "byApplication")
+}
+
+enum SexTypes {
+  MALE
+  FEMALE
+}
+
+enum RelationshipTypes {
+  SPOUSE
+  SON
+  DAUGHTER
+  NEPHEW
+  NIECE
+  PARENT
+  SIBLING
+  OTHER
+}
+
+type Application @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  ownerID: ID
+  habitatID: ID! @index(name: "byHabitat")
+  HouseholdMembers: [HouseholdMember]
+    @hasMany(indexName: "byApplication", fields: ["id"])
+  IncomeRecords: [IncomeRecord]
+    @hasMany(indexName: "byApplication", fields: ["id"])
+  SavingRecords: [SavingRecord]
+    @hasMany(indexName: "byApplication", fields: ["id"])
+  DebtRecords: [DebtRecord] @hasMany(indexName: "byApplication", fields: ["id"])
+  dateCreated: AWSDate
+  submitted: Boolean
+  dateSubmitted: AWSDate
+  submittedStatus: ApplicationSubmittedStatus
+  habitatRevisor: ID
+  dateRevised: AWSDate
+}
+
+type Habitat @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  name: String
+  urlName: String
+  state: String
+  city: String
+  county: String
+  countiesServed: [String]
+  props: AWSJSON
+  Applications: [Application] @hasMany(indexName: "byHabitat", fields: ["id"])
+}
