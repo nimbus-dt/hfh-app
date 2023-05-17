@@ -43,11 +43,4 @@
   }
 }
 
-.prelim-card {
-  width: '500px'; /* Set initial fixed width */
 
-  /* Apply responsive styles using media queries */
-  @media (max-width: 768px) {
-    width: 100%; /* Take full width beyond the breakpoint */
-  }
-}

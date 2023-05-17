@@ -1,10 +1,14 @@
 import './assets/styles/App.css';
 import { Routes, Route } from 'react-router-dom';
 import { ApplicantPrescreenLayout } from './components/PreScreen/ApplicantPrescreenLayout';
-import { PreLim } from './components/PreScreen/PreLim';
+import { PreLimLayout } from './components/PreScreen/PreLim/PreLimLayout';
 
 // eslint-disable-next-line import/no-unresolved
 import '@aws-amplify/ui-react/styles.css';
+import { PreLimHome } from './components/PreScreen/PreLim/PreLimHome';
+import { PreLimTerms } from './components/PreScreen/PreLim/PreLimTerms';
+import { PreLimQuestions } from './components/PreScreen/PreLim/PreLimQuestions';
+import { PreLimResults } from './components/PreScreen/PreLim/PreLimResults';
 
 function App() {
   return (
@@ -18,7 +22,12 @@ function App() {
       <Route path="applicant">
         <Route path=":habitat">
           <Route path="prescreen" element={<ApplicantPrescreenLayout />}>
-            <Route path="prelim" element={<PreLim />} />
+            <Route path="prelim" element={<PreLimLayout />}>
+              <Route path="home" element={<PreLimHome />} />
+              <Route path="terms" element={<PreLimTerms />} />
+              <Route path="questions" element={<PreLimQuestions />} />
+              <Route path="results" element={<PreLimResults />} />
+            </Route>
             <Route path="form" element={<h1>Form</h1>} />
           </Route>
         </Route>
