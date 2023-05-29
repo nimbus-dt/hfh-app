@@ -34,40 +34,7 @@ export function FormLayout() {
       }
     }
 
-    async function fetchApplication() {
-      try {
-        const currentUser = await Auth.currentAuthenticatedUser({
-          bypassCache: false,
-        });
-        setUserID(currentUser.username);
-
-        const applicationObject = await DataStore.query(Application, (u) =>
-          u.ownerID.eq(currentUser.username)
-        );
-        if (applicationObject.length > 0) {
-          setApplicationExists(true);
-          setApplication(applicationObject[0]);
-        } else {
-          await DataStore.save(
-            new Application({
-              ownerID: currentUser.username,
-              habitatID: habitat.id,
-              submitted: false,
-            })
-          );
-
-          const app = DataStore.query(Application, (e) =>
-            e.ownerID.eq(currentUser.username)
-          );
-
-          setApplication(app);
-        }
-      } catch (error) {
-        console.log('Error fetching Application Data:', error);
-      }
-    }
     fetchHabitat();
-    fetchApplication();
   });
 
   const title = (

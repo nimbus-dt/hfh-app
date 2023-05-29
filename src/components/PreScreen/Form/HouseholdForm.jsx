@@ -8,11 +8,6 @@ import {
   Heading,
   PhoneNumberField,
   Card,
-  Table,
-  TableHead,
-  TableRow,
-  TableBody,
-  TableCell,
   Collection,
   Divider,
   Image,
@@ -25,28 +20,24 @@ import {
 } from '@aws-amplify/ui-react';
 import { DataStore, Auth } from 'aws-amplify';
 import { useNavigate } from 'react-router-dom';
-import {
-  HouseholdMember,
-  SexTypes,
-  UserProps,
-  RelationshipTypes,
-} from '../../../models';
+import { HouseholdMember, SexTypes, RelationshipTypes } from '../../../models';
 
 export function HouseholdForm({ application }) {
-  const [name, setName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [dob, setDob] = useState('');
-  const [sex, setSex] = useState('');
-  const [relationship, setRelationship] = useState('');
-
-  const [userDataBool, setUserDataBool] = useState(false);
-  const [userID, setUserID] = useState('');
-  const [isCoapplicant, setIsCoapplicant] = useState(false);
-
-  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Access the form fields
+    const formFields = e.target.elements;
+
+    // Retrieve the values using the form field names
+    const name = formFields.name.value;
+    const lastName = formFields.lastName.value;
+    const dob = formFields.dob.value;
+    const sex = formFields.sex.value;
+    const relationship = formFields.relationship.value;
+    const isCoapplicant = formFields.isCoapplicant.value;
+
+    // Create user
     await DataStore.save(
       new HouseholdMember({
         name,
@@ -59,6 +50,7 @@ export function HouseholdForm({ application }) {
       })
     );
 
+    // Reset the form
     e.target.reset();
   };
 
@@ -71,46 +63,19 @@ export function HouseholdForm({ application }) {
     xxl: false,
   });
 
-  const message = (
-    <Heading level="5" textAlign="center">
-      You have an existing user information record
-    </Heading>
-  );
-
   const householdCreateForm = (
     <Card variation="elevated">
       <Heading textAlign="center">Household Member Create</Heading>
       <form onSubmit={handleSubmit}>
         <Flex direction="column" gap="30px">
-          <TextField
-            name="name"
-            label="Name"
-            isRequired
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <TextField
-            name="lastName"
-            label="Last Name"
-            isRequired
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-          />
-          <TextField
-            name="dob"
-            label="Date of Birth"
-            type="date"
-            isRequired
-            value={dob}
-            onChange={(e) => setDob(e.target.value)}
-          />
+          <TextField name="name" label="Name" isRequired />
+          <TextField name="lastName" label="Last Name" isRequired />
+          <TextField name="dob" label="Date of Birth" type="date" isRequired />
           <SelectField
             name="sex"
             label="Sex"
             isRequired
             placeholder="Select an option"
-            value={sex}
-            onChange={(e) => setSex(e.target.value)}
           >
             <option value={SexTypes.MALE}>Male</option>
             <option value={SexTypes.FEMALE}>Female</option>
@@ -121,8 +86,6 @@ export function HouseholdForm({ application }) {
             label="Relationship"
             isRequired
             placeholder="Select an option"
-            value={relationship}
-            onChange={(e) => setRelationship(e.target.value)}
           >
             <option value={RelationshipTypes.SPOUSE}>Spouse</option>
             <option value={RelationshipTypes.SON}>Son</option>
@@ -134,12 +97,9 @@ export function HouseholdForm({ application }) {
             <option value={RelationshipTypes.OTHER}>Other</option>
           </SelectField>
           <RadioGroupField
-            name="answer"
+            name="isCoapplicant"
             isRequired
-            defaultChecked={false}
             label="Is this person a coapplicant?"
-            value={isCoapplicant}
-            onChange={(e) => setIsCoapplicant(e.target.value)}
           >
             <Radio value>Yes</Radio>
             <Radio value={false}>No</Radio>
@@ -168,7 +128,6 @@ export function HouseholdForm({ application }) {
 }
 
 export function HouseholdMemberDetail({
-  key,
   name,
   lastName,
   dob,
@@ -178,7 +137,7 @@ export function HouseholdMemberDetail({
   sizeRenderer,
 }) {
   return (
-    <Card variation="elevated" width={sizeRenderer ? '80%' : '300px'} key={key}>
+    <Card variation="elevated" width={sizeRenderer ? '80%' : '300px'}>
       <Flex direction="column" gap="1px">
         <Heading level="4">
           {name} {lastName}
@@ -197,7 +156,7 @@ export function HouseholdMemberDetail({
         </Flex>
         <Flex gap="5px">
           <Text fontWeight="bold">Is CoApplicant:</Text>
-          <Text>{isCoapplicant}</Text>
+          <Text>{String(isCoapplicant)}</Text>
         </Flex>
         <Link>Delete</Link>
       </Flex>
