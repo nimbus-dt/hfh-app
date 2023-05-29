@@ -1,4 +1,4 @@
-type UserProps @model @auth(rules: [{ allow: public }]) {
+type UserProps @model @auth(rules: [{allow: public}]) {
   id: ID!
   ownerID: String
   firstName: String
@@ -28,7 +28,7 @@ enum DebtTypes {
   OTHER
 }
 
-type DebtRecord @model @auth(rules: [{ allow: public }]) {
+type DebtRecord @model @auth(rules: [{allow: public}]) {
   id: ID!
   ownerID: String
   monthlyRecurrence: Boolean
@@ -37,7 +37,7 @@ type DebtRecord @model @auth(rules: [{ allow: public }]) {
   applicationID: ID! @index(name: "byApplication")
 }
 
-type SavingRecord @model @auth(rules: [{ allow: public }]) {
+type SavingRecord @model @auth(rules: [{allow: public}]) {
   id: ID!
   ownerID: ID
   institution: String
@@ -52,7 +52,7 @@ enum IncomeTypes {
   OTHER
 }
 
-type IncomeRecord @model @auth(rules: [{ allow: public }]) {
+type IncomeRecord @model @auth(rules: [{allow: public}]) {
   id: ID!
   ownerID: ID
   typeOfIncome: IncomeTypes
@@ -62,7 +62,7 @@ type IncomeRecord @model @auth(rules: [{ allow: public }]) {
   applicationID: ID! @index(name: "byApplication")
 }
 
-type HouseholdMember @model @auth(rules: [{ allow: public }]) {
+type HouseholdMember @model @auth(rules: [{allow: public}]) {
   id: ID!
   name: String
   lastName: String
@@ -76,6 +76,7 @@ type HouseholdMember @model @auth(rules: [{ allow: public }]) {
 enum SexTypes {
   MALE
   FEMALE
+  OTHER
 }
 
 enum RelationshipTypes {
@@ -89,18 +90,14 @@ enum RelationshipTypes {
   OTHER
 }
 
-type Application @model @auth(rules: [{ allow: public }]) {
+type Application @model @auth(rules: [{allow: public}]) {
   id: ID!
   ownerID: ID
   habitatID: ID! @index(name: "byHabitat")
-  HouseholdMembers: [HouseholdMember]
-    @hasMany(indexName: "byApplication", fields: ["id"])
-  IncomeRecords: [IncomeRecord]
-    @hasMany(indexName: "byApplication", fields: ["id"])
-  SavingRecords: [SavingRecord]
-    @hasMany(indexName: "byApplication", fields: ["id"])
+  HouseholdMembers: [HouseholdMember] @hasMany(indexName: "byApplication", fields: ["id"])
+  IncomeRecords: [IncomeRecord] @hasMany(indexName: "byApplication", fields: ["id"])
+  SavingRecords: [SavingRecord] @hasMany(indexName: "byApplication", fields: ["id"])
   DebtRecords: [DebtRecord] @hasMany(indexName: "byApplication", fields: ["id"])
-  dateCreated: AWSDate
   submitted: Boolean
   dateSubmitted: AWSDate
   submittedStatus: ApplicationSubmittedStatus
@@ -108,7 +105,7 @@ type Application @model @auth(rules: [{ allow: public }]) {
   dateRevised: AWSDate
 }
 
-type Habitat @model @auth(rules: [{ allow: public }]) {
+type Habitat @model @auth(rules: [{allow: public}]) {
   id: ID!
   name: String
   urlName: String
@@ -119,3 +116,4 @@ type Habitat @model @auth(rules: [{ allow: public }]) {
   props: AWSJSON
   Applications: [Application] @hasMany(indexName: "byHabitat", fields: ["id"])
 }
+ 

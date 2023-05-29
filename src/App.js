@@ -1,5 +1,6 @@
 import './assets/styles/App.css';
 import { Routes, Route } from 'react-router-dom';
+import { Authenticator } from '@aws-amplify/ui-react';
 import { ApplicantPrescreenLayout } from './components/PreScreen/ApplicantPrescreenLayout';
 import { PreLimLayout } from './components/PreScreen/PreLim/PreLimLayout';
 
@@ -9,6 +10,7 @@ import { PreLimHome } from './components/PreScreen/PreLim/PreLimHome';
 import { PreLimTerms } from './components/PreScreen/PreLim/PreLimTerms';
 import { PreLimQuestions } from './components/PreScreen/PreLim/PreLimQuestions';
 import { PreLimResults } from './components/PreScreen/PreLim/PreLimResults';
+import { FormLayout } from './components/PreScreen/Form/FormLayout';
 
 function App() {
   return (
@@ -28,7 +30,22 @@ function App() {
               <Route path="questions" element={<PreLimQuestions />} />
               <Route path="results" element={<PreLimResults />} />
             </Route>
-            <Route path="form" element={<h1>Form</h1>} />
+
+            <Route
+              path="form"
+              element={
+                <Authenticator>
+                  <FormLayout />
+                </Authenticator>
+              }
+            >
+              <Route path="user" element={<h1>Get user info</h1>} />
+              <Route path="household" element={<h1>Get household info</h1>} />
+              <Route path="income" element={<h1>Get income info</h1>} />
+              <Route path="saving" element={<h1>Get user info</h1>} />
+              <Route path="debt" element={<h1>Get user info</h1>} />
+              <Route path="review" element={<h1>Get user info</h1>} />
+            </Route>
           </Route>
         </Route>
       </Route>

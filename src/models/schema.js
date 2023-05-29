@@ -598,13 +598,6 @@ export const schema = {
                         ]
                     }
                 },
-                "dateCreated": {
-                    "name": "dateCreated",
-                    "isArray": false,
-                    "type": "AWSDate",
-                    "isRequired": false,
-                    "attributes": []
-                },
                 "submitted": {
                     "name": "submitted",
                     "isArray": false,
@@ -849,7 +842,8 @@ export const schema = {
             "name": "SexTypes",
             "values": [
                 "MALE",
-                "FEMALE"
+                "FEMALE",
+                "OTHER"
             ]
         },
         "RelationshipTypes": {
@@ -867,6 +861,6 @@ export const schema = {
         }
     },
     "nonModels": {},
-    "codegenVersion": "3.4.0",
-    "version": "5a6513cde466d350e863f049e84c1727"
+    "codegenVersion": "3.4.3",
+    "version": "a73519a224a34343549a1268913d3338"
 };

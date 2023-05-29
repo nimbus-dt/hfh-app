@@ -1,8 +1,8 @@
 import { Image, Card, Flex } from '@aws-amplify/ui-react';
-import PropTypes from 'prop-types';
 import { useNavigate, useParams } from 'react-router-dom';
 import logoHabitat from '../../assets/images/logoHabitat.svg';
 
+// eslint-disable-next-line react/prop-types
 export function ApplicantPrescreenNavBar({ menuSlot }) {
   const navigate = useNavigate();
   const urlName = useParams().habitat;
@@ -25,7 +25,3 @@ export function ApplicantPrescreenNavBar({ menuSlot }) {
     </Card>
   );
 }
-
-ApplicantPrescreenNavBar.propTypes = {
-  menuSlot: PropTypes.node,
-};

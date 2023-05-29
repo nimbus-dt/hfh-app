@@ -30,7 +30,8 @@ export enum IncomeTypes {
 
 export enum SexTypes {
   MALE = "MALE",
-  FEMALE = "FEMALE"
+  FEMALE = "FEMALE",
+  OTHER = "OTHER"
 }
 
 export enum RelationshipTypes {
@@ -246,7 +247,6 @@ type EagerApplication = {
   readonly IncomeRecords?: (IncomeRecord | null)[] | null;
   readonly SavingRecords?: (SavingRecord | null)[] | null;
   readonly DebtRecords?: (DebtRecord | null)[] | null;
-  readonly dateCreated?: string | null;
   readonly submitted?: boolean | null;
   readonly dateSubmitted?: string | null;
   readonly submittedStatus?: ApplicationSubmittedStatus | keyof typeof ApplicationSubmittedStatus | null;
@@ -268,7 +268,6 @@ type LazyApplication = {
   readonly IncomeRecords: AsyncCollection<IncomeRecord>;
   readonly SavingRecords: AsyncCollection<SavingRecord>;
   readonly DebtRecords: AsyncCollection<DebtRecord>;
-  readonly dateCreated?: string | null;
   readonly submitted?: boolean | null;
   readonly dateSubmitted?: string | null;
   readonly submittedStatus?: ApplicationSubmittedStatus | keyof typeof ApplicationSubmittedStatus | null;

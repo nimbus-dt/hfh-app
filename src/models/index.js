@@ -30,7 +30,8 @@ const IncomeTypes = {
 
 const SexTypes = {
   "MALE": "MALE",
-  "FEMALE": "FEMALE"
+  "FEMALE": "FEMALE",
+  "OTHER": "OTHER"
 };
 
 const RelationshipTypes = {
