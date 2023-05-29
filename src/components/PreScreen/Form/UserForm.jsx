@@ -10,16 +10,9 @@ import {
   PhoneNumberField,
 } from '@aws-amplify/ui-react';
 import { DataStore, Auth } from 'aws-amplify';
-import { SexTypes, UserProps } from '../../../models';
+import { SexTypes, UserProps, Application } from '../../../models';
 
 export function UserForm() {
-  const [name, setName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [dob, setDob] = useState('');
-  const [sex, setSex] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [address, setAddress] = useState('');
-  const [zip, setZip] = useState('');
   const [userDataBool, setUserDataBool] = useState(false);
   const [userID, setUserID] = useState('');
 
@@ -70,7 +63,7 @@ export function UserForm() {
       .substring(0, 10)
       .replace(/^(\d{3})/, '$1-') // Add dash after the first 3 digits
       .replace(/^(\d{3})-(\d{3})/, '$1-$2-'); // Add dash after the next 3 digits
-    setPhoneNumber(formattedNumber);
+    e.target.value = formattedNumber;
   };
 
   const message = (

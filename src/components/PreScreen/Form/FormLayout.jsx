@@ -35,7 +35,35 @@ export function FormLayout() {
     }
 
     fetchHabitat();
-  });
+  }, []);
+
+  useEffect(() => {
+    async function fetchApplication() {
+      try {
+        const currentUser = await Auth.currentAuthenticatedUser({
+          bypassCache: false,
+        });
+
+        const applicationObject = await DataStore.query(Application, (c) =>
+          c.ownerID.eq(currentUser.username)
+        );
+
+        if (applicationObject.length === 0) {
+          const newApplication = await DataStore.save(
+            new Application({
+              ownerID: currentUser.username,
+              habitatID: habitat.id,
+              submitted: false,
+            })
+          );
+        }
+      } catch (error) {
+        console.log('Error retrieving Application object');
+      }
+    }
+
+    fetchApplication();
+  }, []);
 
   const title = (
     <Flex direction="column">
