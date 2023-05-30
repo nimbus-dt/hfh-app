@@ -97,7 +97,7 @@ export function UserForm() {
             >
               <option value={SexTypes.MALE}>Male</option>
               <option value={SexTypes.FEMALE}>Female</option>
-              <option value="other">Other</option>
+              <option value={SexTypes.OTHER}>Other</option>
             </SelectField>
             <PhoneNumberField
               name="phone"
