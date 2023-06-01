@@ -12,7 +12,7 @@ import { DataStore } from '@aws-amplify/datastore';
 import { Auth } from 'aws-amplify';
 import { Habitat, UserProps, Application } from '../../../models';
 import { UserForm } from './UserForm';
-import { HouseholdForm } from './HouseholdForm';
+import { HouseholdForm } from './Household/HouseholdForm';
 
 export function FormLayout() {
   const [habitat, setHabitat] = useState({});
@@ -47,6 +47,8 @@ export function FormLayout() {
         const applicationObject = await DataStore.query(Application, (c) =>
           c.ownerID.eq(currentUser.username)
         );
+
+        setApplication(applicationObject[0]);
 
         if (applicationObject.length === 0) {
           const newApplication = await DataStore.save(
@@ -86,7 +88,7 @@ export function FormLayout() {
       return <UserForm />;
     }
     if (page === 2) {
-      return <HouseholdForm application={application} />;
+      return <HouseholdForm application={application} habitat={habitat} />;
     }
   }
 
