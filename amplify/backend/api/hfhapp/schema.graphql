@@ -7,6 +7,8 @@ type UserProps @model @auth(rules: [{allow: public}]) {
   sex: SexTypes
   phone: AWSPhone
   props: AWSJSON
+  address: String
+  zip: Int
 }
 
 enum ApplicationSubmittedStatus {

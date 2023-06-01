@@ -60,6 +60,8 @@ type EagerUserProps = {
   readonly sex?: SexTypes | keyof typeof SexTypes | null;
   readonly phone?: string | null;
   readonly props?: string | null;
+  readonly address?: string | null;
+  readonly zip?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -77,6 +79,8 @@ type LazyUserProps = {
   readonly sex?: SexTypes | keyof typeof SexTypes | null;
   readonly phone?: string | null;
   readonly props?: string | null;
+  readonly address?: string | null;
+  readonly zip?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

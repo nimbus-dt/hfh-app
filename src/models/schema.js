@@ -61,6 +61,20 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "address": {
+                    "name": "address",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "zip": {
+                    "name": "zip",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -862,5 +876,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.3",
-    "version": "a73519a224a34343549a1268913d3338"
+    "version": "5d335e51a966a8b41102a2c52c2e903d"
 };
