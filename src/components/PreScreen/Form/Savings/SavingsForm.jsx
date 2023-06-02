@@ -25,16 +25,20 @@ export function SavingsForm({ application, habitat }) {
           c.ownerID.eq(currentUser.username)
         );
 
+        const ownersArray = [userProps[0]];
+
         const householdMembersCollection =
           await applicationObject[0].HouseholdMembers.toArray();
 
-        const ownersArray = [userProps[0]];
+        if (householdMembersCollection.length > 0) {
+          const coapplicants = householdMembersCollection.filter(
+            (member) => member.isCoapplicant
+          );
 
-        const coapplicants = householdMembersCollection.filter(
-          (member) => member.isCoapplicant
-        );
-
-        ownersArray.push(...coapplicants);
+          if (coapplicants.length > 0) {
+            ownersArray.push(...coapplicants);
+          }
+        }
 
         setOwners(ownersArray);
       } catch (error) {
@@ -91,6 +95,8 @@ export function SavingsForm({ application, habitat }) {
   useEffect(() => {
     fetchSavingRecords();
   }, [application]);
+
+  console.log(owners);
 
   return (
     <Flex direction="column" width="100%">

@@ -13,6 +13,7 @@ import { Auth } from 'aws-amplify';
 import { Habitat, UserProps, Application } from '../../../models';
 import { UserForm } from './UserForm';
 import { HouseholdForm } from './Household/HouseholdForm';
+import { SavingsForm } from './Savings/SavingsForm';
 
 export function FormLayout() {
   const [habitat, setHabitat] = useState({});
@@ -20,6 +21,7 @@ export function FormLayout() {
   const [userID, setUserID] = useState('');
   const [applicationExists, setApplicationExists] = useState(false);
   const [application, setApplication] = useState({});
+  const [userExists, setUserExists] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,6 +40,28 @@ export function FormLayout() {
   }, []);
 
   useEffect(() => {
+    async function fetchUserProps() {
+      try {
+        const currentUser = await Auth.currentAuthenticatedUser({
+          bypassCache: false,
+        });
+
+        const userProps = await DataStore.query(UserProps, (c) =>
+          c.ownerID.eq(currentUser.username)
+        );
+
+        if (userProps.length > 0) {
+          setUserExists(true);
+        }
+      } catch (error) {
+        console.log('Error retrieving Habitat', error);
+      }
+    }
+
+    fetchUserProps();
+  }, []);
+
+  useEffect(() => {
     async function fetchApplication() {
       try {
         const currentUser = await Auth.currentAuthenticatedUser({
@@ -48,8 +72,6 @@ export function FormLayout() {
           c.ownerID.eq(currentUser.username)
         );
 
-        setApplication(applicationObject[0]);
-
         if (applicationObject.length === 0) {
           const newApplication = await DataStore.save(
             new Application({
@@ -58,6 +80,8 @@ export function FormLayout() {
               submitted: false,
             })
           );
+        } else {
+          setApplication(applicationObject[0]);
         }
       } catch (error) {
         console.log('Error retrieving Application object');
@@ -90,6 +114,9 @@ export function FormLayout() {
     if (page === 2) {
       return <HouseholdForm application={application} habitat={habitat} />;
     }
+    if (page === 3) {
+      return <SavingsForm application={application} habitat={habitat} />;
+    }
   }
 
   return (
@@ -116,6 +143,7 @@ export function FormLayout() {
             }
           }}
           width="fit-content"
+          isDisabled={!userExists}
         >
           Next
         </Button>
