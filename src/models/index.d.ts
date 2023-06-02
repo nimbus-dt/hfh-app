@@ -54,7 +54,7 @@ type EagerUserProps = {
   };
   readonly id: string;
   readonly ownerID?: string | null;
-  readonly firstName?: string | null;
+  readonly name?: string | null;
   readonly lastName?: string | null;
   readonly dob?: string | null;
   readonly sex?: SexTypes | keyof typeof SexTypes | null;
@@ -73,7 +73,7 @@ type LazyUserProps = {
   };
   readonly id: string;
   readonly ownerID?: string | null;
-  readonly firstName?: string | null;
+  readonly name?: string | null;
   readonly lastName?: string | null;
   readonly dob?: string | null;
   readonly sex?: SexTypes | keyof typeof SexTypes | null;
@@ -101,7 +101,8 @@ type EagerDebtRecord = {
   readonly monthlyRecurrence?: boolean | null;
   readonly typeOfDebt?: DebtTypes | keyof typeof DebtTypes | null;
   readonly estimatedAmount?: number | null;
-  readonly applicationID: string;
+  readonly applicationID?: string | null;
+  readonly ownerApplicant?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -116,7 +117,8 @@ type LazyDebtRecord = {
   readonly monthlyRecurrence?: boolean | null;
   readonly typeOfDebt?: DebtTypes | keyof typeof DebtTypes | null;
   readonly estimatedAmount?: number | null;
-  readonly applicationID: string;
+  readonly applicationID?: string | null;
+  readonly ownerApplicant?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -135,8 +137,9 @@ type EagerSavingRecord = {
   readonly id: string;
   readonly ownerID?: string | null;
   readonly institution?: string | null;
-  readonly estimatedAmou?: number | null;
-  readonly applicationID: string;
+  readonly estimatedAmount?: number | null;
+  readonly applicationID?: string | null;
+  readonly ownerApplicant?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -149,8 +152,9 @@ type LazySavingRecord = {
   readonly id: string;
   readonly ownerID?: string | null;
   readonly institution?: string | null;
-  readonly estimatedAmou?: number | null;
-  readonly applicationID: string;
+  readonly estimatedAmount?: number | null;
+  readonly applicationID?: string | null;
+  readonly ownerApplicant?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -172,7 +176,8 @@ type EagerIncomeRecord = {
   readonly employer?: string | null;
   readonly estimatedMonthlyIncome?: number | null;
   readonly proofOfIncome?: (string | null)[] | null;
-  readonly applicationID: string;
+  readonly applicationID?: string | null;
+  readonly ownerApplicant?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -188,7 +193,8 @@ type LazyIncomeRecord = {
   readonly employer?: string | null;
   readonly estimatedMonthlyIncome?: number | null;
   readonly proofOfIncome?: (string | null)[] | null;
-  readonly applicationID: string;
+  readonly applicationID?: string | null;
+  readonly ownerApplicant?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -211,7 +217,7 @@ type EagerHouseholdMember = {
   readonly sex?: SexTypes | keyof typeof SexTypes | null;
   readonly relationship?: RelationshipTypes | keyof typeof RelationshipTypes | null;
   readonly isCoapplicant?: boolean | null;
-  readonly applicationID: string;
+  readonly applicationID?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -228,7 +234,7 @@ type LazyHouseholdMember = {
   readonly sex?: SexTypes | keyof typeof SexTypes | null;
   readonly relationship?: RelationshipTypes | keyof typeof RelationshipTypes | null;
   readonly isCoapplicant?: boolean | null;
-  readonly applicationID: string;
+  readonly applicationID?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

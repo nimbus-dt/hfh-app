@@ -17,8 +17,8 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "firstName": {
-                    "name": "firstName",
+                "name": {
+                    "name": "name",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -161,7 +161,14 @@ export const schema = {
                     "name": "applicationID",
                     "isArray": false,
                     "type": "ID",
-                    "isRequired": true,
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "ownerApplicant": {
+                    "name": "ownerApplicant",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "createdAt": {
@@ -239,8 +246,8 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "estimatedAmou": {
-                    "name": "estimatedAmou",
+                "estimatedAmount": {
+                    "name": "estimatedAmount",
                     "isArray": false,
                     "type": "Float",
                     "isRequired": false,
@@ -250,7 +257,14 @@ export const schema = {
                     "name": "applicationID",
                     "isArray": false,
                     "type": "ID",
-                    "isRequired": true,
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "ownerApplicant": {
+                    "name": "ownerApplicant",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "createdAt": {
@@ -356,7 +370,14 @@ export const schema = {
                     "name": "applicationID",
                     "isArray": false,
                     "type": "ID",
-                    "isRequired": true,
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "ownerApplicant": {
+                    "name": "ownerApplicant",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "createdAt": {
@@ -470,7 +491,7 @@ export const schema = {
                     "name": "applicationID",
                     "isArray": false,
                     "type": "ID",
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
                 "createdAt": {
@@ -876,5 +897,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.3",
-    "version": "5d335e51a966a8b41102a2c52c2e903d"
+    "version": "82e28476a2995d2d2bb0535355023b38"
 };

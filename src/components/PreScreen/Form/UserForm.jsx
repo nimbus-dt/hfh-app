@@ -24,7 +24,7 @@ export function UserForm() {
 
     const userData = {
       ownerID: userID,
-      firstName: form.elements.name.value,
+      name: form.elements.name.value,
       lastName: form.elements.lastName.value,
       dob: form.elements.dob.value,
       sex: form.elements.sex.value,
@@ -67,7 +67,7 @@ export function UserForm() {
           setPreviousDataId(previousData.id);
           const userData = userDataObject[0];
           setFormData({
-            name: userData.firstName,
+            name: userData.name,
             lastName: userData.lastName,
             dob: userData.dob,
             sex: userData.sex,
