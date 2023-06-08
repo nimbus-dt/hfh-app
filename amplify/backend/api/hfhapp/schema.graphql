@@ -1,7 +1,7 @@
 type UserProps @model @auth(rules: [{allow: public}]) {
   id: ID!
   ownerID: String
-  firstName: String
+  name: String
   lastName: String
   dob: AWSDate
   sex: SexTypes
