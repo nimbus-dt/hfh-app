@@ -1,0 +1,12 @@
+{
+  "resourceName": "s3hfhappstorage55f91a86",
+  "bucketName": "hfh-app-storage-55f91a86",
+  "policyUUID": "933b5a83",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ]
+}

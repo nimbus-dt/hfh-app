@@ -17,6 +17,10 @@
       },
       "auth": {
         "hfhapp": {}
+      },
+      "storage": {
+        "hfhUserFiles": {},
+        "s3hfhappstorage55f91a86": {}
       }
     }
   }

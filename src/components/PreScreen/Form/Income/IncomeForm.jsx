@@ -2,20 +2,23 @@
 import { Flex, Heading, Text, useBreakpointValue } from '@aws-amplify/ui-react';
 import { DataStore, Auth } from 'aws-amplify';
 import { useEffect, useState } from 'react';
-import { Application, SavingRecord, UserProps } from '../../../../models';
-import { SavingsCreate } from './SavingsCreate';
-import { SavingsList } from './SavingsList';
+import { UserProps, Application } from '../../../../models';
+import { IncomeCreate } from './IncomeCreate';
+import { IncomeList } from './IncomeList';
 
-export function SavingsForm({ application, habitat }) {
-  const [savings, setSavings] = useState([]);
+export function IncomeForm({ habitat }) {
   const [owners, setOwners] = useState([]);
+  const [user, setUser] = useState(null);
+  const [application, setApplication] = useState(null);
 
+  // Owners
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const currentUser = await Auth.currentAuthenticatedUser({
           bypassCache: false,
         });
+        setUser(currentUser);
 
         const userProps = await DataStore.query(UserProps, (c) =>
           c.ownerID.eq(currentUser.username)
@@ -24,6 +27,8 @@ export function SavingsForm({ application, habitat }) {
         const applicationObject = await DataStore.query(Application, (c) =>
           c.ownerID.eq(currentUser.username)
         );
+
+        setApplication(applicationObject[0]);
 
         const ownersArray = [userProps[0]];
 
@@ -58,54 +63,19 @@ export function SavingsForm({ application, habitat }) {
     xxl: false,
   });
 
-  const handleCreate = async (e) => {
-    e.preventDefault();
-
-    const formFields = e.target.elements;
-    const institution = formFields.institution.value;
-    const estimatedAmount = Number(formFields.estimatedAmount.value);
-    const ownerID = formFields.owner.value;
-
-    await DataStore.save(
-      new SavingRecord({
-        ownerID,
-        institution,
-        estimatedAmount,
-        applicationID: application?.id,
-      })
-    );
-
-    e.target.reset();
-
-    // Fetch the updated saving records
-    fetchSavingRecords();
-  };
-
-  const fetchSavingRecords = async () => {
-    try {
-      const savingRecordObjects = await DataStore.query(SavingRecord, (c) =>
-        c.applicationID.eq(application.id)
-      );
-      setSavings(savingRecordObjects);
-    } catch (error) {
-      console.log('Error retrieving SavingRecords', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchSavingRecords();
-  }, [application]);
-
   return (
     <Flex direction="column" width="100%">
       <Heading level="4" textAlign="center">
-        Savings Information
+        Income Information
       </Heading>
       <Text textAlign="center">
-        Please list all saving records for your coapplicant and yourself.
+        Please list all income records for your coapplicant and yourself.
       </Text>
-      <SavingsList items={savings} sizeRenderer={sizeRenderer} />
-      <SavingsCreate handleCreate={handleCreate} owners={owners} />
+      <IncomeCreate
+        owners={owners}
+        habitat={habitat}
+        application={application}
+      />
     </Flex>
   );
 }
