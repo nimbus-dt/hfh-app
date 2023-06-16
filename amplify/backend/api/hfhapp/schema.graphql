@@ -108,6 +108,7 @@ type Application @model @auth(rules: [{allow: public}]) {
   submittedStatus: ApplicationSubmittedStatus
   habitatRevisor: ID
   dateRevised: AWSDate
+  ownerName: String
 }
 
 type Habitat @model @auth(rules: [{allow: public}]) {
