@@ -6,7 +6,7 @@ import { Application, SavingRecord, UserProps } from '../../../../models';
 import { SavingsCreate } from './SavingsCreate';
 import { SavingsList } from './SavingsList';
 
-export function SavingsForm({ application }) {
+export function SavingsForm({ application, habitat }) {
   const [savings, setSavings] = useState([]);
   const [owners, setOwners] = useState([]);
 
@@ -58,15 +58,24 @@ export function SavingsForm({ application }) {
     xxl: false,
   });
 
-  const handleCreate = async (owner, institution, estimatedAmount) => {
+  const handleCreate = async (e) => {
+    e.preventDefault();
+
+    const formFields = e.target.elements;
+    const institution = formFields.institution.value;
+    const estimatedAmount = Number(formFields.estimatedAmount.value);
+    const ownerID = formFields.owner.value;
+
     await DataStore.save(
       new SavingRecord({
-        ownerID: owner,
+        ownerID,
         institution,
         estimatedAmount,
         applicationID: application?.id,
       })
     );
+
+    e.target.reset();
 
     // Fetch the updated saving records
     fetchSavingRecords();

@@ -10,23 +10,10 @@ import {
 } from '@aws-amplify/ui-react';
 
 export function SavingsCreate({ handleCreate, owners }) {
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const form = e.target;
-    const owner = form.owner.value;
-    const institution = form.institution.value;
-    const estimatedAmount = Number(form.estimatedAmount.value);
-
-    await handleCreate(owner, institution, estimatedAmount);
-
-    form.reset();
-  };
-
   return (
     <Card variation="elevated">
       <Heading textAlign="center">Saving Record Create</Heading>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleCreate}>
         <Flex direction="column" gap="30px">
           <SelectField name="owner" label="Who owns these savings?">
             {owners.map((owner) => (
