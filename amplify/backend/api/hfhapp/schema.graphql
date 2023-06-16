@@ -120,5 +120,6 @@ type Habitat @model @auth(rules: [{allow: public}]) {
   countiesServed: [String]
   props: AWSJSON
   Applications: [Application] @hasMany(indexName: "byHabitat", fields: ["id"])
+  users: [ID]
 }
  
