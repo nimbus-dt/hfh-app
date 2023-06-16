@@ -262,6 +262,7 @@ type EagerApplication = {
   readonly submittedStatus?: ApplicationSubmittedStatus | keyof typeof ApplicationSubmittedStatus | null;
   readonly habitatRevisor?: string | null;
   readonly dateRevised?: string | null;
+  readonly ownerName?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -283,6 +284,7 @@ type LazyApplication = {
   readonly submittedStatus?: ApplicationSubmittedStatus | keyof typeof ApplicationSubmittedStatus | null;
   readonly habitatRevisor?: string | null;
   readonly dateRevised?: string | null;
+  readonly ownerName?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -307,6 +309,7 @@ type EagerHabitat = {
   readonly countiesServed?: (string | null)[] | null;
   readonly props?: string | null;
   readonly Applications?: (Application | null)[] | null;
+  readonly users?: (string | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -325,6 +328,7 @@ type LazyHabitat = {
   readonly countiesServed?: (string | null)[] | null;
   readonly props?: string | null;
   readonly Applications: AsyncCollection<Application>;
+  readonly users?: (string | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

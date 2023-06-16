@@ -11,6 +11,7 @@ import { PreLimTerms } from './components/PreScreen/PreLim/PreLimTerms';
 import { PreLimQuestions } from './components/PreScreen/PreLim/PreLimQuestions';
 import { PreLimResults } from './components/PreScreen/PreLim/PreLimResults';
 import { FormLayout } from './components/PreScreen/Form/FormLayout';
+import { AffiliateLayout } from './components/Affiliate/AffiliateLayout';
 
 function App() {
   return (
@@ -18,7 +19,9 @@ function App() {
       <Route path="/" element={<h1>Landing</h1>} />
 
       <Route path="affiliate">
-        <Route path="prescreen" element={<h1>PreScreen</h1>} />
+        <Route path=":habitat">
+          <Route path="home" element={<AffiliateLayout />} />
+        </Route>
       </Route>
 
       <Route path="applicant">
@@ -38,14 +41,7 @@ function App() {
                   <FormLayout />
                 </Authenticator>
               }
-            >
-              <Route path="user" element={<h1>Get user info</h1>} />
-              <Route path="household" element={<h1>Get household info</h1>} />
-              <Route path="income" element={<h1>Get income info</h1>} />
-              <Route path="saving" element={<h1>Get user info</h1>} />
-              <Route path="debt" element={<h1>Get user info</h1>} />
-              <Route path="review" element={<h1>Get user info</h1>} />
-            </Route>
+            />
           </Route>
         </Route>
       </Route>
