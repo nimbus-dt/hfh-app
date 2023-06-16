@@ -670,6 +670,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "ownerName": {
+                    "name": "ownerName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -797,6 +804,14 @@ export const schema = {
                         ]
                     }
                 },
+                "users": {
+                    "name": "users",
+                    "isArray": true,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -897,5 +912,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.3",
-    "version": "82e28476a2995d2d2bb0535355023b38"
+    "version": "9b12414584b560686835f2a22ad10807"
 };

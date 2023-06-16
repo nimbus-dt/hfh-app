@@ -15,6 +15,7 @@ import { UserForm } from './UserForm';
 import { HouseholdForm } from './Household/HouseholdForm';
 import { SavingsForm } from './Savings/SavingsForm';
 import { DebtForm } from './Debt/DebtForm';
+import { IncomeForm } from './Income/IncomeForm';
 
 export function FormLayout() {
   const [habitat, setHabitat] = useState({});
@@ -120,6 +121,9 @@ export function FormLayout() {
     }
     if (page === 4) {
       return <DebtForm application={application} habitat={habitat} />;
+    }
+    if (page === 5) {
+      return <IncomeForm application={application} habitat={habitat} />;
     }
   }
 

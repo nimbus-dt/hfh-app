@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/prop-types */
 import { Card, Flex, Text, Heading, Link } from '@aws-amplify/ui-react';
 import { DataStore } from 'aws-amplify';
