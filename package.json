@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@aws-amplify/datastore": "^4.3.0",
+    "@aws-amplify/datastore": "^4.5.1",
     "@aws-amplify/ui-react": "^4.6.4",
     "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/jest-dom": "^5.16.5",

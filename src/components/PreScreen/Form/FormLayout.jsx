@@ -15,7 +15,7 @@ import { UserForm } from './UserForm';
 import { HouseholdForm } from './Household/HouseholdForm';
 import { SavingsForm } from './Savings/SavingsForm';
 import { DebtForm } from './Debt/DebtForm';
-import ConfirmForm from './Confirm/ConfirmForm';
+import { ConfirmForm } from './Confirm/ConfirmForm';
 
 export function FormLayout() {
   const [habitat, setHabitat] = useState({});
