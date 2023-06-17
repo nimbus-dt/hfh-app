@@ -7,9 +7,22 @@ import {
   DebtRecord,
   SavingRecord,
   UserProps,
+  Application,
 } from '../../../../models';
 
-export function ConfirmForm() {
+export function ConfirmForm({ application }) {
+  async function submitApplication() {
+    const applicationObject = await DataStore.query(
+      Application,
+      application.id
+    );
+    await DataStore.save(
+      Application.copyOf(applicationObject, (item) => {
+        item.submitted = true;
+      })
+    );
+  }
+
   return (
     <Card variation="elevated">
       <Heading textAlign="center">Confirmation Form</Heading>
@@ -39,7 +52,13 @@ export function ConfirmForm() {
       </Flex>
 
       {/* Add a button to submit the form */}
-      <Button type="submit" variation="primary">
+      <Button
+        type="submit"
+        variation="primary"
+        onClick={() => {
+          submitApplication();
+        }}
+      >
         Confirm
       </Button>
     </Card>
