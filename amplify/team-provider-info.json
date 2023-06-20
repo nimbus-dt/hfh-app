@@ -17,6 +17,9 @@
       },
       "auth": {
         "hfhapp": {}
+      },
+      "function": {
+        "sendstatusemail": {}
       }
     }
   }
