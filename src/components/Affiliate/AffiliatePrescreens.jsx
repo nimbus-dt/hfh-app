@@ -104,6 +104,7 @@ export function AffiliatePrescreens({ prescreens }) {
         item.submittedStatus = newStatus;
       })
     );
+
     window.location.reload();
   }
 
