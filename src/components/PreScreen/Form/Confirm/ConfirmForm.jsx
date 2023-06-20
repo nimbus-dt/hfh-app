@@ -15,6 +15,7 @@ import {
   TableRow,
   TableCell,
 } from '@aws-amplify/ui-react';
+
 import { useEffect, useState } from 'react';
 import { Application, UserProps, Habitat } from '../../../../models';
 import { HouseholdList } from '../Household/HouseholdList';
@@ -35,13 +36,14 @@ export function ConfirmForm({ application, habitat }) {
     );
 
     const current = new Date();
-    const currentDate = current.parseString();
+    const currentDate = current.toISOString();
 
     await DataStore.save(
-      Application.copyOf(applicationObject, (item) => {
-        item.submitted = true;
-
-        item.submittedStatus = 'PENDING';
+      Application.copyOf(applicationObject, (updated) => {
+        updated.submitted = true;
+        updated.ownerName = `${formData.name} ${formData.lastName}`;
+        updated.submittedStatus = 'PENDING';
+        // Include other properties that need to be updated
       })
     );
   }
