@@ -1,10 +1,11 @@
+/* eslint-disable react/prop-types */
 import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Card, Flex, Text, Heading, Link } from '@aws-amplify/ui-react';
 import { DataStore } from 'aws-amplify';
 import { HouseholdMember, DebtRecord, UserProps } from '../../../../models';
 
-function DebtDetail({ item, sizeRenderer }) {
+export function DebtDetail({ item, sizeRenderer }) {
   const [names, setNames] = useState({});
 
   useEffect(() => {
@@ -43,6 +44,7 @@ function DebtDetail({ item, sizeRenderer }) {
   const deleteObject = useCallback(async () => {
     try {
       await DataStore.delete(DebtRecord, item.id);
+      window.location.reload();
     } catch (error) {
       console.error('An error occurred while deleting the Debt Record:', error);
     }
@@ -56,11 +58,11 @@ function DebtDetail({ item, sizeRenderer }) {
         </Heading>
         <Flex gap="5px">
           <Text fontWeight="bold">Type of debt:</Text>
-          <Text>{item.TypeofDebt}</Text>
+          <Text>{String(item.typeofDebt)}</Text>
         </Flex>
         <Flex gap="5px">
           <Text fontWeight="bold">Is this a Monthly Recurrence:</Text>
-          <Text>{item.MonthlyRecurrence}</Text>
+          <Text>{String(item.monthlyRecurrence)}</Text>
         </Flex>
         <Flex gap="5px">
           <Text fontWeight="bold">Estimated amount:</Text>
@@ -71,16 +73,3 @@ function DebtDetail({ item, sizeRenderer }) {
     </Card>
   );
 }
-
-DebtDetail.propTypes = {
-  item: PropTypes.shape({
-    ownerID: PropTypes.string.isRequired,
-    TypeofDebt: PropTypes.string.isRequired,
-    MonthlyRecurrence: PropTypes.string.isRequired,
-    estimatedAmount: PropTypes.number.isRequired,
-    id: PropTypes.string.isRequired,
-  }).isRequired,
-  sizeRenderer: PropTypes.bool.isRequired,
-};
-
-export default DebtDetail;

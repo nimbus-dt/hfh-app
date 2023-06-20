@@ -24,7 +24,7 @@ export function IncomeCreate({ owners, habitat, application }) {
       owner: formFields.owner.value,
       type: formFields.type.value,
       employer: formFields.employer.value,
-      estimatedMonthlyIncome: formFields.estimatedMonthlyIncome.value,
+      estimatedMonthlyIncome: Number(formFields.estimatedMonthlyIncome.value),
     };
 
     // Create income record
@@ -33,7 +33,7 @@ export function IncomeCreate({ owners, habitat, application }) {
         ownerID: data.owner,
         typeOfIncome: data.type,
         employer: data.employer,
-        estimatedMonthlyIncome: data.estimatedMonthlyIncome,
+        estimatedMonthlyIncome: Number(data.estimatedMonthlyIncome),
         proofOfIncome: [],
         applicationID: application?.id,
       })

@@ -108,7 +108,12 @@ export function DebtForm({ application, habitat }) {
         Please list all debt records for your coapplicant and yourself.
       </Text>
       <DebtList items={debt} sizeRenderer={sizeRenderer} />
-      <DebtCreate handleCreate={handleCreate} owners={owners} />
+      <DebtCreate
+        handleCreate={handleCreate}
+        owners={owners}
+        habitat={habitat}
+        application={application}
+      />
     </Flex>
   );
 }

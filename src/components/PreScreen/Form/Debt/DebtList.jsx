@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Card, Flex, Heading, Collection } from '@aws-amplify/ui-react';
-import DebtDetail from './DebtDetail';
+import { DebtDetail } from './DebtDetail';
 
 export function DebtList({ items, sizeRenderer }) {
   return (
