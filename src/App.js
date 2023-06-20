@@ -12,11 +12,12 @@ import { PreLimQuestions } from './components/PreScreen/PreLim/PreLimQuestions';
 import { PreLimResults } from './components/PreScreen/PreLim/PreLimResults';
 import { FormLayout } from './components/PreScreen/Form/FormLayout';
 import { AffiliateLayout } from './components/Affiliate/AffiliateLayout';
+import { LandingLayout } from './components/Landing/LandingLayout';
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<h1>Landing</h1>} />
+      <Route path="/" element={<LandingLayout />} />
 
       <Route path="affiliate">
         <Route path=":habitat">
