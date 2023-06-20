@@ -17,6 +17,7 @@ import { HouseholdForm } from './Household/HouseholdForm';
 import { SavingsForm } from './Savings/SavingsForm';
 import { DebtForm } from './Debt/DebtForm';
 import { IncomeForm } from './Income/IncomeForm';
+import { ConfirmForm } from './Confirm/ConfirmForm';
 
 export function FormLayout() {
   const [habitat, setHabitat] = useState({});
@@ -26,6 +27,20 @@ export function FormLayout() {
   const [application, setApplication] = useState({});
   const [userExists, setUserExists] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    async function fetchApplicationExists() {
+      const applicationObject = await DataStore.query(
+        Application,
+        application.id
+      );
+
+      if (applicationObject.submitted) {
+        setApplicationExists(true);
+      }
+    }
+    fetchApplicationExists();
+  }, []);
 
   useEffect(() => {
     async function fetchHabitat() {
@@ -126,9 +141,20 @@ export function FormLayout() {
     if (page === 5) {
       return <IncomeForm application={application} habitat={habitat} />;
     }
+    if (page === 6) {
+      return <ConfirmForm application={application} />;
+    }
   }
 
-  return (
+  const completeForm = (
+    <div style={{ border: '1px solid black', padding: '10px' }}>
+      <Heading level="5" textAlign="center">
+        Application Complete
+      </Heading>
+    </div>
+  );
+
+  const incompleteForm = (
     <Card
       variation="outlined"
       wrap
@@ -170,4 +196,6 @@ export function FormLayout() {
       <Divider marginTop="20px" />
     </Card>
   );
+
+  return applicationExists ? completeForm : incompleteForm;
 }

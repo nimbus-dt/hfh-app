@@ -31,7 +31,7 @@ export function HouseholdDetail({ item, sizeRenderer }) {
           <Text fontWeight="bold">Is CoApplicant:</Text>
           <Text>{String(item.isCoapplicant)}</Text>
         </Flex>
-        <Link onClick={deleteObject()}>Delete</Link>
+        <Link onClick={deleteObject}>Delete</Link>
       </Flex>
     </Card>
   );
