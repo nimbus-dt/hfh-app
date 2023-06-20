@@ -1,5 +1,5 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import { DataStore } from 'aws-amplify';
+/* eslint-disable import/no-unresolved */
+/* eslint-disable import/no-extraneous-dependencies */import { DataStore } from 'aws-amplify';
 import {
   Flex,
   Button,

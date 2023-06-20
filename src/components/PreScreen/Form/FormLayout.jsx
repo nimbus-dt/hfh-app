@@ -17,6 +17,7 @@ import { HouseholdForm } from './Household/HouseholdForm';
 import { SavingsForm } from './Savings/SavingsForm';
 import { DebtForm } from './Debt/DebtForm';
 import { IncomeForm } from './Income/IncomeForm';
+import { ConfirmForm } from './Confirm/ConfirmForm';
 
 export function FormLayout() {
   const [habitat, setHabitat] = useState({});
@@ -28,18 +29,39 @@ export function FormLayout() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function fetchHabitat() {
+    async function fetchApplicationExists() {
+      const applicationObject = await DataStore.query(
+        Application,
+        application.id
+      );
+
+      if (applicationObject.submitted) {
+        setApplicationExists(true);
+      }
+    }
+    fetchApplicationExists();
+  }, []);
+
+  useEffect(() => {
+    async function fetchApplicationExists() {
       try {
-        const habitatObject = await DataStore.query(Habitat, (c) =>
-          c.urlName.eq(urlName)
+        const currentUser = await Auth.currentAuthenticatedUser({
+          bypassCache: false,
+        });
+
+        const applicationObject = await DataStore.query(Application, (c) =>
+          c.ownerID.eq(currentUser.username)
         );
-        setHabitat(habitatObject[0]);
+
+        if (applicationObject.length > 0 && applicationObject[0].submitted) {
+          setApplicationExists(true);
+        }
       } catch (error) {
-        console.log('Error retrieving Habitat', error);
+        console.log('Error retrieving Application object', error);
       }
     }
 
-    fetchHabitat();
+    fetchApplicationExists();
   }, []);
 
   useEffect(() => {
@@ -126,9 +148,20 @@ export function FormLayout() {
     if (page === 5) {
       return <IncomeForm application={application} habitat={habitat} />;
     }
+    if (page === 6) {
+      return <ConfirmForm application={application} />;
+    }
   }
 
-  return (
+  const completeForm = (
+    <div style={{ border: '1px solid black', padding: '10px' }}>
+      <Heading level="5" textAlign="center">
+        Application Complete
+      </Heading>
+    </div>
+  );
+
+  const incompleteForm = (
     <Card
       variation="outlined"
       wrap
@@ -170,4 +203,6 @@ export function FormLayout() {
       <Divider marginTop="20px" />
     </Card>
   );
+
+  return applicationExists ? completeForm : incompleteForm;
 }
