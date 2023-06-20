@@ -29,6 +29,20 @@ export function FormLayout() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    async function fetchApplicationExists() {
+      const applicationObject = await DataStore.query(
+        Application,
+        application.id
+      );
+
+      if (applicationObject.submitted) {
+        setApplicationExists(true);
+      }
+    }
+    fetchApplicationExists();
+  }, []);
+
+  useEffect(() => {
     async function fetchHabitat() {
       try {
         const habitatObject = await DataStore.query(Habitat, (c) =>
@@ -132,7 +146,15 @@ export function FormLayout() {
     }
   }
 
-  return (
+  const completeForm = (
+    <div style={{ border: '1px solid black', padding: '10px' }}>
+      <Heading level="5" textAlign="center">
+        Application Complete
+      </Heading>
+    </div>
+  );
+
+  const incompleteForm = (
     <Card
       variation="outlined"
       wrap
@@ -174,4 +196,6 @@ export function FormLayout() {
       <Divider marginTop="20px" />
     </Card>
   );
+
+  return applicationExists ? completeForm : incompleteForm;
 }
