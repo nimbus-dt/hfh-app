@@ -59,5 +59,23 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     }
+  },
+  "parameters": {
+    "AMPLIFY_function_sendstatusemail_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendstatusemail"
+        }
+      ]
+    },
+    "AMPLIFY_function_sendstatusemail_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendstatusemail"
+        }
+      ]
+    }
   }
 }
