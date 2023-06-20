@@ -1,14 +1,36 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { Flex, Button, Card, Heading, Text } from '@aws-amplify/ui-react';
-import { AiOutlineCheck } from 'react-icons/ai';
+import {
+  Flex,
+  Button,
+  Card,
+  Heading,
+  Text,
+  Image,
+} from '@aws-amplify/ui-react';
+import { BiUser, BiSupport } from 'react-icons/bi';
+import { AiFillCloud } from 'react-icons/ai';
+
+import nimbusLogo from '../../assets/images/nimbus-logo.png';
 
 export function LandingLayout() {
   const contactButton = <Button backgroundColor="white">Contact us</Button>;
 
   const nav = (
-    <Flex direction="row" width="100%" marginBottom="50px">
-      <Flex width="25%">Logo here</Flex>
-      <Flex width="75%" justifyContent="flex-end">
+    <Flex
+      direction="row"
+      width="100%"
+      backgroundColor="white"
+      alignItems="center"
+    >
+      <Flex width="25%" height="100%">
+        <Image alt="Habitat Logo" src={nimbusLogo} height="100%" width="100%" />
+      </Flex>
+      <Flex
+        width="75%"
+        justifyContent="flex-end"
+        height="100%"
+        marginRight="30px"
+      >
         {contactButton}
       </Flex>
     </Flex>
@@ -16,21 +38,26 @@ export function LandingLayout() {
 
   const hero = (
     <Card
-      variation="outlined"
       width="100%"
       height="500px"
-      backgroundImage="linear-gradient(to bottom right, #55B949, #ffffff)"
+      backgroundImage="linear-gradient(to bottom, #ffffff, #55B949)"
     >
       <Flex direction="column" alignItems="center">
-        {nav}
         <Heading level="1" fontWeight="bold">
           Digitally transform
         </Heading>
-        <Heading level="1" fontWeight="bold">
+        <Heading level="1" fontWeight="bold" marginBottom="10px">
           your Habitat affiliate
         </Heading>
-        <Heading level="4" fontWeight="normal" marginBottom="30px">
-          Our platform serves all of your affiliate's needs, in the cloud
+        <Heading
+          level="4"
+          fontWeight="normal"
+          marginBottom="30px"
+          width="40%"
+          textAlign="center"
+        >
+          With our platform you can take all your processes digital, storing all
+          of your affiliate's data securely in the cloud
         </Heading>
         {contactButton}
       </Flex>
@@ -38,37 +65,41 @@ export function LandingLayout() {
   );
 
   const explanation = (
-    <Card variation="outlined" width="100%" backgroundColor="#242524">
-      <Flex direction="row" alignItems="center" width="100%">
-        <Flex width="50%" alignItems="center" direction="column">
-          <Heading color="white" level="3">
-            Our platform's features
+    <Flex direction="column">
+      <Flex
+        direction="row"
+        alignItems="center"
+        width="100%"
+        justifyContent="space-between"
+        padding="20px"
+      >
+        <Card variation="outlined" backgroundColor="lightgray" width="30% ">
+          <Flex width="100%" justifyContent="center" marginBottom="10px">
+            <BiUser size="50px" />
+          </Flex>
+          <Heading textAlign="center" level="3">
+            Online PreScreens
           </Heading>
-          <Flex direction="row" alignItems="center">
-            <AiOutlineCheck color="white" />
-            <Text color="white">
-              Forget paper applications. Applicants apply through your own
-              website.
-            </Text>
+          <Text textAlign="center">Hey</Text>
+        </Card>
+        <Card variation="outlined" backgroundColor="lightgray" width="30% ">
+          <Flex width="100%" justifyContent="center" marginBottom="10px">
+            <AiFillCloud size="50px" />
           </Flex>
-          <Flex direction="row">
-            <Text color="white">
-              Store all of your data in the cloud, available for easy access.
-            </Text>
+          <Heading textAlign="center" level="3">
+            Cloud Data Storage
+          </Heading>
+        </Card>
+        <Card variation="outlined" backgroundColor="lightgray" width="30% ">
+          <Flex width="100%" justifyContent="center" marginBottom="10px">
+            <BiSupport size="50px" />
           </Flex>
-        </Flex>
-        <Flex width="50%" alignItems="center" alignContent="center">
-          <iframe
-            width="100%"
-            height="400"
-            src="https://www.youtube.com/embed/4fezP875xOQ"
-            title="YouTube video player"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen
-          />
-        </Flex>
+          <Heading textAlign="center" level="3">
+            User Support
+          </Heading>
+        </Card>
       </Flex>
-    </Card>
+    </Flex>
   );
 
   const contactForm = (
@@ -85,6 +116,7 @@ export function LandingLayout() {
 
   return (
     <Flex width="100%" direction="column">
+      {nav}
       {hero}
       {explanation}
       {contactForm}
