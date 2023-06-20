@@ -28,6 +28,38 @@ export function ConfirmForm({ application, habitat }) {
   const [userID, setUserID] = useState('');
   const [formData, setFormData] = useState({});
   const [previousDataId, setPreviousDataId] = useState(null);
+  const [householdMembers, setHouseholdMembers] = useState([]);
+  const [selectedApplication, setSelectedApplication] = useState(null);
+  const [incomes, setIncomes] = useState([]);
+  const [savings, setSavings] = useState([]);
+  const [debts, setDebts] = useState([]);
+
+  useEffect(() => {
+    async function setApplicationChildren() {
+      const applicationObject = await DataStore.query(
+        Application,
+        application.id
+      );
+
+      setSelectedApplication(applicationObject);
+
+      try {
+        const householdMemberArray =
+          await selectedApplication?.HouseholdMembers.toArray();
+        const incomeArray = await selectedApplication?.IncomeRecords.toArray();
+        const savingArray = await selectedApplication?.SavingRecords.toArray();
+        const debtArray = await selectedApplication?.DebtRecords.toArray();
+
+        setHouseholdMembers(householdMemberArray);
+        setIncomes(incomeArray);
+        setSavings(savingArray);
+        setDebts(debtArray);
+      } catch (error) {
+        console.log(`Error fetching application children: ${error}`);
+      }
+    }
+    setApplicationChildren();
+  }, [selectedApplication]);
 
   async function submitApplication() {
     const applicationObject = await DataStore.query(
@@ -181,7 +213,7 @@ export function ConfirmForm({ application, habitat }) {
 
           <TableRow>
             <TableCell colSpan="2">
-              <HouseholdList />
+              <HouseholdList items={householdMembers} />
             </TableCell>
           </TableRow>
 
@@ -195,7 +227,7 @@ export function ConfirmForm({ application, habitat }) {
 
           <TableRow>
             <TableCell colSpan="2">
-              <SavingsList />
+              <SavingsList items={savings} />
             </TableCell>
           </TableRow>
 
@@ -209,7 +241,7 @@ export function ConfirmForm({ application, habitat }) {
 
           <TableRow>
             <TableCell colSpan="2">
-              <DebtList />
+              <DebtList items={debts} />
             </TableCell>
           </TableRow>
 
@@ -223,7 +255,7 @@ export function ConfirmForm({ application, habitat }) {
 
           <TableRow>
             <TableCell colSpan="2">
-              <IncomeList />
+              <IncomeList items={incomes} />
             </TableCell>
           </TableRow>
         </TableBody>
