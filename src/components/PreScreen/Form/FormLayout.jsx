@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useParams, Outlet, useNavigate } from 'react-router-dom';
 import {
   Flex,
