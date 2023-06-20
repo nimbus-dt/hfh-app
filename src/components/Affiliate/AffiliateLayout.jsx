@@ -19,7 +19,6 @@ import {
 import { Habitat } from '../../models';
 import logoHabitat from '../../assets/images/logoHabitat.svg';
 import { AffiliatePrescreens } from './AffiliatePrescreens';
-import { AffiliatePrescreenDetail } from './AffiliatePrescreenDetail';
 
 export function AffiliateLayout() {
   const [page, setPage] = useState('prescreens');
