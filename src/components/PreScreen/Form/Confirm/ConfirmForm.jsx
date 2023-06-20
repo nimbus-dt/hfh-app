@@ -37,12 +37,14 @@ export function ConfirmForm({ application, habitat }) {
 
     const current = new Date();
     const currentDate = current.toISOString();
+    const cutDate = currentDate.substring(0, 10);
 
     await DataStore.save(
       Application.copyOf(applicationObject, (updated) => {
         updated.submitted = true;
         updated.ownerName = `${formData.name} ${formData.lastName}`;
         updated.submittedStatus = 'PENDING';
+        updated.dateSubmitted = cutDate;
         // Include other properties that need to be updated
       })
     );

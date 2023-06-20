@@ -19,7 +19,10 @@
         "hfhapp": {}
       },
       "function": {
-        "sendstatusemail": {}
+        "sendstatusemail": {
+          "deploymentBucketName": "amplify-hfhapp-staging-10900-deployment",
+          "s3Key": "amplify-builds/sendstatusemail-5049716c554131423670-build.zip"
+        }
       }
     }
   }

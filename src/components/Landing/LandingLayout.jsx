@@ -1,6 +1,6 @@
+/* eslint-disable import/no-unresolved */
 /* eslint-disable import/no-extraneous-dependencies */
 import { Flex, Button, Card, Heading, Text } from '@aws-amplify/ui-react';
-import { AiOutlineCheck } from 'react-icons/ai';
 
 export function LandingLayout() {
   const contactButton = <Button backgroundColor="white">Contact us</Button>;
@@ -45,7 +45,6 @@ export function LandingLayout() {
             Our platform's features
           </Heading>
           <Flex direction="row" alignItems="center">
-            <AiOutlineCheck color="white" />
             <Text color="white">
               Forget paper applications. Applicants apply through your own
               website.

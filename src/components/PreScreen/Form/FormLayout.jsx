@@ -43,18 +43,25 @@ export function FormLayout() {
   }, []);
 
   useEffect(() => {
-    async function fetchHabitat() {
+    async function fetchApplicationExists() {
       try {
-        const habitatObject = await DataStore.query(Habitat, (c) =>
-          c.urlName.eq(urlName)
+        const currentUser = await Auth.currentAuthenticatedUser({
+          bypassCache: false,
+        });
+
+        const applicationObject = await DataStore.query(Application, (c) =>
+          c.ownerID.eq(currentUser.username)
         );
-        setHabitat(habitatObject[0]);
+
+        if (applicationObject.length > 0 && applicationObject[0].submitted) {
+          setApplicationExists(true);
+        }
       } catch (error) {
-        console.log('Error retrieving Habitat', error);
+        console.log('Error retrieving Application object', error);
       }
     }
 
-    fetchHabitat();
+    fetchApplicationExists();
   }, []);
 
   useEffect(() => {
