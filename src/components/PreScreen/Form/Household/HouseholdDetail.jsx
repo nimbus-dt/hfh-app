@@ -29,7 +29,7 @@ export function HouseholdDetail({ item, sizeRenderer }) {
         </Flex>
         <Flex gap="5px">
           <Text fontWeight="bold">Is CoApplicant:</Text>
-          <Text>{String(item.isCoapplicant)}</Text>
+          <Text>{item.isCoapplicant ? 'Yes' : 'No'}</Text>
         </Flex>
         <Link onClick={deleteObject}>Delete</Link>
       </Flex>
