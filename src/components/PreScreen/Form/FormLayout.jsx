@@ -65,6 +65,20 @@ export function FormLayout() {
   }, []);
 
   useEffect(() => {
+    async function fetchHabitat() {
+      try {
+        const habitatObject = await DataStore.query(Habitat, (c) =>
+          c.urlName.eq(urlName)
+        );
+        setHabitat(habitatObject[0]);
+      } catch (error) {
+        console.log('Error retrieving Habitat', error);
+      }
+    }
+    fetchHabitat();
+  }, []);
+
+  useEffect(() => {
     async function fetchUserProps() {
       try {
         const currentUser = await Auth.currentAuthenticatedUser({
