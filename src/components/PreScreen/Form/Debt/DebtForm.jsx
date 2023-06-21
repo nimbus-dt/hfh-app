@@ -62,7 +62,7 @@ export function DebtForm({ application, habitat }) {
     e.preventDefault();
 
     const formFields = e.target.elements;
-    const monthlyReccurrence = Boolean(formFields.monthlyReccurrence.value);
+    const monthlyRecurrence = formFields.monthlyRecurrence.value === 'true';
     const typeOfDebt = formFields.typeOfDebt.value;
     const estimatedAmount = Number(formFields.estimatedAmount.value);
     const ownerID = formFields.owner.value;
@@ -70,7 +70,7 @@ export function DebtForm({ application, habitat }) {
     await DataStore.save(
       new DebtRecord({
         ownerID,
-        monthlyReccurrence,
+        monthlyRecurrence, // Update the variable name here
         typeOfDebt,
         estimatedAmount,
         applicationID: application?.id,

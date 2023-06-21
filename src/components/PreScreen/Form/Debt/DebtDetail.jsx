@@ -3,10 +3,26 @@ import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Card, Flex, Text, Heading, Link } from '@aws-amplify/ui-react';
 import { DataStore } from 'aws-amplify';
-import { HouseholdMember, DebtRecord, UserProps } from '../../../../models';
+import {
+  HouseholdMember,
+  DebtRecord,
+  UserProps,
+  Application,
+} from '../../../../models';
 
 export function DebtDetail({ item, sizeRenderer }) {
   const [names, setNames] = useState({});
+  const [Monthly, setMonthly] = useState(false);
+
+  async function submitApplication() {
+    const applicationObject = await DataStore.query(DebtRecord, item.id);
+
+    await DataStore.save(
+      Application.copyOf(applicationObject, (updated) => {
+        updated.monthlyRecurrence = Monthly;
+      })
+    );
+  }
 
   useEffect(() => {
     const fetchOwner = async () => {
@@ -58,11 +74,11 @@ export function DebtDetail({ item, sizeRenderer }) {
         </Heading>
         <Flex gap="5px">
           <Text fontWeight="bold">Type of debt:</Text>
-          <Text>{String(item.typeofDebt)}</Text>
+          <Text>{String(item.typeOfDebt)}</Text>
         </Flex>
         <Flex gap="5px">
           <Text fontWeight="bold">Is this a Monthly Recurrence:</Text>
-          <Text>{String(item.monthlyRecurrence)}</Text>
+          <Text>{item.monthlyRecurrence ? 'Yes' : 'No'}</Text>
         </Flex>
         <Flex gap="5px">
           <Text fontWeight="bold">Estimated amount:</Text>
