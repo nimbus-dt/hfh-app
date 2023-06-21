@@ -1,3 +1,10 @@
+type ContactForm @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  affiliate: String
+  contactEmail: String
+}
+
 type UserProps @model @auth(rules: [{allow: public}]) {
   id: ID!
   ownerID: String
