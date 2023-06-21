@@ -1,4 +1,6 @@
 /* eslint-disable react/prop-types */
+import React, { useState } from 'react';
+import { DataStore } from 'aws-amplify';
 import {
   Card,
   Heading,
@@ -9,9 +11,25 @@ import {
   RadioGroupField,
   Radio,
 } from '@aws-amplify/ui-react';
-import { DebtTypes } from '../../../../models';
+import { DebtRecord, DebtTypes, Application } from '../../../../models';
 
 export function DebtCreate({ handleCreate, owners }) {
+  const [Monthly, setMonthly] = useState(false);
+
+  const handleMonthlyRecurrenceChange = (value) => {
+    setMonthly(value === 'true');
+  };
+
+  async function submitApplication() {
+    const applicationObject = await DataStore.query(DebtRecord, Application.id);
+
+    await DataStore.save(
+      DebtRecord.copyOf(applicationObject, (updated) => {
+        updated.monthlyRecurrence = Monthly;
+      })
+    );
+  }
+
   return (
     <Card variation="elevated">
       <Heading textAlign="center">Debt Record Create</Heading>
@@ -31,10 +49,10 @@ export function DebtCreate({ handleCreate, owners }) {
             placeholder="Select an option"
           >
             <option value={DebtTypes.MEDICAL}>Medical</option>
-            <option value={DebtTypes.STUDENT_LOANS}>Sudent Loan</option>
+            <option value={DebtTypes.STUDENT_LOANS}>Student Loan</option>
             <option value={DebtTypes.COLLECTIONS}>Collections</option>
             <option value={DebtTypes.CAR}>Car</option>
-            <option value={DebtTypes.PERSONAL_LOANS}>Personale Loans</option>
+            <option value={DebtTypes.PERSONAL_LOANS}>Personal Loans</option>
             <option value={DebtTypes.INSTALLMENT_LOANS}>
               Installment Loan
             </option>
@@ -45,12 +63,13 @@ export function DebtCreate({ handleCreate, owners }) {
           </SelectField>
 
           <RadioGroupField
-            name="monthlyReccurrence"
+            name="monthlyRecurrence"
             isRequired
             label="Is this a monthly recurring debt?"
+            onChange={(e) => handleMonthlyRecurrenceChange(e.target.value)}
           >
-            <Radio value>Yes</Radio>
-            <Radio value={false}>No</Radio>
+            <Radio value="true">Yes</Radio>
+            <Radio value="false">No</Radio>
           </RadioGroupField>
 
           <StepperField

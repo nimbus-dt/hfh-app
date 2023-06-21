@@ -47,6 +47,38 @@ export enum RelationshipTypes {
 
 
 
+type EagerContactForm = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<ContactForm, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name?: string | null;
+  readonly affiliate?: string | null;
+  readonly contactEmail?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyContactForm = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<ContactForm, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name?: string | null;
+  readonly affiliate?: string | null;
+  readonly contactEmail?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type ContactForm = LazyLoading extends LazyLoadingDisabled ? EagerContactForm : LazyContactForm
+
+export declare const ContactForm: (new (init: ModelInit<ContactForm>) => ContactForm) & {
+  copyOf(source: ContactForm, mutator: (draft: MutableModel<ContactForm>) => MutableModel<ContactForm> | void): ContactForm;
+}
+
 type EagerUserProps = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<UserProps, 'id'>;
