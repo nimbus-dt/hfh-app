@@ -80,6 +80,7 @@ export function ConfirmForm({ application, habitat }) {
         // Include other properties that need to be updated
       })
     );
+    window.location.reload();
   }
 
   const handleSubmit = async (e) => {

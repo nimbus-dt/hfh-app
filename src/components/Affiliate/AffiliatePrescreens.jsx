@@ -98,7 +98,7 @@ export function AffiliatePrescreens({ prescreens }) {
         }
       >
         {(item, index) => (
-          <Flex width="100%" justifyContent="center">
+          <Flex width="100%" justifyContent="center" key={item.id}>
             <Card key={index} variation="outlined" width="300px">
               <Flex direction="column" justifyContent="space-between">
                 <Text fontWeight="bold">{item.ownerName}</Text>
