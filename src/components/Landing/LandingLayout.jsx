@@ -328,7 +328,7 @@ export function LandingLayout() {
         Contact us!
       </Heading>
       <Heading level="4" fontWeight="normal" marginBottom="30px">
-        We will get back to you as soon as possible
+        Schedule a demo or ask us any questions
       </Heading>
 
       <form onSubmit={handleSubmit}>
