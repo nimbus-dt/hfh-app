@@ -7,6 +7,7 @@ import {
   Divider,
   Pagination,
   Button,
+  Text,
 } from '@aws-amplify/ui-react';
 import { useState, useEffect } from 'react';
 import { DataStore } from '@aws-amplify/datastore';
@@ -27,20 +28,6 @@ export function FormLayout() {
   const [application, setApplication] = useState({});
   const [userExists, setUserExists] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    async function fetchApplicationExists() {
-      const applicationObject = await DataStore.query(
-        Application,
-        application.id
-      );
-
-      if (applicationObject.submitted) {
-        setApplicationExists(true);
-      }
-    }
-    fetchApplicationExists();
-  }, []);
 
   useEffect(() => {
     async function fetchApplicationExists() {
@@ -168,11 +155,26 @@ export function FormLayout() {
   }
 
   const completeForm = (
-    <div style={{ border: '1px solid black', padding: '10px' }}>
-      <Heading level="5" textAlign="center">
-        Application Complete
-      </Heading>
-    </div>
+    <Card variation="elevated" width="300px">
+      <Flex direction="column">
+        <Heading level="5" textAlign="center">
+          Application submitted!
+        </Heading>
+        <Flex direction="column" gap="0">
+          <Text fontWeight="bold">Status:</Text>
+          <Text>{application?.submittedStatus}</Text>
+        </Flex>
+        <Flex direction="column" gap="0">
+          <Text>
+            {
+              habitat?.props?.prePreScreen?.prePreScreenStatusPage[
+                application?.submittedStatus
+              ]
+            }
+          </Text>
+        </Flex>
+      </Flex>
+    </Card>
   );
 
   const incompleteForm = (
@@ -218,5 +220,5 @@ export function FormLayout() {
     </Card>
   );
 
-  return applicationExists ? completeForm : incompleteForm;
+  return application?.submitted ? completeForm : incompleteForm;
 }
