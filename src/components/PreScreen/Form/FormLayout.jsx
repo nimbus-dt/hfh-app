@@ -115,7 +115,7 @@ export function FormLayout() {
           const newApplication = await DataStore.save(
             new Application({
               ownerID: currentUser.username,
-              habitatID: habitat.id,
+              habitatID: habitat?.id,
               submitted: false,
             })
           );
