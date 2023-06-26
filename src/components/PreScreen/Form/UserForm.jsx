@@ -47,6 +47,8 @@ export function UserForm() {
     } catch (error) {
       console.log('Error saving user data:', error);
     }
+
+    window.location.reload();
   };
 
   useEffect(() => {

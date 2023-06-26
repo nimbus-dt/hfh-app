@@ -123,7 +123,7 @@ export function FormLayout() {
           setApplication(applicationObject[0]);
         }
       } catch (error) {
-        console.log('Error retrieving Application object');
+        console.log(`Error retrieving Application object: ${error}`);
       }
     }
 
