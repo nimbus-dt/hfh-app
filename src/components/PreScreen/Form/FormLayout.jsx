@@ -187,34 +187,36 @@ export function FormLayout() {
       <Divider marginBottom="10px" />
       <Flex direction="column" gap="xl">
         {title}
-        <Pagination
-          currentPage={page}
-          totalPages={6}
-          siblingCount={1}
-          width="100%"
-        />
         {formSet()}
-        <Button
-          onClick={() => {
-            if (page !== 6) {
-              setPage(page + 1);
-            }
-          }}
-          width="fit-content"
-          isDisabled={!userExists}
-        >
-          Next
-        </Button>
-        <Button
-          onClick={() => {
-            if (page !== 1) {
-              setPage(page - 1);
-            }
-          }}
-          width="fit-content"
-        >
-          Previous
-        </Button>
+        <Flex justifyContent="space-between" alignItems="center">
+          <Button
+            onClick={() => {
+              if (page !== 1) {
+                setPage(page - 1);
+              }
+            }}
+            width="fit-content"
+          >
+            Previous
+          </Button>
+          <Pagination
+            currentPage={page}
+            totalPages={6}
+            siblingCount={1}
+            width="100%"
+          />
+          <Button
+            onClick={() => {
+              if (page !== 6) {
+                setPage(page + 1);
+              }
+            }}
+            width="fit-content"
+            isDisabled={!userExists}
+          >
+            Next
+          </Button>
+        </Flex>
       </Flex>
       <Divider marginTop="20px" />
     </Card>

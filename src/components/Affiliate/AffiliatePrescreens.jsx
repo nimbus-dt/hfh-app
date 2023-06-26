@@ -132,7 +132,7 @@ export function AffiliatePrescreens({ prescreens }) {
   }
 
   const prescreenDetail = (
-    <Flex width="100%" direction="column">
+    <Flex width="auto" direction="column">
       <Button
         width="fit-content"
         onClick={() => {

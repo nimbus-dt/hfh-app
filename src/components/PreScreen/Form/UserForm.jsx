@@ -116,7 +116,10 @@ export function UserForm() {
 
   // Message to display if user data exists
   const message = (
-    <div style={{ border: '1px solid black', padding: '10px' }}>
+    <Card
+      variation="elevated"
+      style={{ border: '1px solid black', padding: '10px' }}
+    >
       <Heading level="5" textAlign="center">
         You have an existing user information record
       </Heading>
@@ -133,7 +136,7 @@ export function UserForm() {
           Edit
         </Button>
       </Flex>
-    </div>
+    </Card>
   );
 
   const userForm = (

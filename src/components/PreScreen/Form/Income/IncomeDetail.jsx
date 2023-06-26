@@ -49,6 +49,7 @@ export function IncomeDetail({ item, sizeRenderer }) {
   async function deleteObject() {
     try {
       await DataStore.delete(IncomeRecord, item.id);
+      window.location.reload();
     } catch (error) {
       console.error(
         'An error occurred while deleting the Saving Record :',
@@ -70,6 +71,10 @@ export function IncomeDetail({ item, sizeRenderer }) {
         <Flex gap="5px">
           <Text fontWeight="bold">Estimated monthly income:</Text>
           <Text>$ {parseInt(item.estimatedMonthlyIncome)}</Text>
+        </Flex>
+        <Flex gap="5px">
+          <Text fontWeight="bold">Total income:</Text>
+          <Text>$ {parseInt(item.totalIncome)}</Text>
         </Flex>
         <Link onClick={deleteObject}>Delete</Link>
       </Flex>

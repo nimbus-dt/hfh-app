@@ -25,6 +25,7 @@ export function IncomeCreate({ owners, habitat, application }) {
       type: formFields.type.value,
       employer: formFields.employer.value,
       estimatedMonthlyIncome: Number(formFields.estimatedMonthlyIncome.value),
+      totalIncome: Number(formFields.totalIncome.value),
     };
 
     // Create income record
@@ -34,6 +35,7 @@ export function IncomeCreate({ owners, habitat, application }) {
         typeOfIncome: data.type,
         employer: data.employer,
         estimatedMonthlyIncome: Number(data.estimatedMonthlyIncome),
+        totalIncome: Number(data.totalIncome),
         proofOfIncome: [],
         applicationID: application?.id,
       })
@@ -75,6 +77,14 @@ export function IncomeCreate({ owners, habitat, application }) {
             step={0.01}
             name="estimatedMonthlyIncome"
             label="Estimated monthly income"
+            placeholder="$1000.50"
+            isRequired
+          />
+          <StepperField
+            min={0}
+            step={0.01}
+            name="totalIncome"
+            label="Total income"
             placeholder="$1000.50"
             isRequired
           />

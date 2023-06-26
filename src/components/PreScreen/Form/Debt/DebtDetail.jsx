@@ -14,16 +14,6 @@ export function DebtDetail({ item, sizeRenderer }) {
   const [names, setNames] = useState({});
   const [Monthly, setMonthly] = useState(false);
 
-  async function submitApplication() {
-    const applicationObject = await DataStore.query(DebtRecord, item.id);
-
-    await DataStore.save(
-      Application.copyOf(applicationObject, (updated) => {
-        updated.monthlyRecurrence = Monthly;
-      })
-    );
-  }
-
   useEffect(() => {
     const fetchOwner = async () => {
       try {
@@ -77,8 +67,8 @@ export function DebtDetail({ item, sizeRenderer }) {
           <Text>{String(item.typeOfDebt)}</Text>
         </Flex>
         <Flex gap="5px">
-          <Text fontWeight="bold">Is this a Monthly Recurrence:</Text>
-          <Text>{item.monthlyRecurrence ? 'Yes' : 'No'}</Text>
+          <Text fontWeight="bold">Monthly Debt Amount:</Text>
+          <Text>${item.monthlyRecurrence}</Text>
         </Flex>
         <Flex gap="5px">
           <Text fontWeight="bold">Estimated amount:</Text>

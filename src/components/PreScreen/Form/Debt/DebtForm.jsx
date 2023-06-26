@@ -62,7 +62,7 @@ export function DebtForm({ application, habitat }) {
     e.preventDefault();
 
     const formFields = e.target.elements;
-    const monthlyRecurrence = formFields.monthlyRecurrence.value === 'true';
+    const monthlyRecurrence = Number(formFields.monthlyRecurrence.value);
     const typeOfDebt = formFields.typeOfDebt.value;
     const estimatedAmount = Number(formFields.estimatedAmount.value);
     const ownerID = formFields.owner.value;

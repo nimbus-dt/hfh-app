@@ -210,7 +210,7 @@ export const schema = {
                 "monthlyRecurrence": {
                     "name": "monthlyRecurrence",
                     "isArray": false,
-                    "type": "Boolean",
+                    "type": "Float",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -450,6 +450,13 @@ export const schema = {
                     "name": "ownerApplicant",
                     "isArray": false,
                     "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "totalIncome": {
+                    "name": "totalIncome",
+                    "isArray": false,
+                    "type": "Float",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -985,5 +992,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.3",
-    "version": "7aefddf8ede197f0ad352ca0cf0a083d"
+    "version": "fe09651587f9a26cd48e108f8e605f6c"
 };

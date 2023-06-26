@@ -272,7 +272,7 @@ export function ConfirmForm({ application, habitat }) {
           submitApplication();
         }}
       >
-        Confirm
+        Submit
       </Button>
     </Flex>
   );

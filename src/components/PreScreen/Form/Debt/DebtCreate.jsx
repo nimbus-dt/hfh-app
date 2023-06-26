@@ -14,22 +14,6 @@ import {
 import { DebtRecord, DebtTypes, Application } from '../../../../models';
 
 export function DebtCreate({ handleCreate, owners }) {
-  const [Monthly, setMonthly] = useState(false);
-
-  const handleMonthlyRecurrenceChange = (value) => {
-    setMonthly(value === 'true');
-  };
-
-  async function submitApplication() {
-    const applicationObject = await DataStore.query(DebtRecord, Application.id);
-
-    await DataStore.save(
-      DebtRecord.copyOf(applicationObject, (updated) => {
-        updated.monthlyRecurrence = Monthly;
-      })
-    );
-  }
-
   return (
     <Card variation="elevated">
       <Heading textAlign="center">Debt Record Create</Heading>
@@ -62,15 +46,14 @@ export function DebtCreate({ handleCreate, owners }) {
             <option value={DebtTypes.OTHER}>Other</option>
           </SelectField>
 
-          <RadioGroupField
+          <StepperField
+            min={0}
+            step={0.01}
             name="monthlyRecurrence"
+            label="Estimated monthly recurring debt amount"
+            placeholder="1000.50"
             isRequired
-            label="Is this a monthly recurring debt?"
-            onChange={(e) => handleMonthlyRecurrenceChange(e.target.value)}
-          >
-            <Radio value="true">Yes</Radio>
-            <Radio value="false">No</Radio>
-          </RadioGroupField>
+          />
 
           <StepperField
             min={0}

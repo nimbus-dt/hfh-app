@@ -130,7 +130,7 @@ type EagerDebtRecord = {
   };
   readonly id: string;
   readonly ownerID?: string | null;
-  readonly monthlyRecurrence?: boolean | null;
+  readonly monthlyRecurrence?: number | null;
   readonly typeOfDebt?: DebtTypes | keyof typeof DebtTypes | null;
   readonly estimatedAmount?: number | null;
   readonly applicationID?: string | null;
@@ -146,7 +146,7 @@ type LazyDebtRecord = {
   };
   readonly id: string;
   readonly ownerID?: string | null;
-  readonly monthlyRecurrence?: boolean | null;
+  readonly monthlyRecurrence?: number | null;
   readonly typeOfDebt?: DebtTypes | keyof typeof DebtTypes | null;
   readonly estimatedAmount?: number | null;
   readonly applicationID?: string | null;
@@ -210,6 +210,7 @@ type EagerIncomeRecord = {
   readonly proofOfIncome?: (string | null)[] | null;
   readonly applicationID?: string | null;
   readonly ownerApplicant?: boolean | null;
+  readonly totalIncome?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -227,6 +228,7 @@ type LazyIncomeRecord = {
   readonly proofOfIncome?: (string | null)[] | null;
   readonly applicationID?: string | null;
   readonly ownerApplicant?: boolean | null;
+  readonly totalIncome?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

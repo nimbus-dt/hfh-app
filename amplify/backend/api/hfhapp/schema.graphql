@@ -40,7 +40,7 @@ enum DebtTypes {
 type DebtRecord @model @auth(rules: [{allow: public}]) {
   id: ID!
   ownerID: String
-  monthlyRecurrence: Boolean
+  monthlyRecurrence: Float
   typeOfDebt: DebtTypes
   estimatedAmount: Float
   applicationID: ID @index(name: "byApplication")
@@ -72,6 +72,7 @@ type IncomeRecord @model @auth(rules: [{allow: public}]) {
   proofOfIncome: [ID]
   applicationID: ID @index(name: "byApplication")
   ownerApplicant: Boolean
+  totalIncome: Float
 }
 
 type HouseholdMember @model @auth(rules: [{allow: public}]) {
