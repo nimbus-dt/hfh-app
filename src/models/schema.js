@@ -97,13 +97,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "lastName": {
-                    "name": "lastName",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
                 "dob": {
                     "name": "dob",
                     "isArray": false,
@@ -523,13 +516,6 @@ export const schema = {
                 },
                 "name": {
                     "name": "name",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "lastName": {
-                    "name": "lastName",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -992,5 +978,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.3",
-    "version": "fe09651587f9a26cd48e108f8e605f6c"
+    "version": "0bc160622881798444367189b77e78ac"
 };

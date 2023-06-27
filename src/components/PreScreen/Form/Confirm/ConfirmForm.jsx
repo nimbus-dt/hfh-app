@@ -75,7 +75,7 @@ export function ConfirmForm({ application, habitat }) {
       await DataStore.save(
         Application.copyOf(applicationObject, (updated) => {
           updated.submitted = true;
-          updated.ownerName = `${formData.name} ${formData.lastName}`;
+          updated.ownerName = `${formData.name}`;
           updated.submittedStatus = 'PENDING';
           updated.dateSubmitted = cutDate;
           // Include other properties that need to be updated
@@ -94,7 +94,6 @@ export function ConfirmForm({ application, habitat }) {
     const userData = {
       ownerID: userID,
       name: form.elements.name.value,
-      lastName: form.elements.lastName.value,
       dob: form.elements.dob.value,
       sex: form.elements.sex.value,
       phone: form.elements.phone.value,
@@ -137,7 +136,6 @@ export function ConfirmForm({ application, habitat }) {
           const userData = userDataObject[0];
           setFormData({
             name: userData.name,
-            lastName: userData.lastName,
             dob: userData.dob,
             sex: userData.sex,
             phone: userData.phone,
@@ -170,12 +168,6 @@ export function ConfirmForm({ application, habitat }) {
               Name
             </TableCell>
             <TableCell>{formData.name}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell as="th" width="25%">
-              Last Name
-            </TableCell>
-            <TableCell>{formData.lastName}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell as="th" width="25%">

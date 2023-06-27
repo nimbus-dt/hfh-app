@@ -32,7 +32,6 @@ export function HouseholdForm({ application, habitat }) {
 
     // Retrieve the values using the form field names
     const name = formFields.name.value;
-    const lastName = formFields.lastName.value;
     const dob = formFields.dob.value;
     const sex = formFields.sex.value;
     const relationship = formFields.relationship.value;
@@ -42,7 +41,6 @@ export function HouseholdForm({ application, habitat }) {
     await DataStore.save(
       new HouseholdMember({
         name,
-        lastName,
         dateOfBirth: dob,
         sex,
         relationship,

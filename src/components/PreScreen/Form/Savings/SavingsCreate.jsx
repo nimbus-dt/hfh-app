@@ -18,7 +18,7 @@ export function SavingsCreate({ handleCreate, owners }) {
           <SelectField name="owner" label="Who owns these savings?">
             {owners.map((owner) => (
               <option key={owner.id} value={owner.id}>
-                {`${owner.name} ${owner.lastName}`}
+                {`${owner.name}`}
               </option>
             ))}
           </SelectField>
