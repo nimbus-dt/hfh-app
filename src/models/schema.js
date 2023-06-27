@@ -951,6 +951,15 @@ export const schema = {
                 "SALARIED_EMPLOYMENT",
                 "HOURLY_EMPLOYMENT",
                 "SELF_EMPLOYMENT",
+                "SOCIAL_SECURITY_DISABILITY_INSURANCE",
+                "SOCIAL_SECURITY_BENEFITS",
+                "SUPPLEMENTAL_SECURITY_INCOME",
+                "HOUSING_VOUCHER",
+                "CHILD_SUPPORT",
+                "ALIMONY_SUPPORT",
+                "VETERANS_AFFAIR_COMPENSATION",
+                "PENSION_PAYMENTS",
+                "MILITARY_ENTITLEMENTS",
                 "OTHER"
             ]
         },
