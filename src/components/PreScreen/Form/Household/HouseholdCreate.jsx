@@ -17,8 +17,12 @@ export function HouseholdCreate({ handleCreate, enableCoapplicants }) {
       <Heading textAlign="center">Household Member Create</Heading>
       <form onSubmit={handleCreate}>
         <Flex direction="column" gap="30px">
-          <TextField name="name" label="Name" isRequired />
-          <TextField name="lastName" label="Last Name" isRequired />
+          <TextField
+            name="name"
+            label="Full legal name"
+            isRequired
+            placeholder="Jane Sara Doe"
+          />
           <TextField name="dob" label="Date of Birth" type="date" isRequired />
           <SelectField
             name="sex"

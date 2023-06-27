@@ -115,7 +115,7 @@ export function FormLayout() {
     }
 
     fetchApplication();
-  }, []);
+  }, [habitat]);
 
   const title = (
     <Flex direction="column">

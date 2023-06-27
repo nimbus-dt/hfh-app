@@ -13,9 +13,7 @@ export function HouseholdDetail({ item, sizeRenderer }) {
   return (
     <Card variation="elevated" width={sizeRenderer ? '80%' : '300px'}>
       <Flex direction="column" gap="1px">
-        <Heading level="4">
-          {item.name} {item.lastName}
-        </Heading>
+        <Heading level="4">{item.name}</Heading>
         <Flex gap="5px">
           <Text fontWeight="bold">Date of birth:</Text>
           <Text>{item.dateOfBirth}</Text>

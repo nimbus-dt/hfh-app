@@ -22,7 +22,7 @@ export function DebtCreate({ handleCreate, owners }) {
           <SelectField name="owner" label="Who owns this debt?">
             {owners.map((owner) => (
               <option key={owner.id} value={owner.id}>
-                {`${owner.name} ${owner.lastName}`}
+                {`${owner.name}`}
               </option>
             ))}
           </SelectField>

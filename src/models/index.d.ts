@@ -87,7 +87,6 @@ type EagerUserProps = {
   readonly id: string;
   readonly ownerID?: string | null;
   readonly name?: string | null;
-  readonly lastName?: string | null;
   readonly dob?: string | null;
   readonly sex?: SexTypes | keyof typeof SexTypes | null;
   readonly phone?: string | null;
@@ -106,7 +105,6 @@ type LazyUserProps = {
   readonly id: string;
   readonly ownerID?: string | null;
   readonly name?: string | null;
-  readonly lastName?: string | null;
   readonly dob?: string | null;
   readonly sex?: SexTypes | keyof typeof SexTypes | null;
   readonly phone?: string | null;
@@ -246,7 +244,6 @@ type EagerHouseholdMember = {
   };
   readonly id: string;
   readonly name?: string | null;
-  readonly lastName?: string | null;
   readonly dateOfBirth?: string | null;
   readonly sex?: SexTypes | keyof typeof SexTypes | null;
   readonly relationship?: RelationshipTypes | keyof typeof RelationshipTypes | null;
@@ -263,7 +260,6 @@ type LazyHouseholdMember = {
   };
   readonly id: string;
   readonly name?: string | null;
-  readonly lastName?: string | null;
   readonly dateOfBirth?: string | null;
   readonly sex?: SexTypes | keyof typeof SexTypes | null;
   readonly relationship?: RelationshipTypes | keyof typeof RelationshipTypes | null;

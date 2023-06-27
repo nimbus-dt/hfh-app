@@ -34,7 +34,6 @@ export function SavingsDetail({ item, sizeRenderer }) {
     const setNamesFromObject = (object) => {
       setNames({
         name: object.name,
-        lastName: object.lastName,
       });
     };
 
@@ -56,9 +55,7 @@ export function SavingsDetail({ item, sizeRenderer }) {
   return (
     <Card variation="elevated" width={sizeRenderer ? '80%' : '300px'}>
       <Flex direction="column" gap="1px">
-        <Heading level="4">
-          Owner: {names.name} {names.lastName}
-        </Heading>
+        <Heading level="4">Owner: {names.name}</Heading>
         <Flex gap="5px">
           <Text fontWeight="bold">Institution:</Text>
           <Text>{item.institution}</Text>
