@@ -25,7 +25,6 @@ export function UserForm() {
     const userData = {
       ownerID: userID,
       name: form.elements.name.value,
-      lastName: form.elements.lastName.value,
       dob: form.elements.dob.value,
       sex: form.elements.sex.value,
       phone: form.elements.phone.value,
@@ -70,7 +69,6 @@ export function UserForm() {
           const userData = userDataObject[0];
           setFormData({
             name: userData.name,
-            lastName: userData.lastName,
             dob: userData.dob,
             sex: userData.sex,
             phone: userData.phone,
@@ -116,10 +114,7 @@ export function UserForm() {
 
   // Message to display if user data exists
   const message = (
-    <Card
-      variation="elevated"
-      style={{ border: '1px solid black', padding: '10px' }}
-    >
+    <Card variation="elevated">
       <Heading level="5" textAlign="center">
         You have an existing user information record
       </Heading>
@@ -146,16 +141,10 @@ export function UserForm() {
           <Flex direction="column" gap="30px">
             <TextField
               name="name"
-              label="What is your name?"
+              label="What is your full legal name?"
+              placeholder="John William Doe"
               value={formData.name || ''}
               onChange={(e) => handleFieldChange('name', e.target.value)}
-              isRequired
-            />
-            <TextField
-              name="lastName"
-              label="What is your last name?"
-              value={formData.lastName || ''}
-              onChange={(e) => handleFieldChange('lastName', e.target.value)}
               isRequired
             />
             <TextField
@@ -184,7 +173,10 @@ export function UserForm() {
               label="What is your phone number?"
               placeholder="234-567-8910"
               value={formData.phone || ''}
-              onChange={(e) => handleFieldChange('phone', e.target.value)}
+              onChange={(e) => {
+                handlePhoneNumberChange(e);
+                handleFieldChange('phone', e.target.value);
+              }}
               isRequired
               type="tel"
             />

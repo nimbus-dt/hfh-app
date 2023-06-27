@@ -55,7 +55,7 @@ export function IncomeCreate({ owners, habitat, application }) {
           <SelectField name="owner" label="Who owns this income record?">
             {owners.map((owner) => (
               <option key={owner.id} value={owner.id}>
-                {`${owner.name} ${owner.lastName}`}
+                {`${owner.name}`}
               </option>
             ))}
           </SelectField>
