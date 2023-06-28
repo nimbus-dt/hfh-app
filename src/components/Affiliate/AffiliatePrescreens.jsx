@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { DataStore } from 'aws-amplify';
+import { Auth, DataStore } from 'aws-amplify';
 import {
   Flex,
   Heading,
@@ -24,6 +24,10 @@ import { SavingsList } from '../PreScreen/Form/Savings/SavingsList';
 import { DebtList } from '../PreScreen/Form/Debt/DebtList';
 
 export function AffiliatePrescreens({ prescreens }) {
+  const [formData, setFormData] = useState({});
+  const [userDataBool, setUserDataBool] = useState(false);
+  const [userID, setUserID] = useState('');
+  const [previousDataId, setPreviousDataId] = useState(null);
   const [status, setStatus] = useState('ALL');
   const [filteredPrescreens, setFilteredPrescreens] = useState(prescreens);
   const [page, setPage] = useState('allPrescreens');
@@ -124,11 +128,45 @@ export function AffiliatePrescreens({ prescreens }) {
     </Flex>
   );
 
+  useEffect(() => {
+    const checkUserData = async () => {
+      try {
+        const currentUser = await Auth.currentAuthenticatedUser({
+          bypassCache: false,
+        });
+        setUserID(currentUser.username);
+
+        const userDataObject = await DataStore.query(Application, (u) =>
+          u.ownerID.eq(currentUser.username)
+        );
+
+        if (userDataObject.length > 0) {
+          setUserDataBool(true);
+          const previousData = userDataObject[0];
+          setPreviousDataId(previousData.id);
+          const userData = userDataObject[0];
+          setFormData({
+            ownerName: userData.ownerName,
+          });
+        }
+      } catch (error) {
+        console.log('Error fetching UserData:', error);
+      }
+    };
+
+    checkUserData();
+  }, []);
+
   async function updateApplication(newStatus) {
+    const currentUser = await Auth.currentAuthenticatedUser();
+    const currentDate = new Date().toISOString().substring(0, 10);
+
     const original = await DataStore.query(Application, selectedApplication.id);
     await DataStore.save(
       Application.copyOf(original, (item) => {
         item.submittedStatus = newStatus;
+        item.habitatRevisor = formData.ownerName; // change with proper username of the affiliate account. Right now only shows the id of the account
+        item.dateRevised = currentDate;
       })
     );
 
