@@ -3,12 +3,7 @@
 import { Card, Flex, Text, Heading, Link } from '@aws-amplify/ui-react';
 import { useEffect, useState } from 'react';
 import { DataStore } from 'aws-amplify';
-import {
-  HouseholdMember,
-  IncomeRecord,
-  SavingRecord,
-  UserProps,
-} from '../../../../models';
+import { HouseholdMember, IncomeRecord, UserProps } from '../../../../models';
 
 export function IncomeDetail({ item, sizeRenderer }) {
   const [names, setNames] = useState({});
@@ -71,8 +66,8 @@ export function IncomeDetail({ item, sizeRenderer }) {
           <Text>$ {parseInt(item.estimatedMonthlyIncome)}</Text>
         </Flex>
         <Flex gap="5px">
-          <Text fontWeight="bold">Total income:</Text>
-          <Text>$ {parseInt(item.totalIncome)}</Text>
+          <Text fontWeight="bold">Employment Time:</Text>
+          <Text>{parseInt(item.employmentTime)}</Text>
         </Flex>
         <Link onClick={deleteObject}>Delete</Link>
       </Flex>

@@ -24,8 +24,8 @@ export function IncomeCreate({ owners, habitat, application }) {
       owner: formFields.owner.value,
       type: formFields.type.value,
       employer: formFields.employer.value,
+      employmentTime: Number(formFields.employmentTime.value),
       estimatedMonthlyIncome: Number(formFields.estimatedMonthlyIncome.value),
-      totalIncome: Number(formFields.totalIncome.value),
     };
 
     // Create income record
@@ -34,14 +34,12 @@ export function IncomeCreate({ owners, habitat, application }) {
         ownerID: data.owner,
         typeOfIncome: data.type,
         employer: data.employer,
+        employmentTime: data.employmentTime,
         estimatedMonthlyIncome: Number(data.estimatedMonthlyIncome),
-        totalIncome: Number(data.totalIncome),
         proofOfIncome: [],
         applicationID: application?.id,
       })
     );
-
-    console.log(data);
 
     // Reset the form
     e.target.reset();
@@ -59,32 +57,61 @@ export function IncomeCreate({ owners, habitat, application }) {
               </option>
             ))}
           </SelectField>
-          <SelectField name="type" label="Type of income">
-            {Object.values(IncomeTypes).map((item, index) => (
-              <option key={index} value={item}>
-                {item}
-              </option>
-            ))}
+          <SelectField
+            name="type"
+            label="Type of income"
+            isRequired
+            placeholder="Select an option"
+          >
+            <option value={IncomeTypes.SALARIED_EMPLOYMENT}>
+              Salaried Employment
+            </option>
+            <option value={IncomeTypes.HOURLY_EMPLOYMENT}>
+              Hourly Employment
+            </option>
+            <option value={IncomeTypes.SELF_EMPLOYMENT}>Self Employment</option>
+            <option value={IncomeTypes.SOCIAL_SECURITY_DISABILITY_INSURANCE}>
+              Social Security Disability Insurance
+            </option>
+            <option value={IncomeTypes.SOCIAL_SECURITY_BENEFITS}>
+              Social Security Benefits
+            </option>
+            <option value={IncomeTypes.SUPPLEMENTAL_SECURITY_INCOME}>
+              Supplemental Security Income
+            </option>
+            <option value={IncomeTypes.HOUSING_VOUCHER}>Housing Voucher</option>
+            <option value={IncomeTypes.CHILD_SUPPORT}>Child Support</option>
+            <option value={IncomeTypes.ALIMONY_SUPPORT}>Alimony Support</option>
+            <option value={IncomeTypes.VETERANS_AFFAIR_COMPENSATION}>
+              Veterans Affairs Compensation
+            </option>
+            <option value={IncomeTypes.PENSION_PAYMENTS}>
+              Pension Payments
+            </option>
+            <option value={IncomeTypes.MILITARY_ENTITLEMENTS}>
+              Military Entitlements
+            </option>
+            <option value={IncomeTypes.OTHER}>Other</option>
           </SelectField>
           <TextField
             name="employer"
             label="Name of employer"
-            placeholder="Microsoft"
+            placeholder="U.S Government"
             isRequired
+          />
+          <TextField
+            name="employmentTime"
+            label="How many months have you been employed in this job?"
+            placeholder="12"
+            isRequired
+            type="number"
+            min={0}
           />
           <StepperField
             min={0}
             step={0.01}
             name="estimatedMonthlyIncome"
             label="Estimated monthly income"
-            placeholder="$1000.50"
-            isRequired
-          />
-          <StepperField
-            min={0}
-            step={0.01}
-            name="totalIncome"
-            label="Total income"
             placeholder="$1000.50"
             isRequired
           />
