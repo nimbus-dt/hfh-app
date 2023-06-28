@@ -37,7 +37,11 @@ export function AffiliateLayout() {
           c.urlName.eq(urlName)
         );
         setHabitat(habitatObject[0]);
-        setPrescreens(await habitatObject[0].Applications.toArray());
+
+        const applications = (
+          await habitatObject[0].Applications.toArray()
+        ).filter((app) => app.submitted === true);
+        setPrescreens(applications);
       } catch (error) {
         console.log(`Error fetching habitat: ${error}`);
       }

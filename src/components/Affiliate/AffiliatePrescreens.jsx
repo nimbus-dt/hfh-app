@@ -14,6 +14,7 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  Badge,
 } from '@aws-amplify/ui-react';
 import { useEffect, useState } from 'react';
 import { Application } from '../../models';
@@ -79,6 +80,9 @@ export function AffiliatePrescreens({ prescreens }) {
           <option value="ACCEPTED">Accepted</option>
           <option value="REJECTED">Rejected</option>
         </SelectField>
+        <Badge>
+          <Flex alignItems="center">Total: {filteredPrescreens.length}</Flex>
+        </Badge>
       </Flex>
       <Heading level={3} fontWeight="bold" textAlign="center">
         PreScreens
