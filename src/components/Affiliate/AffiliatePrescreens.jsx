@@ -17,11 +17,13 @@ import {
   Badge,
 } from '@aws-amplify/ui-react';
 import { useEffect, useState } from 'react';
+
 import { Application } from '../../models';
 import { HouseholdList } from '../PreScreen/Form/Household/HouseholdList';
 import { IncomeList } from '../PreScreen/Form/Income/IncomeList';
 import { SavingsList } from '../PreScreen/Form/Savings/SavingsList';
 import { DebtList } from '../PreScreen/Form/Debt/DebtList';
+import { EmailTemplate } from './emailTemplate';
 
 export function AffiliatePrescreens({ prescreens }) {
   const [formData, setFormData] = useState({});

@@ -52,7 +52,7 @@ export function AffiliateLayout() {
   const menu = (
     <Menu className="my-menu-content" triggerClassName="my-menu-trigger">
       <MenuItem>PreScreen</MenuItem>
-      <MenuItem>Sign Out</MenuItem>
+      <MenuItem>Sgn Out</MenuItem>
     </Menu>
   );
 

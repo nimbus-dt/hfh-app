@@ -3,8 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@aws-amplify/api": "^5.3.3",
     "@aws-amplify/datastore": "^4.6.0",
     "@aws-amplify/ui-react": "^5.0.1",
+    "@aws-sdk/client-ses": "^3.362.0",
+    "@react-email/render": "^0.0.7",
     "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",

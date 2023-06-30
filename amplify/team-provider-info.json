@@ -12,9 +12,6 @@
       "AmplifyAppId": "dgfg84wx7ntah"
     },
     "categories": {
-      "api": {
-        "hfhapp": {}
-      },
       "auth": {
         "hfhapp": {}
       },
@@ -22,7 +19,8 @@
         "sendstatusemail": {
           "deploymentBucketName": "amplify-hfhapp-staging-10900-deployment",
           "s3Key": "amplify-builds/sendstatusemail-5049716c554131423670-build.zip"
-        }
+        },
+        "hfhappd137d457": {}
       }
     }
   }

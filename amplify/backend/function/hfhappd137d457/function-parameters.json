@@ -1,0 +1,13 @@
+{
+  "lambdaLayers": [],
+  "permissions": {
+    "function": {
+      "sendstatusemail": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  }
+}
