@@ -31,6 +31,7 @@ export function UserForm() {
       props: null,
       address: form.elements.address.value,
       zip: parseInt(form.elements.zip.value),
+      email: form.elements.email.value,
     };
 
     try {
@@ -74,6 +75,7 @@ export function UserForm() {
             phone: userData.phone,
             address: userData.address,
             zip: userData.zip,
+            email: userData.email,
           });
         }
       } catch (error) {
@@ -195,6 +197,16 @@ export function UserForm() {
               onChange={(e) => handleFieldChange('zip', e.target.value)}
               isRequired
             />
+
+            <TextField
+              name="email"
+              label="What email would you like to be contacted through?"
+              type="email"
+              value={formData.email || ''}
+              onChange={(e) => handleFieldChange('email', e.target.value)}
+              isRequired
+            />
+
             <Button type="submit" variation="primary">
               Submit
             </Button>

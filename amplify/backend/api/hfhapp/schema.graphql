@@ -1,11 +1,11 @@
-type ContactForm @model @auth(rules: [{ allow: public }]) {
+type ContactForm @model @auth(rules: [{allow: public}]) {
   id: ID!
   name: String
   affiliate: String
   contactEmail: String
 }
 
-type UserProps @model @auth(rules: [{ allow: public }]) {
+type UserProps @model @auth(rules: [{allow: public}, {allow: owner, operations: [create]}]) {
   id: ID!
   ownerID: String
   name: String
@@ -15,6 +15,7 @@ type UserProps @model @auth(rules: [{ allow: public }]) {
   props: AWSJSON
   address: String
   zip: Int
+  email: AWSEmail
 }
 
 enum ApplicationSubmittedStatus {
@@ -36,7 +37,7 @@ enum DebtTypes {
   OTHER
 }
 
-type DebtRecord @model @auth(rules: [{ allow: public }]) {
+type DebtRecord @model @auth(rules: [{allow: public}]) {
   id: ID!
   ownerID: String
   monthlyRecurrence: Float
@@ -46,7 +47,7 @@ type DebtRecord @model @auth(rules: [{ allow: public }]) {
   ownerApplicant: Boolean
 }
 
-type SavingRecord @model @auth(rules: [{ allow: public }]) {
+type SavingRecord @model @auth(rules: [{allow: public}]) {
   id: ID!
   ownerID: ID
   institution: String
@@ -71,7 +72,7 @@ enum IncomeTypes {
   OTHER
 }
 
-type IncomeRecord @model @auth(rules: [{ allow: public }]) {
+type IncomeRecord @model @auth(rules: [{allow: public}]) {
   id: ID!
   ownerID: ID
   typeOfIncome: IncomeTypes
@@ -83,7 +84,7 @@ type IncomeRecord @model @auth(rules: [{ allow: public }]) {
   totalIncome: Float
 }
 
-type HouseholdMember @model @auth(rules: [{ allow: public }]) {
+type HouseholdMember @model @auth(rules: [{allow: public}]) {
   id: ID!
   name: String
   dateOfBirth: AWSDate
@@ -110,16 +111,13 @@ enum RelationshipTypes {
   OTHER
 }
 
-type Application @model @auth(rules: [{ allow: public }]) {
+type Application @model @auth(rules: [{allow: public}]) {
   id: ID!
   ownerID: ID
   habitatID: ID! @index(name: "byHabitat")
-  HouseholdMembers: [HouseholdMember]
-    @hasMany(indexName: "byApplication", fields: ["id"])
-  IncomeRecords: [IncomeRecord]
-    @hasMany(indexName: "byApplication", fields: ["id"])
-  SavingRecords: [SavingRecord]
-    @hasMany(indexName: "byApplication", fields: ["id"])
+  HouseholdMembers: [HouseholdMember] @hasMany(indexName: "byApplication", fields: ["id"])
+  IncomeRecords: [IncomeRecord] @hasMany(indexName: "byApplication", fields: ["id"])
+  SavingRecords: [SavingRecord] @hasMany(indexName: "byApplication", fields: ["id"])
   DebtRecords: [DebtRecord] @hasMany(indexName: "byApplication", fields: ["id"])
   submitted: Boolean
   dateSubmitted: AWSDate
@@ -129,7 +127,7 @@ type Application @model @auth(rules: [{ allow: public }]) {
   ownerName: String
 }
 
-type Habitat @model @auth(rules: [{ allow: public }]) {
+type Habitat @model @auth(rules: [{allow: public}]) {
   id: ID!
   name: String
   urlName: String
@@ -141,3 +139,4 @@ type Habitat @model @auth(rules: [{ allow: public }]) {
   Applications: [Application] @hasMany(indexName: "byHabitat", fields: ["id"])
   users: [ID]
 }
+ 

@@ -100,6 +100,7 @@ export function ConfirmForm({ application, habitat }) {
       props: null,
       address: form.elements.address.value,
       zip: parseInt(form.elements.zip.value),
+      email: form.elements.email.value,
     };
 
     try {
@@ -141,6 +142,7 @@ export function ConfirmForm({ application, habitat }) {
             phone: userData.phone,
             address: userData.address,
             zip: userData.zip,
+            email: userData.email,
           });
         }
       } catch (error) {
@@ -198,6 +200,12 @@ export function ConfirmForm({ application, habitat }) {
               Zip
             </TableCell>
             <TableCell>{formData.zip}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell as="th" width="25%">
+              Email
+            </TableCell>
+            <TableCell>{formData.email}</TableCell>
           </TableRow>
 
           <TableRow>

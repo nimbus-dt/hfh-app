@@ -102,6 +102,7 @@ type EagerUserProps = {
   readonly props?: string | null;
   readonly address?: string | null;
   readonly zip?: number | null;
+  readonly email?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -120,6 +121,7 @@ type LazyUserProps = {
   readonly props?: string | null;
   readonly address?: string | null;
   readonly zip?: number | null;
+  readonly email?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { DataStore } from 'aws-amplify';
+import { Auth, DataStore } from 'aws-amplify';
 import {
   Flex,
   Heading,
@@ -22,8 +22,13 @@ import { HouseholdList } from '../PreScreen/Form/Household/HouseholdList';
 import { IncomeList } from '../PreScreen/Form/Income/IncomeList';
 import { SavingsList } from '../PreScreen/Form/Savings/SavingsList';
 import { DebtList } from '../PreScreen/Form/Debt/DebtList';
+import { AffiliateEmail } from './AffiliateEmail';
 
 export function AffiliatePrescreens({ prescreens }) {
+  const [formData, setFormData] = useState({});
+  const [userDataBool, setUserDataBool] = useState(false);
+  const [userID, setUserID] = useState('');
+  const [previousDataId, setPreviousDataId] = useState(null);
   const [status, setStatus] = useState('ALL');
   const [filteredPrescreens, setFilteredPrescreens] = useState(prescreens);
   const [page, setPage] = useState('allPrescreens');
@@ -98,37 +103,91 @@ export function AffiliatePrescreens({ prescreens }) {
         itemsPerPage={5}
         searchPlaceholder="Type to search..."
         searchFilter={(item, keyword) =>
-          item.applicant.toLowerCase().startsWith(keyword.toLowerCase())
+          item.ownerName &&
+          item.ownerName.toLowerCase().includes(keyword.toLowerCase())
         }
       >
         {(item, index) => (
-          <Flex width="100%" justifyContent="center" key={item.id}>
-            <Card key={index} variation="outlined" width="300px">
-              <Flex direction="column" justifyContent="space-between">
-                <Text fontWeight="bold">{item.ownerName}</Text>
-                <Text>Submitted: {item.dateSubmitted}</Text>
-                <Text>Status: {item.submittedStatus}</Text>
-                <Link
-                  onClick={() => {
-                    setPage('prescreenDetail');
-                    setSelectedApplication(item);
-                  }}
-                >
-                  View
-                </Link>
-              </Flex>
-            </Card>
+          <Flex width="auto" direction="column">
+            <Table caption="" highlightOnHover variation="bordered">
+              <TableBody>
+                <TableRow>
+                  <TableCell as="th" width="25%">
+                    Name
+                  </TableCell>
+                  <TableCell as="th" width="25%">
+                    Date Submitted
+                  </TableCell>
+                  <TableCell as="th" width="25%">
+                    Status
+                  </TableCell>
+                  <TableCell as="th" width="25%" />
+                </TableRow>
+                <TableRow>
+                  <TableCell>{item.ownerName}</TableCell>
+                  <TableCell>{item.dateSubmitted}</TableCell>
+                  <TableCell>{item.submittedStatus}</TableCell>
+                  <TableCell>
+                    <Button
+                      onClick={() => {
+                        setPage('prescreenDetail');
+                        setSelectedApplication(item);
+                      }}
+                    >
+                      View
+                    </Button>
+                  </TableCell>
+                </TableRow>
+                {/* Rest of the table rows */}
+              </TableBody>
+            </Table>
+
+            {/* Rest of the content */}
           </Flex>
         )}
       </Collection>
     </Flex>
   );
 
+  useEffect(() => {
+    const checkUserData = async () => {
+      try {
+        const currentUser = await Auth.currentAuthenticatedUser({
+          bypassCache: false,
+        });
+        setUserID(currentUser.username);
+
+        const userDataObject = await DataStore.query(Application, (u) =>
+          u.ownerID.eq(currentUser.username)
+        );
+
+        if (userDataObject.length > 0) {
+          setUserDataBool(true);
+          const previousData = userDataObject[0];
+          setPreviousDataId(previousData.id);
+          const userData = userDataObject[0];
+          setFormData({
+            ownerName: userData.ownerName,
+          });
+        }
+      } catch (error) {
+        console.log('Error fetching UserData:', error);
+      }
+    };
+
+    checkUserData();
+  }, []);
+
   async function updateApplication(newStatus) {
+    const currentUser = await Auth.currentAuthenticatedUser();
+    const currentDate = new Date().toISOString().substring(0, 10);
+
     const original = await DataStore.query(Application, selectedApplication.id);
     await DataStore.save(
       Application.copyOf(original, (item) => {
         item.submittedStatus = newStatus;
+        item.habitatRevisor = formData.ownerName; // change with proper username of the affiliate account. Right now only shows the id of the account
+        item.dateRevised = currentDate;
       })
     );
 

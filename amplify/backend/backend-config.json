@@ -1,17 +1,30 @@
 {
   "api": {
     "hfhapp": {
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "hfhapp"
+        }
+      ],
       "output": {
         "authConfig": {
           "additionalAuthenticationProviders": [
             {
               "authenticationType": "AWS_IAM"
+            },
+            {
+              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+              "userPoolConfig": {
+                "userPoolId": "authhfhapp"
+              }
             }
           ],
           "defaultAuthentication": {
             "apiKeyConfig": {
-              "apiKeyExpirationDate": "2023-07-27T21:58:49.008Z",
               "apiKeyExpirationDays": 30,
               "description": "api key description"
             },
@@ -50,6 +63,20 @@
     }
   },
   "function": {
+    "hfhappd137d457": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "sendstatusemail"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "sendstatusemail": {
       "build": true,
       "providerPlugin": "awscloudformation",

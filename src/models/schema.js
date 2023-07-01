@@ -141,6 +141,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "email": {
+                    "name": "email",
+                    "isArray": false,
+                    "type": "AWSEmail",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -177,6 +184,15 @@ export const schema = {
                                     "delete",
                                     "read"
                                 ]
+                            },
+                            {
+                                "provider": "userPools",
+                                "ownerField": "owner",
+                                "allow": "owner",
+                                "operations": [
+                                    "create"
+                                ],
+                                "identityClaim": "cognito:username"
                             }
                         ]
                     }
@@ -986,6 +1002,6 @@ export const schema = {
         }
     },
     "nonModels": {},
-    "codegenVersion": "3.4.3",
-    "version": "0bc160622881798444367189b77e78ac"
+    "codegenVersion": "3.4.4",
+    "version": "03785f229193792aa60313fc2e01d243"
 };
