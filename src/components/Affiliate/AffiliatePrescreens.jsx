@@ -17,13 +17,12 @@ import {
   Badge,
 } from '@aws-amplify/ui-react';
 import { useEffect, useState } from 'react';
-
 import { Application } from '../../models';
 import { HouseholdList } from '../PreScreen/Form/Household/HouseholdList';
 import { IncomeList } from '../PreScreen/Form/Income/IncomeList';
 import { SavingsList } from '../PreScreen/Form/Savings/SavingsList';
 import { DebtList } from '../PreScreen/Form/Debt/DebtList';
-import { EmailTemplate } from './emailTemplate';
+import { AffiliateEmail } from './AffiliateEmail';
 
 export function AffiliatePrescreens({ prescreens }) {
   const [formData, setFormData] = useState({});
@@ -104,26 +103,46 @@ export function AffiliatePrescreens({ prescreens }) {
         itemsPerPage={5}
         searchPlaceholder="Type to search..."
         searchFilter={(item, keyword) =>
-          item.applicant.toLowerCase().startsWith(keyword.toLowerCase())
+          item.ownerName &&
+          item.ownerName.toLowerCase().includes(keyword.toLowerCase())
         }
       >
         {(item, index) => (
-          <Flex width="100%" justifyContent="center" key={item.id}>
-            <Card key={index} variation="outlined" width="300px">
-              <Flex direction="column" justifyContent="space-between">
-                <Text fontWeight="bold">{item.ownerName}</Text>
-                <Text>Submitted: {item.dateSubmitted}</Text>
-                <Text>Status: {item.submittedStatus}</Text>
-                <Link
-                  onClick={() => {
-                    setPage('prescreenDetail');
-                    setSelectedApplication(item);
-                  }}
-                >
-                  View
-                </Link>
-              </Flex>
-            </Card>
+          <Flex width="auto" direction="column">
+            <Table caption="" highlightOnHover variation="bordered">
+              <TableBody>
+                <TableRow>
+                  <TableCell as="th" width="25%">
+                    Name
+                  </TableCell>
+                  <TableCell as="th" width="25%">
+                    Date Submitted
+                  </TableCell>
+                  <TableCell as="th" width="25%">
+                    Status
+                  </TableCell>
+                  <TableCell as="th" width="25%" />
+                </TableRow>
+                <TableRow>
+                  <TableCell>{item.ownerName}</TableCell>
+                  <TableCell>{item.dateSubmitted}</TableCell>
+                  <TableCell>{item.submittedStatus}</TableCell>
+                  <TableCell>
+                    <Button
+                      onClick={() => {
+                        setPage('prescreenDetail');
+                        setSelectedApplication(item);
+                      }}
+                    >
+                      View
+                    </Button>
+                  </TableCell>
+                </TableRow>
+                {/* Rest of the table rows */}
+              </TableBody>
+            </Table>
+
+            {/* Rest of the content */}
           </Flex>
         )}
       </Collection>
