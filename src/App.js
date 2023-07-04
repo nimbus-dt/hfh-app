@@ -21,7 +21,14 @@ function App() {
 
       <Route path="affiliate">
         <Route path=":habitat">
-          <Route path="home" element={<AffiliateLayout />} />
+          <Route
+            path="home"
+            element={
+              <Authenticator hideDefault hideSignUp>
+                <AffiliateLayout />
+              </Authenticator>
+            }
+          />
         </Route>
       </Route>
 

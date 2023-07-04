@@ -103,12 +103,11 @@ export function AffiliatePrescreens({ prescreens }) {
         itemsPerPage={5}
         searchPlaceholder="Type to search..."
         searchFilter={(item, keyword) =>
-          item.ownerName &&
-          item.ownerName.toLowerCase().includes(keyword.toLowerCase())
+          item.ownerName?.toLowerCase().includes(keyword.toLowerCase())
         }
       >
         {(item, index) => (
-          <Flex width="auto" direction="column">
+          <Flex key={index} width="auto" direction="column">
             <Table caption="" highlightOnHover variation="bordered">
               <TableBody>
                 <TableRow>
