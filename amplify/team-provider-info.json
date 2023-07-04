@@ -21,9 +21,6 @@
           "s3Key": "amplify-builds/sendstatusemail-5049716c554131423670-build.zip"
         },
         "hfhappd137d457": {}
-      },
-      "api": {
-        "hfhapp": {}
       }
     }
   }
