@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Auth, DataStore } from 'aws-amplify';
+import { useParams } from 'react-router-dom';
 import {
   Flex,
   Heading,
@@ -17,7 +18,7 @@ import {
   Badge,
 } from '@aws-amplify/ui-react';
 import { useEffect, useState } from 'react';
-import { Application } from '../../models';
+import { Application, IncomeRecord, Habitat } from '../../models';
 import { HouseholdList } from '../PreScreen/Form/Household/HouseholdList';
 import { IncomeList } from '../PreScreen/Form/Income/IncomeList';
 import { SavingsList } from '../PreScreen/Form/Savings/SavingsList';
@@ -37,6 +38,14 @@ export function AffiliatePrescreens({ prescreens }) {
   const [incomes, setIncomes] = useState([]);
   const [savings, setSavings] = useState([]);
   const [debts, setDebts] = useState([]);
+  const [totalSavings, setTotalSavings] = useState(0);
+  const [totalMonthlyIncomes, setTotalMonthlyIncomes] = useState(0);
+  const [totalMonthlyDebts, setTotalMonthlyDebts] = useState(0);
+  const [DebtToIncomeRatio, setDebtToIncomeRatio] = useState('');
+  const [ami, setAMI] = useState([]);
+  const [amiRange, setamiRange] = useState('');
+  const urlName = useParams('habitat').habitat;
+  const totalMembers = householdMembers.length + 1;
 
   useEffect(() => {
     function filterPrescreens() {
@@ -65,12 +74,58 @@ export function AffiliatePrescreens({ prescreens }) {
         setIncomes(incomeArray);
         setSavings(savingArray);
         setDebts(debtArray);
+
+        const savingsPlaceholder = savings
+          .reduce((total, saving) => total + saving.estimatedAmount, 0)
+          .toFixed(2);
+
+        const monthlyIncomePlaceholder = incomes
+          .reduce((total, income) => total + income.estimatedMonthlyIncome, 0)
+          .toFixed(2);
+
+        const monthlyDebtPlaceholder = debts
+          .reduce((total, debt) => total + debt.monthlyRecurrence, 0)
+          .toFixed(2);
+
+        const debtToIncomeRatioPlaceholder = `${(
+          (monthlyDebtPlaceholder / monthlyIncomePlaceholder) *
+          100
+        ).toFixed(2)}%`;
+
+        setTotalMonthlyIncomes(monthlyIncomePlaceholder);
+        setTotalSavings(savingsPlaceholder);
+        setTotalMonthlyDebts(monthlyDebtPlaceholder);
+        setDebtToIncomeRatio(debtToIncomeRatioPlaceholder);
+
+        const habitatObject = await DataStore.query(Habitat, (c) =>
+          c.urlName.eq(urlName)
+        );
+        const amiPlaceholder = habitatObject[0]?.AMI || [];
+
+        const rangePlaceholder = amiPlaceholder[totalMembers - 1];
+        const range = rangePlaceholder;
+        setAMI(range);
+
+        const [minAmi, maxAmi] = range.split('-').map(Number);
+
+        if (
+          !Number.isNaN(totalMonthlyIncomes) &&
+          totalMonthlyIncomes >= minAmi &&
+          totalMonthlyIncomes <= maxAmi
+        ) {
+          setamiRange('Yes');
+        } else {
+          setamiRange('No');
+        }
       } catch (error) {
         console.log(`Error fetching application children: ${error}`);
       }
     }
-    setApplicationChildren();
-  }, [selectedApplication]);
+
+    if (selectedApplication) {
+      setApplicationChildren();
+    }
+  }, [selectedApplication, householdMembers, savings, incomes, debts, urlName]);
 
   const allPrescreens = (
     <Flex direction="column" width="100%" alignContent="center">
@@ -312,43 +367,37 @@ export function AffiliatePrescreens({ prescreens }) {
             <TableCell as="th" width="25%">
               Total Monthly Income
             </TableCell>
-            <TableCell>Orange</TableCell>
+            <TableCell>${totalMonthlyIncomes}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell as="th" width="25%">
               Total Savings
             </TableCell>
-            <TableCell>Orange</TableCell>
+            <TableCell>${totalSavings}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell as="th" width="25%">
               Total Monthly Debt
             </TableCell>
-            <TableCell>Orange</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell as="th" width="25%">
-              Total Non-monthly Debt
-            </TableCell>
-            <TableCell>Orange</TableCell>
+            <TableCell>${totalMonthlyDebts}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell as="th" width="25%">
               Debt to Income Ratio
             </TableCell>
-            <TableCell>Orange</TableCell>
+            <TableCell>{DebtToIncomeRatio}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell as="th" width="25%">
               AMI Range
             </TableCell>
-            <TableCell>Orange</TableCell>
+            <TableCell>{ami}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell as="th" width="25%">
               Within AMI Range
             </TableCell>
-            <TableCell>Orange</TableCell>
+            <TableCell>{amiRange}</TableCell>
           </TableRow>
         </TableBody>
       </Table>

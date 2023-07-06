@@ -894,6 +894,14 @@ export const schema = {
                     "attributes": [],
                     "isArrayNullable": true
                 },
+                "AMI": {
+                    "name": "AMI",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -1002,6 +1010,6 @@ export const schema = {
         }
     },
     "nonModels": {},
-    "codegenVersion": "3.4.3",
-    "version": "03785f229193792aa60313fc2e01d243"
+    "codegenVersion": "3.4.4",
+    "version": "6b6edf572381bb75f07ae89832d575da"
 };
