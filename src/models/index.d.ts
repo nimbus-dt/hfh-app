@@ -351,6 +351,7 @@ type EagerHabitat = {
   readonly props?: string | null;
   readonly Applications?: (Application | null)[] | null;
   readonly users?: (string | null)[] | null;
+  readonly AMI?: (string | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -370,6 +371,7 @@ type LazyHabitat = {
   readonly props?: string | null;
   readonly Applications: AsyncCollection<Application>;
   readonly users?: (string | null)[] | null;
+  readonly AMI?: (string | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
