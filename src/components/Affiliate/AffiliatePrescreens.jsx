@@ -75,48 +75,8 @@ export function AffiliatePrescreens({ prescreens }) {
         setSavings(savingArray);
         setDebts(debtArray);
 
-        const savingsPlaceholder = savings
-          .reduce((total, saving) => total + saving.estimatedAmount, 0)
-          .toFixed(2);
-
-        const monthlyIncomePlaceholder = incomes
-          .reduce((total, income) => total + income.estimatedMonthlyIncome, 0)
-          .toFixed(2);
-
-        const monthlyDebtPlaceholder = debts
-          .reduce((total, debt) => total + debt.monthlyRecurrence, 0)
-          .toFixed(2);
-
-        const debtToIncomeRatioPlaceholder = `${(
-          (monthlyDebtPlaceholder / monthlyIncomePlaceholder) *
-          100
-        ).toFixed(2)}%`;
-
-        setTotalMonthlyIncomes(monthlyIncomePlaceholder);
-        setTotalSavings(savingsPlaceholder);
-        setTotalMonthlyDebts(monthlyDebtPlaceholder);
-        setDebtToIncomeRatio(debtToIncomeRatioPlaceholder);
-
-        const habitatObject = await DataStore.query(Habitat, (c) =>
-          c.urlName.eq(urlName)
-        );
-        const amiPlaceholder = habitatObject[0]?.AMI || [];
-
-        const rangePlaceholder = amiPlaceholder[totalMembers - 1];
-        const range = rangePlaceholder;
-        setAMI(range);
-
-        const [minAmi, maxAmi] = range.split('-').map(Number);
-
-        if (
-          !Number.isNaN(totalMonthlyIncomes) &&
-          totalMonthlyIncomes >= minAmi &&
-          totalMonthlyIncomes <= maxAmi
-        ) {
-          setamiRange('Yes');
-        } else {
-          setamiRange('No');
-        }
+        // Call the calculateMetrics function here
+        calculateMetrics();
       } catch (error) {
         console.log(`Error fetching application children: ${error}`);
       }
@@ -125,7 +85,72 @@ export function AffiliatePrescreens({ prescreens }) {
     if (selectedApplication) {
       setApplicationChildren();
     }
-  }, [selectedApplication, householdMembers, savings, incomes, debts, urlName]);
+  }, [selectedApplication]);
+
+  async function calculateMetrics() {
+    const savingsPlaceholder = savings
+      .reduce((total, saving) => total + saving.estimatedAmount, 0)
+      .toFixed(2);
+
+    const monthlyIncomePlaceholder = incomes
+      .reduce((total, income) => total + income.estimatedMonthlyIncome, 0)
+      .toFixed(2);
+
+    const monthlyDebtPlaceholder = debts
+      .reduce((total, debt) => total + debt.monthlyRecurrence, 0)
+      .toFixed(2);
+
+    const debtToIncomeRatioPlaceholder = `${(
+      (monthlyDebtPlaceholder / monthlyIncomePlaceholder) *
+      100
+    ).toFixed(2)}%`;
+
+    setTotalMonthlyIncomes(monthlyIncomePlaceholder);
+    setTotalSavings(savingsPlaceholder);
+    setTotalMonthlyDebts(monthlyDebtPlaceholder);
+    setDebtToIncomeRatio(debtToIncomeRatioPlaceholder);
+
+    const habitatObject = await DataStore.query(Habitat, (c) =>
+      c.urlName.eq(urlName)
+    );
+    const amiPlaceholder = habitatObject[0]?.AMI || [];
+
+    const rangePlaceholder = amiPlaceholder[totalMembers - 1];
+    const range = rangePlaceholder;
+    setAMI(range);
+
+    const [minAmi, maxAmi] = range.split('-').map(Number);
+
+    if (
+      !Number.isNaN(totalMonthlyIncomes) &&
+      totalMonthlyIncomes >= minAmi &&
+      totalMonthlyIncomes <= maxAmi
+    ) {
+      setamiRange('Yes');
+    } else {
+      setamiRange('No');
+    }
+  }
+
+  useEffect(() => {
+    // Call the calculateMetrics function whenever the necessary state variables change
+    if (
+      selectedApplication &&
+      householdMembers.length > 0 &&
+      incomes.length > 0 &&
+      savings.length > 0 &&
+      debts.length > 0
+    ) {
+      calculateMetrics();
+    }
+  }, [
+    selectedApplication,
+    householdMembers,
+    incomes,
+    savings,
+    debts,
+    amiRange,
+  ]);
 
   const allPrescreens = (
     <Flex direction="column" width="100%" alignContent="center">
