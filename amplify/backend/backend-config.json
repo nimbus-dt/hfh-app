@@ -63,6 +63,21 @@
     }
   },
   "function": {
+    "prescreennotify": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "hfhapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "sendstatusemail": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -71,6 +86,22 @@
   },
   "hosting": {},
   "parameters": {
+    "AMPLIFY_function_prescreennotify_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "prescreennotify"
+        }
+      ]
+    },
+    "AMPLIFY_function_prescreennotify_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "prescreennotify"
+        }
+      ]
+    },
     "AMPLIFY_function_sendstatusemail_deploymentBucketName": {
       "usedBy": [
         {
