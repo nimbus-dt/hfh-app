@@ -29,6 +29,7 @@ Amplify Params - DO NOT EDIT */
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 
+// hello
 const aws = require('aws-sdk');
 
 const ses = new aws.SES({ region: 'us-east-1' });

@@ -1,15 +1,36 @@
-import { Image, Card, Flex } from '@aws-amplify/ui-react';
+/* eslint-disable react/prop-types */
+import { useEffect, useState } from 'react';
+import { Auth, DataStore } from 'aws-amplify';
+import { Image, Card, Flex, Button } from '@aws-amplify/ui-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import logoHabitat from '../../assets/images/logoHabitat.svg';
 
-// eslint-disable-next-line react/prop-types
 export function ApplicantPrescreenNavBar({ menuSlot }) {
   const navigate = useNavigate();
   const urlName = useParams().habitat;
 
-  const handleClick = () => {
-    navigate(`/applicant/${urlName}/prescreen/prelim`);
+  const handleSignIn = () => {
+    navigate('./form');
   };
+
+  const checkAuthState = async () => {
+    try {
+      await Auth.currentAuthenticatedUser();
+
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
+
+  // Use the authenticated state to conditionally render the buttons
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    checkAuthState().then((authState) => {
+      setIsAuthenticated(authState);
+    });
+  }, []);
 
   return (
     <Card wrap width="100%" backgroundColor="#55B949" padding="0">
@@ -18,9 +39,15 @@ export function ApplicantPrescreenNavBar({ menuSlot }) {
           alt="Habitat Logo"
           src={logoHabitat}
           height="100%"
-          onClick={handleClick}
+          onClick={handleSignIn}
         />
-        <Flex marginRight="40px">{menuSlot}</Flex>
+        <Flex marginRight="40px">
+          {isAuthenticated && (
+            <Button backgroundColor="white" onClick={handleSignIn}>
+              Sign In
+            </Button>
+          )}
+        </Flex>
       </Flex>
     </Card>
   );
