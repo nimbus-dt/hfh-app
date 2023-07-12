@@ -19,6 +19,8 @@ import { ContactForm } from '../../models';
 import logoDigital from '../../assets/images/digital.jpg';
 
 import nimbusLogo from '../../assets/images/nimbus-logo.png';
+import { LandingNav } from './LandingNav';
+import { LandingHero } from './LandingHero';
 
 export function LandingLayout() {
   const contactButton = (
@@ -407,14 +409,9 @@ export function LandingLayout() {
   );
 
   return (
-    <Flex width="100%" direction="column">
-      {nav}
-      {hero}
-      {explanation}
-      {longTerm}
-      {contactForm}
-      <Divider />
-      {footer}
+    <Flex width="100%" direction="column" gap="0">
+      <LandingNav />
+      <LandingHero />
     </Flex>
   );
 }
