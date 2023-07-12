@@ -61,7 +61,13 @@ export function DebtDetail({ item, sizeRenderer }) {
         <Heading level="4">Owner: {names.name}</Heading>
         <Flex gap="5px">
           <Text fontWeight="bold">Type of debt:</Text>
-          <Text>{String(item.typeOfDebt)}</Text>
+          <Text>
+            {String(item.typeOfDebt)
+              .toLowerCase()
+              .split('_')
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(' ')}
+          </Text>
         </Flex>
         <Flex gap="5px">
           <Text fontWeight="bold">Monthly Debt Amount:</Text>

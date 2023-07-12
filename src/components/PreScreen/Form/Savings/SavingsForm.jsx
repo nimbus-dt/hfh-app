@@ -63,7 +63,9 @@ export function SavingsForm({ application, habitat }) {
 
     const formFields = e.target.elements;
     const institution = formFields.institution.value;
-    const estimatedAmount = Number(formFields.estimatedAmount.value);
+    const estimatedAmount = Number(
+      Number(formFields.estimatedAmount.value).toFixed(2)
+    );
     const ownerID = formFields.owner.value;
 
     await DataStore.save(

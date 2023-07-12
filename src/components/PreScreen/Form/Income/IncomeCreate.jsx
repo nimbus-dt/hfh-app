@@ -24,8 +24,12 @@ export function IncomeCreate({ owners, habitat, application }) {
       owner: formFields.owner.value,
       type: formFields.type.value,
       employer: formFields.employer.value,
-      employmentTime: Number(formFields.employmentTime.value),
-      estimatedMonthlyIncome: Number(formFields.estimatedMonthlyIncome.value),
+      employmentTime: Number(
+        Number(formFields.employmentTime.value).toFixed(2)
+      ),
+      estimatedMonthlyIncome: Number(
+        Number(formFields.estimatedMonthlyIncome.value).toFixed(2)
+      ),
     };
 
     // Create income record
