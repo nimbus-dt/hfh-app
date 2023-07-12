@@ -10,6 +10,8 @@ import {
   Image,
   TextField,
   Divider,
+  Menu,
+  MenuItem,
 } from '@aws-amplify/ui-react';
 import { BiUser, BiSupport } from 'react-icons/bi';
 import { AiFillCloud, AiFillCheckCircle } from 'react-icons/ai';
@@ -48,7 +50,9 @@ export function LandingLayout() {
         height="100%"
         marginRight="30px"
       >
-        {contactButton}
+        <Menu>
+          <MenuItem>Contact</MenuItem>
+        </Menu>
       </Flex>
     </Flex>
   );

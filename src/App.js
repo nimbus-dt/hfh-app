@@ -13,6 +13,7 @@ import { PreLimResults } from './components/PreScreen/PreLim/PreLimResults';
 import { FormLayout } from './components/PreScreen/Form/FormLayout';
 import { AffiliateLayout } from './components/Affiliate/AffiliateLayout';
 import { LandingLayout } from './components/Landing/LandingLayout';
+import { LandingNav } from './components/Landing/LandingNav';
 
 function App() {
   return (
