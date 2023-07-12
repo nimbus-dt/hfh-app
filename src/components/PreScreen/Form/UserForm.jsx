@@ -110,8 +110,10 @@ export function UserForm() {
     if (previousDataId) {
       await deletePreviousData(); // Delete previous data
       setPreviousDataId(null); // Clear the previousDataId after deletion
+      window.location.reload();
     }
     setUserDataBool(false);
+    window.location.reload();
   };
 
   // Message to display if user data exists
