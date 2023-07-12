@@ -41,15 +41,7 @@ function App() {
               <Route path="questions" element={<PreLimQuestions />} />
               <Route path="results" element={<PreLimResults />} />
             </Route>
-
-            <Route
-              path="form"
-              element={
-                <Authenticator>
-                  <FormLayout />
-                </Authenticator>
-              }
-            />
+            <Route path="form" element={<FormLayout />} />
           </Route>
         </Route>
       </Route>
