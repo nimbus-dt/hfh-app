@@ -13,11 +13,37 @@ import { PreLimResults } from './components/PreScreen/PreLim/PreLimResults';
 import { FormLayout } from './components/PreScreen/Form/FormLayout';
 import { AffiliateLayout } from './components/Affiliate/AffiliateLayout';
 import { LandingLayout } from './components/Landing/LandingLayout';
+import { LandingHome } from './components/Landing/LandingHome';
+import { LandingAbout } from './components/Landing/LandingAbout';
+import { LandingTerms } from './components/Landing/LandingTerms';
+import { LandingPrivacyPolicy } from './components/Landing/LandingPrivacyPolicy';
+import { LandingReturn } from './components/Landing/LandingReturn';
+import { LandingContact } from './components/Landing/LandingContact';
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<LandingLayout />} />
+      <Route path="/" element={<LandingLayout comp={<LandingHome />} />} />
+      <Route
+        path="/about"
+        element={<LandingLayout comp={<LandingAbout />} />}
+      />
+      <Route
+        path="/privacy"
+        element={<LandingLayout comp={<LandingPrivacyPolicy />} />}
+      />
+      <Route
+        path="/terms"
+        element={<LandingLayout comp={<LandingTerms />} />}
+      />
+      <Route
+        path="/return"
+        element={<LandingLayout comp={<LandingReturn />} />}
+      />
+      <Route
+        path="/contact"
+        element={<LandingLayout comp={<LandingContact />} />}
+      />
 
       <Route path="affiliate">
         <Route path=":habitat">
@@ -41,15 +67,7 @@ function App() {
               <Route path="questions" element={<PreLimQuestions />} />
               <Route path="results" element={<PreLimResults />} />
             </Route>
-
-            <Route
-              path="form"
-              element={
-                <Authenticator>
-                  <FormLayout />
-                </Authenticator>
-              }
-            />
+            <Route path="form" element={<FormLayout />} />
           </Route>
         </Route>
       </Route>

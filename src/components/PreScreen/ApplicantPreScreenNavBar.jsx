@@ -10,7 +10,12 @@ export function ApplicantPrescreenNavBar({ menuSlot }) {
   const urlName = useParams().habitat;
 
   const handleSignIn = () => {
-    navigate('./form');
+    navigate('./form', { state: { signUpBool: true } });
+  };
+
+  const handleSignOut = () => {
+    Auth.signOut();
+    navigate('/');
   };
 
   const checkAuthState = async () => {
@@ -35,14 +40,14 @@ export function ApplicantPrescreenNavBar({ menuSlot }) {
   return (
     <Card wrap width="100%" backgroundColor="#55B949" padding="0">
       <Flex direction="row" justifyContent="space-between" alignItems="center">
-        <Image
-          alt="Habitat Logo"
-          src={logoHabitat}
-          height="100%"
-          onClick={handleSignIn}
-        />
+        <Image alt="Habitat Logo" src={logoHabitat} height="100%" />
         <Flex marginRight="40px">
           {isAuthenticated && (
+            <Button backgroundColor="white" onClick={handleSignOut}>
+              Sign Out
+            </Button>
+          )}
+          {!isAuthenticated && (
             <Button backgroundColor="white" onClick={handleSignIn}>
               Sign In
             </Button>

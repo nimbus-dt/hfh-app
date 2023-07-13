@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useParams, Outlet, useNavigate } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import {
   Flex,
   Heading,
@@ -8,6 +8,7 @@ import {
   Pagination,
   Button,
   Text,
+  Authenticator,
 } from '@aws-amplify/ui-react';
 import { useState, useEffect } from 'react';
 import { DataStore } from '@aws-amplify/datastore';
@@ -28,6 +29,10 @@ export function FormLayout() {
   const [application, setApplication] = useState({});
   const [userExists, setUserExists] = useState(false);
   const navigate = useNavigate();
+
+  // Get signUp param
+  const location = useLocation();
+  const signUpBool = location.state?.signUpBool;
 
   useEffect(() => {
     async function fetchApplicationExists() {
@@ -222,5 +227,9 @@ export function FormLayout() {
     </Card>
   );
 
-  return application?.submitted ? completeForm : incompleteForm;
+  return (
+    <Authenticator hideDefault={signUpBool} hideSignUp={signUpBool}>
+      {application?.submitted ? completeForm : incompleteForm}
+    </Authenticator>
+  );
 }
