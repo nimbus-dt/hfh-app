@@ -1,0 +1,390 @@
+/***************************************************************************
+ * The contents of this file were generated with Amplify Studio.           *
+ * Please refrain from making any modifications to this file.              *
+ * Any changes to this file will be overwritten when running amplify pull. *
+ **************************************************************************/
+
+/* eslint-disable */
+import * as React from "react";
+import {
+  Button,
+  Flex,
+  Grid,
+  SelectField,
+  SwitchField,
+  TextField,
+} from "@aws-amplify/ui-react";
+import { getOverrideProps } from "@aws-amplify/ui-react/internal";
+import { HouseholdMember } from "../models";
+import { fetchByPath, validateField } from "./utils";
+import { DataStore } from "aws-amplify";
+export default function HouseholdMemberUpdateForm(props) {
+  const {
+    id: idProp,
+    householdMember: householdMemberModelProp,
+    onSuccess,
+    onError,
+    onSubmit,
+    onValidate,
+    onChange,
+    overrides,
+    ...rest
+  } = props;
+  const initialValues = {
+    name: "",
+    dateOfBirth: "",
+    sex: "",
+    relationship: "",
+    isCoapplicant: false,
+  };
+  const [name, setName] = React.useState(initialValues.name);
+  const [dateOfBirth, setDateOfBirth] = React.useState(
+    initialValues.dateOfBirth
+  );
+  const [sex, setSex] = React.useState(initialValues.sex);
+  const [relationship, setRelationship] = React.useState(
+    initialValues.relationship
+  );
+  const [isCoapplicant, setIsCoapplicant] = React.useState(
+    initialValues.isCoapplicant
+  );
+  const [errors, setErrors] = React.useState({});
+  const resetStateValues = () => {
+    const cleanValues = householdMemberRecord
+      ? { ...initialValues, ...householdMemberRecord }
+      : initialValues;
+    setName(cleanValues.name);
+    setDateOfBirth(cleanValues.dateOfBirth);
+    setSex(cleanValues.sex);
+    setRelationship(cleanValues.relationship);
+    setIsCoapplicant(cleanValues.isCoapplicant);
+    setErrors({});
+  };
+  const [householdMemberRecord, setHouseholdMemberRecord] = React.useState(
+    householdMemberModelProp
+  );
+  React.useEffect(() => {
+    const queryData = async () => {
+      const record = idProp
+        ? await DataStore.query(HouseholdMember, idProp)
+        : householdMemberModelProp;
+      setHouseholdMemberRecord(record);
+    };
+    queryData();
+  }, [idProp, householdMemberModelProp]);
+  React.useEffect(resetStateValues, [householdMemberRecord]);
+  const validations = {
+    name: [],
+    dateOfBirth: [],
+    sex: [],
+    relationship: [],
+    isCoapplicant: [],
+  };
+  const runValidationTasks = async (
+    fieldName,
+    currentValue,
+    getDisplayValue
+  ) => {
+    const value =
+      currentValue && getDisplayValue
+        ? getDisplayValue(currentValue)
+        : currentValue;
+    let validationResponse = validateField(value, validations[fieldName]);
+    const customValidator = fetchByPath(onValidate, fieldName);
+    if (customValidator) {
+      validationResponse = await customValidator(value, validationResponse);
+    }
+    setErrors((errors) => ({ ...errors, [fieldName]: validationResponse }));
+    return validationResponse;
+  };
+  return (
+    <Grid
+      as="form"
+      rowGap="15px"
+      columnGap="15px"
+      padding="20px"
+      onSubmit={async (event) => {
+        event.preventDefault();
+        let modelFields = {
+          name,
+          dateOfBirth,
+          sex,
+          relationship,
+          isCoapplicant,
+        };
+        const validationResponses = await Promise.all(
+          Object.keys(validations).reduce((promises, fieldName) => {
+            if (Array.isArray(modelFields[fieldName])) {
+              promises.push(
+                ...modelFields[fieldName].map((item) =>
+                  runValidationTasks(fieldName, item)
+                )
+              );
+              return promises;
+            }
+            promises.push(
+              runValidationTasks(fieldName, modelFields[fieldName])
+            );
+            return promises;
+          }, [])
+        );
+        if (validationResponses.some((r) => r.hasError)) {
+          return;
+        }
+        if (onSubmit) {
+          modelFields = onSubmit(modelFields);
+        }
+        try {
+          Object.entries(modelFields).forEach(([key, value]) => {
+            if (typeof value === "string" && value.trim() === "") {
+              modelFields[key] = undefined;
+            }
+          });
+          await DataStore.save(
+            HouseholdMember.copyOf(householdMemberRecord, (updated) => {
+              Object.assign(updated, modelFields);
+            })
+          );
+          if (onSuccess) {
+            onSuccess(modelFields);
+          }
+        } catch (err) {
+          if (onError) {
+            onError(modelFields, err.message);
+          }
+        }
+      }}
+      {...getOverrideProps(overrides, "HouseholdMemberUpdateForm")}
+      {...rest}
+    >
+      <TextField
+        label="Name"
+        isRequired={false}
+        isReadOnly={false}
+        value={name}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name: value,
+              dateOfBirth,
+              sex,
+              relationship,
+              isCoapplicant,
+            };
+            const result = onChange(modelFields);
+            value = result?.name ?? value;
+          }
+          if (errors.name?.hasError) {
+            runValidationTasks("name", value);
+          }
+          setName(value);
+        }}
+        onBlur={() => runValidationTasks("name", name)}
+        errorMessage={errors.name?.errorMessage}
+        hasError={errors.name?.hasError}
+        {...getOverrideProps(overrides, "name")}
+      ></TextField>
+      <TextField
+        label="Date of birth"
+        isRequired={false}
+        isReadOnly={false}
+        type="date"
+        value={dateOfBirth}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              dateOfBirth: value,
+              sex,
+              relationship,
+              isCoapplicant,
+            };
+            const result = onChange(modelFields);
+            value = result?.dateOfBirth ?? value;
+          }
+          if (errors.dateOfBirth?.hasError) {
+            runValidationTasks("dateOfBirth", value);
+          }
+          setDateOfBirth(value);
+        }}
+        onBlur={() => runValidationTasks("dateOfBirth", dateOfBirth)}
+        errorMessage={errors.dateOfBirth?.errorMessage}
+        hasError={errors.dateOfBirth?.hasError}
+        {...getOverrideProps(overrides, "dateOfBirth")}
+      ></TextField>
+      <SelectField
+        label="Sex"
+        placeholder="Please select an option"
+        isDisabled={false}
+        value={sex}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              dateOfBirth,
+              sex: value,
+              relationship,
+              isCoapplicant,
+            };
+            const result = onChange(modelFields);
+            value = result?.sex ?? value;
+          }
+          if (errors.sex?.hasError) {
+            runValidationTasks("sex", value);
+          }
+          setSex(value);
+        }}
+        onBlur={() => runValidationTasks("sex", sex)}
+        errorMessage={errors.sex?.errorMessage}
+        hasError={errors.sex?.hasError}
+        {...getOverrideProps(overrides, "sex")}
+      >
+        <option
+          children="Male"
+          value="MALE"
+          {...getOverrideProps(overrides, "sexoption0")}
+        ></option>
+        <option
+          children="Female"
+          value="FEMALE"
+          {...getOverrideProps(overrides, "sexoption1")}
+        ></option>
+        <option
+          children="Other"
+          value="OTHER"
+          {...getOverrideProps(overrides, "sexoption2")}
+        ></option>
+      </SelectField>
+      <SelectField
+        label="Relationship"
+        placeholder="Please select an option"
+        isDisabled={false}
+        value={relationship}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              dateOfBirth,
+              sex,
+              relationship: value,
+              isCoapplicant,
+            };
+            const result = onChange(modelFields);
+            value = result?.relationship ?? value;
+          }
+          if (errors.relationship?.hasError) {
+            runValidationTasks("relationship", value);
+          }
+          setRelationship(value);
+        }}
+        onBlur={() => runValidationTasks("relationship", relationship)}
+        errorMessage={errors.relationship?.errorMessage}
+        hasError={errors.relationship?.hasError}
+        {...getOverrideProps(overrides, "relationship")}
+      >
+        <option
+          children="Spouse"
+          value="SPOUSE"
+          {...getOverrideProps(overrides, "relationshipoption0")}
+        ></option>
+        <option
+          children="Son"
+          value="SON"
+          {...getOverrideProps(overrides, "relationshipoption1")}
+        ></option>
+        <option
+          children="Daughter"
+          value="DAUGHTER"
+          {...getOverrideProps(overrides, "relationshipoption2")}
+        ></option>
+        <option
+          children="Nephew"
+          value="NEPHEW"
+          {...getOverrideProps(overrides, "relationshipoption3")}
+        ></option>
+        <option
+          children="Niece"
+          value="NIECE"
+          {...getOverrideProps(overrides, "relationshipoption4")}
+        ></option>
+        <option
+          children="Parent"
+          value="PARENT"
+          {...getOverrideProps(overrides, "relationshipoption5")}
+        ></option>
+        <option
+          children="Sibling"
+          value="SIBLING"
+          {...getOverrideProps(overrides, "relationshipoption6")}
+        ></option>
+        <option
+          children="Other"
+          value="OTHER"
+          {...getOverrideProps(overrides, "relationshipoption7")}
+        ></option>
+      </SelectField>
+      <SwitchField
+        label="Is coapplicant"
+        defaultChecked={false}
+        isDisabled={false}
+        isChecked={isCoapplicant}
+        onChange={(e) => {
+          let value = e.target.checked;
+          if (onChange) {
+            const modelFields = {
+              name,
+              dateOfBirth,
+              sex,
+              relationship,
+              isCoapplicant: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.isCoapplicant ?? value;
+          }
+          if (errors.isCoapplicant?.hasError) {
+            runValidationTasks("isCoapplicant", value);
+          }
+          setIsCoapplicant(value);
+        }}
+        onBlur={() => runValidationTasks("isCoapplicant", isCoapplicant)}
+        errorMessage={errors.isCoapplicant?.errorMessage}
+        hasError={errors.isCoapplicant?.hasError}
+        {...getOverrideProps(overrides, "isCoapplicant")}
+      ></SwitchField>
+      <Flex
+        justifyContent="space-between"
+        {...getOverrideProps(overrides, "CTAFlex")}
+      >
+        <Button
+          children="Reset"
+          type="reset"
+          onClick={(event) => {
+            event.preventDefault();
+            resetStateValues();
+          }}
+          isDisabled={!(idProp || householdMemberModelProp)}
+          {...getOverrideProps(overrides, "ResetButton")}
+        ></Button>
+        <Flex
+          gap="15px"
+          {...getOverrideProps(overrides, "RightAlignCTASubFlex")}
+        >
+          <Button
+            children="Submit"
+            type="submit"
+            variation="primary"
+            isDisabled={
+              !(idProp || householdMemberModelProp) ||
+              Object.values(errors).some((e) => e?.hasError)
+            }
+            {...getOverrideProps(overrides, "SubmitButton")}
+          ></Button>
+        </Flex>
+      </Flex>
+    </Grid>
+  );
+}

@@ -81,7 +81,7 @@ type IncomeRecord @model @auth(rules: [{allow: public}]) {
   proofOfIncome: [ID]
   applicationID: ID @index(name: "byApplication")
   ownerApplicant: Boolean
-  totalIncome: Float
+  employmentTime: Float
 }
 
 type HouseholdMember @model @auth(rules: [{allow: public}]) {

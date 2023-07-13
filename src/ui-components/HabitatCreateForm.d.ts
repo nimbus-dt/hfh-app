@@ -5,18 +5,47 @@
  **************************************************************************/
 
 import * as React from "react";
-import { GridProps } from "@aws-amplify/ui-react";
+import { GridProps, TextAreaFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
 import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
 export declare type ValidationResponse = {
     hasError: boolean;
     errorMessage?: string;
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
-export declare type HabitatCreateFormInputValues = {};
-export declare type HabitatCreateFormValidationValues = {};
+export declare type HabitatCreateFormInputValues = {
+    name?: string;
+    urlName?: string;
+    state?: string;
+    city?: string;
+    county?: string;
+    countiesServed?: string[];
+    props?: string;
+    users?: string[];
+    AMI?: string[];
+};
+export declare type HabitatCreateFormValidationValues = {
+    name?: ValidationFunction<string>;
+    urlName?: ValidationFunction<string>;
+    state?: ValidationFunction<string>;
+    city?: ValidationFunction<string>;
+    county?: ValidationFunction<string>;
+    countiesServed?: ValidationFunction<string>;
+    props?: ValidationFunction<string>;
+    users?: ValidationFunction<string>;
+    AMI?: ValidationFunction<string>;
+};
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type HabitatCreateFormOverridesProps = {
     HabitatCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
+    name?: PrimitiveOverrideProps<TextFieldProps>;
+    urlName?: PrimitiveOverrideProps<TextFieldProps>;
+    state?: PrimitiveOverrideProps<TextFieldProps>;
+    city?: PrimitiveOverrideProps<TextFieldProps>;
+    county?: PrimitiveOverrideProps<TextFieldProps>;
+    countiesServed?: PrimitiveOverrideProps<TextFieldProps>;
+    props?: PrimitiveOverrideProps<TextAreaFieldProps>;
+    users?: PrimitiveOverrideProps<TextFieldProps>;
+    AMI?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type HabitatCreateFormProps = React.PropsWithChildren<{
     overrides?: HabitatCreateFormOverridesProps | undefined | null;
