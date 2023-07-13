@@ -462,8 +462,8 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "totalIncome": {
-                    "name": "totalIncome",
+                "employmentTime": {
+                    "name": "employmentTime",
                     "isArray": false,
                     "type": "Float",
                     "isRequired": false,
@@ -1011,5 +1011,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "6b6edf572381bb75f07ae89832d575da"
+    "version": "e203f2de71ac378ed15f0c558edc25d3"
 };

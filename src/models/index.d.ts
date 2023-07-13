@@ -219,7 +219,7 @@ type EagerIncomeRecord = {
   readonly proofOfIncome?: (string | null)[] | null;
   readonly applicationID?: string | null;
   readonly ownerApplicant?: boolean | null;
-  readonly totalIncome?: number | null;
+  readonly employmentTime?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -237,7 +237,7 @@ type LazyIncomeRecord = {
   readonly proofOfIncome?: (string | null)[] | null;
   readonly applicationID?: string | null;
   readonly ownerApplicant?: boolean | null;
-  readonly totalIncome?: number | null;
+  readonly employmentTime?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

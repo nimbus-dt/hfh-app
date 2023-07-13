@@ -14,13 +14,14 @@ import {
   Grid,
   Icon,
   ScrollView,
+  SelectField,
+  SwitchField,
   Text,
-  TextAreaField,
   TextField,
   useTheme,
 } from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
-import { Habitat } from "../models";
+import { IncomeRecord } from "../models";
 import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
 function ArrayField({
@@ -181,7 +182,7 @@ function ArrayField({
     </React.Fragment>
   );
 }
-export default function HabitatCreateForm(props) {
+export default function IncomeRecordCreateForm(props) {
   const {
     clearOnSuccess = true,
     onSuccess,
@@ -193,60 +194,54 @@ export default function HabitatCreateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    name: "",
-    urlName: "",
-    state: "",
-    city: "",
-    county: "",
-    countiesServed: [],
-    props: "",
-    users: [],
-    AMI: [],
+    ownerID: "",
+    typeOfIncome: "",
+    employer: "",
+    estimatedMonthlyIncome: "",
+    proofOfIncome: [],
+    ownerApplicant: false,
+    totalIncome: "",
   };
-  const [name, setName] = React.useState(initialValues.name);
-  const [urlName, setUrlName] = React.useState(initialValues.urlName);
-  const [state, setState] = React.useState(initialValues.state);
-  const [city, setCity] = React.useState(initialValues.city);
-  const [county, setCounty] = React.useState(initialValues.county);
-  const [countiesServed, setCountiesServed] = React.useState(
-    initialValues.countiesServed
+  const [ownerID, setOwnerID] = React.useState(initialValues.ownerID);
+  const [typeOfIncome, setTypeOfIncome] = React.useState(
+    initialValues.typeOfIncome
   );
-  const [props, setProps] = React.useState(initialValues.props);
-  const [users, setUsers] = React.useState(initialValues.users);
-  const [AMI, setAMI] = React.useState(initialValues.AMI);
+  const [employer, setEmployer] = React.useState(initialValues.employer);
+  const [estimatedMonthlyIncome, setEstimatedMonthlyIncome] = React.useState(
+    initialValues.estimatedMonthlyIncome
+  );
+  const [proofOfIncome, setProofOfIncome] = React.useState(
+    initialValues.proofOfIncome
+  );
+  const [ownerApplicant, setOwnerApplicant] = React.useState(
+    initialValues.ownerApplicant
+  );
+  const [totalIncome, setTotalIncome] = React.useState(
+    initialValues.totalIncome
+  );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    setName(initialValues.name);
-    setUrlName(initialValues.urlName);
-    setState(initialValues.state);
-    setCity(initialValues.city);
-    setCounty(initialValues.county);
-    setCountiesServed(initialValues.countiesServed);
-    setCurrentCountiesServedValue("");
-    setProps(initialValues.props);
-    setUsers(initialValues.users);
-    setCurrentUsersValue("");
-    setAMI(initialValues.AMI);
-    setCurrentAMIValue("");
+    setOwnerID(initialValues.ownerID);
+    setTypeOfIncome(initialValues.typeOfIncome);
+    setEmployer(initialValues.employer);
+    setEstimatedMonthlyIncome(initialValues.estimatedMonthlyIncome);
+    setProofOfIncome(initialValues.proofOfIncome);
+    setCurrentProofOfIncomeValue("");
+    setOwnerApplicant(initialValues.ownerApplicant);
+    setTotalIncome(initialValues.totalIncome);
     setErrors({});
   };
-  const [currentCountiesServedValue, setCurrentCountiesServedValue] =
+  const [currentProofOfIncomeValue, setCurrentProofOfIncomeValue] =
     React.useState("");
-  const countiesServedRef = React.createRef();
-  const [currentUsersValue, setCurrentUsersValue] = React.useState("");
-  const usersRef = React.createRef();
-  const [currentAMIValue, setCurrentAMIValue] = React.useState("");
-  const AMIRef = React.createRef();
+  const proofOfIncomeRef = React.createRef();
   const validations = {
-    name: [],
-    urlName: [],
-    state: [],
-    city: [],
-    county: [],
-    countiesServed: [],
-    props: [{ type: "JSON" }],
-    users: [],
-    AMI: [],
+    ownerID: [],
+    typeOfIncome: [],
+    employer: [],
+    estimatedMonthlyIncome: [],
+    proofOfIncome: [],
+    ownerApplicant: [],
+    totalIncome: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -274,15 +269,13 @@ export default function HabitatCreateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          name,
-          urlName,
-          state,
-          city,
-          county,
-          countiesServed,
-          props,
-          users,
-          AMI,
+          ownerID,
+          typeOfIncome,
+          employer,
+          estimatedMonthlyIncome,
+          proofOfIncome,
+          ownerApplicant,
+          totalIncome,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -312,7 +305,7 @@ export default function HabitatCreateForm(props) {
               modelFields[key] = undefined;
             }
           });
-          await DataStore.save(new Habitat(modelFields));
+          await DataStore.save(new IncomeRecord(modelFields));
           if (onSuccess) {
             onSuccess(modelFields);
           }
@@ -325,352 +318,315 @@ export default function HabitatCreateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "HabitatCreateForm")}
+      {...getOverrideProps(overrides, "IncomeRecordCreateForm")}
       {...rest}
     >
       <TextField
-        label="Name"
+        label="Owner id"
         isRequired={false}
         isReadOnly={false}
-        value={name}
+        value={ownerID}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              name: value,
-              urlName,
-              state,
-              city,
-              county,
-              countiesServed,
-              props,
-              users,
-              AMI,
+              ownerID: value,
+              typeOfIncome,
+              employer,
+              estimatedMonthlyIncome,
+              proofOfIncome,
+              ownerApplicant,
+              totalIncome,
             };
             const result = onChange(modelFields);
-            value = result?.name ?? value;
+            value = result?.ownerID ?? value;
           }
-          if (errors.name?.hasError) {
-            runValidationTasks("name", value);
+          if (errors.ownerID?.hasError) {
+            runValidationTasks("ownerID", value);
           }
-          setName(value);
+          setOwnerID(value);
         }}
-        onBlur={() => runValidationTasks("name", name)}
-        errorMessage={errors.name?.errorMessage}
-        hasError={errors.name?.hasError}
-        {...getOverrideProps(overrides, "name")}
+        onBlur={() => runValidationTasks("ownerID", ownerID)}
+        errorMessage={errors.ownerID?.errorMessage}
+        hasError={errors.ownerID?.hasError}
+        {...getOverrideProps(overrides, "ownerID")}
+      ></TextField>
+      <SelectField
+        label="Type of income"
+        placeholder="Please select an option"
+        isDisabled={false}
+        value={typeOfIncome}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              ownerID,
+              typeOfIncome: value,
+              employer,
+              estimatedMonthlyIncome,
+              proofOfIncome,
+              ownerApplicant,
+              totalIncome,
+            };
+            const result = onChange(modelFields);
+            value = result?.typeOfIncome ?? value;
+          }
+          if (errors.typeOfIncome?.hasError) {
+            runValidationTasks("typeOfIncome", value);
+          }
+          setTypeOfIncome(value);
+        }}
+        onBlur={() => runValidationTasks("typeOfIncome", typeOfIncome)}
+        errorMessage={errors.typeOfIncome?.errorMessage}
+        hasError={errors.typeOfIncome?.hasError}
+        {...getOverrideProps(overrides, "typeOfIncome")}
+      >
+        <option
+          children="Salaried employment"
+          value="SALARIED_EMPLOYMENT"
+          {...getOverrideProps(overrides, "typeOfIncomeoption0")}
+        ></option>
+        <option
+          children="Hourly employment"
+          value="HOURLY_EMPLOYMENT"
+          {...getOverrideProps(overrides, "typeOfIncomeoption1")}
+        ></option>
+        <option
+          children="Self employment"
+          value="SELF_EMPLOYMENT"
+          {...getOverrideProps(overrides, "typeOfIncomeoption2")}
+        ></option>
+        <option
+          children="Social security disability insurance"
+          value="SOCIAL_SECURITY_DISABILITY_INSURANCE"
+          {...getOverrideProps(overrides, "typeOfIncomeoption3")}
+        ></option>
+        <option
+          children="Social security benefits"
+          value="SOCIAL_SECURITY_BENEFITS"
+          {...getOverrideProps(overrides, "typeOfIncomeoption4")}
+        ></option>
+        <option
+          children="Supplemental security income"
+          value="SUPPLEMENTAL_SECURITY_INCOME"
+          {...getOverrideProps(overrides, "typeOfIncomeoption5")}
+        ></option>
+        <option
+          children="Housing voucher"
+          value="HOUSING_VOUCHER"
+          {...getOverrideProps(overrides, "typeOfIncomeoption6")}
+        ></option>
+        <option
+          children="Child support"
+          value="CHILD_SUPPORT"
+          {...getOverrideProps(overrides, "typeOfIncomeoption7")}
+        ></option>
+        <option
+          children="Alimony support"
+          value="ALIMONY_SUPPORT"
+          {...getOverrideProps(overrides, "typeOfIncomeoption8")}
+        ></option>
+        <option
+          children="Veterans affair compensation"
+          value="VETERANS_AFFAIR_COMPENSATION"
+          {...getOverrideProps(overrides, "typeOfIncomeoption9")}
+        ></option>
+        <option
+          children="Pension payments"
+          value="PENSION_PAYMENTS"
+          {...getOverrideProps(overrides, "typeOfIncomeoption10")}
+        ></option>
+        <option
+          children="Military entitlements"
+          value="MILITARY_ENTITLEMENTS"
+          {...getOverrideProps(overrides, "typeOfIncomeoption11")}
+        ></option>
+        <option
+          children="Other"
+          value="OTHER"
+          {...getOverrideProps(overrides, "typeOfIncomeoption12")}
+        ></option>
+      </SelectField>
+      <TextField
+        label="Employer"
+        isRequired={false}
+        isReadOnly={false}
+        value={employer}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              ownerID,
+              typeOfIncome,
+              employer: value,
+              estimatedMonthlyIncome,
+              proofOfIncome,
+              ownerApplicant,
+              totalIncome,
+            };
+            const result = onChange(modelFields);
+            value = result?.employer ?? value;
+          }
+          if (errors.employer?.hasError) {
+            runValidationTasks("employer", value);
+          }
+          setEmployer(value);
+        }}
+        onBlur={() => runValidationTasks("employer", employer)}
+        errorMessage={errors.employer?.errorMessage}
+        hasError={errors.employer?.hasError}
+        {...getOverrideProps(overrides, "employer")}
       ></TextField>
       <TextField
-        label="Url name"
+        label="Estimated monthly income"
         isRequired={false}
         isReadOnly={false}
-        value={urlName}
+        type="number"
+        step="any"
+        value={estimatedMonthlyIncome}
         onChange={(e) => {
-          let { value } = e.target;
+          let value = isNaN(parseFloat(e.target.value))
+            ? e.target.value
+            : parseFloat(e.target.value);
           if (onChange) {
             const modelFields = {
-              name,
-              urlName: value,
-              state,
-              city,
-              county,
-              countiesServed,
-              props,
-              users,
-              AMI,
+              ownerID,
+              typeOfIncome,
+              employer,
+              estimatedMonthlyIncome: value,
+              proofOfIncome,
+              ownerApplicant,
+              totalIncome,
             };
             const result = onChange(modelFields);
-            value = result?.urlName ?? value;
+            value = result?.estimatedMonthlyIncome ?? value;
           }
-          if (errors.urlName?.hasError) {
-            runValidationTasks("urlName", value);
+          if (errors.estimatedMonthlyIncome?.hasError) {
+            runValidationTasks("estimatedMonthlyIncome", value);
           }
-          setUrlName(value);
+          setEstimatedMonthlyIncome(value);
         }}
-        onBlur={() => runValidationTasks("urlName", urlName)}
-        errorMessage={errors.urlName?.errorMessage}
-        hasError={errors.urlName?.hasError}
-        {...getOverrideProps(overrides, "urlName")}
-      ></TextField>
-      <TextField
-        label="State"
-        isRequired={false}
-        isReadOnly={false}
-        value={state}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              name,
-              urlName,
-              state: value,
-              city,
-              county,
-              countiesServed,
-              props,
-              users,
-              AMI,
-            };
-            const result = onChange(modelFields);
-            value = result?.state ?? value;
-          }
-          if (errors.state?.hasError) {
-            runValidationTasks("state", value);
-          }
-          setState(value);
-        }}
-        onBlur={() => runValidationTasks("state", state)}
-        errorMessage={errors.state?.errorMessage}
-        hasError={errors.state?.hasError}
-        {...getOverrideProps(overrides, "state")}
-      ></TextField>
-      <TextField
-        label="City"
-        isRequired={false}
-        isReadOnly={false}
-        value={city}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              name,
-              urlName,
-              state,
-              city: value,
-              county,
-              countiesServed,
-              props,
-              users,
-              AMI,
-            };
-            const result = onChange(modelFields);
-            value = result?.city ?? value;
-          }
-          if (errors.city?.hasError) {
-            runValidationTasks("city", value);
-          }
-          setCity(value);
-        }}
-        onBlur={() => runValidationTasks("city", city)}
-        errorMessage={errors.city?.errorMessage}
-        hasError={errors.city?.hasError}
-        {...getOverrideProps(overrides, "city")}
-      ></TextField>
-      <TextField
-        label="County"
-        isRequired={false}
-        isReadOnly={false}
-        value={county}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              name,
-              urlName,
-              state,
-              city,
-              county: value,
-              countiesServed,
-              props,
-              users,
-              AMI,
-            };
-            const result = onChange(modelFields);
-            value = result?.county ?? value;
-          }
-          if (errors.county?.hasError) {
-            runValidationTasks("county", value);
-          }
-          setCounty(value);
-        }}
-        onBlur={() => runValidationTasks("county", county)}
-        errorMessage={errors.county?.errorMessage}
-        hasError={errors.county?.hasError}
-        {...getOverrideProps(overrides, "county")}
+        onBlur={() =>
+          runValidationTasks("estimatedMonthlyIncome", estimatedMonthlyIncome)
+        }
+        errorMessage={errors.estimatedMonthlyIncome?.errorMessage}
+        hasError={errors.estimatedMonthlyIncome?.hasError}
+        {...getOverrideProps(overrides, "estimatedMonthlyIncome")}
       ></TextField>
       <ArrayField
         onChange={async (items) => {
           let values = items;
           if (onChange) {
             const modelFields = {
-              name,
-              urlName,
-              state,
-              city,
-              county,
-              countiesServed: values,
-              props,
-              users,
-              AMI,
+              ownerID,
+              typeOfIncome,
+              employer,
+              estimatedMonthlyIncome,
+              proofOfIncome: values,
+              ownerApplicant,
+              totalIncome,
             };
             const result = onChange(modelFields);
-            values = result?.countiesServed ?? values;
+            values = result?.proofOfIncome ?? values;
           }
-          setCountiesServed(values);
-          setCurrentCountiesServedValue("");
+          setProofOfIncome(values);
+          setCurrentProofOfIncomeValue("");
         }}
-        currentFieldValue={currentCountiesServedValue}
-        label={"Counties served"}
-        items={countiesServed}
-        hasError={errors?.countiesServed?.hasError}
-        errorMessage={errors?.countiesServed?.errorMessage}
-        setFieldValue={setCurrentCountiesServedValue}
-        inputFieldRef={countiesServedRef}
+        currentFieldValue={currentProofOfIncomeValue}
+        label={"Proof of income"}
+        items={proofOfIncome}
+        hasError={errors?.proofOfIncome?.hasError}
+        errorMessage={errors?.proofOfIncome?.errorMessage}
+        setFieldValue={setCurrentProofOfIncomeValue}
+        inputFieldRef={proofOfIncomeRef}
         defaultFieldValue={""}
       >
         <TextField
-          label="Counties served"
+          label="Proof of income"
           isRequired={false}
           isReadOnly={false}
-          value={currentCountiesServedValue}
+          value={currentProofOfIncomeValue}
           onChange={(e) => {
             let { value } = e.target;
-            if (errors.countiesServed?.hasError) {
-              runValidationTasks("countiesServed", value);
+            if (errors.proofOfIncome?.hasError) {
+              runValidationTasks("proofOfIncome", value);
             }
-            setCurrentCountiesServedValue(value);
+            setCurrentProofOfIncomeValue(value);
           }}
           onBlur={() =>
-            runValidationTasks("countiesServed", currentCountiesServedValue)
+            runValidationTasks("proofOfIncome", currentProofOfIncomeValue)
           }
-          errorMessage={errors.countiesServed?.errorMessage}
-          hasError={errors.countiesServed?.hasError}
-          ref={countiesServedRef}
+          errorMessage={errors.proofOfIncome?.errorMessage}
+          hasError={errors.proofOfIncome?.hasError}
+          ref={proofOfIncomeRef}
           labelHidden={true}
-          {...getOverrideProps(overrides, "countiesServed")}
+          {...getOverrideProps(overrides, "proofOfIncome")}
         ></TextField>
       </ArrayField>
-      <TextAreaField
-        label="Props"
+      <SwitchField
+        label="Owner applicant"
+        defaultChecked={false}
+        isDisabled={false}
+        isChecked={ownerApplicant}
+        onChange={(e) => {
+          let value = e.target.checked;
+          if (onChange) {
+            const modelFields = {
+              ownerID,
+              typeOfIncome,
+              employer,
+              estimatedMonthlyIncome,
+              proofOfIncome,
+              ownerApplicant: value,
+              totalIncome,
+            };
+            const result = onChange(modelFields);
+            value = result?.ownerApplicant ?? value;
+          }
+          if (errors.ownerApplicant?.hasError) {
+            runValidationTasks("ownerApplicant", value);
+          }
+          setOwnerApplicant(value);
+        }}
+        onBlur={() => runValidationTasks("ownerApplicant", ownerApplicant)}
+        errorMessage={errors.ownerApplicant?.errorMessage}
+        hasError={errors.ownerApplicant?.hasError}
+        {...getOverrideProps(overrides, "ownerApplicant")}
+      ></SwitchField>
+      <TextField
+        label="Total income"
         isRequired={false}
         isReadOnly={false}
+        type="number"
+        step="any"
+        value={totalIncome}
         onChange={(e) => {
-          let { value } = e.target;
+          let value = isNaN(parseFloat(e.target.value))
+            ? e.target.value
+            : parseFloat(e.target.value);
           if (onChange) {
             const modelFields = {
-              name,
-              urlName,
-              state,
-              city,
-              county,
-              countiesServed,
-              props: value,
-              users,
-              AMI,
+              ownerID,
+              typeOfIncome,
+              employer,
+              estimatedMonthlyIncome,
+              proofOfIncome,
+              ownerApplicant,
+              totalIncome: value,
             };
             const result = onChange(modelFields);
-            value = result?.props ?? value;
+            value = result?.totalIncome ?? value;
           }
-          if (errors.props?.hasError) {
-            runValidationTasks("props", value);
+          if (errors.totalIncome?.hasError) {
+            runValidationTasks("totalIncome", value);
           }
-          setProps(value);
+          setTotalIncome(value);
         }}
-        onBlur={() => runValidationTasks("props", props)}
-        errorMessage={errors.props?.errorMessage}
-        hasError={errors.props?.hasError}
-        {...getOverrideProps(overrides, "props")}
-      ></TextAreaField>
-      <ArrayField
-        onChange={async (items) => {
-          let values = items;
-          if (onChange) {
-            const modelFields = {
-              name,
-              urlName,
-              state,
-              city,
-              county,
-              countiesServed,
-              props,
-              users: values,
-              AMI,
-            };
-            const result = onChange(modelFields);
-            values = result?.users ?? values;
-          }
-          setUsers(values);
-          setCurrentUsersValue("");
-        }}
-        currentFieldValue={currentUsersValue}
-        label={"Users"}
-        items={users}
-        hasError={errors?.users?.hasError}
-        errorMessage={errors?.users?.errorMessage}
-        setFieldValue={setCurrentUsersValue}
-        inputFieldRef={usersRef}
-        defaultFieldValue={""}
-      >
-        <TextField
-          label="Users"
-          isRequired={false}
-          isReadOnly={false}
-          value={currentUsersValue}
-          onChange={(e) => {
-            let { value } = e.target;
-            if (errors.users?.hasError) {
-              runValidationTasks("users", value);
-            }
-            setCurrentUsersValue(value);
-          }}
-          onBlur={() => runValidationTasks("users", currentUsersValue)}
-          errorMessage={errors.users?.errorMessage}
-          hasError={errors.users?.hasError}
-          ref={usersRef}
-          labelHidden={true}
-          {...getOverrideProps(overrides, "users")}
-        ></TextField>
-      </ArrayField>
-      <ArrayField
-        onChange={async (items) => {
-          let values = items;
-          if (onChange) {
-            const modelFields = {
-              name,
-              urlName,
-              state,
-              city,
-              county,
-              countiesServed,
-              props,
-              users,
-              AMI: values,
-            };
-            const result = onChange(modelFields);
-            values = result?.AMI ?? values;
-          }
-          setAMI(values);
-          setCurrentAMIValue("");
-        }}
-        currentFieldValue={currentAMIValue}
-        label={"Ami"}
-        items={AMI}
-        hasError={errors?.AMI?.hasError}
-        errorMessage={errors?.AMI?.errorMessage}
-        setFieldValue={setCurrentAMIValue}
-        inputFieldRef={AMIRef}
-        defaultFieldValue={""}
-      >
-        <TextField
-          label="Ami"
-          isRequired={false}
-          isReadOnly={false}
-          value={currentAMIValue}
-          onChange={(e) => {
-            let { value } = e.target;
-            if (errors.AMI?.hasError) {
-              runValidationTasks("AMI", value);
-            }
-            setCurrentAMIValue(value);
-          }}
-          onBlur={() => runValidationTasks("AMI", currentAMIValue)}
-          errorMessage={errors.AMI?.errorMessage}
-          hasError={errors.AMI?.hasError}
-          ref={AMIRef}
-          labelHidden={true}
-          {...getOverrideProps(overrides, "AMI")}
-        ></TextField>
-      </ArrayField>
+        onBlur={() => runValidationTasks("totalIncome", totalIncome)}
+        errorMessage={errors.totalIncome?.errorMessage}
+        hasError={errors.totalIncome?.hasError}
+        {...getOverrideProps(overrides, "totalIncome")}
+      ></TextField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}
