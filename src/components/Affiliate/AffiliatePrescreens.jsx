@@ -109,7 +109,6 @@ export function AffiliatePrescreens({ prescreens }) {
     setTotalSavings(savingsPlaceholder);
     setTotalMonthlyDebts(monthlyDebtPlaceholder);
     setDebtToIncomeRatio(debtToIncomeRatioPlaceholder);
-    console.log('totalMonthlyIncomes', totalMonthlyIncomes);
 
     const habitatObject = await DataStore.query(Habitat, (c) =>
       c.urlName.eq(urlName)
@@ -138,9 +137,7 @@ export function AffiliatePrescreens({ prescreens }) {
     if (
       selectedApplication &&
       householdMembers.length > 0 &&
-      incomes.length > 0 &&
-      savings.length > 0 &&
-      debts.length > 0
+      savings.length > 0
     ) {
       calculateMetrics();
     }
