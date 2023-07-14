@@ -109,6 +109,7 @@ export function AffiliatePrescreens({ prescreens }) {
     setTotalSavings(savingsPlaceholder);
     setTotalMonthlyDebts(monthlyDebtPlaceholder);
     setDebtToIncomeRatio(debtToIncomeRatioPlaceholder);
+    console.log('totalMonthlyIncomes', totalMonthlyIncomes);
 
     const habitatObject = await DataStore.query(Habitat, (c) =>
       c.urlName.eq(urlName)
@@ -217,11 +218,8 @@ export function AffiliatePrescreens({ prescreens }) {
                     </Button>
                   </TableCell>
                 </TableRow>
-                {/* Rest of the table rows */}
               </TableBody>
             </Table>
-
-            {/* Rest of the content */}
           </Flex>
         )}
       </Collection>
