@@ -48,7 +48,7 @@ exports.handler = async (event) => {
         // Get UserProp whose ownerID matches the ownerID of the item
         const userProp = await dynamodb
           .get({
-            TableName: process.env.API_HFHAPP_USERPROPSTABLE_ARN,
+            TableName: process.env.API_HFHAPP_USERPROPSTABLE_NAME,
             Key: { ownerID: ownerID.S },
           })
           .promise();
