@@ -1,3 +1,4 @@
+/* eslint-disable import/no-relative-packages */
 /* eslint-disable import/no-extraneous-dependencies */
 /* Amplify Params - DO NOT EDIT
 	ENV
@@ -29,29 +30,50 @@ Amplify Params - DO NOT EDIT */
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 
+import { DataStore } from 'aws-amplify';
+import { UserProps } from '../../../../../src/models';
+
 const aws = require('aws-sdk');
 
 const ses = new aws.SES({ region: 'us-east-1' });
 
 exports.handler = async (event) => {
   for (const streamedItem of event.Records) {
-    if (streamedItem.eventName === 'INSERT') {
-      await ses
-        .sendEmail({
-          Destination: {
-            ToAddresses: ['jgavelarc@gmail.com'],
-          },
-          Source: process.env.SES_EMAIL,
-          Message: {
-            Subject: { Data: 'Prescreen Notification' },
-            Body: {
-              Text: {
-                Data: `Hi ,\n\nYour prescreen has been scheduled. Please check your calendar for details.\n\nThanks,\nYour Recruiting Team`,
+    if (streamedItem.eventName === 'MODIFY') {
+      // Get items status parameter
+      const { ownerID, submittedStatus } = streamedItem.dynamodb.NewImage;
+
+      if (
+        submittedStatus.S === 'ACCEPTED' ||
+        submittedStatus.S === 'REJECTED'
+      ) {
+        let email;
+        try {
+          const userPropObject = await DataStore.query(UserProps, (c) =>
+            c.ownerID.eq(ownerID.S)
+          );
+          email = userPropObject[0].email;
+        } catch (error) {
+          console.log(`Error getting UserProps from DataStore: ${error}`);
+        }
+
+        await ses
+          .sendEmail({
+            Destination: {
+              ToAddresses: [email.S],
+            },
+            Source: process.env.SES_EMAIL,
+            Message: {
+              Subject: { Data: 'Prescreen Notification' },
+              Body: {
+                Text: {
+                  Data: `Hi ,\n\nA decision has been made to your Habitat Pre-Screen Form. Please access the login portal to revise your application status.\n\nThanks,\nThe Habitat Team`,
+                },
               },
             },
-          },
-        })
-        .promise();
+          })
+          .promise();
+      }
     }
   }
   return { status: 'done' };
