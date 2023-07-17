@@ -1,4 +1,3 @@
-/* eslint-disable import/no-relative-packages */
 /* eslint-disable import/no-extraneous-dependencies */
 /* Amplify Params - DO NOT EDIT
 	ENV
@@ -30,9 +29,6 @@ Amplify Params - DO NOT EDIT */
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 
-import { DataStore } from 'aws-amplify';
-import { UserProps } from '../../../../../src/models';
-
 const aws = require('aws-sdk');
 
 const ses = new aws.SES({ region: 'us-east-1' });
@@ -47,15 +43,13 @@ exports.handler = async (event) => {
         submittedStatus.S === 'ACCEPTED' ||
         submittedStatus.S === 'REJECTED'
       ) {
-        let email;
-        try {
-          const userPropObject = await DataStore.query(UserProps, (c) =>
-            c.ownerID.eq(ownerID.S)
-          );
-          email = userPropObject[0].email;
-        } catch (error) {
-          console.log(`Error getting UserProps from DataStore: ${error}`);
-        }
+        // Get UserProp whose ownerID matches the ownerID of the item
+        const userProp = process.env.API_HFHAPP_USERPROPSTABLE_NAME.get({
+          ownerID: ownerID.S,
+        });
+
+        // Get email from UserProp
+        const email = userProp?.email;
 
         await ses
           .sendEmail({

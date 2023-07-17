@@ -69,14 +69,6 @@
         {
           "attributes": [
             "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput"
-          ],
-          "category": "api",
-          "resourceName": "hfhapp"
-        },
-        {
-          "attributes": [
-            "GraphQLAPIIdOutput",
             "GraphQLAPIEndpointOutput",
             "GraphQLAPIKeyOutput"
           ],

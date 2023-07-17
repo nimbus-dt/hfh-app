@@ -16,9 +16,6 @@
     "s3Key": {
       "Type": "String"
     },
-    "sesEmail": {
-      "Type": "String"
-    },
     "apihfhappGraphQLAPIIdOutput": {
       "Type": "String",
       "Default": "apihfhappGraphQLAPIIdOutput"
@@ -34,6 +31,9 @@
     "authhfhappUserPoolId": {
       "Type": "String",
       "Default": "authhfhappUserPoolId"
+    },
+    "sesEmail": {
+      "Type": "String"
     }
   },
   "Conditions": {
