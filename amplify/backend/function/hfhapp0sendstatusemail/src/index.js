@@ -31,6 +31,8 @@ Amplify Params - DO NOT EDIT */
 
 const aws = require('aws-sdk');
 
+const dynamodb = new aws.DynamoDB.DocumentClient();
+
 const ses = new aws.SES({ region: 'us-east-1' });
 
 exports.handler = async (event) => {
@@ -44,9 +46,12 @@ exports.handler = async (event) => {
         submittedStatus.S === 'REJECTED'
       ) {
         // Get UserProp whose ownerID matches the ownerID of the item
-        const userProp = process.env.API_HFHAPP_USERPROPSTABLE_NAME.get({
-          ownerID: ownerID.S,
-        });
+        const userProp = await dynamodb
+          .get({
+            TableName: process.env.API_HFHAPP_USERPROPSTABLE_ARN,
+            Key: { ownerID: ownerID.S },
+          })
+          .promise();
 
         // Get email from UserProp
         const email = userProp?.email;

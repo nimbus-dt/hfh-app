@@ -127,7 +127,7 @@
       "function": {
         "hfhapp0sendstatusemail": {
           "deploymentBucketName": "amplify-hfhapp-staging-10900-deployment",
-          "s3Key": "amplify-builds/hfhapp0sendstatusemail-444870456a716a4f734c-build.zip",
+          "s3Key": "amplify-builds/hfhapp0sendstatusemail-686f4656367a2b424166-build.zip",
           "sesEmail": "support@nimbus-dt.com"
         }
       }
