@@ -72,7 +72,11 @@ export function LandingHome() {
               the Homeownership Program, providing seamless online tools and
               efficient automation to enhance your franchise's operations.
             </Text>
-            <Flex direction="row" justifyContent="space-between" width="100%">
+            <Flex
+              direction={responsiveBool ? 'column' : 'row'}
+              justifyContent="space-between"
+              width="100%"
+            >
               <Badge>Email Notifications</Badge>
               <Badge>Automated Calculations</Badge>
               <Badge>Cloud Storage</Badge>

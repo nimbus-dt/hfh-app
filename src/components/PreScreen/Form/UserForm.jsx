@@ -113,7 +113,6 @@ export function UserForm() {
       window.location.reload();
     }
     setUserDataBool(false);
-    window.location.reload();
   };
 
   // Message to display if user data exists

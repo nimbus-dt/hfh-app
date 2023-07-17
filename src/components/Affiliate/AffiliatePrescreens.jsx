@@ -137,9 +137,7 @@ export function AffiliatePrescreens({ prescreens }) {
     if (
       selectedApplication &&
       householdMembers.length > 0 &&
-      incomes.length > 0 &&
-      savings.length > 0 &&
-      debts.length > 0
+      savings.length > 0
     ) {
       calculateMetrics();
     }
@@ -217,11 +215,8 @@ export function AffiliatePrescreens({ prescreens }) {
                     </Button>
                   </TableCell>
                 </TableRow>
-                {/* Rest of the table rows */}
               </TableBody>
             </Table>
-
-            {/* Rest of the content */}
           </Flex>
         )}
       </Collection>
