@@ -55,13 +55,12 @@ exports.handler = async (event) => {
         };
 
         let email;
-        dynamodb.scan(params, (err, data) => {
-          if (err) {
-            console.error('Error retrieving item:', err);
-          } else {
-            email = data.Items[0].email;
-          }
-        });
+        try {
+          const data = await dynamodb.scan(params).promise();
+          email = data.Items[0].email;
+        } catch (error) {
+          console.error('Error retrieving item:', error);
+        }
 
         await ses
           .sendEmail({
