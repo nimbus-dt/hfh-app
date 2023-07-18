@@ -39,27 +39,34 @@ exports.handler = async (event) => {
   for (const streamedItem of event.Records) {
     if (streamedItem.eventName === 'MODIFY') {
       // Get items status parameter
-      const { submittedStatus } = streamedItem.dynamodb.NewImage;
+      const { ownerID, submittedStatus } = streamedItem.dynamodb.NewImage;
 
       if (
         submittedStatus.S === 'ACCEPTED' ||
         submittedStatus.S === 'REJECTED'
       ) {
         // Get UserProp whose ownerID matches the ownerID of the item
-        const userProp = await dynamodb
-          .get({
-            TableName: process.env.API_HFHAPP_USERPROPSTABLE_NAME,
-            Key: { id: '4c6b0713-0992-41dd-b86d-b129ec18998d' },
-          })
-          .promise();
+        const params = {
+          TableName: 'UserProps-xpqowefcszff7e3kerhc25fb7m-staging',
+          FilterExpression: 'ownerID = :ownerIDValue',
+          ExpressionAttributeValues: {
+            ':ownerIDValue': ownerID.S,
+          },
+        };
 
-        // Get email from UserProp
-        const email = userProp?.email;
+        let email;
+        dynamodb.scan(params, (err, data) => {
+          if (err) {
+            console.error('Error retrieving item:', err);
+          } else {
+            email = data.Items[0].email;
+          }
+        });
 
         await ses
           .sendEmail({
             Destination: {
-              ToAddresses: [email.S],
+              ToAddresses: [email],
             },
             Source: process.env.SES_EMAIL,
             Message: {
