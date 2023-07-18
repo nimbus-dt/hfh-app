@@ -62,57 +62,9 @@
       "service": "Cognito"
     }
   },
-  "function": {
-    "hfhapp0sendstatusemail": {
-      "build": true,
-      "dependsOn": [
-        {
-          "attributes": [
-            "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput",
-            "GraphQLAPIKeyOutput"
-          ],
-          "category": "api",
-          "resourceName": "hfhapp"
-        },
-        {
-          "attributes": [
-            "UserPoolId"
-          ],
-          "category": "auth",
-          "resourceName": "hfhapp"
-        }
-      ],
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    }
-  },
+  "function": {},
   "hosting": {},
   "parameters": {
-    "AMPLIFY_function_hfhapp0sendstatusemail_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "hfhapp0sendstatusemail"
-        }
-      ]
-    },
-    "AMPLIFY_function_hfhapp0sendstatusemail_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "hfhapp0sendstatusemail"
-        }
-      ]
-    },
-    "AMPLIFY_function_hfhapp0sendstatusemail_sesEmail": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "hfhapp0sendstatusemail"
-        }
-      ]
-    },
     "AMPLIFY_prescreennotify_deploymentBucketName_0": {
       "usedBy": [
         {
@@ -912,6 +864,13 @@
           "resourceName": "s3Key"
         }
       ]
+    }
+  },
+  "storage": {
+    "s3hfhappstoragebucket": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "S3"
     }
   }
 }

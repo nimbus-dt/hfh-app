@@ -103,6 +103,7 @@ type EagerUserProps = {
   readonly address?: string | null;
   readonly zip?: number | null;
   readonly email?: string | null;
+  readonly identityID?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -122,6 +123,7 @@ type LazyUserProps = {
   readonly address?: string | null;
   readonly zip?: number | null;
   readonly email?: string | null;
+  readonly identityID?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

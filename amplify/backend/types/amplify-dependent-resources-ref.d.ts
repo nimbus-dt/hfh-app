@@ -17,12 +17,9 @@ export type AmplifyDependentResourcesAttributes = {
       "UserPoolName": "string"
     }
   },
-  "function": {
-    "hfhapp0sendstatusemail": {
-      "Arn": "string",
-      "LambdaExecutionRole": "string",
-      "LambdaExecutionRoleArn": "string",
-      "Name": "string",
+  "storage": {
+    "s3hfhappstoragebucket": {
+      "BucketName": "string",
       "Region": "string"
     }
   }
