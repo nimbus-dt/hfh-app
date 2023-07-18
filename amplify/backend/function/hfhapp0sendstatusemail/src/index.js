@@ -39,7 +39,7 @@ exports.handler = async (event) => {
   for (const streamedItem of event.Records) {
     if (streamedItem.eventName === 'MODIFY') {
       // Get items status parameter
-      const { ownerID, submittedStatus } = streamedItem.dynamodb.NewImage;
+      const { submittedStatus } = streamedItem.dynamodb.NewImage;
 
       if (
         submittedStatus.S === 'ACCEPTED' ||
@@ -49,7 +49,7 @@ exports.handler = async (event) => {
         const userProp = await dynamodb
           .get({
             TableName: process.env.API_HFHAPP_USERPROPSTABLE_NAME,
-            Key: { ownerID: ownerID.S },
+            Key: { id: '4c6b0713-0992-41dd-b86d-b129ec18998d' },
           })
           .promise();
 
