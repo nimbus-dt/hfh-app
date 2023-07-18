@@ -20,6 +20,7 @@ import { LandingPrivacyPolicy } from './components/Landing/LandingPrivacyPolicy'
 import { LandingReturn } from './components/Landing/LandingReturn';
 import { LandingContact } from './components/Landing/LandingContact';
 import { LandingPricing } from './components/Landing/LandingPricing';
+import { Test } from './components/Test';
 
 function App() {
   return (
@@ -49,6 +50,8 @@ function App() {
         path="/pricing"
         element={<LandingLayout comp={<LandingPricing />} />}
       />
+
+      <Route path="test" element={<Test />} />
 
       <Route path="affiliate">
         <Route path=":habitat">

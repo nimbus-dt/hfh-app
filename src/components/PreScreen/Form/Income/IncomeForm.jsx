@@ -90,7 +90,11 @@ export function IncomeForm({ habitat }) {
       <Text textAlign="center">
         Please list all income records for your coapplicant and yourself.
       </Text>
-      <IncomeList items={income} sizeRenderer={sizeRenderer} />
+      <IncomeList
+        items={income}
+        sizeRenderer={sizeRenderer}
+        application={application}
+      />
       <IncomeCreate
         owners={owners}
         habitat={habitat}

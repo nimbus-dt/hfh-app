@@ -17,6 +17,15 @@ export function UserForm() {
   const [userID, setUserID] = useState('');
   const [formData, setFormData] = useState({});
   const [previousDataId, setPreviousDataId] = useState(null);
+  const [identityIdField, setIdentityIdField] = useState(null);
+
+  useEffect(() => {
+    async function getIdentity() {
+      const result = await Auth.currentUserCredentials();
+      setIdentityIdField(result?.identityId);
+    }
+    getIdentity();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,6 +41,7 @@ export function UserForm() {
       address: form.elements.address.value,
       zip: parseInt(form.elements.zip.value),
       email: form.elements.email.value,
+      identityID: identityIdField,
     };
 
     try {
