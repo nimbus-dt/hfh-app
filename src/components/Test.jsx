@@ -7,13 +7,27 @@ import {
   StepperField,
   Flex,
   Button,
+  Text,
 } from '@aws-amplify/ui-react';
-import { DataStore, Storage } from 'aws-amplify';
-import { useState } from 'react';
-import { Habitat, IncomeTypes, IncomeRecord } from '../../../../models';
+import { Storage, Auth } from 'aws-amplify';
+import { useEffect, useState } from 'react';
+import { Habitat, IncomeTypes, IncomeRecord } from '../models';
 
-export function IncomeCreate({ owners, habitat, application }) {
-  // Create new income record
+export function Test({ owners, habitat, application }) {
+  useEffect(() => {
+    async function getFiles() {
+      const result2 = await Storage.get(
+        'alachua_ownerID_1689708250775_jgam-ggms.jpg',
+        {
+          level: 'protected',
+          identityId: 'us-east-1:72cb5e9e-d441-48bd-b217-dc2ac5eed24a',
+        }
+      );
+      console.log(result2);
+    }
+    getFiles();
+  }, []);
+
   const handleCreate = async (e) => {
     e.preventDefault();
 
@@ -22,20 +36,12 @@ export function IncomeCreate({ owners, habitat, application }) {
 
     // Process file
     const file = formFields.proofOfIncome.files[0];
-    const newFileName = `${habitat?.urlName}_${
-      formFields.owner.value
-    }_${Date.now()}_${file.name}`;
+    const newFileName = `alachua_ownerID_${Date.now()}_${file.name}`;
     const modifiedFile = new File([file], newFileName, { type: file.type });
-    let result;
-    try {
-      result = await Storage.put(modifiedFile.name, modifiedFile, {
-        level: 'protected',
-      });
-    } catch (error) {
-      console.log(`Error uploading file: ${error}`);
-    }
+    const result = await Storage.put(modifiedFile.name, modifiedFile, {
+      level: 'protected',
+    });
 
-    // Get data from form
     const data = {
       owner: formFields.owner.value,
       type: formFields.type.value,
@@ -46,22 +52,10 @@ export function IncomeCreate({ owners, habitat, application }) {
       estimatedMonthlyIncome: Number(
         Number(formFields.estimatedMonthlyIncome.value).toFixed(2)
       ),
-      proofOfIncome: [result?.key],
+      proofOfIncome: [result.key],
     };
 
-    // Create income record
-    await DataStore.save(
-      new IncomeRecord({
-        ownerID: data.owner,
-        typeOfIncome: data.type,
-        employer: data.employer,
-        employmentTime: data.employmentTime,
-        estimatedMonthlyIncome: Number(data.estimatedMonthlyIncome),
-        proofOfIncome: data.proofOfIncome,
-        applicationID: application?.id,
-      })
-    );
-
+    console.log(data);
     // Reset the form
     e.target.reset();
   };
@@ -72,11 +66,12 @@ export function IncomeCreate({ owners, habitat, application }) {
       <form onSubmit={handleCreate}>
         <Flex direction="column" gap="30px">
           <SelectField name="owner" label="Who owns this income record?">
-            {owners.map((owner) => (
-              <option key={owner.id} value={owner.id}>
-                {`${owner.name}`}
-              </option>
-            ))}
+            <option
+              key="cab4936d-c91c-40cf-9b50-f7d17350c097"
+              value="cab4936d-c91c-40cf-9b50-f7d17350c097"
+            >
+              Jose
+            </option>
           </SelectField>
           <SelectField
             name="type"
@@ -128,18 +123,16 @@ export function IncomeCreate({ owners, habitat, application }) {
             type="number"
             min={0}
           />
-          <TextField
+          <StepperField
             min={0}
             step={0.01}
             name="estimatedMonthlyIncome"
             label="Estimated monthly income"
             placeholder="$1000.50"
             isRequired
-            type="number"
           />
           <TextField
             label="Upload most recent pay stub"
-            descriptiveText="To remove uploaded file, reload screen"
             name="proofOfIncome"
             type="file"
             accept=".jpg, .png, .pdf"

@@ -18,11 +18,17 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
-    "hfhapp0sendstatusemail": {
+    "applicationchangenotification": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",
       "Name": "string",
+      "Region": "string"
+    }
+  },
+  "storage": {
+    "s3hfhappstoragebucket": {
+      "BucketName": "string",
       "Region": "string"
     }
   }

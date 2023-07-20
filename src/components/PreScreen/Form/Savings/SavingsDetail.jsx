@@ -62,7 +62,7 @@ export function SavingsDetail({ item, sizeRenderer }) {
         </Flex>
         <Flex gap="5px">
           <Text fontWeight="bold">Estimated amount:</Text>
-          <Text>$ {item.estimatedAmount}</Text>
+          <Text>${item.estimatedAmount}</Text>
         </Flex>
         <Link onClick={deleteObject}>Delete</Link>
       </Flex>

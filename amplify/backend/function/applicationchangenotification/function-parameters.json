@@ -3,19 +3,16 @@
     "api": {
       "hfhapp": [
         "Query",
-        "Mutation",
-        "Subscription"
+        "Mutation"
       ]
     },
-    "auth": {
-      "hfhapp": [
+    "storage": {
+      "s3hfhappstoragebucket": [
         "create",
         "read",
         "update",
         "delete"
-      ]
-    },
-    "storage": {
+      ],
       "ContactForm:@model(appsync)": [
         "create",
         "read",

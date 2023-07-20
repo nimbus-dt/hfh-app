@@ -124,11 +124,14 @@
       "api": {
         "hfhapp": {}
       },
+      "storage": {
+        "s3hfhappstoragebucket": {}
+      },
       "function": {
-        "hfhapp0sendstatusemail": {
+        "applicationchangenotification": {
+          "sesEmail": "support@nimbus-dt.com",
           "deploymentBucketName": "amplify-hfhapp-staging-10900-deployment",
-          "s3Key": "amplify-builds/hfhapp0sendstatusemail-334f736d5a426e326f48-build.zip",
-          "sesEmail": "support@nimbus-dt.com"
+          "s3Key": "amplify-builds/applicationchangenotification-386f665a724e55457073-build.zip"
         }
       }
     }

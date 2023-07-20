@@ -63,17 +63,9 @@
     }
   },
   "function": {
-    "hfhapp0sendstatusemail": {
+    "applicationchangenotification": {
       "build": true,
       "dependsOn": [
-        {
-          "attributes": [
-            "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput"
-          ],
-          "category": "api",
-          "resourceName": "hfhapp"
-        },
         {
           "attributes": [
             "GraphQLAPIIdOutput",
@@ -85,10 +77,10 @@
         },
         {
           "attributes": [
-            "UserPoolId"
+            "BucketName"
           ],
-          "category": "auth",
-          "resourceName": "hfhapp"
+          "category": "storage",
+          "resourceName": "s3hfhappstoragebucket"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -97,27 +89,27 @@
   },
   "hosting": {},
   "parameters": {
-    "AMPLIFY_function_hfhapp0sendstatusemail_deploymentBucketName": {
+    "AMPLIFY_function_applicationchangenotification_deploymentBucketName": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "hfhapp0sendstatusemail"
+          "resourceName": "applicationchangenotification"
         }
       ]
     },
-    "AMPLIFY_function_hfhapp0sendstatusemail_s3Key": {
+    "AMPLIFY_function_applicationchangenotification_s3Key": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "hfhapp0sendstatusemail"
+          "resourceName": "applicationchangenotification"
         }
       ]
     },
-    "AMPLIFY_function_hfhapp0sendstatusemail_sesEmail": {
+    "AMPLIFY_function_applicationchangenotification_sesEmail": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "hfhapp0sendstatusemail"
+          "resourceName": "applicationchangenotification"
         }
       ]
     },
@@ -920,6 +912,13 @@
           "resourceName": "s3Key"
         }
       ]
+    }
+  },
+  "storage": {
+    "s3hfhappstoragebucket": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "S3"
     }
   }
 }

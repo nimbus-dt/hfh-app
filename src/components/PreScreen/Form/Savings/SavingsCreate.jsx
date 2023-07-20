@@ -28,13 +28,14 @@ export function SavingsCreate({ handleCreate, owners }) {
             placeholder="Bank of America"
             isRequired
           />
-          <StepperField
+          <TextField
             min={0}
             step={0.01}
             name="estimatedAmount"
             label="Estimated savings amount"
             placeholder="1000.50"
             isRequired
+            type="number"
           />
           <Button type="submit" variation="primary">
             Submit

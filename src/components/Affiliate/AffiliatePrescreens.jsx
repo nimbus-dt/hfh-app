@@ -23,7 +23,6 @@ import { HouseholdList } from '../PreScreen/Form/Household/HouseholdList';
 import { IncomeList } from '../PreScreen/Form/Income/IncomeList';
 import { SavingsList } from '../PreScreen/Form/Savings/SavingsList';
 import { DebtList } from '../PreScreen/Form/Debt/DebtList';
-import { AffiliateEmail } from './AffiliateEmail';
 
 export function AffiliatePrescreens({ prescreens }) {
   const [formData, setFormData] = useState({});
@@ -343,7 +342,7 @@ export function AffiliatePrescreens({ prescreens }) {
 
           <TableRow>
             <TableCell colSpan="2">
-              <IncomeList items={incomes} />
+              <IncomeList items={incomes} application={selectedApplication} />
             </TableCell>
           </TableRow>
 
