@@ -128,13 +128,14 @@ export function IncomeCreate({ owners, habitat, application }) {
             type="number"
             min={0}
           />
-          <StepperField
+          <TextField
             min={0}
             step={0.01}
             name="estimatedMonthlyIncome"
             label="Estimated monthly income"
             placeholder="$1000.50"
             isRequired
+            type="number"
           />
           <TextField
             label="Upload most recent pay stub"

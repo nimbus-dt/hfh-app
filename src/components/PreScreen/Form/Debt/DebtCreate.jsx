@@ -10,6 +10,8 @@ import {
   StepperField,
   RadioGroupField,
   Radio,
+  NumberField,
+  TextField,
 } from '@aws-amplify/ui-react';
 import { DebtRecord, DebtTypes, Application } from '../../../../models';
 
@@ -46,22 +48,24 @@ export function DebtCreate({ handleCreate, owners }) {
             <option value={DebtTypes.OTHER}>Other</option>
           </SelectField>
 
-          <StepperField
+          <TextField
             min={0}
             step={0.01}
             name="monthlyRecurrence"
             label="Estimated monthly recurring debt amount"
             placeholder="1000.50"
             isRequired
+            type="number"
           />
 
-          <StepperField
+          <TextField
             min={0}
             step={0.01}
             name="estimatedAmount"
             label="Estimated debt amount"
             placeholder="1000.50"
             isRequired
+            type="number"
           />
           <Button type="submit" variation="primary">
             Submit
