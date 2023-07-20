@@ -54,46 +54,55 @@ export function LandingPricing() {
               Pricing
             </Heading>
             <ScrollView height="50%" width="100%">
-              <Text textAlign="start">
-                Welcome to Habitat App Pricing for Habitat for Humanity
-                Affiliates! We're excited to partner with Habitat for Humanity
-                and provide you with an online platform to streamline your
-                homeownership program application process. Our pricing structure
-                is designed to support your organization's mission while
-                ensuring a seamless experience for you and your administrative
-                users. Here are the details: <br /> <br />
-                1. Initial Sign-Up Fee: To get started with Habitat App, we
-                charge a one-time initial sign-up fee. This fee covers the setup
-                and customization of the platform according to your specific
-                requirements. Our team will work closely with you to ensure a
-                smooth integration of the app into your workflow, providing
-                personalized assistance during the implementation phase. <br />
-                <br />
-                2. Fee per Application Cycle: We understand that the application
-                cycle is a crucial period for Habitat for Humanity affiliates.
-                During this time, administrative users receive and review
-                pre-screen forms from potential homeowners. To support you
-                during each application cycle, we charge a fee based on the
-                total number of applications received and the number of
-                administrative users utilizing the platform for review. The fee
-                per application cycle is designed to align with your
-                organization's needs. As the number of applications and
-                administrative users may vary, we provide a scalable pricing
-                structure to accommodate fluctuations in demand. Our goal is to
-                ensure fair and transparent pricing that grows alongside your
-                program. For a detailed estimate of the fee per application
-                cycle based on your specific requirements, please contact our
-                sales team. We'll be more than happy to discuss your
-                organization's unique needs and provide a customized quote.
-                <br /> <br /> At Habitat App, we are committed to supporting
-                Habitat for Humanity in its mission to provide affordable
-                housing. Our pricing structure reflects this commitment,
-                offering flexibility and scalability to meet the changing
-                demands of your homeownership program. Together, let's empower
-                more families to achieve their dream of homeownership with the
-                help of Habitat App. Contact us today to learn more about our
-                pricing options and start streamlining your application process!
-              </Text>
+              <Flex direction="column" width="100%" height="100%" gap="10px">
+                <Flex direction="column" width="100%" height="100%" gap="5px">
+                  <Text fontWeight="bold">1. Free Tier</Text>
+                  <Text>
+                    Sign up fee: <b>$0</b> <br />
+                    Monthly fee: <b>$0</b>
+                  </Text>
+                  <Text>
+                    <ul>
+                      <li>100 pre-screen forms</li>
+                      <li>1 user</li>
+                      <li>Email notifications when a decision has been made</li>
+                      <li>
+                        Ideal for small affiliates or those just starting with
+                        Habitat-App
+                      </li>
+                    </ul>
+                  </Text>
+                </Flex>
+                <Flex direction="column" width="100%" height="100%" gap="5px">
+                  <Text fontWeight="bold">2. Standard Tier</Text>
+                  <Text>
+                    Sign up fee: <b>$2000</b> <br />
+                    Monthly fee: <b>$100</b>
+                  </Text>
+                  <Text>
+                    <ul>
+                      <li>1000 pre-screen forms</li>
+                      <li>5 users</li>
+                      <li>Email notifications when a decision has been made</li>
+                    </ul>
+                  </Text>
+                </Flex>
+                <Flex direction="column" width="100%" height="100%" gap="5px">
+                  <Text fontWeight="bold">3. Pro Tier</Text>
+                  <Text>
+                    Sign up fee: <b>According to size of affiliate</b> <br />
+                    Monthly fee: <b>$200</b>
+                  </Text>
+                  <Text>
+                    <ul>
+                      <li>5000 pre-screen forms</li>
+                      <li>10 users</li>
+                      <li>Email notifications when a decision has been made</li>
+                      <li>Custom features</li>
+                    </ul>
+                  </Text>
+                </Flex>
+              </Flex>
             </ScrollView>
           </Flex>
         </Flex>

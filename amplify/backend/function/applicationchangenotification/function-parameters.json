@@ -1,0 +1,73 @@
+{
+  "permissions": {
+    "api": {
+      "hfhapp": [
+        "Query",
+        "Mutation"
+      ]
+    },
+    "storage": {
+      "s3hfhappstoragebucket": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "ContactForm:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "UserProps:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "DebtRecord:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "SavingRecord:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "IncomeRecord:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "HouseholdMember:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "Application:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "Habitat:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": [],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "sesEmail",
+      "environmentVariableName": "SES_EMAIL"
+    }
+  ]
+}
