@@ -85,7 +85,7 @@ export function IncomeDetail({ item, sizeRenderer, application }) {
         </Flex>
         <Flex gap="5px">
           <Text fontWeight="bold">Monthly income:</Text>
-          <Text>$ {parseInt(item.estimatedMonthlyIncome)}</Text>
+          <Text>${parseInt(item.estimatedMonthlyIncome)}</Text>
         </Flex>
         <Flex gap="5px">
           <Text fontWeight="bold">Employment Time:</Text>
