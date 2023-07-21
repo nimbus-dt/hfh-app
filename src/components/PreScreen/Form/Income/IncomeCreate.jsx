@@ -64,6 +64,7 @@ export function IncomeCreate({ owners, habitat, application }) {
 
     // Reset the form
     e.target.reset();
+    window.location.reload();
   };
 
   return (
