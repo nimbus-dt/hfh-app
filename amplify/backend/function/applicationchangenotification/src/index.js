@@ -26,7 +26,7 @@ Amplify Params - DO NOT EDIT */
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
-exports.handler = event => {
+exports.handler = (event) => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
   for (const record of event.Records) {
     console.log(record.eventID);

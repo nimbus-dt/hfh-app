@@ -66,6 +66,7 @@ export function LandingPricing() {
                       <li>100 pre-screen forms</li>
                       <li>1 user</li>
                       <li>Email notifications when a decision has been made</li>
+                      <li>Storage and processing of pre-screens</li>
                       <li>
                         Ideal for small affiliates or those just starting with
                         Habitat-App
@@ -84,21 +85,7 @@ export function LandingPricing() {
                       <li>1000 pre-screen forms</li>
                       <li>5 users</li>
                       <li>Email notifications when a decision has been made</li>
-                    </ul>
-                  </Text>
-                </Flex>
-                <Flex direction="column" width="100%" height="100%" gap="5px">
-                  <Text fontWeight="bold">3. Pro Tier</Text>
-                  <Text>
-                    Sign up fee: <b>According to size of affiliate</b> <br />
-                    Monthly fee: <b>$200</b>
-                  </Text>
-                  <Text>
-                    <ul>
-                      <li>5000 pre-screen forms</li>
-                      <li>10 users</li>
-                      <li>Email notifications when a decision has been made</li>
-                      <li>Custom features</li>
+                      <li>Storage and processing of pre-screens</li>
                     </ul>
                   </Text>
                 </Flex>

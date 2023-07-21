@@ -15,7 +15,7 @@ export function ApplicantPrescreenNavBar({ menuSlot }) {
 
   const handleSignOut = () => {
     Auth.signOut();
-    navigate('/');
+    navigate('./prelim/home');
   };
 
   const checkAuthState = async () => {
