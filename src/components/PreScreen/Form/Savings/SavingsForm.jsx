@@ -98,8 +98,6 @@ export function SavingsForm({ application, habitat }) {
     fetchSavingRecords();
   }, [application]);
 
-  console.log(owners);
-
   return (
     <Flex direction="column" width="100%">
       <Heading level="4" textAlign="center">

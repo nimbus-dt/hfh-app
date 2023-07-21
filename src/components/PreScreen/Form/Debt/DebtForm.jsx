@@ -101,8 +101,6 @@ export function DebtForm({ application, habitat }) {
     fetchDebtRecords();
   }, [application]);
 
-  console.log(owners);
-
   return (
     <Flex direction="column" width="100%">
       <Heading level="4" textAlign="center">
