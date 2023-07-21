@@ -402,6 +402,13 @@
                   }
                 ]
               }
+            },
+            {
+              "Action": [
+                "ses:SendEmail"
+              ],
+              "Effect": "Allow",
+              "Resource": "arn:aws:ses:us-east-1:719959370210:identity/support@nimbus-dt.com"
             }
           ]
         }
