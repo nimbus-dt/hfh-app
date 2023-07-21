@@ -78,6 +78,7 @@ export function PreLimQuestions() {
       <Loader
         variation="linear"
         percentage={percentage}
+        isPercentageTextHidden
         isDeterminate
         marginBottom="40px"
       />

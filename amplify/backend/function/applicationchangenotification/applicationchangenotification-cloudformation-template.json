@@ -315,10 +315,7 @@
           }
         },
         "Role": {
-          "Fn::GetAtt": [
-            "LambdaExecutionRole",
-            "Arn"
-          ]
+          "Fn::GetAtt": ["LambdaExecutionRole", "Arn"]
         },
         "Runtime": "nodejs18.x",
         "Layers": [],
@@ -352,22 +349,16 @@
             {
               "Effect": "Allow",
               "Principal": {
-                "Service": [
-                  "lambda.amazonaws.com"
-                ]
+                "Service": ["lambda.amazonaws.com"]
               },
-              "Action": [
-                "sts:AssumeRole"
-              ]
+              "Action": ["sts:AssumeRole"]
             }
           ]
         }
       }
     },
     "lambdaexecutionpolicy": {
-      "DependsOn": [
-        "LambdaExecutionRole"
-      ],
+      "DependsOn": ["LambdaExecutionRole"],
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyName": "lambda-execution-policy",
@@ -402,15 +393,18 @@
                   }
                 ]
               }
+            },
+            {
+              "Action": ["ses:SendEmail"],
+              "Effect": "Allow",
+              "Resource": "arn:aws:ses:us-east-1:719959370210:identity/support@nimbus-dt.com"
             }
           ]
         }
       }
     },
     "LambdaTriggerPolicyApplication": {
-      "DependsOn": [
-        "LambdaExecutionRole"
-      ],
+      "DependsOn": ["LambdaExecutionRole"],
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyName": "amplify-lambda-execution-policy-Application",
@@ -442,10 +436,7 @@
     },
     "LambdaEventSourceMappingApplication": {
       "Type": "AWS::Lambda::EventSourceMapping",
-      "DependsOn": [
-        "LambdaTriggerPolicyApplication",
-        "LambdaExecutionRole"
-      ],
+      "DependsOn": ["LambdaTriggerPolicyApplication", "LambdaExecutionRole"],
       "Properties": {
         "BatchSize": 100,
         "Enabled": true,
@@ -455,18 +446,13 @@
           }
         },
         "FunctionName": {
-          "Fn::GetAtt": [
-            "LambdaFunction",
-            "Arn"
-          ]
+          "Fn::GetAtt": ["LambdaFunction", "Arn"]
         },
         "StartingPosition": "LATEST"
       }
     },
     "AmplifyResourcesPolicy": {
-      "DependsOn": [
-        "LambdaExecutionRole"
-      ],
+      "DependsOn": ["LambdaExecutionRole"],
       "Type": "AWS::IAM::Policy",
       "Properties": {
         "PolicyName": "amplify-lambda-execution-policy",
@@ -480,9 +466,7 @@
           "Statement": [
             {
               "Effect": "Allow",
-              "Action": [
-                "appsync:GraphQL"
-              ],
+              "Action": ["appsync:GraphQL"],
               "Resource": [
                 {
                   "Fn::Join": [
@@ -545,11 +529,7 @@
             },
             {
               "Effect": "Allow",
-              "Action": [
-                "s3:PutObject",
-                "s3:GetObject",
-                "s3:DeleteObject"
-              ],
+              "Action": ["s3:PutObject", "s3:GetObject", "s3:DeleteObject"],
               "Resource": [
                 {
                   "Fn::Join": [
@@ -1074,10 +1054,7 @@
     },
     "Arn": {
       "Value": {
-        "Fn::GetAtt": [
-          "LambdaFunction",
-          "Arn"
-        ]
+        "Fn::GetAtt": ["LambdaFunction", "Arn"]
       }
     },
     "Region": {
@@ -1092,10 +1069,7 @@
     },
     "LambdaExecutionRoleArn": {
       "Value": {
-        "Fn::GetAtt": [
-          "LambdaExecutionRole",
-          "Arn"
-        ]
+        "Fn::GetAtt": ["LambdaExecutionRole", "Arn"]
       }
     }
   }
