@@ -195,7 +195,7 @@ export function FormLayout() {
               }
             }}
             width="fit-content"
-            isDisabled={!userExists}
+            isDisabled={!applicationExists}
           >
             Next
           </Button>
