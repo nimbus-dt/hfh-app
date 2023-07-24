@@ -209,7 +209,7 @@ export function FormLayout() {
   if (applicationExists) {
     formComponent = application?.submitted ? completeForm : incompleteForm;
   } else {
-    formComponent = <div>Loading...</div>;
+    formComponent = <div>Please refresh the page...</div>;
   }
 
   return (
