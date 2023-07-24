@@ -195,7 +195,7 @@ export function FormLayout() {
               }
             }}
             width="fit-content"
-            isDisabled={!applicationExists}
+            isDisabled={!application?.submittedStatus}
           >
             Next
           </Button>
