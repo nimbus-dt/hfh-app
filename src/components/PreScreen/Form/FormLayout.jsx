@@ -52,15 +52,14 @@ export function FormLayout() {
           setApplicationExists(true);
           setApplication(applicationObject[0]);
         }
-      } catch (error) {
-        console.log('Error retrieving  existing data', error);
-      }
 
-      const userPropObject = await DataStore.query(UserProps, (c) =>
-        c.ownerID.eq(userID)
-      );
-      if (userPropObject.length > 0) {
-        setUserExists(true);
+        const userPropObject = await DataStore.query(UserProps, (c) =>
+          c.ownerID.eq(currentUser.username)
+        );
+
+        setUserExists(userPropObject.length > 0);
+      } catch (error) {
+        console.log('Error retrieving existing data', error);
       }
     }
     checkExistingData();
