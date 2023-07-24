@@ -195,7 +195,7 @@ export function FormLayout() {
               }
             }}
             width="fit-content"
-            isDisabled={!application?.submittedStatus}
+            isDisabled={!userExists}
           >
             Next
           </Button>
@@ -209,7 +209,7 @@ export function FormLayout() {
   if (applicationExists) {
     formComponent = application?.submitted ? completeForm : incompleteForm;
   } else {
-    formComponent = <div>Please refresh the page...</div>;
+    formComponent = <div>Please refresh the page....</div>;
   }
 
   return (
