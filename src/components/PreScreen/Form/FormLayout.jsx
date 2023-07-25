@@ -29,31 +29,40 @@ export function FormLayout() {
   const [application, setApplication] = useState({});
   const [userExists, setUserExists] = useState(false);
   const navigate = useNavigate();
+  const [signedUp, setSignedUp] = useState(false);
 
   // Get signUp param
   const location = useLocation();
   const signUpBool = location.state?.signUpBool;
 
   useEffect(() => {
-    async function fetchApplicationExists() {
+    async function checkExistingData() {
       try {
         const currentUser = await Auth.currentAuthenticatedUser({
           bypassCache: false,
         });
 
+        setUserID(currentUser.username);
+
         const applicationObject = await DataStore.query(Application, (c) =>
           c.ownerID.eq(currentUser.username)
         );
 
-        if (applicationObject.length > 0 && applicationObject[0].submitted) {
+        if (applicationObject.length > 0) {
           setApplicationExists(true);
+          setApplication(applicationObject[0]);
         }
+
+        const userPropObject = await DataStore.query(UserProps, (c) =>
+          c.ownerID.eq(currentUser.username)
+        );
+
+        setUserExists(userPropObject.length > 0);
       } catch (error) {
-        console.log('Error retrieving Application object', error);
+        console.log('Error retrieving existing data', error);
       }
     }
-
-    fetchApplicationExists();
+    checkExistingData();
   }, []);
 
   useEffect(() => {
@@ -71,56 +80,25 @@ export function FormLayout() {
   }, []);
 
   useEffect(() => {
-    async function fetchUserProps() {
-      try {
-        const currentUser = await Auth.currentAuthenticatedUser({
-          bypassCache: false,
-        });
-
-        const userProps = await DataStore.query(UserProps, (c) =>
-          c.ownerID.eq(currentUser.username)
-        );
-
-        if (userProps.length > 0) {
-          setUserExists(true);
-        }
-      } catch (error) {
-        console.log('Error retrieving Habitat', error);
-      }
-    }
-
-    fetchUserProps();
-  }, []);
-
-  useEffect(() => {
-    async function fetchApplication() {
-      try {
-        const currentUser = await Auth.currentAuthenticatedUser({
-          bypassCache: false,
-        });
-
-        const applicationObject = await DataStore.query(Application, (c) =>
-          c.ownerID.eq(currentUser.username)
-        );
-
-        if (applicationObject.length === 0) {
+    async function createNewApplication() {
+      if (!applicationExists && habitat?.id && userID) {
+        try {
           const newApplication = await DataStore.save(
             new Application({
-              ownerID: currentUser.username,
+              ownerID: userID,
               habitatID: habitat?.id,
               submitted: false,
             })
           );
-        } else {
-          setApplication(applicationObject[0]);
+          setApplication(newApplication);
+        } catch (error) {
+          console.log(`Error retrieving Application object: ${error}`);
         }
-      } catch (error) {
-        console.log(`Error retrieving Application object: ${error}`);
       }
     }
 
-    fetchApplication();
-  }, [habitat]);
+    createNewApplication();
+  }, [habitat, userID, applicationExists]);
 
   const title = (
     <Flex direction="column">
@@ -217,7 +195,7 @@ export function FormLayout() {
               }
             }}
             width="fit-content"
-            isDisabled={!userExists}
+            isDisabled={!userExists || !applicationExists}
           >
             Next
           </Button>
@@ -227,9 +205,16 @@ export function FormLayout() {
     </Card>
   );
 
+  let formComponent;
+  if (applicationExists) {
+    formComponent = application?.submitted ? completeForm : incompleteForm;
+  } else {
+    formComponent = <div>Please refresh the page....</div>;
+  }
+
   return (
-    <Authenticator hideDefault={signUpBool} hideSignUp={signUpBool}>
-      {application?.submitted ? completeForm : incompleteForm}
+    <Authenticator hideDefault={signedUp} hideSignUp={signedUp}>
+      {formComponent}
     </Authenticator>
   );
 }
