@@ -87,7 +87,7 @@ export function HouseholdForm({ application, habitat }) {
         Household Information
       </Heading>
       <Text textAlign="center">
-        Here you will be able to tell us who is part of your household
+        Please input all members of your current household except yourself.
       </Text>
       <HouseholdList items={items} sizeRenderer={sizeRenderer} />
       <HouseholdCreate
