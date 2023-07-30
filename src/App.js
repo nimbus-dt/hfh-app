@@ -12,6 +12,7 @@ import { PreLimQuestions } from './components/PreScreen/PreLim/PreLimQuestions';
 import { PreLimResults } from './components/PreScreen/PreLim/PreLimResults';
 import { FormLayout } from './components/PreScreen/Form/FormLayout';
 import { AffiliateLayout } from './components/Affiliate/AffiliateLayout';
+import { AffiliateSettings } from './components/Affiliate/AffiliateSettings';
 import { LandingLayout } from './components/Landing/LandingLayout';
 import { LandingHome } from './components/Landing/LandingHome';
 import { LandingAbout } from './components/Landing/LandingAbout';
@@ -60,6 +61,14 @@ function App() {
             element={
               <Authenticator hideDefault hideSignUp>
                 <AffiliateLayout />
+              </Authenticator>
+            }
+          />
+          <Route
+            path="settings"
+            element={
+              <Authenticator hideDefault hideSignUp>
+                <AffiliateSettings />
               </Authenticator>
             }
           />
