@@ -21,6 +21,7 @@ import { LandingReturn } from './components/Landing/LandingReturn';
 import { LandingContact } from './components/Landing/LandingContact';
 import { LandingPricing } from './components/Landing/LandingPricing';
 import { Test } from './components/Test';
+import { FormHome } from './components/PreScreen/Form/FormHome';
 
 function App() {
   return (
@@ -75,6 +76,7 @@ function App() {
               <Route path="questions" element={<PreLimQuestions />} />
               <Route path="results" element={<PreLimResults />} />
             </Route>
+            <Route path="applications" element={<FormHome />} />
             <Route path="form" element={<FormLayout />} />
           </Route>
         </Route>
