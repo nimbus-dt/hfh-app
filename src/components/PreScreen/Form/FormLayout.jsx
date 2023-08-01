@@ -144,10 +144,6 @@ export function FormLayout() {
           Application submitted!
         </Heading>
         <Flex direction="column" gap="0">
-          <Text fontWeight="bold">Status:</Text>
-          <Text>{application?.submittedStatus}</Text>
-        </Flex>
-        <Flex direction="column" gap="0">
           <Text>
             {
               habitat?.props?.prePreScreen?.prePreScreenStatusPage[
