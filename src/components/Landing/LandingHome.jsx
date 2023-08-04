@@ -87,10 +87,7 @@ export function LandingHome() {
               variation="primary"
               onClick={() => {
                 // redirect to youtube.com in another tab
-                window.open(
-                  'https://www.loom.com/share/d5430caf09d4462492b701794daa09d4?sid=8376f173-52f0-413f-9be4-141771c3a373',
-                  '_blank'
-                );
+                window.open('https://youtu.be/1nH2APt0Mg4', '_blank');
               }}
             >
               Watch Demo
