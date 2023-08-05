@@ -2,6 +2,11 @@ import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-
 // @ts-ignore
 import { LazyLoading, LazyLoadingDisabled, AsyncCollection } from "@aws-amplify/datastore";
 
+export enum ApplicationTimeStatus {
+  CURRENT = "CURRENT",
+  PAST = "PAST"
+}
+
 export enum ApplicationSubmittedStatus {
   ACCEPTED = "ACCEPTED",
   PENDING = "PENDING",
@@ -306,6 +311,7 @@ type EagerApplication = {
   readonly habitatRevisor?: string | null;
   readonly dateRevised?: string | null;
   readonly ownerName?: string | null;
+  readonly timeStatus?: ApplicationTimeStatus | keyof typeof ApplicationTimeStatus | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -328,6 +334,7 @@ type LazyApplication = {
   readonly habitatRevisor?: string | null;
   readonly dateRevised?: string | null;
   readonly ownerName?: string | null;
+  readonly timeStatus?: ApplicationTimeStatus | keyof typeof ApplicationTimeStatus | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

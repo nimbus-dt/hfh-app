@@ -2,6 +2,11 @@
 import { initSchema } from '@aws-amplify/datastore';
 import { schema } from './schema';
 
+const ApplicationTimeStatus = {
+  "CURRENT": "CURRENT",
+  "PAST": "PAST"
+};
+
 const ApplicationSubmittedStatus = {
   "ACCEPTED": "ACCEPTED",
   "PENDING": "PENDING",
@@ -65,6 +70,7 @@ export {
   HouseholdMember,
   Application,
   Habitat,
+  ApplicationTimeStatus,
   ApplicationSubmittedStatus,
   DebtTypes,
   IncomeTypes,

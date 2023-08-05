@@ -766,6 +766,15 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "timeStatus": {
+                    "name": "timeStatus",
+                    "isArray": false,
+                    "type": {
+                        "enum": "ApplicationTimeStatus"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -953,6 +962,13 @@ export const schema = {
         }
     },
     "enums": {
+        "ApplicationTimeStatus": {
+            "name": "ApplicationTimeStatus",
+            "values": [
+                "CURRENT",
+                "PAST"
+            ]
+        },
         "ApplicationSubmittedStatus": {
             "name": "ApplicationSubmittedStatus",
             "values": [
@@ -1018,5 +1034,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "359536d8447de98ec6ae2bdca88f406b"
+    "version": "823d2ca08d4d346226d321034780ae58"
 };

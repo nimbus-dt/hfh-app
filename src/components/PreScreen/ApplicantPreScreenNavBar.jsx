@@ -10,7 +10,7 @@ export function ApplicantPrescreenNavBar({ menuSlot }) {
   const urlName = useParams().habitat;
 
   const handleSignIn = () => {
-    navigate('./form', { state: { signUpBool: true } });
+    navigate('./form/info', { state: { signUpBool: true } });
   };
 
   const handleSignOut = () => {
