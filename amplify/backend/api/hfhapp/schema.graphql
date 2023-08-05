@@ -1,3 +1,8 @@
+enum ApplicationTimeStatus {
+  CURRENT
+  PAST
+}
+
 type ContactForm @model @auth(rules: [{allow: public}]) {
   id: ID!
   name: String
@@ -126,6 +131,7 @@ type Application @model @auth(rules: [{allow: public}]) {
   habitatRevisor: ID
   dateRevised: AWSDate
   ownerName: String
+  timeStatus: ApplicationTimeStatus
 }
 
 type Habitat @model @auth(rules: [{allow: public}]) {
