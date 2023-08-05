@@ -17,14 +17,13 @@ export function FormUserForm() {
   /* CONSTS */
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  const [userProps, setUserProps] = useState(null);
   const [identityIdField, setIdentityIdField] = useState(null);
 
   /* USE EFFECTS */
 
-  // Check if user is signed in
+  // Get identity
   useEffect(() => {
-    async function checkSignedIn() {
+    async function getIdentity() {
       try {
         const currentUser = await Auth.currentAuthenticatedUser({
           bypassCache: false,
@@ -33,11 +32,11 @@ export function FormUserForm() {
         setIdentityIdField(result?.identityId);
         setUser(currentUser);
       } catch (error) {
-        navigate('../prelim/home');
+        console.log(`Error getting identity: ${error}`);
       }
     }
-    checkSignedIn();
-  }, [navigate]);
+    getIdentity();
+  }, []);
 
   // Check is user has userProps
   useEffect(() => {
@@ -47,7 +46,7 @@ export function FormUserForm() {
           c.ownerID.eq(user?.username)
         );
         if (userPropsObject.length !== 0) {
-          navigate('../applications');
+          navigate('../apps');
         }
       } catch (error) {
         console.log(`Error getting user props: ${error}`);
@@ -63,13 +62,13 @@ export function FormUserForm() {
     const formData = new FormData(form);
     const userPropsObject = Object.fromEntries(formData.entries());
     userPropsObject.zip = parseInt(userPropsObject.zip);
-    userPropsObject.identityId = identityIdField;
+    userPropsObject.identityID = identityIdField;
+    userPropsObject.ownerID = user?.username;
 
     try {
       const newUserProps = await DataStore.save(
         new UserProps({
           ...userPropsObject,
-          ownerID: user?.username,
         })
       );
       window.location.reload();
@@ -154,12 +153,12 @@ export function FormUserForm() {
   );
 
   return (
-    <Card variation="elevated" width="80%">
+    <Flex direction="column">
       <Heading level="3" textAlign="center">
         User Information
       </Heading>
       <Text textAlign="center">Please fill out your personal information</Text>
       {userForm}
-    </Card>
+    </Flex>
   );
 }

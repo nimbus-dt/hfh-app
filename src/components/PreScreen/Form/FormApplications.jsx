@@ -1,28 +1,19 @@
 import {
-  Menu,
-  MenuItem,
   Flex,
   Heading,
   Card,
-  Image,
-  Badge,
   SelectField,
   Divider,
   Collection,
-  Table,
-  TableRow,
-  TableCell,
-  TableBody,
   Button,
   Text,
 } from '@aws-amplify/ui-react';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { DataStore, Auth } from 'aws-amplify';
 import { Habitat, Application, UserProps } from '../../../models';
-import logoHabitat from '../../../assets/images/logoHabitat.svg';
 
-export function FormHome() {
+export function FormApplications() {
   /* CONSTS */
 
   const urlName = useParams('habitat').habitat;
@@ -31,6 +22,26 @@ export function FormHome() {
   const [apps, setApps] = useState({ CURRENT: [], PAST: [] });
   const [userProps, setUserProps] = useState(null);
   const [timeStatus, setTimeStatus] = useState('CURRENT');
+  const navigate = useNavigate();
+
+  /* FUNCTIONS */
+  async function createApplication() {
+    try {
+      const application = await DataStore.save(
+        new Application({
+          ownerID: user?.username,
+          habitatID: habitat?.id,
+          submitted: false,
+          ownerName: userProps?.name,
+          timeStatus: 'CURRENT',
+          submittedStatus: 'PENDING',
+        })
+      );
+      window.location.reload();
+    } catch (error) {
+      console.log(`Error creating application: ${error}`);
+    }
+  }
 
   /* USE EFFECTS */
 
@@ -111,19 +122,6 @@ export function FormHome() {
 
   /* UI */
 
-  const title = (
-    <Card variation="elevated" width="80%">
-      <Flex direction="column">
-        <Heading level={3} fontWeight="bold">
-          Welcome
-        </Heading>
-        <Heading level={3} marginTop="-10px" fontWeight="bold">
-          {userProps?.name}
-        </Heading>
-      </Flex>
-    </Card>
-  );
-
   const applications = (
     <Collection
       width="100%"
@@ -135,30 +133,26 @@ export function FormHome() {
     >
       {(item, index) => (
         <Flex key={index} width="auto" direction="column">
-          <Table caption="" highlightOnHover variation="bordered">
-            <TableBody>
-              <TableRow>
-                <TableCell as="th" width="25%">
-                  Name
-                </TableCell>
-                <TableCell as="th" width="25%">
-                  Date Submitted
-                </TableCell>
-                <TableCell as="th" width="25%">
-                  Status
-                </TableCell>
-                <TableCell as="th" width="25%" />
-              </TableRow>
-              <TableRow>
-                <TableCell>{item.ownerName}</TableCell>
-                <TableCell>{item.dateSubmitted}</TableCell>
-                <TableCell>{item.submittedStatus}</TableCell>
-                <TableCell>
-                  <Button>View</Button>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
+          <Card width="100%" variation="outlined">
+            <Flex direction="column" width="100%" gap="5px">
+              <Text width="100%">{item.ownerName}</Text>
+              <Text width="100%">
+                {item.submitted ? 'Submitted' : 'Not submitted'}
+              </Text>
+              <Button
+                width="fit-content"
+                variation="primary"
+                marginTop="5px"
+                onClick={() => {
+                  navigate('../app', {
+                    state: { applicationID: item.id },
+                  });
+                }}
+              >
+                View
+              </Button>
+            </Flex>
+          </Card>
         </Flex>
       )}
     </Collection>
@@ -172,8 +166,10 @@ export function FormHome() {
       </Text>
       <Button
         variation="primary"
-        width="fit-content
-      "
+        width="fit-content"
+        onClick={() => {
+          createApplication();
+        }}
       >
         Create New Application
       </Button>
@@ -187,7 +183,7 @@ export function FormHome() {
   );
 
   const collectionWrapper = (
-    <Card variation="elevated" width="80%">
+    <Card variation="elevated" width="100%">
       <Flex direction="column" width="100%" alignContent="center">
         <Flex direction="row" width="100%" marginLeft="0">
           <SelectField
@@ -215,7 +211,6 @@ export function FormHome() {
 
   const layout = (
     <Flex width="100%" direction="column" alignItems="center">
-      {title}
       {collectionWrapper}
     </Flex>
   );

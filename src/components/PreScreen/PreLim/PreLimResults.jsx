@@ -69,7 +69,7 @@ export function PreLimResults() {
       <Button
         variation="primary"
         width="fit-content"
-        onClick={() => navigate('../../form/')}
+        onClick={() => navigate('../../form/info/')}
       >
         Sign Up
       </Button>
