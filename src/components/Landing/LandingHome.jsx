@@ -6,6 +6,7 @@ import {
   Text,
   Badge,
   useBreakpointValue,
+  Button,
 } from '@aws-amplify/ui-react';
 import heroIcon from '../../assets/images/hero-icon.svg';
 
@@ -82,6 +83,15 @@ export function LandingHome() {
               <Badge>Cloud Storage</Badge>
               <Badge>No paperwork</Badge>
             </Flex>
+            <Button
+              variation="primary"
+              onClick={() => {
+                // redirect to youtube.com in another tab
+                window.open('https://youtu.be/1nH2APt0Mg4', '_blank');
+              }}
+            >
+              Watch Demo
+            </Button>
           </Flex>
         </Flex>
       </Card>
