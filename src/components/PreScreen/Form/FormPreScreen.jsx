@@ -23,7 +23,7 @@ export function FormPreScreen() {
   const urlName = useParams().habitat;
   const [application, setApplication] = useState({});
   const location = useLocation();
-  const applicationID = location.state?.application;
+  const applicationID = location.state?.applicationID;
   const [page, setPage] = useState(1);
 
   /* USE EFFECTS */
@@ -48,7 +48,7 @@ export function FormPreScreen() {
           Application,
           applicationID
         );
-        setApplication(applicationObject[0]);
+        setApplication(applicationObject);
       } catch (error) {
         console.log(`Error getting application: ${error}`);
       }
@@ -75,7 +75,7 @@ export function FormPreScreen() {
   }
 
   const completeForm = (
-    <Card variation="elevated" width="300px">
+    <Card variation="elevated" width="100%">
       <Flex direction="column">
         <Heading level="5" textAlign="center">
           Application submitted!
