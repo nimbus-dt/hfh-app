@@ -6,6 +6,9 @@ import { Application, DebtRecord, UserProps } from '../../../../models';
 import { DebtCreate } from './DebtCreate';
 import { DebtList } from './DebtList';
 
+/**
+ * DebtForm displays details about debt. It is used to create and edit a Habitat - specific debt
+ */
 export function DebtForm({ application, habitat }) {
   const [debt, setDebt] = useState([]);
   const [owners, setOwners] = useState([]);
@@ -30,11 +33,13 @@ export function DebtForm({ application, habitat }) {
         const householdMembersCollection =
           await applicationObject[0].HouseholdMembers.toArray();
 
+        // Add coapplicants to ownersArray if any of the household members collection is coapplicant.
         if (householdMembersCollection.length > 0) {
           const coapplicants = householdMembersCollection.filter(
             (member) => member.isCoapplicant
           );
 
+          // Add coapplicants to ownersArray.
           if (coapplicants.length > 0) {
             ownersArray.push(...coapplicants);
           }
