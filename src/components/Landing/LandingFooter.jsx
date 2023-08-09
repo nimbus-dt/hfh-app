@@ -1,8 +1,17 @@
-import { Flex, Link, Text } from '@aws-amplify/ui-react';
+import { Flex, Link, Text, useBreakpointValue } from '@aws-amplify/ui-react';
 import { useNavigate } from 'react-router-dom';
 
 export function LandingFooter() {
   const navigate = useNavigate();
+
+  const responsiveBool = useBreakpointValue({
+    base: true,
+    small: true,
+    medium: true,
+    large: false,
+    xl: false,
+    xxl: false,
+  });
 
   const big = (
     <Flex
@@ -12,15 +21,17 @@ export function LandingFooter() {
       alignItems="center"
       justifyContent="space-between"
       height="fit-content"
-      gap="50px"
+      // gap="50px"
     >
       <Flex
-        direction="row"
+        direction={responsiveBool ? 'column' : 'row'}
         width="90%"
         backgroundColor="white"
         alignItems="center"
         justifyContent="space-between"
         height="fit-content"
+        overflow="hidden"
+        paddingTop={responsiveBool ? '5%' : '2%'}
       >
         <Link onClick={() => navigate('/')}>Home</Link>
         <Link onClick={() => navigate('/about')}>About us</Link>
@@ -31,7 +42,7 @@ export function LandingFooter() {
         <Link onClick={() => navigate('/contact')}>Contact</Link>
       </Flex>
       <Flex
-        direction="row"
+        direction="column"
         width="90%"
         backgroundColor="white"
         alignItems="center"
