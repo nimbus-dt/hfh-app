@@ -20,7 +20,6 @@ import { LandingTerms } from './components/Landing/LandingTerms';
 import { LandingPrivacyPolicy } from './components/Landing/LandingPrivacyPolicy';
 import { LandingReturn } from './components/Landing/LandingReturn';
 import { LandingContact } from './components/Landing/LandingContact';
-import { LandingPricing } from './components/Landing/LandingPricing';
 import { Test } from './components/Test';
 import { FormApplications } from './components/PreScreen/Form/FormApplications';
 import { FormUserForm } from './components/PreScreen/Form/FormUserForm';
