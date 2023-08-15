@@ -10,6 +10,7 @@ import {
 import logo from '../../assets/images/nimbus-logo.png';
 
 export function LandingPricing() {
+  const paddle = window.Paddle;
   const responsiveBool = useBreakpointValue({
     base: true,
     small: true,
