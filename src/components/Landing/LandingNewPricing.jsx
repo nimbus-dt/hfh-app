@@ -10,7 +10,6 @@ import {
   Badge,
   Button,
 } from '@aws-amplify/ui-react';
-import logo from '../../assets/images/nimbus-logo.png';
 
 export function LandingNewPricing() {
   const paddle = window.Paddle;
