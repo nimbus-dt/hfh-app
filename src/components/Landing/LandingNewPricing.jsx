@@ -23,17 +23,13 @@ export function LandingNewPricing() {
     xxl: false,
   });
 
-  async function handleOneTimePayment(e) {
-    paddle.Checkout.open({
-      product: 846233,
-    });
-  }
+  const oneTimePayment = () => {
+    paddle.Checkout.open({ product: 846938 });
+  };
 
-  async function handleMonthlyPayment(e) {
-    paddle.Checkout.open({
-      product: 846939,
-    });
-  }
+  const monthlyPayment = () => {
+    paddle.Checkout.open({ product: 846939 });
+  };
 
   return (
     <Flex
@@ -81,7 +77,7 @@ export function LandingNewPricing() {
                 <Button
                   variation="primary"
                   onClick={() => {
-                    handleOneTimePayment();
+                    oneTimePayment();
                   }}
                 >
                   Buy now
@@ -115,7 +111,7 @@ export function LandingNewPricing() {
                 <Button
                   variation="primary"
                   onClick={() => {
-                    handleMonthlyPayment();
+                    monthlyPayment();
                   }}
                 >
                   Buy now
