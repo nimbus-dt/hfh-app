@@ -22,6 +22,19 @@ export function LandingNewPricing() {
     xl: false,
     xxl: false,
   });
+
+  async function handleOneTimePayment(e) {
+    paddle.Checkout.open({
+      product: 846233,
+    });
+  }
+
+  async function handleMonthlyPayment(e) {
+    paddle.Checkout.open({
+      product: 846939,
+    });
+  }
+
   return (
     <Flex
       direction="column"
@@ -65,6 +78,14 @@ export function LandingNewPricing() {
                     $2000.00
                   </Heading>
                 </Badge>
+                <Button
+                  variation="primary"
+                  onClick={() => {
+                    handleOneTimePayment();
+                  }}
+                >
+                  Buy now
+                </Button>
               </Flex>
             </Card>
             <Card variation="outlined" width="40%">
@@ -91,10 +112,17 @@ export function LandingNewPricing() {
                     $100.00 / month
                   </Heading>
                 </Badge>
+                <Button
+                  variation="primary"
+                  onClick={() => {
+                    handleMonthlyPayment();
+                  }}
+                >
+                  Buy now
+                </Button>
               </Flex>
             </Card>
           </Flex>
-          <Button variation="primary">Buy now</Button>
         </Flex>
       </Card>
     </Flex>
