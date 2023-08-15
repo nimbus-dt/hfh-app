@@ -23,7 +23,7 @@ export function LandingNewPricing() {
   });
 
   const oneTimePayment = () => {
-    paddle.Checkout.open({ product: 846938 });
+    paddle.Checkout.open({ product: 846233 });
   };
 
   const monthlyPayment = () => {
