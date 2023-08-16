@@ -61,6 +61,44 @@ export enum RelationshipTypes {
 
 
 
+type EagerCycles = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Cycles, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly cycleStartDate?: string | null;
+  readonly cycleEndDate?: string | null;
+  readonly cycleStatus?: boolean | null;
+  readonly Applications?: (Application | null)[] | null;
+  readonly habitatID?: string | null;
+  readonly cycleSeason?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyCycles = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Cycles, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly cycleStartDate?: string | null;
+  readonly cycleEndDate?: string | null;
+  readonly cycleStatus?: boolean | null;
+  readonly Applications: AsyncCollection<Application>;
+  readonly habitatID?: string | null;
+  readonly cycleSeason?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Cycles = LazyLoading extends LazyLoadingDisabled ? EagerCycles : LazyCycles
+
+export declare const Cycles: (new (init: ModelInit<Cycles>) => Cycles) & {
+  copyOf(source: Cycles, mutator: (draft: MutableModel<Cycles>) => MutableModel<Cycles> | void): Cycles;
+}
+
 type EagerContactForm = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<ContactForm, 'id'>;
@@ -312,6 +350,7 @@ type EagerApplication = {
   readonly dateRevised?: string | null;
   readonly ownerName?: string | null;
   readonly timeStatus?: ApplicationTimeStatus | keyof typeof ApplicationTimeStatus | null;
+  readonly cyclesID?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -335,6 +374,7 @@ type LazyApplication = {
   readonly dateRevised?: string | null;
   readonly ownerName?: string | null;
   readonly timeStatus?: ApplicationTimeStatus | keyof typeof ApplicationTimeStatus | null;
+  readonly cyclesID?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -361,6 +401,7 @@ type EagerHabitat = {
   readonly Applications?: (Application | null)[] | null;
   readonly users?: (string | null)[] | null;
   readonly AMI?: (string | null)[] | null;
+  readonly Cycles?: (Cycles | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -381,6 +422,7 @@ type LazyHabitat = {
   readonly Applications: AsyncCollection<Application>;
   readonly users?: (string | null)[] | null;
   readonly AMI?: (string | null)[] | null;
+  readonly Cycles: AsyncCollection<Cycles>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
