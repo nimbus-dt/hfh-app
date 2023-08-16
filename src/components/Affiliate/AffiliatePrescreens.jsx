@@ -427,9 +427,11 @@ export function AffiliatePrescreens({ prescreens }) {
   );
 
   return (
-    <>
-      {page === 'allPrescreens' && allPrescreens}
-      {page === 'prescreenDetail' && prescreenDetail}
-    </>
+    <Card width="80%" variation="elevated">
+      <Flex direction="column" alignItems="center">
+        {page === 'allPrescreens' && allPrescreens}
+        {page === 'prescreenDetail' && prescreenDetail}
+      </Flex>
+    </Card>
   );
 }

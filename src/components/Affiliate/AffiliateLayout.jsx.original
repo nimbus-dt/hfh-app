@@ -1,22 +1,28 @@
 import { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import { useNavigate, useParams } from 'react-router-dom';
 import { DataStore, Auth } from 'aws-amplify';
 import {
   Card,
+  Grid,
+  Button,
   Flex,
   Menu,
   MenuItem,
   Image,
   Heading,
   Text,
+  Divider,
+  Collection,
+  SelectField,
+  Link,
+  Authenticator,
 } from '@aws-amplify/ui-react';
 import { Habitat, Application } from '../../models';
 import logoHabitat from '../../assets/images/logoHabitat.svg';
 import { AffiliatePrescreens } from './AffiliatePrescreens';
-import AffiliateSettingsPage from '../../pages/Affiliate/Settings';
 
-export function AffiliateLayout({ page }) {
+export function AffiliateLayout() {
+  const [page, setPage] = useState('prescreens');
   const [habitat, setHabitat] = useState(null);
   const [prescreens, setPrescreens] = useState([]);
   const [userID, setUserID] = useState('');
@@ -47,12 +53,10 @@ export function AffiliateLayout({ page }) {
         );
         setHabitat(habitatObject[0]);
 
-        if (page === 'prescreens') {
-          const applications = (
-            await habitatObject[0].Applications.toArray()
-          ).filter((app) => app.submitted === true);
-          setPrescreens(applications);
-        }
+        const applications = (
+          await habitatObject[0].Applications.toArray()
+        ).filter((app) => app.submitted === true);
+        setPrescreens(applications);
 
         const allowedUsers = habitatObject[0].users || [];
         const currentUser = await Auth.currentAuthenticatedUser({
@@ -120,59 +124,57 @@ export function AffiliateLayout({ page }) {
     </Flex>
   );
 
+  let content;
   if (isLoading) {
-    return (
-      <Flex direction="column" height="100vh" alignItems="center">
-        <Text>Loading...</Text>;
-      </Flex>
-    );
-  }
-
-  if (!isUserAllowed) {
-    return (
-      <Flex direction="column" height="100vh" alignItems="center">
-        <Card width="80%" variation="elevated">
-          <Text>
-            Sorry, you are not allowed to access this page. Please contact the
-            administrator for assistance.
-          </Text>
+    content = <Text>Loading...</Text>;
+  } else if (isUserAllowed) {
+    content = (
+      <>
+        <Card
+          wrap
+          width="100%"
+          backgroundColor="#55B949"
+          padding="0"
+          columnStart="1"
+          columnEnd="-1"
+        >
+          <Flex
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Image alt="Habitat Logo" src={logoHabitat} height="100%" />
+            <Flex marginRight="40px">{menu}</Flex>
+          </Flex>
         </Card>
-      </Flex>
+
+        <Card width="80%" variation="elevated">
+          {title}
+        </Card>
+
+        <Card width="80%" variation="elevated">
+          <Flex direction="column" alignItems="center">
+            {page === 'prescreens' && (
+              <AffiliatePrescreens prescreens={prescreens} />
+            )}
+          </Flex>
+        </Card>
+      </>
+    );
+  } else {
+    content = (
+      <Card width="80%" variation="elevated">
+        <Text>
+          Sorry, you are not allowed to access this page. Please contact the
+          administrator for assistance.
+        </Text>
+      </Card>
     );
   }
 
   return (
     <Flex direction="column" height="100vh" alignItems="center">
-      <Card
-        wrap
-        width="100%"
-        backgroundColor="#55B949"
-        padding="0"
-        columnStart="1"
-        columnEnd="-1"
-      >
-        <Flex
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <Image alt="Habitat Logo" src={logoHabitat} height="100%" />
-          <Flex marginRight="40px">{menu}</Flex>
-        </Flex>
-      </Card>
-
-      <Card width="80%" variation="elevated">
-        {title}
-      </Card>
-
-      {page === 'prescreens' && <AffiliatePrescreens prescreens={prescreens} />}
-      {page === 'settings' && (
-        <AffiliateSettingsPage habitatProps={habitat.props} />
-      )}
+      {content}
     </Flex>
   );
 }
-
-AffiliateLayout.propTypes = {
-  page: PropTypes.oneOf(['prescreens', 'settings']).isRequired,
-};
