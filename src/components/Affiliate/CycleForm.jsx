@@ -102,6 +102,13 @@ export function CycleForm() {
         })
       );
 
+      // Update the habitat to include the new cycle
+      await DataStore.save(
+        Habitat.copyOf(habitat, (updatedHabitat) => {
+          updatedHabitat.Cycles = [...updatedHabitat.Cycles, newCycle];
+        })
+      );
+
       console.log('New cycle created:', newCycle);
       // Perform any necessary actions or navigation here
     } catch (error) {
