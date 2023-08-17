@@ -21,23 +21,30 @@ export function LandingAbout() {
     <Flex
       direction="column"
       width="100%"
-      height="100%"
+      height="fit-content"
       backgroundColor="#34548c"
       alignItems="center"
       alignContent="center"
     >
-      <Card width="80%" variation="elevated" height="80%" marginTop="100px">
+      <Card
+        width={responsiveBool ? '90%' : '85%'}
+        variation="elevated"
+        height="80%"
+        marginTop="5%"
+        marginBottom="5%"
+      >
         <Flex
           direction={responsiveBool ? 'column' : 'row'}
           width="100%"
           height="100%"
+          alignContent="center"
           justifyContent={responsiveBool ? 'center' : 'space-between'}
         >
           <Flex
             direction="column"
             width={responsiveBool ? '100%' : '50%'}
             height="100%"
-            alignItems="center"
+            alignItems="stretch"
             justifyContent="center"
           >
             <Image src={logo} alt="Nimbus Logo" />
@@ -48,11 +55,13 @@ export function LandingAbout() {
             height="100%"
             alignItems="center"
             justifyContent="center"
+            alignContent="space-between"
+            alignSelf="center"
           >
             <Heading level="5" textAlign="center">
               Nimbus: your partner in digital transformations
             </Heading>
-            <Text textAlign="center">
+            <Text textAlign="center" alignself="center">
               Nimbus, founded by{' '}
               <a
                 href="https://www.linkedin.com/in/jose-guillermo-avelar/"

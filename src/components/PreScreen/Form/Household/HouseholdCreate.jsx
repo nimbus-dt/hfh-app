@@ -65,7 +65,7 @@ export function HouseholdCreate({ handleCreate, enableCoapplicants }) {
           </RadioGroupField>
 
           <Button type="submit" variation="primary">
-            Submit
+            Add
           </Button>
         </Flex>
       </form>

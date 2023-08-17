@@ -23,17 +23,24 @@ export function LandingHome() {
     <Flex
       direction="column"
       width="100%"
-      height="100%"
+      height="fit-content"
       backgroundColor="#34548c"
       alignItems="center"
       alignContent="center"
     >
-      <Card width="80%" variation="elevated" height="80%" marginTop="100px">
+      <Card
+        width={responsiveBool ? '90%' : '85%'}
+        height={responsiveBool ? 'fit-content' : '80%'}
+        variation="elevated"
+        marginTop="5%"
+        marginBottom="5%"
+      >
         <Flex
           direction={responsiveBool ? 'column' : 'row'}
           width="100%"
           height="100%"
-          justifyContent={responsiveBool ? 'center' : 'space-between'}
+          justifyContent={responsiveBool ? 'center' : 'center'}
+          marginBottom="5%"
         >
           <Flex
             direction="column"
@@ -77,6 +84,7 @@ export function LandingHome() {
               direction={responsiveBool ? 'column' : 'row'}
               justifyContent="space-between"
               width="100%"
+              alignContent={responsiveBool ? 'center' : 'top'}
             >
               <Badge>Email Notifications</Badge>
               <Badge>Automated Calculations</Badge>

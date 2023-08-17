@@ -20,13 +20,13 @@ import { LandingTerms } from './components/Landing/LandingTerms';
 import { LandingPrivacyPolicy } from './components/Landing/LandingPrivacyPolicy';
 import { LandingReturn } from './components/Landing/LandingReturn';
 import { LandingContact } from './components/Landing/LandingContact';
-import { LandingPricing } from './components/Landing/LandingPricing';
 import { Test } from './components/Test';
 import { FormApplications } from './components/PreScreen/Form/FormApplications';
 import { FormUserForm } from './components/PreScreen/Form/FormUserForm';
 import { FormLayoutNew } from './components/PreScreen/Form/FormLayoutNew';
 import { FormInfoPage } from './components/PreScreen/Form/FormInfoPage';
 import { CycleForm } from './components/Affiliate/CycleForm';
+import { LandingNewPricing } from './components/Landing/LandingNewPricing';
 
 function App() {
   return (
@@ -54,7 +54,7 @@ function App() {
       />
       <Route
         path="/pricing"
-        element={<LandingLayout comp={<LandingPricing />} />}
+        element={<LandingLayout comp={<LandingNewPricing />} />}
       />
 
       <Route path="test" element={<Test />} />

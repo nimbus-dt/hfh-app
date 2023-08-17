@@ -16,6 +16,7 @@ import {
   SelectField,
   Link,
   Authenticator,
+  useBreakpointValue,
 } from '@aws-amplify/ui-react';
 import { Habitat, Application } from '../../models';
 import logoHabitat from '../../assets/images/logoHabitat.svg';
@@ -28,6 +29,15 @@ export function AffiliateLayout() {
   const [userID, setUserID] = useState('');
   const [isUserAllowed, setIsUserAllowed] = useState(false); // New state to track user access
   const [isLoading, setIsLoading] = useState(true); // New state to track loading status
+
+  const responsiveBool = useBreakpointValue({
+    base: true,
+    small: true,
+    medium: true,
+    large: false,
+    xl: false,
+    xxl: false,
+  });
 
   const navigate = useNavigate();
 
@@ -141,11 +151,19 @@ export function AffiliateLayout() {
         >
           <Flex
             direction="row"
+            gap="0px"
             justifyContent="space-between"
             alignItems="center"
+            width="100%"
           >
             <Image alt="Habitat Logo" src={logoHabitat} height="100%" />
-            <Flex marginRight="40px">{menu}</Flex>
+            <Flex
+              marginRight={responsiveBool ? '0' : '40px'}
+              grow="1"
+              justifyContent={responsiveBool ? 'center' : 'flex-end'}
+            >
+              {menu}
+            </Flex>
           </Flex>
         </Card>
 
@@ -153,10 +171,17 @@ export function AffiliateLayout() {
           {title}
         </Card>
 
-        <Card width="80%" variation="elevated">
-          <Flex direction="column" alignItems="center">
+        <Card
+          width={responsiveBool ? '100%' : '80%'}
+          variation={responsiveBool ? '' : 'elevated'}
+          justifyContent="center"
+        >
+          <Flex direction="column" alignItems="center" justify-content="center">
             {page === 'prescreens' && (
-              <AffiliatePrescreens prescreens={prescreens} />
+              <AffiliatePrescreens
+                prescreens={prescreens}
+                justifyContent="center"
+              />
             )}
           </Flex>
         </Card>
@@ -174,7 +199,7 @@ export function AffiliateLayout() {
   }
 
   return (
-    <Flex direction="column" height="100vh" alignItems="center">
+    <Flex direction="column" height="100%" width="100%" alignItems="center">
       {content}
     </Flex>
   );

@@ -4,26 +4,21 @@ import {
   Flex,
   Heading,
   Text,
-  Divider,
-  Card,
-  Link,
-  SelectField,
-  Collection,
   Button,
   Table,
   TableBody,
   TableRow,
   TableCell,
 } from '@aws-amplify/ui-react';
-
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { Application, UserProps, Habitat } from '../../../../models';
+import { Application, UserProps } from '../../../../models';
 import { HouseholdList } from '../Household/HouseholdList';
 import { IncomeList } from '../Income/IncomeList';
 import { SavingsList } from '../Savings/SavingsList';
 import { DebtList } from '../Debt/DebtList';
 
-export function ConfirmForm({ application, habitat }) {
+export function ConfirmForm({ application }) {
   const [userDataBool, setUserDataBool] = useState(false);
   const [userID, setUserID] = useState('');
   const [formData, setFormData] = useState({});
@@ -33,6 +28,7 @@ export function ConfirmForm({ application, habitat }) {
   const [incomes, setIncomes] = useState([]);
   const [savings, setSavings] = useState([]);
   const [debts, setDebts] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function setApplicationChildren() {
@@ -59,7 +55,16 @@ export function ConfirmForm({ application, habitat }) {
       }
     }
     setApplicationChildren();
-  }, [selectedApplication]);
+  }, [application.id, selectedApplication]);
+
+  useEffect(() => {
+    async function checkSubmittedStatus() {
+      if (selectedApplication?.submitted) {
+        navigate('../apps');
+      }
+    }
+    checkSubmittedStatus();
+  }, [navigate, selectedApplication?.submitted]);
 
   async function submitApplication() {
     const applicationObject = await DataStore.query(
@@ -72,7 +77,7 @@ export function ConfirmForm({ application, habitat }) {
     const cutDate = currentDate.substring(0, 10);
 
     try {
-      await DataStore.save(
+      const newApp = await DataStore.save(
         Application.copyOf(applicationObject, (updated) => {
           updated.submitted = true;
           updated.ownerName = `${formData.name}`;
@@ -84,39 +89,7 @@ export function ConfirmForm({ application, habitat }) {
     } catch (error) {
       console.log(`Error submitting application: ${error}`);
     }
-    window.location.reload();
   }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const form = e.target;
-
-    const userData = {
-      ownerID: userID,
-      name: form.elements.name.value,
-      dob: form.elements.dob.value,
-      sex: form.elements.sex.value,
-      phone: form.elements.phone.value,
-      props: null,
-      address: form.elements.address.value,
-      zip: parseInt(form.elements.zip.value),
-      email: form.elements.email.value,
-    };
-
-    try {
-      const newData = await DataStore.save(new UserProps(userData));
-      setUserDataBool(true);
-
-      if (previousDataId) {
-        const previousData = await DataStore.query(UserProps, previousDataId);
-        await DataStore.delete(previousData);
-      }
-
-      setPreviousDataId(newData.id);
-    } catch (error) {
-      console.log('Error saving user data:', error);
-    }
-  };
 
   useEffect(() => {
     const checkUserData = async () => {
@@ -265,6 +238,10 @@ export function ConfirmForm({ application, habitat }) {
           </TableRow>
         </TableBody>
       </Table>
+      <Text textAlign="center" width="100%">
+        Please make sure that you have added at least ONE RECORD per section. If
+        you have not, your application will not be considered.
+      </Text>
       <Button
         type="submit"
         variation="primary"

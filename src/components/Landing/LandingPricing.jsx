@@ -10,6 +10,7 @@ import {
 import logo from '../../assets/images/nimbus-logo.png';
 
 export function LandingPricing() {
+  const paddle = window.Paddle;
   const responsiveBool = useBreakpointValue({
     base: true,
     small: true,
@@ -27,7 +28,13 @@ export function LandingPricing() {
       alignItems="center"
       alignContent="center"
     >
-      <Card width="80%" variation="elevated" height="80%" marginTop="100px">
+      <Card
+        width={responsiveBool ? '90%' : '85%'}
+        height={responsiveBool ? 'fit-content' : '80%'}
+        variation="elevated"
+        marginTop="5%"
+        marginBottom="5%"
+      >
         <Flex
           direction={responsiveBool ? 'column' : 'row'}
           width="100%"

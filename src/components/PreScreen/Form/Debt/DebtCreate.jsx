@@ -74,7 +74,7 @@ export function DebtCreate({ handleCreate, owners }) {
             type="number"
           />
           <Button type="submit" variation="primary">
-            Submit
+            Add
           </Button>
         </Flex>
       </form>
