@@ -25,7 +25,6 @@ import { FormApplications } from './components/PreScreen/Form/FormApplications';
 import { FormUserForm } from './components/PreScreen/Form/FormUserForm';
 import { FormLayoutNew } from './components/PreScreen/Form/FormLayoutNew';
 import { FormInfoPage } from './components/PreScreen/Form/FormInfoPage';
-import { LandingNewPricing } from './components/Landing/LandingNewPricing';
 
 function App() {
   return (
