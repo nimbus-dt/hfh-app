@@ -1,5 +1,117 @@
 export const schema = {
     "models": {
+        "Cycles": {
+            "name": "Cycles",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "cycleStartDate": {
+                    "name": "cycleStartDate",
+                    "isArray": false,
+                    "type": "AWSDate",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "cycleEndDate": {
+                    "name": "cycleEndDate",
+                    "isArray": false,
+                    "type": "AWSDate",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "cycleStatus": {
+                    "name": "cycleStatus",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "Applications": {
+                    "name": "Applications",
+                    "isArray": true,
+                    "type": {
+                        "model": "Application"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "cyclesID"
+                        ]
+                    }
+                },
+                "habitatID": {
+                    "name": "habitatID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "cycleSeason": {
+                    "name": "cycleSeason",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Cycles",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byHabitat",
+                        "fields": [
+                            "habitatID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "ContactForm": {
             "name": "ContactForm",
             "fields": {
@@ -775,6 +887,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "cyclesID": {
+                    "name": "cyclesID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -805,6 +924,15 @@ export const schema = {
                         "name": "byHabitat",
                         "fields": [
                             "habitatID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byCycles",
+                        "fields": [
+                            "cyclesID"
                         ]
                     }
                 },
@@ -917,6 +1045,22 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isArrayNullable": true
+                },
+                "Cycles": {
+                    "name": "Cycles",
+                    "isArray": true,
+                    "type": {
+                        "model": "Cycles"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "habitatID"
+                        ]
+                    }
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -1034,5 +1178,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "823d2ca08d4d346226d321034780ae58"
+    "version": "aa29e9bb267f17360358e2dee1cce331"
 };

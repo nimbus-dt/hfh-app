@@ -1,3 +1,13 @@
+type Cycles @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  cycleStartDate: AWSDate
+  cycleEndDate: AWSDate
+  cycleStatus: Boolean
+  Applications: [Application] @hasMany(indexName: "byCycles", fields: ["id"])
+  habitatID: ID @index(name: "byHabitat")
+  cycleSeason: String
+}
+
 enum ApplicationTimeStatus {
   CURRENT
   PAST
@@ -132,6 +142,7 @@ type Application @model @auth(rules: [{allow: public}]) {
   dateRevised: AWSDate
   ownerName: String
   timeStatus: ApplicationTimeStatus
+  cyclesID: ID @index(name: "byCycles")
 }
 
 type Habitat @model @auth(rules: [{allow: public}]) {
@@ -146,5 +157,6 @@ type Habitat @model @auth(rules: [{allow: public}]) {
   Applications: [Application] @hasMany(indexName: "byHabitat", fields: ["id"])
   users: [ID]
   AMI: [String]
+  Cycles: [Cycles] @hasMany(indexName: "byHabitat", fields: ["id"])
 }
  

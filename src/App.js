@@ -25,6 +25,7 @@ import { FormApplications } from './components/PreScreen/Form/FormApplications';
 import { FormUserForm } from './components/PreScreen/Form/FormUserForm';
 import { FormLayoutNew } from './components/PreScreen/Form/FormLayoutNew';
 import { FormInfoPage } from './components/PreScreen/Form/FormInfoPage';
+import { CycleForm } from './components/Affiliate/CycleForm';
 import { LandingNewPricing } from './components/Landing/LandingNewPricing';
 
 function App() {
@@ -73,6 +74,14 @@ function App() {
             element={
               <Authenticator hideDefault hideSignUp>
                 <AffiliateSettings />
+              </Authenticator>
+            }
+          />
+          <Route
+            path="cycle"
+            element={
+              <Authenticator hideDefault hideSignUp>
+                <CycleForm />
               </Authenticator>
             }
           />

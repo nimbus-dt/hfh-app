@@ -10,6 +10,12 @@ import {
   Application,
 } from '../../../../models';
 
+/**
+ * DebtDetail is a component that manages the debt detail. It provides a way to add / remove items from the database without relying on data store.
+ *
+ *
+ * @return { ReactElement } React element that manages the debt detail and allows you to interact with it
+ */
 export function DebtDetail({ item, sizeRenderer }) {
   const [names, setNames] = useState({});
   const [Monthly, setMonthly] = useState(false);
@@ -19,11 +25,13 @@ export function DebtDetail({ item, sizeRenderer }) {
       try {
         let ownerObject = await DataStore.query(UserProps, item.ownerID);
 
+        // Set the owner object s names.
         if (ownerObject) {
           setNamesFromObject(ownerObject);
         } else {
           ownerObject = await DataStore.query(HouseholdMember, item.ownerID);
 
+          // Set the names of the owner object.
           if (ownerObject) {
             setNamesFromObject(ownerObject);
           } else {

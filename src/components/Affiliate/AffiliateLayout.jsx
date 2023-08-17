@@ -116,6 +116,7 @@ export function AffiliateLayout() {
   const menu = (
     <Menu className="my-menu-content" triggerClassName="my-menu-trigger">
       <MenuItem>PreScreen</MenuItem>
+      <MenuItem onClick={() => navigate('../cycle')}> Create Cycle</MenuItem>
       <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
     </Menu>
   );
