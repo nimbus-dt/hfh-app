@@ -11,13 +11,14 @@ import {
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { DataStore, Auth } from 'aws-amplify';
-import { Habitat, Application, UserProps } from '../../../models';
+import { Habitat, Application, UserProps, Cycles } from '../../../models';
 
 export function FormApplications() {
   /* CONSTS */
 
   const urlName = useParams('habitat').habitat;
   const [habitat, setHabitat] = useState(null);
+  const [cycle, setCycle] = useState(null);
   const [user, setUser] = useState(null);
   const [apps, setApps] = useState({ CURRENT: [], PAST: [] });
   const [userProps, setUserProps] = useState(null);
@@ -27,16 +28,36 @@ export function FormApplications() {
   /* FUNCTIONS */
   async function createApplication() {
     try {
+      if (!habitat) {
+        console.log('Habitat information is not available.');
+        return;
+      }
+
+      // Fetch active cycle for the current habitat
+      const activeCycles = await DataStore.query(Cycles, (c) =>
+        c.habitatID.eq(habitat.id).cycleStatus.eq(true)
+      );
+      const activeCycle = activeCycles[0]; // Assuming there's only one active cycle
+
+      if (!activeCycle) {
+        console.log('No active cycle found.');
+        return;
+      }
+
+      // Create an application associated with the active cycle
       const application = await DataStore.save(
         new Application({
           ownerID: user?.username,
-          habitatID: habitat?.id,
+          habitatID: habitat.id,
+          cycleID: cycle.id, // Set the cycle ID here
           submitted: false,
           ownerName: userProps?.name,
           timeStatus: 'CURRENT',
           submittedStatus: 'PENDING',
         })
       );
+
+      console.log('Application created:', application);
       window.location.reload();
     } catch (error) {
       console.log(`Error creating application: ${error}`);
@@ -59,6 +80,21 @@ export function FormApplications() {
     }
     getHabitat();
   }, [urlName]);
+
+  useEffect(() => {
+    async function getCycle() {
+      try {
+        const CycleObject = await DataStore.query(Habitat, (c) =>
+          c.cycleID.eq(cycle.id)
+        );
+        setCycle(CycleObject[0]);
+        console.log(CycleObject[0]);
+      } catch (error) {
+        console.log(`Could not retrieve Cycle: ${error}`);
+      }
+    }
+    getCycle();
+  }, [habitat]);
 
   // Fetch user
   useEffect(() => {
