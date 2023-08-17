@@ -51,10 +51,6 @@ function App() {
         path="/contact"
         element={<LandingLayout comp={<LandingContact />} />}
       />
-      <Route
-        path="/pricing"
-        element={<LandingLayout comp={<LandingNewPricing />} />}
-      />
 
       <Route path="test" element={<Test />} />
 
