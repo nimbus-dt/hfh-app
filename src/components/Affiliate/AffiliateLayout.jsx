@@ -10,6 +10,7 @@ import {
   Image,
   Heading,
   Text,
+  View,
 } from '@aws-amplify/ui-react';
 import { Habitat, Application } from '../../models';
 import logoHabitat from '../../assets/images/logoHabitat.svg';
@@ -109,13 +110,7 @@ export function AffiliateLayout({ page }) {
   const title = (
     <Flex direction="column">
       <Heading level={3} fontWeight="bold">
-        Welcome
-      </Heading>
-      <Heading level={3} marginTop="-10px" fontWeight="bold">
-        {habitat?.name}
-      </Heading>
-      <Heading level={3} marginTop="-10px" fontWeight="bold">
-        Habitat for Humanity
+        Welcome {habitat?.name} Habitat for Humanity
       </Heading>
     </Flex>
   );
@@ -142,7 +137,7 @@ export function AffiliateLayout({ page }) {
   }
 
   return (
-    <Flex direction="column" height="100vh" alignItems="center">
+    <View height="100vh" width="100%">
       <Card
         wrap
         width="100%"
@@ -150,6 +145,7 @@ export function AffiliateLayout({ page }) {
         padding="0"
         columnStart="1"
         columnEnd="-1"
+        marginBottom="1rem"
       >
         <Flex
           direction="row"
@@ -161,15 +157,23 @@ export function AffiliateLayout({ page }) {
         </Flex>
       </Card>
 
-      <Card width="80%" variation="elevated">
+      <Card
+        width={{ base: '95%', medium: '80%' }}
+        variation="elevated"
+        margin="auto"
+      >
         {title}
       </Card>
 
-      {page === 'prescreens' && <AffiliatePrescreens prescreens={prescreens} />}
-      {page === 'settings' && (
-        <AffiliateSettingsPage habitatProps={habitat.props} />
-      )}
-    </Flex>
+      <Flex direction="column" width="100%" grow="1">
+        {page === 'prescreens' && (
+          <AffiliatePrescreens prescreens={prescreens} />
+        )}
+        {page === 'settings' && (
+          <AffiliateSettingsPage habitatProps={habitat.props} />
+        )}
+      </Flex>
+    </View>
   );
 }
 
