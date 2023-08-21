@@ -1,11 +1,9 @@
-/* eslint-disable react/prop-types */
-import { Controller, useFieldArray } from 'react-hook-form';
+import PropTypes from 'prop-types';
+import { useFieldArray } from 'react-hook-form';
 import {
   Button,
   Flex,
   Heading,
-  Radio,
-  RadioGroupField,
   Text,
   TextAreaField,
   TextField,
@@ -39,7 +37,7 @@ export function PreScreenHomeTextList({ watch, control, register, errors }) {
       <Heading level={5} fontWeight="bold" textAlign="center" marginTop="1rem">
         Official PreScreem Form Home Text
       </Heading>
-      {/* <Text fontStyle="italic">This is a test</Text> */}
+
       <Flex direction="column" marginBottom="1rem" marginTop="1rem">
         {controlledFields.map((field, index) => (
           <div key={field.id}>
@@ -110,6 +108,9 @@ export function PreScreenHomeTextList({ watch, control, register, errors }) {
   );
 }
 
-// QuestionsForm.propTypes = {
-//   handleOnSubmit: PropTypes.func,
-// };
+PreScreenHomeTextList.propTypes = {
+  watch: PropTypes.func,
+  control: PropTypes.object,
+  register: PropTypes.func,
+  errors: PropTypes.object,
+};

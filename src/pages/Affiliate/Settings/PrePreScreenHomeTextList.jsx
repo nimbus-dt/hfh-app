@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
 import { useFieldArray } from 'react-hook-form';
 import {
   Button,
@@ -110,6 +110,9 @@ export function PrePreScreenHomeTextList({ watch, control, register, errors }) {
   );
 }
 
-// QuestionsForm.propTypes = {
-//   handleOnSubmit: PropTypes.func,
-// };
+PrePreScreenHomeTextList.propTypes = {
+  watch: PropTypes.func,
+  control: PropTypes.object,
+  register: PropTypes.func,
+  errors: PropTypes.object,
+};
