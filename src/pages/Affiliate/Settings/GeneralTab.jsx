@@ -130,7 +130,7 @@ export function GeneralTab({ watch, control, register, errors }) {
           <TextField
             name="statusPageRejected"
             label="Status Page Rejected Message"
-            {...register('prePreScreen.prePreScreenStatusPage.ACCEPTED', {
+            {...register('prePreScreen.prePreScreenStatusPage.REJECTED', {
               setValueAs: valueAsStringOrEmpty,
             })}
           />

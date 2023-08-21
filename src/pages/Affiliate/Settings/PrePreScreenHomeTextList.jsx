@@ -37,7 +37,7 @@ export function PrePreScreenHomeTextList({ watch, control, register, errors }) {
       <Heading level={5} fontWeight="bold" textAlign="center" marginTop="1rem">
         Preliminary Form Home Text
       </Heading>
-      {/* <Text fontStyle="italic">This is a test</Text> */}
+
       <Flex direction="column" marginBottom="1rem" marginTop="1rem">
         {controlledFields.map((field, index) => (
           <div key={field.id}>
@@ -60,9 +60,8 @@ export function PrePreScreenHomeTextList({ watch, control, register, errors }) {
                   />
                   <ErrorText
                     message={
-                      errors?.prePreScreen?.prePreScreenHomeText?.homeText?.[
-                        index
-                      ]?.title?.message
+                      errors?.prePreScreen?.prePreScreenHomeText?.[index]?.title
+                        ?.message
                     }
                   />
                 </View>
@@ -78,9 +77,8 @@ export function PrePreScreenHomeTextList({ watch, control, register, errors }) {
                   />
                   <ErrorText
                     message={
-                      errors?.prePreScreen?.prePreScreenHomeText?.homeText?.[
-                        index
-                      ]?.text?.message
+                      errors?.prePreScreen?.prePreScreenHomeText?.[index]?.text
+                        ?.message
                     }
                   />
                 </View>
