@@ -110,73 +110,63 @@ export function AffiliateSettingsPage({ habitatId, habitatProps }) {
   };
 
   return (
-    <Card
-      variation="elevated"
-      width={{ base: '95%', medium: '80%', large: '60%' }}
-      minHeight="100%"
-      margin="auto"
-      marginTop="1rem"
-      marginBottom="1rem"
-      wrap
-    >
-      <Flex direction="column" width="100%" alignContent="center">
-        <Heading level={3} fontWeight="bold" textAlign="center">
-          Settings
-        </Heading>
+    <>
+      <Heading level={3} fontWeight="bold" textAlign="center">
+        Settings
+      </Heading>
 
-        <form onSubmit={handleSubmit(onValid, onInvalid)} noValidate>
-          {alert && (
-            <Alert
-              key={alert.key}
-              variation={alert.variation}
-              marginBottom="20px"
-              isDismissible
-              hasIcon
-              onDismiss={() => updateAlert(null)}
-            >
-              {alert.message}
-            </Alert>
-          )}
-          <Tabs spacing="equal">
-            <TabItem title="General" onClick={(...args) => console.log(args)}>
-              <GeneralTab
-                watch={watch}
-                register={register}
-                control={control}
-                errors={errors}
-              />
-            </TabItem>
+      <form onSubmit={handleSubmit(onValid, onInvalid)} noValidate>
+        {alert && (
+          <Alert
+            key={alert.key}
+            variation={alert.variation}
+            marginBottom="20px"
+            isDismissible
+            hasIcon
+            onDismiss={() => updateAlert(null)}
+          >
+            {alert.message}
+          </Alert>
+        )}
+        <Tabs spacing="equal">
+          <TabItem title="General" onClick={(...args) => console.log(args)}>
+            <GeneralTab
+              watch={watch}
+              register={register}
+              control={control}
+              errors={errors}
+            />
+          </TabItem>
 
-            <TabItem title="Terms">
-              <TermsTab
-                watch={watch}
-                register={register}
-                control={control}
-                errors={errors}
-              />
-            </TabItem>
+          <TabItem title="Terms">
+            <TermsTab
+              watch={watch}
+              register={register}
+              control={control}
+              errors={errors}
+            />
+          </TabItem>
 
-            <TabItem title="Questions">
-              <QuestionsTab
-                watch={watch}
-                register={register}
-                control={control}
-                errors={errors}
-              />
-            </TabItem>
-          </Tabs>
+          <TabItem title="Questions">
+            <QuestionsTab
+              watch={watch}
+              register={register}
+              control={control}
+              errors={errors}
+            />
+          </TabItem>
+        </Tabs>
 
-          <Flex direction="row-reverse" alignItems="center" marginTop="2rem">
-            <Button type="submit" variation="primary">
-              Save Settings
-            </Button>
-            <Button type="button" variation="warning" onClick={() => reset()}>
-              Cancel
-            </Button>
-          </Flex>
-        </form>
-      </Flex>
-    </Card>
+        <Flex direction="row-reverse" alignItems="center" marginTop="2rem">
+          <Button type="submit" variation="primary">
+            Save Settings
+          </Button>
+          <Button type="button" variation="warning" onClick={() => reset()}>
+            Cancel
+          </Button>
+        </Flex>
+      </form>
+    </>
   );
 }
 
