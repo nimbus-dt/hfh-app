@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { DataStore } from 'aws-amplify';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -19,6 +20,7 @@ import { isObjectEmpty } from '../../../utils/objects';
 import { PREPRESCREEN_HOMETEXT_DEFAULT } from './PreScreenHomeTextList';
 import { PRESCREEN_HOMETEXT_DEFAULT } from './PrePreScreenHomeTextList';
 import { GeneralTab } from './GeneralTab';
+import { Habitat } from '../../../models';
 
 const DEFAULT_VALUES = {
   data: {
@@ -43,7 +45,7 @@ const DEFAULT_VALUES = {
   },
 };
 
-export function AffiliateSettingsPage({ habitatProps }) {
+export function AffiliateSettingsPage({ habitatId, habitatProps }) {
   const {
     register,
     handleSubmit,
@@ -59,14 +61,13 @@ export function AffiliateSettingsPage({ habitatProps }) {
     values: habitatProps,
   });
 
-  const onValid = (data) => {
-    // TODO implement form submition
-    console.log(JSON.stringify(data, null, 2));
-  };
-
-  const onInvalid = (validationErrors) => {
-    // TODO remove
-    console.log(validationErrors);
+  const onValid = async (data) => {
+    const originalHabitat = await DataStore.query(Habitat, habitatId);
+    await DataStore.save(
+      Habitat.copyOf(originalHabitat, (updated) => {
+        updated.props = data;
+      })
+    );
   };
 
   return (
@@ -84,7 +85,7 @@ export function AffiliateSettingsPage({ habitatProps }) {
           Settings
         </Heading>
 
-        <form onSubmit={handleSubmit(onValid, onInvalid)} noValidate>
+        <form onSubmit={handleSubmit(onValid)} noValidate>
           {!isObjectEmpty(errors) && (
             <Alert
               key={alert.key}
@@ -187,5 +188,6 @@ const habitatPropsShape = PropTypes.shape({
 });
 
 AffiliateSettingsPage.propTypes = {
+  habitatId: PropTypes.string,
   habitatProps: habitatPropsShape,
 };

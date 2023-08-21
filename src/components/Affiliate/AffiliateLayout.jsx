@@ -170,7 +170,10 @@ export function AffiliateLayout({ page }) {
           <AffiliatePrescreens prescreens={prescreens} />
         )}
         {page === 'settings' && (
-          <AffiliateSettingsPage habitatProps={habitat.props} />
+          <AffiliateSettingsPage
+            habitatId={habitat.id}
+            habitatProps={habitat.props}
+          />
         )}
       </Flex>
     </View>
