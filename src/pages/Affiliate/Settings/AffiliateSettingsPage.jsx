@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 import { DataStore } from 'aws-amplify';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -16,7 +17,6 @@ import {
 import { DEFAULT_QUESTION_VALUES, QuestionsTab } from './QuestionsTab';
 import { DEFAULT_TERM_VALUES, TermsTab } from './TermsTab';
 import { habitatPropsFormSchema } from './form.schema';
-import { isObjectEmpty } from '../../../utils/objects';
 import { PREPRESCREEN_HOMETEXT_DEFAULT } from './PreScreenHomeTextList';
 import { PRESCREEN_HOMETEXT_DEFAULT } from './PrePreScreenHomeTextList';
 import { GeneralTab } from './GeneralTab';
@@ -45,7 +45,26 @@ const DEFAULT_VALUES = {
   },
 };
 
+const FORM_ERROR_ALERT = {
+  key: 'habitat-props-form-error-alert',
+  variation: 'error',
+  message: 'Please check the entered data',
+};
+
+const NETWORK_ERROR_ALERT = {
+  key: 'habitat-props-network-error-alert',
+  variation: 'error',
+  message: 'An error has ocurred, try again',
+};
+
+const SUCCESS_ALERT = {
+  key: 'habitat-props-form-success-alert',
+  variation: 'success',
+  message: 'Settings updated successfully',
+};
+
 export function AffiliateSettingsPage({ habitatId, habitatProps }) {
+  const [alert, setAlert] = useState(null);
   const {
     register,
     handleSubmit,
@@ -61,13 +80,33 @@ export function AffiliateSettingsPage({ habitatId, habitatProps }) {
     values: habitatProps,
   });
 
+  const updateAlert = (newAlert) => {
+    setAlert(newAlert);
+
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+  };
+
   const onValid = async (data) => {
-    const originalHabitat = await DataStore.query(Habitat, habitatId);
-    await DataStore.save(
-      Habitat.copyOf(originalHabitat, (updated) => {
-        updated.props = data;
-      })
-    );
+    try {
+      const originalHabitat = await DataStore.query(Habitat, habitatId);
+      await DataStore.save(
+        Habitat.copyOf(originalHabitat, (updated) => {
+          updated.props = data;
+        })
+      );
+
+      updateAlert(SUCCESS_ALERT);
+    } catch (error) {
+      updateAlert(NETWORK_ERROR_ALERT);
+    }
+  };
+
+  const onInvalid = () => {
+    updateAlert(FORM_ERROR_ALERT);
   };
 
   return (
@@ -85,19 +124,19 @@ export function AffiliateSettingsPage({ habitatId, habitatProps }) {
           Settings
         </Heading>
 
-        <form onSubmit={handleSubmit(onValid)} noValidate>
-          {!isObjectEmpty(errors) && (
+        <form onSubmit={handleSubmit(onValid, onInvalid)} noValidate>
+          {alert && (
             <Alert
               key={alert.key}
-              variation="error"
-              isDismissible={false}
+              variation={alert.variation}
               marginBottom="20px"
+              isDismissible
               hasIcon
+              onDismiss={() => updateAlert(null)}
             >
-              Error: Please check the entered data
+              {alert.message}
             </Alert>
           )}
-
           <Tabs spacing="equal">
             <TabItem title="General" onClick={(...args) => console.log(args)}>
               <GeneralTab
