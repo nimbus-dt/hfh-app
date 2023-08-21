@@ -8,7 +8,6 @@ import { useForm } from 'react-hook-form';
 import {
   Flex,
   Heading,
-  Card,
   Tabs,
   TabItem,
   Button,
