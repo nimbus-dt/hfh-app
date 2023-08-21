@@ -147,7 +147,7 @@ export function IncomeCreate({ owners, habitat, application }) {
             isRequired
           />
           <Button type="submit" variation="primary">
-            Submit
+            Add
           </Button>
         </Flex>
       </form>

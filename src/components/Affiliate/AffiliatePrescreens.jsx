@@ -16,6 +16,7 @@ import {
   TableRow,
   TableCell,
   Badge,
+  useBreakpointValue,
 } from '@aws-amplify/ui-react';
 import { useEffect, useState } from 'react';
 import { Application, IncomeRecord, Habitat } from '../../models';
@@ -45,6 +46,15 @@ export function AffiliatePrescreens({ prescreens }) {
   const [amiRange, setamiRange] = useState('');
   const urlName = useParams('habitat').habitat;
   const totalMembers = householdMembers.length + 1;
+
+  const responsiveBool = useBreakpointValue({
+    base: true,
+    small: true,
+    medium: true,
+    large: false,
+    xl: false,
+    xxl: false,
+  });
 
   useEffect(() => {
     function filterPrescreens() {
@@ -150,8 +160,18 @@ export function AffiliatePrescreens({ prescreens }) {
   ]);
 
   const allPrescreens = (
-    <Flex direction="column" width="100%" alignContent="center">
-      <Flex direction="row" width="100%" marginLeft="0">
+    <Flex
+      direction="column"
+      width="100%"
+      alignContent="center"
+      justifyContent="center"
+    >
+      <Flex
+        direction="row"
+        width="100%"
+        marginLeft="0"
+        justifyContent={responsiveBool ? 'center' : 'left'}
+      >
         <SelectField
           onChange={(event) => {
             setStatus(event.target.value);
@@ -184,8 +204,19 @@ export function AffiliatePrescreens({ prescreens }) {
         }
       >
         {(item, index) => (
-          <Flex key={index} width="auto" direction="column">
-            <Table caption="" highlightOnHover variation="bordered">
+          <Flex
+            key={index}
+            width="auto"
+            direction="column"
+            justifyContent="center"
+          >
+            <Table
+              caption=""
+              highlightOnHover
+              variation="bordered"
+              justify-content="center"
+              size={responsiveBool ? 'small' : ''}
+            >
               <TableBody>
                 <TableRow>
                   <TableCell as="th" width="25%">

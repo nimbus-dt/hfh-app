@@ -11,6 +11,7 @@ import {
   Heading,
   Text,
   View,
+  useBreakpointValue,
 } from '@aws-amplify/ui-react';
 import { Habitat, Application } from '../../models';
 import logoHabitat from '../../assets/images/logoHabitat.svg';
@@ -23,6 +24,15 @@ export function AffiliateLayout({ page }) {
   const [userID, setUserID] = useState('');
   const [isUserAllowed, setIsUserAllowed] = useState(false); // New state to track user access
   const [isLoading, setIsLoading] = useState(true); // New state to track loading status
+
+  const responsiveBool = useBreakpointValue({
+    base: true,
+    small: true,
+    medium: true,
+    large: false,
+    xl: false,
+    xxl: false,
+  });
 
   const navigate = useNavigate();
 
@@ -103,6 +113,7 @@ export function AffiliateLayout({ page }) {
   const menu = (
     <Menu className="my-menu-content" triggerClassName="my-menu-trigger">
       <MenuItem>PreScreen</MenuItem>
+      <MenuItem onClick={() => navigate('../cycle')}> Create Cycle</MenuItem>
       <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
     </Menu>
   );
@@ -166,15 +177,28 @@ export function AffiliateLayout({ page }) {
       </Card>
 
       <Flex direction="column" width="100%" grow="1">
-        {page === 'prescreens' && (
-          <AffiliatePrescreens prescreens={prescreens} />
-        )}
-        {page === 'settings' && (
-          <AffiliateSettingsPage
-            habitatId={habitat.id}
-            habitatProps={habitat.props}
-          />
-        )}
+        <Card
+          width={responsiveBool ? '100%' : '80%'}
+          variation={responsiveBool ? '' : 'elevated'}
+          justifyContent="center"
+          minHeight="100%"
+          margin="auto"
+          marginTop="1rem"
+          marginBottom="1rem"
+          wrap
+        >
+          <Flex direction="column" width="100%" alignContent="center">
+            {page === 'prescreens' && (
+              <AffiliatePrescreens prescreens={prescreens} />
+            )}
+            {page === 'settings' && (
+              <AffiliateSettingsPage
+                habitatId={habitat.id}
+                habitatProps={habitat.props}
+              />
+            )}
+          </Flex>
+        </Card>
       </Flex>
     </View>
   );

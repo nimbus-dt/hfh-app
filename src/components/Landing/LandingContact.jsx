@@ -48,7 +48,16 @@ export function LandingContact() {
   }
 
   const contactForm = (
-    <Card width="100%" height="500px" id="contactFormSection">
+    <Card
+      width="100%"
+      // height="500px"
+      id="contactFormSection"
+      // width={responsiveBool ? '90%' : '85%'}
+      height={responsiveBool ? 'fit-content' : '80%'}
+      // variation="elevated"
+      marginTop="5%"
+      marginBottom="5%"
+    >
       <Heading level="1" fontWeight="bold">
         Contact us!
       </Heading>
@@ -98,7 +107,13 @@ export function LandingContact() {
       alignItems="center"
       alignContent="center"
     >
-      <Card width="80%" variation="elevated" height="80%" marginTop="100px">
+      <Card
+        width={responsiveBool ? '90%' : '85%'}
+        height={responsiveBool ? 'fit-content' : '80%'}
+        variation="elevated"
+        marginTop="5%"
+        marginBottom="5%"
+      >
         <Flex
           direction={responsiveBool ? 'column' : 'row'}
           width="100%"
