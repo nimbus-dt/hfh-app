@@ -125,7 +125,7 @@ export function AffiliateSettingsPage() {
             </Alert>
           )}
           <Tabs spacing="equal">
-            <TabItem title="General" onClick={(...args) => console.log(args)}>
+            <TabItem title="General">
               <GeneralTab
                 watch={watch}
                 register={register}
