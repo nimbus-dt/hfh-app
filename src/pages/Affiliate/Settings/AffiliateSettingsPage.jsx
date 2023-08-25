@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import { useOutletContext } from 'react-router-dom';
 import { useState } from 'react';
 import { DataStore } from 'aws-amplify';
 
@@ -62,7 +62,9 @@ const SUCCESS_ALERT = {
   message: 'Settings updated successfully',
 };
 
-export function AffiliateSettingsPage({ habitatId, habitatProps }) {
+export function AffiliateSettingsPage() {
+  const { habitat } = useOutletContext();
+  const { id: habitatId, props: habitatProps } = habitat;
   const [alert, setAlert] = useState(null);
   const {
     register,
@@ -81,12 +83,6 @@ export function AffiliateSettingsPage({ habitatId, habitatProps }) {
 
   const updateAlert = (newAlert) => {
     setAlert(newAlert);
-
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'smooth',
-    });
   };
 
   const onValid = async (data) => {
@@ -114,108 +110,59 @@ export function AffiliateSettingsPage({ habitatId, habitatProps }) {
         Settings
       </Heading>
 
-      <form onSubmit={handleSubmit(onValid, onInvalid)} noValidate>
-        {alert && (
-          <Alert
-            key={alert.key}
-            variation={alert.variation}
-            marginBottom="20px"
-            isDismissible
-            hasIcon
-            onDismiss={() => updateAlert(null)}
-          >
-            {alert.message}
-          </Alert>
-        )}
-        <Tabs spacing="equal">
-          <TabItem title="General" onClick={(...args) => console.log(args)}>
-            <GeneralTab
-              watch={watch}
-              register={register}
-              control={control}
-              errors={errors}
-            />
-          </TabItem>
+      <Flex direction="column">
+        <form onSubmit={handleSubmit(onValid, onInvalid)} noValidate>
+          {alert && (
+            <Alert
+              key={alert.key}
+              variation={alert.variation}
+              marginBottom="20px"
+              onDismiss={() => updateAlert(null)}
+              isDismissible
+              hasIcon
+            >
+              {alert.message}
+            </Alert>
+          )}
+          <Tabs spacing="equal">
+            <TabItem title="General" onClick={(...args) => console.log(args)}>
+              <GeneralTab
+                watch={watch}
+                register={register}
+                control={control}
+                errors={errors}
+              />
+            </TabItem>
 
-          <TabItem title="Terms">
-            <TermsTab
-              watch={watch}
-              register={register}
-              control={control}
-              errors={errors}
-            />
-          </TabItem>
+            <TabItem title="Terms">
+              <TermsTab
+                watch={watch}
+                register={register}
+                control={control}
+                errors={errors}
+              />
+            </TabItem>
 
-          <TabItem title="Questions">
-            <QuestionsTab
-              watch={watch}
-              register={register}
-              control={control}
-              errors={errors}
-            />
-          </TabItem>
-        </Tabs>
+            <TabItem title="Questions">
+              <QuestionsTab
+                watch={watch}
+                register={register}
+                control={control}
+                errors={errors}
+              />
+            </TabItem>
+          </Tabs>
 
-        <Flex direction="row-reverse" alignItems="center" marginTop="2rem">
-          <Button type="submit" variation="primary">
-            Save Settings
-          </Button>
-          <Button type="button" variation="warning" onClick={() => reset()}>
-            Cancel
-          </Button>
-        </Flex>
-      </form>
+          <Flex direction="row-reverse" alignItems="center" marginTop="2rem">
+            <Button type="submit" variation="primary">
+              Save Settings
+            </Button>
+            <Button type="button" variation="warning" onClick={() => reset()}>
+              Cancel
+            </Button>
+          </Flex>
+        </form>
+      </Flex>
     </>
   );
 }
-
-const habitatPropsShape = PropTypes.shape({
-  data: PropTypes.shape({
-    maxCoapplicants: PropTypes.number,
-  }),
-  preScreen: PropTypes.shape({
-    homeText: PropTypes.arrayOf(
-      PropTypes.shape({
-        text: PropTypes.string,
-        title: PropTypes.string,
-      })
-    ),
-  }),
-  prePreScreen: PropTypes.shape({
-    prePreScreenTerms: PropTypes.arrayOf(
-      PropTypes.shape({
-        title: PropTypes.string,
-        body: PropTypes.string,
-      })
-    ),
-    prePreScreenQuestions: PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string,
-        description: PropTypes.string,
-        label: PropTypes.string,
-        rejectionValue: PropTypes.oneOf(['Yes', 'No']),
-        rejectionResultText: PropTypes.string,
-      })
-    ),
-    prePreScreenResultsText: PropTypes.shape({
-      Sorry: PropTypes.string,
-      Congratulations: PropTypes.string,
-    }),
-    prePreScreenHomeText: PropTypes.arrayOf(
-      PropTypes.shape({
-        text: PropTypes.string,
-        title: PropTypes.string,
-      })
-    ),
-    prePreScreenStatusPage: PropTypes.shape({
-      ACCEPTED: PropTypes.string,
-      PENDING: PropTypes.string,
-      REJECTED: PropTypes.string,
-    }),
-  }),
-});
-
-AffiliateSettingsPage.propTypes = {
-  habitatId: PropTypes.string,
-  habitatProps: habitatPropsShape,
-};
