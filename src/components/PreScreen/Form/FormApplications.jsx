@@ -33,23 +33,11 @@ export function FormApplications() {
         return;
       }
 
-      // Fetch active cycle for the current habitat
-      const activeCycles = await DataStore.query(Cycles, (c) =>
-        c.habitatID.eq(habitat.id).cycleStatus.eq(true)
-      );
-      const activeCycle = activeCycles[0]; // Assuming there's only one active cycle
-
-      if (!activeCycle) {
-        console.log('No active cycle found.');
-        return;
-      }
-
       // Create an application associated with the active cycle
       const application = await DataStore.save(
         new Application({
           ownerID: user?.username,
           habitatID: habitat.id,
-          cycleID: cycle.id, // Set the cycle ID here
           submitted: false,
           ownerName: userProps?.name,
           timeStatus: 'CURRENT',
