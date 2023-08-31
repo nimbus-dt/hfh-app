@@ -27,8 +27,8 @@ import { CycleForm } from './components/Affiliate/CycleForm';
 import { LandingNewPricing } from './components/Landing/LandingNewPricing';
 import AffiliateLayout from './layouts/AffiliateLayout';
 import { AffiliatePrescreens } from './components/Affiliate/AffiliatePrescreens';
-import AffiliateSettingsPage from './pages/Affiliate/Settings';
-import AffiliateBillingPage from './pages/Affiliate/Billing';
+import AffiliateSettingsPage from './pages/affiliate/settings';
+import AffiliateBillingPage from './pages/affiliate/billing';
 
 function App() {
   return (
