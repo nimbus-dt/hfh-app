@@ -10,7 +10,7 @@ import {
   TextField,
 } from '@aws-amplify/ui-react';
 
-import { Cycles, Habitat } from '../../models'; // Make sure to import the correct models path
+import { Cycles, Habitat } from '../../../models'; // Make sure to import the correct models path
 
 export function CycleForm() {
   const { habitat } = useOutletContext();

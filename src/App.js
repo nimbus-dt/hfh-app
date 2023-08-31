@@ -23,7 +23,7 @@ import { FormApplications } from './components/PreScreen/Form/FormApplications';
 import { FormUserForm } from './components/PreScreen/Form/FormUserForm';
 import { FormLayoutNew } from './components/PreScreen/Form/FormLayoutNew';
 import { FormInfoPage } from './components/PreScreen/Form/FormInfoPage';
-import { CycleForm } from './components/Affiliate/CycleForm';
+import { CycleForm } from './pages/affiliate/cycles/CycleForm';
 import { LandingNewPricing } from './components/Landing/LandingNewPricing';
 import AffiliateLayout from './layouts/AffiliateLayout';
 import { AffiliatePrescreens } from './components/Affiliate/AffiliatePrescreens';
