@@ -176,6 +176,10 @@ export function AffiliatePrescreens() {
       alignContent="center"
       justifyContent="center"
     >
+      <Heading level={3} fontWeight="bold" textAlign="center">
+        PreScreens
+      </Heading>
+      <Divider />
       <Flex
         direction="row"
         width="100%"
@@ -196,10 +200,6 @@ export function AffiliatePrescreens() {
           <Flex alignItems="center">Total: {filteredPrescreens.length}</Flex>
         </Badge>
       </Flex>
-      <Heading level={3} fontWeight="bold" textAlign="center">
-        PreScreens
-      </Heading>
-      <Divider />
       <Collection
         width="100%"
         type="grid"

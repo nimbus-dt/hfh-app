@@ -12,6 +12,7 @@ import {
   TabItem,
   Button,
   Alert,
+  Divider,
 } from '@aws-amplify/ui-react';
 import { DEFAULT_QUESTION_VALUES, QuestionsTab } from './QuestionsTab';
 import { DEFAULT_TERM_VALUES, TermsTab } from './TermsTab';
@@ -108,10 +109,12 @@ export function AffiliateSettingsPage() {
   };
 
   return (
-    <>
+    <Flex direction="column" width="100%" height="100%">
       <Heading level={3} fontWeight="bold" textAlign="center">
         Settings
       </Heading>
+
+      <Divider />
 
       <Flex direction="column">
         <form onSubmit={handleSubmit(onValid, onInvalid)} noValidate>
@@ -166,6 +169,6 @@ export function AffiliateSettingsPage() {
           </Flex>
         </form>
       </Flex>
-    </>
+    </Flex>
   );
 }
