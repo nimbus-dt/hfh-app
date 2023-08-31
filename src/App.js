@@ -23,12 +23,12 @@ import { FormApplications } from './components/PreScreen/Form/FormApplications';
 import { FormUserForm } from './components/PreScreen/Form/FormUserForm';
 import { FormLayoutNew } from './components/PreScreen/Form/FormLayoutNew';
 import { FormInfoPage } from './components/PreScreen/Form/FormInfoPage';
-import { CycleForm } from './pages/affiliate/cycles/CycleForm';
 import { LandingNewPricing } from './components/Landing/LandingNewPricing';
 import AffiliateLayout from './layouts/AffiliateLayout';
 import { AffiliatePrescreens } from './components/Affiliate/AffiliatePrescreens';
 import AffiliateSettingsPage from './pages/affiliate/settings';
 import AffiliateBillingPage from './pages/affiliate/billing';
+import AffiliateCyclesPage from './pages/affiliate/cycles';
 
 function App() {
   return (
@@ -81,7 +81,7 @@ function App() {
         >
           <Route path="home" element={<AffiliatePrescreens />} />
           <Route path="settings" element={<AffiliateSettingsPage />} />
-          <Route path="cycle" element={<CycleForm />} />
+          <Route path="cycle" element={<AffiliateCyclesPage />} />
           <Route path="billing" element={<AffiliateBillingPage />} />
         </Route>
       </Route>
