@@ -63,7 +63,7 @@ const SUCCESS_ALERT = {
 };
 
 export function AffiliateSettingsPage() {
-  const { habitat } = useOutletContext();
+  const { habitat, setHabitat } = useOutletContext();
   const { id: habitatId, props: habitatProps } = habitat;
   const [alert, setAlert] = useState(null);
   const {
@@ -88,11 +88,14 @@ export function AffiliateSettingsPage() {
   const onValid = async (data) => {
     try {
       const originalHabitat = await DataStore.query(Habitat, habitatId);
-      await DataStore.save(
+
+      const updatedHabitat = await DataStore.save(
         Habitat.copyOf(originalHabitat, (updated) => {
           updated.props = data;
         })
       );
+
+      setHabitat(updatedHabitat);
 
       updateAlert(SUCCESS_ALERT);
     } catch (error) {

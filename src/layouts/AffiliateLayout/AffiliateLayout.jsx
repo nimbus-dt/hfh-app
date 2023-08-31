@@ -35,21 +35,23 @@ export function AffiliateLayout() {
     xxl: false,
   });
 
-  const urlName = useParams('habitat').habitat;
+  const habitatUrlName = useParams('habitat').habitat;
 
-  // Get habitat
+  // fetch habitat on mount
   useEffect(() => {
-    const fetchHabitat = async () => {
+    const fetchData = async () => {
       try {
-        const habitatObject = await DataStore.query(Habitat, (c) =>
-          c.urlName.eq(urlName)
+        const habitatsResponse = await DataStore.query(Habitat, (c) =>
+          c.urlName.eq(habitatUrlName)
         );
-        setHabitat(habitatObject[0]);
+        const habitatObject = habitatsResponse[0];
+        setHabitat(habitatObject);
 
-        const allowedUsers = habitatObject[0].users || [];
+        const allowedUsers = habitatObject.users || [];
         const currentUser = await Auth.currentAuthenticatedUser({
           bypassCache: false,
         });
+
         setUserID(currentUser.username);
 
         if (allowedUsers.includes(currentUser.username)) {
@@ -57,14 +59,15 @@ export function AffiliateLayout() {
         } else {
           setIsUserAllowed(false);
         }
+
         setIsLoading(false);
       } catch (error) {
         console.log(`Error fetching habitat: ${error}`);
       }
     };
 
-    fetchHabitat();
-  }, []);
+    fetchData();
+  }, [habitatUrlName]);
 
   useEffect(() => {
     async function fetchApplication() {
@@ -133,7 +136,7 @@ export function AffiliateLayout() {
               grow={1}
               wrap
             >
-              <Outlet context={{ habitat }} />
+              <Outlet context={{ habitat, setHabitat }} />
             </Card>
           </Flex>
         </ScrollView>
