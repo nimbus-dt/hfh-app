@@ -1,18 +1,27 @@
 /* eslint-disable react/prop-types */
+import { useRef, useState } from 'react';
 import {
   Card,
   Heading,
   TextField,
   SelectField,
-  StepperField,
   Flex,
   Button,
+  Text,
+  View,
+  Alert,
 } from '@aws-amplify/ui-react';
+import { HiTrash } from 'react-icons/hi';
 import { DataStore, Storage } from 'aws-amplify';
-import { useState } from 'react';
-import { Habitat, IncomeTypes, IncomeRecord } from '../../../../models';
+import { IncomeTypes, IncomeRecord } from '../../../../models';
+
+const MAX_FILES_AMOUNT = 10;
 
 export function IncomeCreate({ owners, habitat, application }) {
+  const [files, setFiles] = useState([]);
+  const [filesInputError, setFilesInputError] = useState(false);
+  const filesInputRef = useRef();
+
   // Create new income record
   const handleCreate = async (e) => {
     e.preventDefault();
@@ -65,6 +74,42 @@ export function IncomeCreate({ owners, habitat, application }) {
     // Reset the form
     e.target.reset();
     window.location.reload();
+  };
+
+  // this function is used to keep the input data in sync with the state
+  const updateFilesList = (filesList) => {
+    filesInputRef.current.files = filesList;
+    setFiles(Array.from(filesList));
+  };
+
+  const handleFilesInputChange = (e) => {
+    const filesList = e.target.files;
+
+    if (filesList.length > MAX_FILES_AMOUNT) {
+      const emptyFiles = new DataTransfer().files;
+
+      updateFilesList(emptyFiles);
+      setFilesInputError(true);
+
+      return;
+    }
+
+    setFilesInputError(false);
+    setFiles(Array.from(filesList));
+  };
+
+  const handleOnFileRemove = (fileName) => {
+    const dt = new DataTransfer();
+
+    files.forEach((file) => {
+      if (file.name === fileName) {
+        return;
+      }
+
+      dt.items.add(file);
+    });
+
+    updateFilesList(dt.files);
   };
 
   return (
@@ -138,14 +183,87 @@ export function IncomeCreate({ owners, habitat, application }) {
             isRequired
             type="number"
           />
-          <TextField
-            label="Upload most recent pay stub"
-            descriptiveText="To remove uploaded file, reload screen"
-            name="proofOfIncome"
-            type="file"
-            accept=".jpg, .png, .pdf"
-            isRequired
-          />
+
+          <View width="100%">
+            <TextField
+              label="Upload most recent pay stub"
+              name="proofOfIncome"
+              type="file"
+              accept=".jpg, .png, .pdf"
+              onChange={handleFilesInputChange}
+              ref={filesInputRef}
+              multiple
+              isRequired
+            />
+
+            {filesInputError && (
+              <Alert
+                key="files-input-amount-error"
+                variation="error"
+                marginTop="0.5rem"
+                onDismiss={() => setFilesInputError(false)}
+                isDismissible
+                hasIcon
+              >
+                Maximum amount of files is {MAX_FILES_AMOUNT}
+              </Alert>
+            )}
+
+            {files.length > 0 && (
+              <>
+                <Text
+                  fontSize="0.875rem"
+                  fontStyle="italic"
+                  marginTop="0.5rem"
+                  variation="secondary"
+                >
+                  Selected files:
+                </Text>
+
+                <Flex
+                  direction="column"
+                  gap="0.25rem"
+                  maxHeight="12.5rem"
+                  overflow="auto"
+                >
+                  {files.map((file) => (
+                    <Flex
+                      key={file.name}
+                      height="3rem"
+                      alignItems="center"
+                      justifyContent="center"
+                      gap="0.25rem"
+                    >
+                      <TextField
+                        value={file.name}
+                        type="text"
+                        margin="0rem"
+                        grow={1}
+                        style={{
+                          cursor: 'auto',
+                        }}
+                        disabled
+                        labelHidden
+                      />
+                      <Button
+                        title="Remove file"
+                        type="button"
+                        variation="destructive"
+                        height="2.5rem"
+                        width="2.5rem"
+                        padding="0rem"
+                        margin="0rem"
+                        onClick={() => handleOnFileRemove(file.name)}
+                      >
+                        <HiTrash size={16} />
+                      </Button>
+                    </Flex>
+                  ))}
+                </Flex>
+              </>
+            )}
+          </View>
+
           <Button type="submit" variation="primary">
             Add
           </Button>
