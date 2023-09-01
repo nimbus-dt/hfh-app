@@ -11,12 +11,11 @@ export function IncomeList({ items, sizeRenderer, application }) {
           items={items}
           type={sizeRenderer ? 'list' : 'grid'}
           gap="20px"
-          templateColumns="1fr 1fr"
-          templateRows="12rem 12rem"
-          wrap
-          isPaginated
-          itemsPerPage={sizeRenderer ? 1 : 4}
+          templateColumns="1fr"
+          itemsPerPage={sizeRenderer ? 1 : 2}
           alignItems="center"
+          isPaginated
+          wrap
         >
           {(item, index) => (
             <IncomeDetail
