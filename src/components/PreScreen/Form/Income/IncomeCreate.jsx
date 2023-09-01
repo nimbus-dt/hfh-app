@@ -22,6 +22,26 @@ export function IncomeCreate({ owners, habitat, application }) {
   const [filesInputError, setFilesInputError] = useState(false);
   const filesInputRef = useRef();
 
+  const getFileFormattedKey = (fileName, ownerValue) => {
+    const formattedKey = `${
+      habitat?.urlName
+    }_${ownerValue}_${Date.now()}_${fileName}`;
+
+    return formattedKey;
+  };
+
+  const uploadFiles = async (ownerValue) => {
+    const promisesArr = files.map((file) =>
+      Storage.put(getFileFormattedKey(file.name, ownerValue), file, {
+        level: 'protected',
+      })
+    );
+
+    const results = await Promise.all(promisesArr);
+
+    return results;
+  };
+
   // Create new income record
   const handleCreate = async (e) => {
     e.preventDefault();
@@ -29,51 +49,33 @@ export function IncomeCreate({ owners, habitat, application }) {
     // Access the form fields
     const formFields = e.target.elements;
 
-    // Process file
-    const file = formFields.proofOfIncome.files[0];
-    const newFileName = `${habitat?.urlName}_${
-      formFields.owner.value
-    }_${Date.now()}_${file.name}`;
-    const modifiedFile = new File([file], newFileName, { type: file.type });
-    let result;
     try {
-      result = await Storage.put(modifiedFile.name, modifiedFile, {
-        level: 'protected',
-      });
-    } catch (error) {
-      console.log(`Error uploading file: ${error}`);
-    }
+      const results = await uploadFiles(formFields.owner.value);
 
-    // Get data from form
-    const data = {
-      owner: formFields.owner.value,
-      type: formFields.type.value,
-      employer: formFields.employer.value,
-      employmentTime: Number(
-        Number(formFields.employmentTime.value).toFixed(2)
-      ),
-      estimatedMonthlyIncome: Number(
-        Number(formFields.estimatedMonthlyIncome.value).toFixed(2)
-      ),
-      proofOfIncome: [result?.key],
-    };
-
-    // Create income record
-    await DataStore.save(
-      new IncomeRecord({
-        ownerID: data.owner,
-        typeOfIncome: data.type,
-        employer: data.employer,
-        employmentTime: data.employmentTime,
-        estimatedMonthlyIncome: Number(data.estimatedMonthlyIncome),
-        proofOfIncome: data.proofOfIncome,
+      // Get data from form
+      const data = {
+        ownerID: formFields.owner.value,
+        typeOfIncome: formFields.type.value,
+        employer: formFields.employer.value,
+        employmentTime: Number(
+          Number(formFields.employmentTime.value).toFixed(2)
+        ),
+        estimatedMonthlyIncome: Number(
+          Number(formFields.estimatedMonthlyIncome.value).toFixed(2)
+        ),
+        proofOfIncome: results.map((result) => result?.key),
         applicationID: application?.id,
-      })
-    );
+      };
 
-    // Reset the form
-    e.target.reset();
-    window.location.reload();
+      // Create income record
+      await DataStore.save(new IncomeRecord(data));
+
+      // Reset the form
+      e.target.reset();
+      window.location.reload();
+    } catch (error) {
+      console.log(`Error uploading files: ${error}`);
+    }
   };
 
   // this function is used to keep the input data in sync with the state
