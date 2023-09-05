@@ -1,0 +1,39 @@
+.navContainer {
+  background-color: var(--secondary);
+}
+
+.navLink {
+  width: 100%;
+  color: var(--on_secondary);
+  text-decoration: none;
+  cursor: pointer;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  align-items: center;
+  font-weight: bold;
+  border-radius: 0.25rem;
+}
+
+.active {
+  background-color: var(--secondary-accent-dark);
+}
+
+.navLink:hover {
+  background-color: var(--secondary-accent-dark);
+}
+
+.signOutBtn {
+  width: 100%;
+  padding: 1rem;
+  color: var(--on_secondary);
+  border-radius: 0;
+}
+
+.signOutBtn:hover {
+  color: var(--on_secondary);
+  background-color: var(--secondary-accent-dark);
+}
+
+.signOutBtn:focus {
+  color: var(--on_secondary);
+  background-color: var(--secondary-accent-dark);
+}
