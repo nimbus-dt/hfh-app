@@ -88,7 +88,8 @@ export function IncomeCreate({ owners, habitat, application }) {
   const handleFilesInputChange = (e) => {
     const filesList = e.target.files;
 
-    if (!filesList) {
+    if (!filesList || filesList.length <= 0) {
+      updateFilesList(filesDT);
       return;
     }
 
