@@ -18,8 +18,9 @@ import { IncomeTypes, IncomeRecord } from '../../../../models';
 const MAX_FILES_AMOUNT = 10;
 
 export function IncomeCreate({ owners, habitat, application }) {
-  const [files, setFiles] = useState([]);
+  const [filesDT, setFilesDT] = useState(new DataTransfer());
   const [filesInputError, setFilesInputError] = useState(false);
+  const [repeatedFileWarning, setRepeatedFileWarning] = useState(false);
   const filesInputRef = useRef();
 
   const getFileFormattedKey = (fileName, ownerValue) => {
@@ -31,7 +32,7 @@ export function IncomeCreate({ owners, habitat, application }) {
   };
 
   const uploadFiles = async (ownerValue) => {
-    const promisesArr = files.map((file) =>
+    const promisesArr = Array.from(filesDT.files).map((file) =>
       Storage.put(getFileFormattedKey(file.name, ownerValue), file, {
         level: 'protected',
       })
@@ -79,39 +80,55 @@ export function IncomeCreate({ owners, habitat, application }) {
   };
 
   // this function is used to keep the input data in sync with the state
-  const updateFilesList = (filesList) => {
-    filesInputRef.current.files = filesList;
-    setFiles(Array.from(filesList));
+  const updateFilesList = (newFilesDT) => {
+    filesInputRef.current.files = newFilesDT.files;
+    setFilesDT(newFilesDT);
   };
 
   const handleFilesInputChange = (e) => {
     const filesList = e.target.files;
 
-    if (filesList.length > MAX_FILES_AMOUNT) {
-      const emptyFiles = new DataTransfer().files;
+    if (!filesList) {
+      return;
+    }
 
-      updateFilesList(emptyFiles);
+    if (filesDT.files.length >= MAX_FILES_AMOUNT) {
+      updateFilesList(filesDT);
       setFilesInputError(true);
 
       return;
     }
 
-    setFilesInputError(false);
-    setFiles(Array.from(filesList));
-  };
+    const newFilesDT = new DataTransfer();
+    const newFile = filesList[0];
+    let fileAlreadyExist = false;
 
-  const handleOnFileRemove = (fileName) => {
-    const dt = new DataTransfer();
-
-    files.forEach((file) => {
-      if (file.name === fileName) {
-        return;
+    // clone files list and check if is repeated
+    for (const file of filesDT.files) {
+      if (file.name === newFile.name) {
+        fileAlreadyExist = true;
       }
 
-      dt.items.add(file);
-    });
+      newFilesDT.items.add(file);
+    }
 
-    updateFilesList(dt.files);
+    if (fileAlreadyExist) {
+      setRepeatedFileWarning(true);
+    } else {
+      newFilesDT.items.add(newFile);
+      setRepeatedFileWarning(false);
+    }
+
+    setFilesInputError(false);
+    updateFilesList(newFilesDT);
+  };
+
+  const handleOnFileRemove = (index) => {
+    const newFilesDT = filesDT;
+
+    newFilesDT.items.remove(index);
+
+    updateFilesList(newFilesDT);
   };
 
   return (
@@ -189,12 +206,12 @@ export function IncomeCreate({ owners, habitat, application }) {
           <View width="100%">
             <TextField
               label="Upload most recent pay stub"
+              descriptiveText="Add files one by one"
               name="proofOfIncome"
               type="file"
               accept=".jpg, .png, .pdf"
               onChange={handleFilesInputChange}
               ref={filesInputRef}
-              multiple
               isRequired
             />
 
@@ -211,7 +228,20 @@ export function IncomeCreate({ owners, habitat, application }) {
               </Alert>
             )}
 
-            {files.length > 0 && (
+            {repeatedFileWarning && (
+              <Alert
+                key="files-input-repeated-warning"
+                variation="warning"
+                marginTop="0.5rem"
+                onDismiss={() => setRepeatedFileWarning(false)}
+                isDismissible
+                hasIcon
+              >
+                Cannot upload a file twice
+              </Alert>
+            )}
+
+            {filesDT.files.length > 0 && (
               <>
                 <Text
                   fontSize="0.875rem"
@@ -228,7 +258,7 @@ export function IncomeCreate({ owners, habitat, application }) {
                   maxHeight="12.5rem"
                   overflow="auto"
                 >
-                  {files.map((file) => (
+                  {Array.from(filesDT.files).map((file) => (
                     <Flex
                       key={file.name}
                       height="3rem"
