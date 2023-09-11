@@ -73,9 +73,9 @@ export function IncomeCreate({ owners, habitat, application }) {
 
       // Reset the form
       e.target.reset();
-      window.location.reload();
+      updateFilesList(new DataTransfer()); // empty files input
     } catch (error) {
-      console.log(`Error uploading files: ${error}`);
+      console.log('Error uploading files', error);
     }
   };
 
