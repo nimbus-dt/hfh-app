@@ -10,7 +10,7 @@ import {
   View,
 } from '@aws-amplify/ui-react';
 import { HiTrash } from 'react-icons/hi';
-import ErrorText from '../../../components/Forms/ErrorText';
+import ErrorText from '../../../components/forms/ErrorText';
 import { valueAsStringOrEmpty } from '../../../utils/forms';
 
 export const DEFAULT_TERM_VALUES = {

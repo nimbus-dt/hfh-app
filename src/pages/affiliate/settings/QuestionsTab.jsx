@@ -13,7 +13,7 @@ import {
 } from '@aws-amplify/ui-react';
 import { HiTrash } from 'react-icons/hi';
 import { valueAsStringOrEmpty } from '../../../utils/forms';
-import ErrorText from '../../../components/Forms/ErrorText';
+import ErrorText from '../../../components/forms/ErrorText';
 
 export const DEFAULT_QUESTION_VALUES = {
   name: '',
