@@ -6,8 +6,13 @@ import { HouseholdMember } from '../../../../models';
 
 export function HouseholdDetail({ item, sizeRenderer }) {
   async function deleteObject() {
-    await DataStore.delete(HouseholdMember, (member) => member.id.eq(item.id));
-    window.location.reload();
+    try {
+      await DataStore.delete(HouseholdMember, (member) =>
+        member.id.eq(item.id)
+      );
+    } catch (error) {
+      console.log('Error deleting record', error);
+    }
   }
 
   return (

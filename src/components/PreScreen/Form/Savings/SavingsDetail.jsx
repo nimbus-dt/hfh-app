@@ -43,7 +43,6 @@ export function SavingsDetail({ item, sizeRenderer }) {
   async function deleteObject() {
     try {
       await DataStore.delete(SavingRecord, item.id);
-      window.location.reload();
     } catch (error) {
       console.error(
         'An error occurred while deleting the Saving Record :',

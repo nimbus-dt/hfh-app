@@ -45,12 +45,8 @@ export function IncomeDetail({ item, sizeRenderer, application }) {
   const deleteObject = async () => {
     try {
       await DataStore.delete(IncomeRecord, item.id);
-      window.location.reload();
     } catch (error) {
-      console.error(
-        'An error occurred while deleting the Saving Record :',
-        error
-      );
+      console.error('Error deleting income record', error);
     }
   };
 

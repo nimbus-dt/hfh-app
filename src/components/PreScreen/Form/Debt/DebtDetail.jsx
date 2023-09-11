@@ -57,7 +57,6 @@ export function DebtDetail({ item, sizeRenderer }) {
   const deleteObject = useCallback(async () => {
     try {
       await DataStore.delete(DebtRecord, item.id);
-      window.location.reload();
     } catch (error) {
       console.error('An error occurred while deleting the Debt Record:', error);
     }
