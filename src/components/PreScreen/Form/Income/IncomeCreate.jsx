@@ -124,10 +124,14 @@ export function IncomeCreate({ owners, habitat, application }) {
     updateFilesList(newFilesDT);
   };
 
-  const handleOnFileRemove = (index) => {
-    const newFilesDT = filesDT;
+  const handleOnFileRemove = (fileNameToRemove) => {
+    const newFilesDT = new DataTransfer();
 
-    newFilesDT.items.remove(index);
+    for (const file of filesDT.files) {
+      if (file.name !== fileNameToRemove) {
+        newFilesDT.items.add(file);
+      }
+    }
 
     updateFilesList(newFilesDT);
   };
