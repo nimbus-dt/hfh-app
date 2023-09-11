@@ -1,4 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
 import { DataStore, Auth } from 'aws-amplify';
 import {
   Flex,
@@ -11,74 +13,51 @@ import {
   TableCell,
 } from '@aws-amplify/ui-react';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Application, UserProps } from '../../../../models';
 import { HouseholdList } from '../Household/HouseholdList';
 import { IncomeList } from '../Income/IncomeList';
 import { SavingsList } from '../Savings/SavingsList';
 import { DebtList } from '../Debt/DebtList';
 
-export function ConfirmForm({ application }) {
-  const [userDataBool, setUserDataBool] = useState(false);
-  const [userID, setUserID] = useState('');
+export function ConfirmForm({
+  application,
+  householdMembers,
+  savingRecords,
+  debtRecords,
+  incomeRecords,
+}) {
   const [formData, setFormData] = useState({});
-  const [previousDataId, setPreviousDataId] = useState(null);
-  const [householdMembers, setHouseholdMembers] = useState([]);
-  const [selectedApplication, setSelectedApplication] = useState(null);
-  const [incomes, setIncomes] = useState([]);
-  const [savings, setSavings] = useState([]);
-  const [debts, setDebts] = useState([]);
   const navigate = useNavigate();
 
+  const isAnySectionEmpty =
+    householdMembers.length <= 0 ||
+    savingRecords.length <= 0 ||
+    debtRecords.length <= 0 ||
+    incomeRecords.length <= 0;
+
+  // check if application is already submitted
   useEffect(() => {
-    async function setApplicationChildren() {
-      const applicationObject = await DataStore.query(
-        Application,
-        application.id
-      );
-
-      setSelectedApplication(applicationObject);
-
-      try {
-        const householdMemberArray =
-          await selectedApplication?.HouseholdMembers.toArray();
-        const incomeArray = await selectedApplication?.IncomeRecords.toArray();
-        const savingArray = await selectedApplication?.SavingRecords.toArray();
-        const debtArray = await selectedApplication?.DebtRecords.toArray();
-
-        setHouseholdMembers(householdMemberArray);
-        setIncomes(incomeArray);
-        setSavings(savingArray);
-        setDebts(debtArray);
-      } catch (error) {
-        console.log(`Error fetching application children: ${error}`);
-      }
+    if (!application?.submitted) {
+      return;
     }
-    setApplicationChildren();
-  }, [application.id, selectedApplication]);
 
-  useEffect(() => {
-    async function checkSubmittedStatus() {
-      if (selectedApplication?.submitted) {
-        navigate('../apps');
-      }
-    }
-    checkSubmittedStatus();
-  }, [navigate, selectedApplication?.submitted]);
+    navigate('../apps');
+  }, [application?.submitted]);
 
   async function submitApplication() {
-    const applicationObject = await DataStore.query(
-      Application,
-      application.id
-    );
+    if (isAnySectionEmpty) {
+      console.log('not submitting mf');
+      return;
+    }
 
     const current = new Date();
     const currentDate = current.toISOString();
     const cutDate = currentDate.substring(0, 10);
 
     try {
-      const newApp = await DataStore.save(
-        Application.copyOf(applicationObject, (updated) => {
+      await DataStore.save(
+        Application.copyOf(application, (updated) => {
           updated.submitted = true;
           updated.ownerName = `${formData.name}`;
           updated.submittedStatus = 'PENDING';
@@ -86,6 +65,8 @@ export function ConfirmForm({ application }) {
           // Include other properties that need to be updated
         })
       );
+
+      navigate('../apps');
     } catch (error) {
       console.log(`Error submitting application: ${error}`);
     }
@@ -97,16 +78,12 @@ export function ConfirmForm({ application }) {
         const currentUser = await Auth.currentAuthenticatedUser({
           bypassCache: false,
         });
-        setUserID(currentUser.username);
 
         const userDataObject = await DataStore.query(UserProps, (u) =>
           u.ownerID.eq(currentUser.username)
         );
 
         if (userDataObject.length > 0) {
-          setUserDataBool(true);
-          const previousData = userDataObject[0];
-          setPreviousDataId(previousData.id);
           const userData = userDataObject[0];
           setFormData({
             name: userData.name,
@@ -126,6 +103,57 @@ export function ConfirmForm({ application }) {
     checkUserData();
   }, []);
 
+  const generalInformationData = [
+    {
+      header: 'Name',
+      value: formData.name,
+    },
+    {
+      header: 'Date of Birth',
+      value: formData.dob,
+    },
+    {
+      header: 'Sex',
+      value: formData.sex,
+    },
+    {
+      header: 'Phone Number',
+      value: formData.phone,
+    },
+    {
+      header: 'Address',
+      value: formData.address,
+    },
+    {
+      header: 'Zip',
+      value: formData.zip,
+    },
+
+    {
+      header: 'Email',
+      value: formData.email,
+    },
+  ];
+
+  const sectionsListsData = [
+    {
+      header: 'Household',
+      ListComponent: <HouseholdList items={householdMembers} />,
+    },
+    {
+      header: 'Savings',
+      ListComponent: <SavingsList items={savingRecords} />,
+    },
+    {
+      header: 'Debt',
+      ListComponent: <DebtList items={debtRecords} />,
+    },
+    {
+      header: 'Income',
+      ListComponent: <IncomeList items={incomeRecords} />,
+    },
+  ];
+
   const prescreenDetail = (
     <Flex width="100%" direction="column">
       <Table caption="" highlightOnHover variation="bordered">
@@ -138,116 +166,45 @@ export function ConfirmForm({ application }) {
             </TableCell>
           </TableRow>
 
-          <TableRow>
-            <TableCell as="th" width="25%">
-              Name
-            </TableCell>
-            <TableCell>{formData.name}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell as="th" width="25%">
-              Date of Birth
-            </TableCell>
-            <TableCell>{formData.dob}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell as="th" width="25%">
-              Sex
-            </TableCell>
-            <TableCell>{formData.sex}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell as="th" width="25%">
-              Phone Number
-            </TableCell>
-            <TableCell>{formData.phone}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell as="th" width="25%">
-              Address
-            </TableCell>
-            <TableCell>{formData.address}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell as="th" width="25%">
-              Zip
-            </TableCell>
-            <TableCell>{formData.zip}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell as="th" width="25%">
-              Email
-            </TableCell>
-            <TableCell>{formData.email}</TableCell>
-          </TableRow>
+          {generalInformationData.map((data) => (
+            <TableRow key={data.header}>
+              <TableCell as="th" width="25%">
+                {data.header}
+              </TableCell>
+              <TableCell>{data.value}</TableCell>
+            </TableRow>
+          ))}
 
-          <TableRow>
-            <TableCell as="th" colSpan="2">
-              <Heading level="3" textAlign="center">
-                Household Information
-              </Heading>
-            </TableCell>
-          </TableRow>
+          {sectionsListsData.map((data) => (
+            <Fragment key={data.header}>
+              <TableRow>
+                <TableCell as="th" colSpan="2">
+                  <Heading level="3" textAlign="center">
+                    {data.header} Information
+                  </Heading>
+                </TableCell>
+              </TableRow>
 
-          <TableRow>
-            <TableCell colSpan="2">
-              <HouseholdList items={householdMembers} />
-            </TableCell>
-          </TableRow>
-
-          <TableRow>
-            <TableCell as="th" colSpan="2">
-              <Heading level="3" textAlign="center">
-                Savings Information
-              </Heading>
-            </TableCell>
-          </TableRow>
-
-          <TableRow>
-            <TableCell colSpan="2">
-              <SavingsList items={savings} />
-            </TableCell>
-          </TableRow>
-
-          <TableRow>
-            <TableCell as="th" colSpan="2">
-              <Heading level="3" textAlign="center">
-                Debt Information
-              </Heading>
-            </TableCell>
-          </TableRow>
-
-          <TableRow>
-            <TableCell colSpan="2">
-              <DebtList items={debts} />
-            </TableCell>
-          </TableRow>
-
-          <TableRow>
-            <TableCell as="th" colSpan="2">
-              <Heading level="3" textAlign="center">
-                Income Information
-              </Heading>
-            </TableCell>
-          </TableRow>
-
-          <TableRow>
-            <TableCell colSpan="2">
-              <IncomeList items={incomes} />
-            </TableCell>
-          </TableRow>
+              <TableRow>
+                <TableCell colSpan="2">{data.ListComponent}</TableCell>
+              </TableRow>
+            </Fragment>
+          ))}
         </TableBody>
       </Table>
+
       <Text textAlign="center" width="100%">
         Please make sure that you have added at least ONE RECORD per section. If
         you have not, your application will not be considered.
       </Text>
+
       <Button
         type="submit"
         variation="primary"
         onClick={() => {
           submitApplication();
         }}
+        disabled={isAnySectionEmpty}
       >
         Submit
       </Button>
@@ -256,3 +213,11 @@ export function ConfirmForm({ application }) {
 
   return prescreenDetail;
 }
+
+ConfirmForm.propTypes = {
+  application: PropTypes.object,
+  householdMembers: PropTypes.array,
+  savingRecords: PropTypes.array,
+  debtRecords: PropTypes.array,
+  incomeRecords: PropTypes.array,
+};
