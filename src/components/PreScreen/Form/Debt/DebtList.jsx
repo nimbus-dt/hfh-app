@@ -16,13 +16,12 @@ export function DebtList({ items, sizeRenderer }) {
         <Collection
           items={items}
           type={sizeRenderer ? 'list' : 'grid'}
-          gap="20px"
+          gap="1rem"
           templateColumns="1fr 1fr"
-          templateRows="12rem 12rem"
-          wrap
-          isPaginated
           itemsPerPage={sizeRenderer ? 1 : 4}
           alignItems="center"
+          isPaginated
+          wrap
         >
           {(item, index) => (
             <DebtDetail item={item} sizeRenderer={sizeRenderer} key={index} />
