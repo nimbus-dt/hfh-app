@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react/prop-types */
 import PropTypes from 'prop-types';
 import { DataStore, Auth } from 'aws-amplify';
 import {
