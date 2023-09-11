@@ -1,4 +1,4 @@
-import { Auth, DataStore } from 'aws-amplify';
+import { Auth, DataStore, SortDirection } from 'aws-amplify';
 import { useOutletContext, useParams } from 'react-router-dom';
 import {
   Flex,
@@ -56,8 +56,13 @@ export function AffiliatePrescreens() {
 
   useEffect(() => {
     const fetchPrescreens = async () => {
-      const applications = (await habitat.Applications.toArray()).filter(
-        (app) => app.submitted === true
+      const applications = await DataStore.query(
+        Application,
+        (c1) =>
+          c1.and((c2) => [c2.habitatID.eq(habitat.id), c2.submitted.eq(true)]),
+        {
+          sort: (s) => s.dateSubmitted(SortDirection.DESCENDING),
+        }
       );
 
       setPrescreens(applications);
