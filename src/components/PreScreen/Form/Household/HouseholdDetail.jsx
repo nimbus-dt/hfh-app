@@ -1,11 +1,11 @@
-/* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/prop-types */
-import { Card, Flex, Text, Heading, Link } from '@aws-amplify/ui-react';
+import { Flex, Text } from '@aws-amplify/ui-react';
 import { DataStore } from 'aws-amplify';
 import { HouseholdMember } from '../../../../models';
+import RecordDetail from '../../../RecordDetail';
 
 export function HouseholdDetail({ item, sizeRenderer }) {
-  async function deleteObject() {
+  const deleteObject = async () => {
     try {
       await DataStore.delete(HouseholdMember, (member) =>
         member.id.eq(item.id)
@@ -13,30 +13,36 @@ export function HouseholdDetail({ item, sizeRenderer }) {
     } catch (error) {
       console.log('Error deleting record', error);
     }
-  }
+  };
 
   return (
-    <Card variation="elevated" width={sizeRenderer ? '80%' : '300px'}>
-      <Flex direction="column" gap="1px">
-        <Heading level="4">{item.name}</Heading>
-        <Flex gap="5px">
-          <Text fontWeight="bold">Date of birth:</Text>
-          <Text>{item.dateOfBirth}</Text>
-        </Flex>
-        <Flex gap="5px">
-          <Text fontWeight="bold">Sex:</Text>
-          <Text>{item.sex}</Text>
-        </Flex>
-        <Flex gap="5px">
-          <Text fontWeight="bold">Relationship:</Text>
-          <Text>{item.relationship}</Text>
-        </Flex>
-        <Flex gap="5px">
-          <Text fontWeight="bold">Is CoApplicant:</Text>
-          <Text>{item.isCoapplicant ? 'Yes' : 'No'}</Text>
-        </Flex>
-        <Link onClick={deleteObject}>Delete</Link>
-      </Flex>
-    </Card>
+    <RecordDetail
+      title={item.name}
+      onDelete={deleteObject}
+      sizeRenderer={sizeRenderer}
+      renderBody={() => (
+        <>
+          <Flex gap="5px">
+            <Text fontWeight="bold">Date of birth:</Text>
+            <Text>{item.dateOfBirth}</Text>
+          </Flex>
+
+          <Flex gap="5px">
+            <Text fontWeight="bold">Sex:</Text>
+            <Text>{item.sex}</Text>
+          </Flex>
+
+          <Flex gap="5px">
+            <Text fontWeight="bold">Relationship:</Text>
+            <Text>{item.relationship}</Text>
+          </Flex>
+
+          <Flex gap="5px">
+            <Text fontWeight="bold">Is CoApplicant:</Text>
+            <Text>{item.isCoapplicant ? 'Yes' : 'No'}</Text>
+          </Flex>
+        </>
+      )}
+    />
   );
 }
