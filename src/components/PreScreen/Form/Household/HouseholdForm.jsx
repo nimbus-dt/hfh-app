@@ -1,15 +1,23 @@
-/* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
 import { Flex, Heading, Text, useBreakpointValue } from '@aws-amplify/ui-react';
 import { DataStore } from 'aws-amplify';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { HouseholdMember } from '../../../../models';
 import { HouseholdList } from './HouseholdList';
 import { HouseholdCreate } from './HouseholdCreate';
 
-export function HouseholdForm({ application, habitat }) {
-  const [households, setHouseholds] = useState();
-  const [coapplicants, setCoapplicants] = useState(0);
-  const [enableCoapplicants, setEnableCoapplicants] = useState(true);
+const countCoapplicants = (householdMembers) =>
+  householdMembers.filter((member) => member.isCoapplicant).length;
+
+export function HouseholdForm({
+  applicationID,
+  householdMembers,
+  habitatMaxCoapplicants,
+}) {
+  const [coapplicants] = useState(() => countCoapplicants(householdMembers));
+  const [enableCoapplicants] = useState(
+    () => coapplicants !== habitatMaxCoapplicants
+  );
 
   const sizeRenderer = useBreakpointValue({
     base: true,
@@ -20,76 +28,52 @@ export function HouseholdForm({ application, habitat }) {
     xxl: false,
   });
 
-  const countCoapplicants = (household) =>
-    household.filter((member) => member.isCoapplicant).length;
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleCreate = async (e) => {
     e.preventDefault();
 
-    // Access the form fields
-    const formFields = e.target.elements;
+    try {
+      // Access the form fields
+      const formFields = e.target.elements;
 
-    // Retrieve the values using the form field names
-    const name = formFields.name.value;
-    const dob = formFields.dob.value;
-    const sex = formFields.sex.value;
-    const relationship = formFields.relationship.value;
-    const isCoapplicant = Boolean(formFields.isCoapplicant.value);
+      // Retrieve the values using the form field names
+      const name = formFields.name.value;
+      const dob = formFields.dob.value;
+      const sex = formFields.sex.value;
+      const relationship = formFields.relationship.value;
+      const isCoapplicant = Boolean(formFields.isCoapplicant.value);
 
-    // Create user
-    await DataStore.save(
-      new HouseholdMember({
-        name,
-        dateOfBirth: dob,
-        sex,
-        relationship,
-        isCoapplicant,
-        applicationID: application?.id,
-      })
-    );
+      // Create user
+      await DataStore.save(
+        new HouseholdMember({
+          name,
+          dateOfBirth: dob,
+          sex,
+          relationship,
+          isCoapplicant,
+          applicationID,
+        })
+      );
 
-    // Reset the form
-    e.target.reset();
+      // Reset the form
+      e.target.reset();
+    } catch (error) {
+      console.log('Error storing household member information', error);
+    }
   };
-
-  useEffect(() => {
-    const fetchHouseholdMembers = async () => {
-      try {
-        const householdMemberObjects = await DataStore.query(
-          HouseholdMember,
-          (c) => c.applicationID.eq(application.id)
-        );
-        setHouseholds(householdMemberObjects);
-        setCoapplicants(countCoapplicants(householdMemberObjects));
-
-        if (coapplicants === habitat?.props?.data?.maxCoapplicants) {
-          setEnableCoapplicants(false);
-        }
-      } catch (error) {
-        console.log('Error retrieving HouseholdMembers', error);
-      }
-    };
-
-    fetchHouseholdMembers();
-  }, [
-    handleCreate,
-    application.id,
-    coapplicants,
-    habitat?.props?.data?.maxCoapplicants,
-  ]);
-
-  const items = households;
 
   return (
     <Flex direction="column" width="100%">
       <Heading level="4" textAlign="center">
         Household Information
       </Heading>
+
       <Text textAlign="center">
         Please input all members of your current household except yourself.
       </Text>
-      <HouseholdList items={items} sizeRenderer={sizeRenderer} />
+
+      <HouseholdList items={householdMembers} sizeRenderer={sizeRenderer} />
+
       <HouseholdCreate
         handleCreate={handleCreate}
         enableCoapplicants={enableCoapplicants}
@@ -97,3 +81,9 @@ export function HouseholdForm({ application, habitat }) {
     </Flex>
   );
 }
+
+HouseholdForm.propTypes = {
+  applicationID: PropTypes.string,
+  householdMembers: PropTypes.array,
+  habitatMaxCoapplicants: PropTypes.number,
+};

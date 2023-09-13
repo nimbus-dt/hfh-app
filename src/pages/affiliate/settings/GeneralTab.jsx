@@ -4,7 +4,7 @@ import {
   valueAsNumberOrEmpty,
   valueAsStringOrEmpty,
 } from '../../../utils/forms';
-import ErrorText from '../../../components/Forms/ErrorText';
+import ErrorText from '../../../components/forms/ErrorText';
 import { PrePreScreenHomeTextList } from './PrePreScreenHomeTextList';
 import { PreScreenHomeTextList } from './PreScreenHomeTextList';
 
