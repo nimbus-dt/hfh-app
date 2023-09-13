@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
-import { Card, Flex, Text, Heading, Button } from '@aws-amplify/ui-react';
-import { HiXMark } from 'react-icons/hi2';
+import { Flex, Text, Button } from '@aws-amplify/ui-react';
 import { useEffect, useState } from 'react';
 import { DataStore, Storage } from 'aws-amplify';
 import { HouseholdMember, IncomeRecord, UserProps } from '../../../../models';
 import { downloadWithUrl } from '../../../../utils/files';
+import RecordDetail from '../../../RecordDetail';
 
 export function IncomeDetail({ item, sizeRenderer, application }) {
   const [names, setNames] = useState({});
@@ -45,12 +45,8 @@ export function IncomeDetail({ item, sizeRenderer, application }) {
   const deleteObject = async () => {
     try {
       await DataStore.delete(IncomeRecord, item.id);
-      window.location.reload();
     } catch (error) {
-      console.error(
-        'An error occurred while deleting the Saving Record :',
-        error
-      );
+      console.error('Error deleting income record', error);
     }
   };
 
@@ -73,67 +69,55 @@ export function IncomeDetail({ item, sizeRenderer, application }) {
   };
 
   return (
-    <Card variation="elevated" width={sizeRenderer ? '100%' : '300px'}>
-      <Flex direction="column" gap="1px">
-        <Flex justifyContent="space-between" gap="0.5rem">
-          <Heading level="4">Owner: {names.name}</Heading>
-
-          <Button
-            title="Remove income record"
-            shrink="0rem"
-            type="button"
-            variation="warning"
-            height="2rem"
-            width="2rem"
-            padding="0rem"
-            onClick={deleteObject}
-          >
-            <HiXMark size={20} />
-          </Button>
-        </Flex>
-
-        <Flex gap="5px">
-          <Text fontWeight="bold">Employer:</Text>
-          <Text>{item.employer}</Text>
-        </Flex>
-
-        <Flex gap="5px">
-          <Text fontWeight="bold">Monthly income:</Text>
-          <Text>${parseInt(item.estimatedMonthlyIncome)}</Text>
-        </Flex>
-
-        <Flex gap="5px">
-          <Text fontWeight="bold">Employment Time:</Text>
-          <Text>{parseInt(item.employmentTime)} months</Text>
-        </Flex>
-
-        <Flex direction="column" gap="5px">
-          <Text fontWeight="bold">Proof of Income:</Text>
-
-          <Flex
-            direction="column"
-            gap="0.25rem"
-            maxHeight="7rem"
-            overflow="auto"
-          >
-            <ul style={{ margin: 0 }}>
-              {item.proofOfIncome.map((fileKey, index) => (
-                <li key={fileKey}>
-                  <Button
-                    type="button"
-                    title={`Download file #${index + 1}`}
-                    variation="link"
-                    padding="0rem 0.55rem 0rem 0.55rem"
-                    onClick={() => downloadFile(fileKey)}
-                  >
-                    File #{index + 1}
-                  </Button>
-                </li>
-              ))}
-            </ul>
+    <RecordDetail
+      title={`Owner: ${names.name}`}
+      onDelete={deleteObject}
+      sizeRenderer={sizeRenderer}
+      renderBody={() => (
+        <>
+          <Flex gap="5px">
+            <Text fontWeight="bold">Employer:</Text>
+            <Text>{item.employer}</Text>
           </Flex>
-        </Flex>
-      </Flex>
-    </Card>
+
+          <Flex gap="5px">
+            <Text fontWeight="bold">Monthly income:</Text>
+            <Text>${parseInt(item.estimatedMonthlyIncome)}</Text>
+          </Flex>
+
+          <Flex gap="5px">
+            <Text fontWeight="bold">Employment Time:</Text>
+            <Text>{parseInt(item.employmentTime)} months</Text>
+          </Flex>
+
+          <Flex direction="column" gap="5px">
+            <Text fontWeight="bold">Proof of Income:</Text>
+
+            <Flex
+              direction="column"
+              gap="0.25rem"
+              maxHeight="7rem"
+              overflow="auto"
+            >
+              <ul style={{ margin: 0 }}>
+                {item.proofOfIncome.map((fileKey, index) => (
+                  <li key={fileKey}>
+                    <Button
+                      type="button"
+                      title={`Download file #${index + 1}`}
+                      variation="link"
+                      padding="0rem 0.55rem 0rem 0.55rem"
+                      onClick={() => downloadFile(fileKey)}
+                    >
+                      File #{index + 1}
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+            </Flex>
+          </Flex>
+        </>
+      )}
+    />
   );
 }

@@ -10,9 +10,9 @@ export function IncomeList({ items, sizeRenderer, application }) {
         <Collection
           items={items}
           type={sizeRenderer ? 'list' : 'grid'}
-          gap="20px"
-          templateColumns="1fr"
-          itemsPerPage={sizeRenderer ? 1 : 2}
+          gap="1rem"
+          templateColumns="1fr 1fr"
+          itemsPerPage={sizeRenderer ? 1 : 4}
           alignItems="center"
           isPaginated
           wrap
