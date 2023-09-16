@@ -19,7 +19,7 @@ import {
   useBreakpointValue,
 } from '@aws-amplify/ui-react';
 import { useEffect, useState } from 'react';
-import { Application, IncomeRecord, Habitat } from '../../models';
+import { Application, IncomeRecord, Habitat, UserProps } from '../../models';
 import { HouseholdList } from '../PreScreen/Form/Household/HouseholdList';
 import { IncomeList } from '../PreScreen/Form/Income/IncomeList';
 import { SavingsList } from '../PreScreen/Form/Savings/SavingsList';
@@ -44,6 +44,7 @@ export function AffiliatePrescreens({ prescreens }) {
   const [DebtToIncomeRatio, setDebtToIncomeRatio] = useState('');
   const [ami, setAMI] = useState([]);
   const [amiRange, setamiRange] = useState('');
+  const [userProps, setUserProps] = useState(null);
   const urlName = useParams('habitat').habitat;
   const totalMembers = householdMembers.length + 1;
 
@@ -282,6 +283,24 @@ export function AffiliatePrescreens({ prescreens }) {
     checkUserData();
   }, []);
 
+  useEffect(() => {
+    async function getUserProps() {
+      try {
+        const userPropsObject = await DataStore.query(UserProps, (item) =>
+          item.ownerID.eq(userID)
+        );
+
+        const userPropsIndividual = userPropsObject[0];
+
+        setUserProps(userPropsIndividual);
+      } catch (error) {
+        console.log(`Error fetching user props: ${error}`);
+      }
+    }
+
+    getUserProps();
+  }, [userID]);
+
   async function updateApplication(newStatus) {
     const currentUser = await Auth.currentAuthenticatedUser();
     const currentDate = new Date().toISOString().substring(0, 10);
@@ -335,6 +354,24 @@ export function AffiliatePrescreens({ prescreens }) {
               Status
             </TableCell>
             <TableCell>{selectedApplication?.submittedStatus}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell as="th" width="25%">
+              Date Of Birth
+            </TableCell>
+            <TableCell>{userProps?.dob}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell as="th" width="25%">
+              SEX
+            </TableCell>
+            <TableCell>{userProps?.sex}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell as="th" width="25%">
+              Phone Number
+            </TableCell>
+            <TableCell>{userProps?.phone}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell as="th" width="25%">
