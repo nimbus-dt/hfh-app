@@ -19,3 +19,21 @@ export const mapEnumToList = (enumObject) => {
 
   return result;
 };
+
+/**
+ * Returns an object with the keys of the enum types and the values
+ * as human readable strings
+ * @param { EnumObject } enumObject
+ * @returns { { [EnumType]: string } }
+ */
+export const mapEnumToHumanReadableValues = (enumObject) => {
+  const result = Object.values(enumObject).reduce(
+    (sum, enumType) => ({
+      ...sum,
+      [enumType]: stringToHumanReadable(enumType),
+    }),
+    {}
+  );
+
+  return result;
+};
