@@ -14,13 +14,13 @@ import {
   Alert,
   Divider,
 } from '@aws-amplify/ui-react';
+import { Habitat } from 'models';
 import { DEFAULT_QUESTION_VALUES, QuestionsTab } from './QuestionsTab';
 import { DEFAULT_TERM_VALUES, TermsTab } from './TermsTab';
 import { habitatPropsFormSchema } from './form.schema';
 import { PREPRESCREEN_HOMETEXT_DEFAULT } from './PreScreenHomeTextList';
 import { PRESCREEN_HOMETEXT_DEFAULT } from './PrePreScreenHomeTextList';
 import { GeneralTab } from './GeneralTab';
-import { Habitat } from '../../../models';
 
 const DEFAULT_VALUES = {
   data: {

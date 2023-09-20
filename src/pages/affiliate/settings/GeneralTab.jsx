@@ -1,10 +1,7 @@
 import PropTypes from 'prop-types';
 import { Flex, Heading, TextField, View } from '@aws-amplify/ui-react';
-import {
-  valueAsNumberOrEmpty,
-  valueAsStringOrEmpty,
-} from '../../../utils/forms';
-import ErrorText from '../../../components/forms/ErrorText';
+import { valueAsNumberOrEmpty, valueAsStringOrEmpty } from 'utils/forms';
+import ErrorText from 'components/forms/ErrorText';
 import { PrePreScreenHomeTextList } from './PrePreScreenHomeTextList';
 import { PreScreenHomeTextList } from './PreScreenHomeTextList';
 
