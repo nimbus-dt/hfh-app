@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Flex, Text } from '@aws-amplify/ui-react';
 import { DataStore } from 'aws-amplify';
+import { formatRelationshipValue, formatSexValue } from 'utils/formatters';
 import { HouseholdMember } from '../../../../models';
 import RecordDetail from '../../../RecordDetail';
 
@@ -29,12 +30,12 @@ export function HouseholdDetail({ item, sizeRenderer }) {
 
           <Flex gap="5px">
             <Text fontWeight="bold">Sex:</Text>
-            <Text>{item.sex}</Text>
+            <Text>{formatSexValue(item.sex)}</Text>
           </Flex>
 
           <Flex gap="5px">
             <Text fontWeight="bold">Relationship:</Text>
-            <Text>{item.relationship}</Text>
+            <Text>{formatRelationshipValue(item.relationship)}</Text>
           </Flex>
 
           <Flex gap="5px">
