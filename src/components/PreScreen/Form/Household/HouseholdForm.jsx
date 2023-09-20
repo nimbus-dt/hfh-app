@@ -41,7 +41,7 @@ export function HouseholdForm({
       const dob = formFields.dob.value;
       const sex = formFields.sex.value;
       const relationship = formFields.relationship.value;
-      const isCoapplicant = Boolean(formFields.isCoapplicant.value);
+      const isCoapplicant = formFields.isCoapplicant.value === 'yes';
 
       // Create user
       await DataStore.save(

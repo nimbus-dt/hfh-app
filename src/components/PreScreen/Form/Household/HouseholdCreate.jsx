@@ -60,8 +60,8 @@ export function HouseholdCreate({ handleCreate, enableCoapplicants }) {
                 : 'You have reached the maximum number of coapplicants.'
             }
           >
-            <Radio value>Yes</Radio>
-            <Radio value={false}>No</Radio>
+            <Radio value="yes">Yes</Radio>
+            <Radio value="no">No</Radio>
           </RadioGroupField>
 
           <Button type="submit" variation="primary">
