@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
 import { Flex, Text } from '@aws-amplify/ui-react';
 import { DataStore } from 'aws-amplify';
 import { formatRelationshipValue, formatSexValue } from 'utils/formatters';
@@ -47,3 +47,8 @@ export function HouseholdDetail({ item, sizeRenderer }) {
     />
   );
 }
+
+HouseholdDetail.propTypes = {
+  item: PropTypes.object.isRequired,
+  sizeRenderer: PropTypes.bool.isRequired,
+};
