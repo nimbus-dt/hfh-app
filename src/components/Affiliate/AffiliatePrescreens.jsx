@@ -302,7 +302,7 @@ export function AffiliatePrescreens() {
     async function getUserProps() {
       try {
         const userPropsObject = await DataStore.query(UserProps, (item) =>
-          item.ownerID.eq(userID)
+          item.ownerID.eq(selectedApplication?.ownerID)
         );
 
         const userPropsIndividual = userPropsObject[0];
@@ -378,7 +378,7 @@ export function AffiliatePrescreens() {
           </TableRow>
           <TableRow>
             <TableCell as="th" width="25%">
-              SEX
+              Sex
             </TableCell>
             <TableCell>{userProps?.sex}</TableCell>
           </TableRow>
