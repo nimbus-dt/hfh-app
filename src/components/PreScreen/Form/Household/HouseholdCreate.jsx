@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
 import {
   Card,
   Heading,
@@ -72,3 +72,8 @@ export function HouseholdCreate({ handleCreate, enableCoapplicants }) {
     </Card>
   );
 }
+
+HouseholdCreate.propTypes = {
+  handleCreate: PropTypes.func.isRequired,
+  enableCoapplicants: PropTypes.bool.isRequired,
+};
