@@ -9,7 +9,7 @@ import {
   Flex,
   Button,
 } from '@aws-amplify/ui-react';
-import { SexTypes, RelationshipTypes } from '../../../../models';
+import { SEX_TYPES_LIST } from 'utils/constants';
 
 export function HouseholdCreate({ handleCreate, enableCoapplicants }) {
   return (
@@ -30,9 +30,11 @@ export function HouseholdCreate({ handleCreate, enableCoapplicants }) {
             isRequired
             placeholder="Select an option"
           >
-            <option value={SexTypes.MALE}>Male</option>
-            <option value={SexTypes.FEMALE}>Female</option>
-            <option value="other">Other</option>
+            {SEX_TYPES_LIST.map(({ key, value }) => (
+              <option key={key} value={key}>
+                {value}
+              </option>
+            ))}
           </SelectField>
           <SelectField
             name="relationship"
