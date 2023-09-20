@@ -1,4 +1,4 @@
-import { SexTypes } from 'models';
+import { RelationshipTypes, SexTypes } from 'models';
 import { mapEnumToHumanReadableValues, mapEnumToList } from './mappers';
 
 /**
@@ -27,3 +27,13 @@ export const SEX_TYPES_LIST = mapEnumToList(SexTypes);
  */
 export const SEX_VALUES_MAP = mapEnumToHumanReadableValues(SexTypes);
 
+/**
+ * This constant is used to iterate through the relationship list types(keys) and values
+ */
+export const RELATIONSHIP_TYPES_LIST = mapEnumToList(RelationshipTypes);
+
+/**
+ * This constant is used to get relationship values according to the relationship type(key)
+ */
+export const RELATIONSHIP_VALUES_MAP =
+  mapEnumToHumanReadableValues(RelationshipTypes);
