@@ -9,7 +9,7 @@ import {
   Flex,
   Button,
 } from '@aws-amplify/ui-react';
-import { SEX_TYPES_LIST } from 'utils/constants';
+import { RELATIONSHIP_TYPES_LIST, SEX_TYPES_LIST } from 'utils/constants';
 
 export function HouseholdCreate({ handleCreate, enableCoapplicants }) {
   return (
@@ -42,14 +42,11 @@ export function HouseholdCreate({ handleCreate, enableCoapplicants }) {
             isRequired
             placeholder="Select an option"
           >
-            <option value={RelationshipTypes.SPOUSE}>Spouse</option>
-            <option value={RelationshipTypes.SON}>Son</option>
-            <option value={RelationshipTypes.DAUGHTER}>Daughter</option>{' '}
-            <option value={RelationshipTypes.NEPHEW}>Nephew</option>{' '}
-            <option value={RelationshipTypes.NIECE}>Niece</option>{' '}
-            <option value={RelationshipTypes.PARENT}>Parent</option>
-            <option value={RelationshipTypes.SIBLING}>Sibling</option>
-            <option value={RelationshipTypes.OTHER}>Other</option>
+            {RELATIONSHIP_TYPES_LIST.map(({ key, value }) => (
+              <option key={key} value={key}>
+                {value}
+              </option>
+            ))}
           </SelectField>
           <RadioGroupField
             name="isCoapplicant"
