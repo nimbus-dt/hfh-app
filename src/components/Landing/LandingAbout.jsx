@@ -68,7 +68,7 @@ export function LandingAbout() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Jose Avelar
+                Guillermo Avelar
               </a>
               , specializes in custom SaaS products for digital transformations.
               Leveraging cloud technologies and AI, our solutions provide secure
