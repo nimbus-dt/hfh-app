@@ -1,13 +1,9 @@
-/* eslint-disable react/prop-types */
-import { Auth, DataStore } from 'aws-amplify';
-import { useParams } from 'react-router-dom';
+import { Auth, DataStore, SortDirection } from 'aws-amplify';
+import { useOutletContext, useParams } from 'react-router-dom';
 import {
   Flex,
   Heading,
-  Text,
   Divider,
-  Card,
-  Link,
   SelectField,
   Collection,
   Button,
@@ -19,13 +15,15 @@ import {
   useBreakpointValue,
 } from '@aws-amplify/ui-react';
 import { useEffect, useState } from 'react';
-import { Application, IncomeRecord, Habitat, UserProps } from '../../models';
+import { Application, Habitat, UserProps } from '../../models';
 import { HouseholdList } from '../PreScreen/Form/Household/HouseholdList';
 import { IncomeList } from '../PreScreen/Form/Income/IncomeList';
 import { SavingsList } from '../PreScreen/Form/Savings/SavingsList';
 import { DebtList } from '../PreScreen/Form/Debt/DebtList';
 
-export function AffiliatePrescreens({ prescreens }) {
+export function AffiliatePrescreens() {
+  const { habitat } = useOutletContext();
+  const [prescreens, setPrescreens] = useState([]);
   const [formData, setFormData] = useState({});
   const [userDataBool, setUserDataBool] = useState(false);
   const [userID, setUserID] = useState('');
@@ -56,6 +54,23 @@ export function AffiliatePrescreens({ prescreens }) {
     xl: false,
     xxl: false,
   });
+
+  useEffect(() => {
+    const fetchPrescreens = async () => {
+      const applications = await DataStore.query(
+        Application,
+        (c1) =>
+          c1.and((c2) => [c2.habitatID.eq(habitat.id), c2.submitted.eq(true)]),
+        {
+          sort: (s) => s.dateSubmitted(SortDirection.DESCENDING),
+        }
+      );
+
+      setPrescreens(applications);
+    };
+
+    fetchPrescreens();
+  }, [habitat]);
 
   useEffect(() => {
     function filterPrescreens() {
@@ -167,6 +182,10 @@ export function AffiliatePrescreens({ prescreens }) {
       alignContent="center"
       justifyContent="center"
     >
+      <Heading level={3} fontWeight="bold" textAlign="center">
+        PreScreens
+      </Heading>
+      <Divider />
       <Flex
         direction="row"
         width="100%"
@@ -187,10 +206,6 @@ export function AffiliatePrescreens({ prescreens }) {
           <Flex alignItems="center">Total: {filteredPrescreens.length}</Flex>
         </Badge>
       </Flex>
-      <Heading level={3} fontWeight="bold" textAlign="center">
-        PreScreens
-      </Heading>
-      <Divider />
       <Collection
         width="100%"
         type="grid"

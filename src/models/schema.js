@@ -303,15 +303,6 @@ export const schema = {
                                     "delete",
                                     "read"
                                 ]
-                            },
-                            {
-                                "provider": "userPools",
-                                "ownerField": "owner",
-                                "allow": "owner",
-                                "operations": [
-                                    "create"
-                                ],
-                                "identityClaim": "cognito:username"
                             }
                         ]
                     }

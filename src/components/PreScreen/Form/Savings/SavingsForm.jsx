@@ -1,54 +1,11 @@
-/* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
 import { Flex, Heading, Text, useBreakpointValue } from '@aws-amplify/ui-react';
-import { DataStore, Auth } from 'aws-amplify';
-import { useEffect, useState } from 'react';
-import { Application, SavingRecord, UserProps } from '../../../../models';
+import { DataStore } from 'aws-amplify';
+import { SavingRecord } from '../../../../models';
 import { SavingsCreate } from './SavingsCreate';
 import { SavingsList } from './SavingsList';
 
-export function SavingsForm({ application, habitat }) {
-  const [savings, setSavings] = useState([]);
-  const [owners, setOwners] = useState([]);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const currentUser = await Auth.currentAuthenticatedUser({
-          bypassCache: false,
-        });
-
-        const userProps = await DataStore.query(UserProps, (c) =>
-          c.ownerID.eq(currentUser.username)
-        );
-
-        const applicationObject = await DataStore.query(Application, (c) =>
-          c.ownerID.eq(currentUser.username)
-        );
-
-        const ownersArray = [userProps[0]];
-
-        const householdMembersCollection =
-          await applicationObject[0].HouseholdMembers.toArray();
-
-        if (householdMembersCollection.length > 0) {
-          const coapplicants = householdMembersCollection.filter(
-            (member) => member.isCoapplicant
-          );
-
-          if (coapplicants.length > 0) {
-            ownersArray.push(...coapplicants);
-          }
-        }
-
-        setOwners(ownersArray);
-      } catch (error) {
-        console.log('Error retrieving HouseholdMembers', error);
-      }
-    };
-
-    fetchUser();
-  }, [application]);
-
+export function SavingsForm({ applicationID, savingRecords, owners }) {
   const sizeRenderer = useBreakpointValue({
     base: true,
     small: true,
@@ -61,42 +18,28 @@ export function SavingsForm({ application, habitat }) {
   const handleCreate = async (e) => {
     e.preventDefault();
 
-    const formFields = e.target.elements;
-    const institution = formFields.institution.value;
-    const estimatedAmount = Number(
-      Number(formFields.estimatedAmount.value).toFixed(2)
-    );
-    const ownerID = formFields.owner.value;
-
-    await DataStore.save(
-      new SavingRecord({
-        ownerID,
-        institution,
-        estimatedAmount,
-        applicationID: application?.id,
-      })
-    );
-
-    e.target.reset();
-
-    // Fetch the updated saving records
-    fetchSavingRecords();
-  };
-
-  const fetchSavingRecords = async () => {
     try {
-      const savingRecordObjects = await DataStore.query(SavingRecord, (c) =>
-        c.applicationID.eq(application.id)
+      const formFields = e.target.elements;
+      const institution = formFields.institution.value;
+      const estimatedAmount = Number(
+        Number(formFields.estimatedAmount.value).toFixed(2)
       );
-      setSavings(savingRecordObjects);
+      const ownerID = formFields.owner.value;
+
+      await DataStore.save(
+        new SavingRecord({
+          ownerID,
+          institution,
+          estimatedAmount,
+          applicationID,
+        })
+      );
+
+      e.target.reset();
     } catch (error) {
-      console.log('Error retrieving SavingRecords', error);
+      console.log('Error storing saving record', error);
     }
   };
-
-  useEffect(() => {
-    fetchSavingRecords();
-  }, [application]);
 
   return (
     <Flex direction="column" width="100%">
@@ -106,8 +49,14 @@ export function SavingsForm({ application, habitat }) {
       <Text textAlign="center">
         Please list all saving records for your coapplicant and yourself.
       </Text>
-      <SavingsList items={savings} sizeRenderer={sizeRenderer} />
+      <SavingsList items={savingRecords} sizeRenderer={sizeRenderer} />
       <SavingsCreate handleCreate={handleCreate} owners={owners} />
     </Flex>
   );
 }
+
+SavingsForm.propTypes = {
+  applicationID: PropTypes.string,
+  savingRecords: PropTypes.array,
+  owners: PropTypes.array,
+};

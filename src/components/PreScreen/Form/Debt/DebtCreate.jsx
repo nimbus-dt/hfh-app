@@ -1,20 +1,21 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
-import { DataStore } from 'aws-amplify';
+import React from 'react';
 import {
   Card,
   Heading,
   SelectField,
   Flex,
   Button,
-  StepperField,
-  RadioGroupField,
-  Radio,
-  NumberField,
   TextField,
 } from '@aws-amplify/ui-react';
-import { DebtRecord, DebtTypes, Application } from '../../../../models';
+import { DebtTypes } from '../../../../models';
 
+/**
+ * Renders debt creation form. It is used to create a debt in the user's account and add it to the list of owners.
+ *
+ *
+ * @return { JSX. Element } The div that displays the
+ */
 export function DebtCreate({ handleCreate, owners }) {
   return (
     <Card variation="elevated">

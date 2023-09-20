@@ -1,34 +1,13 @@
-/* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/prop-types */
-import { Card, Flex, Text, Heading, Link } from '@aws-amplify/ui-react';
+import { Flex, Text, Button } from '@aws-amplify/ui-react';
 import { useEffect, useState } from 'react';
 import { DataStore, Storage } from 'aws-amplify';
 import { HouseholdMember, IncomeRecord, UserProps } from '../../../../models';
+import { downloadWithUrl } from '../../../../utils/files';
+import RecordDetail from '../../../RecordDetail';
 
 export function IncomeDetail({ item, sizeRenderer, application }) {
   const [names, setNames] = useState({});
-  const [file, setFile] = useState(null);
-
-  useEffect(() => {
-    async function getFile() {
-      const owner = application?.ownerID;
-
-      // get user props
-      const userProps = await DataStore.query(UserProps, (c) =>
-        c.ownerID.eq(owner)
-      );
-
-      const identity = userProps[0]?.identityID;
-
-      const result = await Storage.get(item.proofOfIncome[0], {
-        level: 'protected',
-        identityId: identity,
-      });
-
-      setFile(result);
-    }
-    getFile();
-  }, [application?.ownerID, item.proofOfIncome]);
 
   useEffect(() => {
     const fetchOwner = async () => {
@@ -63,41 +42,82 @@ export function IncomeDetail({ item, sizeRenderer, application }) {
     fetchOwner();
   }, [item.ownerID]);
 
-  async function deleteObject() {
+  const deleteObject = async () => {
     try {
       await DataStore.delete(IncomeRecord, item.id);
-      window.location.reload();
     } catch (error) {
-      console.error(
-        'An error occurred while deleting the Saving Record :',
-        error
-      );
+      console.error('Error deleting income record', error);
     }
-  }
+  };
+
+  const downloadFile = async (fileKey) => {
+    const owner = application?.ownerID;
+
+    // get user props
+    const userProps = await DataStore.query(UserProps, (c) =>
+      c.ownerID.eq(owner)
+    );
+
+    const identity = userProps[0]?.identityID;
+
+    const signedURL = await Storage.get(fileKey, {
+      level: 'protected',
+      identityId: identity,
+    });
+
+    downloadWithUrl(signedURL);
+  };
 
   return (
-    <Card variation="elevated" width={sizeRenderer ? '80%' : '300px'}>
-      <Flex direction="column" gap="1px">
-        <Heading level="4">Owner: {names.name}</Heading>
-        <Flex gap="5px">
-          <Text fontWeight="bold">Employer:</Text>
-          <Text>{item.employer}</Text>
-        </Flex>
-        <Flex gap="5px">
-          <Text fontWeight="bold">Monthly income:</Text>
-          <Text>${parseInt(item.estimatedMonthlyIncome)}</Text>
-        </Flex>
-        <Flex gap="5px">
-          <Text fontWeight="bold">Employment Time:</Text>
-          <Text>{parseInt(item.employmentTime)} months</Text>
-        </Flex>
-        <Flex gap="5px">
-          <Link fontWeight="bold" href={file}>
-            Proof of Income
-          </Link>
-        </Flex>
-        <Link onClick={deleteObject}>Delete</Link>
-      </Flex>
-    </Card>
+    <RecordDetail
+      title={`Owner: ${names.name}`}
+      onDelete={deleteObject}
+      sizeRenderer={sizeRenderer}
+      renderBody={() => (
+        <>
+          <Flex gap="5px">
+            <Text fontWeight="bold">Employer:</Text>
+            <Text>{item.employer}</Text>
+          </Flex>
+
+          <Flex gap="5px">
+            <Text fontWeight="bold">Monthly income:</Text>
+            <Text>${parseInt(item.estimatedMonthlyIncome)}</Text>
+          </Flex>
+
+          <Flex gap="5px">
+            <Text fontWeight="bold">Employment Time:</Text>
+            <Text>{parseInt(item.employmentTime)} months</Text>
+          </Flex>
+
+          <Flex direction="column" gap="5px">
+            <Text fontWeight="bold">Proof of Income:</Text>
+
+            <Flex
+              direction="column"
+              gap="0.25rem"
+              maxHeight="7rem"
+              overflow="auto"
+            >
+              <ul style={{ margin: 0 }}>
+                {item.proofOfIncome.map((fileKey, index) => (
+                  <li key={fileKey}>
+                    <Button
+                      type="button"
+                      title={`Download file #${index + 1}`}
+                      variation="link"
+                      padding="0rem 0.55rem 0rem 0.55rem"
+                      onClick={() => downloadFile(fileKey)}
+                    >
+                      File #{index + 1}
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+            </Flex>
+          </Flex>
+        </>
+      )}
+    />
   );
 }
