@@ -314,7 +314,7 @@ export function AffiliatePrescreens() {
     }
 
     getUserProps();
-  }, []);
+  }, [selectedApplication?.ownerID]);
 
   async function updateApplication(newStatus) {
     const currentUser = await Auth.currentAuthenticatedUser();
