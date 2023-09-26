@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
 import { Flex, Heading, Text, useBreakpointValue } from '@aws-amplify/ui-react';
 import { DataStore } from 'aws-amplify';
-import { useState } from 'react';
-import { HouseholdMember } from '../../../../models';
+import { HouseholdMember } from 'models';
 import { HouseholdList } from './HouseholdList';
 import { HouseholdCreate } from './HouseholdCreate';
 
@@ -14,10 +13,8 @@ export function HouseholdForm({
   householdMembers,
   habitatMaxCoapplicants,
 }) {
-  const [coapplicants] = useState(() => countCoapplicants(householdMembers));
-  const [enableCoapplicants] = useState(
-    () => coapplicants !== habitatMaxCoapplicants
-  );
+  const coapplicants = countCoapplicants(householdMembers);
+  const enableCoapplicants = coapplicants < habitatMaxCoapplicants;
 
   const sizeRenderer = useBreakpointValue({
     base: true,
@@ -28,7 +25,6 @@ export function HouseholdForm({
     xxl: false,
   });
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleCreate = async (e) => {
     e.preventDefault();
 
