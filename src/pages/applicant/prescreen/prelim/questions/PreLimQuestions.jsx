@@ -10,13 +10,12 @@ import {
   Card,
   Loader,
 } from '@aws-amplify/ui-react';
-import { useSelector, useDispatch } from 'react-redux';
-import { setPreLimAnswers } from '../../../../../redux/preLimAnswersSlice.js';
+import { useDispatch } from 'react-redux';
+import { setPreLimAnswers } from 'redux/preLimAnswersSlice.js';
 
 export function PreLimQuestionsPage() {
   const [counter, setCounter] = useState(1);
   const [answers, setAnswers] = useState([]);
-  const preLimAnswers = useSelector((state) => state.preLimAnswers);
   const dispatch = useDispatch();
 
   const [habitat] = useOutletContext();
