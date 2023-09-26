@@ -15,7 +15,7 @@ import {
   useBreakpointValue,
 } from '@aws-amplify/ui-react';
 import { useEffect, useState } from 'react';
-import { Application, Habitat, UserProps } from '../../models';
+import { Application, Habitat, UserProps } from 'models';
 import { HouseholdList } from '../PreScreen/Form/Household/HouseholdList';
 import { IncomeList } from '../PreScreen/Form/Income/IncomeList';
 import { SavingsList } from '../PreScreen/Form/Savings/SavingsList';
@@ -144,7 +144,7 @@ export function AffiliatePrescreens() {
     const range = rangePlaceholder;
     setAMI(range);
 
-    const [minAmi, maxAmi] = range.split('-').map(Number);
+    const [minAmi, maxAmi] = range?.split('-').map(Number) ?? [0, 0];
 
     if (
       !Number.isNaN(totalMonthlyIncomes) &&
