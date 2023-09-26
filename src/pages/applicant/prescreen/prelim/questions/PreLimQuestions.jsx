@@ -11,9 +11,9 @@ import {
   Loader,
 } from '@aws-amplify/ui-react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setPreLimAnswers } from '../../../redux/preLimAnswersSlice.js';
+import { setPreLimAnswers } from '../../../../../redux/preLimAnswersSlice.js';
 
-export function PreLimQuestions() {
+export function PreLimQuestionsPage() {
   const [counter, setCounter] = useState(1);
   const [answers, setAnswers] = useState([]);
   const preLimAnswers = useSelector((state) => state.preLimAnswers);

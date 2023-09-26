@@ -5,6 +5,7 @@ import PreLimLayout from 'layouts/PreLimLayout';
 import FormApplicationsPage from 'pages/applicant/prescreen/form/apps';
 import PreLimHomePage from 'pages/applicant/prescreen/prelim/home';
 import PreLimTermsPage from 'pages/applicant/prescreen/prelim/terms';
+import PreLimQuestionsPage from 'pages/applicant/prescreen/prelim/questions';
 
 import { ApplicantPrescreenLayout } from './components/PreScreen/ApplicantPrescreenLayout';
 
@@ -100,7 +101,7 @@ function App() {
             <Route path="prelim" element={<PreLimLayout />}>
               <Route path="home" element={<PreLimHomePage />} />
               <Route path="terms" element={<PreLimTermsPage />} />
-              <Route path="questions" element={<PreLimQuestions />} />
+              <Route path="questions" element={<PreLimQuestionsPage />} />
               <Route path="results" element={<PreLimResults />} />
             </Route>
             <Route path="form" element={<FormLayoutNew />}>
