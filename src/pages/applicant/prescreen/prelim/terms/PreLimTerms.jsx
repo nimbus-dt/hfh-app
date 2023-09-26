@@ -8,7 +8,7 @@ import {
 } from '@aws-amplify/ui-react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 
-export function PreLimTerms() {
+export function PreLimTermsPage() {
   const [habitat] = useOutletContext();
   const navigate = useNavigate();
 

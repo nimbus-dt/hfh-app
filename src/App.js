@@ -4,11 +4,12 @@ import { Authenticator, ScrollView } from '@aws-amplify/ui-react';
 import PreLimLayout from 'layouts/PreLimLayout';
 import FormApplicationsPage from 'pages/applicant/prescreen/form/apps';
 import PreLimHomePage from 'pages/applicant/prescreen/prelim/home';
+import PreLimTermsPage from 'pages/applicant/prescreen/prelim/terms';
+
 import { ApplicantPrescreenLayout } from './components/PreScreen/ApplicantPrescreenLayout';
 
 // eslint-disable-next-line import/no-unresolved
 import '@aws-amplify/ui-react/styles.css';
-import { PreLimTerms } from './components/PreScreen/PreLim/PreLimTerms';
 import { PreLimQuestions } from './components/PreScreen/PreLim/PreLimQuestions';
 import { PreLimResults } from './components/PreScreen/PreLim/PreLimResults';
 import { FormPreScreen } from './components/PreScreen/Form/FormPreScreen';
@@ -98,7 +99,7 @@ function App() {
           <Route path="prescreen" element={<ApplicantPrescreenLayout />}>
             <Route path="prelim" element={<PreLimLayout />}>
               <Route path="home" element={<PreLimHomePage />} />
-              <Route path="terms" element={<PreLimTerms />} />
+              <Route path="terms" element={<PreLimTermsPage />} />
               <Route path="questions" element={<PreLimQuestions />} />
               <Route path="results" element={<PreLimResults />} />
             </Route>
