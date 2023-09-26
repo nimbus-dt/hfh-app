@@ -1,10 +1,10 @@
 import './assets/styles/App.css';
 import { Routes, Route, Outlet } from 'react-router-dom';
 import { Authenticator, ScrollView } from '@aws-amplify/ui-react';
+import PreLimLayout from 'layouts/PreLimLayout';
 import FormApplicationsPage from 'pages/applicant/prescreen/form/apps';
 import PreLimHomePage from 'pages/applicant/prescreen/prelim/home';
 import { ApplicantPrescreenLayout } from './components/PreScreen/ApplicantPrescreenLayout';
-import { PreLimLayout } from './components/PreScreen/PreLim/PreLimLayout';
 
 // eslint-disable-next-line import/no-unresolved
 import '@aws-amplify/ui-react/styles.css';

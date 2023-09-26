@@ -2,7 +2,7 @@ import { useParams, Outlet } from 'react-router-dom';
 import { Flex, Heading, Card, Divider } from '@aws-amplify/ui-react';
 import { useState, useEffect } from 'react';
 import { DataStore } from '@aws-amplify/datastore';
-import { Habitat } from '../../../models';
+import { Habitat } from 'models';
 
 export function PreLimLayout() {
   const [habitat, setHabitat] = useState({});
