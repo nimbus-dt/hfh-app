@@ -6,13 +6,12 @@ import FormApplicationsPage from 'pages/applicant/prescreen/form/apps';
 import PreLimHomePage from 'pages/applicant/prescreen/prelim/home';
 import PreLimTermsPage from 'pages/applicant/prescreen/prelim/terms';
 import PreLimQuestionsPage from 'pages/applicant/prescreen/prelim/questions';
+import PreLimResultsPage from 'pages/applicant/prescreen/prelim/results';
 
 import { ApplicantPrescreenLayout } from './components/PreScreen/ApplicantPrescreenLayout';
 
 // eslint-disable-next-line import/no-unresolved
 import '@aws-amplify/ui-react/styles.css';
-import { PreLimQuestions } from './components/PreScreen/PreLim/PreLimQuestions';
-import { PreLimResults } from './components/PreScreen/PreLim/PreLimResults';
 import { FormPreScreen } from './components/PreScreen/Form/FormPreScreen';
 import { LandingLayout } from './components/Landing/LandingLayout';
 import { LandingHome } from './components/Landing/LandingHome';
@@ -102,7 +101,7 @@ function App() {
               <Route path="home" element={<PreLimHomePage />} />
               <Route path="terms" element={<PreLimTermsPage />} />
               <Route path="questions" element={<PreLimQuestionsPage />} />
-              <Route path="results" element={<PreLimResults />} />
+              <Route path="results" element={<PreLimResultsPage />} />
             </Route>
             <Route path="form" element={<FormLayoutNew />}>
               <Route path="info" element={<FormInfoPage />} />

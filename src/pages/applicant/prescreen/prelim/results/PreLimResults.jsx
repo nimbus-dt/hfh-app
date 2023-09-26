@@ -10,7 +10,7 @@ import { useNavigate, useOutletContext } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-export function PreLimResults() {
+export function PreLimResultsPage() {
   const navigate = useNavigate();
   const [habitat] = useOutletContext();
   const preLimAnswers = useSelector((state) => state.preLimAnswers);
