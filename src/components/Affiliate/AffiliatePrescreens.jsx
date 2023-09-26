@@ -400,6 +400,12 @@ export function AffiliatePrescreens() {
             </TableCell>
             <TableCell>{selectedApplication?.dateRevised}</TableCell>
           </TableRow>
+          <TableRow>
+            <TableCell as="th" width="25%">
+              Address
+            </TableCell>
+            <TableCell>{userProps?.address}</TableCell>
+          </TableRow>
 
           <TableRow>
             <TableCell as="th" colSpan="2">
