@@ -417,7 +417,10 @@ export function AffiliatePrescreens() {
 
           <TableRow>
             <TableCell colSpan="2">
-              <HouseholdList items={householdMembers} />
+              <HouseholdList
+                items={householdMembers}
+                sizeRenderer={responsiveBool}
+              />
             </TableCell>
           </TableRow>
 
@@ -431,7 +434,11 @@ export function AffiliatePrescreens() {
 
           <TableRow>
             <TableCell colSpan="2">
-              <IncomeList items={incomes} application={selectedApplication} />
+              <IncomeList
+                items={incomes}
+                application={selectedApplication}
+                sizeRenderer={responsiveBool}
+              />
             </TableCell>
           </TableRow>
 
@@ -445,7 +452,7 @@ export function AffiliatePrescreens() {
 
           <TableRow>
             <TableCell colSpan="2">
-              <DebtList items={debts} />
+              <DebtList items={debts} sizeRenderer={responsiveBool} />
             </TableCell>
           </TableRow>
 
@@ -459,7 +466,7 @@ export function AffiliatePrescreens() {
 
           <TableRow>
             <TableCell colSpan="2">
-              <SavingsList items={savings} />
+              <SavingsList items={savings} sizeRenderer={responsiveBool} />
             </TableCell>
           </TableRow>
 
