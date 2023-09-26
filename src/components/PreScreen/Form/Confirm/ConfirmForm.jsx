@@ -10,6 +10,7 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  useBreakpointValue,
 } from '@aws-amplify/ui-react';
 import { useNavigate } from 'react-router-dom';
 import { Fragment, useEffect, useState } from 'react';
@@ -28,6 +29,15 @@ export function ConfirmForm({
 }) {
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
+
+  const sizeRenderer = useBreakpointValue({
+    base: true,
+    small: true,
+    medium: true,
+    large: false,
+    xl: false,
+    xxl: false,
+  });
 
   const isAnySectionEmpty =
     householdMembers.length <= 0 ||
@@ -137,19 +147,27 @@ export function ConfirmForm({
   const sectionsListsData = [
     {
       header: 'Household',
-      ListComponent: <HouseholdList items={householdMembers} />,
+      ListComponent: (
+        <HouseholdList items={householdMembers} sizeRenderer={sizeRenderer} />
+      ),
     },
     {
       header: 'Savings',
-      ListComponent: <SavingsList items={savingRecords} />,
+      ListComponent: (
+        <SavingsList items={savingRecords} sizeRenderer={sizeRenderer} />
+      ),
     },
     {
       header: 'Debt',
-      ListComponent: <DebtList items={debtRecords} />,
+      ListComponent: (
+        <DebtList items={debtRecords} sizeRenderer={sizeRenderer} />
+      ),
     },
     {
       header: 'Income',
-      ListComponent: <IncomeList items={incomeRecords} />,
+      ListComponent: (
+        <IncomeList items={incomeRecords} sizeRenderer={sizeRenderer} />
+      ),
     },
   ];
 
