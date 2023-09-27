@@ -35,7 +35,7 @@ export function PreScreenHomeTextList({ watch, control, register, errors }) {
   return (
     <>
       <Heading level={5} fontWeight="bold" textAlign="center" marginTop="1rem">
-        Official PreScreem Form Home Text
+        Official PreScreen Form Home Text
       </Heading>
 
       <Flex direction="column" marginBottom="1rem" marginTop="1rem">
