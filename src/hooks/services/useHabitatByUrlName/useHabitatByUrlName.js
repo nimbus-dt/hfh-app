@@ -19,7 +19,7 @@ export function useHabitatByUrlName({ habitatUrlName }) {
   });
 
   return {
-    habitat: data?.[0] ?? {},
+    habitat: data?.[0] ?? null,
     loading,
     error,
   };
