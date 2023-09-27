@@ -9,10 +9,10 @@ export function HouseholdList({ items, sizeRenderer }) {
         <Heading>Household Member List</Heading>
         <Collection
           items={items}
-          type={sizeRenderer ? 'list' : 'grid'}
+          type="list"
           gap="1rem"
           templateColumns="1fr 1fr"
-          itemsPerPage={sizeRenderer ? 1 : 4}
+          itemsPerPage={1}
           alignItems="center"
           isPaginated
           wrap

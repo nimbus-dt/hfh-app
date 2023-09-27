@@ -18,7 +18,6 @@ export function FormApplicationsPage() {
 
   const urlName = useParams('habitat').habitat;
   const [habitat, setHabitat] = useState(null);
-  const [cycle, setCycle] = useState(null);
   const [user, setUser] = useState(null);
   const [apps, setApps] = useState({ CURRENT: [], PAST: [] });
   const [userProps, setUserProps] = useState(null);
@@ -33,7 +32,7 @@ export function FormApplicationsPage() {
         return;
       }
 
-      // Create an application associated with the active cycle
+      // Create an application
       const application = await DataStore.save(
         new Application({
           ownerID: user?.username,
@@ -68,21 +67,6 @@ export function FormApplicationsPage() {
     }
     getHabitat();
   }, [urlName]);
-
-  useEffect(() => {
-    async function getCycle() {
-      try {
-        const CycleObject = await DataStore.query(Habitat, (c) =>
-          c.cycleID.eq(cycle.id)
-        );
-        setCycle(CycleObject[0]);
-        console.log(CycleObject[0]);
-      } catch (error) {
-        console.log(`Could not retrieve Cycle: ${error}`);
-      }
-    }
-    getCycle();
-  }, [habitat]);
 
   // Fetch user
   useEffect(() => {
