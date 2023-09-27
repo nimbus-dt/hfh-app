@@ -1,6 +1,7 @@
 import './assets/styles/App.css';
 import { Routes, Route, Outlet } from 'react-router-dom';
 import { Authenticator, ScrollView } from '@aws-amplify/ui-react';
+import FormApplicationsPage from 'pages/applicant/prescreen/form/apps';
 import { ApplicantPrescreenLayout } from './components/PreScreen/ApplicantPrescreenLayout';
 import { PreLimLayout } from './components/PreScreen/PreLim/PreLimLayout';
 
@@ -19,7 +20,6 @@ import { LandingPrivacyPolicy } from './components/Landing/LandingPrivacyPolicy'
 import { LandingReturn } from './components/Landing/LandingReturn';
 import { LandingContact } from './components/Landing/LandingContact';
 import { Test } from './components/Test';
-import { FormApplications } from './components/PreScreen/Form/FormApplications';
 import { FormUserForm } from './components/PreScreen/Form/FormUserForm';
 import { FormLayoutNew } from './components/PreScreen/Form/FormLayoutNew';
 import { FormInfoPage } from './components/PreScreen/Form/FormInfoPage';
@@ -105,7 +105,7 @@ function App() {
             <Route path="form" element={<FormLayoutNew />}>
               <Route path="info" element={<FormInfoPage />} />
               <Route path="user" element={<FormUserForm />} />
-              <Route path="apps" element={<FormApplications />} />
+              <Route path="apps" element={<FormApplicationsPage />} />
               <Route path="app" element={<FormPreScreen />} />
             </Route>
           </Route>
