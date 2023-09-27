@@ -15,7 +15,7 @@ import {
   useBreakpointValue,
 } from '@aws-amplify/ui-react';
 import { useEffect, useState } from 'react';
-import { Application, Habitat, UserProps } from '../../models';
+import { Application, Habitat, UserProps } from 'models';
 import { HouseholdList } from '../PreScreen/Form/Household/HouseholdList';
 import { IncomeList } from '../PreScreen/Form/Income/IncomeList';
 import { SavingsList } from '../PreScreen/Form/Savings/SavingsList';
@@ -144,7 +144,7 @@ export function AffiliatePrescreens() {
     const range = rangePlaceholder;
     setAMI(range);
 
-    const [minAmi, maxAmi] = range.split('-').map(Number);
+    const [minAmi, maxAmi] = range?.split('-').map(Number) ?? [0, 0];
 
     if (
       !Number.isNaN(totalMonthlyIncomes) &&
@@ -400,6 +400,12 @@ export function AffiliatePrescreens() {
             </TableCell>
             <TableCell>{selectedApplication?.dateRevised}</TableCell>
           </TableRow>
+          <TableRow>
+            <TableCell as="th" width="25%">
+              Address
+            </TableCell>
+            <TableCell>{userProps?.address}</TableCell>
+          </TableRow>
 
           <TableRow>
             <TableCell as="th" colSpan="2">
@@ -411,7 +417,10 @@ export function AffiliatePrescreens() {
 
           <TableRow>
             <TableCell colSpan="2">
-              <HouseholdList items={householdMembers} />
+              <HouseholdList
+                items={householdMembers}
+                sizeRenderer={responsiveBool}
+              />
             </TableCell>
           </TableRow>
 
@@ -425,7 +434,11 @@ export function AffiliatePrescreens() {
 
           <TableRow>
             <TableCell colSpan="2">
-              <IncomeList items={incomes} application={selectedApplication} />
+              <IncomeList
+                items={incomes}
+                application={selectedApplication}
+                sizeRenderer={responsiveBool}
+              />
             </TableCell>
           </TableRow>
 
@@ -439,7 +452,7 @@ export function AffiliatePrescreens() {
 
           <TableRow>
             <TableCell colSpan="2">
-              <DebtList items={debts} />
+              <DebtList items={debts} sizeRenderer={responsiveBool} />
             </TableCell>
           </TableRow>
 
@@ -453,7 +466,7 @@ export function AffiliatePrescreens() {
 
           <TableRow>
             <TableCell colSpan="2">
-              <SavingsList items={savings} />
+              <SavingsList items={savings} sizeRenderer={responsiveBool} />
             </TableCell>
           </TableRow>
 

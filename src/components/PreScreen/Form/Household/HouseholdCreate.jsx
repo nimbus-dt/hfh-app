@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
 import {
   Card,
   Heading,
@@ -9,7 +9,7 @@ import {
   Flex,
   Button,
 } from '@aws-amplify/ui-react';
-import { SexTypes, RelationshipTypes } from '../../../../models';
+import { RELATIONSHIP_TYPES_LIST, SEX_TYPES_LIST } from 'utils/constants';
 
 export function HouseholdCreate({ handleCreate, enableCoapplicants }) {
   return (
@@ -30,9 +30,11 @@ export function HouseholdCreate({ handleCreate, enableCoapplicants }) {
             isRequired
             placeholder="Select an option"
           >
-            <option value={SexTypes.MALE}>Male</option>
-            <option value={SexTypes.FEMALE}>Female</option>
-            <option value="other">Other</option>
+            {SEX_TYPES_LIST.map(({ key, value }) => (
+              <option key={key} value={key}>
+                {value}
+              </option>
+            ))}
           </SelectField>
           <SelectField
             name="relationship"
@@ -40,14 +42,11 @@ export function HouseholdCreate({ handleCreate, enableCoapplicants }) {
             isRequired
             placeholder="Select an option"
           >
-            <option value={RelationshipTypes.SPOUSE}>Spouse</option>
-            <option value={RelationshipTypes.SON}>Son</option>
-            <option value={RelationshipTypes.DAUGHTER}>Daughter</option>{' '}
-            <option value={RelationshipTypes.NEPHEW}>Nephew</option>{' '}
-            <option value={RelationshipTypes.NIECE}>Niece</option>{' '}
-            <option value={RelationshipTypes.PARENT}>Parent</option>
-            <option value={RelationshipTypes.SIBLING}>Sibling</option>
-            <option value={RelationshipTypes.OTHER}>Other</option>
+            {RELATIONSHIP_TYPES_LIST.map(({ key, value }) => (
+              <option key={key} value={key}>
+                {value}
+              </option>
+            ))}
           </SelectField>
           <RadioGroupField
             name="isCoapplicant"
@@ -60,8 +59,8 @@ export function HouseholdCreate({ handleCreate, enableCoapplicants }) {
                 : 'You have reached the maximum number of coapplicants.'
             }
           >
-            <Radio value>Yes</Radio>
-            <Radio value={false}>No</Radio>
+            <Radio value="yes">Yes</Radio>
+            <Radio value="no">No</Radio>
           </RadioGroupField>
 
           <Button type="submit" variation="primary">
@@ -72,3 +71,8 @@ export function HouseholdCreate({ handleCreate, enableCoapplicants }) {
     </Card>
   );
 }
+
+HouseholdCreate.propTypes = {
+  handleCreate: PropTypes.func.isRequired,
+  enableCoapplicants: PropTypes.bool.isRequired,
+};

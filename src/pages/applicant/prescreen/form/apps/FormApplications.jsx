@@ -11,9 +11,9 @@ import {
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { DataStore, Auth } from 'aws-amplify';
-import { Habitat, Application, UserProps } from '../../../models';
+import { Habitat, Application, UserProps } from 'models';
 
-export function FormApplications() {
+export function FormApplicationsPage() {
   /* CONSTS */
 
   const urlName = useParams('habitat').habitat;
