@@ -55,3 +55,14 @@ const USDollar = new Intl.NumberFormat('en-US', {
  */
 export const formatNumberAsCurrency = (num) => USDollar.format(num);
 
+const Percentage = new Intl.NumberFormat('default', {
+  style: 'percent',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+/**
+ * Returns a percentage string
+ * @param {number} ratio i.e.: 0.4958
+ * @returns {string} i.e.: 49.58 %
+ */
+export const formatNumberAsPercentage = (num) => Percentage.format(num);
