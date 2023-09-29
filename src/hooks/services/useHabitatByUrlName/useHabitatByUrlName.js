@@ -7,15 +7,16 @@ import { SortDirection } from 'aws-amplify';
  * @param {Object} params
  * @param {string} params.habitatUrlName
  */
-export function useHabitatByUrlName({ habitatUrlName }) {
+export function useHabitatByUrlName({ habitatUrlName, dependencyArray }) {
   const { data, loading, error } = useDataStoreQuery({
     model: Habitat,
     criteria: (c) => c.urlName.eq(habitatUrlName),
     paginationProducer: {
       sort: (s) => s.urlName(SortDirection.ASCENDING),
       page: 0,
-      limit: 10,
+      limit: 1,
     },
+    dependencyArray,
   });
 
   return {
