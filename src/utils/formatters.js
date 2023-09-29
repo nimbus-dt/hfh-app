@@ -1,4 +1,8 @@
-import { RELATIONSHIP_VALUES_MAP, SEX_VALUES_MAP } from './constants';
+import {
+  APPLICATION_SUBMITTED_STATUS_MAP,
+  RELATIONSHIP_VALUES_MAP,
+  SEX_VALUES_MAP,
+} from './constants';
 
 /**
  * Returns a string with all the clases joined by empty space
@@ -22,3 +26,13 @@ export const formatSexValue = (sexType) => SEX_VALUES_MAP[sexType] ?? '';
  */
 export const formatRelationshipValue = (relationshipType) =>
   RELATIONSHIP_VALUES_MAP[relationshipType] ?? '';
+
+/**
+ * Returns a string with the application submitted status value as a human
+ * readable string
+ * @param { ApplicationSubmittedStatus } type
+ * @returns {string}
+ */
+export const formatSubmittedStatus = (type) =>
+  APPLICATION_SUBMITTED_STATUS_MAP[type] ?? '';
+
