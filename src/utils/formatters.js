@@ -36,3 +36,11 @@ export const formatRelationshipValue = (relationshipType) =>
 export const formatSubmittedStatus = (type) =>
   APPLICATION_SUBMITTED_STATUS_MAP[type] ?? '';
 
+/**
+ * Returns a string with the application submitted status value as a human
+ * readable string
+ * @param {object} value
+ * @returns {string}
+ */
+export const formatYesNoBoolean = (value) => (value ? 'Yes' : 'No');
+
