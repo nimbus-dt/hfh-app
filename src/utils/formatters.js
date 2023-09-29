@@ -44,3 +44,14 @@ export const formatSubmittedStatus = (type) =>
  */
 export const formatYesNoBoolean = (value) => (value ? 'Yes' : 'No');
 
+const USDollar = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+});
+/**
+ * Returns a currency string
+ * @param {number} value i.e.: 240.4967298
+ * @returns {string} i.e.: $240.49
+ */
+export const formatNumberAsCurrency = (num) => USDollar.format(num);
+
