@@ -48,7 +48,7 @@ export function useDataStoreQuery({ model, criteria, paginationProducer }) {
       ignore = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [...dependencyArray]);
 
   return {
     data,
