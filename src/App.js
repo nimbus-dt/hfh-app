@@ -1,6 +1,11 @@
 import './assets/styles/App.css';
 import { Routes, Route, Outlet } from 'react-router-dom';
 import { Authenticator, ScrollView } from '@aws-amplify/ui-react';
+
+import AffiliateLayout from 'layouts/AffiliateLayout';
+import AffiliatePrescreensPage from 'pages/affiliate/home';
+import AffiliateApplicationDetailPage from 'pages/affiliate/application-detail';
+
 import PreLimLayout from 'layouts/PreLimLayout';
 import FormApplicationsPage from 'pages/applicant/prescreen/form/apps';
 import PreLimHomePage from 'pages/applicant/prescreen/prelim/home';
@@ -8,7 +13,7 @@ import PreLimTermsPage from 'pages/applicant/prescreen/prelim/terms';
 import PreLimQuestionsPage from 'pages/applicant/prescreen/prelim/questions';
 import PreLimResultsPage from 'pages/applicant/prescreen/prelim/results';
 
-import { ApplicantPrescreenLayout } from './components/PreScreen/ApplicantPrescreenLayout';
+import { ApplicantPrescreenLayout } from 'components/PreScreen/ApplicantPrescreenLayout';
 
 // eslint-disable-next-line import/no-unresolved
 import '@aws-amplify/ui-react/styles.css';
@@ -25,8 +30,6 @@ import { FormUserForm } from './components/PreScreen/Form/FormUserForm';
 import { FormLayoutNew } from './components/PreScreen/Form/FormLayoutNew';
 import { FormInfoPage } from './components/PreScreen/Form/FormInfoPage';
 import { LandingNewPricing } from './components/Landing/LandingNewPricing';
-import AffiliateLayout from './layouts/AffiliateLayout';
-import { AffiliatePrescreens } from './components/Affiliate/AffiliatePrescreens';
 import AffiliateSettingsPage from './pages/affiliate/settings';
 import AffiliateBillingPage from './pages/affiliate/billing';
 import AffiliateCyclesPage from './pages/affiliate/cycles';
@@ -80,7 +83,11 @@ function App() {
             </Authenticator>
           }
         >
-          <Route path="home" element={<AffiliatePrescreens />} />
+          <Route path="home" element={<AffiliatePrescreensPage />} />
+          <Route
+            path="applications/:applicationId"
+            element={<AffiliateApplicationDetailPage />}
+          />
           <Route path="settings" element={<AffiliateSettingsPage />} />
           <Route path="cycle" element={<AffiliateCyclesPage />} />
           <Route path="billing" element={<AffiliateBillingPage />} />
