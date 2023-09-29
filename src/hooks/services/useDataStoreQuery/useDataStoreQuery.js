@@ -11,8 +11,14 @@ import { DataStore } from '@aws-amplify/datastore';
  * @param {function} [params.paginationProducer.sort] read https://docs.amplify.aws/lib/datastore/data-access/q/platform/js/#sort
  * @param {number} [params.paginationProducer.page] read https://docs.amplify.aws/lib/datastore/data-access/q/platform/js/#pagination
  * @param {number} [params.paginationProducer.limit] read https://docs.amplify.aws/lib/datastore/data-access/q/platform/js/#pagination
+ * @param {[]} [params.dependencyArray = []] array of dependencies to refetch query
  */
-export function useDataStoreQuery({ model, criteria, paginationProducer }) {
+export function useDataStoreQuery({
+  model,
+  criteria,
+  paginationProducer,
+  dependencyArray = [],
+}) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -56,3 +62,23 @@ export function useDataStoreQuery({ model, criteria, paginationProducer }) {
     error,
   };
 }
+
+/**
+ * To all hooks build from this builder, check useDataStoreQuery documentation
+ */
+export const dataStoreQueryHookBuilder =
+  ({ model, defaultDataValue }) =>
+  ({ criteria, paginationProducer, dependencyArray }) => {
+    const { data, loading, error } = useDataStoreQuery({
+      model,
+      criteria,
+      paginationProducer,
+      dependencyArray,
+    });
+
+    return {
+      data: data ?? defaultDataValue,
+      loading,
+      error,
+    };
+  };
