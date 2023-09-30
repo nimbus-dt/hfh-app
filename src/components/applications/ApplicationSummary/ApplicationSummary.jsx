@@ -9,10 +9,10 @@ import {
   useBreakpointValue,
 } from '@aws-amplify/ui-react';
 import ApplicantInfoTable from 'components/applications/ApplicantInfoTable';
-import { HouseholdList } from 'components/PreScreen/Form/Household/HouseholdList';
-import { IncomeList } from 'components/PreScreen/Form/Income/IncomeList';
-import { DebtList } from 'components/PreScreen/Form/Debt/DebtList';
-import { SavingsList } from 'components/PreScreen/Form/Savings/SavingsList';
+import HouseholdList from 'components/applications/HouseholdList';
+import IncomeList from 'components/applications/IncomeList';
+import DebtList from 'components/applications/DebtList';
+import SavingsList from 'components/applications/SavingsList';
 
 export function ApplicationSummary({
   selectedApplication,
