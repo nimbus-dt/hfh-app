@@ -21,27 +21,32 @@ export function ApplicationSummary({
   incomes,
   debts,
   savings,
+  isEditable,
 }) {
   const sizeRenderer = useBreakpointValue({
     base: true,
     large: false,
   });
+
+  const commonListProps = {
+    sizeRenderer,
+    isEditable,
+  };
+
   const applicationListsSections = [
     {
       header: 'Household',
       ListComponent: (
-        <HouseholdList items={householdMembers} sizeRenderer={sizeRenderer} />
+        <HouseholdList items={householdMembers} {...commonListProps} />
       ),
     },
     {
       header: 'Savings',
-      ListComponent: (
-        <SavingsList items={savings} sizeRenderer={sizeRenderer} />
-      ),
+      ListComponent: <SavingsList items={savings} {...commonListProps} />,
     },
     {
       header: 'Debt',
-      ListComponent: <DebtList items={debts} sizeRenderer={sizeRenderer} />,
+      ListComponent: <DebtList items={debts} {...commonListProps} />,
     },
     {
       header: 'Income',
@@ -49,7 +54,7 @@ export function ApplicationSummary({
         <IncomeList
           items={incomes}
           application={selectedApplication}
-          sizeRenderer={sizeRenderer}
+          {...commonListProps}
         />
       ),
     },
@@ -92,4 +97,5 @@ ApplicationSummary.propTypes = {
   incomes: PropTypes.array,
   debts: PropTypes.array,
   savings: PropTypes.array,
+  isEditable: PropTypes.bool,
 };
