@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { Flex, Heading, Text, useBreakpointValue } from '@aws-amplify/ui-react';
 import { IncomeCreate } from './IncomeCreate';
-import { IncomeList } from './IncomeList';
+import { IncomeList } from '../../../../../components/applications/IncomeList/IncomeList';
 
 export function IncomeForm({ application, habitat, incomeRecords, owners }) {
   const sizeRenderer = useBreakpointValue({

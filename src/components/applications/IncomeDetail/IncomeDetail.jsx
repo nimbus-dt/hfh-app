@@ -1,12 +1,12 @@
-/* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
 import { Flex, Text, Button } from '@aws-amplify/ui-react';
 import { useEffect, useState } from 'react';
 import { DataStore, Storage } from 'aws-amplify';
-import { HouseholdMember, IncomeRecord, UserProps } from '../../../../models';
-import { downloadWithUrl } from '../../../../utils/files';
-import RecordDetail from '../../../RecordDetail';
+import { HouseholdMember, IncomeRecord, UserProps } from '../../../models';
+import { downloadWithUrl } from '../../../utils/files';
+import RecordDetail from '../../RecordDetail';
 
-export function IncomeDetail({ item, sizeRenderer, application }) {
+export function IncomeDetail({ item, sizeRenderer, application, isEditable }) {
   const [names, setNames] = useState({});
 
   useEffect(() => {
@@ -73,6 +73,7 @@ export function IncomeDetail({ item, sizeRenderer, application }) {
       title={`Owner: ${names.name}`}
       onDelete={deleteObject}
       sizeRenderer={sizeRenderer}
+      isEditable={isEditable}
       renderBody={() => (
         <>
           <Flex gap="5px">
@@ -121,3 +122,10 @@ export function IncomeDetail({ item, sizeRenderer, application }) {
     />
   );
 }
+
+IncomeDetail.propTypes = {
+  item: PropTypes.object,
+  sizeRenderer: PropTypes.bool,
+  application: PropTypes.object,
+  isEditable: PropTypes.bool,
+};

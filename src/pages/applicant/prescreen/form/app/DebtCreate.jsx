@@ -8,7 +8,7 @@ import {
   Button,
   TextField,
 } from '@aws-amplify/ui-react';
-import { DebtTypes } from '../../../../models';
+import { DebtTypes } from '../../../../../models';
 
 /**
  * Renders debt creation form. It is used to create a debt in the user's account and add it to the list of owners.

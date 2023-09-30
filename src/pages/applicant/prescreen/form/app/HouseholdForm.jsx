@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Flex, Heading, Text, useBreakpointValue } from '@aws-amplify/ui-react';
 import { DataStore } from 'aws-amplify';
 import { HouseholdMember } from 'models';
-import { HouseholdList } from './HouseholdList';
+import { HouseholdList } from '../../../../../components/applications/HouseholdList/HouseholdList';
 import { HouseholdCreate } from './HouseholdCreate';
 
 const countCoapplicants = (householdMembers) =>

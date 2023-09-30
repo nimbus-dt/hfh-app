@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import { Flex, Heading, Text, useBreakpointValue } from '@aws-amplify/ui-react';
 import { DataStore } from 'aws-amplify';
-import { SavingRecord } from '../../../../models';
+import { SavingRecord } from '../../../../../models';
 import { SavingsCreate } from './SavingsCreate';
-import { SavingsList } from './SavingsList';
+import { SavingsList } from '../../../../../components/applications/SavingsList/SavingsList';
 
 export function SavingsForm({ applicationID, savingRecords, owners }) {
   const sizeRenderer = useBreakpointValue({

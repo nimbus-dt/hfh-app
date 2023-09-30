@@ -1,9 +1,9 @@
-/* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
 import React, { useEffect, useState, useCallback } from 'react';
 import { Flex, Text } from '@aws-amplify/ui-react';
 import { DataStore } from 'aws-amplify';
-import { HouseholdMember, DebtRecord, UserProps } from '../../../../models';
-import RecordDetail from '../../../RecordDetail';
+import { HouseholdMember, DebtRecord, UserProps } from '../../../models';
+import RecordDetail from '../../RecordDetail';
 
 /**
  * DebtDetail is a component that manages the debt detail. It provides a way to add / remove items from the database without relying on data store.
@@ -11,7 +11,7 @@ import RecordDetail from '../../../RecordDetail';
  *
  * @return { ReactElement } React element that manages the debt detail and allows you to interact with it
  */
-export function DebtDetail({ item, sizeRenderer }) {
+export function DebtDetail({ item, sizeRenderer, isEditable }) {
   const [names, setNames] = useState({});
 
   useEffect(() => {
@@ -61,6 +61,7 @@ export function DebtDetail({ item, sizeRenderer }) {
       title={`Owner: ${names.name}`}
       onDelete={deleteObject}
       sizeRenderer={sizeRenderer}
+      isEditable={isEditable}
       renderBody={() => (
         <>
           <Flex gap="5px">
@@ -86,3 +87,9 @@ export function DebtDetail({ item, sizeRenderer }) {
     />
   );
 }
+
+DebtDetail.propTypes = {
+  item: PropTypes.object,
+  sizeRenderer: PropTypes.bool,
+  isEditable: PropTypes.bool,
+};

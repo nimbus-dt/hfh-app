@@ -1,8 +1,8 @@
-/* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
 import { Card, Flex, Heading, Collection } from '@aws-amplify/ui-react';
-import { IncomeDetail } from './IncomeDetail';
+import { IncomeDetail } from '../IncomeDetail/IncomeDetail';
 
-export function IncomeList({ items, sizeRenderer, application }) {
+export function IncomeList({ items, sizeRenderer, application, isEditable }) {
   return (
     <Card variation="elevated" width="100%">
       <Flex direction="column" alignItems="center" justifyContent="center">
@@ -17,12 +17,13 @@ export function IncomeList({ items, sizeRenderer, application }) {
           isPaginated
           wrap
         >
-          {(item, index) => (
+          {(item) => (
             <IncomeDetail
+              key={item.id}
               item={item}
               sizeRenderer={sizeRenderer}
-              key={index}
               application={application}
+              isEditable={isEditable}
             />
           )}
         </Collection>
@@ -30,3 +31,10 @@ export function IncomeList({ items, sizeRenderer, application }) {
     </Card>
   );
 }
+
+IncomeList.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.object),
+  sizeRenderer: PropTypes.bool,
+  application: PropTypes.object,
+  isEditable: PropTypes.bool,
+};

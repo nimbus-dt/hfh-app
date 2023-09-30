@@ -13,7 +13,7 @@ import {
 } from '@aws-amplify/ui-react';
 import { HiTrash } from 'react-icons/hi';
 import { DataStore, Storage } from 'aws-amplify';
-import { IncomeTypes, IncomeRecord } from '../../../../models';
+import { IncomeTypes, IncomeRecord } from '../../../../../models';
 
 const MAX_FILES_AMOUNT = 10;
 

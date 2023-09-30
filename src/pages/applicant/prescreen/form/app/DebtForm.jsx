@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import { Flex, Heading, Text, useBreakpointValue } from '@aws-amplify/ui-react';
 import { DataStore } from 'aws-amplify';
-import { DebtRecord } from '../../../../models';
+import { DebtRecord } from '../../../../../models';
 import { DebtCreate } from './DebtCreate';
-import { DebtList } from './DebtList';
+import { DebtList } from '../../../../../components/applications/DebtList/DebtList';
 
 /**
  * DebtForm displays details about debt. It is used to create and edit a Habitat - specific debt

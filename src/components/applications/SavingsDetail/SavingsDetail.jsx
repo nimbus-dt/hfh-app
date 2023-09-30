@@ -1,11 +1,11 @@
-/* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
 import { Flex, Text } from '@aws-amplify/ui-react';
 import { useEffect, useState } from 'react';
 import { DataStore } from 'aws-amplify';
-import { HouseholdMember, SavingRecord, UserProps } from '../../../../models';
-import RecordDetail from '../../../RecordDetail';
+import { HouseholdMember, SavingRecord, UserProps } from '../../../models';
+import RecordDetail from '../../RecordDetail';
 
-export function SavingsDetail({ item, sizeRenderer }) {
+export function SavingsDetail({ item, sizeRenderer, isEditable }) {
   const [names, setNames] = useState({});
 
   useEffect(() => {
@@ -56,6 +56,7 @@ export function SavingsDetail({ item, sizeRenderer }) {
       title={`Owner: ${names.name}`}
       onDelete={deleteObject}
       sizeRenderer={sizeRenderer}
+      isEditable={isEditable}
       renderBody={() => (
         <>
           <Flex gap="5px">
@@ -72,3 +73,9 @@ export function SavingsDetail({ item, sizeRenderer }) {
     />
   );
 }
+
+SavingsDetail.propTypes = {
+  item: PropTypes.object,
+  sizeRenderer: PropTypes.bool,
+  isEditable: PropTypes.bool,
+};
