@@ -8,6 +8,7 @@ import AffiliateApplicationDetailPage from 'pages/affiliate/application-detail';
 
 import PreLimLayout from 'layouts/PreLimLayout';
 import FormApplicationsPage from 'pages/applicant/prescreen/form/apps';
+import FormPreScreenPage from 'pages/applicant/prescreen/form/app';
 import PreLimHomePage from 'pages/applicant/prescreen/prelim/home';
 import PreLimTermsPage from 'pages/applicant/prescreen/prelim/terms';
 import PreLimQuestionsPage from 'pages/applicant/prescreen/prelim/questions';
@@ -17,7 +18,6 @@ import { ApplicantPrescreenLayout } from 'components/PreScreen/ApplicantPrescree
 
 // eslint-disable-next-line import/no-unresolved
 import '@aws-amplify/ui-react/styles.css';
-import { FormPreScreen } from './components/PreScreen/Form/FormPreScreen';
 import { LandingLayout } from './components/Landing/LandingLayout';
 import { LandingHome } from './components/Landing/LandingHome';
 import { LandingAbout } from './components/Landing/LandingAbout';
@@ -114,7 +114,7 @@ function App() {
               <Route path="info" element={<FormInfoPage />} />
               <Route path="user" element={<FormUserForm />} />
               <Route path="apps" element={<FormApplicationsPage />} />
-              <Route path="app" element={<FormPreScreen />} />
+              <Route path="app" element={<FormPreScreenPage />} />
             </Route>
           </Route>
         </Route>
