@@ -49,7 +49,11 @@ export function SavingsForm({ applicationID, savingRecords, owners }) {
       <Text textAlign="center">
         Please list all saving records for your coapplicant and yourself.
       </Text>
-      <SavingsList items={savingRecords} sizeRenderer={sizeRenderer} />
+      <SavingsList
+        items={savingRecords}
+        sizeRenderer={sizeRenderer}
+        isEditable
+      />
       <SavingsCreate handleCreate={handleCreate} owners={owners} />
     </Flex>
   );

@@ -68,7 +68,11 @@ export function HouseholdForm({
         Please input all members of your current household except yourself.
       </Text>
 
-      <HouseholdList items={householdMembers} sizeRenderer={sizeRenderer} />
+      <HouseholdList
+        items={householdMembers}
+        sizeRenderer={sizeRenderer}
+        isEditable
+      />
 
       <HouseholdCreate
         handleCreate={handleCreate}

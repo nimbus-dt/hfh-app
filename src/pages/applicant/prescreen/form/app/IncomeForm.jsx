@@ -25,6 +25,7 @@ export function IncomeForm({ application, habitat, incomeRecords, owners }) {
         items={incomeRecords}
         sizeRenderer={sizeRenderer}
         application={application}
+        isEditable
       />
       <IncomeCreate
         owners={owners}

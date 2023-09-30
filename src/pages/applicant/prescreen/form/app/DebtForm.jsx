@@ -52,7 +52,7 @@ export function DebtForm({ applicationID, debtRecords, owners }) {
       <Text textAlign="center">
         Please list all debt records for your coapplicant and yourself.
       </Text>
-      <DebtList items={debtRecords} sizeRenderer={sizeRenderer} />
+      <DebtList items={debtRecords} sizeRenderer={sizeRenderer} isEditable />
       <DebtCreate handleCreate={handleCreate} owners={owners} />
     </Flex>
   );
