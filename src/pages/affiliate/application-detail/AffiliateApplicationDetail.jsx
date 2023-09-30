@@ -1,27 +1,11 @@
 import { Auth, DataStore } from 'aws-amplify';
-import {
-  useLocation,
-  useNavigate,
-  useOutletContext,
-  useParams,
-} from 'react-router-dom';
-import {
-  Flex,
-  Heading,
-  Button,
-  Table,
-  TableBody,
-  TableRow,
-  TableCell,
-  useBreakpointValue,
-} from '@aws-amplify/ui-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import { Flex, Button } from '@aws-amplify/ui-react';
+import { useEffect, useState } from 'react';
 import { Application, UserProps } from 'models';
-import { HouseholdList } from 'components/PreScreen/Form/Household/HouseholdList';
-import { IncomeList } from 'components/PreScreen/Form/Income/IncomeList';
-import { SavingsList } from 'components/PreScreen/Form/Savings/SavingsList';
-import { DebtList } from 'components/PreScreen/Form/Debt/DebtList';
 import GeneralInfoTable from 'components/applications/GeneralInfoTable';
+import ApplicationSummary from 'components/applications/ApplicationSummary';
+import ApplicationMetricsTable from 'components/applications/ApplicationMetricsTable';
 import {
   useApplicationById,
   useDebtRecordsQuery,
@@ -29,7 +13,14 @@ import {
   useIncomeRecordsQuery,
   useSavingRecordsQuery,
 } from 'hooks/services';
-import { calculateMetrics } from './calculateMetrics';
+import {
+  getAmi,
+  getDebtToIncomeRatio,
+  getIsWithinAmiRange,
+  getTotalMonthlyDebts,
+  getTotalMonthlyIncomes,
+  getTotalSavings,
+} from 'utils/applicationMetrics';
 
 export function AffiliateApplicationDetailPage() {
   const [formData, setFormData] = useState({});
@@ -47,46 +38,19 @@ export function AffiliateApplicationDetailPage() {
   const { data: savings } = useSavingRecordsQuery(queriesProps);
   const { data: debts } = useDebtRecordsQuery(queriesProps);
   const [userProps, setUserProps] = useState(null);
-  const totalMembers = householdMembers.length + 1;
   const [userDataBool, setUserDataBool] = useState(false);
   const [userID, setUserID] = useState('');
   const [previousDataId, setPreviousDataId] = useState(null);
-  const navigate = useNavigate();
-  console.count('counter');
-
-  const responsiveBool = useBreakpointValue({
-    base: true,
-    large: false,
-  });
-
-  const {
-    totalMonthlyIncomes,
-    totalSavings,
+  const totalSavings = getTotalSavings(savings);
+  const totalMonthlyIncomes = getTotalMonthlyIncomes(incomes);
+  const totalMonthlyDebts = getTotalMonthlyDebts(debts);
+  const debtToIncomeRatio = getDebtToIncomeRatio(
     totalMonthlyDebts,
-    debtToIncomeRatio,
-    ami,
-    amiRange,
-  } = useMemo(
-    () =>
-      calculateMetrics({
-        selectedApplication,
-        householdMembers,
-        savings,
-        incomes,
-        debts,
-        habitat,
-        totalMembers,
-      }),
-    [
-      selectedApplication,
-      householdMembers,
-      savings,
-      incomes,
-      debts,
-      habitat,
-      totalMembers,
-    ]
+    totalMonthlyIncomes
   );
+  const ami = getAmi(habitat?.AMI || [], householdMembers.length);
+  const isWithinAmiRange = getIsWithinAmiRange(ami, totalMonthlyIncomes);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const checkUserData = async () => {
@@ -168,180 +132,24 @@ export function AffiliateApplicationDetailPage() {
         habitatRevisor={selectedApplication?.habitatRevisor}
         dateRevised={selectedApplication?.dateRevised}
       />
-      <Table caption="" highlightOnHover variation="bordered">
-        <TableBody>
-          <TableRow>
-            <TableCell as="th" colSpan="2">
-              <Heading level="3" textAlign="center">
-                General Information
-              </Heading>
-            </TableCell>
-          </TableRow>
 
-          <TableRow>
-            <TableCell as="th" width="25%">
-              Name
-            </TableCell>
-            <TableCell>{selectedApplication?.ownerName}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell as="th" width="25%">
-              Date Submitted
-            </TableCell>
-            <TableCell>{selectedApplication?.dateSubmitted}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell as="th" width="25%">
-              Status
-            </TableCell>
-            <TableCell>{selectedApplication?.submittedStatus}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell as="th" width="25%">
-              Date Of Birth
-            </TableCell>
-            <TableCell>{userProps?.dob}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell as="th" width="25%">
-              Sex
-            </TableCell>
-            <TableCell>{userProps?.sex}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell as="th" width="25%">
-              Phone Number
-            </TableCell>
-            <TableCell>{userProps?.phone}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell as="th" width="25%">
-              Revisor
-            </TableCell>
-            <TableCell>{selectedApplication?.habitatRevisor}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell as="th" width="25%">
-              Date revised
-            </TableCell>
-            <TableCell>{selectedApplication?.dateRevised}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell as="th" width="25%">
-              Address
-            </TableCell>
-            <TableCell>{userProps?.address}</TableCell>
-          </TableRow>
+      <ApplicationSummary
+        selectedApplication={selectedApplication}
+        userProps={userProps}
+        householdMembers={householdMembers}
+        incomes={incomes}
+        debts={debts}
+        savings={savings}
+      />
 
-          <TableRow>
-            <TableCell as="th" colSpan="2">
-              <Heading level="3" textAlign="center">
-                Household Information
-              </Heading>
-            </TableCell>
-          </TableRow>
-
-          <TableRow>
-            <TableCell colSpan="2">
-              <HouseholdList
-                items={householdMembers}
-                sizeRenderer={responsiveBool}
-              />
-            </TableCell>
-          </TableRow>
-
-          <TableRow>
-            <TableCell as="th" colSpan="2">
-              <Heading level="3" textAlign="center">
-                Income Information
-              </Heading>
-            </TableCell>
-          </TableRow>
-
-          <TableRow>
-            <TableCell colSpan="2">
-              <IncomeList
-                items={incomes}
-                application={selectedApplication}
-                sizeRenderer={responsiveBool}
-              />
-            </TableCell>
-          </TableRow>
-
-          <TableRow>
-            <TableCell as="th" colSpan="2">
-              <Heading level="3" textAlign="center">
-                Debt Information
-              </Heading>
-            </TableCell>
-          </TableRow>
-
-          <TableRow>
-            <TableCell colSpan="2">
-              <DebtList items={debts} sizeRenderer={responsiveBool} />
-            </TableCell>
-          </TableRow>
-
-          <TableRow>
-            <TableCell as="th" colSpan="2">
-              <Heading level="3" textAlign="center">
-                Savings Information
-              </Heading>
-            </TableCell>
-          </TableRow>
-
-          <TableRow>
-            <TableCell colSpan="2">
-              <SavingsList items={savings} sizeRenderer={responsiveBool} />
-            </TableCell>
-          </TableRow>
-
-          <TableRow>
-            <TableCell as="th" colSpan="2">
-              <Heading level="3" textAlign="center">
-                Metrics
-              </Heading>
-            </TableCell>
-          </TableRow>
-
-          <TableRow>
-            <TableCell as="th" width="25%">
-              Total Monthly Income
-            </TableCell>
-            <TableCell>${totalMonthlyIncomes}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell as="th" width="25%">
-              Total Savings
-            </TableCell>
-            <TableCell>${totalSavings}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell as="th" width="25%">
-              Total Monthly Debt
-            </TableCell>
-            <TableCell>${totalMonthlyDebts}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell as="th" width="25%">
-              Debt to Income Ratio
-            </TableCell>
-            <TableCell>{debtToIncomeRatio}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell as="th" width="25%">
-              AMI Range
-            </TableCell>
-            <TableCell>{ami}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell as="th" width="25%">
-              Within AMI Range
-            </TableCell>
-            <TableCell>{amiRange}</TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
+      <ApplicationMetricsTable
+        totalMonthlyIncomes={totalMonthlyIncomes}
+        totalSavings={totalSavings}
+        totalMonthlyDebts={totalMonthlyDebts}
+        debtToIncomeRatio={debtToIncomeRatio}
+        ami={ami}
+        isWithinAmiRange={isWithinAmiRange}
+      />
 
       <Button onClick={() => updateApplication('ACCEPTED')}>Accept</Button>
       <Button onClick={() => updateApplication('REJECTED')}>Reject</Button>
