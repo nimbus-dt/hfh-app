@@ -39,8 +39,9 @@ export function LandingHome() {
           direction={responsiveBool ? 'column' : 'row'}
           width="100%"
           height="100%"
-          justifyContent={responsiveBool ? 'center' : 'center'}
-          marginBottom="5%"
+          justifyContent="center"
+          alignContent="center"
+          alignItems="center"
         >
           <Flex
             direction="column"
