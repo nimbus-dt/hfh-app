@@ -1,4 +1,8 @@
-import { RelationshipTypes, SexTypes } from 'models';
+import {
+  RelationshipTypes,
+  SexTypes,
+  ApplicationSubmittedStatus,
+} from 'models';
 import { mapEnumToHumanReadableValues, mapEnumToList } from './mappers';
 
 /**
@@ -37,3 +41,18 @@ export const RELATIONSHIP_TYPES_LIST = mapEnumToList(RelationshipTypes);
  */
 export const RELATIONSHIP_VALUES_MAP =
   mapEnumToHumanReadableValues(RelationshipTypes);
+
+/**
+ * This constant is used to iterate through the application submitted status(keys) and values
+ */
+export const APPLICATION_SUBMITTED_STATUS_LIST = mapEnumToList(
+  ApplicationSubmittedStatus
+);
+
+/**
+ * This constant is used to get application submitted status values values according to
+ * the type(key)
+ */
+export const APPLICATION_SUBMITTED_STATUS_MAP = mapEnumToHumanReadableValues(
+  ApplicationSubmittedStatus
+);
