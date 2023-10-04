@@ -1,3 +1,3 @@
-import { AffiliatePrescreensPage } from './AffiliatePrescreens';
+import { AffiliateHomePage } from './AffiliateHomePage';
 
-export default AffiliatePrescreensPage;
+export default AffiliateHomePage;

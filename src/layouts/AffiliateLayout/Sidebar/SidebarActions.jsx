@@ -3,11 +3,12 @@ import { Auth } from 'aws-amplify';
 import { NavLink, useParams } from 'react-router-dom';
 import {
   HiCog6Tooth,
-  HiArrowPath,
   HiArrowLeftOnRectangle,
+  HiUserGroup,
+  HiEnvelope,
 } from 'react-icons/hi2';
 import { HiHome } from 'react-icons/hi';
-import { BiMoneyWithdraw } from 'react-icons/bi';
+import { IoHammer } from 'react-icons/io5';
 import { concatClassNames } from '../../../utils/formatters';
 import styles from './SidebarActions.module.css';
 
@@ -18,19 +19,24 @@ const buildRoutes = (habitat) => [
     href: `/affiliate/${habitat}/home`,
   },
   {
-    title: 'Application Cycles',
-    Icon: HiArrowPath,
-    href: `/affiliate/${habitat}/cycle`,
+    title: 'Applications',
+    Icon: HiEnvelope,
+    href: `/affiliate/${habitat}/apps`,
+  },
+  {
+    title: 'Repairs',
+    Icon: IoHammer,
+    href: `/affiliate/${habitat}/repairs`,
+  },
+  {
+    title: 'Volunteers',
+    Icon: HiUserGroup,
+    href: `/affiliate/${habitat}/volunteers`,
   },
   {
     title: 'Settings',
     Icon: HiCog6Tooth,
     href: `/affiliate/${habitat}/settings`,
-  },
-  {
-    title: 'Billing',
-    Icon: BiMoneyWithdraw,
-    href: `/affiliate/${habitat}/billing`,
   },
 ];
 

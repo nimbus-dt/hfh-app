@@ -120,7 +120,7 @@ export function AffiliateApplicationDetailPage() {
       <Button
         width="fit-content"
         onClick={() => {
-          navigate('../home');
+          navigate('../apps');
         }}
       >
         Go back
