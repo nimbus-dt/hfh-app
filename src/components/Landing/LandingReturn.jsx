@@ -29,10 +29,10 @@ export function LandingReturn() {
     >
       <Card
         width={responsiveBool ? '90%' : '85%'}
-        height={responsiveBool ? 'fit-content' : '80%'}
+        height="500px"
         variation="elevated"
-        marginTop="5%"
-        marginBottom="5%"
+        marginTop="50px"
+        marginBottom="50px"
       >
         <Flex
           direction={responsiveBool ? 'column' : 'row'}
