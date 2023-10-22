@@ -4,7 +4,7 @@ type Cycles @model @auth(rules: [{allow: public}]) {
   cycleEndDate: AWSDate
   cycleStatus: Boolean
   Applications: [Application] @hasMany(indexName: "byCycles", fields: ["id"])
-  habitatID: ID @index(name: "byHabitat")
+  habitatID: ID! @index(name: "byHabitat")
   cycleSeason: String
 }
 
@@ -100,14 +100,14 @@ type IncomeRecord @model @auth(rules: [{allow: public}]) {
   employmentTime: Float
 }
 
-type HouseholdMember @model @auth(rules: [{allow: public}]) {
+type HouseholdMember @model @auth(rules: [{allow: public}, {allow: private, provider: iam}]) {
   id: ID!
   name: String
   dateOfBirth: AWSDate
   sex: SexTypes
   relationship: RelationshipTypes
   isCoapplicant: Boolean
-  applicationID: ID @index(name: "byApplication")
+  applicationID: ID! @index(name: "byApplication")
 }
 
 enum SexTypes {
@@ -132,9 +132,9 @@ type Application @model @auth(rules: [{allow: public}]) {
   ownerID: ID
   habitatID: ID! @index(name: "byHabitat")
   HouseholdMembers: [HouseholdMember] @hasMany(indexName: "byApplication", fields: ["id"])
-  IncomeRecords: [IncomeRecord] @hasMany(indexName: "byApplication", fields: ["id"])
-  SavingRecords: [SavingRecord] @hasMany(indexName: "byApplication", fields: ["id"])
-  DebtRecords: [DebtRecord] @hasMany(indexName: "byApplication", fields: ["id"])
+  IncomeRecords: [HouseholdMember] @hasMany(indexName: "byApplication", fields: ["id"])
+  SavingRecords: [HouseholdMember] @hasMany(indexName: "byApplication", fields: ["id"])
+  DebtRecords: [HouseholdMember] @hasMany(indexName: "byApplication", fields: ["id"])
   submitted: Boolean
   dateSubmitted: AWSDate
   submittedStatus: ApplicationSubmittedStatus
@@ -154,7 +154,7 @@ type Habitat @model @auth(rules: [{allow: public}]) {
   county: String
   countiesServed: [String]
   props: AWSJSON
-  Applications: [Application] @hasMany(indexName: "byHabitat", fields: ["id"])
+  Applications: [Cycles] @hasMany(indexName: "byHabitat", fields: ["id"])
   users: [ID]
   AMI: [String]
   Cycles: [Cycles] @hasMany(indexName: "byHabitat", fields: ["id"])
