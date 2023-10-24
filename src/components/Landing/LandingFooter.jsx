@@ -38,7 +38,6 @@ export function LandingFooter() {
         <Link onClick={() => navigate('/privacy')}>Privacy Policy</Link>
         <Link onClick={() => navigate('/terms')}>Terms of Use</Link>
         <Link onClick={() => navigate('/return')}>Return Policy</Link>
-        <Link onClick={() => navigate('/contact')}>Contact</Link>
       </Flex>
       <Flex
         direction="column"

@@ -12,8 +12,12 @@
       "AmplifyAppId": "dgfg84wx7ntah"
     },
     "categories": {
-      "auth": {
-        "hfhapp": {}
+      "function": {
+        "applicationchangenotification": {
+          "sesEmail": "support@nimbus-dt.com",
+          "deploymentBucketName": "amplify-hfhapp-staging-10900-deployment",
+          "s3Key": "amplify-builds/applicationchangenotification-63506c6530466851664a-build.zip"
+        }
       },
       "prescreennotify": {
         "deploymentBucketName": {
@@ -121,46 +125,14 @@
           "60": "p"
         }
       },
-      "api": {
+      "auth": {
         "hfhapp": {}
       },
       "storage": {
         "s3hfhappstoragebucket": {}
       },
-      "function": {
-        "applicationchangenotification": {
-          "sesEmail": "support@nimbus-dt.com",
-          "deploymentBucketName": "amplify-hfhapp-staging-10900-deployment",
-          "s3Key": "amplify-builds/applicationchangenotification-63506c6530466851664a-build.zip"
-        }
-      }
-    }
-  },
-  "prod": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-hfhapp-prod-162631-authRole",
-      "UnauthRoleArn": "arn:aws:iam::719959370210:role/amplify-hfhapp-prod-162631-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::719959370210:role/amplify-hfhapp-prod-162631-authRole",
-      "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-hfhapp-prod-162631-deployment",
-      "UnauthRoleName": "amplify-hfhapp-prod-162631-unauthRole",
-      "StackName": "amplify-hfhapp-prod-162631",
-      "StackId": "arn:aws:cloudformation:us-east-1:719959370210:stack/amplify-hfhapp-prod-162631/5ecf2b20-19be-11ee-a5f3-0eb16a4bf1e9",
-      "AmplifyAppId": "dgfg84wx7ntah"
-    },
-    "categories": {
-      "auth": {
+      "api": {
         "hfhapp": {}
-      },
-      "function": {
-        "prescreennotify": {
-          "deploymentBucketName": "amplify-hfhapp-prod-162631-deployment",
-          "s3Key": "amplify-builds/prescreennotify-6b546134334335654739-build.zip"
-        },
-        "sendstatusemail": {
-          "deploymentBucketName": "amplify-hfhapp-prod-162631-deployment",
-          "s3Key": "amplify-builds/sendstatusemail-5049716c554131423670-build.zip"
-        }
       }
     }
   }

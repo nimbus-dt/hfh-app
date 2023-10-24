@@ -51,7 +51,7 @@ export const schema = {
                     "name": "habitatID",
                     "isArray": false,
                     "type": "ID",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "cycleSeason": {
@@ -683,7 +683,7 @@ export const schema = {
                     "name": "applicationID",
                     "isArray": false,
                     "type": "ID",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "createdAt": {
@@ -725,6 +725,16 @@ export const schema = {
                         "rules": [
                             {
                                 "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "iam",
                                 "operations": [
                                     "create",
                                     "update",
@@ -781,7 +791,7 @@ export const schema = {
                     "name": "IncomeRecords",
                     "isArray": true,
                     "type": {
-                        "model": "IncomeRecord"
+                        "model": "HouseholdMember"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -797,7 +807,7 @@ export const schema = {
                     "name": "SavingRecords",
                     "isArray": true,
                     "type": {
-                        "model": "SavingRecord"
+                        "model": "HouseholdMember"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -813,7 +823,7 @@ export const schema = {
                     "name": "DebtRecords",
                     "isArray": true,
                     "type": {
-                        "model": "DebtRecord"
+                        "model": "HouseholdMember"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -1009,7 +1019,7 @@ export const schema = {
                     "name": "Applications",
                     "isArray": true,
                     "type": {
-                        "model": "Application"
+                        "model": "Cycles"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -1169,5 +1179,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "aa29e9bb267f17360358e2dee1cce331"
+    "version": "272aff0227c58a25d0cde5eb8ba686f8"
 };
