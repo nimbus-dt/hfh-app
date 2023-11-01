@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
 import { useRef, useState } from 'react';
 import {
   Card,
@@ -309,3 +309,9 @@ export function IncomeCreate({ owners, habitat, application }) {
     </Card>
   );
 }
+
+IncomeCreate.propTypes = {
+  owners: PropTypes.array,
+  habitat: PropTypes.object,
+  application: PropTypes.object,
+};

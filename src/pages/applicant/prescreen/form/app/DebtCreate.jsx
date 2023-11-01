@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
 import React from 'react';
 import {
   Card,
@@ -29,6 +29,7 @@ export function DebtCreate({ handleCreate, owners }) {
               </option>
             ))}
           </SelectField>
+
           <SelectField
             name="typeOfDebt"
             label="What type of debt is this"
@@ -76,3 +77,8 @@ export function DebtCreate({ handleCreate, owners }) {
     </Card>
   );
 }
+
+DebtCreate.propTypes = {
+  handleCreate: PropTypes.func,
+  owners: PropTypes.array,
+};
