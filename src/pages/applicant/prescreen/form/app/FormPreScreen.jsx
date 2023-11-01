@@ -1,5 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useParams, useLocation } from 'react-router-dom';
+
 import {
   Flex,
   Heading,
@@ -7,172 +7,149 @@ import {
   Pagination,
   Button,
   Text,
+  Alert,
 } from '@aws-amplify/ui-react';
-import { useState, useEffect } from 'react';
-import { Auth } from 'aws-amplify';
-import { DataStore } from '@aws-amplify/datastore';
+import { useMemo, useState } from 'react';
+import useHabitatByUrlName from 'hooks/services/useHabitatByUrlName';
+import useCurrentAuthenticatedUser from 'hooks/services/useCurrentAuthenticatedUser';
 import {
-  Habitat,
-  Application,
-  HouseholdMember,
-  SavingRecord,
-  DebtRecord,
-  UserProps,
-  IncomeRecord,
-} from 'models';
+  useApplicationById,
+  useDebtRecordsObserveQuery,
+  useHouseholdMembersObserveQuery,
+  useIncomeRecordsObserveQuery,
+  useSavingRecordsObserveQuery,
+} from 'hooks/services';
+import useApplicationRecordsOwners from 'hooks/services/useApplicationRecordsOwners';
+import { validateRecords } from 'utils/validators';
 import { HouseholdForm } from './HouseholdForm';
 import { SavingsForm } from './SavingsForm';
 import { DebtForm } from './DebtForm';
 import { IncomeForm } from './IncomeForm';
 import { ConfirmForm } from './ConfirmForm';
-
-const createRecordsSubscription = ({ applicationID, model, callback }) =>
-  DataStore.observeQuery(model, (c) =>
-    c.applicationID.eq(applicationID)
-  ).subscribe(({ items, isSynced }) => {
-    if (!isSynced) {
-      return;
-    }
-
-    callback(items);
-  });
+import {
+  DEBTS_OWNERS_VALIDATION_ALERT,
+  INCOMES_OWNERS_VALIDATION_ALERT,
+  RECORD_AMOUNT_VALIDATION_ALERT,
+  SAVINGS_OWNERS_VALIDATION_ALERT,
+} from './alerts';
 
 export function FormPreScreenPage() {
-  const [application, setApplication] = useState({});
-  const [habitat, setHabitat] = useState({});
-  const [householdMembers, setHouseholdMembers] = useState([]);
-  const [savingRecords, setSavingRecords] = useState([]);
-  const [debtRecords, setDebtRecords] = useState([]);
-  const [incomeRecords, setIncomeRecords] = useState([]);
-  const [currentUser, setCurrentUser] = useState(null);
-  const [owners, setOwners] = useState([]);
-  const [page, setPage] = useState(1);
   const location = useLocation();
-  const applicationID = location.state?.applicationID;
-  const urlName = useParams().habitat;
-  const nextBtnIsDisabled =
-    (page === 1 && householdMembers.length <= 0) ||
-    (page === 2 && savingRecords.length <= 0) ||
-    (page === 3 && debtRecords.length <= 0) ||
-    (page === 4 && incomeRecords.length <= 0) ||
-    page >= 5;
+  const { applicationID } = location.state;
+  const { habitat: habitatUrlName } = useParams();
+  const { data: application } = useApplicationById({
+    id: applicationID,
+  });
+  const { habitat, error: habitatError } = useHabitatByUrlName({
+    habitatUrlName,
+  });
+  const { currentUser } = useCurrentAuthenticatedUser();
+  const { data: householdMembers } = useHouseholdMembersObserveQuery({
+    criteria: (c) => c.applicationID.eq(applicationID),
+    dependencyArray: [applicationID],
+  });
+  const { data: debtRecords } = useDebtRecordsObserveQuery({
+    criteria: (c) => c.applicationID.eq(applicationID),
+    dependencyArray: [applicationID],
+  });
+  const { data: savingRecords } = useSavingRecordsObserveQuery({
+    criteria: (c) => c.applicationID.eq(applicationID),
+    dependencyArray: [applicationID],
+  });
+  const { data: incomeRecords } = useIncomeRecordsObserveQuery({
+    criteria: (c) => c.applicationID.eq(applicationID),
+    dependencyArray: [applicationID],
+  });
+  const { data: owners } = useApplicationRecordsOwners({
+    currentUser,
+    householdMembers,
+    dependencyArray: [currentUser, householdMembers],
+  });
 
-  // fetch habitat
-  useEffect(() => {
-    async function fetchHabitat() {
-      try {
-        const habitatObject = await DataStore.query(Habitat, (c) =>
-          c.urlName.eq(urlName)
-        );
-        setHabitat(habitatObject[0]);
-      } catch (error) {
-        console.log('Error retrieving Habitat', error);
-      }
-    }
-    fetchHabitat();
-  }, []);
-
-  // fetch application
-  useEffect(() => {
-    async function fetchApplication() {
-      try {
-        const applicationObject = await DataStore.query(
-          Application,
-          applicationID
-        );
-
-        setApplication(applicationObject);
-      } catch (error) {
-        console.log('Error retrieving Application', error);
-      }
+  const ownersIDs = useMemo(() => {
+    if (!owners) {
+      return [];
     }
 
-    fetchApplication();
-  }, []);
+    return new Set(owners.map((owner) => owner.id));
+  }, [owners]);
 
-  // fetch current user
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const currentUserResponse = await Auth.currentAuthenticatedUser({
-          bypassCache: false,
-        });
+  const [alerts, setAlerts] = useState([]);
+  const [page, setPage] = useState(1);
+  const nextBtnIsDisabled = page === 5;
 
-        setCurrentUser(currentUserResponse);
-      } catch (error) {
-        console.log('Error retrieving current user', error);
-      }
-    };
+  const isValidToMoveToNextPage = () => {
+    const newAlerts = [];
+    let isValid = true;
 
-    fetchUser();
-  }, []);
+    switch (page) {
+      case 1:
+        if (householdMembers.length <= 0) {
+          setAlerts([RECORD_AMOUNT_VALIDATION_ALERT]);
+          isValid = false;
+        }
 
-  // set owners
-  useEffect(() => {
-    if (!currentUser) {
+        return isValid;
+
+      case 2:
+        if (savingRecords.length <= 0) {
+          newAlerts.push(RECORD_AMOUNT_VALIDATION_ALERT);
+          isValid = false;
+        }
+
+        if (!validateRecords(savingRecords, ownersIDs)) {
+          newAlerts.push(SAVINGS_OWNERS_VALIDATION_ALERT);
+          isValid = false;
+        }
+
+        setAlerts(newAlerts);
+        return isValid;
+
+      case 3:
+        if (debtRecords.length <= 0) {
+          newAlerts.push(RECORD_AMOUNT_VALIDATION_ALERT);
+          isValid = false;
+        }
+
+        if (!validateRecords(debtRecords, ownersIDs)) {
+          newAlerts.push(DEBTS_OWNERS_VALIDATION_ALERT);
+          isValid = false;
+        }
+
+        setAlerts(newAlerts);
+        return isValid;
+
+      case 4:
+        if (incomeRecords.length <= 0) {
+          newAlerts.push(RECORD_AMOUNT_VALIDATION_ALERT);
+          isValid = false;
+        }
+
+        if (!validateRecords(incomeRecords, ownersIDs)) {
+          newAlerts.push(INCOMES_OWNERS_VALIDATION_ALERT);
+          isValid = false;
+        }
+
+        setAlerts(newAlerts);
+        return isValid;
+
+      case 5:
+      default:
+        return false;
+    }
+  };
+
+  const moveToNextPage = () => {
+    if (!isValidToMoveToNextPage()) {
       return;
     }
 
-    const getOwners = async () => {
-      try {
-        const userProps = await DataStore.query(UserProps, (c) =>
-          c.ownerID.eq(currentUser.username)
-        );
+    setPage((prevValue) => prevValue + 1);
+  };
 
-        const ownersArray = [userProps[0]];
-
-        if (householdMembers.length > 0) {
-          const coapplicants = householdMembers.filter(
-            (member) => member.isCoapplicant
-          );
-
-          if (coapplicants.length > 0) {
-            ownersArray.push(...coapplicants);
-          }
-        }
-
-        setOwners(ownersArray);
-      } catch (error) {
-        console.log('Error retrieving current user', error);
-      }
-    };
-
-    getOwners();
-  }, [currentUser, householdMembers]);
-
-  // fetch and create lists subscription
-  useEffect(() => {
-    const householdMembersSubscription = createRecordsSubscription({
-      applicationID,
-      model: HouseholdMember,
-      callback: (items) => setHouseholdMembers(items),
-    });
-
-    const savingRecordsSubscription = createRecordsSubscription({
-      applicationID,
-      model: SavingRecord,
-      callback: (items) => setSavingRecords(items),
-    });
-
-    const debtRecordsSubscription = createRecordsSubscription({
-      applicationID,
-      model: DebtRecord,
-      callback: (items) => setDebtRecords(items),
-    });
-
-    const incomeRecordsSubscription = createRecordsSubscription({
-      applicationID,
-      model: IncomeRecord,
-      callback: (items) => setIncomeRecords(items),
-    });
-
-    return () => {
-      householdMembersSubscription.unsubscribe();
-      savingRecordsSubscription.unsubscribe();
-      debtRecordsSubscription.unsubscribe();
-      incomeRecordsSubscription.unsubscribe();
-    };
-  }, [applicationID]);
+  if (habitatError) {
+    console.log('Error retrieving Habitat:', habitatError.message);
+  }
 
   function formSet() {
     if (page === 1) {
@@ -180,7 +157,6 @@ export function FormPreScreenPage() {
         <HouseholdForm
           applicationID={applicationID}
           householdMembers={householdMembers}
-          habitatMaxCoapplicants={habitat?.props?.data?.maxCoapplicants}
         />
       );
     }
@@ -220,6 +196,8 @@ export function FormPreScreenPage() {
           savingRecords={savingRecords}
           debtRecords={debtRecords}
           incomeRecords={incomeRecords}
+          ownersIDs={ownersIDs}
+          setAlerts={setAlerts}
         />
       );
     }
@@ -252,6 +230,15 @@ export function FormPreScreenPage() {
     <Flex direction="column" gap="xl" width="100%">
       {formSet()}
 
+      <Flex direction="column">
+        {alerts.length > 0 &&
+          alerts.map((alert) => (
+            <Alert key={alert.key} variation={alert.variation} hasIcon>
+              {alert.message}
+            </Alert>
+          ))}
+      </Flex>
+
       <Flex justifyContent="space-between" alignItems="center" width="100%">
         <Button
           onClick={() => {
@@ -271,11 +258,7 @@ export function FormPreScreenPage() {
         />
 
         <Button
-          onClick={() => {
-            if (page !== 5) {
-              setPage(page + 1);
-            }
-          }}
+          onClick={moveToNextPage}
           width="fit-content"
           disabled={nextBtnIsDisabled}
         >
