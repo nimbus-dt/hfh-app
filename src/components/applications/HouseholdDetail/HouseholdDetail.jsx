@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { Flex, Text } from '@aws-amplify/ui-react';
 import { DataStore } from 'aws-amplify';
 import { formatRelationshipValue, formatSexValue } from 'utils/formatters';
+import { isAdult } from 'utils/dates';
 import { HouseholdMember } from '../../../models';
 import RecordDetail from '../../RecordDetail';
 
@@ -14,6 +15,13 @@ export function HouseholdDetail({ item, sizeRenderer, isEditable }) {
     } catch (error) {
       console.log('Error deleting record', error);
     }
+  };
+
+  const getIsUnemployedString = () => {
+    if (isAdult(item.dateOfBirth)) {
+      return item.isUnemployed ? 'Yes' : 'No';
+    }
+    return 'N/A';
   };
 
   return (
@@ -40,8 +48,8 @@ export function HouseholdDetail({ item, sizeRenderer, isEditable }) {
           </Flex>
 
           <Flex gap="5px">
-            <Text fontWeight="bold">Is CoApplicant:</Text>
-            <Text>{item.isCoapplicant ? 'Yes' : 'No'}</Text>
+            <Text fontWeight="bold">Is Unemployed:</Text>
+            <Text>{getIsUnemployedString()}</Text>
           </Flex>
         </>
       )}

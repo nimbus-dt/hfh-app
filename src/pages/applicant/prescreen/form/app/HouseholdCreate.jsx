@@ -10,8 +10,17 @@ import {
   Button,
 } from '@aws-amplify/ui-react';
 import { RELATIONSHIP_TYPES_LIST, SEX_TYPES_LIST } from 'utils/constants';
+import { useState } from 'react';
+import { isAdult as isAdultUtility } from 'utils/dates';
 
-export function HouseholdCreate({ handleCreate, enableCoapplicants }) {
+export function HouseholdCreate({ handleCreate }) {
+  const [isAdult, setIsAdult] = useState(false);
+
+  const handleDoBChange = (e) => {
+    const newDob = e.target.value;
+    setIsAdult(isAdultUtility(newDob));
+  };
+
   return (
     <Card variation="elevated">
       <Heading textAlign="center">Household Member Create</Heading>
@@ -23,7 +32,15 @@ export function HouseholdCreate({ handleCreate, enableCoapplicants }) {
             isRequired
             placeholder="Jane Sara Doe"
           />
-          <TextField name="dob" label="Date of Birth" type="date" isRequired />
+
+          <TextField
+            name="dob"
+            label="Date of Birth"
+            type="date"
+            onChange={handleDoBChange}
+            isRequired
+          />
+
           <SelectField
             name="sex"
             label="Sex"
@@ -36,6 +53,7 @@ export function HouseholdCreate({ handleCreate, enableCoapplicants }) {
               </option>
             ))}
           </SelectField>
+
           <SelectField
             name="relationship"
             label="Relationship"
@@ -48,20 +66,18 @@ export function HouseholdCreate({ handleCreate, enableCoapplicants }) {
               </option>
             ))}
           </SelectField>
-          <RadioGroupField
-            name="isCoapplicant"
-            isRequired
-            label="Is this person a coapplicant?"
-            isDisabled={!enableCoapplicants}
-            descriptiveText={
-              enableCoapplicants
-                ? 'A coapplicant will also be required to input financial data.'
-                : 'You have reached the maximum number of coapplicants.'
-            }
-          >
-            <Radio value="yes">Yes</Radio>
-            <Radio value="no">No</Radio>
-          </RadioGroupField>
+
+          {isAdult && (
+            <RadioGroupField
+              name="isUnemployed"
+              label="Is this person unemployed?"
+              descriptiveText="A unemployed household member will not be required to input financial data."
+              isRequired
+            >
+              <Radio value="yes">Yes</Radio>
+              <Radio value="no">No</Radio>
+            </RadioGroupField>
+          )}
 
           <Button type="submit" variation="primary">
             Add
@@ -74,5 +90,4 @@ export function HouseholdCreate({ handleCreate, enableCoapplicants }) {
 
 HouseholdCreate.propTypes = {
   handleCreate: PropTypes.func.isRequired,
-  enableCoapplicants: PropTypes.bool.isRequired,
 };
