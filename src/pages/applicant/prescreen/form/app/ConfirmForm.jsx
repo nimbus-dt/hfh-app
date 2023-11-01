@@ -6,6 +6,8 @@ import ApplicationSummary from 'components/applications/ApplicationSummary';
 import useCurrentAuthenticatedUser from 'hooks/services/useCurrentAuthenticatedUser';
 import useUserPropsByUsername from 'hooks/services/useUserPropsByUsername';
 import { Application } from 'models';
+import { validateAllApplicationRecords } from 'utils/validators';
+import dayjs from 'dayjs';
 
 export function ConfirmForm({
   application,
@@ -13,6 +15,8 @@ export function ConfirmForm({
   savingRecords,
   debtRecords,
   incomeRecords,
+  ownersIDs,
+  setAlerts,
 }) {
   const { currentUser } = useCurrentAuthenticatedUser();
   const { userProps } = useUserPropsByUsername({
@@ -40,9 +44,25 @@ export function ConfirmForm({
       return;
     }
 
-    const current = new Date();
-    const currentDate = current.toISOString();
-    const cutDate = currentDate.substring(0, 10);
+    const recordsValidation = validateAllApplicationRecords({
+      incomeRecords,
+      savingRecords,
+      debtRecords,
+      ownersIDs,
+    });
+
+    if (!recordsValidation.areAllValid) {
+      const newAlerts = recordsValidation.invalidRecordTypes.map(
+        (recordType) => ({
+          key: `${recordType.toLowerCase()}-record-alert`,
+          variation: 'error',
+          message: `Records for owners missing in ${recordType.toLowerCase()} records`,
+        })
+      );
+
+      setAlerts(newAlerts);
+      return;
+    }
 
     try {
       await DataStore.save(
@@ -50,7 +70,7 @@ export function ConfirmForm({
           updated.submitted = true;
           updated.ownerName = `${formData.name}`;
           updated.submittedStatus = 'PENDING';
-          updated.dateSubmitted = cutDate;
+          updated.dateSubmitted = dayjs().format('YYYY-MM-DD');
           // Include other properties that need to be updated
         })
       );
@@ -72,10 +92,9 @@ export function ConfirmForm({
         savings={savingRecords}
         isEditable
       />
-
       <Text textAlign="center" width="100%">
-        Please make sure that you have added at least ONE RECORD per section. If
-        you have not, your application will not be considered.
+        Please make sure that you have added at least ONE RECORD per available
+        owner in every section to submit the application.
       </Text>
 
       <Button
@@ -98,4 +117,6 @@ ConfirmForm.propTypes = {
   savingRecords: PropTypes.array,
   debtRecords: PropTypes.array,
   incomeRecords: PropTypes.array,
+  ownersIDs: PropTypes.object,
+  setAlerts: PropTypes.func,
 };
