@@ -8,9 +8,6 @@ import {
   useBreakpointValue,
   Button,
 } from '@aws-amplify/ui-react';
-import Flicking from '@egjs/react-flicking';
-import '@egjs/react-flicking/dist/flicking.css';
-import { AutoPlay } from '@egjs/flicking-plugins';
 import {
   HiCog6Tooth,
   HiArrowLeftOnRectangle,
