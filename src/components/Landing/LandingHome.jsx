@@ -104,7 +104,7 @@ export function LandingHome() {
               variation="primary"
               onClick={() => {
                 // redirect to youtube.com in another tab
-                window.open('https://youtu.be/1nH2APt0Mg4', '_blank');
+                window.open('https://vimeo.com/880702355', '_blank');
               }}
             >
               Watch Demo

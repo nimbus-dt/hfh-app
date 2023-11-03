@@ -672,8 +672,8 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "isCoapplicant": {
-                    "name": "isCoapplicant",
+                "isUnemployed": {
+                    "name": "isUnemployed",
                     "isArray": false,
                     "type": "Boolean",
                     "isRequired": false,
@@ -1179,5 +1179,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "272aff0227c58a25d0cde5eb8ba686f8"
+    "version": "14d3d3831a27dcaa05a87f6fa5eb4d5d"
 };

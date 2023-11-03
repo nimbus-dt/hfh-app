@@ -303,7 +303,7 @@ type EagerHouseholdMember = {
   readonly dateOfBirth?: string | null;
   readonly sex?: SexTypes | keyof typeof SexTypes | null;
   readonly relationship?: RelationshipTypes | keyof typeof RelationshipTypes | null;
-  readonly isCoapplicant?: boolean | null;
+  readonly isUnemployed?: boolean | null;
   readonly applicationID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -319,7 +319,7 @@ type LazyHouseholdMember = {
   readonly dateOfBirth?: string | null;
   readonly sex?: SexTypes | keyof typeof SexTypes | null;
   readonly relationship?: RelationshipTypes | keyof typeof RelationshipTypes | null;
-  readonly isCoapplicant?: boolean | null;
+  readonly isUnemployed?: boolean | null;
   readonly applicationID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
