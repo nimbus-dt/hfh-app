@@ -78,6 +78,15 @@ export function FormPreScreenPage() {
   const [page, setPage] = useState(1);
   const nextBtnIsDisabled = page === 5;
 
+  const addAlerts = (newAlerts) => {
+    setAlerts(newAlerts);
+  };
+
+  const removeAlert = (keyToRemove) => {
+    const newAlerts = alerts.filter((alert) => alert.key !== keyToRemove);
+    setAlerts(newAlerts);
+  };
+
   const isValidToMoveToNextPage = () => {
     const newAlerts = [];
     let isValid = true;
@@ -85,7 +94,7 @@ export function FormPreScreenPage() {
     switch (page) {
       case 1:
         if (householdMembers.length <= 0) {
-          setAlerts([RECORD_AMOUNT_VALIDATION_ALERT]);
+          addAlerts([RECORD_AMOUNT_VALIDATION_ALERT]);
           isValid = false;
         }
 
@@ -102,7 +111,7 @@ export function FormPreScreenPage() {
           isValid = false;
         }
 
-        setAlerts(newAlerts);
+        addAlerts(newAlerts);
         return isValid;
 
       case 3:
@@ -116,7 +125,7 @@ export function FormPreScreenPage() {
           isValid = false;
         }
 
-        setAlerts(newAlerts);
+        addAlerts(newAlerts);
         return isValid;
 
       case 4:
@@ -130,7 +139,7 @@ export function FormPreScreenPage() {
           isValid = false;
         }
 
-        setAlerts(newAlerts);
+        addAlerts(newAlerts);
         return isValid;
 
       case 5:
@@ -197,7 +206,7 @@ export function FormPreScreenPage() {
           debtRecords={debtRecords}
           incomeRecords={incomeRecords}
           ownersIDs={ownersIDs}
-          setAlerts={setAlerts}
+          addAlerts={addAlerts}
         />
       );
     }
@@ -233,7 +242,13 @@ export function FormPreScreenPage() {
       <Flex direction="column">
         {alerts.length > 0 &&
           alerts.map((alert) => (
-            <Alert key={alert.key} variation={alert.variation} hasIcon>
+            <Alert
+              key={alert.key}
+              variation={alert.variation}
+              hasIcon
+              isDismissible
+              onDismiss={() => removeAlert(alert.key)}
+            >
               {alert.message}
             </Alert>
           ))}
