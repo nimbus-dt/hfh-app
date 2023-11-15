@@ -13,5 +13,5 @@ export const [
 ] = Object.entries(APPLICATION_RECORD_TYPES_MAP).map(([key, value]) => ({
   key: `${value}-records-owner-validation-alert`,
   variation: 'error',
-  message: `Records for owners missing in ${value} records`,
+  message: `All household members older than 18 that are employed must have a ${value.toLowerCase()} record`,
 }));

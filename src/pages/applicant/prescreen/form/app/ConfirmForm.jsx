@@ -16,7 +16,7 @@ export function ConfirmForm({
   debtRecords,
   incomeRecords,
   ownersIDs,
-  setAlerts,
+  addAlerts,
 }) {
   const { currentUser } = useCurrentAuthenticatedUser();
   const { userProps } = useUserPropsByUsername({
@@ -56,11 +56,11 @@ export function ConfirmForm({
         (recordType) => ({
           key: `${recordType.toLowerCase()}-record-alert`,
           variation: 'error',
-          message: `Records for owners missing in ${recordType.toLowerCase()} records`,
+          message: `All household members older than 18 that are employed must have a ${recordType.toLowerCase()} record`,
         })
       );
 
-      setAlerts(newAlerts);
+      addAlerts(newAlerts);
       return;
     }
 
@@ -118,5 +118,5 @@ ConfirmForm.propTypes = {
   debtRecords: PropTypes.array,
   incomeRecords: PropTypes.array,
   ownersIDs: PropTypes.object,
-  setAlerts: PropTypes.func,
+  addAlerts: PropTypes.func,
 };
