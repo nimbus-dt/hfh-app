@@ -8,6 +8,13 @@ import useUserPropsByUsername from 'hooks/services/useUserPropsByUsername';
 import { Application } from 'models';
 import { validateAllApplicationRecords } from 'utils/validators';
 import dayjs from 'dayjs';
+import { ApplicationRecordTypes } from 'utils/constants';
+import {
+  DEBTS_OWNERS_VALIDATION_ALERT,
+  GENERAL_OWNERS_VALIDATION_ALERT,
+  INCOMES_OWNERS_VALIDATION_ALERT,
+  SAVINGS_OWNERS_VALIDATION_ALERT,
+} from './alerts';
 
 export function ConfirmForm({
   application,
@@ -53,11 +60,18 @@ export function ConfirmForm({
 
     if (!recordsValidation.areAllValid) {
       const newAlerts = recordsValidation.invalidRecordTypes.map(
-        (recordType) => ({
-          key: `${recordType.toLowerCase()}-record-alert`,
-          variation: 'error',
-          message: `All household members older than 18 that are employed must have a ${recordType.toLowerCase()} record`,
-        })
+        (recordType) => {
+          switch (recordType) {
+            case ApplicationRecordTypes.SAVING:
+              return SAVINGS_OWNERS_VALIDATION_ALERT;
+            case ApplicationRecordTypes.DEBT:
+              return DEBTS_OWNERS_VALIDATION_ALERT;
+            case ApplicationRecordTypes.INCOME:
+              return INCOMES_OWNERS_VALIDATION_ALERT;
+            default:
+              return GENERAL_OWNERS_VALIDATION_ALERT;
+          }
+        }
       );
 
       addAlerts(newAlerts);
