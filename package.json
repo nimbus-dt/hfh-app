@@ -19,6 +19,7 @@
     "@testing-library/user-event": "^13.5.0",
     "aws-amplify": "^5.3.11",
     "aws-sdk": "^2.1478.0",
+    "dayjs": "^1.11.10",
     "html5-device-mockups": "^3.2.1",
     "lodash.startcase": "^4.4.0",
     "prop-types": "^15.8.1",
@@ -54,6 +55,9 @@
           ]
         }
       }
+    },
+    "rules": {
+      "react-hooks/exhaustive-deps": "off"
     }
   },
   "browserslist": {

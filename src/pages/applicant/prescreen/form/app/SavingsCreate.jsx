@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
 import {
   Card,
   Heading,
@@ -6,7 +6,6 @@ import {
   SelectField,
   Flex,
   Button,
-  StepperField,
 } from '@aws-amplify/ui-react';
 
 export function SavingsCreate({ handleCreate, owners }) {
@@ -45,3 +44,8 @@ export function SavingsCreate({ handleCreate, owners }) {
     </Card>
   );
 }
+
+SavingsCreate.propTypes = {
+  handleCreate: PropTypes.func,
+  owners: PropTypes.array,
+};

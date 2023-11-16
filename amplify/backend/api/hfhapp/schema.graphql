@@ -106,7 +106,7 @@ type HouseholdMember @model @auth(rules: [{allow: public}, {allow: private, prov
   dateOfBirth: AWSDate
   sex: SexTypes
   relationship: RelationshipTypes
-  isCoapplicant: Boolean
+  isUnemployed: Boolean
   applicationID: ID! @index(name: "byApplication")
 }
 

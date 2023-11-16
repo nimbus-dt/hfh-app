@@ -2,6 +2,7 @@ import {
   RelationshipTypes,
   SexTypes,
   ApplicationSubmittedStatus,
+  DebtTypes,
 } from 'models';
 import { mapEnumToHumanReadableValues, mapEnumToList } from './mappers';
 
@@ -55,4 +56,22 @@ export const APPLICATION_SUBMITTED_STATUS_LIST = mapEnumToList(
  */
 export const APPLICATION_SUBMITTED_STATUS_MAP = mapEnumToHumanReadableValues(
   ApplicationSubmittedStatus
+);
+
+export const DEBT_TYPES_LIST = mapEnumToList(DebtTypes);
+
+export const DEBT_TYPES_MAP = mapEnumToHumanReadableValues(DebtTypes);
+
+export const ApplicationRecordTypes = {
+  INCOME: 'INCOME',
+  SAVING: 'SAVING',
+  DEBT: 'DEBT',
+};
+
+export const APPLICATION_RECORD_TYPES_LIST = mapEnumToList(
+  ApplicationRecordTypes
+);
+
+export const APPLICATION_RECORD_TYPES_MAP = mapEnumToHumanReadableValues(
+  ApplicationRecordTypes
 );

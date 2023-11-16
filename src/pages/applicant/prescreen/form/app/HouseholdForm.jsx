@@ -2,20 +2,11 @@ import PropTypes from 'prop-types';
 import { Flex, Heading, Text, useBreakpointValue } from '@aws-amplify/ui-react';
 import { DataStore } from 'aws-amplify';
 import { HouseholdMember } from 'models';
+import { isAdult } from 'utils/dates';
 import { HouseholdList } from '../../../../../components/applications/HouseholdList/HouseholdList';
 import { HouseholdCreate } from './HouseholdCreate';
 
-const countCoapplicants = (householdMembers) =>
-  householdMembers.filter((member) => member.isCoapplicant).length;
-
-export function HouseholdForm({
-  applicationID,
-  householdMembers,
-  habitatMaxCoapplicants,
-}) {
-  const coapplicants = countCoapplicants(householdMembers);
-  const enableCoapplicants = coapplicants < habitatMaxCoapplicants;
-
+export function HouseholdForm({ applicationID, householdMembers }) {
   const sizeRenderer = useBreakpointValue({
     base: true,
     small: true,
@@ -37,7 +28,9 @@ export function HouseholdForm({
       const dob = formFields.dob.value;
       const sex = formFields.sex.value;
       const relationship = formFields.relationship.value;
-      const isCoapplicant = formFields.isCoapplicant.value === 'yes';
+      const isUnemployed = isAdult(dob)
+        ? formFields.isUnemployed.value === 'yes'
+        : undefined;
 
       // Create user
       await DataStore.save(
@@ -46,7 +39,7 @@ export function HouseholdForm({
           dateOfBirth: dob,
           sex,
           relationship,
-          isCoapplicant,
+          isUnemployed,
           applicationID,
         })
       );
@@ -74,10 +67,7 @@ export function HouseholdForm({
         isEditable
       />
 
-      <HouseholdCreate
-        handleCreate={handleCreate}
-        enableCoapplicants={enableCoapplicants}
-      />
+      <HouseholdCreate handleCreate={handleCreate} />
     </Flex>
   );
 }
@@ -85,5 +75,4 @@ export function HouseholdForm({
 HouseholdForm.propTypes = {
   applicationID: PropTypes.string,
   householdMembers: PropTypes.array,
-  habitatMaxCoapplicants: PropTypes.number,
 };
