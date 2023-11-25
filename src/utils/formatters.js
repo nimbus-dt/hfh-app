@@ -1,5 +1,6 @@
 import {
   APPLICATION_SUBMITTED_STATUS_MAP,
+  DEBT_TYPES_MAP,
   RELATIONSHIP_VALUES_MAP,
   SEX_VALUES_MAP,
 } from './constants';
@@ -35,6 +36,8 @@ export const formatRelationshipValue = (relationshipType) =>
  */
 export const formatSubmittedStatus = (type) =>
   APPLICATION_SUBMITTED_STATUS_MAP[type] ?? '';
+
+export const formatDebtType = (type) => DEBT_TYPES_MAP[type] ?? '';
 
 /**
  * Returns a string with the application submitted status value as a human
