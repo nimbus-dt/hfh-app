@@ -40,7 +40,12 @@ export function ApplicantPrescreenNavBar({ menuSlot }) {
   return (
     <Card wrap width="100%" backgroundColor="#55B949" padding="0">
       <Flex direction="row" justifyContent="space-between" alignItems="center">
-        <Image alt="Habitat Logo" src={logoHabitat} height="100%" />
+        <Image
+          alt="Habitat Logo"
+          src={logoHabitat}
+          height="100%"
+          marginLeft="-10px"
+        />
         <Flex marginRight="40px">
           {isAuthenticated && (
             <Button backgroundColor="white" onClick={handleSignOut}>

@@ -11,10 +11,13 @@ import PreLimQuestionsPage from 'pages/applicant/prescreen/prelim/questions';
 import PreLimResultsPage from 'pages/applicant/prescreen/prelim/results';
 
 import { ApplicantPrescreenLayout } from 'components/PreScreen/ApplicantPrescreenLayout';
+import { TestHome } from 'components/Test/Layout/Parts/TestHome';
 
 import AffiliateLayout from 'layouts/AffiliateLayout';
 import AffiliatePrescreensPage from 'pages/affiliate/apps';
 import AffiliateApplicationDetailPage from 'pages/affiliate/application-detail';
+import { TestLayout } from './components/Test/Layout/TestLayout';
+
 import AffiliateSettingsPage from './pages/affiliate/settings';
 
 // eslint-disable-next-line import/no-unresolved
@@ -26,7 +29,6 @@ import { LandingTerms } from './components/Landing/LandingTerms';
 import { LandingPrivacyPolicy } from './components/Landing/LandingPrivacyPolicy';
 import { LandingReturn } from './components/Landing/LandingReturn';
 import { LandingContact } from './components/Landing/LandingContact';
-import { Test } from './components/Test';
 import { FormUserForm } from './components/PreScreen/Form/FormUserForm';
 import { FormLayoutNew } from './components/PreScreen/Form/FormLayoutNew';
 import { FormInfoPage } from './components/PreScreen/Form/FormInfoPage';
@@ -73,7 +75,13 @@ function App() {
         />
       </Route>
 
-      <Route path="test" element={<Test />} />
+      <Route path="homeownership" element={<TestLayout />}>
+        <Route path=":habitat">
+          <Route path="home" element={<TestHome />} />
+          <Route path="terms" element="User agrees to terms" />
+          <Route path="applicant-info" element="User info" />
+        </Route>
+      </Route>
 
       <Route path="affiliate">
         <Route
