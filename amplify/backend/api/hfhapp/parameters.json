@@ -2,6 +2,6 @@
   "AppSyncApiName": "hfhapp",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
   "DynamoDBEnableServerSideEncryption": false,
-  "AuthModeLastUpdated": "2023-11-29T02:41:17.312Z",
+  "AuthModeLastUpdated": "2023-10-22T19:11:42.685Z",
   "CreateAPIKey": 1
 }
