@@ -1,62 +1,36 @@
-import { Flex, Card, Button, Badge, ScrollView } from '@aws-amplify/ui-react';
-import { Outlet } from 'react-router-dom';
-import { useState } from 'react';
+import { Flex, Heading } from '@aws-amplify/ui-react';
+import { Outlet, useParams } from 'react-router-dom';
+import useHabitatByUrlName from 'hooks/services/useHabitatByUrlName';
 import { TestNav } from './TestNav';
+import { CustomCard } from '../Reusable/CustomCard';
 
 export function TestLayout() {
-  const [page, setPage] = useState(1);
+  const { habitat: habitatUrlName } = useParams();
+  const { habitat, error } = useHabitatByUrlName({
+    habitatUrlName,
+  });
+
+  if (error) {
+    console.log('Error retrieving Habitat:', error.message);
+  }
+
+  const content = (
+    <Heading level={4} fontWeight="bold" textAlign="center">
+      Homeownership Program Application
+    </Heading>
+  );
+
   return (
     <Flex
       direction="column"
       alignItems="center"
-      height="100vh"
       backgroundColor="lightgray"
+      minHeight="100vh"
+      height="100%"
     >
       <TestNav />
-      <Card
-        variation="outlined"
-        wrap
-        width={{ base: '80%', medium: '500px' }}
-        height="80vh"
-        borderRadius="20px"
-      >
-        <Flex direction="column" width="100%" height="90%">
-          <ScrollView>
-            <Outlet />
-          </ScrollView>
-        </Flex>
-        <Flex direction="row" width="100%" height="10%" justifyContent="end">
-          <Flex direction="column" width="20%" alignItems="start">
-            <Button
-              variation="primary"
-              isDisabled={page === 1}
-              onClick={() => {
-                setPage(page - 1);
-              }}
-            >
-              Back
-            </Button>
-          </Flex>
-          <Flex
-            direction="column"
-            width="60%"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Badge>Section {page}</Badge>
-          </Flex>
-          <Flex direction="column" width="20%" alignItems="end">
-            <Button
-              variation="primary"
-              onClick={() => {
-                setPage(page + 1);
-              }}
-            >
-              Next
-            </Button>
-          </Flex>
-        </Flex>
-      </Card>
+      <CustomCard> {content} </CustomCard>
+      <Outlet context={[habitat]} />
     </Flex>
   );
 }

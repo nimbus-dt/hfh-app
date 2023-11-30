@@ -11,11 +11,13 @@ import PreLimQuestionsPage from 'pages/applicant/prescreen/prelim/questions';
 import PreLimResultsPage from 'pages/applicant/prescreen/prelim/results';
 
 import { ApplicantPrescreenLayout } from 'components/PreScreen/ApplicantPrescreenLayout';
-import { TestHome } from 'components/Test/Layout/Parts/TestHome';
+import { TestHome } from 'components/Test/Parts/TestHome';
+import { TestApplicantInfo } from 'components/Test/Parts/TestApplicantInfo';
 
 import AffiliateLayout from 'layouts/AffiliateLayout';
 import AffiliatePrescreensPage from 'pages/affiliate/apps';
 import AffiliateApplicationDetailPage from 'pages/affiliate/application-detail';
+import { TestTerms } from 'components/Test/Parts/TestTerms';
 import { TestLayout } from './components/Test/Layout/TestLayout';
 
 import AffiliateSettingsPage from './pages/affiliate/settings';
@@ -78,8 +80,8 @@ function App() {
       <Route path="homeownership" element={<TestLayout />}>
         <Route path=":habitat">
           <Route path="home" element={<TestHome />} />
-          <Route path="terms" element="User agrees to terms" />
-          <Route path="applicant-info" element="User info" />
+          <Route path="terms" element={<TestTerms />} />
+          <Route path="applicant-info" element={<TestApplicantInfo />} />
         </Route>
       </Route>
 
