@@ -16,7 +16,7 @@
         "applicationchangenotification": {
           "sesEmail": "support@nimbus-dt.com",
           "deploymentBucketName": "amplify-hfhapp-staging-10900-deployment",
-          "s3Key": "amplify-builds/applicationchangenotification-63506c6530466851664a-build.zip"
+          "s3Key": "amplify-builds/applicationchangenotification-42416175756763693234-build.zip"
         }
       },
       "prescreennotify": {
