@@ -1,10 +1,33 @@
-import { Heading, Flex, View, Text, Button } from '@aws-amplify/ui-react';
+import {
+  Heading,
+  Flex,
+  View,
+  Text,
+  Button,
+  CheckboxField,
+} from '@aws-amplify/ui-react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useState } from 'react';
 import { CustomCard } from '../Reusable/CustomCard';
 
 export function TestTerms() {
   const [habitat] = useOutletContext();
   const navigate = useNavigate();
+  const [agreeTerms, setAgreeTerms] = useState(false);
+  const [error, setError] = useState(false);
+
+  const handleOnChangeAgreeTerms = () => {
+    setAgreeTerms((previousAgreeTerms) => !previousAgreeTerms);
+    setError(false);
+  };
+
+  const handleOnClickNext = () => {
+    if (agreeTerms) {
+      navigate('../applicant-info');
+    } else {
+      setError(true);
+    }
+  };
 
   const content = (
     <>
@@ -24,15 +47,19 @@ export function TestTerms() {
             )
           )}
         </Flex>
+        <CheckboxField
+          checked={agreeTerms}
+          onChange={handleOnChangeAgreeTerms}
+          label="I have read and agreed to the terms and services."
+          hasError={error}
+          errorMessage="You can't continue the application process without agreeing the terms."
+        />
       </View>
       <Flex width="100%" justifyContent="space-between">
         <Button variation="primary" onClick={() => navigate('../home')}>
           Back
         </Button>
-        <Button
-          variation="primary"
-          onClick={() => navigate('../applicant-info')}
-        >
+        <Button variation="primary" onClick={handleOnClickNext}>
           Next
         </Button>
       </Flex>
