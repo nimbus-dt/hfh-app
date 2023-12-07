@@ -59,7 +59,11 @@ export function TestTerms() {
         <Button variation="primary" onClick={() => navigate('../home')}>
           Back
         </Button>
-        <Button variation="primary" onClick={handleOnClickNext}>
+        <Button
+          isDisabled={!agreeTerms}
+          variation="primary"
+          onClick={handleOnClickNext}
+        >
           Next
         </Button>
       </Flex>
