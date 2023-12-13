@@ -1,4 +1,4 @@
-import { Flex, Heading } from '@aws-amplify/ui-react';
+import { Flex, Heading, ScrollView } from '@aws-amplify/ui-react';
 import { Outlet, useParams } from 'react-router-dom';
 import useHabitatByUrlName from 'hooks/services/useHabitatByUrlName';
 import { TestNav } from './TestNav';
@@ -21,16 +21,18 @@ export function TestLayout() {
   );
 
   return (
-    <Flex
-      direction="column"
-      alignItems="center"
-      backgroundColor="lightgray"
-      minHeight="100vh"
-      height="100%"
-    >
-      <TestNav />
-      <CustomCard> {content} </CustomCard>
-      <Outlet context={[habitat]} />
-    </Flex>
+    <ScrollView height="100vh">
+      <Flex
+        direction="column"
+        alignItems="center"
+        backgroundColor="lightgray"
+        minHeight="100vh"
+        paddingBottom="1rem"
+      >
+        <TestNav />
+        <CustomCard> {content} </CustomCard>
+        <Outlet context={[habitat]} />
+      </Flex>
+    </ScrollView>
   );
 }
