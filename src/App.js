@@ -79,7 +79,7 @@ function App() {
         <Route
           path=":habitat"
           element={
-            <Authenticator hideDefault hideSignUp>
+            <Authenticator hideDefault>
               <AffiliateLayout />
             </Authenticator>
           }

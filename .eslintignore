@@ -2,7 +2,7 @@ src/models
 src/ui-components
 src/aws-exports.js
 amplify-codegen-temp/models
-amplify/backend/function/hfhappd137d457/src/index.js
+amplify/*
 src\models
 
 src\models\models
