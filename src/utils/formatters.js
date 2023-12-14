@@ -1,4 +1,9 @@
-import { RELATIONSHIP_VALUES_MAP, SEX_VALUES_MAP } from './constants';
+import {
+  APPLICATION_SUBMITTED_STATUS_MAP,
+  DEBT_TYPES_MAP,
+  RELATIONSHIP_VALUES_MAP,
+  SEX_VALUES_MAP,
+} from './constants';
 
 /**
  * Returns a string with all the clases joined by empty space
@@ -22,3 +27,45 @@ export const formatSexValue = (sexType) => SEX_VALUES_MAP[sexType] ?? '';
  */
 export const formatRelationshipValue = (relationshipType) =>
   RELATIONSHIP_VALUES_MAP[relationshipType] ?? '';
+
+/**
+ * Returns a string with the application submitted status value as a human
+ * readable string
+ * @param { ApplicationSubmittedStatus } type
+ * @returns {string}
+ */
+export const formatSubmittedStatus = (type) =>
+  APPLICATION_SUBMITTED_STATUS_MAP[type] ?? '';
+
+export const formatDebtType = (type) => DEBT_TYPES_MAP[type] ?? '';
+
+/**
+ * Returns a string with the application submitted status value as a human
+ * readable string
+ * @param {object} value
+ * @returns {string}
+ */
+export const formatYesNoBoolean = (value) => (value ? 'Yes' : 'No');
+
+const USDollar = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+});
+/**
+ * Returns a currency string
+ * @param {number} value i.e.: 240.4967298
+ * @returns {string} i.e.: $240.49
+ */
+export const formatNumberAsCurrency = (num) => USDollar.format(num);
+
+const Percentage = new Intl.NumberFormat('default', {
+  style: 'percent',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+/**
+ * Returns a percentage string
+ * @param {number} ratio i.e.: 0.4958
+ * @returns {string} i.e.: 49.58 %
+ */
+export const formatNumberAsPercentage = (num) => Percentage.format(num);

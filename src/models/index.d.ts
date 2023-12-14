@@ -71,7 +71,7 @@ type EagerCycles = {
   readonly cycleEndDate?: string | null;
   readonly cycleStatus?: boolean | null;
   readonly Applications?: (Application | null)[] | null;
-  readonly habitatID?: string | null;
+  readonly habitatID: string;
   readonly cycleSeason?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -87,7 +87,7 @@ type LazyCycles = {
   readonly cycleEndDate?: string | null;
   readonly cycleStatus?: boolean | null;
   readonly Applications: AsyncCollection<Application>;
-  readonly habitatID?: string | null;
+  readonly habitatID: string;
   readonly cycleSeason?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -303,8 +303,8 @@ type EagerHouseholdMember = {
   readonly dateOfBirth?: string | null;
   readonly sex?: SexTypes | keyof typeof SexTypes | null;
   readonly relationship?: RelationshipTypes | keyof typeof RelationshipTypes | null;
-  readonly isCoapplicant?: boolean | null;
-  readonly applicationID?: string | null;
+  readonly isUnemployed?: boolean | null;
+  readonly applicationID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -319,8 +319,8 @@ type LazyHouseholdMember = {
   readonly dateOfBirth?: string | null;
   readonly sex?: SexTypes | keyof typeof SexTypes | null;
   readonly relationship?: RelationshipTypes | keyof typeof RelationshipTypes | null;
-  readonly isCoapplicant?: boolean | null;
-  readonly applicationID?: string | null;
+  readonly isUnemployed?: boolean | null;
+  readonly applicationID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -340,9 +340,9 @@ type EagerApplication = {
   readonly ownerID?: string | null;
   readonly habitatID: string;
   readonly HouseholdMembers?: (HouseholdMember | null)[] | null;
-  readonly IncomeRecords?: (IncomeRecord | null)[] | null;
-  readonly SavingRecords?: (SavingRecord | null)[] | null;
-  readonly DebtRecords?: (DebtRecord | null)[] | null;
+  readonly IncomeRecords?: (HouseholdMember | null)[] | null;
+  readonly SavingRecords?: (HouseholdMember | null)[] | null;
+  readonly DebtRecords?: (HouseholdMember | null)[] | null;
   readonly submitted?: boolean | null;
   readonly dateSubmitted?: string | null;
   readonly submittedStatus?: ApplicationSubmittedStatus | keyof typeof ApplicationSubmittedStatus | null;
@@ -364,9 +364,9 @@ type LazyApplication = {
   readonly ownerID?: string | null;
   readonly habitatID: string;
   readonly HouseholdMembers: AsyncCollection<HouseholdMember>;
-  readonly IncomeRecords: AsyncCollection<IncomeRecord>;
-  readonly SavingRecords: AsyncCollection<SavingRecord>;
-  readonly DebtRecords: AsyncCollection<DebtRecord>;
+  readonly IncomeRecords: AsyncCollection<HouseholdMember>;
+  readonly SavingRecords: AsyncCollection<HouseholdMember>;
+  readonly DebtRecords: AsyncCollection<HouseholdMember>;
   readonly submitted?: boolean | null;
   readonly dateSubmitted?: string | null;
   readonly submittedStatus?: ApplicationSubmittedStatus | keyof typeof ApplicationSubmittedStatus | null;
@@ -398,7 +398,7 @@ type EagerHabitat = {
   readonly county?: string | null;
   readonly countiesServed?: (string | null)[] | null;
   readonly props?: string | null;
-  readonly Applications?: (Application | null)[] | null;
+  readonly Applications?: (Cycles | null)[] | null;
   readonly users?: (string | null)[] | null;
   readonly AMI?: (string | null)[] | null;
   readonly Cycles?: (Cycles | null)[] | null;
@@ -419,7 +419,7 @@ type LazyHabitat = {
   readonly county?: string | null;
   readonly countiesServed?: (string | null)[] | null;
   readonly props?: string | null;
-  readonly Applications: AsyncCollection<Application>;
+  readonly Applications: AsyncCollection<Cycles>;
   readonly users?: (string | null)[] | null;
   readonly AMI?: (string | null)[] | null;
   readonly Cycles: AsyncCollection<Cycles>;

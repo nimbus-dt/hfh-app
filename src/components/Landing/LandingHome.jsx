@@ -8,6 +8,15 @@ import {
   useBreakpointValue,
   Button,
 } from '@aws-amplify/ui-react';
+import {
+  HiCog6Tooth,
+  HiArrowLeftOnRectangle,
+  HiUserGroup,
+  HiEnvelope,
+  HiUser,
+} from 'react-icons/hi2';
+import { HiHome } from 'react-icons/hi';
+import { IoHammer } from 'react-icons/io5';
 import heroIcon from '../../assets/images/hero-icon.svg';
 
 export function LandingHome() {
@@ -30,17 +39,18 @@ export function LandingHome() {
     >
       <Card
         width={responsiveBool ? '90%' : '85%'}
-        height={responsiveBool ? 'fit-content' : '80%'}
         variation="elevated"
-        marginTop="5%"
-        marginBottom="5%"
+        marginTop="50px"
+        height="500px"
+        marginBottom="50px"
       >
         <Flex
           direction={responsiveBool ? 'column' : 'row'}
           width="100%"
           height="100%"
-          justifyContent={responsiveBool ? 'center' : 'center'}
-          marginBottom="5%"
+          justifyContent="center"
+          alignContent="center"
+          alignItems="center"
         >
           <Flex
             direction="column"
@@ -64,7 +74,7 @@ export function LandingHome() {
               textAlign="center"
               width="100%"
             >
-              Habitat-App
+              HabitatApp
             </Heading>
             <Heading
               level="6"
@@ -76,9 +86,8 @@ export function LandingHome() {
               Humanity affiliates
             </Heading>
             <Text textAlign="center" width="100%">
-              Our innovative platform revolutionizes the application process for
-              the Homeownership Program, providing seamless online tools and
-              efficient automation to enhance your franchise's operations.
+              Our innovative platform provides seamless online tools and
+              efficient automation to enhance your affiliate's operations.
             </Text>
             <Flex
               direction={responsiveBool ? 'column' : 'row'}
@@ -86,16 +95,16 @@ export function LandingHome() {
               width="100%"
               alignContent={responsiveBool ? 'center' : 'top'}
             >
-              <Badge>Email Notifications</Badge>
-              <Badge>Automated Calculations</Badge>
+              <Badge>Homeownership Online App</Badge>
               <Badge>Cloud Storage</Badge>
               <Badge>No paperwork</Badge>
+              <Badge>Automatizations</Badge>
             </Flex>
             <Button
               variation="primary"
               onClick={() => {
                 // redirect to youtube.com in another tab
-                window.open('https://youtu.be/1nH2APt0Mg4', '_blank');
+                window.open('https://vimeo.com/880702355', '_blank');
               }}
             >
               Watch Demo

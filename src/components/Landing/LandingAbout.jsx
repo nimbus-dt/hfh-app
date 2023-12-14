@@ -29,9 +29,9 @@ export function LandingAbout() {
       <Card
         width={responsiveBool ? '90%' : '85%'}
         variation="elevated"
-        height="80%"
-        marginTop="5%"
-        marginBottom="5%"
+        marginTop="50px"
+        marginBottom="50px"
+        height="500px"
       >
         <Flex
           direction={responsiveBool ? 'column' : 'row'}

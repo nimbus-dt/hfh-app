@@ -4,3 +4,5 @@ src/aws-exports.js
 amplify-codegen-temp/models
 amplify/backend/function/hfhappd137d457/src/index.js
 src\models
+
+src\models\models
