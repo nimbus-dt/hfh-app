@@ -197,63 +197,65 @@ export function TestApplicantInfo() {
 
   return (
     <View as="div">
-      {alert && (
-        <Alert
-          variation={alert.variation}
-          heading={alert.heading}
-          marginBottom="20px"
-          onDismiss={() => setAlert()}
-          isDismissible
-          hasIcon
-        >
-          {alert.body}
-        </Alert>
-      )}
-      <BasicInformation
-        expanded={basicInfoOpen}
-        onExpandedChange={setBasicInfoOpen}
-        applicantInfo={applicantInfo}
-        onValid={onValidBasicInfo}
-        edit={basicInfoEdit}
-        onClickEdit={handleOnClickBasicInfoEdit}
-      />
-      <br />
-      <Address
-        expanded={currentAddressOpen}
-        onExpandedChange={setCurrentAddressOpen}
-        applicantInfo={applicantInfo}
-        onValid={onValidCurrentAddress}
-        edit={currentAddressEdit}
-        onClickEdit={handleOnClickCurrentAddressEdit}
-      />
-      <br />
-      {applicantInfo?.props?.currentAddress?.monthsLivedHere < 24 && (
-        <>
-          <PrevAddress
-            expanded={previousAddressOpen}
-            onExpandedChange={setPreviousAddressOpen}
-            applicantInfo={applicantInfo}
-            onValid={onValidPreviousAddress}
-            edit={previousAddressEdit}
-            onClickEdit={handleOnClickPreviousAddressEdit}
-          />
-          <br />
-        </>
-      )}
-      <CustomCard>
-        <Flex width="100%" justifyContent="space-between">
-          <Button variation="primary" onClick={() => navigate('../terms')}>
-            Back
-          </Button>
-          <Button
-            variation="primary"
-            onClick={handleOnClickNext}
-            isDisabled={isNextDisabled()}
+      <Flex direction="column" gap="unset" alignItems="center">
+        {alert && (
+          <Alert
+            variation={alert.variation}
+            heading={alert.heading}
+            marginBottom="20px"
+            onDismiss={() => setAlert()}
+            isDismissible
+            hasIcon
           >
-            Next
-          </Button>
-        </Flex>
-      </CustomCard>
+            {alert.body}
+          </Alert>
+        )}
+        <BasicInformation
+          expanded={basicInfoOpen}
+          onExpandedChange={setBasicInfoOpen}
+          applicantInfo={applicantInfo}
+          onValid={onValidBasicInfo}
+          edit={basicInfoEdit}
+          onClickEdit={handleOnClickBasicInfoEdit}
+        />
+        <br />
+        <Address
+          expanded={currentAddressOpen}
+          onExpandedChange={setCurrentAddressOpen}
+          applicantInfo={applicantInfo}
+          onValid={onValidCurrentAddress}
+          edit={currentAddressEdit}
+          onClickEdit={handleOnClickCurrentAddressEdit}
+        />
+        <br />
+        {applicantInfo?.props?.currentAddress?.monthsLivedHere < 24 && (
+          <>
+            <PrevAddress
+              expanded={previousAddressOpen}
+              onExpandedChange={setPreviousAddressOpen}
+              applicantInfo={applicantInfo}
+              onValid={onValidPreviousAddress}
+              edit={previousAddressEdit}
+              onClickEdit={handleOnClickPreviousAddressEdit}
+            />
+            <br />
+          </>
+        )}
+        <CustomCard>
+          <Flex width="100%" justifyContent="space-between">
+            <Button variation="primary" onClick={() => navigate('../terms')}>
+              Back
+            </Button>
+            <Button
+              variation="primary"
+              onClick={handleOnClickNext}
+              isDisabled={isNextDisabled()}
+            >
+              Next
+            </Button>
+          </Flex>
+        </CustomCard>
+      </Flex>
     </View>
   );
 }
