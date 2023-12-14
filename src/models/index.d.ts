@@ -61,6 +61,36 @@ export enum RelationshipTypes {
 
 
 
+type EagerApplicantInfo = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<ApplicantInfo, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyApplicantInfo = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<ApplicantInfo, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type ApplicantInfo = LazyLoading extends LazyLoadingDisabled ? EagerApplicantInfo : LazyApplicantInfo
+
+export declare const ApplicantInfo: (new (init: ModelInit<ApplicantInfo>) => ApplicantInfo) & {
+  copyOf(source: ApplicantInfo, mutator: (draft: MutableModel<ApplicantInfo>) => MutableModel<ApplicantInfo> | void): ApplicantInfo;
+}
+
 type EagerCycles = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Cycles, 'id'>;
@@ -304,7 +334,7 @@ type EagerHouseholdMember = {
   readonly sex?: SexTypes | keyof typeof SexTypes | null;
   readonly relationship?: RelationshipTypes | keyof typeof RelationshipTypes | null;
   readonly isUnemployed?: boolean | null;
-  readonly applicationID: string;
+  readonly applicationID?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -320,7 +350,7 @@ type LazyHouseholdMember = {
   readonly sex?: SexTypes | keyof typeof SexTypes | null;
   readonly relationship?: RelationshipTypes | keyof typeof RelationshipTypes | null;
   readonly isUnemployed?: boolean | null;
-  readonly applicationID: string;
+  readonly applicationID?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
