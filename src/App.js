@@ -13,6 +13,7 @@ import PreLimResultsPage from 'pages/applicant/prescreen/prelim/results';
 import { ApplicantPrescreenLayout } from 'components/PreScreen/ApplicantPrescreenLayout';
 import { TestHome } from 'components/Test/Parts/TestHome';
 import { TestApplicantInfo } from 'components/Test/Parts/TestApplicantInfo';
+import { TestChecklist } from 'components/Test/Parts/TestChecklist';
 
 import AffiliateLayout from 'layouts/AffiliateLayout';
 import AffiliatePrescreensPage from 'pages/affiliate/apps';
@@ -82,6 +83,7 @@ function App() {
           <Route path="home" element={<TestHome />} />
           <Route path="terms" element={<TestTerms />} />
           <Route path="applicant-info" element={<TestApplicantInfo />} />
+          <Route path="checklist" element={<TestChecklist />} />
         </Route>
       </Route>
 
