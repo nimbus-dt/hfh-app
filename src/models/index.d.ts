@@ -61,6 +61,36 @@ export enum RelationshipTypes {
 
 
 
+type EagerChecklist = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Checklist, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyChecklist = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Checklist, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Checklist = LazyLoading extends LazyLoadingDisabled ? EagerChecklist : LazyChecklist
+
+export declare const Checklist: (new (init: ModelInit<Checklist>) => Checklist) & {
+  copyOf(source: Checklist, mutator: (draft: MutableModel<Checklist>) => MutableModel<Checklist> | void): Checklist;
+}
+
 type EagerApplicantInfo = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<ApplicantInfo, 'id'>;
