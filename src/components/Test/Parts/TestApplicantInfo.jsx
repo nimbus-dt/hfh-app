@@ -176,7 +176,9 @@ export function TestApplicantInfo() {
       (previousPreviousAddressEdit) => !previousPreviousAddressEdit
     );
 
-  const handleOnClickNext = () => {};
+  const handleOnClickNext = () => {
+    navigate('../checklist');
+  };
 
   const isNextDisabled = () => {
     if (
