@@ -3,18 +3,13 @@ import { useState } from 'react';
 import { ApplicantInfo } from 'models';
 import { DataStore } from 'aws-amplify';
 import { useNavigate } from 'react-router-dom';
+import { createAlert } from 'utils/factories';
 import {
   BasicInformation,
   Address,
   PrevAddress,
 } from '../FormComponents/FormApplicantInfo';
 import { CustomCard } from '../Reusable/CustomCard';
-
-const createAlert = (variation, heading, body) => ({
-  variation,
-  heading,
-  body,
-});
 
 export function TestApplicantInfo() {
   const [applicantInfo, setApplicantInfo] = useState();
