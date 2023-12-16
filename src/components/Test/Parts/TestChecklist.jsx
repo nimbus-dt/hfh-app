@@ -76,7 +76,7 @@ export function TestChecklist() {
 
   const isEnabled = checklist === undefined || edit;
   return (
-    <Flex direction="column" alignItems="center">
+    <Flex direction="column" alignItems="center" width="100%">
       {alert && (
         <Alert
           variation={alert.variation}
