@@ -61,6 +61,36 @@ export enum RelationshipTypes {
 
 
 
+type EagerWritten = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Written, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyWritten = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Written, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Written = LazyLoading extends LazyLoadingDisabled ? EagerWritten : LazyWritten
+
+export declare const Written: (new (init: ModelInit<Written>) => Written) & {
+  copyOf(source: Written, mutator: (draft: MutableModel<Written>) => MutableModel<Written> | void): Written;
+}
+
 type EagerChecklist = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Checklist, 'id'>;
