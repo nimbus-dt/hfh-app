@@ -72,7 +72,7 @@ export function TestWritten() {
 
   const isEnabled = writtenQuestions === undefined || edit;
   return (
-    <Flex direction="column" alignItems="center">
+    <Flex direction="column" alignItems="center" width="100%">
       {alert && (
         <Alert
           variation={alert.variation}
