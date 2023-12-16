@@ -85,7 +85,9 @@ export function TestWritten() {
         </Alert>
       )}
       <CustomExpandableCard
-        title="Written Response"
+        title={`${
+          writtenQuestions !== undefined ? '✔️' : '❌'
+        } Written Response`}
         expanded={expanded}
         onExpandedChange={handleOnExpandedChange}
       >
