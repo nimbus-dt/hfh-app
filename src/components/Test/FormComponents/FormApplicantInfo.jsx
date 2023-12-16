@@ -61,7 +61,7 @@ export function BasicInformation({
   return (
     <CustomExpandableCard
       title={`${
-        applicantInfo?.props?.basicInfo !== undefined ? '✔' : '❌'
+        applicantInfo?.props?.basicInfo !== undefined ? '✔️' : '❌'
       } Basic Information`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
@@ -223,7 +223,7 @@ export function Address({
   return (
     <CustomExpandableCard
       title={`${
-        applicantInfo?.props?.currentAddress !== undefined ? '✔' : '❌'
+        applicantInfo?.props?.currentAddress !== undefined ? '✔️' : '❌'
       } Present Address`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
@@ -322,7 +322,7 @@ export function PrevAddress({
   return (
     <CustomExpandableCard
       title={`${
-        applicantInfo?.props?.previousAddress !== undefined ? '✔' : '❌'
+        applicantInfo?.props?.previousAddress !== undefined ? '✔️' : '❌'
       } Previous Address`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
