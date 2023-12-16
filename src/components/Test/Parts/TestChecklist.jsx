@@ -89,7 +89,7 @@ export function TestChecklist() {
         </Alert>
       )}
       <CustomExpandableCard
-        title="Checklist"
+        title={`${checklist ? '✔️' : '❌'} Checklist`}
         expanded={expanded}
         onExpandedChange={handleOnExpandedChange}
       >
