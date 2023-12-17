@@ -76,7 +76,7 @@ export function TestChecklist() {
 
   const isEnabled = checklist === undefined || edit;
   return (
-    <Flex direction="column" alignItems="center">
+    <Flex direction="column" alignItems="center" width="100%">
       {alert && (
         <Alert
           variation={alert.variation}
@@ -89,34 +89,37 @@ export function TestChecklist() {
         </Alert>
       )}
       <CustomExpandableCard
-        title="Checklist"
+        title={`${checklist ? '✔️' : '❌'} Checklist`}
         expanded={expanded}
         onExpandedChange={handleOnExpandedChange}
       >
         <form onSubmit={handleSubmit(onValidSubmit)}>
           {habitat?.props?.prePreScreen?.prePreScreenQuestions.map(
             (question) => (
-              <Controller
-                key={question.name}
-                control={control}
-                name={question.name}
-                defaultValue={null}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <RadioGroupField
-                    name={question.name}
-                    label={question.label}
-                    onChange={(e) => onChange(e.target.value)}
-                    onBlur={onBlur}
-                    value={value}
-                    isRequired
-                    defaultChecked={false}
-                    isDisabled={!isEnabled}
-                  >
-                    <Radio value="Yes">Yes</Radio>
-                    <Radio value="No">No</Radio>
-                  </RadioGroupField>
-                )}
-              />
+              <>
+                <Controller
+                  key={question.name}
+                  control={control}
+                  name={question.name}
+                  defaultValue={null}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <RadioGroupField
+                      name={question.name}
+                      label={question.label}
+                      onChange={(e) => onChange(e.target.value)}
+                      onBlur={onBlur}
+                      value={value}
+                      isRequired
+                      defaultChecked={false}
+                      isDisabled={!isEnabled}
+                    >
+                      <Radio value="Yes">Yes</Radio>
+                      <Radio value="No">No</Radio>
+                    </RadioGroupField>
+                  )}
+                />
+                <br />
+              </>
             )
           )}
           <Flex width="100%" justifyContent="end">
