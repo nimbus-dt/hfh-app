@@ -66,7 +66,7 @@ export function TestWritten() {
     }
   };
 
-  const handleOnClickNext = () => {};
+  const handleOnClickNext = () => navigate('../records');
 
   const handleOnClickEdit = () => setEdit((previousEdit) => !previousEdit);
 
