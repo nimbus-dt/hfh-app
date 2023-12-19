@@ -59,9 +59,10 @@ const RelationshipTypes = {
   "OTHER": "OTHER"
 };
 
-const { Written, Checklist, ApplicantInfo, Cycles, ContactForm, UserProps, DebtRecord, SavingRecord, IncomeRecord, HouseholdMember, Application, Habitat } = initSchema(schema);
+const { Record, Written, Checklist, ApplicantInfo, Cycles, ContactForm, UserProps, DebtRecord, SavingRecord, IncomeRecord, HouseholdMember, Application, Habitat } = initSchema(schema);
 
 export {
+  Record,
   Written,
   Checklist,
   ApplicantInfo,
