@@ -15,6 +15,7 @@ import { TestHome } from 'components/Test/Parts/TestHome';
 import { TestApplicantInfo } from 'components/Test/Parts/TestApplicantInfo';
 import { TestChecklist } from 'components/Test/Parts/TestChecklist';
 import { TestWritten } from 'components/Test/Parts/TestWritten';
+import { TestRecords } from 'components/Test/Parts/TestRecords';
 
 import AffiliateLayout from 'layouts/AffiliateLayout';
 import AffiliatePrescreensPage from 'pages/affiliate/apps';
@@ -86,6 +87,7 @@ function App() {
           <Route path="applicant-info" element={<TestApplicantInfo />} />
           <Route path="checklist" element={<TestChecklist />} />
           <Route path="written" element={<TestWritten />} />
+          <Route path="records" element={<TestRecords />} />
         </Route>
       </Route>
 
