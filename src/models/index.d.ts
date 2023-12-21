@@ -61,6 +61,34 @@ export enum RelationshipTypes {
 
 
 
+type EagerMember = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Member, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyMember = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Member, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Member = LazyLoading extends LazyLoadingDisabled ? EagerMember : LazyMember
+
+export declare const Member: (new (init: ModelInit<Member>) => Member) & {
+  copyOf(source: Member, mutator: (draft: MutableModel<Member>) => MutableModel<Member> | void): Member;
+}
+
 type EagerRecord = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Record, 'id'>;
