@@ -104,7 +104,7 @@ export function TestRecords() {
     setLoading(false);
   };
 
-  const handleOnClickNext = () => {};
+  const handleOnClickNext = () => navigate('../homeowners');
 
   const handleOnClickEdit = () => {
     reset(persistedValues);
