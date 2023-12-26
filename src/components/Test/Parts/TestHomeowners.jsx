@@ -229,7 +229,7 @@ export function TestHomeowners() {
             },
           }}
         >
-          <Table variation="small">
+          <Table variation="small" style={{ wordBreak: 'break-word' }}>
             <TableHead>
               <TableRow>
                 <TableCell as="th" width="40%">
