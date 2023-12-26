@@ -13,7 +13,7 @@ import {
   ThemeProvider,
 } from '@aws-amplify/ui-react';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { DataStore } from 'aws-amplify';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -75,6 +75,7 @@ export function TestHomeowners() {
     });
     setMemberModal(false);
     setEditingMember(undefined);
+    setEdit(false);
   };
 
   const handleOnClickCloseDelete = () => setMemberToDelete(undefined);
@@ -168,6 +169,7 @@ export function TestHomeowners() {
   const handleOnClickEdit = () => setEdit((previousEdit) => !previousEdit);
 
   const isEnabled = editingMember === undefined || edit;
+
   return (
     <Flex direction="column" alignItems="center" width="100%">
       {alert && (
@@ -252,7 +254,18 @@ export function TestHomeowners() {
 
                   const handleOnClickMore = () => {
                     setEditingMember(member);
-                    reset(member.props);
+                    const hasOtherRelationship = !relationshipOptions.includes(
+                      member.props.relationship
+                    );
+                    reset({
+                      ...member.props,
+                      relationship: hasOtherRelationship
+                        ? 'Other'
+                        : member.props.relationship,
+                      otherRelationship: hasOtherRelationship
+                        ? member.props.relationship
+                        : undefined,
+                    });
                   };
                   return (
                     <TableRow key={member.id}>
