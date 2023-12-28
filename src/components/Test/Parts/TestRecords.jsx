@@ -150,7 +150,6 @@ export function TestRecords() {
                       accept={record.acceptedFileTypes.join(', ')}
                       isDisabled={!isEnabled}
                       maxFileCount={record.max}
-                      multiple={record.max > 1}
                     />
                   );
                 }}
