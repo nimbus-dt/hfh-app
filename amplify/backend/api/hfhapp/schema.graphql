@@ -1,3 +1,9 @@
+type EmploymentInfo @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ownerID: ID
+  props: AWSJSON
+}
+
 type Member @model @auth(rules: [{allow: public}]) {
   id: ID!
   props: AWSJSON
