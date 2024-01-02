@@ -1,3 +1,9 @@
+type Record @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ownerID: ID
+  props: AWSJSON
+}
+
 type Written @model @auth(rules: [{allow: public}]) {
   id: ID!
   ownerID: ID
