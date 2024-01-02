@@ -8,8 +8,8 @@ import {
   BasicInformation,
   Address,
   PrevAddress,
-} from '../FormComponents/FormApplicantInfo';
-import { CustomCard } from '../Reusable/CustomCard';
+} from './components/FormApplicantInfo';
+import { CustomCard } from '../../Reusable/CustomCard';
 
 export function TestApplicantInfo() {
   const [applicantInfo, setApplicantInfo] = useState();

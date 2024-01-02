@@ -8,13 +8,13 @@ import {
 import PropTypes from 'prop-types';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CustomExpandableCard } from '../Reusable/CustomExpandableCard';
+import { CustomExpandableCard } from '../../../Reusable/CustomExpandableCard';
 import {
   addressSchema,
   basicInfoSchema,
   maritalStatusValues,
   ownerShipValues,
-} from '../Parts/aplicantInfo.schema';
+} from '../aplicantInfo.schema';
 
 export function BasicInformation({
   applicantInfo,
