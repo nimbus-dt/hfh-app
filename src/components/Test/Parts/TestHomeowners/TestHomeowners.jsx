@@ -164,7 +164,9 @@ export function TestHomeowners() {
     }
   };
 
-  const handleOnClickNext = () => {};
+  const handleOnClickNext = () => {
+    navigate('../employment');
+  };
 
   const handleOnClickEdit = () => setEdit((previousEdit) => !previousEdit);
 
