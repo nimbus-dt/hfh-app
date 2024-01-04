@@ -95,6 +95,10 @@ export function TestLayout() {
     if (authStatus === 'authenticated' && application === undefined) {
       getOrCreateApplication();
     }
+    if (authStatus === 'unauthenticated') {
+      console.log('clean application');
+      setApplication();
+    }
   }, [authStatus, application, user]);
 
   useEffect(() => {
