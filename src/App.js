@@ -82,7 +82,14 @@ function App() {
         />
       </Route>
 
-      <Route path="homeownership" element={<TestLayout />}>
+      <Route
+        path="homeownership"
+        element={
+          <Authenticator.Provider>
+            <TestLayout />
+          </Authenticator.Provider>
+        }
+      >
         <Route path=":habitat">
           <Route path="home" element={<TestHome />} />
           <Route path="terms" element={<TestTerms />} />
