@@ -1,11 +1,18 @@
-import { View, Flex, Text, Heading, Button } from '@aws-amplify/ui-react';
+import {
+  View,
+  Flex,
+  Text,
+  Heading,
+  Button,
+  Authenticator,
+} from '@aws-amplify/ui-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useHabitatByUrlName from 'hooks/services/useHabitatByUrlName';
 import { CustomCard } from '../Reusable/CustomCard';
 
 export function TestHome() {
   const navigate = useNavigate();
-  const { habitat: habitatUrlName } = useParams();
+  const { habitat: habitatUrlName, isAuthenticated } = useParams();
   const { habitat, error } = useHabitatByUrlName({
     habitatUrlName,
   });
@@ -36,5 +43,9 @@ export function TestHome() {
     </>
   );
 
-  return <CustomCard>{content}</CustomCard>;
+  return (
+    <Authenticator hideSignUp={isAuthenticated}>
+      <CustomCard>{content}</CustomCard>
+    </Authenticator>
+  );
 }
