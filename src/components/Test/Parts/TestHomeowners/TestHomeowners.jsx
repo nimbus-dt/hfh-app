@@ -12,8 +12,8 @@ import {
   TableBody,
   ThemeProvider,
 } from '@aws-amplify/ui-react';
-import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { DataStore } from 'aws-amplify';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -39,7 +39,6 @@ const relationshipOptions = [
 ];
 
 export function TestHomeowners() {
-  const [houseHold, setHouseHold] = useState();
   const [members, setMembers] = useState([]);
   const [editingMember, setEditingMember] = useState();
   const [memberToDelete, setMemberToDelete] = useState();
@@ -47,6 +46,7 @@ export function TestHomeowners() {
   const [edit, setEdit] = useState(false);
   const [expanded, setExpanded] = useState(true);
   const [alert, setAlert] = useState();
+  const { application, updateApplicationLastSection } = useOutletContext();
   const navigate = useNavigate();
   const {
     handleSubmit,
@@ -117,8 +117,9 @@ export function TestHomeowners() {
       if (editingMember) {
         const original = await DataStore.query(Member, editingMember.id);
         const persistedMember = await DataStore.save(
-          Member.copyOf(original, (originalWritten) => {
-            originalWritten.props = memberProps;
+          Member.copyOf(original, (originalMember) => {
+            originalMember.testapplicationID = application.id;
+            originalMember.props = memberProps;
           })
         );
         setMembers((previousMembers) => {
@@ -139,7 +140,7 @@ export function TestHomeowners() {
         );
       } else {
         const persistedMember = await DataStore.save(
-          new Member({ props: memberProps })
+          new Member({ testapplicationID: application.id, props: memberProps })
         );
         setMembers((previousMembers) => [...previousMembers, persistedMember]);
         setAlert(
@@ -159,6 +160,7 @@ export function TestHomeowners() {
       setEdit(false);
       setMemberModal(false);
       setEditingMember(undefined);
+      updateApplicationLastSection();
     } catch {
       setAlert(createAlert('error', 'Error', "The member couldn't be saved."));
     }
@@ -171,6 +173,22 @@ export function TestHomeowners() {
   const handleOnClickEdit = () => setEdit((previousEdit) => !previousEdit);
 
   const isEnabled = editingMember === undefined || edit;
+
+  useEffect(() => {
+    const getMembers = async (applicationID) => {
+      try {
+        const existingMembers = await DataStore.query(Member, (c) =>
+          c.testapplicationID.eq(applicationID)
+        );
+        setMembers(existingMembers);
+      } catch (error) {
+        console.log('Error fetching the members data.');
+      }
+    };
+    if (application) {
+      getMembers(application.id);
+    }
+  }, [application]);
 
   return (
     <Flex direction="column" alignItems="center" width="100%">
@@ -202,7 +220,7 @@ export function TestHomeowners() {
         </Flex>
       </Modal>
       <CustomExpandableCard
-        title={`${houseHold !== undefined ? '✔️' : '❌'} Household`}
+        title={`${members.length > 0 ? '✔️' : '❌'} Household`}
         expanded={expanded}
         onExpandedChange={handleOnExpandedChange}
       >
@@ -396,18 +414,6 @@ export function TestHomeowners() {
             </Flex>
           </form>
         </Modal>
-        <Flex width="100%" justifyContent="end">
-          {houseHold ? (
-            <Button onClick={handleOnClickEdit} variation="secondary">
-              {editingMember ? 'Cancel' : 'Edit'}
-            </Button>
-          ) : null}
-          {isEnabled ? (
-            <Button type="submit" variation="primary">
-              Save
-            </Button>
-          ) : null}
-        </Flex>
       </CustomExpandableCard>
       <CustomCard>
         <Flex width="100%" justifyContent="space-between">
@@ -417,7 +423,7 @@ export function TestHomeowners() {
           <Button
             variation="primary"
             onClick={handleOnClickNext}
-            isDisabled={houseHold === undefined}
+            isDisabled={members.length === 0}
           >
             Next
           </Button>
