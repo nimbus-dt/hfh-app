@@ -96,7 +96,6 @@ export function TestLayout() {
       getOrCreateApplication();
     }
     if (authStatus === 'unauthenticated') {
-      console.log('clean application');
       setApplication();
     }
   }, [authStatus, application, user]);
