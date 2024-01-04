@@ -61,6 +61,38 @@ export enum RelationshipTypes {
 
 
 
+type EagerTestApplication = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<TestApplication, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID?: string | null;
+  readonly lastSection?: string | null;
+  readonly members?: (Member | null)[] | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyTestApplication = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<TestApplication, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID?: string | null;
+  readonly lastSection?: string | null;
+  readonly members: AsyncCollection<Member>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type TestApplication = LazyLoading extends LazyLoadingDisabled ? EagerTestApplication : LazyTestApplication
+
+export declare const TestApplication: (new (init: ModelInit<TestApplication>) => TestApplication) & {
+  copyOf(source: TestApplication, mutator: (draft: MutableModel<TestApplication>) => MutableModel<TestApplication> | void): TestApplication;
+}
+
 type EagerEmploymentInfo = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<EmploymentInfo, 'id'>;
@@ -98,6 +130,7 @@ type EagerMember = {
   };
   readonly id: string;
   readonly props?: string | null;
+  readonly testapplicationID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -109,6 +142,7 @@ type LazyMember = {
   };
   readonly id: string;
   readonly props?: string | null;
+  readonly testapplicationID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

@@ -1,3 +1,10 @@
+type TestApplication @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ownerID: ID
+  lastSection: String
+  members: [Member] @hasMany(indexName: "byTestApplication", fields: ["id"])
+}
+
 type EmploymentInfo @model @auth(rules: [{allow: public}]) {
   id: ID!
   ownerID: ID
@@ -7,6 +14,7 @@ type EmploymentInfo @model @auth(rules: [{allow: public}]) {
 type Member @model @auth(rules: [{allow: public}]) {
   id: ID!
   props: AWSJSON
+  testapplicationID: ID! @index(name: "byTestApplication")
 }
 
 type Record @model @auth(rules: [{allow: public}]) {
