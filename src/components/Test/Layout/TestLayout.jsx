@@ -87,7 +87,6 @@ export function TestLayout() {
       const existingApplication = await getApplication(user.username);
       if (existingApplication !== undefined) {
         setApplication(existingApplication);
-        navigate(existingApplication.lastSection);
       } else {
         const newApplication = await createNewApplication(user.username);
         setApplication(newApplication);
@@ -105,6 +104,12 @@ export function TestLayout() {
       navigate(urlSections.join('/'));
     }
   }, [location.pathname, authStatus]);
+
+  useEffect(() => {
+    if (application && authStatus === 'authenticated') {
+      navigate(application.lastSection);
+    }
+  }, [authStatus, application]);
 
   return (
     <ScrollView height="100vh" ref={scrollViewReference}>
