@@ -36,7 +36,6 @@ export function TestEmployment() {
             props: data,
           })
         );
-        console.log('persistedEmploymentInfo', persistedEmploymentInfo);
         setCurrentEmploymentOpen(true);
         setEmploymentInfo(persistedEmploymentInfo);
       } else {
@@ -159,7 +158,7 @@ export function TestEmployment() {
       (previousPreviousEmploymentEdit) => !previousPreviousEmploymentEdit
     );
 
-  const handleOnClickNext = () => {};
+  const handleOnClickNext = () => navigate('../financial');
 
   const isNextDisabled = () => {
     if (
