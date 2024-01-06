@@ -61,6 +61,96 @@ export enum RelationshipTypes {
 
 
 
+type EagerAsset = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Asset, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerId: string;
+  readonly props: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyAsset = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Asset, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerId: string;
+  readonly props: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Asset = LazyLoading extends LazyLoadingDisabled ? EagerAsset : LazyAsset
+
+export declare const Asset: (new (init: ModelInit<Asset>) => Asset) & {
+  copyOf(source: Asset, mutator: (draft: MutableModel<Asset>) => MutableModel<Asset> | void): Asset;
+}
+
+type EagerDebt = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Debt, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerId: string;
+  readonly props: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyDebt = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Debt, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerId: string;
+  readonly props: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Debt = LazyLoading extends LazyLoadingDisabled ? EagerDebt : LazyDebt
+
+export declare const Debt: (new (init: ModelInit<Debt>) => Debt) & {
+  copyOf(source: Debt, mutator: (draft: MutableModel<Debt>) => MutableModel<Debt> | void): Debt;
+}
+
+type EagerIncome = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Income, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerId: string;
+  readonly props: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyIncome = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Income, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerId: string;
+  readonly props: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Income = LazyLoading extends LazyLoadingDisabled ? EagerIncome : LazyIncome
+
+export declare const Income: (new (init: ModelInit<Income>) => Income) & {
+  copyOf(source: Income, mutator: (draft: MutableModel<Income>) => MutableModel<Income> | void): Income;
+}
+
 type EagerTestApplication = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<TestApplication, 'id'>;
