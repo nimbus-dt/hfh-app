@@ -61,6 +61,124 @@ export enum RelationshipTypes {
 
 
 
+type EagerMember = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Member, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyMember = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Member, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Member = LazyLoading extends LazyLoadingDisabled ? EagerMember : LazyMember
+
+export declare const Member: (new (init: ModelInit<Member>) => Member) & {
+  copyOf(source: Member, mutator: (draft: MutableModel<Member>) => MutableModel<Member> | void): Member;
+}
+
+type EagerRecord = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Record, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyRecord = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Record, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Record = LazyLoading extends LazyLoadingDisabled ? EagerRecord : LazyRecord
+
+export declare const Record: (new (init: ModelInit<Record>) => Record) & {
+  copyOf(source: Record, mutator: (draft: MutableModel<Record>) => MutableModel<Record> | void): Record;
+}
+
+type EagerWritten = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Written, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyWritten = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Written, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Written = LazyLoading extends LazyLoadingDisabled ? EagerWritten : LazyWritten
+
+export declare const Written: (new (init: ModelInit<Written>) => Written) & {
+  copyOf(source: Written, mutator: (draft: MutableModel<Written>) => MutableModel<Written> | void): Written;
+}
+
+type EagerChecklist = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Checklist, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyChecklist = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Checklist, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Checklist = LazyLoading extends LazyLoadingDisabled ? EagerChecklist : LazyChecklist
+
+export declare const Checklist: (new (init: ModelInit<Checklist>) => Checklist) & {
+  copyOf(source: Checklist, mutator: (draft: MutableModel<Checklist>) => MutableModel<Checklist> | void): Checklist;
+}
+
 type EagerApplicantInfo = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<ApplicantInfo, 'id'>;

@@ -1,3 +1,26 @@
+type Member @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  props: AWSJSON
+}
+
+type Record @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ownerID: ID
+  props: AWSJSON
+}
+
+type Written @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ownerID: ID
+  props: AWSJSON
+}
+
+type Checklist @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ownerID: ID
+  props: AWSJSON
+}
+
 type ApplicantInfo @model @auth(rules: [{allow: public}]) {
   id: ID!
   ownerID: ID
