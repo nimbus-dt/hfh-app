@@ -12,11 +12,12 @@ import PreLimResultsPage from 'pages/applicant/prescreen/prelim/results';
 
 import { ApplicantPrescreenLayout } from 'components/PreScreen/ApplicantPrescreenLayout';
 import { TestHome } from 'components/Test/Parts/TestHome';
-import { TestApplicantInfo } from 'components/Test/Parts/TestApplicantInfo';
-import { TestChecklist } from 'components/Test/Parts/TestChecklist';
-import { TestWritten } from 'components/Test/Parts/TestWritten';
-import { TestRecords } from 'components/Test/Parts/TestRecords';
-import { TestHomeowners } from 'components/Test/Parts/TestHomeowners';
+import TestApplicantInfo from 'components/Test/Parts/TestApplicantInfo';
+import TestChecklist from 'components/Test/Parts/TestChecklist';
+import TestWritten from 'components/Test/Parts/TestWritten';
+import TestRecords from 'components/Test/Parts/TestRecords';
+import TestHomeowners from 'components/Test/Parts/TestHomeowners';
+import TestEmployment from 'components/Test/Parts/TestEmployment';
 
 import AffiliateLayout from 'layouts/AffiliateLayout';
 import AffiliatePrescreensPage from 'pages/affiliate/apps';
@@ -90,6 +91,7 @@ function App() {
           <Route path="written" element={<TestWritten />} />
           <Route path="records" element={<TestRecords />} />
           <Route path="homeowners" element={<TestHomeowners />} />
+          <Route path="employment" element={<TestEmployment />} />
         </Route>
       </Route>
 

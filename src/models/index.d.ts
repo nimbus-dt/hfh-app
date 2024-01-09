@@ -61,6 +61,36 @@ export enum RelationshipTypes {
 
 
 
+type EagerEmploymentInfo = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<EmploymentInfo, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyEmploymentInfo = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<EmploymentInfo, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type EmploymentInfo = LazyLoading extends LazyLoadingDisabled ? EagerEmploymentInfo : LazyEmploymentInfo
+
+export declare const EmploymentInfo: (new (init: ModelInit<EmploymentInfo>) => EmploymentInfo) & {
+  copyOf(source: EmploymentInfo, mutator: (draft: MutableModel<EmploymentInfo>) => MutableModel<EmploymentInfo> | void): EmploymentInfo;
+}
+
 type EagerMember = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Member, 'id'>;

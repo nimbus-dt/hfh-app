@@ -21,8 +21,8 @@ import { Member } from 'models';
 import { createAlert } from 'utils/factories';
 import Modal from 'components/Modal';
 import { MdAdd, MdClose, MdMoreHoriz } from 'react-icons/md';
-import { CustomCard } from '../Reusable/CustomCard';
-import { CustomExpandableCard } from '../Reusable/CustomExpandableCard';
+import { CustomCard } from '../../Reusable/CustomCard';
+import { CustomExpandableCard } from '../../Reusable/CustomExpandableCard';
 import { memberSchema } from './household.schema';
 
 const relationshipOptions = [
@@ -164,7 +164,9 @@ export function TestHomeowners() {
     }
   };
 
-  const handleOnClickNext = () => {};
+  const handleOnClickNext = () => {
+    navigate('../employment');
+  };
 
   const handleOnClickEdit = () => setEdit((previousEdit) => !previousEdit);
 

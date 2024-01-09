@@ -69,3 +69,20 @@ const Percentage = new Intl.NumberFormat('default', {
  * @returns {string} i.e.: 49.58 %
  */
 export const formatNumberAsPercentage = (num) => Percentage.format(num);
+
+/**
+ * Returns a phone number string with format (XXX) XXX-XXXX
+ * @param {string} unformattedNumber i.e.: 8005550100, 800 555 0100, (800) 5550100
+ * @returns {string} i.e.: (800) 555‑0100
+ */
+export const formatPhoneNumber = (unformattedNumber) => {
+  const formattedNumber = unformattedNumber
+    .replace(/[^\d\b]/g, '')
+    .substring(0, 10)
+    .replace(/^(\d{1})/, '($1')
+    .replace(/^(\(\d{3})(\d{1})/, '$1)$2')
+    .replace(/^(\(\d{3}\))(\d{1})/, '$1 $2')
+    .replace(/^(\(\d{3}\))\s(\d{3})(\d{1})/, '$1 $2-$3');
+
+  return formattedNumber;
+};

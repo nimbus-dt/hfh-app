@@ -6,8 +6,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Written } from 'models';
 import { createAlert } from 'utils/factories';
-import { CustomCard } from '../Reusable/CustomCard';
-import { CustomExpandableCard } from '../Reusable/CustomExpandableCard';
+import { CustomCard } from '../../Reusable/CustomCard';
+import { CustomExpandableCard } from '../../Reusable/CustomExpandableCard';
 import { writtenSchema } from './written.schema';
 
 export function TestWritten() {
