@@ -312,7 +312,7 @@ const IncomeSection = ({
                   };
                   return (
                     <TableRow key={income.id}>
-                      <TableCell>{income.props.type}</TableCell>
+                      <TableCell>{income.props.source}</TableCell>
                       <TableCell>{`$${income.props.monthlyIncome}`}</TableCell>
                       <TableCell>
                         <Flex
