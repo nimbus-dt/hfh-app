@@ -137,6 +137,7 @@ const DebtSection = ({
     const resultsKeys = results.map((result) => result.key);
     const newDebtProps = {
       type: data.otherType ? data.otherType : data.type,
+      description: data.description,
       monthlyPayment: data.monthlyPayment,
       unpaidBalance: data.unpaidBalance,
       monthsLeftToPaid: data.monthsLeftToPaid,
@@ -389,6 +390,15 @@ const DebtSection = ({
                   isDisabled={!isEnabled}
                 />
               )}
+              <TextField
+                {...register('description')}
+                label="Debt description"
+                placeholder="Payment of new bought car"
+                hasError={errors.description !== undefined}
+                errorMessage={errors.description?.message}
+                isRequired
+                isDisabled={!isEnabled}
+              />
               <Controller
                 control={control}
                 name="monthlyPayment"

@@ -49,7 +49,8 @@ export const debtTypes = [
 
 export const debtSchema = z.object({
   type: z.enum(debtTypes),
-  otherType: z.string().min(0).optional(),
+  otherType: z.string().min(1).optional(),
+  description: z.string().min(1),
   monthlyPayment: moneyNumber,
   unpaidBalance: moneyNumber,
   monthsLeftToPaid: intPositiveNumber,
@@ -73,8 +74,8 @@ export const assetsTypes = [
 
 export const assetsSchema = z.object({
   type: z.enum(assetsTypes),
-  otherType: z.string().min(0).optional(),
-  heldByOrLocation: z.string().min(0),
+  otherType: z.string().min(1).optional(),
+  heldByOrLocation: z.string().min(1),
   currentValue: moneyNumber,
   proofs: fileArray,
 });
