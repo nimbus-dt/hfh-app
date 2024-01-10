@@ -392,6 +392,7 @@ const AssetsSection = ({
               <TextField
                 {...register('heldByOrLocation')}
                 label="Name of institution where asset is held / Asset Location"
+                placeholder="Bank of America"
                 hasError={errors.heldByOrLocation !== undefined}
                 errorMessage={errors.heldByOrLocation?.message}
                 isRequired
@@ -408,6 +409,7 @@ const AssetsSection = ({
                   return (
                     <CurrencyInput
                       label="Current asset value"
+                      placeholder="5000"
                       min={0}
                       hasError={errors.currentValue !== undefined}
                       errorMessage={errors.currentValue?.message}
