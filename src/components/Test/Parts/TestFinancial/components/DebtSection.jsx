@@ -400,6 +400,7 @@ const DebtSection = ({
                   return (
                     <CurrencyInput
                       label="Monthly debt payment"
+                      placeholder="500"
                       min={0}
                       hasError={errors.monthlyPayment !== undefined}
                       errorMessage={errors.monthlyPayment?.message}
@@ -422,6 +423,7 @@ const DebtSection = ({
                   return (
                     <CurrencyInput
                       label="Unpaid balance"
+                      placeholder="10000"
                       min={0}
                       hasError={errors.unpaidBalance !== undefined}
                       errorMessage={errors.unpaidBalance?.message}
@@ -436,6 +438,7 @@ const DebtSection = ({
               <TextField
                 {...register('monthsLeftToPaid')}
                 label="Months left to paid"
+                placeholder="20"
                 type="number"
                 min={0}
                 hasError={errors.monthsLeftToPaid !== undefined}
