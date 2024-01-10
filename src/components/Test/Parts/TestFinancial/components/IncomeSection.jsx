@@ -394,6 +394,7 @@ const IncomeSection = ({
               <TextField
                 {...register('source')}
                 label="Source of income"
+                placeholder="McDonalds"
                 hasError={errors.source !== undefined}
                 errorMessage={errors.source?.message}
                 isRequired
@@ -409,6 +410,7 @@ const IncomeSection = ({
                   return (
                     <CurrencyInput
                       label="Monthly income"
+                      placeholder="1000"
                       min={0}
                       hasError={errors.monthlyIncome !== undefined}
                       errorMessage={errors.monthlyIncome?.message}
