@@ -22,6 +22,7 @@ export function TestNav({ isAuthenticated }) {
           <Button
             variation="link"
             color="black"
+            backgroundColor="white"
             marginRight="1rem"
             onClick={handleSignOut}
           >
