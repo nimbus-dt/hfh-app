@@ -5,6 +5,7 @@ import {
   Heading,
   Button,
   Authenticator,
+  ThemeProvider,
 } from '@aws-amplify/ui-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useHabitatByUrlName from 'hooks/services/useHabitatByUrlName';
@@ -44,8 +45,27 @@ export function TestHome() {
   );
 
   return (
-    <Authenticator hideSignUp={isAuthenticated}>
-      <CustomCard>{content}</CustomCard>
-    </Authenticator>
+    <CustomCard>
+      <ThemeProvider
+        theme={{
+          name: 'homeownership-authentication',
+          tokens: {
+            components: {
+              authenticator: {
+                container: {
+                  widthMax: '100%',
+                },
+                router: {
+                  borderStyle: 'none',
+                  boxShadow: 'none',
+                },
+              },
+            },
+          },
+        }}
+      >
+        <Authenticator hideSignUp={isAuthenticated}>{content}</Authenticator>
+      </ThemeProvider>
+    </CustomCard>
   );
 }
