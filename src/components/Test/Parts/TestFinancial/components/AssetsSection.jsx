@@ -400,6 +400,7 @@ const AssetsSection = ({
               <Controller
                 control={control}
                 name="currentValue"
+                defaultValue=""
                 render={({ field: { onChange, value } }) => {
                   const handleOnChange = (newValue) => {
                     onChange(newValue);

@@ -392,6 +392,7 @@ const DebtSection = ({
               <Controller
                 control={control}
                 name="monthlyPayment"
+                defaultValue=""
                 render={({ field: { onChange, value } }) => {
                   const handleOnChange = (newValue) => {
                     onChange(newValue);
@@ -413,6 +414,7 @@ const DebtSection = ({
               <Controller
                 control={control}
                 name="unpaidBalance"
+                defaultValue=""
                 render={({ field: { onChange, value } }) => {
                   const handleOnChange = (newValue) => {
                     onChange(newValue);

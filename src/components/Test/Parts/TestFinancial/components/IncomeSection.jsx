@@ -403,6 +403,7 @@ const IncomeSection = ({
               <Controller
                 control={control}
                 name="monthlyIncome"
+                defaultValue=""
                 render={({ field: { onChange, value } }) => {
                   const handleOnChange = (newValue) => {
                     onChange(newValue);
