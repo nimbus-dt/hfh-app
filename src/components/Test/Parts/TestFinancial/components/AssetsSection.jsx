@@ -22,6 +22,7 @@ import { CustomExpandableCard } from 'components/Test/Reusable/CustomExpandableC
 import { MdAdd, MdClose, MdMoreHoriz } from 'react-icons/md';
 import FileInput from 'components/FileInput';
 import { createAlert } from 'utils/factories';
+import CurrencyInput from 'components/CurrencyInput';
 import { assetsSchema, assetsTypes } from '../TestFinancial.schema';
 import UploadingFileLoader from './UploadingFileLoader';
 
@@ -310,7 +311,7 @@ const AssetsSection = ({
                   return (
                     <TableRow key={asset.id}>
                       <TableCell>{asset.props.type}</TableCell>
-                      <TableCell>{asset.props.monthlyPayment}</TableCell>
+                      <TableCell>{`$${asset.props.currentValue}`}</TableCell>
                       <TableCell>
                         <Flex
                           direction={{ base: 'column', small: 'row' }}
@@ -396,16 +397,28 @@ const AssetsSection = ({
                 isRequired
                 isDisabled={!isEnabled}
               />
-              <TextField
-                {...register('currentValue')}
-                label="Current asset value"
-                type="number"
-                min={0}
-                hasError={errors.currentValue !== undefined}
-                errorMessage={errors.currentValue?.message}
-                isRequired
-                isDisabled={!isEnabled}
+              <Controller
+                control={control}
+                name="currentValue"
+                render={({ field: { onChange, value } }) => {
+                  const handleOnChange = (newValue) => {
+                    onChange(newValue);
+                  };
+                  return (
+                    <CurrencyInput
+                      label="Current asset value"
+                      min={0}
+                      hasError={errors.currentValue !== undefined}
+                      errorMessage={errors.currentValue?.message}
+                      isRequired
+                      isDisabled={!isEnabled}
+                      value={value}
+                      onChange={handleOnChange}
+                    />
+                  );
+                }}
               />
+
               <Controller
                 control={control}
                 name="proofs"

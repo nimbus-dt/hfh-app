@@ -22,6 +22,7 @@ import { CustomExpandableCard } from 'components/Test/Reusable/CustomExpandableC
 import { MdAdd, MdClose, MdMoreHoriz } from 'react-icons/md';
 import FileInput from 'components/FileInput';
 import { createAlert } from 'utils/factories';
+import CurrencyInput from 'components/CurrencyInput';
 import { incomeSchema, incomeTypes } from '../TestFinancial.schema';
 import UploadingFileLoader from './UploadingFileLoader';
 
@@ -312,7 +313,7 @@ const IncomeSection = ({
                   return (
                     <TableRow key={income.id}>
                       <TableCell>{income.props.type}</TableCell>
-                      <TableCell>{income.props.monthlyIncome}</TableCell>
+                      <TableCell>{`$${income.props.monthlyIncome}`}</TableCell>
                       <TableCell>
                         <Flex
                           direction={{ base: 'column', small: 'row' }}
@@ -398,15 +399,26 @@ const IncomeSection = ({
                 isRequired
                 isDisabled={!isEnabled}
               />
-              <TextField
-                {...register('monthlyIncome')}
-                label="Monthly income"
-                type="number"
-                min={0}
-                hasError={errors.monthlyIncome !== undefined}
-                errorMessage={errors.monthlyIncome?.message}
-                isRequired
-                isDisabled={!isEnabled}
+              <Controller
+                control={control}
+                name="monthlyIncome"
+                render={({ field: { onChange, value } }) => {
+                  const handleOnChange = (newValue) => {
+                    onChange(newValue);
+                  };
+                  return (
+                    <CurrencyInput
+                      label="Monthly income"
+                      min={0}
+                      hasError={errors.monthlyIncome !== undefined}
+                      errorMessage={errors.monthlyIncome?.message}
+                      isRequired
+                      isDisabled={!isEnabled}
+                      value={value}
+                      onChange={handleOnChange}
+                    />
+                  );
+                }}
               />
               <Controller
                 control={control}

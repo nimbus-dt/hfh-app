@@ -22,6 +22,7 @@ import { CustomExpandableCard } from 'components/Test/Reusable/CustomExpandableC
 import { MdAdd, MdClose, MdMoreHoriz } from 'react-icons/md';
 import FileInput from 'components/FileInput';
 import { createAlert } from 'utils/factories';
+import CurrencyInput from 'components/CurrencyInput';
 import { debtSchema, debtTypes } from '../TestFinancial.schema';
 import UploadingFileLoader from './UploadingFileLoader';
 
@@ -310,7 +311,7 @@ const DebtSection = ({
                   return (
                     <TableRow key={debt.id}>
                       <TableCell>{debt.props.type}</TableCell>
-                      <TableCell>{debt.props.monthlyPayment}</TableCell>
+                      <TableCell>{`$${debt.props.monthlyPayment}`}</TableCell>
                       <TableCell>
                         <Flex
                           direction={{ base: 'column', small: 'row' }}
@@ -388,25 +389,47 @@ const DebtSection = ({
                   isDisabled={!isEnabled}
                 />
               )}
-              <TextField
-                {...register('monthlyPayment')}
-                label="Monthly debt payment"
-                type="number"
-                min={0}
-                hasError={errors.monthlyPayment !== undefined}
-                errorMessage={errors.monthlyPayment?.message}
-                isRequired
-                isDisabled={!isEnabled}
+              <Controller
+                control={control}
+                name="monthlyPayment"
+                render={({ field: { onChange, value } }) => {
+                  const handleOnChange = (newValue) => {
+                    onChange(newValue);
+                  };
+                  return (
+                    <CurrencyInput
+                      label="Monthly debt payment"
+                      min={0}
+                      hasError={errors.monthlyPayment !== undefined}
+                      errorMessage={errors.monthlyPayment?.message}
+                      isRequired
+                      isDisabled={!isEnabled}
+                      value={value}
+                      onChange={handleOnChange}
+                    />
+                  );
+                }}
               />
-              <TextField
-                {...register('unpaidBalance')}
-                label="Unpaid balance"
-                type="number"
-                min={0}
-                hasError={errors.unpaidBalance !== undefined}
-                errorMessage={errors.unpaidBalance?.message}
-                isRequired
-                isDisabled={!isEnabled}
+              <Controller
+                control={control}
+                name="unpaidBalance"
+                render={({ field: { onChange, value } }) => {
+                  const handleOnChange = (newValue) => {
+                    onChange(newValue);
+                  };
+                  return (
+                    <CurrencyInput
+                      label="Unpaid balance"
+                      min={0}
+                      hasError={errors.unpaidBalance !== undefined}
+                      errorMessage={errors.unpaidBalance?.message}
+                      isRequired
+                      isDisabled={!isEnabled}
+                      value={value}
+                      onChange={handleOnChange}
+                    />
+                  );
+                }}
               />
               <TextField
                 {...register('monthsLeftToPaid')}
