@@ -52,6 +52,7 @@ export function TestHomeowners() {
     handleSubmit,
     register,
     reset,
+    unregister,
     watch,
     formState: { errors },
   } = useForm({
@@ -72,6 +73,7 @@ export function TestHomeowners() {
       birthDay: undefined,
       sex: undefined,
       relationship: undefined,
+      otherRelationship: undefined,
     });
     setMemberModal(false);
     setEditingMember(undefined);
@@ -105,15 +107,15 @@ export function TestHomeowners() {
   };
 
   const onValidSubmitMember = async (data) => {
-    const memberProps = {
-      fullName: data.fullName,
-      birthDay: data.birthDay,
-      sex: data.sex,
-      relationship: data.otherRelationship
-        ? data.otherRelationship
-        : data.relationship,
-    };
     try {
+      const memberProps = {
+        fullName: data.fullName,
+        birthDay: data.birthDay,
+        sex: data.sex,
+        relationship: data.otherRelationship
+          ? data.otherRelationship
+          : data.relationship,
+      };
       if (editingMember) {
         const original = await DataStore.query(Member, editingMember.id);
         const persistedMember = await DataStore.save(
@@ -151,15 +153,8 @@ export function TestHomeowners() {
           )
         );
       }
-      reset({
-        fullName: undefined,
-        birthDay: undefined,
-        sex: undefined,
-        relationship: undefined,
-      });
-      setEdit(false);
-      setMemberModal(false);
-      setEditingMember(undefined);
+      handleOnClickCloseMemberModal();
+
       updateApplicationLastSection();
     } catch {
       setAlert(createAlert('error', 'Error', "The member couldn't be saved."));
@@ -189,6 +184,12 @@ export function TestHomeowners() {
       getMembers(application.id);
     }
   }, [application]);
+
+  useEffect(() => {
+    if (watchRelationship !== 'Other') {
+      unregister('otherRelationship');
+    }
+  }, [watchRelationship]);
 
   return (
     <Flex direction="column" alignItems="center" width="100%">

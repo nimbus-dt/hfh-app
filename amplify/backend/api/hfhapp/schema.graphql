@@ -1,3 +1,21 @@
+type Asset @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ownerId: ID!
+  props: AWSJSON!
+}
+
+type Debt @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ownerId: ID!
+  props: AWSJSON!
+}
+
+type Income @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ownerId: ID!
+  props: AWSJSON!
+}
+
 type TestApplication @model @auth(rules: [{allow: public}]) {
   id: ID!
   ownerID: ID
