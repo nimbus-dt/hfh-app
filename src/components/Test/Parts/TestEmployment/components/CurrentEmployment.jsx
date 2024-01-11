@@ -1,7 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { CustomExpandableCard } from 'components/Test/Reusable/CustomExpandableCard';
-import { Button, Flex, TextField } from '@aws-amplify/ui-react';
+import {
+  Button,
+  Flex,
+  Radio,
+  RadioGroupField,
+  TextField,
+} from '@aws-amplify/ui-react';
 import PropTypes from 'prop-types';
 import { formatPhoneNumber } from 'utils/formatters';
 import { currentEmploymentSchema } from '../TestEmployment.schema';
@@ -15,6 +21,7 @@ const CurrentEmployment = ({
   onClickEdit,
 }) => {
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors },
@@ -87,7 +94,27 @@ const CurrentEmployment = ({
           isDisabled={!isEnabled}
         />
         <br />
-
+        <Controller
+          control={control}
+          name="firstJob"
+          defaultValue="Yes"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <RadioGroupField
+              name="firstJob"
+              label="Is this your first job?"
+              onChange={(e) => onChange(e.target.value)}
+              onBlur={onBlur}
+              value={value}
+              isRequired
+              hasError={errors?.firstJob !== undefined}
+              isDisabled={!isEnabled}
+            >
+              <Radio value="Yes">Yes</Radio>
+              <Radio value="No">No</Radio>
+            </RadioGroupField>
+          )}
+        />
+        <br />
         <Flex width="100%" justifyContent="end">
           {employmentInfo?.props?.currentEmployment ? (
             <Button onClick={onClickEdit} variation="secondary">

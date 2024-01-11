@@ -19,7 +19,9 @@ const employmentSchema = z.object({
   businessPhone: phoneSchema,
 });
 
-export const currentEmploymentSchema = employmentSchema;
+export const currentEmploymentSchema = employmentSchema.extend({
+  firstJob: z.string(),
+});
 
 export const previousEmploymentSchema = employmentSchema.extend({
   endDate: z.string(),
