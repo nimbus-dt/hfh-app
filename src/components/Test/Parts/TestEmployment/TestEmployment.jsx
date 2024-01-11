@@ -1,8 +1,8 @@
 import { Alert, Button, Flex, View } from '@aws-amplify/ui-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { EmploymentInfo } from 'models';
 import { DataStore } from 'aws-amplify';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { createAlert } from 'utils/factories';
 import { calculateAge } from 'utils/dates';
 import { CustomCard } from '../../Reusable/CustomCard';
@@ -22,6 +22,8 @@ export function TestEmployment() {
   const [previousEmploymentOpen, setPreviousEmploymentOpen] = useState(false);
   const [previousEmploymentEdit, setPreviousEmploymentEdit] = useState(false);
 
+  const { application, updateApplicationLastSection } = useOutletContext();
+
   const [alert, setAlert] = useState();
   const navigate = useNavigate();
 
@@ -30,6 +32,7 @@ export function TestEmployment() {
       if (employmentInfo === undefined) {
         const persistedEmploymentInfo = await DataStore.save(
           new EmploymentInfo({
+            ownerID: application.id,
             props: data,
           })
         );
@@ -43,6 +46,7 @@ export function TestEmployment() {
         );
         const persistedEmploymentInfo = await DataStore.save(
           EmploymentInfo.copyOf(original, (originalEmploymentInfo) => {
+            originalEmploymentInfo.ownerID = application.id;
             originalEmploymentInfo.props = {
               ...originalEmploymentInfo.props,
               currentlyUnemployed: data.currentlyUnemployed,
@@ -62,6 +66,8 @@ export function TestEmployment() {
       );
 
       setUnemploymentOpen(false);
+
+      updateApplicationLastSection();
     } catch {
       setAlert(
         createAlert(
@@ -176,6 +182,23 @@ export function TestEmployment() {
     }
     return true;
   };
+
+  useEffect(() => {
+    const getEmploymentInfo = async (applicationID) => {
+      try {
+        const existingEmploymentInfo = await DataStore.query(
+          EmploymentInfo,
+          (c) => c.ownerID.eq(applicationID)
+        );
+        setEmploymentInfo(existingEmploymentInfo[0]);
+      } catch (error) {
+        console.log('Error fetching the employment info data.');
+      }
+    };
+    if (application) {
+      getEmploymentInfo(application.id);
+    }
+  }, [application]);
 
   return (
     <View as="div">

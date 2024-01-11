@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { CustomCard } from '../Reusable/CustomCard';
 
 export function TestTerms() {
-  const [habitat] = useOutletContext();
+  const { habitat } = useOutletContext();
   const navigate = useNavigate();
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [error, setError] = useState(false);

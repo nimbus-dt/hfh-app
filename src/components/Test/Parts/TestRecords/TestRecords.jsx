@@ -1,6 +1,6 @@
 import { Flex, Button, Alert, View, Text, Loader } from '@aws-amplify/ui-react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DataStore, Storage } from 'aws-amplify';
 import { Controller, useForm } from 'react-hook-form';
 import { Record } from 'models';
@@ -16,8 +16,8 @@ export function TestRecords() {
   const [edit, setEdit] = useState(false);
   const [expanded, setExpanded] = useState(true);
   const [alert, setAlert] = useState();
-  const [habitat] = useOutletContext();
-  const owner = '4b079007-94ed-4240-a3ef-c4fab500d9e9';
+  const { habitat, application, updateApplicationLastSection } =
+    useOutletContext();
   const [loading, setLoading] = useState(false);
   const [persistedValues, setPersistedValues] = useState();
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ export function TestRecords() {
   const uploadFiles = async (files, recordName) => {
     const promisesArr = files.map((file) =>
       Storage.put(
-        `records/${habitat?.urlName}/${owner}/${recordName}/${file.name}`,
+        `records/${habitat?.urlName}/${application.id}/${recordName}/${file.name}`,
         file,
         {
           level: 'public',
@@ -78,6 +78,7 @@ export function TestRecords() {
 
         const persistedRecord = await DataStore.save(
           Record.copyOf(original, (originalRecord) => {
+            originalRecord.ownerID = application.id;
             originalRecord.props = resultsObj;
           })
         );
@@ -85,7 +86,7 @@ export function TestRecords() {
         setRecords(persistedRecord);
       } else {
         const persistedRecord = await DataStore.save(
-          new Record({ props: resultsObj })
+          new Record({ ownerID: application.id, props: resultsObj })
         );
         setRecords(persistedRecord);
       }
@@ -98,6 +99,7 @@ export function TestRecords() {
         )
       );
       setExpanded(false);
+      updateApplicationLastSection();
     } catch (error) {
       setAlert(createAlert('error', 'Error', "The records couldn't be saved."));
     }
@@ -112,6 +114,35 @@ export function TestRecords() {
   };
 
   const isEnabled = records === undefined || edit;
+
+  useEffect(() => {
+    const getRecords = async (applicationID) => {
+      try {
+        const existingRecords = await DataStore.query(Record, (c) =>
+          c.ownerID.eq(applicationID)
+        );
+        setRecords(existingRecords[0]);
+
+        const newFormValues = {};
+
+        for (const [key, filesKeys] of Object.entries(
+          existingRecords[0].props
+        )) {
+          const filesArray = filesKeys.map((fileKey) => {
+            const pathArray = fileKey.split('/');
+            return new File([''], pathArray[pathArray.length - 1]);
+          });
+          newFormValues[key] = filesArray;
+        }
+        reset(newFormValues);
+      } catch (error) {
+        console.log('Error fetching the records data.');
+      }
+    };
+    if (application) {
+      getRecords(application.id);
+    }
+  }, [application]);
   return (
     <Flex direction="column" alignItems="center" width="100%">
       {alert && (

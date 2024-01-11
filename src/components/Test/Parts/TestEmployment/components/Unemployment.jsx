@@ -27,11 +27,6 @@ const Unemployment = ({
 
   const isEnabled = !employmentInfo?.props?.currentlyUnemployed || edit;
 
-  useEffect(() => {
-    console.log('errores', errors);
-    console.log('employmentInfo', employmentInfo);
-  }, [errors, employmentInfo]);
-
   return (
     <CustomExpandableCard
       title={`${
