@@ -92,7 +92,11 @@ export function TestLayout() {
         setApplication(newApplication);
       }
     };
-    if (authStatus === 'authenticated' && application === undefined) {
+    if (
+      authStatus === 'authenticated' &&
+      application === undefined &&
+      user !== undefined
+    ) {
       getOrCreateApplication();
     }
     if (authStatus === 'unauthenticated') {
