@@ -64,7 +64,7 @@ export function TestFinancial() {
   );
 
   const handleOnClickNext = () => {
-    navigate('../employment');
+    navigate('../review');
   };
 
   useEffect(() => {
