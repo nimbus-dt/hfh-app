@@ -195,11 +195,7 @@ const DebtSection = ({
       updateApplicationLastSection();
     } catch (error) {
       setAlert(
-        createAlert(
-          'error',
-          'Error',
-          `The debt record couldn't be saved.${error}`
-        )
+        createAlert('error', 'Error', `The debt record couldn't be saved.`)
       );
     }
     setLoading((previousLoading) => previousLoading - 1);
