@@ -173,6 +173,7 @@ export function TestEmployment() {
       }
       if (
         calculateAge(employmentInfo?.props?.currentEmployment?.startDate) < 1 &&
+        employmentInfo?.props?.currentEmployment?.firstJob === 'No' &&
         employmentInfo.props.previousEmployment === undefined
       ) {
         return true;
@@ -237,19 +238,20 @@ export function TestEmployment() {
           </>
         )}
         {calculateAge(employmentInfo?.props?.currentEmployment?.startDate) <
-          1 && (
-          <>
-            <PreviousEmployment
-              expanded={previousEmploymentOpen}
-              onExpandedChange={setPreviousEmploymentOpen}
-              employmentInfo={employmentInfo}
-              onValid={onValidPreviousEmployment}
-              edit={previousEmploymentEdit}
-              onClickEdit={handleOnClickPreviousEmploymentEdit}
-            />
-            <br />
-          </>
-        )}
+          1 &&
+          employmentInfo?.props?.currentEmployment?.firstJob === 'No' && (
+            <>
+              <PreviousEmployment
+                expanded={previousEmploymentOpen}
+                onExpandedChange={setPreviousEmploymentOpen}
+                employmentInfo={employmentInfo}
+                onValid={onValidPreviousEmployment}
+                edit={previousEmploymentEdit}
+                onClickEdit={handleOnClickPreviousEmploymentEdit}
+              />
+              <br />
+            </>
+          )}
         <CustomCard>
           <Flex width="100%" justifyContent="space-between">
             <Link to="../homeowners">
