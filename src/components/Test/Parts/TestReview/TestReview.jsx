@@ -84,7 +84,7 @@ export function TestReview() {
         onClickClose={handleOnClickSubmitModalClose}
       >
         <Text>
-          Are you sure you want to submit your applicantion? Once submited you
+          Are you sure you want to submit your application? Once submited you
           won't be able to resubmit.
         </Text>
         <br />
