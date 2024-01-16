@@ -65,6 +65,11 @@ export function TestReview() {
           {alert.body}
         </Alert>
       )}
+      <CustomCard>
+        Before submitting your application, please review the information you've
+        submitted for accuracy and completeness.
+      </CustomCard>
+      <br />
       <ApplicantInfoSection />
       <ChecklistSection />
       <WrittenSection />
