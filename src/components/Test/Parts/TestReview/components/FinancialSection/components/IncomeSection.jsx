@@ -58,6 +58,7 @@ const IncomeSection = ({ ownerId, incomes }) => {
       title="Income records"
       expanded={expanded}
       onExpandedChange={handleOnExpandedChange}
+      width="100%"
     >
       <ThemeProvider
         theme={{

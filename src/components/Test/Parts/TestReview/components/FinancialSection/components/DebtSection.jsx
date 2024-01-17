@@ -59,6 +59,7 @@ const DebtSection = ({ ownerId, debts }) => {
       title="Debt records"
       expanded={expanded}
       onExpandedChange={handleOnExpandedChange}
+      width="100%"
     >
       <ThemeProvider
         theme={{

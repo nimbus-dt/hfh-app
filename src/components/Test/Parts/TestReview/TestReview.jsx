@@ -31,6 +31,7 @@ export function TestReview() {
   const [unemploymentOpen, setUnemploymentOpen] = useState(false);
   const [currentEmploymentOpen, setCurrentEmploymentOpen] = useState(false);
   const [previousEmploymentOpen, setPreviousEmploymentOpen] = useState(false);
+  const [financialOpen, setFinancialOpen] = useState(false);
 
   const handleBasicInformationOnReview = () => {
     setBasicInfoOpen(false);
@@ -100,6 +101,8 @@ export function TestReview() {
     setUnemploymentOpen(false);
     if (employed) {
       setCurrentEmploymentOpen(true);
+    } else {
+      setFinancialOpen(true);
     }
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
@@ -111,6 +114,8 @@ export function TestReview() {
     setCurrentEmploymentOpen(false);
     if (hasPreviousEmployment) {
       setPreviousEmploymentOpen(true);
+    } else {
+      setFinancialOpen(true);
     }
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
@@ -120,6 +125,7 @@ export function TestReview() {
 
   const handlePreviousEmploymentOnReview = () => {
     setPreviousEmploymentOpen(false);
+    setFinancialOpen(true);
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
       previousEmployment: true,
@@ -127,6 +133,7 @@ export function TestReview() {
   };
 
   const handleFinancialOnReview = () => {
+    setFinancialOpen(false);
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
       financial: true,
@@ -255,6 +262,8 @@ export function TestReview() {
         handlePreviousAddressOnReview={handlePreviousEmploymentOnReview}
       />
       <FinancialSection
+        expanded={financialOpen}
+        setExpanded={setFinancialOpen}
         reviewedSections={reviewedSections}
         setReviewedSections={setReviewedSections}
         onReview={handleFinancialOnReview}
