@@ -1,19 +1,25 @@
 import { Flex, Button, TextAreaField } from '@aws-amplify/ui-react';
 import { Link, useOutletContext } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { DataStore } from 'aws-amplify';
 import { Written } from 'models';
 import { CustomExpandableCard } from 'components/Test/Reusable/CustomExpandableCard';
+import PropTypes from 'prop-types';
+import { getCheckOrExEmoji } from 'utils/misc';
 import LoadingData from './LoadingData';
 
-const WrittenSection = () => {
+const WrittenSection = ({
+  expanded,
+  setExpanded,
+  reviewedSections,
+  setReviewedSections,
+  onReview,
+}) => {
   const [writtenQuestions, setWrittenQuestions] = useState();
 
-  const [expanded, setExpanded] = useState(false);
+  const customCardReference = useRef(null);
 
   const { habitat, application } = useOutletContext();
-
-  const handleOnExpandedChange = (newExpanded) => setExpanded(newExpanded);
 
   useEffect(() => {
     const getWritten = async (applicationID) => {
@@ -31,12 +37,31 @@ const WrittenSection = () => {
     }
   }, [application]);
 
+  useEffect(() => {
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      written: false,
+    }));
+  }, [setReviewedSections]);
+
+  useEffect(() => {
+    if (expanded) {
+      customCardReference.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  }, [expanded]);
+
   return (
     <>
       <CustomExpandableCard
-        title="Written Response"
+        title={`${getCheckOrExEmoji(
+          reviewedSections.written
+        )} Written Response`}
         expanded={expanded}
-        onExpandedChange={handleOnExpandedChange}
+        onExpandedChange={setExpanded}
+        ref={customCardReference}
       >
         {writtenQuestions ? (
           <>
@@ -53,8 +78,11 @@ const WrittenSection = () => {
             )}
             <Flex width="100%" justifyContent="end">
               <Link to="../written">
-                <Button variation="primary">Edit</Button>
+                <Button>Edit</Button>
               </Link>
+              <Button onClick={onReview} variation="primary">
+                Review
+              </Button>
             </Flex>
           </>
         ) : (
@@ -65,6 +93,14 @@ const WrittenSection = () => {
       <br />
     </>
   );
+};
+
+WrittenSection.propTypes = {
+  expanded: PropTypes.bool,
+  setExpanded: PropTypes.func,
+  reviewedSections: PropTypes.object,
+  setReviewedSections: PropTypes.func,
+  onReview: PropTypes.func,
 };
 
 export default WrittenSection;

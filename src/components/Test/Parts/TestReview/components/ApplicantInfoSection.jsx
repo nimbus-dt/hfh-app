@@ -7,9 +7,10 @@ import {
 } from '@aws-amplify/ui-react';
 import PropTypes from 'prop-types';
 import { Link, useOutletContext } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { forwardRef, useEffect, useRef, useState } from 'react';
 import { ApplicantInfo } from 'models';
 import { DataStore } from 'aws-amplify';
+import { getCheckOrExEmoji } from 'utils/misc';
 import { CustomExpandableCard } from '../../../Reusable/CustomExpandableCard';
 import {
   maritalStatusValues,
@@ -19,12 +20,40 @@ import LoadingData from './LoadingData';
 
 const editRoute = '../applicant-info';
 
-function BasicInformation({ applicantInfo, expanded, onExpandedChange }) {
+function BasicInformation({
+  applicantInfo,
+  expanded,
+  onExpandedChange,
+  reviewedSections,
+  setReviewedSections,
+  onReview,
+}) {
+  useEffect(() => {
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      basicInfo: false,
+    }));
+  }, [setReviewedSections]);
+
+  const customCardReference = useRef(null);
+
+  useEffect(() => {
+    if (expanded) {
+      customCardReference.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  }, [expanded]);
+
   return (
     <CustomExpandableCard
-      title="Basic Information"
+      title={`${getCheckOrExEmoji(
+        reviewedSections.basicInfo
+      )} Basic Information`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
+      ref={customCardReference}
     >
       {applicantInfo === undefined ? (
         <LoadingData />
@@ -95,8 +124,11 @@ function BasicInformation({ applicantInfo, expanded, onExpandedChange }) {
           <br />
           <Flex width="100%" justifyContent="end">
             <Link to={editRoute}>
-              <Button variation="primary">Edit</Button>
+              <Button>Edit</Button>
             </Link>
+            <Button variation="primary" onClick={onReview}>
+              Review
+            </Button>
           </Flex>
         </>
       )}
@@ -108,14 +140,43 @@ BasicInformation.propTypes = {
   applicantInfo: PropTypes.object,
   expanded: PropTypes.bool,
   onExpandedChange: PropTypes.func,
+  reviewedSections: PropTypes.object,
+  setReviewedSections: PropTypes.func,
+  onReview: PropTypes.func,
 };
 
-function Address({ expanded, onExpandedChange, applicantInfo }) {
+const Address = ({
+  expanded,
+  onExpandedChange,
+  applicantInfo,
+  reviewedSections,
+  setReviewedSections,
+  onReview,
+}) => {
+  const customCardReference = useRef(null);
+
+  useEffect(() => {
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      address: false,
+    }));
+  }, [setReviewedSections]);
+
+  useEffect(() => {
+    if (expanded) {
+      customCardReference.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  }, [expanded]);
+
   return (
     <CustomExpandableCard
-      title="Present Address"
+      title={`${getCheckOrExEmoji(reviewedSections.address)} Present Address`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
+      ref={customCardReference}
     >
       {applicantInfo === undefined ? (
         <LoadingData />
@@ -148,27 +209,61 @@ function Address({ expanded, onExpandedChange, applicantInfo }) {
           </RadioGroupField>
           <Flex width="100%" justifyContent="end">
             <Link to={editRoute}>
-              <Button variation="primary">Edit</Button>
+              <Button>Edit</Button>
             </Link>
+            <Button onClick={onReview} variation="primary">
+              Review
+            </Button>
           </Flex>
         </>
       )}
     </CustomExpandableCard>
   );
-}
+};
 
 Address.propTypes = {
   applicantInfo: PropTypes.object,
   expanded: PropTypes.bool,
   onExpandedChange: PropTypes.func,
+  reviewedSections: PropTypes.object,
+  setReviewedSections: PropTypes.func,
+  onReview: PropTypes.func,
 };
 
-function PrevAddress({ expanded, onExpandedChange, applicantInfo }) {
+function PrevAddress({
+  expanded,
+  onExpandedChange,
+  applicantInfo,
+  reviewedSections,
+  setReviewedSections,
+  onReview,
+}) {
+  const customCardReference = useRef(null);
+
+  useEffect(() => {
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      prevAddress: false,
+    }));
+  }, [setReviewedSections]);
+
+  useEffect(() => {
+    if (expanded) {
+      customCardReference.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  }, [expanded]);
+
   return (
     <CustomExpandableCard
-      title="Previous Address"
+      title={`${getCheckOrExEmoji(
+        reviewedSections.prevAddress
+      )} Previous Address`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
+      ref={customCardReference}
     >
       {applicantInfo === undefined ? (
         <LoadingData />
@@ -202,8 +297,11 @@ function PrevAddress({ expanded, onExpandedChange, applicantInfo }) {
 
           <Flex width="100%" justifyContent="end">
             <Link to={editRoute}>
-              <Button variation="primary">Edit</Button>
+              <Button>Edit</Button>
             </Link>
+            <Button onClick={onReview} variation="primary">
+              Review
+            </Button>
           </Flex>
         </>
       )}
@@ -215,16 +313,27 @@ PrevAddress.propTypes = {
   applicantInfo: PropTypes.object,
   expanded: PropTypes.bool,
   onExpandedChange: PropTypes.func,
+  reviewedSections: PropTypes.object,
+  setReviewedSections: PropTypes.func,
+  onReview: PropTypes.func,
 };
 
-const ApplicantInfoSection = () => {
+const ApplicantInfoSection = ({
+  basicInfoOpen,
+  setBasicInfoOpen,
+  handleBasicInformationOnReview,
+  currentAddressOpen,
+  setCurrentAddressOpen,
+  handleAddressOnReview,
+  previousAddressOpen,
+  setPreviousAddressOpen,
+  handlePreviousAddressOnReview,
+  reviewedSections,
+  setReviewedSections,
+}) => {
   const { application } = useOutletContext();
 
   const [applicantInfo, setApplicantInfo] = useState();
-
-  const [basicInfoOpen, setBasicInfoOpen] = useState(true);
-  const [currentAddressOpen, setCurrentAddressOpen] = useState(false);
-  const [previousAddressOpen, setPreviousAddressOpen] = useState(false);
 
   useEffect(() => {
     const getApplicationInfo = async (applicationID) => {
@@ -249,12 +358,18 @@ const ApplicantInfoSection = () => {
         expanded={basicInfoOpen}
         onExpandedChange={setBasicInfoOpen}
         applicantInfo={applicantInfo}
+        reviewedSections={reviewedSections}
+        setReviewedSections={setReviewedSections}
+        onReview={handleBasicInformationOnReview}
       />
       <br />
       <Address
         expanded={currentAddressOpen}
         onExpandedChange={setCurrentAddressOpen}
         applicantInfo={applicantInfo}
+        reviewedSections={reviewedSections}
+        setReviewedSections={setReviewedSections}
+        onReview={handleAddressOnReview}
       />
       <br />
       {applicantInfo?.props?.previousAddress && (
@@ -263,12 +378,29 @@ const ApplicantInfoSection = () => {
             expanded={previousAddressOpen}
             onExpandedChange={setPreviousAddressOpen}
             applicantInfo={applicantInfo}
+            reviewedSections={reviewedSections}
+            setReviewedSections={setReviewedSections}
+            onReview={handlePreviousAddressOnReview}
           />
           <br />
         </>
       )}
     </>
   );
+};
+
+ApplicantInfoSection.propTypes = {
+  basicInfoOpen: PropTypes.bool,
+  setBasicInfoOpen: PropTypes.func,
+  handleBasicInformationOnReview: PropTypes.func,
+  currentAddressOpen: PropTypes.bool,
+  setCurrentAddressOpen: PropTypes.func,
+  handleAddressOnReview: PropTypes.func,
+  previousAddressOpen: PropTypes.bool,
+  setPreviousAddressOpen: PropTypes.func,
+  handlePreviousAddressOnReview: PropTypes.func,
+  reviewedSections: PropTypes.object,
+  setReviewedSections: PropTypes.func,
 };
 
 export default ApplicantInfoSection;

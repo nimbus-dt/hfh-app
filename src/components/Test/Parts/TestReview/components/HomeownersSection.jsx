@@ -11,13 +11,15 @@ import {
   ThemeProvider,
 } from '@aws-amplify/ui-react';
 import { Link, useOutletContext } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { DataStore } from 'aws-amplify';
 import { useForm } from 'react-hook-form';
 import { Member } from 'models';
 import Modal from 'components/Modal';
 import { MdMoreHoriz } from 'react-icons/md';
 import { CustomExpandableCard } from 'components/Test/Reusable/CustomExpandableCard';
+import PropTypes from 'prop-types';
+import { getCheckOrExEmoji } from 'utils/misc';
 
 const relationshipOptions = [
   'Parent',
@@ -32,16 +34,21 @@ const relationshipOptions = [
   'Other',
 ];
 
-function HomeownersSection() {
+function HomeownersSection({
+  expanded,
+  setExpanded,
+  reviewedSections,
+  setReviewedSections,
+  onReview,
+}) {
   const [members, setMembers] = useState([]);
   const [memberModal, setMemberModal] = useState(false);
-  const [expanded, setExpanded] = useState(false);
+  const customCardReference = useRef(null);
+
   const { application } = useOutletContext();
   const { unregister, register, reset, watch } = useForm();
 
   const watchRelationship = watch('relationship');
-
-  const handleOnExpandedChange = (newExpanded) => setExpanded(newExpanded);
 
   const handleOnClickCloseMemberModal = () => {
     reset({
@@ -76,12 +83,29 @@ function HomeownersSection() {
     }
   }, [watchRelationship]);
 
+  useEffect(() => {
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      homeowners: false,
+    }));
+  }, [setReviewedSections]);
+
+  useEffect(() => {
+    if (expanded) {
+      customCardReference.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  }, [expanded]);
+
   return (
     <>
       <CustomExpandableCard
-        title="Household"
+        title={`${getCheckOrExEmoji(reviewedSections.homeowners)} Household`}
         expanded={expanded}
-        onExpandedChange={handleOnExpandedChange}
+        onExpandedChange={setExpanded}
+        ref={customCardReference}
       >
         <ThemeProvider
           theme={{
@@ -167,8 +191,11 @@ function HomeownersSection() {
           <br />
           <Flex width="100%" justifyContent="end">
             <Link to="../homeowners">
-              <Button variation="primary">Edit</Button>
+              <Button>Edit</Button>
             </Link>
+            <Button onClick={onReview} variation="primary">
+              Review
+            </Button>
           </Flex>
         </ThemeProvider>
         <Modal
@@ -230,5 +257,13 @@ function HomeownersSection() {
     </>
   );
 }
+
+HomeownersSection.propTypes = {
+  expanded: PropTypes.bool,
+  setExpanded: PropTypes.func,
+  reviewedSections: PropTypes.object,
+  setReviewedSections: PropTypes.func,
+  onReview: PropTypes.func,
+};
 
 export default HomeownersSection;

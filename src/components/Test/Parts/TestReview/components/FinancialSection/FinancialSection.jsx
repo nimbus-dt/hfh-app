@@ -6,17 +6,24 @@ import {
   View,
   Text,
   Loader,
+  Button,
 } from '@aws-amplify/ui-react';
 import { useOutletContext } from 'react-router-dom';
 import { useEffect, useMemo, useState } from 'react';
 import { DataStore } from 'aws-amplify';
 import { ApplicantInfo, Member, Income, Debt, Asset } from 'models';
 import { CustomCard } from 'components/Test/Reusable/CustomCard';
+import { getCheckOrExEmoji } from 'utils/misc';
+import PropTypes from 'prop-types';
 import IncomeSection from './components/IncomeSection';
 import DebtSection from './components/DebtSection';
 import AssetsSection from './components/AssetsSection';
 
-export default function FinancialSection() {
+export default function FinancialSection({
+  reviewedSections,
+  setReviewedSections,
+  onReview,
+}) {
   const [applicantInfo, setApplicantInfo] = useState();
   const [members, setMembers] = useState([]);
   const [incomes, setIncomes] = useState([]);
@@ -123,6 +130,13 @@ export default function FinancialSection() {
     }
   }, [application]);
 
+  useEffect(() => {
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      financial: false,
+    }));
+  }, [setReviewedSections]);
+
   return applicantInfo === undefined ? (
     <CustomCard>
       <Flex>
@@ -132,6 +146,12 @@ export default function FinancialSection() {
     </CustomCard>
   ) : (
     <>
+      <CustomCard>
+        <Text fontWeight="bold">{`${getCheckOrExEmoji(
+          reviewedSections.financial
+        )} Financial information`}</Text>
+      </CustomCard>
+      <br />
       <View
         width={{ base: '80%', medium: '500px' }}
         borderRadius="medium"
@@ -174,6 +194,20 @@ export default function FinancialSection() {
         assets={filterAssetsBySelectedTab}
       />
       <br />
+      <CustomCard>
+        <Flex width="100%" justifyContent="end">
+          <Button onClick={onReview} variation="primary">
+            Review
+          </Button>
+        </Flex>
+      </CustomCard>
+      <br />
     </>
   );
 }
+
+FinancialSection.propTypes = {
+  reviewedSections: PropTypes.object,
+  setReviewedSections: PropTypes.func,
+  onReview: PropTypes.func,
+};

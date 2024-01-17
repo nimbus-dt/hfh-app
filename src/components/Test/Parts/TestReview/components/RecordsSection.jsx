@@ -1,20 +1,26 @@
 import { Flex, Button, View } from '@aws-amplify/ui-react';
-import { useOutletContext } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { Link, useOutletContext } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
 import { DataStore } from 'aws-amplify';
 import { Record } from 'models';
 import FileInput from 'components/FileInput';
 import { CustomExpandableCard } from 'components/Test/Reusable/CustomExpandableCard';
+import PropTypes from 'prop-types';
+import { getCheckOrExEmoji } from 'utils/misc';
 import LoadingData from './LoadingData';
 
-const RecordsSection = () => {
+const RecordsSection = ({
+  reviewedSections,
+  setReviewedSections,
+  expanded,
+  setExpanded,
+  onReview,
+}) => {
   const [records, setRecords] = useState();
 
-  const [expanded, setExpanded] = useState(false);
+  const customCardReference = useRef(null);
 
   const { habitat, application } = useOutletContext();
-
-  const handleOnExpandedChange = (newExpanded) => setExpanded(newExpanded);
 
   useEffect(() => {
     const getRecords = async (applicationID) => {
@@ -44,12 +50,29 @@ const RecordsSection = () => {
       getRecords(application.id);
     }
   }, [application]);
+
+  useEffect(() => {
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      records: false,
+    }));
+  }, [setReviewedSections]);
+
+  useEffect(() => {
+    if (expanded) {
+      customCardReference.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  }, [expanded]);
   return (
     <>
       <CustomExpandableCard
-        title="Records"
+        title={`${getCheckOrExEmoji(reviewedSections.records)} Records`}
         expanded={expanded}
-        onExpandedChange={handleOnExpandedChange}
+        onExpandedChange={setExpanded}
+        ref={customCardReference}
       >
         {records ? (
           <>
@@ -65,7 +88,12 @@ const RecordsSection = () => {
               </View>
             ))}
             <Flex width="100%" justifyContent="end">
-              <Button variation="primary">Edit</Button>
+              <Link to="../records">
+                <Button>Edit</Button>
+              </Link>
+              <Button onClick={onReview} variation="primary">
+                Review
+              </Button>
             </Flex>
           </>
         ) : (
@@ -75,6 +103,14 @@ const RecordsSection = () => {
       <br />
     </>
   );
+};
+
+RecordsSection.propTypes = {
+  reviewedSections: PropTypes.object,
+  setReviewedSections: PropTypes.func,
+  expanded: PropTypes.bool,
+  setExpanded: PropTypes.func,
+  onReview: PropTypes.func,
 };
 
 export default RecordsSection;

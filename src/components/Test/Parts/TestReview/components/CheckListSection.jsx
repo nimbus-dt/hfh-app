@@ -6,19 +6,26 @@ import {
   View,
 } from '@aws-amplify/ui-react';
 import { Link, useOutletContext } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { DataStore } from 'aws-amplify';
 import { Checklist } from 'models';
 import { CustomExpandableCard } from 'components/Test/Reusable/CustomExpandableCard';
+import PropTypes from 'prop-types';
+import { getCheckOrExEmoji } from 'utils/misc';
 import LoadingData from './LoadingData';
 
-export function ChecklistSection() {
+export function ChecklistSection({
+  expanded,
+  setExpanded,
+  reviewedSections,
+  setReviewedSections,
+  onReview,
+}) {
   const [checklist, setChecklist] = useState();
-  const [expanded, setExpanded] = useState(false);
 
   const { habitat, application } = useOutletContext();
 
-  const handleOnExpandedChange = (newExpanded) => setExpanded(newExpanded);
+  const customCardReference = useRef(null);
 
   useEffect(() => {
     const getChecklist = async (applicationID) => {
@@ -36,12 +43,29 @@ export function ChecklistSection() {
     }
   }, [application]);
 
+  useEffect(() => {
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      checklist: false,
+    }));
+  }, [setReviewedSections]);
+
+  useEffect(() => {
+    if (expanded) {
+      customCardReference.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  }, [expanded]);
+
   return (
     <>
       <CustomExpandableCard
-        title="Checklist"
+        title={`${getCheckOrExEmoji(reviewedSections.checklist)} Checklist`}
         expanded={expanded}
-        onExpandedChange={handleOnExpandedChange}
+        onExpandedChange={setExpanded}
+        ref={customCardReference}
       >
         {checklist ? (
           <>
@@ -63,8 +87,11 @@ export function ChecklistSection() {
             )}
             <Flex width="100%" justifyContent="end">
               <Link to="../checklist">
-                <Button variation="primary">Edit</Button>
+                <Button>Edit</Button>
               </Link>
+              <Button onClick={onReview} variation="primary">
+                Review
+              </Button>
             </Flex>
           </>
         ) : (
@@ -75,3 +102,11 @@ export function ChecklistSection() {
     </>
   );
 }
+
+ChecklistSection.propTypes = {
+  expanded: PropTypes.bool,
+  setExpanded: PropTypes.func,
+  reviewedSections: PropTypes.object,
+  setReviewedSections: PropTypes.func,
+  onReview: PropTypes.func,
+};
