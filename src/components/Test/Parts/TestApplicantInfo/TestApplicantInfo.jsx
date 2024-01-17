@@ -1,17 +1,19 @@
 import { Alert, Button, Flex, View } from '@aws-amplify/ui-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ApplicantInfo } from 'models';
 import { DataStore } from 'aws-amplify';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { createAlert } from 'utils/factories';
 import {
   BasicInformation,
   Address,
   PrevAddress,
-} from '../FormComponents/FormApplicantInfo';
-import { CustomCard } from '../Reusable/CustomCard';
+} from './components/FormApplicantInfo';
+import { CustomCard } from '../../Reusable/CustomCard';
 
 export function TestApplicantInfo() {
+  const { application, updateApplicationLastSection } = useOutletContext();
+
   const [applicantInfo, setApplicantInfo] = useState();
 
   const [basicInfoOpen, setBasicInfoOpen] = useState(true);
@@ -31,6 +33,7 @@ export function TestApplicantInfo() {
       if (applicantInfo === undefined) {
         const persistedApplicantInfo = await DataStore.save(
           new ApplicantInfo({
+            ownerID: application.id,
             props: {
               basicInfo: data,
             },
@@ -49,6 +52,7 @@ export function TestApplicantInfo() {
         const original = await DataStore.query(ApplicantInfo, applicantInfo.id);
         const persistedApplicantInfo = await DataStore.save(
           ApplicantInfo.copyOf(original, (originalApplicantInfo) => {
+            originalApplicantInfo.ownerID = application.id;
             originalApplicantInfo.props = {
               ...originalApplicantInfo.props,
               basicInfo: { ...data },
@@ -67,6 +71,7 @@ export function TestApplicantInfo() {
       }
 
       setBasicInfoOpen(false);
+      updateApplicationLastSection();
     } catch {
       setAlert(
         createAlert(
@@ -86,6 +91,7 @@ export function TestApplicantInfo() {
       if (applicantInfo === undefined) {
         const persistedApplicantInfo = await DataStore.save(
           new ApplicantInfo({
+            ownerID: application.id,
             props: {
               currentAddress: data,
             },
@@ -103,6 +109,7 @@ export function TestApplicantInfo() {
         const original = await DataStore.query(ApplicantInfo, applicantInfo.id);
         const persistedApplicantInfo = await DataStore.save(
           ApplicantInfo.copyOf(original, (originalApplicantInfo) => {
+            originalApplicantInfo.ownerID = application.id;
             originalApplicantInfo.props = {
               ...originalApplicantInfo.props,
               previousAddress:
@@ -125,6 +132,7 @@ export function TestApplicantInfo() {
       }
       setPreviousAddressOpen(true);
       setCurrentAddressOpen(false);
+      updateApplicationLastSection();
     } catch {
       setAlert(
         createAlert('error', 'Error', "The current address couldn't be saved.")
@@ -142,6 +150,7 @@ export function TestApplicantInfo() {
       const original = await DataStore.query(ApplicantInfo, applicantInfo.id);
       const persistedApplicantInfo = await DataStore.save(
         ApplicantInfo.copyOf(original, (originalApplicantInfo) => {
+          originalApplicantInfo.ownerID = application.id;
           originalApplicantInfo.props = {
             ...originalApplicantInfo.props,
             previousAddress: { ...data },
@@ -159,6 +168,7 @@ export function TestApplicantInfo() {
       );
 
       setPreviousAddressOpen(false);
+      updateApplicationLastSection();
     } catch {
       setAlert(
         createAlert('error', 'Error', "The previous address couldn't be saved.")
@@ -191,6 +201,23 @@ export function TestApplicantInfo() {
     }
     return true;
   };
+
+  useEffect(() => {
+    const getApplicationInfo = async (applicationID) => {
+      try {
+        const existingApplicantInfo = await DataStore.query(
+          ApplicantInfo,
+          (c) => c.ownerID.eq(applicationID)
+        );
+        setApplicantInfo(existingApplicantInfo[0]);
+      } catch (error) {
+        console.log('Error fetching the applicant info data.');
+      }
+    };
+    if (application) {
+      getApplicationInfo(application.id);
+    }
+  }, [application]);
 
   return (
     <View as="div">

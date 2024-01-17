@@ -4,16 +4,17 @@ import {
   RadioGroupField,
   Radio,
   Alert,
+  View,
 } from '@aws-amplify/ui-react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DataStore } from 'aws-amplify';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Checklist } from 'models';
 import { createAlert } from 'utils/factories';
-import { CustomCard } from '../Reusable/CustomCard';
-import { CustomExpandableCard } from '../Reusable/CustomExpandableCard';
+import { CustomCard } from '../../Reusable/CustomCard';
+import { CustomExpandableCard } from '../../Reusable/CustomExpandableCard';
 import { checklistSchema } from './checklist.schema';
 
 export function TestChecklist() {
@@ -21,7 +22,8 @@ export function TestChecklist() {
   const [edit, setEdit] = useState(false);
   const [expanded, setExpanded] = useState(true);
   const [alert, setAlert] = useState();
-  const [habitat] = useOutletContext();
+  const { habitat, application, updateApplicationLastSection } =
+    useOutletContext();
   const navigate = useNavigate();
   const { handleSubmit, control } = useForm({
     resolver: zodResolver(checklistSchema),
@@ -38,13 +40,14 @@ export function TestChecklist() {
         const original = await DataStore.query(Checklist, checklist.id);
         const persistedChecklist = await DataStore.save(
           Checklist.copyOf(original, (originalChecklist) => {
+            originalChecklist.ownerID = application.id;
             originalChecklist.props = data;
           })
         );
         setChecklist(persistedChecklist);
       } else {
         const persistedChecklist = await DataStore.save(
-          new Checklist({ props: data })
+          new Checklist({ ownerID: application.id, props: data })
         );
         setChecklist(persistedChecklist);
       }
@@ -57,6 +60,7 @@ export function TestChecklist() {
         )
       );
       setExpanded(false);
+      updateApplicationLastSection();
     } catch {
       setAlert(
         createAlert(
@@ -75,6 +79,23 @@ export function TestChecklist() {
   const handleOnClickEdit = () => setEdit((previousEdit) => !previousEdit);
 
   const isEnabled = checklist === undefined || edit;
+
+  useEffect(() => {
+    const getChecklist = async (applicationID) => {
+      try {
+        const existingChecklist = await DataStore.query(Checklist, (c) =>
+          c.ownerID.eq(applicationID)
+        );
+        setChecklist(existingChecklist[0]);
+      } catch (error) {
+        console.log('Error fetching the checklist data.');
+      }
+    };
+    if (application) {
+      getChecklist(application.id);
+    }
+  }, [application]);
+
   return (
     <Flex direction="column" alignItems="center" width="100%">
       {alert && (
@@ -96,9 +117,8 @@ export function TestChecklist() {
         <form onSubmit={handleSubmit(onValidSubmit)}>
           {habitat?.props?.prePreScreen?.prePreScreenQuestions.map(
             (question) => (
-              <>
+              <View key={question.name}>
                 <Controller
-                  key={question.name}
                   control={control}
                   name={question.name}
                   defaultValue={null}
@@ -119,7 +139,7 @@ export function TestChecklist() {
                   )}
                 />
                 <br />
-              </>
+              </View>
             )
           )}
           <Flex width="100%" justifyContent="end">

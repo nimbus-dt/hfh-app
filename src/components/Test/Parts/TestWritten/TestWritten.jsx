@@ -1,13 +1,13 @@
 import { Flex, Button, Alert, TextAreaField } from '@aws-amplify/ui-react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DataStore } from 'aws-amplify';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Written } from 'models';
 import { createAlert } from 'utils/factories';
-import { CustomCard } from '../Reusable/CustomCard';
-import { CustomExpandableCard } from '../Reusable/CustomExpandableCard';
+import { CustomCard } from '../../Reusable/CustomCard';
+import { CustomExpandableCard } from '../../Reusable/CustomExpandableCard';
 import { writtenSchema } from './written.schema';
 
 export function TestWritten() {
@@ -15,7 +15,8 @@ export function TestWritten() {
   const [edit, setEdit] = useState(false);
   const [expanded, setExpanded] = useState(true);
   const [alert, setAlert] = useState();
-  const [habitat] = useOutletContext();
+  const { habitat, application, updateApplicationLastSection } =
+    useOutletContext();
   const navigate = useNavigate();
   const {
     handleSubmit,
@@ -36,13 +37,14 @@ export function TestWritten() {
         const original = await DataStore.query(Written, writtenQuestions.id);
         const persistedWritten = await DataStore.save(
           Written.copyOf(original, (originalWritten) => {
+            originalWritten.ownerID = application.id;
             originalWritten.props = data;
           })
         );
         setWrittenQuestions(persistedWritten);
       } else {
         const persistedWritten = await DataStore.save(
-          new Written({ props: data })
+          new Written({ ownerID: application.id, props: data })
         );
         setWrittenQuestions(persistedWritten);
       }
@@ -55,6 +57,7 @@ export function TestWritten() {
         )
       );
       setExpanded(false);
+      updateApplicationLastSection();
     } catch {
       setAlert(
         createAlert(
@@ -71,6 +74,23 @@ export function TestWritten() {
   const handleOnClickEdit = () => setEdit((previousEdit) => !previousEdit);
 
   const isEnabled = writtenQuestions === undefined || edit;
+
+  useEffect(() => {
+    const getWritten = async (applicationID) => {
+      try {
+        const existingWritten = await DataStore.query(Written, (c) =>
+          c.ownerID.eq(applicationID)
+        );
+        setWrittenQuestions(existingWritten[0]);
+      } catch (error) {
+        console.log('Error fetching the written questions data.');
+      }
+    };
+    if (application) {
+      getWritten(application.id);
+    }
+  }, [application]);
+
   return (
     <Flex direction="column" alignItems="center" width="100%">
       {alert && (
