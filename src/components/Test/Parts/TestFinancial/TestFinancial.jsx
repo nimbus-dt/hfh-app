@@ -13,6 +13,7 @@ import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { useEffect, useMemo, useState } from 'react';
 import { DataStore } from 'aws-amplify';
 import { ApplicantInfo, Member, Income, Debt, Asset } from 'models';
+import Modal from 'components/Modal';
 import { CustomCard } from '../../Reusable/CustomCard';
 import IncomeSection from './components/IncomeSection';
 import DebtSection from './components/DebtSection';
@@ -25,6 +26,8 @@ export function TestFinancial() {
   const [debts, setDebts] = useState([]);
   const [assets, setAssets] = useState([]);
   const [selectedTab, setSelectedTab] = useState(0);
+  const [incompleteMembers, setIncompleteMembers] = useState([]);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const [alert, setAlert] = useState();
   const { habitat, application, updateApplicationLastSection } =
@@ -63,8 +66,54 @@ export function TestFinancial() {
     [assets, ownerBySelectedTab]
   );
 
-  const handleOnClickNext = () => {
+  const checkFinancialById = (id) => {
+    const filterIncomes = incomes.filter((income) => income.ownerId === id);
+    const filterDebts = debts.filter((debt) => debt.ownerId === id);
+    const filterAssets = assets.filter((asset) => asset.ownerId === id);
+
+    return (
+      filterIncomes.length === 0 ||
+      filterDebts.length === 0 ||
+      filterAssets.length === 0
+    );
+  };
+
+  const checkFinancialOfApplicantAndMembers = () => {
+    let arrayOfIncompleted = [];
+    if (checkFinancialById(applicantInfo?.id)) {
+      arrayOfIncompleted = [
+        ...arrayOfIncompleted,
+        {
+          id: applicantInfo?.id,
+          fullName: applicantInfo?.props?.basicInfo?.fullName,
+        },
+      ];
+    }
+    members.forEach((member) => {
+      if (checkFinancialById(member.id)) {
+        arrayOfIncompleted = [
+          ...arrayOfIncompleted,
+          { id: member?.id, fullName: member?.props?.fullName },
+        ];
+      }
+    });
+    return arrayOfIncompleted;
+  };
+
+  const handleOnClickConfirmModalAccept = () => {
     navigate('../review');
+  };
+
+  const handleOnClickNext = () => {
+    if (incompleteMembers.length > 0) {
+      setShowConfirmModal(true);
+    } else {
+      navigate('../review');
+    }
+  };
+
+  const handleOnClickSubmitModalClose = () => {
+    setShowConfirmModal(false);
   };
 
   useEffect(() => {
@@ -133,6 +182,10 @@ export function TestFinancial() {
     }
   }, [application]);
 
+  useEffect(() => {
+    setIncompleteMembers(checkFinancialOfApplicantAndMembers());
+  }, [checkFinancialOfApplicantAndMembers]);
+
   return (
     <Flex direction="column" alignItems="center" width="100%">
       {applicantInfo === undefined ? (
@@ -155,6 +208,41 @@ export function TestFinancial() {
               {alert.body}
             </Alert>
           )}
+          <Modal
+            title="Alert"
+            width={{ base: '95%', medium: '30rem' }}
+            open={showConfirmModal}
+            onClickClose={handleOnClickSubmitModalClose}
+          >
+            <Text>
+              You have not entered all record types for the following members:
+            </Text>
+            <ul>
+              {incompleteMembers.map((incompleteMember) => (
+                <li key={incompleteMember.id}>{incompleteMember.fullName}</li>
+              ))}
+            </ul>
+            <Text>
+              Are you sure you want to continue? Keep in mind that if you do not
+              submit financial records correctly your application might not be
+              reviewed correctly.
+            </Text>
+            <br />
+            <Flex width="100%" justifyContent="end">
+              <Button
+                variation="primary"
+                onClick={handleOnClickConfirmModalAccept}
+              >
+                Accept
+              </Button>
+              <Button
+                variation="secondary"
+                onClick={handleOnClickSubmitModalClose}
+              >
+                Cancel
+              </Button>
+            </Flex>
+          </Modal>
           <View
             width={{ base: '80%', medium: '500px' }}
             borderRadius="medium"
