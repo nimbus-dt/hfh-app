@@ -187,8 +187,17 @@ export function TestReview() {
         </Alert>
       )}
       <CustomCard>
-        Before submitting your application, please review the information you've
-        submitted for accuracy and completeness.
+        <Text>
+          Before submitting your application,{' '}
+          <Text as="span" fontWeight="bold">
+            please review the information you've submitted
+          </Text>{' '}
+          for accuracy and completeness.{' '}
+          <Text as="span" fontWeight="bold">
+            Click confirm
+          </Text>{' '}
+          on each of the sections below before submitting.
+        </Text>
       </CustomCard>
       <br />
       <ApplicantInfoSection
