@@ -5,7 +5,16 @@ import PropTypes from 'prop-types';
 
 // eslint-disable-next-line react/display-name
 export const CustomExpandableCard = forwardRef(
-  ({ title, children, expanded, onExpandedChange }, ref) => {
+  (
+    {
+      title,
+      children,
+      expanded,
+      onExpandedChange,
+      width = { base: '80%', medium: '500px' },
+    },
+    ref
+  ) => {
     const [internalExpanded, setInternalExpanded] = useState(expanded || false);
 
     const onInternalChange = () => {
@@ -37,7 +46,7 @@ export const CustomExpandableCard = forwardRef(
       <Card
         variation="elevated"
         wrap
-        width={{ base: '80%', medium: '500px' }}
+        width={width}
         borderRadius="10px"
         height={getExpandedValue() ? '100%' : '50px'}
         overflow="clip"
@@ -60,4 +69,5 @@ CustomExpandableCard.propTypes = {
   children: PropTypes.node,
   expanded: PropTypes.bool,
   onExpandedChange: PropTypes.func,
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 };
