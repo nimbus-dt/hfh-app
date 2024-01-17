@@ -86,7 +86,7 @@ const PreviousEmployment = ({
               <Button>Edit</Button>
             </Link>
             <Button onClick={onReview} variation="primary">
-              Review
+              Confirm
             </Button>
           </Flex>
         </>

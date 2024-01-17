@@ -197,7 +197,7 @@ export default function FinancialSection({
       <CustomCard>
         <Flex width="100%" justifyContent="end">
           <Button onClick={onReview} variation="primary">
-            Review
+            Confirm
           </Button>
         </Flex>
       </CustomCard>

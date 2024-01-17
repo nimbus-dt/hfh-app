@@ -127,7 +127,7 @@ function BasicInformation({
               <Button>Edit</Button>
             </Link>
             <Button variation="primary" onClick={onReview}>
-              Review
+              Confirm
             </Button>
           </Flex>
         </>
@@ -212,7 +212,7 @@ const Address = ({
               <Button>Edit</Button>
             </Link>
             <Button onClick={onReview} variation="primary">
-              Review
+              Confirm
             </Button>
           </Flex>
         </>
@@ -300,7 +300,7 @@ function PrevAddress({
               <Button>Edit</Button>
             </Link>
             <Button onClick={onReview} variation="primary">
-              Review
+              Confirm
             </Button>
           </Flex>
         </>
