@@ -41,7 +41,7 @@ function BasicInformation({
     if (expanded) {
       customCardReference.current.scrollIntoView({
         behavior: 'smooth',
-        block: 'start',
+        block: 'nearest',
       });
     }
   }, [expanded]);
@@ -166,7 +166,7 @@ const Address = ({
     if (expanded) {
       customCardReference.current.scrollIntoView({
         behavior: 'smooth',
-        block: 'start',
+        block: 'nearest',
       });
     }
   }, [expanded]);
@@ -251,7 +251,7 @@ function PrevAddress({
     if (expanded) {
       customCardReference.current.scrollIntoView({
         behavior: 'smooth',
-        block: 'start',
+        block: 'nearest',
       });
     }
   }, [expanded]);

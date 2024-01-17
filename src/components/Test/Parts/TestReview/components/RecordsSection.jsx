@@ -62,7 +62,7 @@ const RecordsSection = ({
     if (expanded) {
       customCardReference.current.scrollIntoView({
         behavior: 'smooth',
-        block: 'start',
+        block: 'nearest',
       });
     }
   }, [expanded]);
