@@ -22,6 +22,7 @@ import TestFinancial from 'components/Test/Parts/TestFinancial';
 import TestReview from 'components/Test/Parts/TestReview';
 
 import AffiliateLayout from 'layouts/AffiliateLayout';
+import TestAffiliateLayout from 'layouts/TestAffiliateLayout';
 import AffiliatePrescreensPage from 'pages/affiliate/apps';
 import AffiliateApplicationDetailPage from 'pages/affiliate/application-detail';
 import { TestTerms } from 'components/Test/Parts/TestTerms';
@@ -125,6 +126,19 @@ function App() {
             element={<AffiliateApplicationDetailPage />}
           />
           <Route path="settings" element={<AffiliateSettingsPage />} />
+        </Route>
+      </Route>
+
+      <Route path="affiliate-portal">
+        <Route
+          path=":habitat"
+          element={
+            <Authenticator.Provider>
+              <TestAffiliateLayout />
+            </Authenticator.Provider>
+          }
+        >
+          <Route path="home" element={<AffiliateHomePage />} />
         </Route>
       </Route>
 
