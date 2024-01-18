@@ -43,12 +43,15 @@ export function TestLayout() {
 
   const getApplication = async (username) => {
     try {
-      const existingApplication = await DataStore.query(TestApplication, (c) =>
-        c.ownerID.eq(username)
+      const existingApplication = await DataStore.query(TestApplication, (c1) =>
+        c1.and((c2) => [
+          c2.ownerID.eq(username),
+          c2.testApplicationAffiliateId.eq(habitat.id),
+        ])
       );
       return existingApplication[0];
     } catch (error) {
-      console.log('Error fetching the application data.');
+      console.log(`Error fetching the application data. ${error}`);
     }
   };
 
@@ -59,6 +62,8 @@ export function TestLayout() {
           ownerID: username,
           lastSection: location.pathname,
           members: [],
+          submitted: false,
+          testApplicationAffiliateId: habitat.id,
         })
       );
 
@@ -77,8 +82,8 @@ export function TestLayout() {
         })
       );
       setApplication(persistedApplicantInfo);
-    } catch {
-      console.log("Error updating the application's last section.");
+    } catch (error) {
+      console.log(`Error updating the application's last section.`);
     }
   }, [application, location.pathname]);
 
@@ -92,27 +97,36 @@ export function TestLayout() {
         setApplication(newApplication);
       }
     };
-    if (authStatus === 'authenticated' && application === undefined) {
+    if (
+      authStatus === 'authenticated' &&
+      application === undefined &&
+      user !== undefined &&
+      habitat
+    ) {
       getOrCreateApplication();
     }
     if (authStatus === 'unauthenticated') {
       setApplication();
     }
-  }, [authStatus, application, user]);
+  }, [authStatus, application, user, habitat]);
 
   useEffect(() => {
     const urlSections = location.pathname.split('/');
-    if (authStatus === 'unauthenticated' && urlSections[3] !== 'home') {
+    if (
+      (authStatus === 'unauthenticated' && urlSections[3] !== 'home') ||
+      (application && application.submitted && authStatus === 'authenticated')
+    ) {
       urlSections[3] = 'home';
       navigate(urlSections.join('/'));
     }
-  }, [location.pathname, authStatus]);
+  }, [location.pathname, authStatus, application]);
 
   useEffect(() => {
-    if (application && authStatus === 'authenticated') {
-      navigate(application.lastSection);
+    const urlSections = location.pathname.split('/');
+    if (application && application.submitted) {
+      urlSections[3] = 'home';
     }
-  }, [authStatus, application]);
+  }, [location.pathname]);
 
   return (
     <ScrollView height="100vh" ref={scrollViewReference}>
@@ -126,7 +140,12 @@ export function TestLayout() {
         <TestNav isAuthenticated={authStatus === 'authenticated'} />
         <CustomCard> {content} </CustomCard>
         <Outlet
-          context={{ habitat, application, updateApplicationLastSection }}
+          context={{
+            habitat,
+            application,
+            setApplication,
+            updateApplicationLastSection,
+          }}
         />
       </Flex>
     </ScrollView>

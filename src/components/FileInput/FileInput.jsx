@@ -7,7 +7,7 @@ const FileInput = ({
   maxFileCount,
   label,
   onChange,
-  files,
+  files = [],
   multiple,
   isRequired,
   accept,
@@ -36,9 +36,11 @@ const FileInput = ({
 
   useEffect(() => {
     if (filesInputRef.current) {
-      const dataTransfer = new DataTransfer();
-      files.forEach((file) => dataTransfer.items.add(file));
-      filesInputRef.current.files = dataTransfer.files;
+      if (files) {
+        const dataTransfer = new DataTransfer();
+        files.forEach((file) => dataTransfer.items.add(file));
+        filesInputRef.current.files = dataTransfer.files;
+      }
     }
   }, [files]);
 
@@ -64,11 +66,12 @@ const FileInput = ({
         multiple={multiple}
         isDisabled={
           isDisabled ||
-          (maxFileCount !== undefined && files.length >= maxFileCount)
+          onChange === undefined ||
+          (maxFileCount !== undefined && files && files.length >= maxFileCount)
         }
       />
 
-      {files.length > 0 && (
+      {files && files.length > 0 && (
         <>
           <Text
             fontSize="0.875rem"
@@ -129,8 +132,8 @@ const FileInput = ({
 FileInput.propTypes = {
   maxFileCount: PropTypes.number,
   label: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
-  files: PropTypes.array.isRequired,
+  onChange: PropTypes.func,
+  files: PropTypes.array,
   multiple: PropTypes.bool,
   isRequired: PropTypes.bool,
   accept: PropTypes.string,

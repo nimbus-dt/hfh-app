@@ -19,6 +19,7 @@ import TestRecords from 'components/Test/Parts/TestRecords';
 import TestHomeowners from 'components/Test/Parts/TestHomeowners';
 import TestEmployment from 'components/Test/Parts/TestEmployment';
 import TestFinancial from 'components/Test/Parts/TestFinancial';
+import TestReview from 'components/Test/Parts/TestReview';
 
 import AffiliateLayout from 'layouts/AffiliateLayout';
 import AffiliatePrescreensPage from 'pages/affiliate/apps';
@@ -101,6 +102,7 @@ function App() {
           <Route path="homeowners" element={<TestHomeowners />} />
           <Route path="employment" element={<TestEmployment />} />
           <Route path="financial" element={<TestFinancial />} />
+          <Route path="review" element={<TestReview />} />
         </Route>
       </Route>
 

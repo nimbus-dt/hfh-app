@@ -1,35 +1,40 @@
 import {
   Flex,
-  Button,
-  Alert,
   Tabs,
   TabItem,
   ScrollView,
   View,
   Text,
   Loader,
+  Button,
 } from '@aws-amplify/ui-react';
-import { Link, useNavigate, useOutletContext } from 'react-router-dom';
-import { useEffect, useMemo, useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { DataStore } from 'aws-amplify';
 import { ApplicantInfo, Member, Income, Debt, Asset } from 'models';
-import { CustomCard } from '../../Reusable/CustomCard';
+import { CustomCard } from 'components/Test/Reusable/CustomCard';
+import { getCheckOrExEmoji } from 'utils/misc';
+import PropTypes from 'prop-types';
+import { CustomExpandableCard } from 'components/Test/Reusable/CustomExpandableCard';
 import IncomeSection from './components/IncomeSection';
 import DebtSection from './components/DebtSection';
 import AssetsSection from './components/AssetsSection';
 
-export function TestFinancial() {
+export default function FinancialSection({
+  reviewedSections,
+  setReviewedSections,
+  onReview,
+  expanded,
+  setExpanded,
+}) {
   const [applicantInfo, setApplicantInfo] = useState();
   const [members, setMembers] = useState([]);
   const [incomes, setIncomes] = useState([]);
   const [debts, setDebts] = useState([]);
   const [assets, setAssets] = useState([]);
   const [selectedTab, setSelectedTab] = useState(0);
-
-  const [alert, setAlert] = useState();
-  const { habitat, application, updateApplicationLastSection } =
-    useOutletContext();
-  const navigate = useNavigate();
+  const { application } = useOutletContext();
+  const customCardReference = useRef(null);
 
   const handleSelectedTabOnChange = (newTab) => setSelectedTab(Number(newTab));
 
@@ -62,10 +67,6 @@ export function TestFinancial() {
     () => assets.filter((asset) => asset.ownerId === ownerBySelectedTab.id),
     [assets, ownerBySelectedTab]
   );
-
-  const handleOnClickNext = () => {
-    navigate('../review');
-  };
 
   useEffect(() => {
     const getFinancial = async (applicationID) => {
@@ -133,96 +134,87 @@ export function TestFinancial() {
     }
   }, [application]);
 
-  return (
-    <Flex direction="column" alignItems="center" width="100%">
-      {applicantInfo === undefined ? (
-        <CustomCard>
-          <Flex>
-            <Loader size="large" />
-            <Text>Loading data</Text>
-          </Flex>
-        </CustomCard>
-      ) : (
-        <>
-          {alert && (
-            <Alert
-              variation={alert.variation}
-              heading={alert.heading}
-              onDismiss={() => setAlert()}
-              isDismissible
-              hasIcon
+  useEffect(() => {
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      financial: false,
+    }));
+  }, [setReviewedSections]);
+
+  useEffect(() => {
+    if (expanded) {
+      customCardReference.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+      });
+    }
+  }, [expanded]);
+
+  return applicantInfo === undefined ? (
+    <CustomCard width="100%">
+      <Flex>
+        <Loader size="large" />
+        <Text>Loading financial data</Text>
+      </Flex>
+    </CustomCard>
+  ) : (
+    <>
+      <CustomExpandableCard
+        title={`${getCheckOrExEmoji(
+          reviewedSections.financial
+        )} Financial information`}
+        expanded={expanded}
+        onExpandedChange={setExpanded}
+        ref={customCardReference}
+      >
+        <View width="100%" borderRadius="medium" overflow="hidden">
+          <ScrollView backgroundColor="white">
+            <Tabs
+              spacing="equal"
+              whiteSpace="nowrap"
+              currentIndex={selectedTab}
+              onChange={handleSelectedTabOnChange}
             >
-              {alert.body}
-            </Alert>
-          )}
-          <View
-            width={{ base: '80%', medium: '500px' }}
-            borderRadius="medium"
-            overflow="hidden"
-          >
-            <ScrollView backgroundColor="white">
-              <Tabs
-                spacing="equal"
-                whiteSpace="nowrap"
-                currentIndex={selectedTab}
-                onChange={handleSelectedTabOnChange}
-              >
-                <TabItem title={applicantInfo?.props.basicInfo.fullName} />
-                {members.map((member) => (
-                  <TabItem key={member.id} title={member?.props.fullName} />
-                ))}
-              </Tabs>
-            </ScrollView>
-          </View>
-          <CustomCard>
-            <Text fontWeight="bold">
-              {ownerBySelectedTab !== undefined &&
-                `${ownerBySelectedTab.fullName} Financial Information`}
-            </Text>
-          </CustomCard>
-          <IncomeSection
-            ownerId={ownerBySelectedTab?.id}
-            incomes={filterIncomesBySelectedTab}
-            setIncomes={setIncomes}
-            setAlert={setAlert}
-            applicationId={application?.id}
-            updateApplicationLastSection={updateApplicationLastSection}
-            habitat={habitat}
-          />
-          <DebtSection
-            ownerId={ownerBySelectedTab?.id}
-            debts={filterDebtsBySelectedTab}
-            setDebts={setDebts}
-            setAlert={setAlert}
-            applicationId={application?.id}
-            updateApplicationLastSection={updateApplicationLastSection}
-            habitat={habitat}
-          />
-          <AssetsSection
-            ownerId={ownerBySelectedTab?.id}
-            assets={filterAssetsBySelectedTab}
-            setAssets={setAssets}
-            setAlert={setAlert}
-            applicationId={application?.id}
-            updateApplicationLastSection={updateApplicationLastSection}
-            habitat={habitat}
-          />
-        </>
-      )}
-      <CustomCard>
-        <Flex width="100%" justifyContent="space-between">
-          <Link to="../employment">
-            <Button variation="primary">Back</Button>
-          </Link>
-          <Button
-            variation="primary"
-            onClick={handleOnClickNext}
-            isDisabled={members.length === 0}
-          >
-            Next
+              <TabItem title={applicantInfo?.props.basicInfo.fullName} />
+              {members.map((member) => (
+                <TabItem key={member.id} title={member?.props.fullName} />
+              ))}
+            </Tabs>
+          </ScrollView>
+        </View>
+        <CustomCard width="100%">
+          <Text fontWeight="bold">
+            {ownerBySelectedTab !== undefined &&
+              `${ownerBySelectedTab.fullName} Financial Information`}
+          </Text>
+        </CustomCard>
+        <IncomeSection
+          ownerId={ownerBySelectedTab?.id}
+          incomes={filterIncomesBySelectedTab}
+        />
+        <DebtSection
+          ownerId={ownerBySelectedTab?.id}
+          debts={filterDebtsBySelectedTab}
+        />
+        <AssetsSection
+          ownerId={ownerBySelectedTab?.id}
+          assets={filterAssetsBySelectedTab}
+        />
+        <Flex width="100%" justifyContent="end">
+          <Button onClick={onReview} variation="primary">
+            Confirm
           </Button>
         </Flex>
-      </CustomCard>
-    </Flex>
+      </CustomExpandableCard>
+      <br />
+    </>
   );
 }
+
+FinancialSection.propTypes = {
+  reviewedSections: PropTypes.object,
+  setReviewedSections: PropTypes.func,
+  onReview: PropTypes.func,
+  expanded: PropTypes.object,
+  setExpanded: PropTypes.func,
+};
