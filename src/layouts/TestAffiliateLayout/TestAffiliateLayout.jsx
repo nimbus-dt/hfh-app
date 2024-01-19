@@ -115,7 +115,7 @@ const TestAffiliateLayout = () => {
                       Affiliate Portal
                     </Heading>
                   </CustomCard>
-                  {!isUserAllowed && (
+                  {authStatus === 'authenticated' && !isUserAllowed && (
                     <CustomCard>
                       <Text>
                         Sorry, you are not allowed to access this page. Please
