@@ -143,7 +143,7 @@ const TestAffiliateLayout = () => {
                           },
                         }}
                       >
-                        <Authenticator hideDefault hideSignUp />
+                        <Authenticator hideDefault />
                       </ThemeProvider>
                     </CustomCard>
                   )}
