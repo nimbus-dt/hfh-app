@@ -22,9 +22,11 @@ import TestFinancial from 'components/Test/Parts/TestFinancial';
 import TestReview from 'components/Test/Parts/TestReview';
 
 import AffiliateLayout from 'layouts/AffiliateLayout';
-import TestAffiliateLayout from 'layouts/TestAffiliateLayout';
 import AffiliatePrescreensPage from 'pages/affiliate/apps';
 import AffiliateApplicationDetailPage from 'pages/affiliate/application-detail';
+import TestAffiliateLayout from 'layouts/TestAffiliateLayout';
+import TestApplications from 'pages/affiliate-portal/applications';
+import TestApplicationDetails from 'pages/affiliate-portal/applications/:applicationId';
 import { TestTerms } from 'components/Test/Parts/TestTerms';
 import { TestLayout } from './components/Test/Layout/TestLayout';
 
@@ -139,6 +141,10 @@ function App() {
           }
         >
           <Route path="home" element={<AffiliateHomePage />} />
+          <Route path="applications">
+            <Route index element={<TestApplications />} />
+            <Route path=":applicationId" element={<TestApplicationDetails />} />
+          </Route>
         </Route>
       </Route>
 
