@@ -14,39 +14,41 @@ import {
   TableHead,
   Pagination,
 } from '@aws-amplify/ui-react';
-import { useEffect, useState } from 'react';
-import { APPLICATION_SUBMITTED_STATUS_LIST } from 'utils/constants';
+import { useState } from 'react';
 import {
   useApplicantInfosQuery,
   useTestApplicationsQuery,
 } from 'hooks/services';
+import { DataStore } from 'aws-amplify';
+import { TestApplication } from 'models';
+import StatusSelect from './components/StatusSelect';
 
-const ALL_STATUS_KEY = 'ALL';
-const STATUS_LIST = [
-  {
-    key: ALL_STATUS_KEY,
-    value: 'All',
-  },
-  ...APPLICATION_SUBMITTED_STATUS_LIST,
-];
+// const STATUS = ['All', 'Unset', 'Pending', 'Accepted'];
+const UNSET = 'Unset';
+const STATUS = ['All', UNSET];
 
 const perPage = 5;
 
 const TestApplications = () => {
-  const { habitat } = useOutletContext();
-  const [status, setStatus] = useState(ALL_STATUS_KEY);
+  const { habitat, addCustomStatusToHabitat } = useOutletContext();
+  const [status, setStatus] = useState(STATUS[0]);
+  const [trigger, setTrigger] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const { data: applications } = useTestApplicationsQuery({
     criteria: (c1) =>
       c1.and((c2) => {
-        const criteriaArr = [
-          c2.testApplicationAffiliateId.eq(habitat.id),
+        let criteriaArr = [
+          c2.testApplicationAffiliateId.eq(habitat?.id),
           c2.submitted.eq(true),
         ];
 
+        if (status !== STATUS[0]) {
+          criteriaArr = [...criteriaArr, c2.status.eq(status)];
+        }
+
         return criteriaArr;
       }),
-    dependencyArray: [],
+    dependencyArray: [habitat?.id, status, trigger],
   });
 
   const { data: applicantInfos } = useApplicantInfosQuery({
@@ -56,7 +58,6 @@ const TestApplications = () => {
           c2.ownerID.eq(application.id)
         );
 
-        console.log(arrayOfFilters);
         return arrayOfFilters;
       }),
     dependencyArray: [applications],
@@ -67,9 +68,30 @@ const TestApplications = () => {
     large: false,
   });
 
-  useEffect(() => {
-    console.log('applicants', applicantInfos);
-  }, [applicantInfos]);
+  const handleUpdateApplicationStatus = async (applicationId, newStatus) => {
+    if (habitat) {
+      try {
+        if (
+          !(
+            habitat.props.data.customStatus
+              ? habitat.props.data.customStatus
+              : []
+          ).includes(newStatus)
+        ) {
+          await addCustomStatusToHabitat(newStatus);
+        }
+        const original = await DataStore.query(TestApplication, applicationId);
+        await DataStore.save(
+          TestApplication.copyOf(original, (originalApplication) => {
+            originalApplication.status = newStatus;
+          })
+        );
+        setTrigger((previousTrigger) => previousTrigger + 1);
+      } catch (error) {
+        console.log('Error while updating the status');
+      }
+    }
+  };
 
   return (
     <Flex
@@ -94,9 +116,12 @@ const TestApplications = () => {
             setStatus(event.target.value);
           }}
         >
-          {STATUS_LIST.map(({ key, value }) => (
-            <option key={key} value={key}>
-              {value}
+          {[
+            ...STATUS,
+            ...(habitat ? habitat.props.data.customStatus || [] : []),
+          ].map((statusValue) => (
+            <option key={statusValue} value={statusValue}>
+              {statusValue}
             </option>
           ))}
         </SelectField>
@@ -136,7 +161,7 @@ const TestApplications = () => {
             {applications
               .slice((currentPage - 1) * perPage, currentPage * perPage)
               .map((application, index) => (
-                <TableRow key={index}>
+                <TableRow key={application.id}>
                   <TableCell>
                     {index + 1 + (currentPage - 1) * perPage}
                   </TableCell>
@@ -149,7 +174,20 @@ const TestApplications = () => {
                     }
                   </TableCell>
                   <TableCell>{application.submittedDate}</TableCell>
-                  <TableCell>{application.status}</TableCell>
+                  <TableCell>
+                    <StatusSelect
+                      defaultValue={application.status}
+                      options={[
+                        UNSET,
+                        ...(habitat
+                          ? habitat.props.data.customStatus || []
+                          : []),
+                      ]}
+                      onChange={(newStatus) =>
+                        handleUpdateApplicationStatus(application.id, newStatus)
+                      }
+                    />
+                  </TableCell>
                   <TableCell>
                     <Link to={`../applications/${application?.id}`}>
                       <Button>View</Button>
