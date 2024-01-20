@@ -5,7 +5,7 @@ import {
   // HiCog6Tooth,
   HiArrowLeftOnRectangle,
   // HiUserGroup,
-  // HiEnvelope,
+  HiEnvelope,
 } from 'react-icons/hi2';
 import { HiHome } from 'react-icons/hi';
 // import { IoHammer } from 'react-icons/io5';
@@ -18,11 +18,11 @@ const buildRoutes = (habitat) => [
     Icon: HiHome,
     href: `/affiliate-portal/${habitat}/home`,
   },
-  // {
-  //   title: 'Applications',
-  //   Icon: HiEnvelope,
-  //   href: `/affiliate/${habitat}/apps`,
-  // },
+  {
+    title: 'Applications',
+    Icon: HiEnvelope,
+    href: `/affiliate-portal/${habitat}/applications`,
+  },
   // {
   //   title: 'Repairs',
   //   Icon: IoHammer,
