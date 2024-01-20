@@ -22,7 +22,7 @@ export function ApplicationMetricsTable({
       value: formatNumberAsCurrency(totalMonthlyDebts ?? 0),
     },
     {
-      header: 'Total hoysehold Debt',
+      header: 'Total household Debt',
       value: formatNumberAsCurrency(totalDebts ?? 0),
     },
     {
