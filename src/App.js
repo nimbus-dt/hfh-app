@@ -26,7 +26,7 @@ import AffiliatePrescreensPage from 'pages/affiliate/apps';
 import AffiliateApplicationDetailPage from 'pages/affiliate/application-detail';
 import TestAffiliateLayout from 'layouts/TestAffiliateLayout';
 import TestApplications from 'pages/affiliate-portal/applications';
-import TestApplicationDetails from 'pages/affiliate-portal/applications/:applicationId';
+import TestApplicationDetails from 'pages/affiliate-portal/applications/[applicationId]';
 import { TestTerms } from 'components/Test/Parts/TestTerms';
 import { TestLayout } from './components/Test/Layout/TestLayout';
 
