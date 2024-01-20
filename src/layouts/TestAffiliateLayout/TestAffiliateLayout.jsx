@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 import { DataStore } from 'aws-amplify';
 import {
@@ -45,6 +45,35 @@ const TestAffiliateLayout = () => {
   });
 
   const habitatUrlName = useParams('habitat').habitat;
+
+  const addCustomStatusToHabitat = useCallback(
+    async (newCustomStatus) => {
+      try {
+        const original = await DataStore.query(Habitat, habitat);
+        const persistedHabitat = await DataStore.save(
+          Habitat.copyOf(original, (originalHabitat) => {
+            if (
+              !(
+                originalHabitat.props.data.customStatus
+                  ? originalHabitat.props.data.customStatus
+                  : []
+              ).includes(newCustomStatus) &&
+              newCustomStatus !== 'Unset'
+            ) {
+              originalHabitat.props.data.customStatus = originalHabitat.props
+                .data.customStatus
+                ? [...originalHabitat.props.data.customStatus, newCustomStatus]
+                : [newCustomStatus];
+            }
+          })
+        );
+        setHabitat(persistedHabitat);
+      } catch (error) {
+        console.log(`Error updating the habitat's custom status.`);
+      }
+    },
+    [habitat]
+  );
 
   // fetch habitat on mount
   useEffect(() => {
@@ -162,7 +191,9 @@ const TestAffiliateLayout = () => {
                   grow={1}
                   wrap
                 >
-                  <Outlet context={{ habitat, setHabitat }} />
+                  <Outlet
+                    context={{ habitat, setHabitat, addCustomStatusToHabitat }}
+                  />
                 </Card>
               </>
             )}
