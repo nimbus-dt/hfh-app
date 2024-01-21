@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import DataTable from 'components/DataTable';
 import { useEffect, useState } from 'react';
 import { Storage } from 'aws-amplify';
+import { Loader } from '@aws-amplify/ui-react';
 
 const RecordsTable = ({ questions, answers }) => {
   const [linksObject, setLinksObject] = useState({});
@@ -41,15 +42,17 @@ const RecordsTable = ({ questions, answers }) => {
         header: question.label,
         value: (
           <ul>
-            {linksObject[question.name]
-              ? linksObject[question.name].map((linkObject) => (
-                  <li key={linkObject.link}>
-                    <a href={linkObject.link} download>
-                      {linkObject.fileName}
-                    </a>
-                  </li>
-                ))
-              : ''}
+            {linksObject[question.name] ? (
+              linksObject[question.name].map((linkObject) => (
+                <li key={linkObject.link}>
+                  <a href={linkObject.link} download>
+                    {linkObject.fileName}
+                  </a>
+                </li>
+              ))
+            ) : (
+              <Loader size="large" />
+            )}
           </ul>
         ),
       }))}
