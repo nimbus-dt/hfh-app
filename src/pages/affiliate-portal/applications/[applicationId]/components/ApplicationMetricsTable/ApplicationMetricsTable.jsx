@@ -35,7 +35,7 @@ export function ApplicationMetricsTable({
     },
   ];
 
-  return <DataTable heading="Applicant Information" data={applicantData} />;
+  return <DataTable heading="Metrics" data={applicantData} />;
 }
 
 ApplicationMetricsTable.propTypes = {
