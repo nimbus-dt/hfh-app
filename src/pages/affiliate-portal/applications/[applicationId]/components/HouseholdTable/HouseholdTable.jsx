@@ -173,7 +173,6 @@ function HouseholdTable({ members }) {
           )}
         </Flex>
       </Modal>
-      <br />
     </>
   );
 }
