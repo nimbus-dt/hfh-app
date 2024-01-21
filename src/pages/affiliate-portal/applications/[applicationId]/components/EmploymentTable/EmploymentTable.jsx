@@ -5,7 +5,7 @@ const EmploymentTable = ({ employmentInfo }) => (
   <>
     <DataTable
       heading="Employment Information"
-      subheading="Current staus"
+      subheading="Current status"
       data={[
         {
           header: 'Unemployed',
