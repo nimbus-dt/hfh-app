@@ -71,7 +71,7 @@ const DebtSection = ({ debts }) => {
       <Heading level="5" textAlign="center">
         Debt Record List
       </Heading>
-      <Table variation="small" style={{ wordBreak: 'break-word' }}>
+      <Table highlightOnHover style={{ wordBreak: 'break-word' }}>
         <TableHead>
           <TableRow>
             <TableCell as="th" width="40%">
