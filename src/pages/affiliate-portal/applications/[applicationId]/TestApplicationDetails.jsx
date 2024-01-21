@@ -113,7 +113,6 @@ const TestApplicationDetails = () => {
         questions={habitat?.props?.prePreScreen?.prePreScreenRecords}
         answers={records[0]?.props || {}}
       />
-      {/* <HouseholdList items={members} {...commonListProps} /> */}
       <HouseholdTable members={members} />
       <EmploymentTable employmentInfo={employmentInfos[0]} />
       <FinancialInfoSection
