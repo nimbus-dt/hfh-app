@@ -24,10 +24,10 @@ import GeneralInfoTable from './components/GeneralInfoTable';
 import ChecklistTable from './components/ChecklistTable';
 import WrittenTable from './components/WrittenTable';
 import RecordsTable from './components/RecordsTable';
-import HouseholdList from './components/HouseholdList';
 import EmploymentTable from './components/EmploymentTable';
 import FinancialInfoSection from './components/FinancialInfoSection/FinancialInfoSection';
 import ApplicationMetricsTable from './components/ApplicationMetricsTable';
+import HouseholdTable from './components/HouseholdTable';
 
 const TestApplicationDetails = () => {
   const { habitat } = useOutletContext();
@@ -86,11 +86,6 @@ const TestApplicationDetails = () => {
     large: false,
   });
 
-  const commonListProps = {
-    sizeRenderer,
-    isEditable: false,
-  };
-
   return (
     <Flex width="auto" direction="column">
       <Button
@@ -118,7 +113,8 @@ const TestApplicationDetails = () => {
         questions={habitat?.props?.prePreScreen?.prePreScreenRecords}
         answers={records[0]?.props || {}}
       />
-      <HouseholdList items={members} {...commonListProps} />
+      {/* <HouseholdList items={members} {...commonListProps} /> */}
+      <HouseholdTable members={members} />
       <EmploymentTable employmentInfo={employmentInfos[0]} />
       <FinancialInfoSection
         applicantInfo={applicantInfos[0]}
