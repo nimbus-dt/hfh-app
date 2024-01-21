@@ -25,9 +25,9 @@ import ChecklistTable from './components/ChecklistTable';
 import WrittenTable from './components/WrittenTable';
 import RecordsTable from './components/RecordsTable';
 import EmploymentTable from './components/EmploymentTable';
-import FinancialInfoSection from './components/FinancialInfoSection/FinancialInfoSection';
 import ApplicationMetricsTable from './components/ApplicationMetricsTable';
 import HouseholdTable from './components/HouseholdTable';
+import FinancialSection from './components/FinancialSection';
 
 const TestApplicationDetails = () => {
   const { habitat } = useOutletContext();
@@ -115,7 +115,7 @@ const TestApplicationDetails = () => {
       />
       <HouseholdTable members={members} />
       <EmploymentTable employmentInfo={employmentInfos[0]} />
-      <FinancialInfoSection
+      <FinancialSection
         applicantInfo={applicantInfos[0]}
         members={members}
         incomes={incomes}
