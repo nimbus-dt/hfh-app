@@ -1,5 +1,12 @@
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
-import { Flex, Button, useBreakpointValue } from '@aws-amplify/ui-react';
+import {
+  Flex,
+  Button,
+  useBreakpointValue,
+  ScrollView,
+  Tabs,
+  TabItem,
+} from '@aws-amplify/ui-react';
 import {
   useApplicantInfosQuery,
   useRecordsQuery,
@@ -19,6 +26,7 @@ import {
   getTestTotalMonthlyIncomes,
   getTotalAssetsValue,
 } from 'utils/applicationMetrics';
+import { useState } from 'react';
 import ApplicantInfoTable from './components/ApplicantInfoTable';
 import GeneralInfoTable from './components/GeneralInfoTable';
 import ChecklistTable from './components/ChecklistTable';
@@ -30,6 +38,9 @@ import HouseholdTable from './components/HouseholdTable';
 import FinancialSection from './components/FinancialSection';
 
 const TestApplicationDetails = () => {
+  const [selectedTab, setSelectedTab] = useState(0);
+
+  const handleSelectedTabOnChange = (newTab) => setSelectedTab(Number(newTab));
   const { habitat } = useOutletContext();
   const { applicationId } = useParams();
   const { data: application } = useTestApplicationById({
@@ -96,40 +107,74 @@ const TestApplicationDetails = () => {
       >
         Go back
       </Button>
-      <GeneralInfoTable
-        status={application?.status}
-        submittedDate={application?.submittedDate}
-      />
-      <ApplicantInfoTable applicantInfo={applicantInfos[0]} />
-      <ChecklistTable
-        questions={habitat?.props?.prePreScreen?.prePreScreenQuestions}
-        answers={checklists[0]?.props || {}}
-      />
-      <WrittenTable
-        questions={habitat?.props?.prePreScreen?.prePreScreenWrittenQuestions}
-        answers={writtens[0]?.props || {}}
-      />
-      <RecordsTable
-        questions={habitat?.props?.prePreScreen?.prePreScreenRecords}
-        answers={records[0]?.props || {}}
-      />
-      <HouseholdTable members={members} />
-      <EmploymentTable employmentInfo={employmentInfos[0]} />
-      <FinancialSection
-        applicantInfo={applicantInfos[0]}
-        members={members}
-        incomes={incomes}
-        debts={debts}
-        assets={assets}
-        sizeRenderer={sizeRenderer}
-      />
-      <ApplicationMetricsTable
-        totalMonthlyIncomes={totalMonthlyIncomes}
-        totalAssets={totalAssetsValue}
-        totalMonthlyDebts={totalMonthlyDebts}
-        totalDebts={totalDebts}
-        debtToIncomeRatio={debtToIncomeRatio}
-      />
+      <ScrollView width="100%">
+        <Tabs
+          spacing="equal"
+          whiteSpace="nowrap"
+          currentIndex={selectedTab}
+          onChange={handleSelectedTabOnChange}
+        >
+          <TabItem title="General" />
+          <TabItem title="Applicant" />
+          <TabItem title="Checklist" />
+          <TabItem title="Written" />
+          <TabItem title="Records" />
+          <TabItem title="Household" />
+          <TabItem title="Employment" />
+          <TabItem title="Financial" />
+          <TabItem title="Metrics" />
+        </Tabs>
+      </ScrollView>
+      {selectedTab === 0 && (
+        <GeneralInfoTable
+          status={application?.status}
+          submittedDate={application?.submittedDate}
+        />
+      )}
+      {selectedTab === 1 && (
+        <ApplicantInfoTable applicantInfo={applicantInfos[0]} />
+      )}
+      {selectedTab === 2 && (
+        <ChecklistTable
+          questions={habitat?.props?.prePreScreen?.prePreScreenQuestions}
+          answers={checklists[0]?.props || {}}
+        />
+      )}
+      {selectedTab === 3 && (
+        <WrittenTable
+          questions={habitat?.props?.prePreScreen?.prePreScreenWrittenQuestions}
+          answers={writtens[0]?.props || {}}
+        />
+      )}
+      {selectedTab === 4 && (
+        <RecordsTable
+          questions={habitat?.props?.prePreScreen?.prePreScreenRecords}
+          answers={records[0]?.props || {}}
+        />
+      )}
+      {selectedTab === 5 && <HouseholdTable members={members} />}
+      {selectedTab === 6 && (
+        <EmploymentTable employmentInfo={employmentInfos[0]} />
+      )}
+      {selectedTab === 7 && (
+        <FinancialSection
+          applicantInfo={applicantInfos[0]}
+          members={members}
+          incomes={incomes}
+          debts={debts}
+          assets={assets}
+          sizeRenderer={sizeRenderer}
+        />
+      )}
+      {selectedTab === 8 && (
+        <ApplicationMetricsTable
+          totalMonthlyIncomes={totalMonthlyIncomes}
+          totalAssets={totalAssetsValue}
+          totalMonthlyDebts={totalMonthlyDebts}
+          totalDebts={totalDebts}
+          debtToIncomeRatio={debtToIncomeRatio}
+        />
+      )}
 
       <Button onClick={() => {}}>Accept</Button>
       <Button onClick={() => {}}>Reject</Button>
