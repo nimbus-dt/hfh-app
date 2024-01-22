@@ -75,6 +75,48 @@ const TestAffiliateLayout = () => {
     [habitat]
   );
 
+  const removeCustomStatusToHabitat = useCallback(
+    async (customStatus) => {
+      try {
+        const original = await DataStore.query(Habitat, habitat);
+        const persistedHabitat = await DataStore.save(
+          Habitat.copyOf(original, (originalHabitat) => {
+            originalHabitat.props.data.customStatus =
+              originalHabitat.props.data.customStatus.filter(
+                (customStatusIntem) => customStatusIntem !== customStatus
+              );
+          })
+        );
+        setHabitat(persistedHabitat);
+      } catch (error) {
+        console.log(`Error removing a custom status from the habitat.`);
+      }
+    },
+    [habitat]
+  );
+
+  const updateCustomStatusToHabitat = useCallback(
+    async (oldCustomStatus, newCustomStatus) => {
+      try {
+        const original = await DataStore.query(Habitat, habitat);
+        const persistedHabitat = await DataStore.save(
+          Habitat.copyOf(original, (originalHabitat) => {
+            originalHabitat.props.data.customStatus = [
+              ...originalHabitat.props.data.customStatus.filter(
+                (customStatusIntem) => customStatusIntem !== oldCustomStatus
+              ),
+              newCustomStatus,
+            ];
+          })
+        );
+        setHabitat(persistedHabitat);
+      } catch (error) {
+        console.log(`Error updating a custom status from the habitat.`);
+      }
+    },
+    [habitat]
+  );
+
   // fetch habitat on mount
   useEffect(() => {
     const fetchData = async () => {
@@ -192,7 +234,13 @@ const TestAffiliateLayout = () => {
                   wrap
                 >
                   <Outlet
-                    context={{ habitat, setHabitat, addCustomStatusToHabitat }}
+                    context={{
+                      habitat,
+                      setHabitat,
+                      addCustomStatusToHabitat,
+                      removeCustomStatusToHabitat,
+                      updateCustomStatusToHabitat,
+                    }}
                   />
                 </Card>
               </>
