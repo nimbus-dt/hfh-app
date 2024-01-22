@@ -137,7 +137,7 @@ const IncomeSection = ({
     const newIncomeProps = {
       type: data.otherType ? data.otherType : data.type,
       source: data.source,
-      monthlyIncome: data.monthlyIncome,
+      monthlyIncome: Number(data.monthlyIncome),
       proofs: resultsKeys,
     };
     try {

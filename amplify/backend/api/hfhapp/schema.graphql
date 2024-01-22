@@ -24,6 +24,7 @@ type TestApplication @model @auth(rules: [{allow: public}]) {
   submitted: Boolean!
   submittedDate: AWSDate
   affiliate: Habitat! @hasOne
+  status: String
 }
 
 type EmploymentInfo @model @auth(rules: [{allow: public}]) {

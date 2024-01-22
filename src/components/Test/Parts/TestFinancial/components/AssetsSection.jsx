@@ -137,7 +137,7 @@ const AssetsSection = ({
     const newAssetProps = {
       type: data.otherType ? data.otherType : data.type,
       heldByOrLocation: data.heldByOrLocation,
-      currentValue: data.currentValue,
+      currentValue: Number(data.currentValue),
       proofs: resultsKeys,
     };
     try {
