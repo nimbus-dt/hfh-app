@@ -13,40 +13,55 @@ import {
   useBreakpointValue,
   TableHead,
   Pagination,
+  TextField,
+  Text,
+  View,
 } from '@aws-amplify/ui-react';
-import { useEffect, useState } from 'react';
-import { APPLICATION_SUBMITTED_STATUS_LIST } from 'utils/constants';
+import { useMemo, useState } from 'react';
 import {
   useApplicantInfosQuery,
   useTestApplicationsQuery,
 } from 'hooks/services';
+import { DataStore } from 'aws-amplify';
+import { TestApplication } from 'models';
+import Modal from 'components/Modal';
+import { MdAdd, MdCheck, MdClose, MdDelete, MdEdit } from 'react-icons/md';
 
-const ALL_STATUS_KEY = 'ALL';
-const STATUS_LIST = [
-  {
-    key: ALL_STATUS_KEY,
-    value: 'All',
-  },
-  ...APPLICATION_SUBMITTED_STATUS_LIST,
-];
+const UNSET = 'Unset';
+const STATUS = ['All', UNSET];
 
 const perPage = 5;
 
 const TestApplications = () => {
-  const { habitat } = useOutletContext();
-  const [status, setStatus] = useState(ALL_STATUS_KEY);
+  const {
+    habitat,
+    addCustomStatusToHabitat,
+    removeCustomStatusToHabitat,
+    updateCustomStatusToHabitat,
+  } = useOutletContext();
+  const [status, setStatus] = useState(STATUS[0]);
+  const [trigger, setTrigger] = useState(0);
+  const [statusModalOpen, setStatusModalOpen] = useState(false);
+  const [editingStatus, setEditingStatus] = useState();
+  const [editingAlert, setEditingAlert] = useState(false);
+  const [deletingStatus, setDeletingStatus] = useState();
+  const [newStatus, setNewStatus] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const { data: applications } = useTestApplicationsQuery({
     criteria: (c1) =>
       c1.and((c2) => {
-        const criteriaArr = [
-          c2.testApplicationAffiliateId.eq(habitat.id),
+        let criteriaArr = [
+          c2.testApplicationAffiliateId.eq(habitat?.id),
           c2.submitted.eq(true),
         ];
 
+        if (status !== STATUS[0]) {
+          criteriaArr = [...criteriaArr, c2.status.eq(status)];
+        }
+
         return criteriaArr;
       }),
-    dependencyArray: [],
+    dependencyArray: [habitat?.id, status, trigger],
   });
 
   const { data: applicantInfos } = useApplicantInfosQuery({
@@ -56,7 +71,6 @@ const TestApplications = () => {
           c2.ownerID.eq(application.id)
         );
 
-        console.log(arrayOfFilters);
         return arrayOfFilters;
       }),
     dependencyArray: [applications],
@@ -67,9 +81,117 @@ const TestApplications = () => {
     large: false,
   });
 
-  useEffect(() => {
-    console.log('applicants', applicantInfos);
-  }, [applicantInfos]);
+  const handleNewStatusOnChange = (event) => {
+    setNewStatus(event.currentTarget.value);
+  };
+
+  const statusAlreadyExists = useMemo(
+    () =>
+      (habitat.props.data.customStatus
+        ? [...habitat.props.data.customStatus, UNSET]
+        : [UNSET]
+      ).includes(newStatus),
+    [habitat, newStatus]
+  );
+
+  const handleAddStatus = async () => {
+    try {
+      if (!statusAlreadyExists) {
+        await addCustomStatusToHabitat(newStatus);
+      }
+      setNewStatus('');
+    } catch (error) {
+      console.log('Error while adding the new status');
+    }
+  };
+
+  const handleUpdateApplicationStatus = async (
+    applicationId,
+    newStatusValue
+  ) => {
+    if (habitat) {
+      try {
+        const original = await DataStore.query(TestApplication, applicationId);
+        await DataStore.save(
+          TestApplication.copyOf(original, (originalApplication) => {
+            originalApplication.status = newStatusValue;
+          })
+        );
+        setTrigger((previousTrigger) => previousTrigger + 1);
+      } catch (error) {
+        console.log('Error while updating the status');
+      }
+    }
+  };
+
+  const handleDeleteCustomStatus = async () => {
+    try {
+      await removeCustomStatusToHabitat(deletingStatus);
+
+      const applicationsToUpdate = await DataStore.query(TestApplication, (c) =>
+        c.and((c2) => [
+          c2.testApplicationAffiliateId.eq(habitat?.id),
+          c2.status.eq(deletingStatus),
+        ])
+      );
+
+      for (const applicationToUpdate of applicationsToUpdate) {
+        await DataStore.save(
+          TestApplication.copyOf(applicationToUpdate, (originalApplication) => {
+            originalApplication.status = UNSET;
+          })
+        );
+      }
+
+      setTrigger((previousTrigger) => previousTrigger + 1);
+      setDeletingStatus(undefined);
+    } catch (error) {
+      console.log('Error while updating applications status.');
+    }
+  };
+
+  const handleUpdateCustomStatus = async () => {
+    try {
+      console.log('editingStatus', editingStatus);
+      console.log('newStatus', newStatus);
+
+      await updateCustomStatusToHabitat(editingStatus, newStatus);
+
+      const applicationsToUpdate = await DataStore.query(TestApplication, (c) =>
+        c.and((c2) => [
+          c2.testApplicationAffiliateId.eq(habitat?.id),
+          c2.status.eq(editingStatus),
+        ])
+      );
+
+      for (const applicationToUpdate of applicationsToUpdate) {
+        await DataStore.save(
+          TestApplication.copyOf(applicationToUpdate, (originalApplication) => {
+            originalApplication.status = newStatus;
+          })
+        );
+      }
+
+      setTrigger((previousTrigger) => previousTrigger + 1);
+      setEditingStatus(undefined);
+      setNewStatus('');
+      setEditingAlert(false);
+    } catch (error) {
+      console.log('Error while updating applications status.');
+    }
+  };
+  const handleStatusOnClick = () => setStatusModalOpen(true);
+
+  const handleOnCloseStatusModal = () => setStatusModalOpen(false);
+
+  const handleOnCloseEditingAlert = () => setEditingAlert(false);
+
+  const handleOnCloseDelete = () => setDeletingStatus(undefined);
+
+  const handleCancelEdit = () => {
+    setEditingStatus(undefined);
+    setNewStatus('');
+  };
 
   return (
     <Flex
@@ -94,9 +216,12 @@ const TestApplications = () => {
             setStatus(event.target.value);
           }}
         >
-          {STATUS_LIST.map(({ key, value }) => (
-            <option key={key} value={key}>
-              {value}
+          {[
+            ...STATUS,
+            ...(habitat ? habitat.props.data.customStatus || [] : []),
+          ].map((statusValue) => (
+            <option key={statusValue} value={statusValue}>
+              {statusValue}
             </option>
           ))}
         </SelectField>
@@ -106,6 +231,153 @@ const TestApplications = () => {
         </Badge>
       </Flex>
       <Flex width="auto" direction="column" justifyContent="center">
+        <Modal
+          title="Status"
+          open={statusModalOpen}
+          onClickClose={() => handleOnCloseStatusModal()}
+          width="30rem"
+        >
+          <>
+            <Modal
+              title="Alert"
+              open={editingAlert}
+              onClickClose={handleOnCloseEditingAlert}
+              width="25rem"
+            >
+              <View>
+                <Text as="p">
+                  You want to edit the status? This would update all the
+                  applications with this status.
+                </Text>
+                <Flex marginTop="1rem" justifyContent="center">
+                  <Button
+                    variation="primary"
+                    onClick={handleUpdateCustomStatus}
+                  >
+                    Accept
+                  </Button>
+                  <Button
+                    variation="destructive"
+                    onClick={handleOnCloseEditingAlert}
+                  >
+                    Cancel
+                  </Button>
+                </Flex>
+              </View>
+            </Modal>
+            <Modal
+              title="Alert"
+              open={deletingStatus !== undefined}
+              onClickClose={handleOnCloseDelete}
+              width="25rem"
+            >
+              <View>
+                <Text as="p">
+                  You want to delete the status? This would update all the
+                  applications with this status to have an Unset status.
+                </Text>
+                <Flex marginTop="1rem" justifyContent="center">
+                  <Button
+                    variation="primary"
+                    onClick={handleDeleteCustomStatus}
+                  >
+                    Accept
+                  </Button>
+                  <Button variation="destructive" onClick={handleOnCloseDelete}>
+                    Cancel
+                  </Button>
+                </Flex>
+              </View>
+            </Modal>
+            <Flex width="100%" justifyContent="space-between" alignItems="end">
+              <TextField
+                label="New status:"
+                value={newStatus}
+                onChange={handleNewStatusOnChange}
+                hasError={statusAlreadyExists || newStatus === ''}
+                errorMessage="Invalid status"
+              />
+              {editingStatus ? (
+                <Flex>
+                  <Button
+                    padding="0.5rem"
+                    variation="destructive"
+                    title="Cancel edit"
+                    isDisabled={statusAlreadyExists}
+                    onClick={handleCancelEdit}
+                  >
+                    <MdClose />
+                  </Button>
+                  <Button
+                    padding="0.5rem"
+                    variation="primary"
+                    title="Confirm edit"
+                    isDisabled={statusAlreadyExists}
+                    onClick={() => setEditingAlert(true)}
+                  >
+                    <MdCheck />
+                  </Button>
+                </Flex>
+              ) : (
+                <Button
+                  padding="0.5rem"
+                  variation="primary"
+                  title="Add status"
+                  isDisabled={statusAlreadyExists}
+                  onClick={handleAddStatus}
+                >
+                  <MdAdd />
+                </Button>
+              )}
+            </Flex>
+            <br />
+            <Table
+              caption=""
+              highlightOnHover
+              variation="striped"
+              justify-content="center"
+              size={responsiveBool ? 'small' : ''}
+            >
+              <TableHead>
+                <TableRow>
+                  <TableCell as="th" width="70%">
+                    Name
+                  </TableCell>
+                  <TableCell as="th" width="30%">
+                    Actions
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {habitat.props.data.customStatus.map((statusItem) => (
+                  <TableRow key={statusItem}>
+                    <TableCell>{statusItem}</TableCell>
+                    <TableCell>
+                      <Flex gap="0.5rem">
+                        <Button
+                          padding="0.5rem"
+                          onClick={() => {
+                            setEditingStatus(statusItem);
+                            setNewStatus(statusItem);
+                          }}
+                        >
+                          <MdEdit />
+                        </Button>
+                        <Button
+                          padding="0.5rem"
+                          variation="destructive"
+                          onClick={() => setDeletingStatus(statusItem)}
+                        >
+                          <MdDelete />
+                        </Button>
+                      </Flex>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </>
+        </Modal>
         <Table
           caption=""
           highlightOnHover
@@ -125,7 +397,13 @@ const TestApplications = () => {
                 Date Submitted
               </TableCell>
               <TableCell as="th" width="25%">
-                Status
+                <Button
+                  variation="link"
+                  color="var(--amplify-colors-font-primary)"
+                  onClick={handleStatusOnClick}
+                >
+                  Status
+                </Button>
               </TableCell>
               <TableCell as="th" width="25%">
                 Actions
@@ -136,7 +414,7 @@ const TestApplications = () => {
             {applications
               .slice((currentPage - 1) * perPage, currentPage * perPage)
               .map((application, index) => (
-                <TableRow key={index}>
+                <TableRow key={application.id}>
                   <TableCell>
                     {index + 1 + (currentPage - 1) * perPage}
                   </TableCell>
@@ -149,7 +427,29 @@ const TestApplications = () => {
                     }
                   </TableCell>
                   <TableCell>{application.submittedDate}</TableCell>
-                  <TableCell>{application.status}</TableCell>
+                  <TableCell>
+                    <SelectField
+                      labelHidden
+                      value={application.status}
+                      onChange={(event) =>
+                        handleUpdateApplicationStatus(
+                          application.id,
+                          event.currentTarget.value
+                        )
+                      }
+                    >
+                      {[
+                        UNSET,
+                        ...(habitat
+                          ? habitat.props.data.customStatus || []
+                          : []),
+                      ].map((selectedStatus) => (
+                        <option key={selectedStatus} value={selectedStatus}>
+                          {selectedStatus}
+                        </option>
+                      ))}
+                    </SelectField>
+                  </TableCell>
                   <TableCell>
                     <Link to={`../applications/${application?.id}`}>
                       <Button>View</Button>

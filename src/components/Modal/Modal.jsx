@@ -22,6 +22,7 @@ const Modal = ({ title, children, onClickClose, open, width }) => {
         alignItems="center"
         style={{
           backdropFilter: 'blur(0.1rem)',
+          zIndex: 10,
         }}
         onClick={handleOnClickBlur}
       >
