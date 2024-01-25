@@ -7,6 +7,7 @@
     "@aws-amplify/datastore": "^4.7.5",
     "@aws-amplify/ui-react": "^5.3.1",
     "@aws-amplify/ui-react-storage": "^2.3.1",
+    "@aws-sdk/client-cognito-identity-provider": "^3.499.0",
     "@aws-sdk/client-ses": "^3.433.0",
     "@egjs/flicking": "^4.11.0",
     "@egjs/flicking-plugins": "^4.7.1",

@@ -1,6 +1,6 @@
 import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-amplify/datastore";
 // @ts-ignore
-import { LazyLoading, LazyLoadingDisabled, AsyncCollection } from "@aws-amplify/datastore";
+import { LazyLoading, LazyLoadingDisabled, AsyncCollection, AsyncItem } from "@aws-amplify/datastore";
 
 export enum ApplicationTimeStatus {
   CURRENT = "CURRENT",
@@ -59,7 +59,287 @@ export enum RelationshipTypes {
   OTHER = "OTHER"
 }
 
+type EagerAsset = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Asset, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerId?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
 
+type LazyAsset = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Asset, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerId?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Asset = LazyLoading extends LazyLoadingDisabled ? EagerAsset : LazyAsset
+
+export declare const Asset: (new (init: ModelInit<Asset>) => Asset) & {
+  copyOf(source: Asset, mutator: (draft: MutableModel<Asset>) => MutableModel<Asset> | void): Asset;
+}
+
+type EagerDebt = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Debt, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerId?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyDebt = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Debt, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerId?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Debt = LazyLoading extends LazyLoadingDisabled ? EagerDebt : LazyDebt
+
+export declare const Debt: (new (init: ModelInit<Debt>) => Debt) & {
+  copyOf(source: Debt, mutator: (draft: MutableModel<Debt>) => MutableModel<Debt> | void): Debt;
+}
+
+type EagerIncome = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Income, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerId?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyIncome = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Income, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerId?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Income = LazyLoading extends LazyLoadingDisabled ? EagerIncome : LazyIncome
+
+export declare const Income: (new (init: ModelInit<Income>) => Income) & {
+  copyOf(source: Income, mutator: (draft: MutableModel<Income>) => MutableModel<Income> | void): Income;
+}
+
+type EagerTestApplication = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<TestApplication, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID?: string | null;
+  readonly lastSection?: string | null;
+  readonly members?: (Member | null)[] | null;
+  readonly submitted: boolean;
+  readonly submittedDate?: string | null;
+  readonly affiliate: Habitat;
+  readonly status?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+  readonly testApplicationAffiliateId: string;
+}
+
+type LazyTestApplication = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<TestApplication, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID?: string | null;
+  readonly lastSection?: string | null;
+  readonly members: AsyncCollection<Member>;
+  readonly submitted: boolean;
+  readonly submittedDate?: string | null;
+  readonly affiliate: AsyncItem<Habitat>;
+  readonly status?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+  readonly testApplicationAffiliateId: string;
+}
+
+export declare type TestApplication = LazyLoading extends LazyLoadingDisabled ? EagerTestApplication : LazyTestApplication
+
+export declare const TestApplication: (new (init: ModelInit<TestApplication>) => TestApplication) & {
+  copyOf(source: TestApplication, mutator: (draft: MutableModel<TestApplication>) => MutableModel<TestApplication> | void): TestApplication;
+}
+
+type EagerEmploymentInfo = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<EmploymentInfo, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyEmploymentInfo = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<EmploymentInfo, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type EmploymentInfo = LazyLoading extends LazyLoadingDisabled ? EagerEmploymentInfo : LazyEmploymentInfo
+
+export declare const EmploymentInfo: (new (init: ModelInit<EmploymentInfo>) => EmploymentInfo) & {
+  copyOf(source: EmploymentInfo, mutator: (draft: MutableModel<EmploymentInfo>) => MutableModel<EmploymentInfo> | void): EmploymentInfo;
+}
+
+type EagerMember = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Member, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly props?: string | null;
+  readonly testapplicationID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyMember = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Member, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly props?: string | null;
+  readonly testapplicationID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Member = LazyLoading extends LazyLoadingDisabled ? EagerMember : LazyMember
+
+export declare const Member: (new (init: ModelInit<Member>) => Member) & {
+  copyOf(source: Member, mutator: (draft: MutableModel<Member>) => MutableModel<Member> | void): Member;
+}
+
+type EagerRecord = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Record, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyRecord = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Record, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Record = LazyLoading extends LazyLoadingDisabled ? EagerRecord : LazyRecord
+
+export declare const Record: (new (init: ModelInit<Record>) => Record) & {
+  copyOf(source: Record, mutator: (draft: MutableModel<Record>) => MutableModel<Record> | void): Record;
+}
+
+type EagerWritten = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Written, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyWritten = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Written, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Written = LazyLoading extends LazyLoadingDisabled ? EagerWritten : LazyWritten
+
+export declare const Written: (new (init: ModelInit<Written>) => Written) & {
+  copyOf(source: Written, mutator: (draft: MutableModel<Written>) => MutableModel<Written> | void): Written;
+}
+
+type EagerChecklist = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Checklist, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyChecklist = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Checklist, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Checklist = LazyLoading extends LazyLoadingDisabled ? EagerChecklist : LazyChecklist
+
+export declare const Checklist: (new (init: ModelInit<Checklist>) => Checklist) & {
+  copyOf(source: Checklist, mutator: (draft: MutableModel<Checklist>) => MutableModel<Checklist> | void): Checklist;
+}
 
 type EagerApplicantInfo = {
   readonly [__modelMeta__]: {

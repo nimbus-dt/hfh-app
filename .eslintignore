@@ -2,7 +2,10 @@ src/models
 src/ui-components
 src/aws-exports.js
 amplify-codegen-temp/models
-amplify/*
+amplify/backend
 src\models
+amplify/#current-cloud-backend
 
 src\models\models
+
+src/models/models

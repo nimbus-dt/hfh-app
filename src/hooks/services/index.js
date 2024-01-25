@@ -1,13 +1,88 @@
 import {
+  ApplicantInfo,
   Application,
+  Asset,
+  Checklist,
+  Debt,
   DebtRecord,
+  EmploymentInfo,
   HouseholdMember,
+  Income,
   IncomeRecord,
+  Member,
+  Record,
   SavingRecord,
+  TestApplication,
+  Written,
 } from 'models';
 import { dataStoreQueryHookBuilder } from './useDataStoreQuery/useDataStoreQuery';
 import { dataStoreQueryByIdHookBuilder } from './useDataStoreQueryById/useDataStoreQueryById';
 import { dataStoreObserveQueryHookBuilder } from './useDataStoreObserveQuery/useDataStoreObserveQuery';
+
+/* ASSET MODEL SERVICES */
+export const useAssetsQuery = dataStoreQueryHookBuilder({
+  model: Asset,
+  defaultDataValue: [],
+});
+
+/* DEBT MODEL SERVICES */
+export const useDebtsQuery = dataStoreQueryHookBuilder({
+  model: Debt,
+  defaultDataValue: [],
+});
+
+/* INCOME MODEL SERVICES */
+export const useIncomesQuery = dataStoreQueryHookBuilder({
+  model: Income,
+  defaultDataValue: [],
+});
+
+/* EMPLOYMENTINFO MODEL SERVICES */
+export const useEmploymentInfosQuery = dataStoreQueryHookBuilder({
+  model: EmploymentInfo,
+  defaultDataValue: [],
+});
+
+/* MEMBER MODEL SERVICES */
+export const useMembersQuery = dataStoreQueryHookBuilder({
+  model: Member,
+  defaultDataValue: [],
+});
+
+/* RECORD MODEL SERVICES */
+export const useRecordsQuery = dataStoreQueryHookBuilder({
+  model: Record,
+  defaultDataValue: [],
+});
+
+/* WRITTEN MODEL SERVICES */
+export const useWrittensQuery = dataStoreQueryHookBuilder({
+  model: Written,
+  defaultDataValue: [],
+});
+
+/* CHECKLIST MODEL SERVICES */
+export const useChecklistsQuery = dataStoreQueryHookBuilder({
+  model: Checklist,
+  defaultDataValue: [],
+});
+
+/* APPLICANTINFO MODEL SERVICES */
+export const useApplicantInfosQuery = dataStoreQueryHookBuilder({
+  model: ApplicantInfo,
+  defaultDataValue: [],
+});
+
+/* TESTAPPLICATION MODEL SERVICES */
+export const useTestApplicationsQuery = dataStoreQueryHookBuilder({
+  model: TestApplication,
+  defaultDataValue: [],
+});
+
+export const useTestApplicationById = dataStoreQueryByIdHookBuilder({
+  model: TestApplication,
+  defaultDataValue: null,
+});
 
 /* APPLICATION MODEL SERVICES */
 export const useApplicationsQuery = dataStoreQueryHookBuilder({

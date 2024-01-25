@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "paths": {
+    "/notify": {
+      "name": "/notify",
+      "lambdaFunction": "sendEmailToApplicant",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create"
+        ]
+      }
+    }
+  }
+}

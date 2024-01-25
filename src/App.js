@@ -11,10 +11,29 @@ import PreLimQuestionsPage from 'pages/applicant/prescreen/prelim/questions';
 import PreLimResultsPage from 'pages/applicant/prescreen/prelim/results';
 
 import { ApplicantPrescreenLayout } from 'components/PreScreen/ApplicantPrescreenLayout';
+import { TestHome } from 'components/Test/Parts/TestHome';
+import TestApplicantInfo from 'components/Test/Parts/TestApplicantInfo';
+import TestChecklist from 'components/Test/Parts/TestChecklist';
+import TestWritten from 'components/Test/Parts/TestWritten';
+import TestRecords from 'components/Test/Parts/TestRecords';
+import TestHomeowners from 'components/Test/Parts/TestHomeowners';
+import TestEmployment from 'components/Test/Parts/TestEmployment';
+import TestFinancial from 'components/Test/Parts/TestFinancial';
+import TestReview from 'components/Test/Parts/TestReview';
 
 import AffiliateLayout from 'layouts/AffiliateLayout';
 import AffiliatePrescreensPage from 'pages/affiliate/apps';
 import AffiliateApplicationDetailPage from 'pages/affiliate/application-detail';
+import TestAffiliateLayout from 'layouts/TestAffiliateLayout';
+import TestApplications from 'pages/affiliate-portal/applications';
+import TestApplicationDetails from 'pages/affiliate-portal/applications/[applicationId]';
+import AffiliatePortalHomePage from 'pages/affiliate-portal/home';
+import AffiliatePortalRepairsPage from 'pages/affiliate-portal/repairs';
+import AffiliatePortalVolunteersPage from 'pages/affiliate-portal/volunteers';
+import AffiliatePortalSettingsPage from 'pages/affiliate-portal/settings';
+import { TestTerms } from 'components/Test/Parts/TestTerms';
+import { TestLayout } from './components/Test/Layout/TestLayout';
+
 import AffiliateSettingsPage from './pages/affiliate/settings';
 
 // eslint-disable-next-line import/no-unresolved
@@ -26,7 +45,6 @@ import { LandingTerms } from './components/Landing/LandingTerms';
 import { LandingPrivacyPolicy } from './components/Landing/LandingPrivacyPolicy';
 import { LandingReturn } from './components/Landing/LandingReturn';
 import { LandingContact } from './components/Landing/LandingContact';
-import { Test } from './components/Test';
 import { FormUserForm } from './components/PreScreen/Form/FormUserForm';
 import { FormLayoutNew } from './components/PreScreen/Form/FormLayoutNew';
 import { FormInfoPage } from './components/PreScreen/Form/FormInfoPage';
@@ -73,7 +91,27 @@ function App() {
         />
       </Route>
 
-      <Route path="test" element={<Test />} />
+      <Route
+        path="homeownership"
+        element={
+          <Authenticator.Provider>
+            <TestLayout />
+          </Authenticator.Provider>
+        }
+      >
+        <Route path=":habitat">
+          <Route path="home" element={<TestHome />} />
+          <Route path="terms" element={<TestTerms />} />
+          <Route path="applicant-info" element={<TestApplicantInfo />} />
+          <Route path="checklist" element={<TestChecklist />} />
+          <Route path="written" element={<TestWritten />} />
+          <Route path="records" element={<TestRecords />} />
+          <Route path="homeowners" element={<TestHomeowners />} />
+          <Route path="employment" element={<TestEmployment />} />
+          <Route path="financial" element={<TestFinancial />} />
+          <Route path="review" element={<TestReview />} />
+        </Route>
+      </Route>
 
       <Route path="affiliate">
         <Route
@@ -94,6 +132,29 @@ function App() {
             element={<AffiliateApplicationDetailPage />}
           />
           <Route path="settings" element={<AffiliateSettingsPage />} />
+        </Route>
+      </Route>
+
+      <Route path="affiliate-portal">
+        <Route
+          path=":habitat"
+          element={
+            <Authenticator.Provider>
+              <TestAffiliateLayout />
+            </Authenticator.Provider>
+          }
+        >
+          <Route path="home" element={<AffiliatePortalHomePage />} />
+          <Route path="applications">
+            <Route index element={<TestApplications />} />
+            <Route path=":applicationId" element={<TestApplicationDetails />} />
+          </Route>
+          <Route path="repairs" element={<AffiliatePortalRepairsPage />} />
+          <Route
+            path="volunteers"
+            element={<AffiliatePortalVolunteersPage />}
+          />
+          <Route path="settings" element={<AffiliatePortalSettingsPage />} />
         </Route>
       </Route>
 

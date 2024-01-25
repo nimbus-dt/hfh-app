@@ -1,3 +1,62 @@
+type Asset @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ownerId: ID
+  props: AWSJSON
+}
+
+type Debt @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ownerId: ID
+  props: AWSJSON
+}
+
+type Income @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ownerId: ID
+  props: AWSJSON
+}
+
+type TestApplication @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ownerID: ID
+  lastSection: String
+  members: [Member] @hasMany(indexName: "byTestApplication", fields: ["id"])
+  submitted: Boolean!
+  submittedDate: AWSDate
+  affiliate: Habitat! @hasOne
+  status: String
+}
+
+type EmploymentInfo @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ownerID: ID
+  props: AWSJSON
+}
+
+type Member @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  props: AWSJSON
+  testapplicationID: ID! @index(name: "byTestApplication")
+}
+
+type Record @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ownerID: ID
+  props: AWSJSON
+}
+
+type Written @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ownerID: ID
+  props: AWSJSON
+}
+
+type Checklist @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ownerID: ID
+  props: AWSJSON
+}
+
 type ApplicantInfo @model @auth(rules: [{allow: public}]) {
   id: ID!
   ownerID: ID

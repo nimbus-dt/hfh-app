@@ -1,3 +1,18 @@
+export const getTestTotalMonthlyIncomes = (incomeRecords) =>
+  incomeRecords.reduce(
+    (total, income) => total + income.props.monthlyIncome,
+    0
+  );
+
+export const getTotalAssetsValue = (assetRecords) =>
+  assetRecords.reduce((total, saving) => total + saving.props.currentValue, 0);
+
+export const getTestTotalMonthlyDebts = (debtRecords) =>
+  debtRecords.reduce((total, debt) => total + debt.props.monthlyPayment, 0);
+
+export const getTestTotalDebts = (debtRecords) =>
+  debtRecords.reduce((total, debt) => total + debt.props.unpaidBalance, 0);
+
 export const getTotalMonthlyIncomes = (incomeRecords) =>
   incomeRecords.reduce(
     (total, income) => total + income.estimatedMonthlyIncome,

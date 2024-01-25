@@ -1,0 +1,10 @@
+{
+  "lambdaLayers": [],
+  "permissions": {
+    "auth": {
+      "hfhapp": [
+        "read"
+      ]
+    }
+  }
+}
