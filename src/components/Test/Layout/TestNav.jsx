@@ -2,7 +2,7 @@
 import { Image, Card, Flex, Button } from '@aws-amplify/ui-react';
 import PropTypes from 'prop-types';
 import { Auth } from 'aws-amplify';
-import logoHabitat from '../../../assets/images/logoHabitat.svg';
+import logoHabitat from '../../../assets/images/trace.svg';
 
 export function TestNav({ isAuthenticated }) {
   const handleSignOut = async () => {

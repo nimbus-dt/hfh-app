@@ -1,6 +1,6 @@
 import { Flex, Image } from '@aws-amplify/ui-react';
 import { COLORS } from '../../../utils/constants';
-import logoHabitat from '../../../assets/images/logoHabitat.svg';
+import logoHabitat from '../../../assets/images/trace.svg';
 import { SidebarActions } from './SidebarActions';
 
 export function SidebarLG() {
