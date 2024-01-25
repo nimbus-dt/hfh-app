@@ -138,9 +138,9 @@ const DebtSection = ({
     const newDebtProps = {
       type: data.otherType ? data.otherType : data.type,
       description: data.description,
-      monthlyPayment: data.monthlyPayment,
-      unpaidBalance: data.unpaidBalance,
-      monthsLeftToPaid: data.monthsLeftToPaid,
+      monthlyPayment: Number(data.monthlyPayment),
+      unpaidBalance: Number(data.unpaidBalance),
+      monthsLeftToPaid: Number(data.monthsLeftToPaid),
       proofs: resultsKeys,
     };
     try {
@@ -195,11 +195,7 @@ const DebtSection = ({
       updateApplicationLastSection();
     } catch (error) {
       setAlert(
-        createAlert(
-          'error',
-          'Error',
-          `The debt record couldn't be saved.${error}`
-        )
+        createAlert('error', 'Error', `The debt record couldn't be saved.`)
       );
     }
     setLoading((previousLoading) => previousLoading - 1);

@@ -8,12 +8,19 @@ import {
   Flex,
 } from '@aws-amplify/ui-react';
 
-export function DataTable({ heading, data }) {
+export function DataTable({ heading, subheading, data }) {
   return (
     <Flex direction="column">
-      <Heading level="3" textAlign="center">
-        {heading}
-      </Heading>
+      {heading && (
+        <Heading level="3" textAlign="center">
+          {heading}
+        </Heading>
+      )}
+      {subheading && (
+        <Heading level="4" textAlign="center">
+          {subheading}
+        </Heading>
+      )}
 
       <Table caption="" highlightOnHover variation="bordered">
         <TableBody>
@@ -32,11 +39,12 @@ export function DataTable({ heading, data }) {
 }
 
 DataTable.propTypes = {
-  heading: PropTypes.string.isRequired,
+  heading: PropTypes.string,
+  subheading: PropTypes.string,
   data: PropTypes.arrayOf(
     PropTypes.shape({
       header: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired,
+      value: PropTypes.node,
     })
   ).isRequired,
 };

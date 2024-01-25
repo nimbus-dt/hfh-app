@@ -1,6 +1,6 @@
 import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-amplify/datastore";
 // @ts-ignore
-import { LazyLoading, LazyLoadingDisabled, AsyncCollection } from "@aws-amplify/datastore";
+import { LazyLoading, LazyLoadingDisabled, AsyncCollection, AsyncItem } from "@aws-amplify/datastore";
 
 export enum ApplicationTimeStatus {
   CURRENT = "CURRENT",
@@ -67,8 +67,8 @@ type EagerAsset = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly ownerId: string;
-  readonly props: string;
+  readonly ownerId?: string | null;
+  readonly props?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -79,8 +79,8 @@ type LazyAsset = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly ownerId: string;
-  readonly props: string;
+  readonly ownerId?: string | null;
+  readonly props?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -97,8 +97,8 @@ type EagerDebt = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly ownerId: string;
-  readonly props: string;
+  readonly ownerId?: string | null;
+  readonly props?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -109,8 +109,8 @@ type LazyDebt = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly ownerId: string;
-  readonly props: string;
+  readonly ownerId?: string | null;
+  readonly props?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -127,8 +127,8 @@ type EagerIncome = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly ownerId: string;
-  readonly props: string;
+  readonly ownerId?: string | null;
+  readonly props?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -139,8 +139,8 @@ type LazyIncome = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly ownerId: string;
-  readonly props: string;
+  readonly ownerId?: string | null;
+  readonly props?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -160,8 +160,13 @@ type EagerTestApplication = {
   readonly ownerID?: string | null;
   readonly lastSection?: string | null;
   readonly members?: (Member | null)[] | null;
+  readonly submitted: boolean;
+  readonly submittedDate?: string | null;
+  readonly affiliate: Habitat;
+  readonly status?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly testApplicationAffiliateId: string;
 }
 
 type LazyTestApplication = {
@@ -173,8 +178,13 @@ type LazyTestApplication = {
   readonly ownerID?: string | null;
   readonly lastSection?: string | null;
   readonly members: AsyncCollection<Member>;
+  readonly submitted: boolean;
+  readonly submittedDate?: string | null;
+  readonly affiliate: AsyncItem<Habitat>;
+  readonly status?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly testApplicationAffiliateId: string;
 }
 
 export declare type TestApplication = LazyLoading extends LazyLoadingDisabled ? EagerTestApplication : LazyTestApplication

@@ -137,7 +137,7 @@ const IncomeSection = ({
     const newIncomeProps = {
       type: data.otherType ? data.otherType : data.type,
       source: data.source,
-      monthlyIncome: data.monthlyIncome,
+      monthlyIncome: Number(data.monthlyIncome),
       proofs: resultsKeys,
     };
     try {
@@ -194,11 +194,7 @@ const IncomeSection = ({
       updateApplicationLastSection();
     } catch (error) {
       setAlert(
-        createAlert(
-          'error',
-          'Error',
-          `The income record couldn't be saved.${error}`
-        )
+        createAlert('error', 'Error', `The income record couldn't be saved.`)
       );
     }
     setLoading((previousLoading) => previousLoading - 1);

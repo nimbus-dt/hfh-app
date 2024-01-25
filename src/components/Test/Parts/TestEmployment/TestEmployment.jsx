@@ -1,4 +1,4 @@
-import { Alert, Button, Flex, View } from '@aws-amplify/ui-react';
+import { Alert, Button, Flex } from '@aws-amplify/ui-react';
 import { useEffect, useState } from 'react';
 import { EmploymentInfo } from 'models';
 import { DataStore } from 'aws-amplify';
@@ -173,6 +173,7 @@ export function TestEmployment() {
       }
       if (
         calculateAge(employmentInfo?.props?.currentEmployment?.startDate) < 1 &&
+        employmentInfo?.props?.currentEmployment?.firstJob === 'No' &&
         employmentInfo.props.previousEmployment === undefined
       ) {
         return true;
@@ -200,44 +201,43 @@ export function TestEmployment() {
   }, [application]);
 
   return (
-    <View as="div">
-      <Flex direction="column" gap="unset" alignItems="center">
-        {alert && (
-          <Alert
-            variation={alert.variation}
-            heading={alert.heading}
-            marginBottom="20px"
-            onDismiss={() => setAlert()}
-            isDismissible
-            hasIcon
-          >
-            {alert.body}
-          </Alert>
-        )}
-        <Unemployment
-          expanded={unemploymentOpen}
-          onExpandedChange={setUnemploymentOpen}
-          employmentInfo={employmentInfo}
-          onValid={onValidCurrentlyUnemployed}
-          edit={unemploymentEdit}
-          onClickEdit={handleOnClickUnemploymentEdit}
-        />
-        <br />
-        {employmentInfo?.props?.currentlyUnemployed === 'No' && (
-          <>
-            <CurrentEmployment
-              expanded={currentEmploymentOpen}
-              onExpandedChange={setCurrentEmploymentOpen}
-              employmentInfo={employmentInfo}
-              onValid={onValidCurrentEmployment}
-              edit={currentEmploymentEdit}
-              onClickEdit={handleOnClickCurrentEmploymentEdit}
-            />
-            <br />
-          </>
-        )}
-        {calculateAge(employmentInfo?.props?.currentEmployment?.startDate) <
-          1 && (
+    <Flex direction="column" gap="unset" alignItems="center" width="100%">
+      {alert && (
+        <Alert
+          variation={alert.variation}
+          heading={alert.heading}
+          marginBottom="20px"
+          onDismiss={() => setAlert()}
+          isDismissible
+          hasIcon
+        >
+          {alert.body}
+        </Alert>
+      )}
+      <Unemployment
+        expanded={unemploymentOpen}
+        onExpandedChange={setUnemploymentOpen}
+        employmentInfo={employmentInfo}
+        onValid={onValidCurrentlyUnemployed}
+        edit={unemploymentEdit}
+        onClickEdit={handleOnClickUnemploymentEdit}
+      />
+      <br />
+      {employmentInfo?.props?.currentlyUnemployed === 'No' && (
+        <>
+          <CurrentEmployment
+            expanded={currentEmploymentOpen}
+            onExpandedChange={setCurrentEmploymentOpen}
+            employmentInfo={employmentInfo}
+            onValid={onValidCurrentEmployment}
+            edit={currentEmploymentEdit}
+            onClickEdit={handleOnClickCurrentEmploymentEdit}
+          />
+          <br />
+        </>
+      )}
+      {calculateAge(employmentInfo?.props?.currentEmployment?.startDate) < 1 &&
+        employmentInfo?.props?.currentEmployment?.firstJob === 'No' && (
           <>
             <PreviousEmployment
               expanded={previousEmploymentOpen}
@@ -250,21 +250,20 @@ export function TestEmployment() {
             <br />
           </>
         )}
-        <CustomCard>
-          <Flex width="100%" justifyContent="space-between">
-            <Link to="../homeowners">
-              <Button variation="primary">Back</Button>
-            </Link>
-            <Button
-              variation="primary"
-              onClick={handleOnClickNext}
-              isDisabled={isNextDisabled()}
-            >
-              Next
-            </Button>
-          </Flex>
-        </CustomCard>
-      </Flex>
-    </View>
+      <CustomCard>
+        <Flex width="100%" justifyContent="space-between">
+          <Link to="../homeowners">
+            <Button variation="primary">Back</Button>
+          </Link>
+          <Button
+            variation="primary"
+            onClick={handleOnClickNext}
+            isDisabled={isNextDisabled()}
+          >
+            Next
+          </Button>
+        </Flex>
+      </CustomCard>
+    </Flex>
   );
 }

@@ -19,10 +19,14 @@ import TestRecords from 'components/Test/Parts/TestRecords';
 import TestHomeowners from 'components/Test/Parts/TestHomeowners';
 import TestEmployment from 'components/Test/Parts/TestEmployment';
 import TestFinancial from 'components/Test/Parts/TestFinancial';
+import TestReview from 'components/Test/Parts/TestReview';
 
 import AffiliateLayout from 'layouts/AffiliateLayout';
 import AffiliatePrescreensPage from 'pages/affiliate/apps';
 import AffiliateApplicationDetailPage from 'pages/affiliate/application-detail';
+import TestAffiliateLayout from 'layouts/TestAffiliateLayout';
+import TestApplications from 'pages/affiliate-portal/applications';
+import TestApplicationDetails from 'pages/affiliate-portal/applications/[applicationId]';
 import { TestTerms } from 'components/Test/Parts/TestTerms';
 import { TestLayout } from './components/Test/Layout/TestLayout';
 
@@ -101,6 +105,7 @@ function App() {
           <Route path="homeowners" element={<TestHomeowners />} />
           <Route path="employment" element={<TestEmployment />} />
           <Route path="financial" element={<TestFinancial />} />
+          <Route path="review" element={<TestReview />} />
         </Route>
       </Route>
 
@@ -123,6 +128,23 @@ function App() {
             element={<AffiliateApplicationDetailPage />}
           />
           <Route path="settings" element={<AffiliateSettingsPage />} />
+        </Route>
+      </Route>
+
+      <Route path="affiliate-portal">
+        <Route
+          path=":habitat"
+          element={
+            <Authenticator.Provider>
+              <TestAffiliateLayout />
+            </Authenticator.Provider>
+          }
+        >
+          <Route path="home" element={<AffiliateHomePage />} />
+          <Route path="applications">
+            <Route index element={<TestApplications />} />
+            <Route path=":applicationId" element={<TestApplicationDetails />} />
+          </Route>
         </Route>
       </Route>
 
