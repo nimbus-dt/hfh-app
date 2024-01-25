@@ -2,13 +2,13 @@ import { Button, Flex, View } from '@aws-amplify/ui-react';
 import { Auth } from 'aws-amplify';
 import { NavLink, useParams } from 'react-router-dom';
 import {
-  // HiCog6Tooth,
+  HiCog6Tooth,
   HiArrowLeftOnRectangle,
-  // HiUserGroup,
+  HiUserGroup,
   HiEnvelope,
 } from 'react-icons/hi2';
 import { HiHome } from 'react-icons/hi';
-// import { IoHammer } from 'react-icons/io5';
+import { IoHammer } from 'react-icons/io5';
 import { concatClassNames } from '../../../utils/formatters';
 import styles from './SidebarActions.module.css';
 
@@ -23,21 +23,21 @@ const buildRoutes = (habitat) => [
     Icon: HiEnvelope,
     href: `/affiliate-portal/${habitat}/applications`,
   },
-  // {
-  //   title: 'Repairs',
-  //   Icon: IoHammer,
-  //   href: `/affiliate/${habitat}/repairs`,
-  // },
-  // {
-  //   title: 'Volunteers',
-  //   Icon: HiUserGroup,
-  //   href: `/affiliate/${habitat}/volunteers`,
-  // },
-  // {
-  //   title: 'Settings',
-  //   Icon: HiCog6Tooth,
-  //   href: `/affiliate/${habitat}/settings`,
-  // },
+  {
+    title: 'Repairs',
+    Icon: IoHammer,
+    href: `/affiliate-portal/${habitat}/repairs`,
+  },
+  {
+    title: 'Volunteers',
+    Icon: HiUserGroup,
+    href: `/affiliate-portal/${habitat}/volunteers`,
+  },
+  {
+    title: 'Settings',
+    Icon: HiCog6Tooth,
+    href: `/affiliate-portal/${habitat}/settings`,
+  },
 ];
 
 export function SidebarActions() {
