@@ -7,7 +7,14 @@ export function GeneralInfoTable({ submittedDate, status }) {
     { header: 'Status', value: status ?? '' },
   ];
 
-  return <DataTable heading="General Information" data={data} />;
+  return (
+    <DataTable
+      heading="General Information"
+      headingTextAlign="left"
+      data={data}
+      divider
+    />
+  );
 }
 
 GeneralInfoTable.propTypes = {

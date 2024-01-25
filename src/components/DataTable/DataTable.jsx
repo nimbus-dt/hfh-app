@@ -6,18 +6,29 @@ import {
   TableRow,
   TableCell,
   Flex,
+  Divider,
 } from '@aws-amplify/ui-react';
 
-export function DataTable({ heading, subheading, data }) {
+export function DataTable({
+  heading,
+  subheading,
+  data,
+  headingTextAlign = 'center',
+  subheadingTextAlign = 'center',
+  divider,
+}) {
   return (
     <Flex direction="column">
       {heading && (
-        <Heading level="3" textAlign="center">
-          {heading}
-        </Heading>
+        <>
+          <Heading level="3" textAlign={headingTextAlign}>
+            {heading}
+          </Heading>
+          {divider && <Divider />}
+        </>
       )}
       {subheading && (
-        <Heading level="4" textAlign="center">
+        <Heading marginTop="1rem" level="4" textAlign={subheadingTextAlign}>
           {subheading}
         </Heading>
       )}
@@ -47,4 +58,7 @@ DataTable.propTypes = {
       value: PropTypes.node,
     })
   ).isRequired,
+  headingTextAlign: PropTypes.string,
+  subheadingTextAlign: PropTypes.string,
+  divider: PropTypes.bool,
 };

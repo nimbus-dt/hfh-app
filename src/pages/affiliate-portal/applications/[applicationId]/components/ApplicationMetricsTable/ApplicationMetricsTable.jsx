@@ -35,7 +35,14 @@ export function ApplicationMetricsTable({
     },
   ];
 
-  return <DataTable heading="Metrics" data={applicantData} />;
+  return (
+    <DataTable
+      heading="Metrics"
+      headingTextAlign="left"
+      divider
+      data={applicantData}
+    />
+  );
 }
 
 ApplicationMetricsTable.propTypes = {

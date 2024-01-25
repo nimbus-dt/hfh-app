@@ -68,9 +68,7 @@ const DebtSection = ({ debts }) => {
 
   return (
     <>
-      <Heading level="5" textAlign="center">
-        Debt Record List
-      </Heading>
+      <Heading level="5">Debt Record List</Heading>
       <Table highlightOnHover style={{ wordBreak: 'break-word' }}>
         <TableHead>
           <TableRow>

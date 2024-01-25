@@ -38,6 +38,8 @@ const RecordsTable = ({ questions, answers }) => {
   return (
     <DataTable
       heading="Records"
+      headingTextAlign="left"
+      divider
       data={questions.map((question) => ({
         header: question.label,
         value: (

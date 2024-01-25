@@ -1,11 +1,15 @@
 import PropTypes from 'prop-types';
 import DataTable from 'components/DataTable';
+import { Flex } from '@aws-amplify/ui-react';
 
 const EmploymentTable = ({ employmentInfo }) => (
-  <>
+  <Flex direction="column">
     <DataTable
       heading="Employment Information"
       subheading="Current status"
+      headingTextAlign="left"
+      subheadingTextAlign="left"
+      divider
       data={[
         {
           header: 'Unemployed',
@@ -16,6 +20,8 @@ const EmploymentTable = ({ employmentInfo }) => (
     {employmentInfo?.props?.currentEmployment && (
       <DataTable
         subheading="Current employment"
+        subheadingTextAlign="left"
+        divider
         data={[
           {
             header: 'Name of current employer',
@@ -49,6 +55,8 @@ const EmploymentTable = ({ employmentInfo }) => (
     {employmentInfo?.props?.previousEmployment && (
       <DataTable
         subheading="Previous employment"
+        subheadingTextAlign="left"
+        divider
         data={[
           {
             header: 'Name of previous employer',
@@ -81,7 +89,7 @@ const EmploymentTable = ({ employmentInfo }) => (
         ]}
       />
     )}
-  </>
+  </Flex>
 );
 
 EmploymentTable.propTypes = {
