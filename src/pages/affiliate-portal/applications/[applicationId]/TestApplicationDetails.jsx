@@ -9,6 +9,8 @@ import {
   Text,
   TextAreaField,
   SelectField,
+  Loader,
+  View,
 } from '@aws-amplify/ui-react';
 import {
   useApplicantInfosQuery,
@@ -51,6 +53,7 @@ const TestApplicationDetails = () => {
   const [trigger, setTrigger] = useState(true);
   const [returnModalOpen, setReturnModalOpen] = useState(false);
   const [decideModalOpen, setDecideModalOpen] = useState(false);
+  const [loading, setLoading] = useState(0);
   const { habitat } = useOutletContext();
   const { applicationId } = useParams();
   const { data: application } = useTestApplicationById({
@@ -133,6 +136,7 @@ const TestApplicationDetails = () => {
   const handleReturnModalOnClose = () => setReturnModalOpen(false);
 
   const handleOnValidReturn = async (data) => {
+    setLoading((previousLoading) => previousLoading + 1);
     try {
       const original = await DataStore.query(TestApplication, application.id);
       const persistedApplication = await DataStore.save(
@@ -143,7 +147,7 @@ const TestApplicationDetails = () => {
 
       await API.post('sendEmailToApplicantAPI', '/notify', {
         body: {
-          subject: `Status update on your ${habitat?.name} application`,
+          subject: 'Status update on your Habitat for Humanity application',
           body: data.message,
           sub: persistedApplication.ownerID,
         },
@@ -155,6 +159,7 @@ const TestApplicationDetails = () => {
     } catch (error) {
       console.log('An error ocurred while returning the application');
     }
+    setLoading((previousLoading) => previousLoading - 1);
   };
 
   const handleDecideOnClick = () => setDecideModalOpen(true);
@@ -162,6 +167,7 @@ const TestApplicationDetails = () => {
   const handleDecideModalOnClose = () => setDecideModalOpen(false);
 
   const handleOnValidDecide = async (data) => {
+    setLoading((previousLoading) => previousLoading + 1);
     try {
       const original = await DataStore.query(TestApplication, application.id);
       const persistedApplication = await DataStore.save(
@@ -172,7 +178,7 @@ const TestApplicationDetails = () => {
 
       await API.post('sendEmailToApplicantAPI', '/notify', {
         body: {
-          subject: `Status update on your ${habitat?.name} application`,
+          subject: 'Status update on your Habitat for Humanity application',
           body: data.message,
           sub: persistedApplication.ownerID,
         },
@@ -184,6 +190,7 @@ const TestApplicationDetails = () => {
     } catch (error) {
       console.log('An error ocurred while returning the application');
     }
+    setLoading((previousLoading) => previousLoading - 1);
   };
 
   return (
@@ -275,7 +282,7 @@ const TestApplicationDetails = () => {
             By returning an application you are giving an applicant the chance
             to edit their info.
           </Text>
-
+          <br />
           <TextAreaField
             {...registerReturn('message')}
             label="Return message"
@@ -285,6 +292,12 @@ const TestApplicationDetails = () => {
             hasError={errorsReturn?.message}
             errorMessage="Invalid message"
           />
+          {loading > 0 && (
+            <View>
+              <Text>Updating application and sending email to applicant.</Text>
+              <Loader variation="linear" />
+            </View>
+          )}
           <Flex justifyContent="end" marginTop="1rem">
             <Button variation="destructive" onClick={handleReturnModalOnClose}>
               Cancel
@@ -303,6 +316,7 @@ const TestApplicationDetails = () => {
           <Text>
             Here is where you can render a decision for an application.
           </Text>
+          <br />
           <SelectField
             {...registerDecide('status')}
             label="Status"
@@ -319,6 +333,7 @@ const TestApplicationDetails = () => {
               </option>
             ))}
           </SelectField>
+          <br />
           <TextAreaField
             {...registerDecide('message')}
             label="Decision message"
@@ -328,6 +343,12 @@ const TestApplicationDetails = () => {
             hasError={errorsDecide?.message}
             errorMessage="Invalid message"
           />
+          {loading > 0 && (
+            <View>
+              <Text>Updating application and sending email to applicant.</Text>
+              <Loader variation="linear" />
+            </View>
+          )}
           <Flex justifyContent="end" marginTop="1rem">
             <Button variation="destructive" onClick={handleDecideModalOnClose}>
               Cancel
