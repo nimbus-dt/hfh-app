@@ -9,14 +9,19 @@
       "UnauthRoleName": "amplify-hfhapp-staging-10900-unauthRole",
       "StackName": "amplify-hfhapp-staging-10900",
       "StackId": "arn:aws:cloudformation:us-east-1:719959370210:stack/amplify-hfhapp-staging-10900/94492930-f061-11ed-8aef-127de6d08e5f",
-      "AmplifyAppId": "dgfg84wx7ntah"
+      "AmplifyAppId": "dgfg84wx7ntah",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-hfhapp-staging-10900-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "function": {
         "applicationchangenotification": {
           "sesEmail": "support@nimbus-dt.com",
           "deploymentBucketName": "amplify-hfhapp-staging-10900-deployment",
-          "s3Key": "amplify-builds/applicationchangenotification-42416175756763693234-build.zip"
+          "s3Key": "amplify-builds/applicationchangenotification-564d6c2b306867486b47-build.zip"
+        },
+        "sendEmailToApplicant": {
+          "deploymentBucketName": "amplify-hfhapp-staging-10900-deployment",
+          "s3Key": "amplify-builds/sendEmailToApplicant-4a4a69386346414d546a-build.zip"
         }
       },
       "prescreennotify": {
@@ -132,7 +137,8 @@
         "s3hfhappstoragebucket": {}
       },
       "api": {
-        "hfhapp": {}
+        "hfhapp": {},
+        "sendEmailToApplicantAPI": {}
       }
     }
   }

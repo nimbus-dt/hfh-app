@@ -20,6 +20,20 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "AppSync"
+    },
+    "sendEmailToApplicantAPI": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "sendEmailToApplicant"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
     }
   },
   "auth": {
@@ -71,6 +85,20 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "sendEmailToApplicant": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "hfhapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "hosting": {},
@@ -96,6 +124,22 @@
         {
           "category": "function",
           "resourceName": "applicationchangenotification"
+        }
+      ]
+    },
+    "AMPLIFY_function_sendEmailToApplicant_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendEmailToApplicant"
+        }
+      ]
+    },
+    "AMPLIFY_function_sendEmailToApplicant_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendEmailToApplicant"
         }
       ]
     },
