@@ -9,6 +9,7 @@ import {
   TableCell,
   TableBody,
   Heading,
+  Divider,
 } from '@aws-amplify/ui-react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -54,10 +55,9 @@ function HouseholdTable({ members }) {
   }, [watchRelationship]);
 
   return (
-    <>
-      <Heading textAlign="center" level="3">
-        Household Member List
-      </Heading>
+    <Flex direction="column">
+      <Heading level="3">Household Member List</Heading>
+      <Divider />
 
       <Table highlightOnHover style={{ wordBreak: 'break-word' }}>
         <TableHead>
@@ -173,7 +173,7 @@ function HouseholdTable({ members }) {
           )}
         </Flex>
       </Modal>
-    </>
+    </Flex>
   );
 }
 
