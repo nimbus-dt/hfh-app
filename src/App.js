@@ -27,6 +27,10 @@ import AffiliateApplicationDetailPage from 'pages/affiliate/application-detail';
 import TestAffiliateLayout from 'layouts/TestAffiliateLayout';
 import TestApplications from 'pages/affiliate-portal/applications';
 import TestApplicationDetails from 'pages/affiliate-portal/applications/[applicationId]';
+import AffiliatePortalHomePage from 'pages/affiliate-portal/home';
+import AffiliatePortalRepairsPage from 'pages/affiliate-portal/repairs';
+import AffiliatePortalVolunteersPage from 'pages/affiliate-portal/volunteers';
+import AffiliatePortalSettingsPage from 'pages/affiliate-portal/settings';
 import { TestTerms } from 'components/Test/Parts/TestTerms';
 import { TestLayout } from './components/Test/Layout/TestLayout';
 
@@ -140,11 +144,17 @@ function App() {
             </Authenticator.Provider>
           }
         >
-          <Route path="home" element={<AffiliateHomePage />} />
+          <Route path="home" element={<AffiliatePortalHomePage />} />
           <Route path="applications">
             <Route index element={<TestApplications />} />
             <Route path=":applicationId" element={<TestApplicationDetails />} />
           </Route>
+          <Route path="repairs" element={<AffiliatePortalRepairsPage />} />
+          <Route
+            path="volunteers"
+            element={<AffiliatePortalVolunteersPage />}
+          />
+          <Route path="settings" element={<AffiliatePortalSettingsPage />} />
         </Route>
       </Route>
 
