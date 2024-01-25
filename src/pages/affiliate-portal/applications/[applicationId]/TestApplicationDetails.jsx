@@ -3,14 +3,12 @@ import {
   Flex,
   Button,
   useBreakpointValue,
-  ScrollView,
-  Tabs,
-  TabItem,
   Text,
   TextAreaField,
   SelectField,
   Loader,
   View,
+  Heading,
 } from '@aws-amplify/ui-react';
 import {
   useApplicantInfosQuery,
@@ -49,7 +47,6 @@ import FinancialSection from './components/FinancialSection';
 import { decideSchema, returnSchema } from '../TestApplicationDetails.schema';
 
 const TestApplicationDetails = () => {
-  const [selectedTab, setSelectedTab] = useState(0);
   const [trigger, setTrigger] = useState(true);
   const [returnModalOpen, setReturnModalOpen] = useState(false);
   const [decideModalOpen, setDecideModalOpen] = useState(false);
@@ -129,8 +126,6 @@ const TestApplicationDetails = () => {
     large: false,
   });
 
-  const handleSelectedTabOnChange = (newTab) => setSelectedTab(Number(newTab));
-
   const handleReturnOnClick = () => setReturnModalOpen(true);
 
   const handleReturnModalOnClose = () => setReturnModalOpen(false);
@@ -194,7 +189,7 @@ const TestApplicationDetails = () => {
   };
 
   return (
-    <Flex width="auto" direction="column">
+    <Flex width="auto" direction="column" gap="2.5rem">
       <Button
         width="fit-content"
         onClick={() => {
@@ -203,74 +198,59 @@ const TestApplicationDetails = () => {
       >
         Go back
       </Button>
-      <ScrollView width="100%">
-        <Tabs
-          spacing="equal"
-          whiteSpace="nowrap"
-          currentIndex={selectedTab}
-          onChange={handleSelectedTabOnChange}
-        >
-          <TabItem title="General" />
-          <TabItem title="Applicant" />
-          <TabItem title="Checklist" />
-          <TabItem title="Written" />
-          <TabItem title="Records" />
-          <TabItem title="Household" />
-          <TabItem title="Employment" />
-          <TabItem title="Financial" />
-          <TabItem title="Metrics" />
-        </Tabs>
-      </ScrollView>
-      {selectedTab === 0 && (
-        <GeneralInfoTable
-          status={application?.status}
-          submittedDate={application?.submittedDate}
-        />
-      )}
-      {selectedTab === 1 && (
-        <ApplicantInfoTable applicantInfo={applicantInfos[0]} />
-      )}
-      {selectedTab === 2 && (
-        <ChecklistTable
-          questions={habitat?.props?.prePreScreen?.prePreScreenQuestions}
-          answers={checklists[0]?.props || {}}
-        />
-      )}
-      {selectedTab === 3 && (
-        <WrittenTable
-          questions={habitat?.props?.prePreScreen?.prePreScreenWrittenQuestions}
-          answers={writtens[0]?.props || {}}
-        />
-      )}
-      {selectedTab === 4 && (
-        <RecordsTable
-          questions={habitat?.props?.prePreScreen?.prePreScreenRecords}
-          answers={records[0]?.props || {}}
-        />
-      )}
-      {selectedTab === 5 && <HouseholdTable members={members} />}
-      {selectedTab === 6 && (
-        <EmploymentTable employmentInfo={employmentInfos[0]} />
-      )}
-      {selectedTab === 7 && (
-        <FinancialSection
-          applicantInfo={applicantInfos[0]}
-          members={members}
-          incomes={incomes}
-          debts={debts}
-          assets={assets}
-          sizeRenderer={sizeRenderer}
-        />
-      )}
-      {selectedTab === 8 && (
-        <ApplicationMetricsTable
-          totalMonthlyIncomes={totalMonthlyIncomes}
-          totalAssets={totalAssetsValue}
-          totalMonthlyDebts={totalMonthlyDebts}
-          totalDebts={totalDebts}
-          debtToIncomeRatio={debtToIncomeRatio}
-        />
-      )}
+
+      <View>
+        <Heading level={1} fontWeight="medium">
+          {applicantInfos[0]?.props.basicInfo.fullName}
+        </Heading>
+        <Heading level={1} fontWeight="medium">
+          Application
+        </Heading>
+      </View>
+
+      <GeneralInfoTable
+        status={application?.status}
+        submittedDate={application?.submittedDate}
+      />
+
+      <ApplicantInfoTable applicantInfo={applicantInfos[0]} />
+
+      <ChecklistTable
+        questions={habitat?.props?.prePreScreen?.prePreScreenQuestions}
+        answers={checklists[0]?.props || {}}
+      />
+
+      <WrittenTable
+        questions={habitat?.props?.prePreScreen?.prePreScreenWrittenQuestions}
+        answers={writtens[0]?.props || {}}
+      />
+
+      <RecordsTable
+        questions={habitat?.props?.prePreScreen?.prePreScreenRecords}
+        answers={records[0]?.props || {}}
+      />
+
+      <HouseholdTable members={members} />
+
+      <EmploymentTable employmentInfo={employmentInfos[0]} />
+
+      <FinancialSection
+        applicantInfo={applicantInfos[0]}
+        members={members}
+        incomes={incomes}
+        debts={debts}
+        assets={assets}
+        sizeRenderer={sizeRenderer}
+      />
+
+      <ApplicationMetricsTable
+        totalMonthlyIncomes={totalMonthlyIncomes}
+        totalAssets={totalAssetsValue}
+        totalMonthlyDebts={totalMonthlyDebts}
+        totalDebts={totalDebts}
+        debtToIncomeRatio={debtToIncomeRatio}
+      />
+
       <Modal
         title="Return"
         open={returnModalOpen}

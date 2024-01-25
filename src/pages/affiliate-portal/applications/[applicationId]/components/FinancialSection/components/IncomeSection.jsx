@@ -67,9 +67,7 @@ const IncomeSection = ({ incomes }) => {
 
   return (
     <>
-      <Heading level="5" textAlign="center">
-        Income Record List
-      </Heading>
+      <Heading level="5">Income Record List</Heading>
       <Table highlightOnHover style={{ wordBreak: 'break-word' }}>
         <TableHead>
           <TableRow>

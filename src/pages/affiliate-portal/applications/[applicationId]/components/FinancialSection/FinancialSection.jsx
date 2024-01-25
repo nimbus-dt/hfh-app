@@ -6,6 +6,7 @@ import {
   Text,
   Loader,
   Heading,
+  Divider,
 } from '@aws-amplify/ui-react';
 import { useMemo, useState } from 'react';
 import { CustomCard } from 'components/Test/Reusable/CustomCard';
@@ -63,10 +64,9 @@ export default function FinancialSection({
       </Flex>
     </CustomCard>
   ) : (
-    <>
-      <Heading level="3" textAlign="center">
-        Financial information
-      </Heading>
+    <Flex direction="column">
+      <Heading level="3">Financial information</Heading>
+      <Divider />
       <ScrollView backgroundColor="white">
         <Tabs
           spacing="equal"
@@ -80,14 +80,13 @@ export default function FinancialSection({
           ))}
         </Tabs>
       </ScrollView>
-      <Heading level="4" textAlign="center">
+      <Heading level="4">
         {`Financial information of ${ownerBySelectedTab?.fullName}`}
       </Heading>
       <IncomeSection incomes={filterIncomesBySelectedTab} />
       <DebtSection debts={filterDebtsBySelectedTab} />
       <AssetsSection assets={filterAssetsBySelectedTab} />
-      <br />
-    </>
+    </Flex>
   );
 }
 

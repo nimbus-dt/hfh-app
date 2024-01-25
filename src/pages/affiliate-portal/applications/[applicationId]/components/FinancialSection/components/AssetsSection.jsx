@@ -67,9 +67,7 @@ const AssetsSection = ({ assets }) => {
 
   return (
     <>
-      <Heading level="5" textAlign="center">
-        Asset Record List
-      </Heading>
+      <Heading level="5">Asset Record List</Heading>
       <Table highlightOnHover style={{ wordBreak: 'break-word' }}>
         <TableHead>
           <TableRow>

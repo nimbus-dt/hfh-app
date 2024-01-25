@@ -1,11 +1,15 @@
 import PropTypes from 'prop-types';
 import DataTable from 'components/DataTable';
+import { Flex } from '@aws-amplify/ui-react';
 
 const ApplicantInfoTable = ({ applicantInfo }) => (
-  <>
+  <Flex direction="column">
     <DataTable
       heading="Applicant Information"
       subheading="Basic information"
+      headingTextAlign="left"
+      subheadingTextAlign="left"
+      divider
       data={[
         {
           header: 'Full name',
@@ -47,6 +51,7 @@ const ApplicantInfoTable = ({ applicantInfo }) => (
     />
     <DataTable
       subheading="Current address"
+      subheadingTextAlign="left"
       data={[
         {
           header: 'Address',
@@ -65,6 +70,8 @@ const ApplicantInfoTable = ({ applicantInfo }) => (
     {applicantInfo?.props?.previousAddress && (
       <DataTable
         subheading="Previous address"
+        subheadingTextAlign="left"
+        divider
         data={[
           {
             header: 'Address',
@@ -81,7 +88,7 @@ const ApplicantInfoTable = ({ applicantInfo }) => (
         ]}
       />
     )}
-  </>
+  </Flex>
 );
 
 ApplicantInfoTable.propTypes = {
