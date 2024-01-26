@@ -29,6 +29,10 @@ const TestAffiliateLayout = () => {
     context.authStatus,
     context.user,
   ]);
+  const isReallySmall = useBreakpointValue({
+    base: true,
+    small: false,
+  });
 
   const isLargeLayout = useBreakpointValue({
     base: false,
@@ -208,6 +212,11 @@ const TestAffiliateLayout = () => {
                                 router: {
                                   borderStyle: 'none',
                                   boxShadow: 'none',
+                                },
+                                form: {
+                                  padding: isReallySmall
+                                    ? '0.25rem'
+                                    : undefined,
                                 },
                               },
                             },
