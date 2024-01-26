@@ -6,6 +6,7 @@ import {
   Button,
   Authenticator,
   ThemeProvider,
+  useBreakpointValue,
 } from '@aws-amplify/ui-react';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import useHabitatByUrlName from 'hooks/services/useHabitatByUrlName';
@@ -17,6 +18,10 @@ export function TestHome() {
   const { habitat: habitatUrlName, isAuthenticated } = useParams();
   const { habitat, error } = useHabitatByUrlName({
     habitatUrlName,
+  });
+  const isReallySmall = useBreakpointValue({
+    base: true,
+    small: false,
   });
 
   if (error) {
@@ -66,6 +71,9 @@ export function TestHome() {
                 router: {
                   borderStyle: 'none',
                   boxShadow: 'none',
+                },
+                form: {
+                  padding: isReallySmall ? '0.25rem' : undefined,
                 },
               },
             },
