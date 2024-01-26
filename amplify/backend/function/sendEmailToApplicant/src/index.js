@@ -19,7 +19,7 @@ const ses = new SESClient({ region: 'us-east-1' });
 const cognito = new CognitoIdentityProvider();
 
 export const handler = async (event) => {
-  const { subject, body, sub } = JSON.parse(event.body);
+  const { subject, body, sub, habitat } = JSON.parse(event.body);
   try {
     const user = await cognito.adminGetUser({
       Username: sub,
@@ -36,7 +36,9 @@ export const handler = async (event) => {
       },
       Message: {
         Body: {
-          Text: { Data: body },
+          Html: {
+            Data: `<div><p>${body}</p><br/><span>${habitat}</span></div>`,
+          },
         },
 
         Subject: { Data: subject },
