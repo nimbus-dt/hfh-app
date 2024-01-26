@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Button, Flex, Image, View } from '@aws-amplify/ui-react';
+import { Button, Card, Flex, Image, View } from '@aws-amplify/ui-react';
 import { useLocation } from 'react-router-dom';
 import { HiBars3 } from 'react-icons/hi2';
-import { AiOutlineCloseCircle } from 'react-icons/ai';
+import { MdClose } from 'react-icons/md';
 import { COLORS } from '../../../utils/constants';
 import logoHabitat from '../../../assets/images/logoHabitat.svg';
 import styles from './SidebarSM.module.css';
@@ -46,11 +46,17 @@ export function SidebarSM() {
             />
           </View>
 
-          <Flex width="25%" height="100%" justifyContent="center">
+          <Flex
+            width="25%"
+            height="100%"
+            justifyContent="center"
+            alignItems="center"
+          >
             <Button
               variation="link"
               className={styles.barsBtn}
               onClick={toggleIsOpen}
+              padding="0.5rem"
             >
               <HiBars3 size={32} />
             </Button>
@@ -59,26 +65,21 @@ export function SidebarSM() {
       </View>
 
       {isOpen && (
-        <Flex className={styles.sidebarSM}>
-          <SidebarActions />
+        <Card variation="elevated" margin="1rem">
+          <Flex className={styles.sidebarSM} direction="column">
+            <SidebarActions />
 
-          <Flex
-            direction="column"
-            grow={1}
-            alignItems="center"
-            justifyContent="center"
-            maxWidth="25%"
-            height="100%"
-          >
-            <button
-              className={styles.sidebarSMCloseBtn}
-              type="button"
-              onClick={toggleIsOpen}
-            >
-              <AiOutlineCloseCircle size={48} />
-            </button>
+            <Flex justifyContent="center">
+              <Button
+                onClick={toggleIsOpen}
+                padding="0.25rem"
+                borderRadius="large"
+              >
+                <MdClose size="1.5rem" />
+              </Button>
+            </Flex>
           </Flex>
-        </Flex>
+        </Card>
       )}
     </>
   );
