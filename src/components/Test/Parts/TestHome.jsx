@@ -26,8 +26,9 @@ export function TestHome() {
   const content =
     application && application.submitted ? (
       <Text fontWeight="bold">
-        You've submitted an application already, wait for an update on your
-        application.
+        {`You have succesfully submitted your Homeownership Program application
+        for ${habitat?.name}. You will receive an email with updates on your
+        application.`}
       </Text>
     ) : (
       <>
