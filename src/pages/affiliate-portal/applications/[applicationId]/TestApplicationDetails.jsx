@@ -146,6 +146,7 @@ const TestApplicationDetails = () => {
           subject: 'Status update on your Habitat for Humanity application',
           body: data.message,
           sub: persistedApplication.ownerID,
+          habitat: habitat.name,
         },
       });
 
@@ -177,6 +178,7 @@ const TestApplicationDetails = () => {
           subject: 'Status update on your Habitat for Humanity application',
           body: data.message,
           sub: persistedApplication.ownerID,
+          habitat: habitat.name,
         },
       });
 
