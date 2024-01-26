@@ -22,6 +22,10 @@
         "sendEmailToApplicant": {
           "deploymentBucketName": "amplify-hfhapp-staging-10900-deployment",
           "s3Key": "amplify-builds/sendEmailToApplicant-4a4a69386346414d546a-build.zip"
+        },
+        "getEmail": {
+          "deploymentBucketName": "amplify-hfhapp-staging-10900-deployment",
+          "s3Key": "amplify-builds/getEmail-32656859502b666c474d-build.zip"
         }
       },
       "prescreennotify": {
@@ -138,7 +142,8 @@
       },
       "api": {
         "hfhapp": {},
-        "sendEmailToApplicantAPI": {}
+        "sendEmailToApplicantAPI": {},
+        "userAPI": {}
       }
     }
   }

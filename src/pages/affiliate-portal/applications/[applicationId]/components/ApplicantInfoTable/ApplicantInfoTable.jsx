@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import DataTable from 'components/DataTable';
 import { Flex } from '@aws-amplify/ui-react';
 
-const ApplicantInfoTable = ({ applicantInfo }) => (
+const ApplicantInfoTable = ({ applicantInfo, email }) => (
   <Flex direction="column">
     <DataTable
       heading="Applicant Information"
@@ -46,6 +46,10 @@ const ApplicantInfoTable = ({ applicantInfo }) => (
         {
           header: 'Marital status',
           value: applicantInfo?.props?.basicInfo?.maritalStatus ?? '',
+        },
+        {
+          header: 'Email',
+          value: email ?? '',
         },
       ]}
     />
@@ -93,6 +97,7 @@ const ApplicantInfoTable = ({ applicantInfo }) => (
 
 ApplicantInfoTable.propTypes = {
   applicantInfo: PropTypes.object,
+  email: PropTypes.string,
 };
 
 export default ApplicantInfoTable;

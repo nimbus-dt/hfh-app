@@ -12,6 +12,11 @@ const awsmobile = {
             "name": "sendEmailToApplicantAPI",
             "endpoint": "https://nqzp0c5ezc.execute-api.us-east-1.amazonaws.com/staging",
             "region": "us-east-1"
+        },
+        {
+            "name": "userAPI",
+            "endpoint": "https://vcizrpjh45.execute-api.us-east-1.amazonaws.com/staging",
+            "region": "us-east-1"
         }
     ],
     "aws_cognito_identity_pool_id": "us-east-1:eeaa6379-5ef3-4b76-9e6d-4803c8994f99",
