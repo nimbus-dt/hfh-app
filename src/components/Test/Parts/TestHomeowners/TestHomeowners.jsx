@@ -46,6 +46,7 @@ export function TestHomeowners() {
   const [edit, setEdit] = useState(false);
   const [expanded, setExpanded] = useState(true);
   const [alert, setAlert] = useState();
+  const [noMembersModalOpen, setNoMembersModalOpen] = useState(false);
   const { application, updateApplicationLastSection } = useOutletContext();
   const navigate = useNavigate();
   const {
@@ -162,7 +163,19 @@ export function TestHomeowners() {
   };
 
   const handleOnClickNext = () => {
+    if (members.length > 0) {
+      navigate('../employment');
+    } else {
+      setNoMembersModalOpen(true);
+    }
+  };
+
+  const handleOnAcceptNoMembers = () => {
     navigate('../employment');
+  };
+
+  const handleOnCancelNoMembers = () => {
+    setNoMembersModalOpen(false);
   };
 
   const handleOnClickEdit = () => setEdit((previousEdit) => !previousEdit);
@@ -216,6 +229,25 @@ export function TestHomeowners() {
             Accept
           </Button>
           <Button variation="secondary" onClick={handleOnClickCloseDelete}>
+            Cancel
+          </Button>
+        </Flex>
+      </Modal>
+      <Modal
+        title="Alert"
+        open={noMembersModalOpen}
+        onClickClose={handleOnCancelNoMembers}
+      >
+        <Text>
+          Are you sure you want to continue? If so, it means that you are the
+          only member of your household.
+        </Text>
+        <br />
+        <Flex width="100%" justifyContent="end">
+          <Button variation="primary" onClick={handleOnAcceptNoMembers}>
+            Accept
+          </Button>
+          <Button variation="secondary" onClick={handleOnCancelNoMembers}>
             Cancel
           </Button>
         </Flex>
@@ -421,11 +453,7 @@ export function TestHomeowners() {
           <Button variation="primary" onClick={() => navigate('../records')}>
             Back
           </Button>
-          <Button
-            variation="primary"
-            onClick={handleOnClickNext}
-            isDisabled={members.length === 0}
-          >
+          <Button variation="primary" onClick={handleOnClickNext}>
             Next
           </Button>
         </Flex>
