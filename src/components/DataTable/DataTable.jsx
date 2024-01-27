@@ -37,10 +37,14 @@ export function DataTable({
         <TableBody>
           {data.map(({ header, value }) => (
             <TableRow key={header}>
-              <TableCell as="th" width="25%">
+              <TableCell
+                as="th"
+                width={{ base: '50%', medium: '25%' }}
+                style={{ wordBreak: 'break-word' }}
+              >
                 {header}
               </TableCell>
-              <TableCell>{value}</TableCell>
+              <TableCell style={{ wordBreak: 'break-word' }}>{value}</TableCell>
             </TableRow>
           ))}
         </TableBody>
