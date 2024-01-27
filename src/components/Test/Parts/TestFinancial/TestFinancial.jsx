@@ -10,7 +10,7 @@ import {
   Loader,
 } from '@aws-amplify/ui-react';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { DataStore } from 'aws-amplify';
 import { ApplicantInfo, Member, Income, Debt, Asset } from 'models';
 import Modal from 'components/Modal';
@@ -66,21 +66,24 @@ export function TestFinancial() {
     [assets, ownerBySelectedTab]
   );
 
-  const checkFinancialById = (id) => {
-    const filterIncomes = incomes.filter((income) => income.ownerId === id);
-    const filterDebts = debts.filter((debt) => debt.ownerId === id);
-    const filterAssets = assets.filter((asset) => asset.ownerId === id);
+  const checkFinancialById = useCallback(
+    (id) => {
+      const filterIncomes = incomes.filter((income) => income.ownerId === id);
+      const filterDebts = debts.filter((debt) => debt.ownerId === id);
+      const filterAssets = assets.filter((asset) => asset.ownerId === id);
 
-    return (
-      filterIncomes.length === 0 ||
-      filterDebts.length === 0 ||
-      filterAssets.length === 0
-    );
-  };
+      return (
+        filterIncomes.length === 0 ||
+        filterDebts.length === 0 ||
+        filterAssets.length === 0
+      );
+    },
+    [incomes, debts, assets]
+  );
 
-  const checkFinancialOfApplicantAndMembers = () => {
+  const checkFinancialOfApplicantAndMembers = useCallback(() => {
     let arrayOfIncompleted = [];
-    if (checkFinancialById(applicantInfo?.id)) {
+    if (applicantInfo && checkFinancialById(applicantInfo?.id)) {
       arrayOfIncompleted = [
         ...arrayOfIncompleted,
         {
@@ -98,7 +101,7 @@ export function TestFinancial() {
       }
     });
     return arrayOfIncompleted;
-  };
+  }, [applicantInfo, members, checkFinancialById]);
 
   const handleOnClickConfirmModalAccept = () => {
     navigate('../review');
@@ -123,10 +126,12 @@ export function TestFinancial() {
           c.testapplicationID.eq(applicationID)
         );
         setMembers(existingMembers);
+
         const existingApplicantInfo = await DataStore.query(
           ApplicantInfo,
           (c) => c.ownerID.eq(applicationID)
         );
+
         setApplicantInfo(existingApplicantInfo[0]);
         const membersIdArray = existingMembers.map(
           (existingMember) => existingMember.id
