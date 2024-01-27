@@ -307,11 +307,7 @@ export function TestFinancial() {
           <Link to="../employment">
             <Button variation="primary">Back</Button>
           </Link>
-          <Button
-            variation="primary"
-            onClick={handleOnClickNext}
-            isDisabled={members.length === 0}
-          >
+          <Button variation="primary" onClick={handleOnClickNext}>
             Next
           </Button>
         </Flex>
