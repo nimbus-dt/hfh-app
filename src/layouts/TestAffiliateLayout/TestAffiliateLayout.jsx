@@ -165,6 +165,7 @@ const TestAffiliateLayout = () => {
       )}
 
       <View
+        flex="1"
         grow={isLargeLayout ? 1 : 0}
         height={isLargeLayout ? '100%' : 'calc(100% - 6rem)'}
         overflow="hidden"
