@@ -17,7 +17,7 @@ export function Topbar({ habitatName }) {
           width="100%"
         >
           <Heading level={3} fontWeight="bold">
-            Welcome {habitatName} Habitat for Humanity
+            Welcome {habitatName}
           </Heading>
         </Flex>
       </Card>
