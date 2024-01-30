@@ -215,6 +215,6 @@ FinancialSection.propTypes = {
   reviewedSections: PropTypes.object,
   setReviewedSections: PropTypes.func,
   onReview: PropTypes.func,
-  expanded: PropTypes.object,
+  expanded: PropTypes.bool,
   setExpanded: PropTypes.func,
 };

@@ -16,6 +16,7 @@ import {
   TextField,
   Text,
   View,
+  ScrollView,
 } from '@aws-amplify/ui-react';
 import { useMemo, useState } from 'react';
 import {
@@ -331,6 +332,7 @@ const TestApplications = () => {
               )}
             </Flex>
             <br />
+
             <Table
               caption=""
               highlightOnHover
@@ -378,87 +380,89 @@ const TestApplications = () => {
             </Table>
           </>
         </Modal>
-        <Table
-          caption=""
-          highlightOnHover
-          variation="striped"
-          justify-content="center"
-          size={responsiveBool ? 'small' : ''}
-        >
-          <TableHead>
-            <TableRow>
-              <TableCell as="th" width="25%">
-                Index
-              </TableCell>
-              <TableCell as="th" width="25%">
-                Name
-              </TableCell>
-              <TableCell as="th" width="25%">
-                Date Submitted
-              </TableCell>
-              <TableCell as="th" width="25%">
-                <Button
-                  variation="link"
-                  color="var(--amplify-colors-font-primary)"
-                  onClick={handleStatusOnClick}
-                >
-                  Status
-                </Button>
-              </TableCell>
-              <TableCell as="th" width="25%">
-                Actions
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {applications
-              .slice((currentPage - 1) * perPage, currentPage * perPage)
-              .map((application, index) => (
-                <TableRow key={application.id}>
-                  <TableCell>
-                    {index + 1 + (currentPage - 1) * perPage}
-                  </TableCell>
-                  <TableCell>
-                    {
-                      applicantInfos.find(
-                        (applicantInfo) =>
-                          applicantInfo.ownerID === application.id
-                      )?.props.basicInfo.fullName
-                    }
-                  </TableCell>
-                  <TableCell>{application.submittedDate}</TableCell>
-                  <TableCell>
-                    <SelectField
-                      labelHidden
-                      value={application.status}
-                      onChange={(event) =>
-                        handleUpdateApplicationStatus(
-                          application.id,
-                          event.currentTarget.value
-                        )
+        <ScrollView maxWidth="100%">
+          <Table
+            caption=""
+            highlightOnHover
+            variation="striped"
+            justify-content="center"
+            size={responsiveBool ? 'small' : ''}
+          >
+            <TableHead>
+              <TableRow>
+                <TableCell as="th" width="25%">
+                  Index
+                </TableCell>
+                <TableCell as="th" width="25%">
+                  Name
+                </TableCell>
+                <TableCell as="th" width="25%">
+                  Date Submitted
+                </TableCell>
+                <TableCell as="th" width="25%">
+                  <Button
+                    variation="link"
+                    color="var(--amplify-colors-font-primary)"
+                    onClick={handleStatusOnClick}
+                  >
+                    Status
+                  </Button>
+                </TableCell>
+                <TableCell as="th" width="25%">
+                  Actions
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {applications
+                .slice((currentPage - 1) * perPage, currentPage * perPage)
+                .map((application, index) => (
+                  <TableRow key={application.id}>
+                    <TableCell>
+                      {index + 1 + (currentPage - 1) * perPage}
+                    </TableCell>
+                    <TableCell>
+                      {
+                        applicantInfos.find(
+                          (applicantInfo) =>
+                            applicantInfo.ownerID === application.id
+                        )?.props.basicInfo.fullName
                       }
-                    >
-                      {[
-                        UNSET,
-                        ...(habitat
-                          ? habitat.props.data.customStatus || []
-                          : []),
-                      ].map((selectedStatus) => (
-                        <option key={selectedStatus} value={selectedStatus}>
-                          {selectedStatus}
-                        </option>
-                      ))}
-                    </SelectField>
-                  </TableCell>
-                  <TableCell>
-                    <Link to={`../applications/${application?.id}`}>
-                      <Button>View</Button>
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
+                    </TableCell>
+                    <TableCell>{application.submittedDate}</TableCell>
+                    <TableCell>
+                      <SelectField
+                        labelHidden
+                        value={application.status}
+                        onChange={(event) =>
+                          handleUpdateApplicationStatus(
+                            application.id,
+                            event.currentTarget.value
+                          )
+                        }
+                      >
+                        {[
+                          UNSET,
+                          ...(habitat
+                            ? habitat.props.data.customStatus || []
+                            : []),
+                        ].map((selectedStatus) => (
+                          <option key={selectedStatus} value={selectedStatus}>
+                            {selectedStatus}
+                          </option>
+                        ))}
+                      </SelectField>
+                    </TableCell>
+                    <TableCell>
+                      <Link to={`../applications/${application?.id}`}>
+                        <Button>View</Button>
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </ScrollView>
         <Pagination
           currentPage={currentPage}
           totalPages={Math.ceil(applications.length / perPage)}
