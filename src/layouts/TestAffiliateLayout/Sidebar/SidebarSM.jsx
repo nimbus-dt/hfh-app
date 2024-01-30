@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { HiBars3 } from 'react-icons/hi2';
 import { MdClose } from 'react-icons/md';
 import { COLORS } from '../../../utils/constants';
-import logoHabitat from '../../../assets/images/logoHabitat.svg';
+import logoHabitat from '../../../assets/images/trace.svg';
 import styles from './SidebarSM.module.css';
 import { SidebarActions } from './SidebarActions';
 

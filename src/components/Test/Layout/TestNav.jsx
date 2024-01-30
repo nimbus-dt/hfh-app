@@ -10,7 +10,7 @@ import {
 import PropTypes from 'prop-types';
 import { Auth } from 'aws-amplify';
 import { MdLogout } from 'react-icons/md';
-import logoHabitat from '../../../assets/images/logoHabitat.svg';
+import logoHabitat from '../../../assets/images/trace.svg';
 
 export function TestNav({ isAuthenticated }) {
   const boolMobile = useBreakpointValue({

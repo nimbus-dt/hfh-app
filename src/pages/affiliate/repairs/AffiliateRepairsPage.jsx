@@ -9,7 +9,7 @@ export function AffiliateRepairsPage() {
       justifyContent="center"
     >
       <Heading level={3} fontWeight="bold" textAlign="center">
-        Volunteers
+        Repairs
       </Heading>
       <Divider />
       <Badge variation="warning" width="100%">

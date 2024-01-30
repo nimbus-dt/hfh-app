@@ -2,8 +2,9 @@ src/models
 src/ui-components
 src/aws-exports.js
 amplify-codegen-temp/models
-amplify/backend/function/hfhappd137d457/src/index.js
+amplify/backend
 src\models
+amplify/#current-cloud-backend
 
 src\models\models
 
