@@ -6,6 +6,7 @@ import {
   Button,
   Authenticator,
   ThemeProvider,
+  useBreakpointValue,
 } from '@aws-amplify/ui-react';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import useHabitatByUrlName from 'hooks/services/useHabitatByUrlName';
@@ -18,6 +19,10 @@ export function TestHome() {
   const { habitat, error } = useHabitatByUrlName({
     habitatUrlName,
   });
+  const isReallySmall = useBreakpointValue({
+    base: true,
+    small: false,
+  });
 
   if (error) {
     console.log('Error retrieving Habitat:', error.message);
@@ -26,8 +31,9 @@ export function TestHome() {
   const content =
     application && application.submitted ? (
       <Text fontWeight="bold">
-        You've submitted an application already, wait for an update on your
-        application.
+        {`You have succesfully submitted your Homeownership Program application
+        for ${habitat?.name}. You will receive an email with updates on your
+        application.`}
       </Text>
     ) : (
       <>
@@ -65,6 +71,9 @@ export function TestHome() {
                 router: {
                   borderStyle: 'none',
                   boxShadow: 'none',
+                },
+                form: {
+                  padding: isReallySmall ? '0.25rem' : undefined,
                 },
               },
             },

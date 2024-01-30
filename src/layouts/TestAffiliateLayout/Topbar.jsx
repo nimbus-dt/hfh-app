@@ -15,9 +15,18 @@ export function Topbar({ habitatName }) {
           alignItems="center"
           height="100%"
           width="100%"
+          overflow="hidden"
         >
-          <Heading level={3} fontWeight="bold">
-            Welcome {habitatName} Habitat for Humanity
+          <Heading
+            level={3}
+            fontWeight="bold"
+            maxWidth="100%"
+            whiteSpace="nowrap"
+            display="inline-block"
+            style={{ textOverflow: 'ellipsis' }}
+            overflow="hidden"
+          >
+            Welcome {habitatName}
           </Heading>
         </Flex>
       </Card>
