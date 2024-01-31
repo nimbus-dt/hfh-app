@@ -6,7 +6,16 @@
 
 import * as React from "react";
 import { GridProps, SelectFieldProps, TextAreaFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
-import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
+export declare type EscapeHatchProps = {
+    [elementHierarchy: string]: Record<string, unknown>;
+} | null;
+export declare type VariantValues = {
+    [key: string]: string;
+};
+export declare type Variant = {
+    variantValues: VariantValues;
+    overrides: EscapeHatchProps;
+};
 export declare type ValidationResponse = {
     hasError: boolean;
     errorMessage?: string;
@@ -22,6 +31,7 @@ export declare type UserPropsCreateFormInputValues = {
     address?: string;
     zip?: number;
     email?: string;
+    identityID?: string;
 };
 export declare type UserPropsCreateFormValidationValues = {
     ownerID?: ValidationFunction<string>;
@@ -33,6 +43,7 @@ export declare type UserPropsCreateFormValidationValues = {
     address?: ValidationFunction<string>;
     zip?: ValidationFunction<number>;
     email?: ValidationFunction<string>;
+    identityID?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type UserPropsCreateFormOverridesProps = {
@@ -46,6 +57,7 @@ export declare type UserPropsCreateFormOverridesProps = {
     address?: PrimitiveOverrideProps<TextFieldProps>;
     zip?: PrimitiveOverrideProps<TextFieldProps>;
     email?: PrimitiveOverrideProps<TextFieldProps>;
+    identityID?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type UserPropsCreateFormProps = React.PropsWithChildren<{
     overrides?: UserPropsCreateFormOverridesProps | undefined | null;

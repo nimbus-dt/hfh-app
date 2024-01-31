@@ -6,7 +6,16 @@
 
 import * as React from "react";
 import { GridProps, SelectFieldProps, SwitchFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
-import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
+export declare type EscapeHatchProps = {
+    [elementHierarchy: string]: Record<string, unknown>;
+} | null;
+export declare type VariantValues = {
+    [key: string]: string;
+};
+export declare type Variant = {
+    variantValues: VariantValues;
+    overrides: EscapeHatchProps;
+};
 export declare type ValidationResponse = {
     hasError: boolean;
     errorMessage?: string;
@@ -17,14 +26,14 @@ export declare type HouseholdMemberCreateFormInputValues = {
     dateOfBirth?: string;
     sex?: string;
     relationship?: string;
-    isCoapplicant?: boolean;
+    isUnemployed?: boolean;
 };
 export declare type HouseholdMemberCreateFormValidationValues = {
     name?: ValidationFunction<string>;
     dateOfBirth?: ValidationFunction<string>;
     sex?: ValidationFunction<string>;
     relationship?: ValidationFunction<string>;
-    isCoapplicant?: ValidationFunction<boolean>;
+    isUnemployed?: ValidationFunction<boolean>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type HouseholdMemberCreateFormOverridesProps = {
@@ -33,7 +42,7 @@ export declare type HouseholdMemberCreateFormOverridesProps = {
     dateOfBirth?: PrimitiveOverrideProps<TextFieldProps>;
     sex?: PrimitiveOverrideProps<SelectFieldProps>;
     relationship?: PrimitiveOverrideProps<SelectFieldProps>;
-    isCoapplicant?: PrimitiveOverrideProps<SwitchFieldProps>;
+    isUnemployed?: PrimitiveOverrideProps<SwitchFieldProps>;
 } & EscapeHatchProps;
 export declare type HouseholdMemberCreateFormProps = React.PropsWithChildren<{
     overrides?: HouseholdMemberCreateFormOverridesProps | undefined | null;

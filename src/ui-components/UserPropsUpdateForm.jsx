@@ -14,9 +14,8 @@ import {
   TextAreaField,
   TextField,
 } from "@aws-amplify/ui-react";
-import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { UserProps } from "../models";
-import { fetchByPath, validateField } from "./utils";
+import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
 export default function UserPropsUpdateForm(props) {
   const {
@@ -40,6 +39,7 @@ export default function UserPropsUpdateForm(props) {
     address: "",
     zip: "",
     email: "",
+    identityID: "",
   };
   const [ownerID, setOwnerID] = React.useState(initialValues.ownerID);
   const [name, setName] = React.useState(initialValues.name);
@@ -50,6 +50,7 @@ export default function UserPropsUpdateForm(props) {
   const [address, setAddress] = React.useState(initialValues.address);
   const [zip, setZip] = React.useState(initialValues.zip);
   const [email, setEmail] = React.useState(initialValues.email);
+  const [identityID, setIdentityID] = React.useState(initialValues.identityID);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = userPropsRecord
@@ -61,13 +62,14 @@ export default function UserPropsUpdateForm(props) {
     setSex(cleanValues.sex);
     setPhone(cleanValues.phone);
     setProps(
-      typeof cleanValues.props === "string"
+      typeof cleanValues.props === "string" || cleanValues.props === null
         ? cleanValues.props
         : JSON.stringify(cleanValues.props)
     );
     setAddress(cleanValues.address);
     setZip(cleanValues.zip);
     setEmail(cleanValues.email);
+    setIdentityID(cleanValues.identityID);
     setErrors({});
   };
   const [userPropsRecord, setUserPropsRecord] =
@@ -92,6 +94,7 @@ export default function UserPropsUpdateForm(props) {
     address: [],
     zip: [],
     email: [{ type: "Email" }],
+    identityID: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -128,6 +131,7 @@ export default function UserPropsUpdateForm(props) {
           address,
           zip,
           email,
+          identityID,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -153,8 +157,8 @@ export default function UserPropsUpdateForm(props) {
         }
         try {
           Object.entries(modelFields).forEach(([key, value]) => {
-            if (typeof value === "string" && value.trim() === "") {
-              modelFields[key] = undefined;
+            if (typeof value === "string" && value === "") {
+              modelFields[key] = null;
             }
           });
           await DataStore.save(
@@ -192,6 +196,7 @@ export default function UserPropsUpdateForm(props) {
               address,
               zip,
               email,
+              identityID,
             };
             const result = onChange(modelFields);
             value = result?.ownerID ?? value;
@@ -224,6 +229,7 @@ export default function UserPropsUpdateForm(props) {
               address,
               zip,
               email,
+              identityID,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -257,6 +263,7 @@ export default function UserPropsUpdateForm(props) {
               address,
               zip,
               email,
+              identityID,
             };
             const result = onChange(modelFields);
             value = result?.dob ?? value;
@@ -289,6 +296,7 @@ export default function UserPropsUpdateForm(props) {
               address,
               zip,
               email,
+              identityID,
             };
             const result = onChange(modelFields);
             value = result?.sex ?? value;
@@ -338,6 +346,7 @@ export default function UserPropsUpdateForm(props) {
               address,
               zip,
               email,
+              identityID,
             };
             const result = onChange(modelFields);
             value = result?.phone ?? value;
@@ -370,6 +379,7 @@ export default function UserPropsUpdateForm(props) {
               address,
               zip,
               email,
+              identityID,
             };
             const result = onChange(modelFields);
             value = result?.props ?? value;
@@ -402,6 +412,7 @@ export default function UserPropsUpdateForm(props) {
               address: value,
               zip,
               email,
+              identityID,
             };
             const result = onChange(modelFields);
             value = result?.address ?? value;
@@ -438,6 +449,7 @@ export default function UserPropsUpdateForm(props) {
               address,
               zip: value,
               email,
+              identityID,
             };
             const result = onChange(modelFields);
             value = result?.zip ?? value;
@@ -470,6 +482,7 @@ export default function UserPropsUpdateForm(props) {
               address,
               zip,
               email: value,
+              identityID,
             };
             const result = onChange(modelFields);
             value = result?.email ?? value;
@@ -483,6 +496,39 @@ export default function UserPropsUpdateForm(props) {
         errorMessage={errors.email?.errorMessage}
         hasError={errors.email?.hasError}
         {...getOverrideProps(overrides, "email")}
+      ></TextField>
+      <TextField
+        label="Identity id"
+        isRequired={false}
+        isReadOnly={false}
+        value={identityID}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              ownerID,
+              name,
+              dob,
+              sex,
+              phone,
+              props,
+              address,
+              zip,
+              email,
+              identityID: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.identityID ?? value;
+          }
+          if (errors.identityID?.hasError) {
+            runValidationTasks("identityID", value);
+          }
+          setIdentityID(value);
+        }}
+        onBlur={() => runValidationTasks("identityID", identityID)}
+        errorMessage={errors.identityID?.errorMessage}
+        hasError={errors.identityID?.hasError}
+        {...getOverrideProps(overrides, "identityID")}
       ></TextField>
       <Flex
         justifyContent="space-between"

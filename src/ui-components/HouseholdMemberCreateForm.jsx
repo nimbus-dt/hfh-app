@@ -14,9 +14,8 @@ import {
   SwitchField,
   TextField,
 } from "@aws-amplify/ui-react";
-import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { HouseholdMember } from "../models";
-import { fetchByPath, validateField } from "./utils";
+import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
 export default function HouseholdMemberCreateForm(props) {
   const {
@@ -34,7 +33,7 @@ export default function HouseholdMemberCreateForm(props) {
     dateOfBirth: "",
     sex: "",
     relationship: "",
-    isCoapplicant: false,
+    isUnemployed: false,
   };
   const [name, setName] = React.useState(initialValues.name);
   const [dateOfBirth, setDateOfBirth] = React.useState(
@@ -44,8 +43,8 @@ export default function HouseholdMemberCreateForm(props) {
   const [relationship, setRelationship] = React.useState(
     initialValues.relationship
   );
-  const [isCoapplicant, setIsCoapplicant] = React.useState(
-    initialValues.isCoapplicant
+  const [isUnemployed, setIsUnemployed] = React.useState(
+    initialValues.isUnemployed
   );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
@@ -53,7 +52,7 @@ export default function HouseholdMemberCreateForm(props) {
     setDateOfBirth(initialValues.dateOfBirth);
     setSex(initialValues.sex);
     setRelationship(initialValues.relationship);
-    setIsCoapplicant(initialValues.isCoapplicant);
+    setIsUnemployed(initialValues.isUnemployed);
     setErrors({});
   };
   const validations = {
@@ -61,7 +60,7 @@ export default function HouseholdMemberCreateForm(props) {
     dateOfBirth: [],
     sex: [],
     relationship: [],
-    isCoapplicant: [],
+    isUnemployed: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -93,7 +92,7 @@ export default function HouseholdMemberCreateForm(props) {
           dateOfBirth,
           sex,
           relationship,
-          isCoapplicant,
+          isUnemployed,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -119,8 +118,8 @@ export default function HouseholdMemberCreateForm(props) {
         }
         try {
           Object.entries(modelFields).forEach(([key, value]) => {
-            if (typeof value === "string" && value.trim() === "") {
-              modelFields[key] = undefined;
+            if (typeof value === "string" && value === "") {
+              modelFields[key] = null;
             }
           });
           await DataStore.save(new HouseholdMember(modelFields));
@@ -152,7 +151,7 @@ export default function HouseholdMemberCreateForm(props) {
               dateOfBirth,
               sex,
               relationship,
-              isCoapplicant,
+              isUnemployed,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -181,7 +180,7 @@ export default function HouseholdMemberCreateForm(props) {
               dateOfBirth: value,
               sex,
               relationship,
-              isCoapplicant,
+              isUnemployed,
             };
             const result = onChange(modelFields);
             value = result?.dateOfBirth ?? value;
@@ -209,7 +208,7 @@ export default function HouseholdMemberCreateForm(props) {
               dateOfBirth,
               sex: value,
               relationship,
-              isCoapplicant,
+              isUnemployed,
             };
             const result = onChange(modelFields);
             value = result?.sex ?? value;
@@ -253,7 +252,7 @@ export default function HouseholdMemberCreateForm(props) {
               dateOfBirth,
               sex,
               relationship: value,
-              isCoapplicant,
+              isUnemployed,
             };
             const result = onChange(modelFields);
             value = result?.relationship ?? value;
@@ -310,10 +309,10 @@ export default function HouseholdMemberCreateForm(props) {
         ></option>
       </SelectField>
       <SwitchField
-        label="Is coapplicant"
+        label="Is unemployed"
         defaultChecked={false}
         isDisabled={false}
-        isChecked={isCoapplicant}
+        isChecked={isUnemployed}
         onChange={(e) => {
           let value = e.target.checked;
           if (onChange) {
@@ -322,20 +321,20 @@ export default function HouseholdMemberCreateForm(props) {
               dateOfBirth,
               sex,
               relationship,
-              isCoapplicant: value,
+              isUnemployed: value,
             };
             const result = onChange(modelFields);
-            value = result?.isCoapplicant ?? value;
+            value = result?.isUnemployed ?? value;
           }
-          if (errors.isCoapplicant?.hasError) {
-            runValidationTasks("isCoapplicant", value);
+          if (errors.isUnemployed?.hasError) {
+            runValidationTasks("isUnemployed", value);
           }
-          setIsCoapplicant(value);
+          setIsUnemployed(value);
         }}
-        onBlur={() => runValidationTasks("isCoapplicant", isCoapplicant)}
-        errorMessage={errors.isCoapplicant?.errorMessage}
-        hasError={errors.isCoapplicant?.hasError}
-        {...getOverrideProps(overrides, "isCoapplicant")}
+        onBlur={() => runValidationTasks("isUnemployed", isUnemployed)}
+        errorMessage={errors.isUnemployed?.errorMessage}
+        hasError={errors.isUnemployed?.hasError}
+        {...getOverrideProps(overrides, "isUnemployed")}
       ></SwitchField>
       <Flex
         justifyContent="space-between"
