@@ -32,7 +32,7 @@ const LandingPage = () => (
           maxWidth="650px"
           margin="auto"
           gap="2rem"
-          padding={{ base: '1rem', small: '3rem' }}
+          padding={{ base: '1rem', medium: '3rem' }}
         >
           <Heading
             fontSize="40px"
@@ -54,7 +54,7 @@ const LandingPage = () => (
           </Link>
         </Flex>
         <View
-          width={{ base: '80%', small: '70%' }}
+          width={{ base: '80%', medium: '70%' }}
           style={{ aspectRatio: '5/3' }}
           position="relative"
           margin="auto"
@@ -81,7 +81,7 @@ const LandingPage = () => (
           margin="auto"
           direction={{
             base: 'column',
-            small: 'row',
+            medium: 'row',
           }}
           gap="2rem"
           marginTop="4rem"
@@ -105,26 +105,27 @@ const LandingPage = () => (
           />
         </Flex>
         <View
-          width={{ base: '80%', small: '65%' }}
+          width={{ base: '80%', medium: '65%' }}
           margin="auto"
           marginBottom="2rem"
         >
           <Heading fontSize="40px" fontWeight="bold">
             FAQ
           </Heading>
+          <br />
           <Flex
             direction="column"
-            width={{ base: '90%', small: '75%' }}
+            width={{ base: '90%', medium: '75%' }}
             margin="auto"
             gap="2rem"
           >
             <ExpandableQuestion
               title="What is HabitatApp?"
-              content="Cillum laborum aliquip labore do. Proident et irure dolor laboris irure sit proident magna adipisicing duis eu sint. Id non commodo eiusmod Lorem excepteur pariatur in ullamco ipsum aliqua quis labore ex veniam."
+              content="HabitatApp is the all-in-one app for Habitat for Humanity affiliates. With it, affiliates can conduct all of their operations online - Homeownership Programs, Repairs, Volunteer Management and more."
             />
             <ExpandableQuestion
               title="How can I gain access to HabitatApp?"
-              content="Cillum laborum aliquip labore do. Proident et irure dolor laboris irure sit proident magna adipisicing duis eu sint. Id non commodo eiusmod Lorem excepteur pariatur in ullamco ipsum aliqua quis labore ex veniam."
+              content="To get access, contact us now so that we can reach out to you and schedule a demo!"
             />
           </Flex>
         </View>
