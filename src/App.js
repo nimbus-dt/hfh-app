@@ -32,6 +32,8 @@ import AffiliatePortalRepairsPage from 'pages/affiliate-portal/repairs';
 import AffiliatePortalVolunteersPage from 'pages/affiliate-portal/volunteers';
 import AffiliatePortalSettingsPage from 'pages/affiliate-portal/settings';
 import { TestTerms } from 'components/Test/Parts/TestTerms';
+import { NewLandingLayout } from 'pages/index/Layout/NewLandingLayout';
+import LandingPage from 'pages/index/LandingPage';
 import { TestLayout } from './components/Test/Layout/TestLayout';
 
 import AffiliateSettingsPage from './pages/affiliate/settings';
@@ -39,7 +41,6 @@ import AffiliateSettingsPage from './pages/affiliate/settings';
 // eslint-disable-next-line import/no-unresolved
 import '@aws-amplify/ui-react/styles.css';
 import { LandingLayout } from './components/Landing/LandingLayout';
-import { LandingHome } from './components/Landing/LandingHome';
 import { LandingAbout } from './components/Landing/LandingAbout';
 import { LandingTerms } from './components/Landing/LandingTerms';
 import { LandingPrivacyPolicy } from './components/Landing/LandingPrivacyPolicy';
@@ -64,7 +65,14 @@ function App() {
           </ScrollView>
         }
       >
-        <Route index element={<LandingLayout comp={<LandingHome />} />} />
+        <Route
+          index
+          element={
+            <NewLandingLayout>
+              <LandingPage />
+            </NewLandingLayout>
+          }
+        />
         <Route
           path="about"
           element={<LandingLayout comp={<LandingAbout />} />}
