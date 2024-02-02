@@ -34,6 +34,20 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "API Gateway"
+    },
+    "userAPI": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "getEmail"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
     }
   },
   "auth": {
@@ -86,6 +100,20 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "getEmail": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "hfhapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "sendEmailToApplicant": {
       "build": true,
       "dependsOn": [
@@ -124,6 +152,22 @@
         {
           "category": "function",
           "resourceName": "applicationchangenotification"
+        }
+      ]
+    },
+    "AMPLIFY_function_getEmail_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getEmail"
+        }
+      ]
+    },
+    "AMPLIFY_function_getEmail_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getEmail"
         }
       ]
     },

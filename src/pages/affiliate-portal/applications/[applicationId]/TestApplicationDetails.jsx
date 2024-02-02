@@ -29,7 +29,7 @@ import {
   getTestTotalMonthlyIncomes,
   getTotalAssetsValue,
 } from 'utils/applicationMetrics';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from 'components/Modal';
 import { API, DataStore } from 'aws-amplify';
 import { useForm } from 'react-hook-form';
@@ -47,6 +47,7 @@ import FinancialSection from './components/FinancialSection';
 import { decideSchema, returnSchema } from '../TestApplicationDetails.schema';
 
 const TestApplicationDetails = () => {
+  const [userEmail, setUserEmail] = useState();
   const [trigger, setTrigger] = useState(true);
   const [returnModalOpen, setReturnModalOpen] = useState(false);
   const [decideModalOpen, setDecideModalOpen] = useState(false);
@@ -145,6 +146,7 @@ const TestApplicationDetails = () => {
           subject: 'Status update on your Habitat for Humanity application',
           body: data.message,
           sub: persistedApplication.ownerID,
+          habitat: habitat.name,
         },
       });
 
@@ -176,6 +178,7 @@ const TestApplicationDetails = () => {
           subject: 'Status update on your Habitat for Humanity application',
           body: data.message,
           sub: persistedApplication.ownerID,
+          habitat: habitat.name,
         },
       });
 
@@ -187,6 +190,26 @@ const TestApplicationDetails = () => {
     }
     setLoading((previousLoading) => previousLoading - 1);
   };
+
+  useEffect(() => {
+    const getUser = async () => {
+      if (application) {
+        try {
+          const response = await API.get('userAPI', '/email', {
+            queryStringParameters: {
+              sub: application.ownerID,
+            },
+          });
+
+          setUserEmail(response.email);
+        } catch (error) {
+          console.log('Error while retrieving applicant email.');
+        }
+      }
+    };
+
+    getUser();
+  }, [application]);
 
   return (
     <Flex width="auto" direction="column" gap="2.5rem">
@@ -213,7 +236,7 @@ const TestApplicationDetails = () => {
         submittedDate={application?.submittedDate}
       />
 
-      <ApplicantInfoTable applicantInfo={applicantInfos[0]} />
+      <ApplicantInfoTable applicantInfo={applicantInfos[0]} email={userEmail} />
 
       <ChecklistTable
         questions={habitat?.props?.prePreScreen?.prePreScreenQuestions}

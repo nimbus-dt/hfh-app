@@ -1,10 +1,23 @@
 /* eslint-disable react/prop-types */
-import { Image, Card, Flex, Button } from '@aws-amplify/ui-react';
+import {
+  Image,
+  Card,
+  Flex,
+  Button,
+  Text,
+  useBreakpointValue,
+} from '@aws-amplify/ui-react';
 import PropTypes from 'prop-types';
 import { Auth } from 'aws-amplify';
+import { MdLogout } from 'react-icons/md';
 import logoHabitat from '../../../assets/images/trace.svg';
 
 export function TestNav({ isAuthenticated }) {
+  const boolMobile = useBreakpointValue({
+    base: true,
+    small: false,
+  });
+
   const handleSignOut = async () => {
     await Auth.signOut();
   };
@@ -25,8 +38,12 @@ export function TestNav({ isAuthenticated }) {
             backgroundColor="white"
             marginRight="1rem"
             onClick={handleSignOut}
+            padding={boolMobile && '0.5rem'}
           >
-            Sign out
+            <Flex gap="0.5rem">
+              <MdLogout size="1.5rem" />
+              {!boolMobile && <Text>Sign out</Text>}
+            </Flex>
           </Button>
         )}
       </Flex>
