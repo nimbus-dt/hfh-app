@@ -15,7 +15,8 @@ export function NewLandingLayout({ children }) {
         alignItems="center"
         minHeight="100vh"
         paddingBottom="1rem"
-        gap="0"
+        gap="0rem"
+        backgroundColor="lightgray"
       >
         <Card wrap width="100%" backgroundColor="#55B949" padding="0">
           <Flex
