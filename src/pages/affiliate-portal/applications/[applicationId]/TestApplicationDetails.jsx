@@ -188,6 +188,7 @@ const TestApplicationDetails = () => {
       setDecideModalOpen(false);
       setTrigger((previousTrigger) => !previousTrigger);
       resetDecide();
+      navigate('..');
     } catch (error) {
       console.log('An error ocurred while returning the application');
     }
