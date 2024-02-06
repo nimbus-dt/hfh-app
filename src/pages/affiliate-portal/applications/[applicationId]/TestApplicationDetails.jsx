@@ -154,6 +154,7 @@ const TestApplicationDetails = () => {
       setReturnModalOpen(false);
       setTrigger((previousTrigger) => !previousTrigger);
       resetReturn();
+      navigate('..');
     } catch (error) {
       console.log('An error ocurred while returning the application');
     }
