@@ -19,9 +19,8 @@ import {
   TextField,
   useTheme,
 } from "@aws-amplify/ui-react";
-import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { Habitat } from "../models";
-import { fetchByPath, validateField } from "./utils";
+import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
 function ArrayField({
   items = [],
@@ -35,6 +34,7 @@ function ArrayField({
   defaultFieldValue,
   lengthLimit,
   getBadgeText,
+  runValidationTasks,
   errorMessage,
 }) {
   const labelElement = <Text>{label}</Text>;
@@ -58,6 +58,7 @@ function ArrayField({
     setSelectedBadgeIndex(undefined);
   };
   const addItem = async () => {
+    const { hasError } = runValidationTasks();
     if (
       currentFieldValue !== undefined &&
       currentFieldValue !== null &&
@@ -167,12 +168,7 @@ function ArrayField({
               }}
             ></Button>
           )}
-          <Button
-            size="small"
-            variation="link"
-            isDisabled={hasError}
-            onClick={addItem}
-          >
+          <Button size="small" variation="link" onClick={addItem}>
             {selectedBadgeIndex !== undefined ? "Save" : "Add"}
           </Button>
         </Flex>
@@ -308,8 +304,8 @@ export default function HabitatCreateForm(props) {
         }
         try {
           Object.entries(modelFields).forEach(([key, value]) => {
-            if (typeof value === "string" && value.trim() === "") {
-              modelFields[key] = undefined;
+            if (typeof value === "string" && value === "") {
+              modelFields[key] = null;
             }
           });
           await DataStore.save(new Habitat(modelFields));
@@ -513,6 +509,9 @@ export default function HabitatCreateForm(props) {
         label={"Counties served"}
         items={countiesServed}
         hasError={errors?.countiesServed?.hasError}
+        runValidationTasks={async () =>
+          await runValidationTasks("countiesServed", currentCountiesServedValue)
+        }
         errorMessage={errors?.countiesServed?.errorMessage}
         setFieldValue={setCurrentCountiesServedValue}
         inputFieldRef={countiesServedRef}
@@ -596,6 +595,9 @@ export default function HabitatCreateForm(props) {
         label={"Users"}
         items={users}
         hasError={errors?.users?.hasError}
+        runValidationTasks={async () =>
+          await runValidationTasks("users", currentUsersValue)
+        }
         errorMessage={errors?.users?.errorMessage}
         setFieldValue={setCurrentUsersValue}
         inputFieldRef={usersRef}
@@ -646,6 +648,9 @@ export default function HabitatCreateForm(props) {
         label={"Ami"}
         items={AMI}
         hasError={errors?.AMI?.hasError}
+        runValidationTasks={async () =>
+          await runValidationTasks("AMI", currentAMIValue)
+        }
         errorMessage={errors?.AMI?.errorMessage}
         setFieldValue={setCurrentAMIValue}
         inputFieldRef={AMIRef}

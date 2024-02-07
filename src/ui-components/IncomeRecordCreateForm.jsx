@@ -20,9 +20,8 @@ import {
   TextField,
   useTheme,
 } from "@aws-amplify/ui-react";
-import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { IncomeRecord } from "../models";
-import { fetchByPath, validateField } from "./utils";
+import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
 function ArrayField({
   items = [],
@@ -36,6 +35,7 @@ function ArrayField({
   defaultFieldValue,
   lengthLimit,
   getBadgeText,
+  runValidationTasks,
   errorMessage,
 }) {
   const labelElement = <Text>{label}</Text>;
@@ -59,6 +59,7 @@ function ArrayField({
     setSelectedBadgeIndex(undefined);
   };
   const addItem = async () => {
+    const { hasError } = runValidationTasks();
     if (
       currentFieldValue !== undefined &&
       currentFieldValue !== null &&
@@ -168,12 +169,7 @@ function ArrayField({
               }}
             ></Button>
           )}
-          <Button
-            size="small"
-            variation="link"
-            isDisabled={hasError}
-            onClick={addItem}
-          >
+          <Button size="small" variation="link" onClick={addItem}>
             {selectedBadgeIndex !== undefined ? "Save" : "Add"}
           </Button>
         </Flex>
@@ -199,8 +195,9 @@ export default function IncomeRecordCreateForm(props) {
     employer: "",
     estimatedMonthlyIncome: "",
     proofOfIncome: [],
+    applicationID: "",
     ownerApplicant: false,
-    totalIncome: "",
+    employmentTime: "",
   };
   const [ownerID, setOwnerID] = React.useState(initialValues.ownerID);
   const [typeOfIncome, setTypeOfIncome] = React.useState(
@@ -213,11 +210,14 @@ export default function IncomeRecordCreateForm(props) {
   const [proofOfIncome, setProofOfIncome] = React.useState(
     initialValues.proofOfIncome
   );
+  const [applicationID, setApplicationID] = React.useState(
+    initialValues.applicationID
+  );
   const [ownerApplicant, setOwnerApplicant] = React.useState(
     initialValues.ownerApplicant
   );
-  const [totalIncome, setTotalIncome] = React.useState(
-    initialValues.totalIncome
+  const [employmentTime, setEmploymentTime] = React.useState(
+    initialValues.employmentTime
   );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
@@ -227,8 +227,9 @@ export default function IncomeRecordCreateForm(props) {
     setEstimatedMonthlyIncome(initialValues.estimatedMonthlyIncome);
     setProofOfIncome(initialValues.proofOfIncome);
     setCurrentProofOfIncomeValue("");
+    setApplicationID(initialValues.applicationID);
     setOwnerApplicant(initialValues.ownerApplicant);
-    setTotalIncome(initialValues.totalIncome);
+    setEmploymentTime(initialValues.employmentTime);
     setErrors({});
   };
   const [currentProofOfIncomeValue, setCurrentProofOfIncomeValue] =
@@ -240,8 +241,9 @@ export default function IncomeRecordCreateForm(props) {
     employer: [],
     estimatedMonthlyIncome: [],
     proofOfIncome: [],
+    applicationID: [],
     ownerApplicant: [],
-    totalIncome: [],
+    employmentTime: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -274,8 +276,9 @@ export default function IncomeRecordCreateForm(props) {
           employer,
           estimatedMonthlyIncome,
           proofOfIncome,
+          applicationID,
           ownerApplicant,
-          totalIncome,
+          employmentTime,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -301,8 +304,8 @@ export default function IncomeRecordCreateForm(props) {
         }
         try {
           Object.entries(modelFields).forEach(([key, value]) => {
-            if (typeof value === "string" && value.trim() === "") {
-              modelFields[key] = undefined;
+            if (typeof value === "string" && value === "") {
+              modelFields[key] = null;
             }
           });
           await DataStore.save(new IncomeRecord(modelFields));
@@ -335,8 +338,9 @@ export default function IncomeRecordCreateForm(props) {
               employer,
               estimatedMonthlyIncome,
               proofOfIncome,
+              applicationID,
               ownerApplicant,
-              totalIncome,
+              employmentTime,
             };
             const result = onChange(modelFields);
             value = result?.ownerID ?? value;
@@ -365,8 +369,9 @@ export default function IncomeRecordCreateForm(props) {
               employer,
               estimatedMonthlyIncome,
               proofOfIncome,
+              applicationID,
               ownerApplicant,
-              totalIncome,
+              employmentTime,
             };
             const result = onChange(modelFields);
             value = result?.typeOfIncome ?? value;
@@ -461,8 +466,9 @@ export default function IncomeRecordCreateForm(props) {
               employer: value,
               estimatedMonthlyIncome,
               proofOfIncome,
+              applicationID,
               ownerApplicant,
-              totalIncome,
+              employmentTime,
             };
             const result = onChange(modelFields);
             value = result?.employer ?? value;
@@ -495,8 +501,9 @@ export default function IncomeRecordCreateForm(props) {
               employer,
               estimatedMonthlyIncome: value,
               proofOfIncome,
+              applicationID,
               ownerApplicant,
-              totalIncome,
+              employmentTime,
             };
             const result = onChange(modelFields);
             value = result?.estimatedMonthlyIncome ?? value;
@@ -523,8 +530,9 @@ export default function IncomeRecordCreateForm(props) {
               employer,
               estimatedMonthlyIncome,
               proofOfIncome: values,
+              applicationID,
               ownerApplicant,
-              totalIncome,
+              employmentTime,
             };
             const result = onChange(modelFields);
             values = result?.proofOfIncome ?? values;
@@ -536,6 +544,9 @@ export default function IncomeRecordCreateForm(props) {
         label={"Proof of income"}
         items={proofOfIncome}
         hasError={errors?.proofOfIncome?.hasError}
+        runValidationTasks={async () =>
+          await runValidationTasks("proofOfIncome", currentProofOfIncomeValue)
+        }
         errorMessage={errors?.proofOfIncome?.errorMessage}
         setFieldValue={setCurrentProofOfIncomeValue}
         inputFieldRef={proofOfIncomeRef}
@@ -563,6 +574,37 @@ export default function IncomeRecordCreateForm(props) {
           {...getOverrideProps(overrides, "proofOfIncome")}
         ></TextField>
       </ArrayField>
+      <TextField
+        label="Application id"
+        isRequired={false}
+        isReadOnly={false}
+        value={applicationID}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              ownerID,
+              typeOfIncome,
+              employer,
+              estimatedMonthlyIncome,
+              proofOfIncome,
+              applicationID: value,
+              ownerApplicant,
+              employmentTime,
+            };
+            const result = onChange(modelFields);
+            value = result?.applicationID ?? value;
+          }
+          if (errors.applicationID?.hasError) {
+            runValidationTasks("applicationID", value);
+          }
+          setApplicationID(value);
+        }}
+        onBlur={() => runValidationTasks("applicationID", applicationID)}
+        errorMessage={errors.applicationID?.errorMessage}
+        hasError={errors.applicationID?.hasError}
+        {...getOverrideProps(overrides, "applicationID")}
+      ></TextField>
       <SwitchField
         label="Owner applicant"
         defaultChecked={false}
@@ -577,8 +619,9 @@ export default function IncomeRecordCreateForm(props) {
               employer,
               estimatedMonthlyIncome,
               proofOfIncome,
+              applicationID,
               ownerApplicant: value,
-              totalIncome,
+              employmentTime,
             };
             const result = onChange(modelFields);
             value = result?.ownerApplicant ?? value;
@@ -594,12 +637,12 @@ export default function IncomeRecordCreateForm(props) {
         {...getOverrideProps(overrides, "ownerApplicant")}
       ></SwitchField>
       <TextField
-        label="Total income"
+        label="Employment time"
         isRequired={false}
         isReadOnly={false}
         type="number"
         step="any"
-        value={totalIncome}
+        value={employmentTime}
         onChange={(e) => {
           let value = isNaN(parseFloat(e.target.value))
             ? e.target.value
@@ -611,21 +654,22 @@ export default function IncomeRecordCreateForm(props) {
               employer,
               estimatedMonthlyIncome,
               proofOfIncome,
+              applicationID,
               ownerApplicant,
-              totalIncome: value,
+              employmentTime: value,
             };
             const result = onChange(modelFields);
-            value = result?.totalIncome ?? value;
+            value = result?.employmentTime ?? value;
           }
-          if (errors.totalIncome?.hasError) {
-            runValidationTasks("totalIncome", value);
+          if (errors.employmentTime?.hasError) {
+            runValidationTasks("employmentTime", value);
           }
-          setTotalIncome(value);
+          setEmploymentTime(value);
         }}
-        onBlur={() => runValidationTasks("totalIncome", totalIncome)}
-        errorMessage={errors.totalIncome?.errorMessage}
-        hasError={errors.totalIncome?.hasError}
-        {...getOverrideProps(overrides, "totalIncome")}
+        onBlur={() => runValidationTasks("employmentTime", employmentTime)}
+        errorMessage={errors.employmentTime?.errorMessage}
+        hasError={errors.employmentTime?.hasError}
+        {...getOverrideProps(overrides, "employmentTime")}
       ></TextField>
       <Flex
         justifyContent="space-between"
