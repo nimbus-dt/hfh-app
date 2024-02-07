@@ -36,6 +36,7 @@ import { NewLandingLayout } from 'pages/index/Layout/NewLandingLayout';
 import LandingPage from 'pages/index/LandingPage';
 import TermsPage from 'pages/terms/TermsPage';
 import PrivacyPage from 'pages/privacy';
+import ContactPage from 'pages/contact';
 import { TestLayout } from './components/Test/Layout/TestLayout';
 
 import AffiliateSettingsPage from './pages/affiliate/settings';
@@ -45,7 +46,6 @@ import '@aws-amplify/ui-react/styles.css';
 import { LandingLayout } from './components/Landing/LandingLayout';
 import { LandingAbout } from './components/Landing/LandingAbout';
 import { LandingReturn } from './components/Landing/LandingReturn';
-import { LandingContact } from './components/Landing/LandingContact';
 import { FormUserForm } from './components/PreScreen/Form/FormUserForm';
 import { FormLayoutNew } from './components/PreScreen/Form/FormLayoutNew';
 import { FormInfoPage } from './components/PreScreen/Form/FormInfoPage';
@@ -99,7 +99,11 @@ function App() {
         />
         <Route
           path="contact"
-          element={<LandingLayout comp={<LandingContact />} />}
+          element={
+            <NewLandingLayout>
+              <ContactPage />
+            </NewLandingLayout>
+          }
         />
         <Route
           path="pricing"
