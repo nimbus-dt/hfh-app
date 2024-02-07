@@ -16,6 +16,9 @@
     },
     "userAPI": {
       "Type": "String"
+    },
+    "public": {
+      "Type": "String"
     }
   },
   "Conditions": {
