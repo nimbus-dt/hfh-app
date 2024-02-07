@@ -129,7 +129,8 @@ const TestApplicationDetails = () => {
 
   const handleReturnOnClick = () => setReturnModalOpen(true);
 
-  const handleReturnModalOnClose = () => setReturnModalOpen(false);
+  const handleReturnModalOnClose = () =>
+    loading === 0 && setReturnModalOpen(false);
 
   const handleOnValidReturn = async (data) => {
     setLoading((previousLoading) => previousLoading + 1);
@@ -153,6 +154,7 @@ const TestApplicationDetails = () => {
       setReturnModalOpen(false);
       setTrigger((previousTrigger) => !previousTrigger);
       resetReturn();
+      navigate('..');
     } catch (error) {
       console.log('An error ocurred while returning the application');
     }
@@ -161,7 +163,8 @@ const TestApplicationDetails = () => {
 
   const handleDecideOnClick = () => setDecideModalOpen(true);
 
-  const handleDecideModalOnClose = () => setDecideModalOpen(false);
+  const handleDecideModalOnClose = () =>
+    loading === 0 && setDecideModalOpen(false);
 
   const handleOnValidDecide = async (data) => {
     setLoading((previousLoading) => previousLoading + 1);
@@ -185,6 +188,7 @@ const TestApplicationDetails = () => {
       setDecideModalOpen(false);
       setTrigger((previousTrigger) => !previousTrigger);
       resetDecide();
+      navigate('..');
     } catch (error) {
       console.log('An error ocurred while returning the application');
     }
@@ -302,10 +306,16 @@ const TestApplicationDetails = () => {
             </View>
           )}
           <Flex justifyContent="end" marginTop="1rem">
-            <Button variation="destructive" onClick={handleReturnModalOnClose}>
+            <Button
+              variation="destructive"
+              onClick={handleReturnModalOnClose}
+              isDisabled={loading > 0}
+            >
               Cancel
             </Button>
-            <Button type="submit">Return</Button>
+            <Button type="submit" isDisabled={loading > 0}>
+              Return
+            </Button>
           </Flex>
         </form>
       </Modal>
@@ -353,10 +363,16 @@ const TestApplicationDetails = () => {
             </View>
           )}
           <Flex justifyContent="end" marginTop="1rem">
-            <Button variation="destructive" onClick={handleDecideModalOnClose}>
+            <Button
+              variation="destructive"
+              onClick={handleDecideModalOnClose}
+              isDisabled={loading > 0}
+            >
               Cancel
             </Button>
-            <Button type="submit">Send</Button>
+            <Button type="submit" isDisabled={loading > 0}>
+              Send
+            </Button>
           </Flex>
         </form>
       </Modal>

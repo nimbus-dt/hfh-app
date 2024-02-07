@@ -6,8 +6,17 @@
 
 import * as React from "react";
 import { GridProps, SelectFieldProps, SwitchFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
-import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
 import { DebtRecord } from "../models";
+export declare type EscapeHatchProps = {
+    [elementHierarchy: string]: Record<string, unknown>;
+} | null;
+export declare type VariantValues = {
+    [key: string]: string;
+};
+export declare type Variant = {
+    variantValues: VariantValues;
+    overrides: EscapeHatchProps;
+};
 export declare type ValidationResponse = {
     hasError: boolean;
     errorMessage?: string;
@@ -18,6 +27,7 @@ export declare type DebtRecordUpdateFormInputValues = {
     monthlyRecurrence?: number;
     typeOfDebt?: string;
     estimatedAmount?: number;
+    applicationID?: string;
     ownerApplicant?: boolean;
 };
 export declare type DebtRecordUpdateFormValidationValues = {
@@ -25,6 +35,7 @@ export declare type DebtRecordUpdateFormValidationValues = {
     monthlyRecurrence?: ValidationFunction<number>;
     typeOfDebt?: ValidationFunction<string>;
     estimatedAmount?: ValidationFunction<number>;
+    applicationID?: ValidationFunction<string>;
     ownerApplicant?: ValidationFunction<boolean>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
@@ -34,6 +45,7 @@ export declare type DebtRecordUpdateFormOverridesProps = {
     monthlyRecurrence?: PrimitiveOverrideProps<TextFieldProps>;
     typeOfDebt?: PrimitiveOverrideProps<SelectFieldProps>;
     estimatedAmount?: PrimitiveOverrideProps<TextFieldProps>;
+    applicationID?: PrimitiveOverrideProps<TextFieldProps>;
     ownerApplicant?: PrimitiveOverrideProps<SwitchFieldProps>;
 } & EscapeHatchProps;
 export declare type DebtRecordUpdateFormProps = React.PropsWithChildren<{

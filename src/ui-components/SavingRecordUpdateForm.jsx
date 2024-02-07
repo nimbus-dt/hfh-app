@@ -13,9 +13,8 @@ import {
   SwitchField,
   TextField,
 } from "@aws-amplify/ui-react";
-import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { SavingRecord } from "../models";
-import { fetchByPath, validateField } from "./utils";
+import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
 export default function SavingRecordUpdateForm(props) {
   const {
@@ -33,6 +32,7 @@ export default function SavingRecordUpdateForm(props) {
     ownerID: "",
     institution: "",
     estimatedAmount: "",
+    applicationID: "",
     ownerApplicant: false,
   };
   const [ownerID, setOwnerID] = React.useState(initialValues.ownerID);
@@ -41,6 +41,9 @@ export default function SavingRecordUpdateForm(props) {
   );
   const [estimatedAmount, setEstimatedAmount] = React.useState(
     initialValues.estimatedAmount
+  );
+  const [applicationID, setApplicationID] = React.useState(
+    initialValues.applicationID
   );
   const [ownerApplicant, setOwnerApplicant] = React.useState(
     initialValues.ownerApplicant
@@ -53,6 +56,7 @@ export default function SavingRecordUpdateForm(props) {
     setOwnerID(cleanValues.ownerID);
     setInstitution(cleanValues.institution);
     setEstimatedAmount(cleanValues.estimatedAmount);
+    setApplicationID(cleanValues.applicationID);
     setOwnerApplicant(cleanValues.ownerApplicant);
     setErrors({});
   };
@@ -73,6 +77,7 @@ export default function SavingRecordUpdateForm(props) {
     ownerID: [],
     institution: [],
     estimatedAmount: [],
+    applicationID: [],
     ownerApplicant: [],
   };
   const runValidationTasks = async (
@@ -104,6 +109,7 @@ export default function SavingRecordUpdateForm(props) {
           ownerID,
           institution,
           estimatedAmount,
+          applicationID,
           ownerApplicant,
         };
         const validationResponses = await Promise.all(
@@ -130,8 +136,8 @@ export default function SavingRecordUpdateForm(props) {
         }
         try {
           Object.entries(modelFields).forEach(([key, value]) => {
-            if (typeof value === "string" && value.trim() === "") {
-              modelFields[key] = undefined;
+            if (typeof value === "string" && value === "") {
+              modelFields[key] = null;
             }
           });
           await DataStore.save(
@@ -163,6 +169,7 @@ export default function SavingRecordUpdateForm(props) {
               ownerID: value,
               institution,
               estimatedAmount,
+              applicationID,
               ownerApplicant,
             };
             const result = onChange(modelFields);
@@ -190,6 +197,7 @@ export default function SavingRecordUpdateForm(props) {
               ownerID,
               institution: value,
               estimatedAmount,
+              applicationID,
               ownerApplicant,
             };
             const result = onChange(modelFields);
@@ -221,6 +229,7 @@ export default function SavingRecordUpdateForm(props) {
               ownerID,
               institution,
               estimatedAmount: value,
+              applicationID,
               ownerApplicant,
             };
             const result = onChange(modelFields);
@@ -236,6 +245,34 @@ export default function SavingRecordUpdateForm(props) {
         hasError={errors.estimatedAmount?.hasError}
         {...getOverrideProps(overrides, "estimatedAmount")}
       ></TextField>
+      <TextField
+        label="Application id"
+        isRequired={false}
+        isReadOnly={false}
+        value={applicationID}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              ownerID,
+              institution,
+              estimatedAmount,
+              applicationID: value,
+              ownerApplicant,
+            };
+            const result = onChange(modelFields);
+            value = result?.applicationID ?? value;
+          }
+          if (errors.applicationID?.hasError) {
+            runValidationTasks("applicationID", value);
+          }
+          setApplicationID(value);
+        }}
+        onBlur={() => runValidationTasks("applicationID", applicationID)}
+        errorMessage={errors.applicationID?.errorMessage}
+        hasError={errors.applicationID?.hasError}
+        {...getOverrideProps(overrides, "applicationID")}
+      ></TextField>
       <SwitchField
         label="Owner applicant"
         defaultChecked={false}
@@ -248,6 +285,7 @@ export default function SavingRecordUpdateForm(props) {
               ownerID,
               institution,
               estimatedAmount,
+              applicationID,
               ownerApplicant: value,
             };
             const result = onChange(modelFields);

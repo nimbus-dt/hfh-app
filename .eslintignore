@@ -9,3 +9,5 @@ amplify/#current-cloud-backend
 src\models\models
 
 src/models/models
+
+amplify-codegen-temp/models/models

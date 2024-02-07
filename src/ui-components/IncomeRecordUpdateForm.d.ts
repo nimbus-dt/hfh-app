@@ -6,8 +6,17 @@
 
 import * as React from "react";
 import { GridProps, SelectFieldProps, SwitchFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
-import { EscapeHatchProps } from "@aws-amplify/ui-react/internal";
 import { IncomeRecord } from "../models";
+export declare type EscapeHatchProps = {
+    [elementHierarchy: string]: Record<string, unknown>;
+} | null;
+export declare type VariantValues = {
+    [key: string]: string;
+};
+export declare type Variant = {
+    variantValues: VariantValues;
+    overrides: EscapeHatchProps;
+};
 export declare type ValidationResponse = {
     hasError: boolean;
     errorMessage?: string;
@@ -19,8 +28,9 @@ export declare type IncomeRecordUpdateFormInputValues = {
     employer?: string;
     estimatedMonthlyIncome?: number;
     proofOfIncome?: string[];
+    applicationID?: string;
     ownerApplicant?: boolean;
-    totalIncome?: number;
+    employmentTime?: number;
 };
 export declare type IncomeRecordUpdateFormValidationValues = {
     ownerID?: ValidationFunction<string>;
@@ -28,8 +38,9 @@ export declare type IncomeRecordUpdateFormValidationValues = {
     employer?: ValidationFunction<string>;
     estimatedMonthlyIncome?: ValidationFunction<number>;
     proofOfIncome?: ValidationFunction<string>;
+    applicationID?: ValidationFunction<string>;
     ownerApplicant?: ValidationFunction<boolean>;
-    totalIncome?: ValidationFunction<number>;
+    employmentTime?: ValidationFunction<number>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type IncomeRecordUpdateFormOverridesProps = {
@@ -39,8 +50,9 @@ export declare type IncomeRecordUpdateFormOverridesProps = {
     employer?: PrimitiveOverrideProps<TextFieldProps>;
     estimatedMonthlyIncome?: PrimitiveOverrideProps<TextFieldProps>;
     proofOfIncome?: PrimitiveOverrideProps<TextFieldProps>;
+    applicationID?: PrimitiveOverrideProps<TextFieldProps>;
     ownerApplicant?: PrimitiveOverrideProps<SwitchFieldProps>;
-    totalIncome?: PrimitiveOverrideProps<TextFieldProps>;
+    employmentTime?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type IncomeRecordUpdateFormProps = React.PropsWithChildren<{
     overrides?: IncomeRecordUpdateFormOverridesProps | undefined | null;
