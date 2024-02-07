@@ -18,7 +18,7 @@ import {
   View,
   ScrollView,
 } from '@aws-amplify/ui-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   useApplicantInfosQuery,
   useTestApplicationsQuery,
@@ -194,6 +194,10 @@ const TestApplications = () => {
     setNewStatus('');
   };
 
+  useEffect(() => {
+    console.log('applications', applications);
+  }, [applications]);
+
   return (
     <Flex
       direction="column"
@@ -351,7 +355,7 @@ const TestApplications = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {habitat.props.data.customStatus.map((statusItem) => (
+                {habitat.props.data.customStatus?.map((statusItem) => (
                   <TableRow key={statusItem}>
                     <TableCell>{statusItem}</TableCell>
                     <TableCell>
