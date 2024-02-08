@@ -35,15 +35,23 @@ const ContactPage = () => {
         body: {
           subject: 'HabitatApp Form Submission',
           body: `<ul>
-            <li>How did you hear about HabitatApp? ${data.howYouHearAboutHabitatApp}</li>
-            <li>What is your name? ${data.name}</li>
-            <li>What is your email? ${data.email}</li>
-            <li>What is the name of your affiliate? ${data.affiliateName}</li>
-            <li>What is your role within this affiliate? ${data.affiliateRole}</li>
-            <li>In what state is your affiliate located? ${data.affiliateState}</li>
-            <li>How many houses do you build in one year? ${data.housesBuildPerYear}</li>
-            <li>Hoy many applications do you process in a year? ${data.applicationProcessPerYear}</li>
-            <li>Anything else? ${data.anythingElse}</li>
+            <li><b>How did you hear about HabitatApp?</b> ${data.howYouHearAboutHabitatApp}</li>
+            <br/>
+            <li><b>What is your name?</b> ${data.name}</li>
+            <br/>
+            <li><b>What is your email?</b> ${data.email}</li>
+            <br/>
+            <li><b>What is the name of your affiliate?</b> ${data.affiliateName}</li>
+            <br/>
+            <li><b>What is your role within this affiliate?</b> ${data.affiliateRole}</li>
+            <br/>
+            <li><b>In what state is your affiliate located?</b> ${data.affiliateState}</li>
+            <br/>
+            <li><b>How many houses do you build in one year?</b> ${data.housesBuildPerYear}</li>
+            <br/>
+            <li><b>Hoy many applications do you process in a year?</b> ${data.applicationProcessPerYear}</li>
+            <br/>
+            <li><b>Anything else?</b> ${data.anythingElse}</li>
           </ul>`,
         },
       });
