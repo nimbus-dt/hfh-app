@@ -42,9 +42,13 @@ export function TestReview() {
     }));
   };
 
-  const handleAddressOnReview = () => {
+  const handleAddressOnReview = (hasPreviousEmployment) => {
     setCurrentAddressOpen(false);
-    setPreviousAddressOpen(true);
+    if (hasPreviousEmployment) {
+      setPreviousAddressOpen(true);
+    } else {
+      setChecklistExpanded(true);
+    }
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
       address: true,

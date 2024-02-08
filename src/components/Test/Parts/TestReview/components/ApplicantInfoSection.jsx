@@ -369,7 +369,11 @@ const ApplicantInfoSection = ({
         applicantInfo={applicantInfo}
         reviewedSections={reviewedSections}
         setReviewedSections={setReviewedSections}
-        onReview={handleAddressOnReview}
+        onReview={() =>
+          handleAddressOnReview(
+            applicantInfo?.props?.currentAddress?.monthsLivedHere < 24
+          )
+        }
       />
       <br />
       {applicantInfo?.props?.previousAddress && (
