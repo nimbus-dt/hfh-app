@@ -122,11 +122,10 @@ export function TestLayout() {
   }, [location.pathname, authStatus, application]);
 
   useEffect(() => {
-    const urlSections = location.pathname.split('/');
-    if (application && application.submitted) {
-      urlSections[3] = 'home';
+    if (application && authStatus === 'authenticated') {
+      navigate(application.lastSection);
     }
-  }, [location.pathname]);
+  }, [authStatus, application]);
 
   return (
     <ScrollView height="100vh" ref={scrollViewReference}>
