@@ -2,7 +2,12 @@ import { Heading, Flex, Text } from '@aws-amplify/ui-react';
 import { CustomCard } from 'components/Test/Reusable/CustomCard';
 
 const PrivacyPage = () => (
-  <Flex direction="column" paddingBottom="1rem" paddingTop="1rem">
+  <Flex
+    direction="column"
+    paddingBottom="1rem"
+    paddingTop="1rem"
+    alignItems="center"
+  >
     <CustomCard>
       <Heading level={4} fontWeight="bold" textAlign="center">
         Privacy Policy
