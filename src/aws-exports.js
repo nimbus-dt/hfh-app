@@ -9,6 +9,11 @@ const awsmobile = {
     "aws_appsync_apiKey": "da2-mjznmtntejbm3fapktrbwwdxvu",
     "aws_cloud_logic_custom": [
         {
+            "name": "public",
+            "endpoint": "https://pt6xwaf01l.execute-api.us-east-1.amazonaws.com/dev",
+            "region": "us-east-1"
+        },
+        {
             "name": "sendEmailToApplicantAPI",
             "endpoint": "https://ab15jgie2i.execute-api.us-east-1.amazonaws.com/dev",
             "region": "us-east-1"
@@ -16,11 +21,6 @@ const awsmobile = {
         {
             "name": "userAPI",
             "endpoint": "https://uasiehcv0l.execute-api.us-east-1.amazonaws.com/dev",
-            "region": "us-east-1"
-        },
-        {
-            "name": "public",
-            "endpoint": "https://bwb913uxa9.execute-api.us-east-1.amazonaws.com/staging",
             "region": "us-east-1"
         }
     ],
