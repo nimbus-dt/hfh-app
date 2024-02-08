@@ -127,6 +127,26 @@ const LandingPage = () => (
           />
         </Flex>
       </View>
+      <Flex justifyContent="end" gap="2rem" padding="1rem">
+        <Link
+          style={{
+            textDecoration: 'none',
+            color: 'gray',
+          }}
+          to="/privacy"
+        >
+          Privacy Policy
+        </Link>
+        <Link
+          style={{
+            textDecoration: 'none',
+            color: 'gray',
+          }}
+          to="/terms"
+        >
+          Terms of Service
+        </Link>
+      </Flex>
     </View>
   </View>
 );
