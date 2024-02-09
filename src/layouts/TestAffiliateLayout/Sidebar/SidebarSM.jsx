@@ -26,7 +26,6 @@ export function SidebarSM() {
       <View
         width="100%"
         variation="elevated"
-        paddingLeft="0.5rem"
         height="6rem"
         backgroundColor={COLORS.SECONDARY.DEFAULT}
       >
@@ -36,12 +35,17 @@ export function SidebarSM() {
           height="100%"
           width="100%"
         >
-          <View height="5rem" width="75%">
+          <View
+            height="100%"
+            width="fit-content"
+            padding="0"
+            backgroundColor="black"
+          >
             <Image
               alt="Habitat Logo"
               src={logoHabitat}
-              height="5rem"
-              margin={0}
+              height="100%"
+              margin="0"
               objectFit="fill"
             />
           </View>
