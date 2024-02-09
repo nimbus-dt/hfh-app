@@ -161,7 +161,7 @@ export function TestReview() {
       const persistedApplication = await DataStore.save(
         TestApplication.copyOf(original, (originalApplication) => {
           originalApplication.submitted = true;
-          originalApplication.status = 'Unset';
+          originalApplication.submissionStatus = 'Submitted';
           originalApplication.submittedDate = dayjs().format('YYYY-MM-DD');
         })
       );
