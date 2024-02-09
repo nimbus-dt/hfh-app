@@ -114,7 +114,10 @@ export function TestLayout() {
     const urlSections = location.pathname.split('/');
     if (
       (authStatus === 'unauthenticated' && urlSections[3] !== 'home') ||
-      (application && application.submitted && authStatus === 'authenticated')
+      (application &&
+        application.submitted &&
+        authStatus === 'authenticated' &&
+        urlSections[3] !== 'review')
     ) {
       urlSections[3] = 'home';
       navigate(urlSections.join('/'));
@@ -122,11 +125,10 @@ export function TestLayout() {
   }, [location.pathname, authStatus, application]);
 
   useEffect(() => {
-    const urlSections = location.pathname.split('/');
-    if (application && application.submitted) {
-      urlSections[3] = 'home';
+    if (application && authStatus === 'authenticated') {
+      navigate(application.lastSection);
     }
-  }, [location.pathname]);
+  }, [authStatus, application]);
 
   return (
     <ScrollView height="100vh" ref={scrollViewReference}>

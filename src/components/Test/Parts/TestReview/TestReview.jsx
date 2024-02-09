@@ -198,19 +198,21 @@ export function TestReview() {
           {alert.body}
         </Alert>
       )}
-      <CustomCard>
-        <Text>
-          Before submitting your application,{' '}
-          <Text as="span" fontWeight="bold">
-            please review the information you've submitted
-          </Text>{' '}
-          for accuracy and completeness.{' '}
-          <Text as="span" fontWeight="bold">
-            Click confirm
-          </Text>{' '}
-          on each of the sections below before submitting.
-        </Text>
-      </CustomCard>
+      {!application?.submitted && (
+        <CustomCard>
+          <Text>
+            Before submitting your application,{' '}
+            <Text as="span" fontWeight="bold">
+              please review the information you've submitted
+            </Text>{' '}
+            for accuracy and completeness.{' '}
+            <Text as="span" fontWeight="bold">
+              Click confirm
+            </Text>{' '}
+            on each of the sections below before submitting.
+          </Text>
+        </CustomCard>
+      )}
       <br />
       <ApplicantInfoSection
         basicInfoOpen={basicInfoOpen}
@@ -224,6 +226,7 @@ export function TestReview() {
         handlePreviousAddressOnReview={handlePreviousAddressOnReview}
         reviewedSections={reviewedSections}
         setReviewedSections={setReviewedSections}
+        submitted={application?.submitted}
       />
       <ChecklistSection
         reviewedSections={reviewedSections}
@@ -231,6 +234,7 @@ export function TestReview() {
         expanded={checklistExpanded}
         setExpanded={setChecklistExpanded}
         onReview={handleChecklistOnReview}
+        submitted={application?.submitted}
       />
       <WrittenSection
         reviewedSections={reviewedSections}
@@ -238,6 +242,7 @@ export function TestReview() {
         expanded={writtenExpanded}
         setExpanded={setWrittenExpanded}
         onReview={handleWrittenOnReview}
+        submitted={application?.submitted}
       />
       <RecordsSection
         reviewedSections={reviewedSections}
@@ -245,6 +250,7 @@ export function TestReview() {
         expanded={recordsExpanded}
         setExpanded={setRecordsExpanded}
         onReview={handleRecordsOnReview}
+        submitted={application?.submitted}
       />
       <HomeownersSection
         reviewedSections={reviewedSections}
@@ -252,6 +258,7 @@ export function TestReview() {
         expanded={homeownersExpanded}
         setExpanded={setHomeownersExpanded}
         onReview={handleHomeownersOnReview}
+        submitted={application?.submitted}
       />
       <EmploymentSection
         reviewedSections={reviewedSections}
@@ -265,6 +272,7 @@ export function TestReview() {
         handleUnemploymentOnReview={handleUnemploymentOnReview}
         handleCurrentEmploymentOnReview={handleCurrentEmploymentOnReview}
         handlePreviousAddressOnReview={handlePreviousEmploymentOnReview}
+        submitted={application?.submitted}
       />
       <FinancialSection
         expanded={financialOpen}
@@ -272,6 +280,7 @@ export function TestReview() {
         reviewedSections={reviewedSections}
         setReviewedSections={setReviewedSections}
         onReview={handleFinancialOnReview}
+        submitted={application?.submitted}
       />
       <Modal
         title="Alert"
@@ -293,20 +302,25 @@ export function TestReview() {
           </Button>
         </Flex>
       </Modal>
-      <CustomCard>
-        <Flex width="100%" justifyContent="space-between">
-          <Button variation="primary" onClick={() => navigate('../financial')}>
-            Back
-          </Button>
-          <Button
-            variation="primary"
-            onClick={handleOnClickSubmit}
-            isDisabled={isDisabled()}
-          >
-            Submit
-          </Button>
-        </Flex>
-      </CustomCard>
+      {!application?.submitted && (
+        <CustomCard>
+          <Flex width="100%" justifyContent="space-between">
+            <Button
+              variation="primary"
+              onClick={() => navigate('../financial')}
+            >
+              Back
+            </Button>
+            <Button
+              variation="primary"
+              onClick={handleOnClickSubmit}
+              isDisabled={isDisabled()}
+            >
+              Submit
+            </Button>
+          </Flex>
+        </CustomCard>
+      )}
     </Flex>
   );
 }

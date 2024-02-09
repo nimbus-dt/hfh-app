@@ -21,7 +21,7 @@ import CurrencyInput from 'components/CurrencyInput';
 import { assetsTypes } from 'components/Test/Parts/TestFinancial/TestFinancial.schema';
 import { Link } from 'react-router-dom';
 
-const AssetsSection = ({ ownerId, assets }) => {
+const AssetsSection = ({ ownerId, assets, submitted }) => {
   const [modal, setModal] = useState(false);
 
   const [expanded, setExpanded] = useState(false);
@@ -144,11 +144,13 @@ const AssetsSection = ({ ownerId, assets }) => {
           </TableBody>
         </Table>
         <br />
-        <Flex width="100%" justifyContent="end">
-          <Link to="../financial">
-            <Button variation="primary">Edit</Button>
-          </Link>
-        </Flex>
+        {!submitted && (
+          <Flex width="100%" justifyContent="end">
+            <Link to="../financial">
+              <Button variation="primary">Edit</Button>
+            </Link>
+          </Flex>
+        )}
       </ThemeProvider>
       <Modal
         title="Asset"
@@ -206,11 +208,13 @@ const AssetsSection = ({ ownerId, assets }) => {
               />
             )}
           />
-          <Flex width="100%" justifyContent="end">
-            <Link to="../financial">
-              <Button variation="primary">Edit</Button>
-            </Link>
-          </Flex>
+          {!submitted && (
+            <Flex width="100%" justifyContent="end">
+              <Link to="../financial">
+                <Button variation="primary">Edit</Button>
+              </Link>
+            </Flex>
+          )}
         </Flex>
       </Modal>
     </CustomExpandableCard>
@@ -220,6 +224,7 @@ const AssetsSection = ({ ownerId, assets }) => {
 AssetsSection.propTypes = {
   ownerId: PropTypes.string,
   assets: PropTypes.arrayOf(PropTypes.object),
+  submitted: PropTypes.bool,
 };
 
 export default AssetsSection;

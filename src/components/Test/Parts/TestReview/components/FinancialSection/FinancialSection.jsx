@@ -26,6 +26,7 @@ export default function FinancialSection({
   onReview,
   expanded,
   setExpanded,
+  submitted,
 }) {
   const [applicantInfo, setApplicantInfo] = useState();
   const [members, setMembers] = useState([]);
@@ -151,7 +152,7 @@ export default function FinancialSection({
   }, [expanded]);
 
   return applicantInfo === undefined ? (
-    <CustomCard width="100%">
+    <CustomCard>
       <Flex>
         <Loader size="large" />
         <Text>Loading financial data</Text>
@@ -161,7 +162,7 @@ export default function FinancialSection({
     <>
       <CustomExpandableCard
         title={`${getCheckOrExEmoji(
-          reviewedSections.financial
+          reviewedSections.financial || submitted
         )} Financial information`}
         expanded={expanded}
         onExpandedChange={setExpanded}
@@ -191,20 +192,25 @@ export default function FinancialSection({
         <IncomeSection
           ownerId={ownerBySelectedTab?.id}
           incomes={filterIncomesBySelectedTab}
+          submitted={submitted}
         />
         <DebtSection
           ownerId={ownerBySelectedTab?.id}
           debts={filterDebtsBySelectedTab}
+          submitted={submitted}
         />
         <AssetsSection
           ownerId={ownerBySelectedTab?.id}
           assets={filterAssetsBySelectedTab}
+          submitted={submitted}
         />
-        <Flex width="100%" justifyContent="end">
-          <Button onClick={onReview} variation="primary">
-            Confirm
-          </Button>
-        </Flex>
+        {!submitted && (
+          <Flex width="100%" justifyContent="end">
+            <Button onClick={onReview} variation="primary">
+              Confirm
+            </Button>
+          </Flex>
+        )}
       </CustomExpandableCard>
       <br />
     </>
@@ -217,4 +223,5 @@ FinancialSection.propTypes = {
   onReview: PropTypes.func,
   expanded: PropTypes.bool,
   setExpanded: PropTypes.func,
+  submitted: PropTypes.bool,
 };
