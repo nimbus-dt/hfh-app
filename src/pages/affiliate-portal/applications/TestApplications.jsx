@@ -1,8 +1,6 @@
 import { Link, useOutletContext } from 'react-router-dom';
 import {
   Flex,
-  Heading,
-  Divider,
   SelectField,
   Button,
   Table,
@@ -37,6 +35,7 @@ import {
 } from 'react-icons/md';
 import { SUBMISSION_STATUS_LIST } from 'utils/constants';
 import { stringToHumanReadable } from 'utils/strings';
+import PageTitle from '../components/PageTitle/PageTitle';
 
 const PENDING = 'Pending';
 const REVIEW_STATUS = ['All', PENDING];
@@ -241,46 +240,45 @@ const TestApplications = () => {
       alignContent="center"
       justifyContent="center"
     >
-      <Heading level={3} fontWeight="bold" textAlign="center">
-        Applications
-      </Heading>
-      <Divider />
+      <PageTitle title="Applications" habitatName={habitat?.name} />
       <Flex
         direction="row"
         width="100%"
         marginLeft="0"
-        justifyContent={responsiveBool ? 'center' : 'left'}
+        justifyContent={responsiveBool ? 'center' : 'space-between'}
         alignItems="end"
       >
-        <SelectField
-          label="Submission status"
-          value={submissionStatus}
-          onChange={(event) => {
-            setSubmissionStatus(event.target.value);
-          }}
-        >
-          {SUBMISSION_STATUS.map(({ key, value }) => (
-            <option key={key} value={key}>
-              {value}
-            </option>
-          ))}
-        </SelectField>
-        <SelectField
-          label="Review status"
-          value={reviewStatus}
-          onChange={(event) => {
-            setReviewStatus(event.target.value);
-          }}
-        >
-          {[
-            ...REVIEW_STATUS,
-            ...(habitat ? habitat.props.data.customStatus || [] : []),
-          ].map((statusValue) => (
-            <option key={statusValue} value={statusValue}>
-              {statusValue}
-            </option>
-          ))}
-        </SelectField>
+        <Flex>
+          <SelectField
+            label="Submission status"
+            value={submissionStatus}
+            onChange={(event) => {
+              setSubmissionStatus(event.target.value);
+            }}
+          >
+            {SUBMISSION_STATUS.map(({ key, value }) => (
+              <option key={key} value={key}>
+                {value}
+              </option>
+            ))}
+          </SelectField>
+          <SelectField
+            label="Review status"
+            value={reviewStatus}
+            onChange={(event) => {
+              setReviewStatus(event.target.value);
+            }}
+          >
+            {[
+              ...REVIEW_STATUS,
+              ...(habitat ? habitat.props.data.customStatus || [] : []),
+            ].map((statusValue) => (
+              <option key={statusValue} value={statusValue}>
+                {statusValue}
+              </option>
+            ))}
+          </SelectField>
+        </Flex>
 
         <Badge>
           <Flex alignItems="center">Total: {applications.length}</Flex>
