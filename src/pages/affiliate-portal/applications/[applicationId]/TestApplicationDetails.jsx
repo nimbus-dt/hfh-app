@@ -172,7 +172,7 @@ const TestApplicationDetails = () => {
       const original = await DataStore.query(TestApplication, application.id);
       const persistedApplication = await DataStore.save(
         TestApplication.copyOf(original, (originalApplication) => {
-          originalApplication.status = data.status;
+          originalApplication.reviewStatus = data.status;
         })
       );
 
@@ -236,7 +236,8 @@ const TestApplicationDetails = () => {
       </View>
 
       <GeneralInfoTable
-        status={application?.status}
+        reviewStatus={application?.reviewStatus}
+        submissionStatus={application?.submissionStatus}
         submittedDate={application?.submittedDate}
       />
 
@@ -336,7 +337,7 @@ const TestApplicationDetails = () => {
             hasError={errorsDecide?.status}
             errorMessage="Invalid status"
           >
-            <option value="Unset">Unset</option>
+            <option value="Pending">Pending</option>
             {(habitat?.props.data.customStatus
               ? habitat.props.data.customStatus
               : []
