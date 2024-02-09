@@ -63,6 +63,8 @@ export function TestLayout() {
           lastSection: location.pathname,
           members: [],
           submitted: false,
+          submissionStatus: 'Unsubmitted',
+          reviewStatus: 'Pending',
           testApplicationAffiliateId: habitat.id,
         })
       );
