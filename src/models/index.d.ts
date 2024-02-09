@@ -163,7 +163,8 @@ type EagerTestApplication = {
   readonly submitted: boolean;
   readonly submittedDate?: string | null;
   readonly affiliate: Habitat;
-  readonly status?: string | null;
+  readonly reviewStatus?: string | null;
+  readonly submissionStatus?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly testApplicationAffiliateId: string;
@@ -181,7 +182,8 @@ type LazyTestApplication = {
   readonly submitted: boolean;
   readonly submittedDate?: string | null;
   readonly affiliate: AsyncItem<Habitat>;
-  readonly status?: string | null;
+  readonly reviewStatus?: string | null;
+  readonly submissionStatus?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly testApplicationAffiliateId: string;

@@ -21,6 +21,20 @@
       "providerPlugin": "awscloudformation",
       "service": "AppSync"
     },
+    "public": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "sendEmailToAdmin"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
     "sendEmailToApplicantAPI": {
       "dependsOn": [
         {
@@ -114,6 +128,12 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "sendEmailToAdmin": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "sendEmailToApplicant": {
       "build": true,
       "dependsOn": [
@@ -168,6 +188,22 @@
         {
           "category": "function",
           "resourceName": "getEmail"
+        }
+      ]
+    },
+    "AMPLIFY_function_sendEmailToAdmin_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendEmailToAdmin"
+        }
+      ]
+    },
+    "AMPLIFY_function_sendEmailToAdmin_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendEmailToAdmin"
         }
       ]
     },

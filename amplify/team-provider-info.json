@@ -181,7 +181,11 @@
           "s3Key": "amplify-builds/sendEmailToApplicant-494f4a4e754a7533616d-build.zip"
         },
         "hfhapp": {},
-        "s3hfhappstoragebucket": {}
+        "s3hfhappstoragebucket": {},
+        "sendEmailToAdmin": {
+          "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
+          "s3Key": "amplify-builds/sendEmailToAdmin-552f6736526d6c454868-build.zip"
+        }
       },
       "api": {
         "hfhapp": {},

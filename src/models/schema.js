@@ -270,8 +270,15 @@ export const schema = {
                         ]
                     }
                 },
-                "status": {
-                    "name": "status",
+                "reviewStatus": {
+                    "name": "reviewStatus",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "submissionStatus": {
+                    "name": "submissionStatus",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -1910,5 +1917,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "c3b427b2d89b20faf1e38965ef528b7b"
+    "version": "6fd7cf47a00000ae6e88ef50271e20c3"
 };
