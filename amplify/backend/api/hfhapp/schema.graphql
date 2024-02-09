@@ -1,3 +1,9 @@
+enum SubmissionStatus {
+  SUBMITTED
+  UNSUBMITTED
+  RETURNED
+}
+
 type Asset @model @auth(rules: [{allow: public}]) {
   id: ID!
   ownerId: ID
@@ -21,10 +27,10 @@ type TestApplication @model @auth(rules: [{allow: public}]) {
   ownerID: ID
   lastSection: String
   members: [Member] @hasMany(indexName: "byTestApplication", fields: ["id"])
-  submitted: Boolean!
   submittedDate: AWSDate
   affiliate: Habitat! @hasOne
-  status: String
+  reviewStatus: String
+  submissionStatus: SubmissionStatus!
 }
 
 type EmploymentInfo @model @auth(rules: [{allow: public}]) {

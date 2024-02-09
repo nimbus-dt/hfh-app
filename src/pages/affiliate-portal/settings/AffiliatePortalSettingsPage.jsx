@@ -1,4 +1,5 @@
-import { Flex, Heading, Divider, Badge } from '@aws-amplify/ui-react';
+import { Flex, Badge } from '@aws-amplify/ui-react';
+import PageTitle from '../components/PageTitle/PageTitle';
 
 export function AffiliatePortalSettingsPage() {
   return (
@@ -8,10 +9,7 @@ export function AffiliatePortalSettingsPage() {
       alignContent="center"
       justifyContent="center"
     >
-      <Heading level={3} fontWeight="bold" textAlign="center">
-        Settings
-      </Heading>
-      <Divider />
+      <PageTitle title="Settings" />
       <Badge variation="warning" width="100%">
         This page is currently under construction
       </Badge>

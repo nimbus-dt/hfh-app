@@ -3,6 +3,7 @@ import {
   SexTypes,
   ApplicationSubmittedStatus,
   DebtTypes,
+  SubmissionStatus,
 } from 'models';
 import { mapEnumToHumanReadableValues, mapEnumToList } from './mappers';
 
@@ -75,3 +76,15 @@ export const APPLICATION_RECORD_TYPES_LIST = mapEnumToList(
 export const APPLICATION_RECORD_TYPES_MAP = mapEnumToHumanReadableValues(
   ApplicationRecordTypes
 );
+
+/**
+ * This constant is used to iterate through the submissionStatus(keys) and values
+ */
+export const SUBMISSION_STATUS_LIST = mapEnumToList(SubmissionStatus);
+
+/**
+ * This constant is used to get submissionStatus values values according to
+ * the type(key)
+ */
+export const SUBMISSION_STATUS_MAP =
+  mapEnumToHumanReadableValues(SubmissionStatus);
