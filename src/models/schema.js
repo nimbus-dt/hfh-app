@@ -238,13 +238,6 @@ export const schema = {
                         ]
                     }
                 },
-                "submitted": {
-                    "name": "submitted",
-                    "isArray": false,
-                    "type": "Boolean",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "submittedDate": {
                     "name": "submittedDate",
                     "isArray": false,
@@ -280,8 +273,10 @@ export const schema = {
                 "submissionStatus": {
                     "name": "submissionStatus",
                     "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
+                    "type": {
+                        "enum": "SubmissionStatus"
+                    },
+                    "isRequired": true,
                     "attributes": []
                 },
                 "createdAt": {
@@ -1845,6 +1840,14 @@ export const schema = {
         }
     },
     "enums": {
+        "SubmissionStatus": {
+            "name": "SubmissionStatus",
+            "values": [
+                "SUBMITTED",
+                "UNSUBMITTED",
+                "RETURNED"
+            ]
+        },
         "ApplicationTimeStatus": {
             "name": "ApplicationTimeStatus",
             "values": [
@@ -1917,5 +1920,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "6fd7cf47a00000ae6e88ef50271e20c3"
+    "version": "6ad46d2e5d90f8c8cd75088fdd8dc8bc"
 };
