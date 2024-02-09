@@ -28,8 +28,9 @@ import { TestApplication } from 'models';
 import Modal from 'components/Modal';
 import { MdAdd, MdCheck, MdClose, MdDelete, MdEdit } from 'react-icons/md';
 
-const UNSET = 'Unset';
-const STATUS = ['All', UNSET];
+const PENDING = 'Pending';
+const REVIEW_STATUS = ['All', PENDING];
+const SUBMISSION_STATUS = ['All', 'Submitted', 'Returned', 'Unsubmitted'];
 
 const perPage = 5;
 
@@ -40,7 +41,10 @@ const TestApplications = () => {
     removeCustomStatusToHabitat,
     updateCustomStatusToHabitat,
   } = useOutletContext();
-  const [status, setStatus] = useState(STATUS[0]);
+  const [reviewStatus, setReviewStatus] = useState(REVIEW_STATUS[0]);
+  const [submissionStatus, setSubmissionStatus] = useState(
+    SUBMISSION_STATUS[0]
+  );
   const [trigger, setTrigger] = useState(0);
   const [statusModalOpen, setStatusModalOpen] = useState(false);
   const [editingStatus, setEditingStatus] = useState();
@@ -51,18 +55,22 @@ const TestApplications = () => {
   const { data: applications } = useTestApplicationsQuery({
     criteria: (c1) =>
       c1.and((c2) => {
-        let criteriaArr = [
-          c2.testApplicationAffiliateId.eq(habitat?.id),
-          c2.submitted.eq(true),
-        ];
+        let criteriaArr = [c2.testApplicationAffiliateId.eq(habitat?.id)];
 
-        if (status !== STATUS[0]) {
-          criteriaArr = [...criteriaArr, c2.status.eq(status)];
+        if (reviewStatus !== REVIEW_STATUS[0]) {
+          criteriaArr = [...criteriaArr, c2.reviewStatus.eq(reviewStatus)];
+        }
+
+        if (submissionStatus !== SUBMISSION_STATUS[0]) {
+          criteriaArr = [
+            ...criteriaArr,
+            c2.submissionStatus.eq(submissionStatus),
+          ];
         }
 
         return criteriaArr;
       }),
-    dependencyArray: [habitat?.id, status, trigger],
+    dependencyArray: [habitat?.id, reviewStatus, submissionStatus, trigger],
   });
 
   const { data: applicantInfos } = useApplicantInfosQuery({
@@ -89,8 +97,8 @@ const TestApplications = () => {
   const statusAlreadyExists = useMemo(
     () =>
       (habitat.props.data.customStatus
-        ? [...habitat.props.data.customStatus, UNSET]
-        : [UNSET]
+        ? [...habitat.props.data.customStatus, PENDING]
+        : [PENDING]
       ).includes(newStatus),
     [habitat, newStatus]
   );
@@ -115,7 +123,7 @@ const TestApplications = () => {
         const original = await DataStore.query(TestApplication, applicationId);
         await DataStore.save(
           TestApplication.copyOf(original, (originalApplication) => {
-            originalApplication.status = newStatusValue;
+            originalApplication.reviewStatus = newStatusValue;
           })
         );
         setTrigger((previousTrigger) => previousTrigger + 1);
@@ -132,14 +140,14 @@ const TestApplications = () => {
       const applicationsToUpdate = await DataStore.query(TestApplication, (c) =>
         c.and((c2) => [
           c2.testApplicationAffiliateId.eq(habitat?.id),
-          c2.status.eq(deletingStatus),
+          c2.reviewStatus.eq(deletingStatus),
         ])
       );
 
       for (const applicationToUpdate of applicationsToUpdate) {
         await DataStore.save(
           TestApplication.copyOf(applicationToUpdate, (originalApplication) => {
-            originalApplication.status = UNSET;
+            originalApplication.reviewStatus = PENDING;
           })
         );
       }
@@ -153,22 +161,19 @@ const TestApplications = () => {
 
   const handleUpdateCustomStatus = async () => {
     try {
-      console.log('editingStatus', editingStatus);
-      console.log('newStatus', newStatus);
-
       await updateCustomStatusToHabitat(editingStatus, newStatus);
 
       const applicationsToUpdate = await DataStore.query(TestApplication, (c) =>
         c.and((c2) => [
           c2.testApplicationAffiliateId.eq(habitat?.id),
-          c2.status.eq(editingStatus),
+          c2.reviewStatus.eq(editingStatus),
         ])
       );
 
       for (const applicationToUpdate of applicationsToUpdate) {
         await DataStore.save(
           TestApplication.copyOf(applicationToUpdate, (originalApplication) => {
-            originalApplication.status = newStatus;
+            originalApplication.reviewStatus = newStatus;
           })
         );
       }
@@ -216,13 +221,25 @@ const TestApplications = () => {
         justifyContent={responsiveBool ? 'center' : 'left'}
       >
         <SelectField
-          value={status}
+          value={submissionStatus}
           onChange={(event) => {
-            setStatus(event.target.value);
+            setSubmissionStatus(event.target.value);
+          }}
+        >
+          {SUBMISSION_STATUS.map((statusValue) => (
+            <option key={statusValue} value={statusValue}>
+              {statusValue}
+            </option>
+          ))}
+        </SelectField>
+        <SelectField
+          value={reviewStatus}
+          onChange={(event) => {
+            setReviewStatus(event.target.value);
           }}
         >
           {[
-            ...STATUS,
+            ...REVIEW_STATUS,
             ...(habitat ? habitat.props.data.customStatus || [] : []),
           ].map((statusValue) => (
             <option key={statusValue} value={statusValue}>
@@ -279,7 +296,7 @@ const TestApplications = () => {
               <View>
                 <Text as="p">
                   You want to delete the status? This would update all the
-                  applications with this status to have an Unset status.
+                  applications with this status to have an Pending status.
                 </Text>
                 <Flex marginTop="1rem" justifyContent="center">
                   <Button
@@ -394,22 +411,25 @@ const TestApplications = () => {
           >
             <TableHead>
               <TableRow>
-                <TableCell as="th" width="25%">
+                <TableCell as="th" width="fit-content">
                   Index
                 </TableCell>
-                <TableCell as="th" width="25%">
+                <TableCell as="th" minWidth="25ch">
                   Name
                 </TableCell>
-                <TableCell as="th" width="25%">
+                <TableCell as="th" minWidth="20ch">
                   Date Submitted
                 </TableCell>
-                <TableCell as="th" width="25%">
+                <TableCell as="th" minWidth="20ch">
+                  Submission status
+                </TableCell>
+                <TableCell as="th" minWidth="20ch">
                   <Button
                     variation="link"
                     color="var(--amplify-colors-font-primary)"
                     onClick={handleStatusOnClick}
                   >
-                    Status
+                    Review status
                   </Button>
                 </TableCell>
                 <TableCell as="th" width="25%">
@@ -434,10 +454,11 @@ const TestApplications = () => {
                       }
                     </TableCell>
                     <TableCell>{application.submittedDate}</TableCell>
+                    <TableCell>{application.submissionStatus}</TableCell>
                     <TableCell>
                       <SelectField
                         labelHidden
-                        value={application.status}
+                        value={application.reviewStatus}
                         onChange={(event) =>
                           handleUpdateApplicationStatus(
                             application.id,
@@ -446,7 +467,7 @@ const TestApplications = () => {
                         }
                       >
                         {[
-                          UNSET,
+                          PENDING,
                           ...(habitat
                             ? habitat.props.data.customStatus || []
                             : []),
