@@ -15,6 +15,7 @@ import {
   useParams,
 } from 'react-router-dom';
 import useHabitatByUrlName from 'hooks/services/useHabitatByUrlName';
+import { SubmissionStatus } from 'models';
 import { CustomCard } from '../Reusable/CustomCard';
 
 export function TestHome() {
@@ -34,7 +35,8 @@ export function TestHome() {
   }
 
   const content =
-    application && application.submitted ? (
+    application &&
+    application.submissionStatus === SubmissionStatus.SUBMITTED ? (
       <>
         <Text fontWeight="bold">
           {`You have succesfully submitted your Homeownership Program application
