@@ -242,7 +242,7 @@ const TestApplications = () => {
       justifyContent="center"
     >
       <Heading level={3} fontWeight="bold" textAlign="center">
-        Submitted applications
+        Applications
       </Heading>
       <Divider />
       <Flex
