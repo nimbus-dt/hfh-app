@@ -18,19 +18,35 @@ import {
   View,
   ScrollView,
 } from '@aws-amplify/ui-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   useApplicantInfosQuery,
   useTestApplicationsQuery,
 } from 'hooks/services';
-import { DataStore } from 'aws-amplify';
+import { DataStore, SortDirection } from 'aws-amplify';
 import { TestApplication } from 'models';
 import Modal from 'components/Modal';
-import { MdAdd, MdCheck, MdClose, MdDelete, MdEdit } from 'react-icons/md';
+import {
+  MdAdd,
+  MdArrowDownward,
+  MdArrowUpward,
+  MdCheck,
+  MdClose,
+  MdDelete,
+  MdEdit,
+} from 'react-icons/md';
+import { SUBMISSION_STATUS_LIST } from 'utils/constants';
+import { stringToHumanReadable } from 'utils/strings';
 
 const PENDING = 'Pending';
 const REVIEW_STATUS = ['All', PENDING];
-const SUBMISSION_STATUS = ['All', 'Submitted', 'Returned', 'Unsubmitted'];
+const SUBMISSION_STATUS = [
+  {
+    key: 'ALL',
+    value: 'All',
+  },
+  ...SUBMISSION_STATUS_LIST,
+];
 
 const perPage = 5;
 
@@ -43,7 +59,7 @@ const TestApplications = () => {
   } = useOutletContext();
   const [reviewStatus, setReviewStatus] = useState(REVIEW_STATUS[0]);
   const [submissionStatus, setSubmissionStatus] = useState(
-    SUBMISSION_STATUS[0]
+    SUBMISSION_STATUS[0].key
   );
   const [trigger, setTrigger] = useState(0);
   const [statusModalOpen, setStatusModalOpen] = useState(false);
@@ -52,6 +68,9 @@ const TestApplications = () => {
   const [deletingStatus, setDeletingStatus] = useState();
   const [newStatus, setNewStatus] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [submittedDateSort, setSubmittedDateSort] = useState(
+    SortDirection.DESCENDING
+  );
   const { data: applications } = useTestApplicationsQuery({
     criteria: (c1) =>
       c1.and((c2) => {
@@ -61,7 +80,7 @@ const TestApplications = () => {
           criteriaArr = [...criteriaArr, c2.reviewStatus.eq(reviewStatus)];
         }
 
-        if (submissionStatus !== SUBMISSION_STATUS[0]) {
+        if (submissionStatus !== SUBMISSION_STATUS[0].key) {
           criteriaArr = [
             ...criteriaArr,
             c2.submissionStatus.eq(submissionStatus),
@@ -70,7 +89,16 @@ const TestApplications = () => {
 
         return criteriaArr;
       }),
-    dependencyArray: [habitat?.id, reviewStatus, submissionStatus, trigger],
+    paginationProducer: {
+      sort: (s) => s.submittedDate(submittedDateSort),
+    },
+    dependencyArray: [
+      habitat?.id,
+      reviewStatus,
+      submissionStatus,
+      trigger,
+      submittedDateSort,
+    ],
   });
 
   const { data: applicantInfos } = useApplicantInfosQuery({
@@ -188,6 +216,13 @@ const TestApplications = () => {
   };
   const handleStatusOnClick = () => setStatusModalOpen(true);
 
+  const handleSubmittedDateOnClick = () =>
+    setSubmittedDateSort((previousSubmittedDateSort) =>
+      previousSubmittedDateSort === SortDirection.ASCENDING
+        ? SortDirection.DESCENDING
+        : SortDirection.ASCENDING
+    );
+
   const handleOnCloseStatusModal = () => setStatusModalOpen(false);
 
   const handleOnCloseEditingAlert = () => setEditingAlert(false);
@@ -198,10 +233,6 @@ const TestApplications = () => {
     setEditingStatus(undefined);
     setNewStatus('');
   };
-
-  useEffect(() => {
-    console.log('applications', applications);
-  }, [applications]);
 
   return (
     <Flex
@@ -219,20 +250,23 @@ const TestApplications = () => {
         width="100%"
         marginLeft="0"
         justifyContent={responsiveBool ? 'center' : 'left'}
+        alignItems="end"
       >
         <SelectField
+          label="Submission status"
           value={submissionStatus}
           onChange={(event) => {
             setSubmissionStatus(event.target.value);
           }}
         >
-          {SUBMISSION_STATUS.map((statusValue) => (
-            <option key={statusValue} value={statusValue}>
-              {statusValue}
+          {SUBMISSION_STATUS.map(({ key, value }) => (
+            <option key={key} value={key}>
+              {value}
             </option>
           ))}
         </SelectField>
         <SelectField
+          label="Review status"
           value={reviewStatus}
           onChange={(event) => {
             setReviewStatus(event.target.value);
@@ -417,8 +451,26 @@ const TestApplications = () => {
                 <TableCell as="th" minWidth="25ch">
                   Name
                 </TableCell>
-                <TableCell as="th" minWidth="20ch">
-                  Date Submitted
+                <TableCell as="th" minWidth="15ch">
+                  <Flex justifyContent="space-between" alignItems="center">
+                    <Text>Date Submitted</Text>
+
+                    <Button
+                      variation="link"
+                      color="var(--amplify-colors-font-primary)"
+                      onClick={handleSubmittedDateOnClick}
+                      padding="0.5rem"
+                      borderRadius="xxxl"
+                      style={{ aspectRatio: '1/1' }}
+                      height="fit-content"
+                    >
+                      {submittedDateSort === SortDirection.ASCENDING ? (
+                        <MdArrowUpward size="1.25rem" />
+                      ) : (
+                        <MdArrowDownward size="1.25rem" />
+                      )}
+                    </Button>
+                  </Flex>
                 </TableCell>
                 <TableCell as="th" minWidth="20ch">
                   Submission status
@@ -454,7 +506,9 @@ const TestApplications = () => {
                       }
                     </TableCell>
                     <TableCell>{application.submittedDate}</TableCell>
-                    <TableCell>{application.submissionStatus}</TableCell>
+                    <TableCell>
+                      {stringToHumanReadable(application.submissionStatus)}
+                    </TableCell>
                     <TableCell>
                       <SelectField
                         labelHidden
