@@ -240,7 +240,7 @@ const TestApplications = () => {
       alignContent="center"
       justifyContent="center"
     >
-      <PageTitle title="Applications" habitatName={habitat?.name} />
+      <PageTitle title="Applications" />
       <Flex
         direction="row"
         width="100%"

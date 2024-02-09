@@ -1,9 +1,7 @@
 import { Flex, Badge } from '@aws-amplify/ui-react';
-import { useOutletContext } from 'react-router-dom';
 import PageTitle from '../components/PageTitle/PageTitle';
 
 export function AffiliatePortalVolunteersPage() {
-  const { habitat } = useOutletContext();
   return (
     <Flex
       direction="column"
@@ -11,7 +9,7 @@ export function AffiliatePortalVolunteersPage() {
       alignContent="center"
       justifyContent="center"
     >
-      <PageTitle title="Volunteers" habitatName={habitat?.name} />
+      <PageTitle title="Volunteers" />
       <Badge variation="warning" width="100%">
         This page is currently under construction
       </Badge>
