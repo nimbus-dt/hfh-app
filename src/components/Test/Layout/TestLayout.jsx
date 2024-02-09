@@ -114,7 +114,10 @@ export function TestLayout() {
     const urlSections = location.pathname.split('/');
     if (
       (authStatus === 'unauthenticated' && urlSections[3] !== 'home') ||
-      (application && application.submitted && authStatus === 'authenticated')
+      (application &&
+        application.submitted &&
+        authStatus === 'authenticated' &&
+        urlSections[3] !== 'review')
     ) {
       urlSections[3] = 'home';
       navigate(urlSections.join('/'));
