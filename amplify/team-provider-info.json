@@ -27,8 +27,12 @@
           "deploymentBucketName": "amplify-hfhapp-staging-10900-deployment",
           "s3Key": "amplify-builds/getEmail-32656859502b666c474d-build.zip"
         },
-        "hfhapp": {},
-        "s3hfhappstoragebucket": {}
+        "sendEmailToAdmin": {
+          "adminEmail": "guillermo.avelar@habitat-app.org",
+          "sesEmail": "support@nimbus-dt.com",
+          "deploymentBucketName": "amplify-hfhapp-staging-10900-deployment",
+          "s3Key": "amplify-builds/sendEmailToAdmin-552f6736526d6c454868-build.zip"
+        }
       },
       "prescreennotify": {
         "deploymentBucketName": {
@@ -145,7 +149,8 @@
       "api": {
         "hfhapp": {},
         "sendEmailToApplicantAPI": {},
-        "userAPI": {}
+        "userAPI": {},
+        "public": {}
       }
     }
   },
@@ -183,6 +188,8 @@
         "hfhapp": {},
         "s3hfhappstoragebucket": {},
         "sendEmailToAdmin": {
+          "adminEmail": "guillermo.avelar@habitat-app.org",
+          "sesEmail": "support@nimbus-dt.com",
           "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
           "s3Key": "amplify-builds/sendEmailToAdmin-552f6736526d6c454868-build.zip"
         }
@@ -190,7 +197,8 @@
       "api": {
         "hfhapp": {},
         "sendEmailToApplicantAPI": {},
-        "userAPI": {}
+        "userAPI": {},
+        "public": {}
       },
       "storage": {
         "s3hfhappstoragebucket": {}
@@ -229,12 +237,19 @@
           "s3Key": "amplify-builds/sendEmailToApplicant-494f4a4e754a7533616d-build.zip"
         },
         "hfhapp": {},
-        "s3hfhappstoragebucket": {}
+        "s3hfhappstoragebucket": {},
+        "sendEmailToAdmin": {
+          "adminEmail": "guillermo.avelar@habitat-app.org",
+          "sesEmail": "support@nimbus-dt.com",
+          "deploymentBucketName": "amplify-hfhapp-prod-160335-deployment",
+          "s3Key": "amplify-builds/sendEmailToAdmin-552f6736526d6c454868-build.zip"
+        }
       },
       "api": {
         "hfhapp": {},
         "sendEmailToApplicantAPI": {},
-        "userAPI": {}
+        "userAPI": {},
+        "public": {}
       },
       "storage": {
         "s3hfhappstoragebucket": {}

@@ -2,6 +2,7 @@ import { Card, Flex, Image, ScrollView } from '@aws-amplify/ui-react';
 import useScrollToTopOnRouteChange from 'hooks/utils/useScrollToTopOnRouteChange';
 import { useRef } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import logoHabitat from '../../../assets/images/trace.svg';
 
 export function NewLandingLayout({ children }) {
@@ -15,20 +16,20 @@ export function NewLandingLayout({ children }) {
         alignItems="center"
         minHeight="100vh"
         paddingBottom="1rem"
-        gap="0"
+        gap="0rem"
+        backgroundColor="lightgray"
       >
         <Card wrap width="100%" backgroundColor="#55B949" padding="0">
-          <Flex
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Image
-              alt="Habitat Logo"
-              src={logoHabitat}
-              height="100%"
-              marginLeft="-10px"
-            />
+          <Flex direction="row" justifyContent="space-between" alignItems="">
+            <Link to="/">
+              <Image
+                alt="Habitat Logo"
+                src={logoHabitat}
+                height="100%"
+                marginLeft="-10px"
+                backgroundColor="black"
+              />
+            </Link>
           </Flex>
         </Card>
         {children}

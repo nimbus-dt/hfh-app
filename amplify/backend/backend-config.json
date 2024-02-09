@@ -191,6 +191,14 @@
         }
       ]
     },
+    "AMPLIFY_function_sendEmailToAdmin_adminEmail": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendEmailToAdmin"
+        }
+      ]
+    },
     "AMPLIFY_function_sendEmailToAdmin_deploymentBucketName": {
       "usedBy": [
         {
@@ -200,6 +208,14 @@
       ]
     },
     "AMPLIFY_function_sendEmailToAdmin_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendEmailToAdmin"
+        }
+      ]
+    },
+    "AMPLIFY_function_sendEmailToAdmin_sesEmail": {
       "usedBy": [
         {
           "category": "function",
