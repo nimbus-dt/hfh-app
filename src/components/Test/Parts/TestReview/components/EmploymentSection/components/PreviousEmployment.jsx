@@ -13,6 +13,7 @@ const PreviousEmployment = ({
   reviewedSections,
   setReviewedSections,
   onReview,
+  submitted,
 }) => {
   const customCardReference = useRef(null);
 
@@ -31,10 +32,11 @@ const PreviousEmployment = ({
       });
     }
   }, [expanded]);
+
   return (
     <CustomExpandableCard
       title={`${getCheckOrExEmoji(
-        reviewedSections.previousEmployment
+        reviewedSections.previousEmployment || submitted
       )} Previous Employment Information`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
@@ -81,14 +83,16 @@ const PreviousEmployment = ({
           />
           <br />
 
-          <Flex width="100%" justifyContent="end">
-            <Link to="../employment">
-              <Button>Edit</Button>
-            </Link>
-            <Button onClick={onReview} variation="primary">
-              Confirm
-            </Button>
-          </Flex>
+          {!submitted && (
+            <Flex width="100%" justifyContent="end">
+              <Link to="../employment">
+                <Button>Edit</Button>
+              </Link>
+              <Button onClick={onReview} variation="primary">
+                Confirm
+              </Button>
+            </Flex>
+          )}
         </>
       ) : (
         <LoadingData />
@@ -104,6 +108,7 @@ PreviousEmployment.propTypes = {
   reviewedSections: PropTypes.object,
   setReviewedSections: PropTypes.func,
   onReview: PropTypes.func,
+  submitted: PropTypes.bool,
 };
 
 export default PreviousEmployment;

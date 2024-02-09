@@ -20,6 +20,7 @@ const EmploymentSection = ({
   handleUnemploymentOnReview,
   handleCurrentEmploymentOnReview,
   handlePreviousAddressOnReview,
+  submitted,
 }) => {
   const [employmentInfo, setEmploymentInfo] = useState();
 
@@ -55,6 +56,7 @@ const EmploymentSection = ({
             employmentInfo?.props?.currentlyUnemployed === 'No'
           )
         }
+        submitted={submitted}
       />
       <br />
       {employmentInfo?.props?.currentlyUnemployed === 'No' && (
@@ -73,6 +75,7 @@ const EmploymentSection = ({
                   employmentInfo?.props?.currentEmployment?.firstJob === 'No'
               )
             }
+            submitted={submitted}
           />
           <br />
         </>
@@ -87,6 +90,7 @@ const EmploymentSection = ({
               reviewedSections={reviewedSections}
               setReviewedSections={setReviewedSections}
               onReview={handlePreviousAddressOnReview}
+              submitted={submitted}
             />
             <br />
           </>
@@ -107,6 +111,7 @@ EmploymentSection.propTypes = {
   handleUnemploymentOnReview: PropTypes.func,
   handleCurrentEmploymentOnReview: PropTypes.func,
   handlePreviousAddressOnReview: PropTypes.func,
+  submitted: PropTypes.bool,
 };
 
 export default EmploymentSection;

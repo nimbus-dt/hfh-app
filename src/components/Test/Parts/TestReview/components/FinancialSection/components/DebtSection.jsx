@@ -21,7 +21,7 @@ import CurrencyInput from 'components/CurrencyInput';
 import { debtTypes } from 'components/Test/Parts/TestFinancial/TestFinancial.schema';
 import { Link } from 'react-router-dom';
 
-const DebtSection = ({ ownerId, debts }) => {
+const DebtSection = ({ ownerId, debts, submitted }) => {
   const [modal, setModal] = useState(false);
 
   const [expanded, setExpanded] = useState(false);
@@ -145,11 +145,13 @@ const DebtSection = ({ ownerId, debts }) => {
           </TableBody>
         </Table>
         <br />
-        <Flex width="100%" justifyContent="end">
-          <Link to="../financial">
-            <Button variation="primary">Edit</Button>
-          </Link>
-        </Flex>
+        {!submitted && (
+          <Flex width="100%" justifyContent="end">
+            <Link to="../financial">
+              <Button variation="primary">Edit</Button>
+            </Link>
+          </Flex>
+        )}
       </ThemeProvider>
       <Modal
         title="Debt"
@@ -216,11 +218,13 @@ const DebtSection = ({ ownerId, debts }) => {
               <FileInput label="Proof of debt" files={value} isDisabled />
             )}
           />
-          <Flex width="100%" justifyContent="end">
-            <Link to="../financial">
-              <Button variation="primary">Edit</Button>
-            </Link>
-          </Flex>
+          {!submitted && (
+            <Flex width="100%" justifyContent="end">
+              <Link to="../financial">
+                <Button variation="primary">Edit</Button>
+              </Link>
+            </Flex>
+          )}
         </Flex>
       </Modal>
     </CustomExpandableCard>
@@ -230,6 +234,7 @@ const DebtSection = ({ ownerId, debts }) => {
 DebtSection.propTypes = {
   ownerId: PropTypes.string,
   debts: PropTypes.arrayOf(PropTypes.object),
+  submitted: PropTypes.bool,
 };
 
 export default DebtSection;
