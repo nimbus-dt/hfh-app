@@ -1,6 +1,9 @@
-import { Flex, Heading, Divider, Badge } from '@aws-amplify/ui-react';
+import { Flex, Badge } from '@aws-amplify/ui-react';
+import { useOutletContext } from 'react-router-dom';
+import PageTitle from '../components/PageTitle/PageTitle';
 
 export function AffiliatePortalRepairsPage() {
+  const { habitat } = useOutletContext();
   return (
     <Flex
       direction="column"
@@ -8,10 +11,7 @@ export function AffiliatePortalRepairsPage() {
       alignContent="center"
       justifyContent="center"
     >
-      <Heading level={3} fontWeight="bold" textAlign="center">
-        Repairs
-      </Heading>
-      <Divider />
+      <PageTitle title="Repairs" habitatName={habitat?.name} />
       <Badge variation="warning" width="100%">
         This page is currently under construction
       </Badge>
