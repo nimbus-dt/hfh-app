@@ -62,7 +62,7 @@ const TestAffiliateLayout = () => {
                   ? originalHabitat.props.data.customStatus
                   : []
               ).includes(newCustomStatus) &&
-              newCustomStatus !== 'Unset'
+              newCustomStatus !== 'Pending'
             ) {
               originalHabitat.props.data.customStatus = originalHabitat.props
                 .data.customStatus
