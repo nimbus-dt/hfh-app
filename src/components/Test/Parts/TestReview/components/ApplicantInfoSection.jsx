@@ -7,7 +7,7 @@ import {
 } from '@aws-amplify/ui-react';
 import PropTypes from 'prop-types';
 import { Link, useOutletContext } from 'react-router-dom';
-import { forwardRef, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ApplicantInfo } from 'models';
 import { DataStore } from 'aws-amplify';
 import { getCheckOrExEmoji } from 'utils/misc';
@@ -369,7 +369,11 @@ const ApplicantInfoSection = ({
         applicantInfo={applicantInfo}
         reviewedSections={reviewedSections}
         setReviewedSections={setReviewedSections}
-        onReview={handleAddressOnReview}
+        onReview={() =>
+          handleAddressOnReview(
+            applicantInfo?.props?.currentAddress?.monthsLivedHere < 24
+          )
+        }
       />
       <br />
       {applicantInfo?.props?.previousAddress && (
