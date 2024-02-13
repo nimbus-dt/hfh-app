@@ -434,7 +434,7 @@ export function UnmarriedAddendum({
           render={({ field: { onChange, onBlur, value } }) => (
             <RadioGroupField
               name="notSpouseButSimilarPropertyRights"
-              label="Which of these best represents the ownership status of the previous address you lived in?"
+              label="Is there a person who is not your legal spouse but who currently has real property rights similar to those of a legal spouse?"
               onChange={(e) => onChange(e.target.value)}
               onBlur={onBlur}
               value={value}
@@ -456,7 +456,7 @@ export function UnmarriedAddendum({
               render={({ field: { onChange, onBlur, value } }) => (
                 <RadioGroupField
                   name="relationshipType"
-                  label="Which of these best represents the ownership status of the previous address you lived in?"
+                  label="Indicate the type of relationship"
                   onChange={(e) => onChange(e.target.value)}
                   onBlur={onBlur}
                   value={value}
