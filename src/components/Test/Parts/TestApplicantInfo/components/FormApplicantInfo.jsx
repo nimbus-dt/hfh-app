@@ -252,6 +252,7 @@ export function Address({
               onChange={(e) => onChange(e.target.value)}
               onBlur={onBlur}
               value={value}
+              isDisabled={!isEnabled}
               isRequired
             >
               {ownerShipValues.map((ownerShip) => (
@@ -351,6 +352,7 @@ export function PrevAddress({
               onChange={(e) => onChange(e.target.value)}
               onBlur={onBlur}
               value={value}
+              isDisabled={!isEnabled}
               isRequired
             >
               {ownerShipValues.map((ownerShip) => (
@@ -437,6 +439,7 @@ export function UnmarriedAddendum({
               onBlur={onBlur}
               value={value}
               isRequired
+              isDisabled={!isEnabled}
             >
               <Radio value="No">No</Radio>
               <Radio value="Yes">Yes</Radio>
@@ -457,6 +460,7 @@ export function UnmarriedAddendum({
                   onChange={(e) => onChange(e.target.value)}
                   onBlur={onBlur}
                   value={value}
+                  isDisabled={!isEnabled}
                   isRequired
                 >
                   {unmarriedRelationshipTypesValues.map(
