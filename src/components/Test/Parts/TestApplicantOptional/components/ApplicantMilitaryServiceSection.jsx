@@ -44,7 +44,7 @@ const ApplicantMilitaryServiceSection = ({
         applicantOptional?.props?.applicantMilitaryService !== undefined
           ? '✔️'
           : '❌'
-      } Applicant military service`}
+      } Applicant Military Service`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
     >

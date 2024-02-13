@@ -44,7 +44,7 @@ const AnyoneElseMilitaryServiceSection = ({
         applicantOptional?.props?.anyoneElseMilitaryService !== undefined
           ? '✔️'
           : '❌'
-      } Household member military service`}
+      } Household Member Military Service`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
     >
