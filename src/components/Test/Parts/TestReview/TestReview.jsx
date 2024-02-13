@@ -14,6 +14,7 @@ import RecordsSection from './components/RecordsSection';
 import HomeownersSection from './components/HomeownersSection';
 import EmploymentSection from './components/EmploymentSection';
 import FinancialSection from './components/FinancialSection';
+import ApplicantOptionalSection from './components/ApplicantOptionalSection/ApplicantOptionalSection';
 
 export function TestReview() {
   const { application, setApplication } = useOutletContext();
@@ -24,6 +25,11 @@ export function TestReview() {
   const [basicInfoOpen, setBasicInfoOpen] = useState(true);
   const [currentAddressOpen, setCurrentAddressOpen] = useState(false);
   const [previousAddressOpen, setPreviousAddressOpen] = useState(false);
+  const [applicantMilitaryServiceOpen, setApplicantMilitaryServiceOpen] =
+    useState(false);
+  const [anyoneElseMilitaryServiceOpen, setAnyoneElseMilitaryServiceOpen] =
+    useState(false);
+  const [demographicOpen, setDemographicOpen] = useState(false);
   const [checklistExpanded, setChecklistExpanded] = useState(false);
   const [writtenExpanded, setWrittenExpanded] = useState(false);
   const [recordsExpanded, setRecordsExpanded] = useState(false);
@@ -47,7 +53,7 @@ export function TestReview() {
     if (hasPreviousEmployment) {
       setPreviousAddressOpen(true);
     } else {
-      setChecklistExpanded(true);
+      setApplicantMilitaryServiceOpen(true);
     }
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
@@ -57,10 +63,37 @@ export function TestReview() {
 
   const handlePreviousAddressOnReview = () => {
     setPreviousAddressOpen(false);
-    setChecklistExpanded(true);
+    setApplicantMilitaryServiceOpen(true);
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
       prevAddress: true,
+    }));
+  };
+
+  const handleApplicantMilitaryServiceOnReview = () => {
+    setApplicantMilitaryServiceOpen(false);
+    setAnyoneElseMilitaryServiceOpen(true);
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      applicantMilitaryService: true,
+    }));
+  };
+
+  const handleAnyoneElseMilitaryServiceOnReview = () => {
+    setAnyoneElseMilitaryServiceOpen(false);
+    setDemographicOpen(true);
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      anyoneElseMilitaryService: true,
+    }));
+  };
+
+  const handleDemographicOnReview = () => {
+    setDemographicOpen(false);
+    setChecklistExpanded(true);
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      demographic: true,
     }));
   };
 
@@ -223,6 +256,24 @@ export function TestReview() {
         previousAddressOpen={previousAddressOpen}
         setPreviousAddressOpen={setPreviousAddressOpen}
         handlePreviousAddressOnReview={handlePreviousAddressOnReview}
+        reviewedSections={reviewedSections}
+        setReviewedSections={setReviewedSections}
+        submitted={application?.submissionStatus === SubmissionStatus.SUBMITTED}
+      />
+      <ApplicantOptionalSection
+        applicantMilitaryServiceOpen={applicantMilitaryServiceOpen}
+        setApplicantMilitaryServiceOpen={setApplicantMilitaryServiceOpen}
+        handleApplicantMilitaryServiceOnReview={
+          handleApplicantMilitaryServiceOnReview
+        }
+        anyoneElseMilitaryServiceOpen={anyoneElseMilitaryServiceOpen}
+        setAnyoneElseMilitaryServiceOpen={setAnyoneElseMilitaryServiceOpen}
+        handleAnyoneElseMilitaryServiceOnReview={
+          handleAnyoneElseMilitaryServiceOnReview
+        }
+        demographicOpen={demographicOpen}
+        setDemographicOpen={setDemographicOpen}
+        handleDemographicOnReview={handleDemographicOnReview}
         reviewedSections={reviewedSections}
         setReviewedSections={setReviewedSections}
         submitted={application?.submissionStatus === SubmissionStatus.SUBMITTED}
