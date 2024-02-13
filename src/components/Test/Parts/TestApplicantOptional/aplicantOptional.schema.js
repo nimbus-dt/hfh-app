@@ -4,11 +4,14 @@ const yesNoOptions = ['Yes', 'No'];
 
 export const militaryServiceSchema = z.object({
   serveOrServedInUSAF: z.enum(yesNoOptions),
-  currentlyServing: z.enum(yesNoOptions).optional(),
-  projectedExpirationDateOfServiceTour: z.string().optional(),
-  currentlyRetiredDischargedOrSeparated: z.enum(yesNoOptions).optional(),
-  onlyPeriodWasNonActive: z.enum(yesNoOptions).optional(),
-  survivingSpouse: z.enum(yesNoOptions).optional(),
+  currentlyServing: z.enum(yesNoOptions).optional().nullable(),
+  projectedExpirationDateOfServiceTour: z.string().optional().nullable(),
+  currentlyRetiredDischargedOrSeparated: z
+    .enum(yesNoOptions)
+    .optional()
+    .nullable(),
+  onlyPeriodWasNonActive: z.enum(yesNoOptions).optional().nullable(),
+  survivingSpouse: z.enum(yesNoOptions).optional().nullable(),
 });
 
 export const demographicSchema = z.object({
