@@ -1,3 +1,9 @@
+type ApplicantOptional @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ownerID: ID
+  props: AWSJSON
+}
+
 enum SubmissionStatus {
   SUBMITTED
   UNSUBMITTED
