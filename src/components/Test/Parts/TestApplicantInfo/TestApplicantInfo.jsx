@@ -8,8 +8,10 @@ import {
   BasicInformation,
   Address,
   PrevAddress,
+  UnmarriedAddendum,
 } from './components/FormApplicantInfo';
 import { CustomCard } from '../../Reusable/CustomCard';
+import { maritalStatusValues } from './aplicantInfo.schema';
 
 export function TestApplicantInfo() {
   const { application, updateApplicationLastSection } = useOutletContext();
@@ -18,6 +20,9 @@ export function TestApplicantInfo() {
 
   const [basicInfoOpen, setBasicInfoOpen] = useState(true);
   const [basicInfoEdit, setBasicInfoEdit] = useState(false);
+
+  const [unmarriedAddendumOpen, setUnmarriedAddendumOpen] = useState(false);
+  const [unmarriedAddendumEdit, setUnmarriedAddendumEdit] = useState(false);
 
   const [currentAddressOpen, setCurrentAddressOpen] = useState(false);
   const [currentAddressEdit, setCurrentAddressEdit] = useState(false);
@@ -39,7 +44,11 @@ export function TestApplicantInfo() {
             },
           })
         );
-        setCurrentAddressOpen(true);
+        if (data.maritalStatus === maritalStatusValues[2]) {
+          setUnmarriedAddendumOpen(true);
+        } else {
+          setCurrentAddressOpen(true);
+        }
         setApplicantInfo(persistedApplicantInfo);
         setAlert(
           createAlert(
@@ -56,6 +65,10 @@ export function TestApplicantInfo() {
             originalApplicantInfo.props = {
               ...originalApplicantInfo.props,
               basicInfo: { ...data },
+              unmarriedAddendum:
+                data.maritalStatus === maritalStatusValues[2]
+                  ? originalApplicantInfo.unmarriedAddendum
+                  : undefined,
             };
           })
         );
@@ -85,6 +98,48 @@ export function TestApplicantInfo() {
 
   const handleOnClickBasicInfoEdit = () =>
     setBasicInfoEdit((previousBasicInfoEdit) => !previousBasicInfoEdit);
+
+  const onValidUnmarriedAddendum = async (data) => {
+    try {
+      const original = await DataStore.query(ApplicantInfo, applicantInfo.id);
+
+      const persistedApplicantInfo = await DataStore.save(
+        ApplicantInfo.copyOf(original, (originalApplicantInfo) => {
+          originalApplicantInfo.ownerID = application.id;
+          originalApplicantInfo.props = {
+            ...originalApplicantInfo.props,
+            unmarriedAddendum: data,
+          };
+        })
+      );
+      setApplicantInfo(persistedApplicantInfo);
+      setUnmarriedAddendumEdit(false);
+      setCurrentAddressOpen(true);
+      setAlert(
+        createAlert(
+          'success',
+          'Success',
+          'The unmarried addendum information was saved successfully.'
+        )
+      );
+
+      setUnmarriedAddendumOpen(false);
+      updateApplicationLastSection();
+    } catch {
+      setAlert(
+        createAlert(
+          'error',
+          'Error',
+          "The unmarried addendum information couldn't be saved."
+        )
+      );
+    }
+  };
+
+  const handleOnClickUnmarriedAddendumEdit = () =>
+    setUnmarriedAddendumEdit(
+      (previousUnmarriedAddendumEdit) => !previousUnmarriedAddendumEdit
+    );
 
   const onValidCurrentAddress = async (data) => {
     try {
@@ -192,6 +247,13 @@ export function TestApplicantInfo() {
       applicantInfo?.props?.currentAddress !== undefined
     ) {
       if (
+        applicantInfo.props.basicInfo.maritalStatus ===
+          maritalStatusValues[2] &&
+        applicantInfo.props.unmarriedAddendum === undefined
+      ) {
+        return true;
+      }
+      if (
         applicantInfo.props.currentAddress.monthsLivedHere < 24 &&
         applicantInfo.props.previousAddress === undefined
       ) {
@@ -243,6 +305,20 @@ export function TestApplicantInfo() {
           onClickEdit={handleOnClickBasicInfoEdit}
         />
         <br />
+        {applicantInfo?.props?.basicInfo?.maritalStatus ===
+          maritalStatusValues[2] && (
+          <>
+            <UnmarriedAddendum
+              expanded={unmarriedAddendumOpen}
+              onExpandedChange={setUnmarriedAddendumOpen}
+              applicantInfo={applicantInfo}
+              onValid={onValidUnmarriedAddendum}
+              edit={unmarriedAddendumEdit}
+              onClickEdit={handleOnClickUnmarriedAddendumEdit}
+            />
+            <br />
+          </>
+        )}
         <Address
           expanded={currentAddressOpen}
           onExpandedChange={setCurrentAddressOpen}
