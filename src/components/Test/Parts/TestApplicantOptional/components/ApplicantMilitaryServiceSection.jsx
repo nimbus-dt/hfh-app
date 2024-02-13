@@ -1,0 +1,194 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import { CustomExpandableCard } from 'components/Test/Reusable/CustomExpandableCard';
+import PropTypes from 'prop-types';
+import { Controller, useForm } from 'react-hook-form';
+import {
+  Button,
+  Flex,
+  Radio,
+  RadioGroupField,
+  TextField,
+} from '@aws-amplify/ui-react';
+import { militaryServiceSchema } from '../aplicantOptional.schema';
+
+const ApplicantMilitaryServiceSection = ({
+  applicantOptional,
+  expanded,
+  onExpandedChange,
+  onValid,
+  edit,
+  onClickEdit,
+}) => {
+  const {
+    handleSubmit,
+    control,
+    watch,
+    register,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(militaryServiceSchema),
+    shouldFocusError: false,
+    reValidateMode: 'onBlur',
+    values: applicantOptional?.props.applicantMilitaryService,
+  });
+
+  const serveOrServedWatch = watch('serveOrServedInUSAF');
+
+  const currentlyServingWatch = watch('currentlyServing');
+
+  const isEnabled = !applicantOptional?.props?.applicantMilitaryService || edit;
+
+  return (
+    <CustomExpandableCard
+      title={`${
+        applicantOptional?.props?.applicantMilitaryService !== undefined
+          ? '✔️'
+          : '❌'
+      } Applicant military service`}
+      expanded={expanded}
+      onExpandedChange={onExpandedChange}
+    >
+      <form onSubmit={handleSubmit(onValid)}>
+        <Controller
+          control={control}
+          name="serveOrServedInUSAF"
+          defaultValue={null}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <RadioGroupField
+              name="serveOrServedInUSAF"
+              label="Did you (or your deceased spouse) serve, or are you currently serving, in the United States Armed Forces?"
+              onChange={(e) => onChange(e.target.value)}
+              onBlur={onBlur}
+              value={value}
+              hasError={errors?.serveOrServedInUSAF !== undefined}
+              isDisabled={!isEnabled}
+            >
+              <Radio value="Yes">Yes</Radio>
+              <Radio value="No">No</Radio>
+            </RadioGroupField>
+          )}
+        />
+        <br />
+        {serveOrServedWatch === 'Yes' && (
+          <>
+            <Controller
+              control={control}
+              name="currentlyServing"
+              defaultValue={null}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <RadioGroupField
+                  name="currentlyServing"
+                  label="Currently serving on active duty?"
+                  onChange={(e) => onChange(e.target.value)}
+                  onBlur={onBlur}
+                  value={value}
+                  hasError={errors?.currentlyServing !== undefined}
+                  isDisabled={!isEnabled}
+                >
+                  <Radio value="Yes">Yes</Radio>
+                  <Radio value="No">No</Radio>
+                </RadioGroupField>
+              )}
+            />
+            <br />
+            {currentlyServingWatch === 'Yes' && (
+              <>
+                <TextField
+                  {...register('projectedExpirationDateOfServiceTour')}
+                  type="date"
+                  label="Projected expiration date of service/tour"
+                />
+                <br />
+              </>
+            )}
+            <Controller
+              control={control}
+              name="currentlyRetiredDischargedOrSeparated"
+              defaultValue={null}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <RadioGroupField
+                  name="currentlyRetiredDischargedOrSeparated"
+                  label="Currently retired, discharged, or separted from service?"
+                  onChange={(e) => onChange(e.target.value)}
+                  onBlur={onBlur}
+                  value={value}
+                  hasError={
+                    errors?.currentlyRetiredDischargedOrSeparated !== undefined
+                  }
+                  isDisabled={!isEnabled}
+                >
+                  <Radio value="Yes">Yes</Radio>
+                  <Radio value="No">No</Radio>
+                </RadioGroupField>
+              )}
+            />
+            <br />
+            <Controller
+              control={control}
+              name="onlyPeriodWasNonActive"
+              defaultValue={null}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <RadioGroupField
+                  name="onlyPeriodWasNonActive"
+                  label="Only period of service was a non-activated member of the Reserve of National Guard?"
+                  onChange={(e) => onChange(e.target.value)}
+                  onBlur={onBlur}
+                  value={value}
+                  hasError={errors?.onlyPeriodWasNonActive !== undefined}
+                  isDisabled={!isEnabled}
+                >
+                  <Radio value="Yes">Yes</Radio>
+                  <Radio value="No">No</Radio>
+                </RadioGroupField>
+              )}
+            />
+            <br />
+            <Controller
+              control={control}
+              name="survivingSpouse"
+              defaultValue={null}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <RadioGroupField
+                  name="survivingSpouse"
+                  label="Surviving spouse?"
+                  onChange={(e) => onChange(e.target.value)}
+                  onBlur={onBlur}
+                  value={value}
+                  hasError={errors?.survivingSpouse !== undefined}
+                  isDisabled={!isEnabled}
+                >
+                  <Radio value="Yes">Yes</Radio>
+                  <Radio value="No">No</Radio>
+                </RadioGroupField>
+              )}
+            />
+            <br />
+          </>
+        )}
+        <Flex width="100%" justifyContent="end">
+          {applicantOptional?.props.applicantMilitaryService ? (
+            <Button onClick={onClickEdit} variation="secondary">
+              {edit ? 'Cancel' : 'Edit'}
+            </Button>
+          ) : null}
+          {isEnabled ? (
+            <Button type="submit" variation="primary">
+              Save
+            </Button>
+          ) : null}
+        </Flex>
+      </form>
+    </CustomExpandableCard>
+  );
+};
+
+ApplicantMilitaryServiceSection.propTypes = {
+  applicantOptional: PropTypes.object,
+  expanded: PropTypes.bool,
+  onExpandedChange: PropTypes.func,
+  onValid: PropTypes.func,
+  edit: PropTypes.bool,
+  onClickEdit: PropTypes.func,
+};
+
+export default ApplicantMilitaryServiceSection;
