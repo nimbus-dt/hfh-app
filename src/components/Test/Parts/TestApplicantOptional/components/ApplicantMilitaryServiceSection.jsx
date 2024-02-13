@@ -97,6 +97,7 @@ const ApplicantMilitaryServiceSection = ({
                   {...register('projectedExpirationDateOfServiceTour')}
                   type="date"
                   label="Projected expiration date of service/tour"
+                  isDisabled={!isEnabled}
                 />
                 <br />
               </>
