@@ -8,6 +8,13 @@ export const maritalStatusValues = [
 
 export const ownerShipValues = ['Own', 'Rent'];
 
+export const unmarriedRelationshipTypesValues = [
+  'Civil union',
+  'Domestic partnership',
+  'Register reciprocal beneficiary relationship',
+  'Other',
+];
+
 const phoneSchema = z
   .string()
   .regex(
@@ -32,7 +39,6 @@ export const basicInfoSchema = z.object({
   cellPhone: phoneSchema,
   homePhone: optionalPhoneSchema,
   workPhone: optionalPhoneSchema,
-  age: z.coerce.number().int().positive(),
   birthDate: z.string(),
   maritalStatus: z.enum(maritalStatusValues),
 });
@@ -41,4 +47,11 @@ export const addressSchema = z.object({
   address: z.string().min(1),
   ownershipStatus: z.enum(ownerShipValues),
   monthsLivedHere: z.coerce.number().int().positive(),
+});
+
+export const unmarriedAddendumSchema = z.object({
+  notSpouseButSimilarPropertyRights: z.enum(['Yes', 'No']),
+  relationshipType: z.enum(unmarriedRelationshipTypesValues),
+  otherRelationshipType: z.string().min(0),
+  state: z.string().min(0),
 });
