@@ -23,6 +23,7 @@ export function TestReview() {
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [alert, setAlert] = useState();
   const [basicInfoOpen, setBasicInfoOpen] = useState(true);
+  const [unmarriedAddendumOpen, setUnmarriedAddendumOpen] = useState(false);
   const [currentAddressOpen, setCurrentAddressOpen] = useState(false);
   const [previousAddressOpen, setPreviousAddressOpen] = useState(false);
   const [applicantMilitaryServiceOpen, setApplicantMilitaryServiceOpen] =
@@ -39,12 +40,25 @@ export function TestReview() {
   const [previousEmploymentOpen, setPreviousEmploymentOpen] = useState(false);
   const [financialOpen, setFinancialOpen] = useState(false);
 
-  const handleBasicInformationOnReview = () => {
+  const handleBasicInformationOnReview = (unmarried) => {
     setBasicInfoOpen(false);
-    setCurrentAddressOpen(true);
+    if (unmarried) {
+      setUnmarriedAddendumOpen(true);
+    } else {
+      setCurrentAddressOpen(true);
+    }
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
       basicInfo: true,
+    }));
+  };
+
+  const handleUnmarriedAddendumOnReview = () => {
+    setUnmarriedAddendumOpen(false);
+    setCurrentAddressOpen(true);
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      unmarriedAddendum: true,
     }));
   };
 
@@ -250,6 +264,9 @@ export function TestReview() {
         basicInfoOpen={basicInfoOpen}
         setBasicInfoOpen={setBasicInfoOpen}
         handleBasicInformationOnReview={handleBasicInformationOnReview}
+        unmarriedAddendumOpen={unmarriedAddendumOpen}
+        setUnmarriedAddendumOpen={setUnmarriedAddendumOpen}
+        handleUnmarriedAddendumOnReview={handleUnmarriedAddendumOnReview}
         currentAddressOpen={currentAddressOpen}
         setCurrentAddressOpen={setCurrentAddressOpen}
         handleAddressOnReview={handleAddressOnReview}
