@@ -103,12 +103,20 @@ export function TestApplicantInfo() {
     try {
       const original = await DataStore.query(ApplicantInfo, applicantInfo.id);
 
+      const newUnmarriedAddendum = {
+        ...data,
+        otherRelationshipType:
+          data.relationshipType === 'Other'
+            ? data.otherRelationshipType
+            : undefined,
+      };
+
       const persistedApplicantInfo = await DataStore.save(
         ApplicantInfo.copyOf(original, (originalApplicantInfo) => {
           originalApplicantInfo.ownerID = application.id;
           originalApplicantInfo.props = {
             ...originalApplicantInfo.props,
-            unmarriedAddendum: data,
+            unmarriedAddendum: newUnmarriedAddendum,
           };
         })
       );
