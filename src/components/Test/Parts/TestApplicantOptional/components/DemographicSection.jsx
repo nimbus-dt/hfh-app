@@ -288,7 +288,7 @@ const DemographicSection = ({
         <br />
         <CheckboxField
           {...register('race.otherPacificIslander')}
-          label="Other Pacifil Islander"
+          label="Other Pacific Islander"
           marginLeft="1.5rem"
           isDisabled={!isEnabled}
         />
