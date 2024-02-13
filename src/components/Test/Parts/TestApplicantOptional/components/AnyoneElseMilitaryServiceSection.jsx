@@ -36,7 +36,8 @@ const AnyoneElseMilitaryServiceSection = ({
 
   const currentlyServingWatch = watch('currentlyServing');
 
-  const isEnabled = !applicantOptional?.props?.applicantMilitaryService || edit;
+  const isEnabled =
+    !applicantOptional?.props?.anyoneElseMilitaryService || edit;
 
   return (
     <CustomExpandableCard
@@ -147,7 +148,7 @@ const AnyoneElseMilitaryServiceSection = ({
           </>
         )}
         <Flex width="100%" justifyContent="end">
-          {applicantOptional?.props.applicantMilitaryService ? (
+          {applicantOptional?.props.anyoneElseMilitaryService ? (
             <Button onClick={onClickEdit} variation="secondary">
               {edit ? 'Cancel' : 'Edit'}
             </Button>
