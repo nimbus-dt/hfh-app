@@ -182,7 +182,7 @@ export function TestApplicantInfo() {
     );
 
   const handleOnClickNext = () => {
-    navigate('../checklist');
+    navigate('../applicant-optional');
   };
 
   const isNextDisabled = () => {
