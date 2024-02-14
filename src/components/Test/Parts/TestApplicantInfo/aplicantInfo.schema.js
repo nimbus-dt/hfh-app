@@ -51,7 +51,7 @@ export const addressSchema = z.object({
 
 export const unmarriedAddendumSchema = z.object({
   notSpouseButSimilarPropertyRights: z.enum(['Yes', 'No']),
-  relationshipType: z.enum(unmarriedRelationshipTypesValues),
-  otherRelationshipType: z.string().min(0),
-  state: z.string().min(0),
+  relationshipType: z.enum(unmarriedRelationshipTypesValues).optional(),
+  otherRelationshipType: z.string().min(0).optional(),
+  state: z.string().min(0).optional(),
 });

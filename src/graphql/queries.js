@@ -1,6 +1,79 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getApplicantOptional = /* GraphQL */ `
+  query GetApplicantOptional($id: ID!) {
+    getApplicantOptional(id: $id) {
+      id
+      ownerID
+      props
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listApplicantOptionals = /* GraphQL */ `
+  query ListApplicantOptionals(
+    $filter: ModelApplicantOptionalFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listApplicantOptionals(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        ownerID
+        props
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncApplicantOptionals = /* GraphQL */ `
+  query SyncApplicantOptionals(
+    $filter: ModelApplicantOptionalFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncApplicantOptionals(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        ownerID
+        props
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
 export const getAsset = /* GraphQL */ `
   query GetAsset($id: ID!) {
     getAsset(id: $id) {
@@ -219,7 +292,6 @@ export const getTestApplication = /* GraphQL */ `
         startedAt
         __typename
       }
-      submitted
       submittedDate
       affiliate {
         id
@@ -239,7 +311,8 @@ export const getTestApplication = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
-      status
+      reviewStatus
+      submissionStatus
       createdAt
       updatedAt
       _version
@@ -265,9 +338,9 @@ export const listTestApplications = /* GraphQL */ `
         id
         ownerID
         lastSection
-        submitted
         submittedDate
-        status
+        reviewStatus
+        submissionStatus
         createdAt
         updatedAt
         _version
@@ -299,9 +372,9 @@ export const syncTestApplications = /* GraphQL */ `
         id
         ownerID
         lastSection
-        submitted
         submittedDate
-        status
+        reviewStatus
+        submissionStatus
         createdAt
         updatedAt
         _version
