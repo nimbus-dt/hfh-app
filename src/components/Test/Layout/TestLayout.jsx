@@ -65,6 +65,7 @@ export function TestLayout() {
           submissionStatus: SubmissionStatus.UNSUBMITTED,
           reviewStatus: 'Pending',
           testApplicationAffiliateId: habitat.id,
+          submittedDate: '0001-01-01',
         })
       );
 
