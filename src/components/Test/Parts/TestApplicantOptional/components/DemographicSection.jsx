@@ -85,38 +85,88 @@ const DemographicSection = ({
       <form onSubmit={handleSubmit(onValid)}>
         <Text fontWeight="bold">Ethnicity (check one or more)</Text>
         <br />
-        <CheckboxField
-          {...register('ethnicity.hispanicOrLatino')}
-          label="Hispanic or Latino"
-          isDisabled={!isEnabled}
+        <Controller
+          control={control}
+          name="ethnicity.hispanicOrLatino"
+          defaultValue={false}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <CheckboxField
+              name="ethnicity.hispanicOrLatino"
+              onChange={(e) => onChange(e.target.checked)}
+              onBlur={onBlur}
+              checked={value}
+              isDisabled={!isEnabled}
+              label="Hispanic or Latino"
+            />
+          )}
         />
         <br />
-        <CheckboxField
-          {...register('ethnicity.mexican')}
-          label="Mexican"
-          marginLeft="1.5rem"
-          isDisabled={!isEnabled}
+        <Controller
+          control={control}
+          name="ethnicity.mexican"
+          defaultValue={false}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <CheckboxField
+              name="ethnicity.mexican"
+              onChange={(e) => onChange(e.target.checked)}
+              onBlur={onBlur}
+              checked={value}
+              isDisabled={!isEnabled}
+              label="Mexican"
+              marginLeft="1.5rem"
+            />
+          )}
         />
         <br />
-        <CheckboxField
-          {...register('ethnicity.puertoRican')}
-          label="Puerto Rican"
-          marginLeft="1.5rem"
-          isDisabled={!isEnabled}
+        <Controller
+          control={control}
+          name="ethnicity.puertoRican"
+          defaultValue={false}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <CheckboxField
+              name="ethnicity.puertoRican"
+              onChange={(e) => onChange(e.target.checked)}
+              onBlur={onBlur}
+              checked={value}
+              isDisabled={!isEnabled}
+              label="Puerto Rican"
+              marginLeft="1.5rem"
+            />
+          )}
         />
         <br />
-        <CheckboxField
-          {...register('ethnicity.cuban')}
-          label="Cuban"
-          marginLeft="1.5rem"
-          isDisabled={!isEnabled}
+        <Controller
+          control={control}
+          name="ethnicity.cuban"
+          defaultValue={false}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <CheckboxField
+              name="ethnicity.cuban"
+              onChange={(e) => onChange(e.target.checked)}
+              onBlur={onBlur}
+              checked={value}
+              isDisabled={!isEnabled}
+              label="Cuban"
+              marginLeft="1.5rem"
+            />
+          )}
         />
         <br />
-        <CheckboxField
-          {...register('ethnicity.otherHispanicOrLatino')}
-          label="Other Hispanic or Latino"
-          marginLeft="1.5rem"
-          isDisabled={!isEnabled}
+        <Controller
+          control={control}
+          name="ethnicity.otherHispanicOrLatino"
+          defaultValue={false}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <CheckboxField
+              name="ethnicity.otherHispanicOrLatino"
+              onChange={(e) => onChange(e.target.checked)}
+              onBlur={onBlur}
+              checked={value}
+              isDisabled={!isEnabled}
+              label="Other Hispanic or Latino"
+              marginLeft="1.5rem"
+            />
+          )}
         />
         <br />
         {otherHispanicOrLatino && (
@@ -131,16 +181,36 @@ const DemographicSection = ({
             <br />
           </>
         )}
-        <CheckboxField
-          {...register('ethnicity.notHispanicOrLatino')}
-          label="Not Hispanic or Latino"
-          isDisabled={!isEnabled}
+        <Controller
+          control={control}
+          name="ethnicity.notHispanicOrLatino"
+          defaultValue={false}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <CheckboxField
+              name="ethnicity.notHispanicOrLatino"
+              onChange={(e) => onChange(e.target.checked)}
+              onBlur={onBlur}
+              checked={value}
+              isDisabled={!isEnabled}
+              label="Not Hispanic or Latino"
+            />
+          )}
         />
         <br />
-        <CheckboxField
-          {...register('ethnicity.iDoNotWishToProvideThisInfo')}
-          label="I do not wish to provide this information"
-          isDisabled={!isEnabled}
+        <Controller
+          control={control}
+          name="ethnicity.iDoNotWishToProvideThisInfo"
+          defaultValue={false}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <CheckboxField
+              name="ethnicity.iDoNotWishToProvideThisInfo"
+              onChange={(e) => onChange(e.target.checked)}
+              onBlur={onBlur}
+              checked={value}
+              isDisabled={!isEnabled}
+              label="I do not wish to provide this information"
+            />
+          )}
         />
         <br />
         <Text as="label" htmlFor="sex" fontWeight="bold">
@@ -170,10 +240,20 @@ const DemographicSection = ({
         <br />
         <Text fontWeight="bold">Race (check one or more)</Text>
         <br />
-        <CheckboxField
-          {...register('race.americanIndianOrAlaskaNative')}
-          label="American Indian or Alaska Native"
-          isDisabled={!isEnabled}
+        <Controller
+          control={control}
+          name="race.americanIndianOrAlaskaNative"
+          defaultValue={false}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <CheckboxField
+              name="race.americanIndianOrAlaskaNative"
+              onChange={(e) => onChange(e.target.checked)}
+              onBlur={onBlur}
+              checked={value}
+              isDisabled={!isEnabled}
+              label="American Indian or Alaska Native"
+            />
+          )}
         />
         <br />
         {americanIndianOrAlaskaNative && (
@@ -186,59 +266,139 @@ const DemographicSection = ({
             <br />
           </>
         )}
-        <CheckboxField
-          {...register('race.asian')}
-          label="Asian"
-          isDisabled={!isEnabled}
+        <Controller
+          control={control}
+          name="race.asian"
+          defaultValue={false}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <CheckboxField
+              name="race.asian"
+              onChange={(e) => onChange(e.target.checked)}
+              onBlur={onBlur}
+              checked={value}
+              isDisabled={!isEnabled}
+              label="Asian"
+            />
+          )}
         />
         <br />
-        <CheckboxField
-          {...register('race.asianIndian')}
-          label="Asian Indian"
-          marginLeft="1.5rem"
-          isDisabled={!isEnabled}
+        <Controller
+          control={control}
+          name="race.asianIndian"
+          defaultValue={false}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <CheckboxField
+              name="race.asianIndian"
+              onChange={(e) => onChange(e.target.checked)}
+              onBlur={onBlur}
+              checked={value}
+              isDisabled={!isEnabled}
+              label="Asian Indian"
+              marginLeft="1.5rem"
+            />
+          )}
         />
         <br />
-        <CheckboxField
-          {...register('race.chinese')}
-          label="Chinese"
-          marginLeft="1.5rem"
-          isDisabled={!isEnabled}
+        <Controller
+          control={control}
+          name="race.chinese"
+          defaultValue={false}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <CheckboxField
+              name="race.chinese"
+              onChange={(e) => onChange(e.target.checked)}
+              onBlur={onBlur}
+              checked={value}
+              isDisabled={!isEnabled}
+              label="Chinese"
+              marginLeft="1.5rem"
+            />
+          )}
         />
         <br />
-        <CheckboxField
-          {...register('race.filipino')}
-          label="Filipino"
-          marginLeft="1.5rem"
-          isDisabled={!isEnabled}
+        <Controller
+          control={control}
+          name="race.filipino"
+          defaultValue={false}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <CheckboxField
+              name="race.filipino"
+              onChange={(e) => onChange(e.target.checked)}
+              onBlur={onBlur}
+              checked={value}
+              isDisabled={!isEnabled}
+              label="Filipino"
+              marginLeft="1.5rem"
+            />
+          )}
         />
         <br />
-        <CheckboxField
-          {...register('race.japanese')}
-          label="Japanese"
-          marginLeft="1.5rem"
-          isDisabled={!isEnabled}
+        <Controller
+          control={control}
+          name="race.japanese"
+          defaultValue={false}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <CheckboxField
+              name="race.japanese"
+              onChange={(e) => onChange(e.target.checked)}
+              onBlur={onBlur}
+              checked={value}
+              isDisabled={!isEnabled}
+              label="Japanese"
+              marginLeft="1.5rem"
+            />
+          )}
         />
         <br />
-        <CheckboxField
-          {...register('race.korean')}
-          label="Korean"
-          marginLeft="1.5rem"
-          isDisabled={!isEnabled}
+        <Controller
+          control={control}
+          name="race.korean"
+          defaultValue={false}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <CheckboxField
+              name="race.korean"
+              onChange={(e) => onChange(e.target.checked)}
+              onBlur={onBlur}
+              checked={value}
+              isDisabled={!isEnabled}
+              label="Korean"
+              marginLeft="1.5rem"
+            />
+          )}
         />
         <br />
-        <CheckboxField
-          {...register('race.vietnamese')}
-          label="Vietnamese"
-          marginLeft="1.5rem"
-          isDisabled={!isEnabled}
+        <Controller
+          control={control}
+          name="race.vietnamese"
+          defaultValue={false}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <CheckboxField
+              name="race.vietnamese"
+              onChange={(e) => onChange(e.target.checked)}
+              onBlur={onBlur}
+              checked={value}
+              isDisabled={!isEnabled}
+              label="Vietnamese"
+              marginLeft="1.5rem"
+            />
+          )}
         />
         <br />
-        <CheckboxField
-          {...register('race.otherAsian')}
-          label="Other Asian"
-          marginLeft="1.5rem"
-          isDisabled={!isEnabled}
+        <Controller
+          control={control}
+          name="race.otherAsian"
+          defaultValue={false}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <CheckboxField
+              name="race.otherAsian"
+              onChange={(e) => onChange(e.target.checked)}
+              onBlur={onBlur}
+              checked={value}
+              isDisabled={!isEnabled}
+              label="Other Asian"
+              marginLeft="1.5rem"
+            />
+          )}
         />
         <br />
         {otherAsian && (
@@ -253,44 +413,104 @@ const DemographicSection = ({
             <br />
           </>
         )}
-        <CheckboxField
-          {...register('race.blackOrAfricanAmerican')}
-          label="Black or African American"
-          isDisabled={!isEnabled}
+        <Controller
+          control={control}
+          name="race.blackOrAfricanAmerican"
+          defaultValue={false}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <CheckboxField
+              name="race.blackOrAfricanAmerican"
+              onChange={(e) => onChange(e.target.checked)}
+              onBlur={onBlur}
+              checked={value}
+              isDisabled={!isEnabled}
+              label="Black or African American"
+            />
+          )}
         />
         <br />
-        <CheckboxField
-          {...register('race.nativeHawaiianOrOtherPacificIslander')}
-          label="Native Hawaiian or Other Pacific Islander"
-          isDisabled={!isEnabled}
+        <Controller
+          control={control}
+          name="race.nativeHawaiianOrOtherPacificIslander"
+          defaultValue={false}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <CheckboxField
+              name="race.nativeHawaiianOrOtherPacificIslander"
+              onChange={(e) => onChange(e.target.checked)}
+              onBlur={onBlur}
+              checked={value}
+              isDisabled={!isEnabled}
+              label="Native Hawaiian or Other Pacific Islander"
+            />
+          )}
         />
         <br />
-        <CheckboxField
-          {...register('race.nativeHawaiian')}
-          label="Native Hawaiian"
-          marginLeft="1.5rem"
-          isDisabled={!isEnabled}
+        <Controller
+          control={control}
+          name="race.nativeHawaiian"
+          defaultValue={false}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <CheckboxField
+              name="race.nativeHawaiian"
+              onChange={(e) => onChange(e.target.checked)}
+              onBlur={onBlur}
+              checked={value}
+              isDisabled={!isEnabled}
+              label="Native Hawaiian"
+              marginLeft="1.5rem"
+            />
+          )}
         />
         <br />
-        <CheckboxField
-          {...register('race.guamanianOrChamorro')}
-          label="Guamanian or Chamorro"
-          marginLeft="1.5rem"
-          isDisabled={!isEnabled}
+        <Controller
+          control={control}
+          name="race.guamanianOrChamorro"
+          defaultValue={false}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <CheckboxField
+              name="race.guamanianOrChamorro"
+              onChange={(e) => onChange(e.target.checked)}
+              onBlur={onBlur}
+              checked={value}
+              isDisabled={!isEnabled}
+              label="Guamanian or Chamorro"
+              marginLeft="1.5rem"
+            />
+          )}
         />
         <br />
-        <CheckboxField
-          {...register('race.samoan')}
-          label="Samoan"
-          marginLeft="1.5rem"
-          isDisabled={!isEnabled}
+        <Controller
+          control={control}
+          name="race.samoan"
+          defaultValue={false}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <CheckboxField
+              name="race.samoan"
+              onChange={(e) => onChange(e.target.checked)}
+              onBlur={onBlur}
+              checked={value}
+              isDisabled={!isEnabled}
+              label="Samoan"
+              marginLeft="1.5rem"
+            />
+          )}
         />
         <br />
-        <CheckboxField
-          {...register('race.otherPacificIslander')}
-          label="Other Pacific Islander"
-          marginLeft="1.5rem"
-          isDisabled={!isEnabled}
+        <Controller
+          control={control}
+          name="race.otherPacificIslander"
+          defaultValue={false}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <CheckboxField
+              name="race.otherPacificIslander"
+              onChange={(e) => onChange(e.target.checked)}
+              onBlur={onBlur}
+              checked={value}
+              isDisabled={!isEnabled}
+              label="Other Pacific Islander"
+              marginLeft="1.5rem"
+            />
+          )}
         />
         <br />
         {otherPacificIslander && (
@@ -305,16 +525,36 @@ const DemographicSection = ({
             <br />
           </>
         )}
-        <CheckboxField
-          {...register('race.white')}
-          label="White"
-          isDisabled={!isEnabled}
+        <Controller
+          control={control}
+          name="race.white"
+          defaultValue={false}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <CheckboxField
+              name="race.white"
+              onChange={(e) => onChange(e.target.checked)}
+              onBlur={onBlur}
+              checked={value}
+              isDisabled={!isEnabled}
+              label="White"
+            />
+          )}
         />
         <br />
-        <CheckboxField
-          {...register('race.iDoNotWishToProvideThisInfo')}
-          label="I do not wish to provide this information"
-          isDisabled={!isEnabled}
+        <Controller
+          control={control}
+          name="race.iDoNotWishToProvideThisInfo"
+          defaultValue={false}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <CheckboxField
+              name="race.iDoNotWishToProvideThisInfo"
+              onChange={(e) => onChange(e.target.checked)}
+              onBlur={onBlur}
+              checked={value}
+              isDisabled={!isEnabled}
+              label="I do not wish to provide this information"
+            />
+          )}
         />
         <br />
         <Flex width="100%" justifyContent="end">
