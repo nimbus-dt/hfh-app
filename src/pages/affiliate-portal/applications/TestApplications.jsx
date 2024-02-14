@@ -16,7 +16,7 @@ import {
   View,
   ScrollView,
 } from '@aws-amplify/ui-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   useApplicantInfosQuery,
   useTestApplicationsQuery,
@@ -233,6 +233,14 @@ const TestApplications = () => {
     setEditingStatus(undefined);
     setNewStatus('');
   };
+
+  useEffect(() => {
+    console.log('sort', submittedDateSort);
+  }, [submittedDateSort]);
+
+  useEffect(() => {
+    console.log('apps', applications);
+  }, [applications]);
 
   return (
     <Flex
@@ -504,7 +512,10 @@ const TestApplications = () => {
                         )?.props.basicInfo.fullName
                       }
                     </TableCell>
-                    <TableCell>{application.submittedDate}</TableCell>
+                    <TableCell>
+                      {application.submittedDate !== '0001-01-01' &&
+                        application.submittedDate}
+                    </TableCell>
                     <TableCell>
                       {stringToHumanReadable(application.submissionStatus)}
                     </TableCell>
