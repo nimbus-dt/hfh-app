@@ -21,6 +21,7 @@ import {
   useDebtsQuery,
   useAssetsQuery,
   useChecklistsQuery,
+  useApplicantOptionalsQuery,
 } from 'hooks/services';
 import {
   getDebtToIncomeRatio,
@@ -45,6 +46,7 @@ import ApplicationMetricsTable from './components/ApplicationMetricsTable';
 import HouseholdTable from './components/HouseholdTable';
 import FinancialSection from './components/FinancialSection';
 import { decideSchema, returnSchema } from '../TestApplicationDetails.schema';
+import ApplicantOptionalTable from './components/ApplicantOptionalTable';
 
 const TestApplicationDetails = () => {
   const [userEmail, setUserEmail] = useState();
@@ -64,6 +66,8 @@ const TestApplicationDetails = () => {
   };
 
   const { data: applicantInfos } = useApplicantInfosQuery(queriesProps2);
+  const { data: applicantOptionals } =
+    useApplicantOptionalsQuery(queriesProps2);
   const { data: checklists } = useChecklistsQuery(queriesProps2);
   const { data: writtens } = useWrittensQuery(queriesProps2);
   const { data: records } = useRecordsQuery(queriesProps2);
@@ -242,6 +246,8 @@ const TestApplicationDetails = () => {
       />
 
       <ApplicantInfoTable applicantInfo={applicantInfos[0]} email={userEmail} />
+
+      <ApplicantOptionalTable applicantOptional={applicantOptionals[0]} />
 
       <ChecklistTable
         questions={habitat?.props?.prePreScreen?.prePreScreenQuestions}

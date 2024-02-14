@@ -176,7 +176,6 @@ const TestAffiliateLayout = () => {
             direction="column"
             margin="auto"
             alignItems="center"
-            padding="1rem"
           >
             {authStatus === 'unauthenticated' || !isUserAllowed ? (
               <>
@@ -231,24 +230,23 @@ const TestAffiliateLayout = () => {
                 </Flex>
               </>
             ) : (
-              <Card
-                width="100%"
-                variation={responsiveBool ? '' : 'elevated'}
-                justifyContent="center"
-                grow={1}
-                wrap
-                alignSelf="start"
-              >
-                <Outlet
-                  context={{
-                    habitat,
-                    setHabitat,
-                    addCustomStatusToHabitat,
-                    removeCustomStatusToHabitat,
-                    updateCustomStatusToHabitat,
-                  }}
-                />
-              </Card>
+              <Flex padding="1rem" grow={1} width="100%" wrap alignSelf="start">
+                <Card
+                  variation={responsiveBool ? '' : 'elevated'}
+                  justifyContent="center"
+                  grow={1}
+                >
+                  <Outlet
+                    context={{
+                      habitat,
+                      setHabitat,
+                      addCustomStatusToHabitat,
+                      removeCustomStatusToHabitat,
+                      updateCustomStatusToHabitat,
+                    }}
+                  />
+                </Card>
+              </Flex>
             )}
           </Flex>
         </ScrollView>

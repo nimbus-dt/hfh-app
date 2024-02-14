@@ -160,7 +160,7 @@ export function TestChecklist() {
         <Flex width="100%" justifyContent="space-between">
           <Button
             variation="primary"
-            onClick={() => navigate('../applicant-info')}
+            onClick={() => navigate('../applicant-optional')}
           >
             Back
           </Button>

@@ -1,6 +1,57 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateApplicantOptional = /* GraphQL */ `
+  subscription OnCreateApplicantOptional(
+    $filter: ModelSubscriptionApplicantOptionalFilterInput
+  ) {
+    onCreateApplicantOptional(filter: $filter) {
+      id
+      ownerID
+      props
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateApplicantOptional = /* GraphQL */ `
+  subscription OnUpdateApplicantOptional(
+    $filter: ModelSubscriptionApplicantOptionalFilterInput
+  ) {
+    onUpdateApplicantOptional(filter: $filter) {
+      id
+      ownerID
+      props
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteApplicantOptional = /* GraphQL */ `
+  subscription OnDeleteApplicantOptional(
+    $filter: ModelSubscriptionApplicantOptionalFilterInput
+  ) {
+    onDeleteApplicantOptional(filter: $filter) {
+      id
+      ownerID
+      props
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
 export const onCreateAsset = /* GraphQL */ `
   subscription OnCreateAsset($filter: ModelSubscriptionAssetFilterInput) {
     onCreateAsset(filter: $filter) {
@@ -149,7 +200,6 @@ export const onCreateTestApplication = /* GraphQL */ `
         startedAt
         __typename
       }
-      submitted
       submittedDate
       affiliate {
         id
@@ -169,7 +219,8 @@ export const onCreateTestApplication = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
-      status
+      reviewStatus
+      submissionStatus
       createdAt
       updatedAt
       _version
@@ -193,7 +244,6 @@ export const onUpdateTestApplication = /* GraphQL */ `
         startedAt
         __typename
       }
-      submitted
       submittedDate
       affiliate {
         id
@@ -213,7 +263,8 @@ export const onUpdateTestApplication = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
-      status
+      reviewStatus
+      submissionStatus
       createdAt
       updatedAt
       _version
@@ -237,7 +288,6 @@ export const onDeleteTestApplication = /* GraphQL */ `
         startedAt
         __typename
       }
-      submitted
       submittedDate
       affiliate {
         id
@@ -257,7 +307,8 @@ export const onDeleteTestApplication = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
-      status
+      reviewStatus
+      submissionStatus
       createdAt
       updatedAt
       _version
