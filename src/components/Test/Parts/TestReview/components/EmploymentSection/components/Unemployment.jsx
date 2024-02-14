@@ -13,6 +13,7 @@ const Unemployment = ({
   reviewedSections,
   setReviewedSections,
   onReview,
+  submitted,
 }) => {
   const customCardReference = useRef(null);
 
@@ -34,7 +35,9 @@ const Unemployment = ({
 
   return (
     <CustomExpandableCard
-      title={`${getCheckOrExEmoji(reviewedSections.unemployment)} Unemployment`}
+      title={`${getCheckOrExEmoji(
+        reviewedSections.unemployment || submitted
+      )} Unemployment`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
       ref={customCardReference}
@@ -51,14 +54,16 @@ const Unemployment = ({
           </RadioGroupField>
 
           <br />
-          <Flex width="100%" justifyContent="end">
-            <Link to="../employment">
-              <Button>Edit</Button>
-            </Link>
-            <Button onClick={onReview} variation="primary">
-              Confirm
-            </Button>
-          </Flex>
+          {!submitted && (
+            <Flex width="100%" justifyContent="end">
+              <Link to="../employment">
+                <Button>Edit</Button>
+              </Link>
+              <Button onClick={onReview} variation="primary">
+                Confirm
+              </Button>
+            </Flex>
+          )}
         </>
       ) : (
         <LoadingData />
@@ -74,6 +79,7 @@ Unemployment.propTypes = {
   reviewedSections: PropTypes.object,
   setReviewedSections: PropTypes.func,
   onReview: PropTypes.func,
+  submitted: PropTypes.bool,
 };
 
 export default Unemployment;

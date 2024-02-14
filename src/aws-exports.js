@@ -9,6 +9,11 @@ const awsmobile = {
     "aws_appsync_apiKey": "da2-5mejunhxonflln7d3n6lwkkgky",
     "aws_cloud_logic_custom": [
         {
+            "name": "public",
+            "endpoint": "https://xwgw1qqerd.execute-api.us-east-1.amazonaws.com/prod",
+            "region": "us-east-1"
+        },
+        {
             "name": "sendEmailToApplicantAPI",
             "endpoint": "https://ezcqlkrlt3.execute-api.us-east-1.amazonaws.com/prod",
             "region": "us-east-1"

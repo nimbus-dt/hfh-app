@@ -17,7 +17,6 @@ import {
 import { CustomCard } from 'components/Test/Reusable/CustomCard';
 import { TestNav } from 'components/Test/Layout/TestNav';
 import { Habitat } from '../../models';
-import { Topbar } from './Topbar';
 import { COLORS } from '../../utils/constants';
 import Sidebar from './Sidebar';
 
@@ -62,7 +61,7 @@ const TestAffiliateLayout = () => {
                   ? originalHabitat.props.data.customStatus
                   : []
               ).includes(newCustomStatus) &&
-              newCustomStatus !== 'Unset'
+              newCustomStatus !== 'Pending'
             ) {
               originalHabitat.props.data.customStatus = originalHabitat.props
                 .data.customStatus
@@ -231,17 +230,11 @@ const TestAffiliateLayout = () => {
                 </Flex>
               </>
             ) : (
-              <>
-                <Topbar habitatName={habitat?.name} />
+              <Flex padding="1rem" grow={1} width="100%" wrap alignSelf="start">
                 <Card
-                  width={responsiveBool ? '100%' : '80%'}
                   variation={responsiveBool ? '' : 'elevated'}
                   justifyContent="center"
-                  margin="auto"
-                  marginTop="1rem"
-                  marginBottom="1rem"
                   grow={1}
-                  wrap
                 >
                   <Outlet
                     context={{
@@ -253,7 +246,7 @@ const TestAffiliateLayout = () => {
                     }}
                   />
                 </Card>
-              </>
+              </Flex>
             )}
           </Flex>
         </ScrollView>

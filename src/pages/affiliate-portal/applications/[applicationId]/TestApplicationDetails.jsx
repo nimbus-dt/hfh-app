@@ -21,6 +21,7 @@ import {
   useDebtsQuery,
   useAssetsQuery,
   useChecklistsQuery,
+  useApplicantOptionalsQuery,
 } from 'hooks/services';
 import {
   getDebtToIncomeRatio,
@@ -34,7 +35,7 @@ import Modal from 'components/Modal';
 import { API, DataStore } from 'aws-amplify';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { TestApplication } from 'models';
+import { TestApplication, SubmissionStatus } from 'models';
 import ApplicantInfoTable from './components/ApplicantInfoTable';
 import GeneralInfoTable from './components/GeneralInfoTable';
 import ChecklistTable from './components/ChecklistTable';
@@ -45,6 +46,7 @@ import ApplicationMetricsTable from './components/ApplicationMetricsTable';
 import HouseholdTable from './components/HouseholdTable';
 import FinancialSection from './components/FinancialSection';
 import { decideSchema, returnSchema } from '../TestApplicationDetails.schema';
+import ApplicantOptionalTable from './components/ApplicantOptionalTable';
 
 const TestApplicationDetails = () => {
   const [userEmail, setUserEmail] = useState();
@@ -64,6 +66,8 @@ const TestApplicationDetails = () => {
   };
 
   const { data: applicantInfos } = useApplicantInfosQuery(queriesProps2);
+  const { data: applicantOptionals } =
+    useApplicantOptionalsQuery(queriesProps2);
   const { data: checklists } = useChecklistsQuery(queriesProps2);
   const { data: writtens } = useWrittensQuery(queriesProps2);
   const { data: records } = useRecordsQuery(queriesProps2);
@@ -138,7 +142,7 @@ const TestApplicationDetails = () => {
       const original = await DataStore.query(TestApplication, application.id);
       const persistedApplication = await DataStore.save(
         TestApplication.copyOf(original, (originalApplication) => {
-          originalApplication.submitted = false;
+          originalApplication.submissionStatus = SubmissionStatus.RETURNED;
         })
       );
 
@@ -172,7 +176,7 @@ const TestApplicationDetails = () => {
       const original = await DataStore.query(TestApplication, application.id);
       const persistedApplication = await DataStore.save(
         TestApplication.copyOf(original, (originalApplication) => {
-          originalApplication.status = data.status;
+          originalApplication.reviewStatus = data.status;
         })
       );
 
@@ -236,11 +240,14 @@ const TestApplicationDetails = () => {
       </View>
 
       <GeneralInfoTable
-        status={application?.status}
+        reviewStatus={application?.reviewStatus}
+        submissionStatus={application?.submissionStatus}
         submittedDate={application?.submittedDate}
       />
 
       <ApplicantInfoTable applicantInfo={applicantInfos[0]} email={userEmail} />
+
+      <ApplicantOptionalTable applicantOptional={applicantOptionals[0]} />
 
       <ChecklistTable
         questions={habitat?.props?.prePreScreen?.prePreScreenQuestions}
@@ -336,7 +343,7 @@ const TestApplicationDetails = () => {
             hasError={errorsDecide?.status}
             errorMessage="Invalid status"
           >
-            <option value="Unset">Unset</option>
+            <option value="Pending">Pending</option>
             {(habitat?.props.data.customStatus
               ? habitat.props.data.customStatus
               : []
@@ -376,12 +383,14 @@ const TestApplicationDetails = () => {
           </Flex>
         </form>
       </Modal>
-      <Flex justifyContent="end">
-        <Button onClick={handleReturnOnClick}>Return</Button>
-        <Button variation="primary" onClick={handleDecideOnClick}>
-          Decide
-        </Button>
-      </Flex>
+      {application?.submissionStatus === SubmissionStatus.SUBMITTED && (
+        <Flex justifyContent="end">
+          <Button onClick={handleReturnOnClick}>Return</Button>
+          <Button variation="primary" onClick={handleDecideOnClick}>
+            Decide
+          </Button>
+        </Flex>
+      )}
     </Flex>
   );
 };

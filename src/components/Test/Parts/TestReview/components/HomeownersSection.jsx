@@ -40,6 +40,7 @@ function HomeownersSection({
   reviewedSections,
   setReviewedSections,
   onReview,
+  submitted,
 }) {
   const [members, setMembers] = useState([]);
   const [memberModal, setMemberModal] = useState(false);
@@ -102,7 +103,9 @@ function HomeownersSection({
   return (
     <>
       <CustomExpandableCard
-        title={`${getCheckOrExEmoji(reviewedSections.homeowners)} Household`}
+        title={`${getCheckOrExEmoji(
+          reviewedSections.homeowners || submitted
+        )} Household`}
         expanded={expanded}
         onExpandedChange={setExpanded}
         ref={customCardReference}
@@ -189,14 +192,16 @@ function HomeownersSection({
             </TableBody>
           </Table>
           <br />
-          <Flex width="100%" justifyContent="end">
-            <Link to="../homeowners">
-              <Button>Edit</Button>
-            </Link>
-            <Button onClick={onReview} variation="primary">
-              Confirm
-            </Button>
-          </Flex>
+          {!submitted && (
+            <Flex width="100%" justifyContent="end">
+              <Link to="../homeowners">
+                <Button>Edit</Button>
+              </Link>
+              <Button onClick={onReview} variation="primary">
+                Confirm
+              </Button>
+            </Flex>
+          )}
         </ThemeProvider>
         <Modal
           title="Member"
@@ -245,11 +250,13 @@ function HomeownersSection({
                 isDisabled
               />
             )}
-            <Flex width="100%" justifyContent="end">
-              <Link to="../homeowners">
-                <Button variation="primary">Edit</Button>
-              </Link>
-            </Flex>
+            {!submitted && (
+              <Flex width="100%" justifyContent="end">
+                <Link to="../homeowners">
+                  <Button variation="primary">Edit</Button>
+                </Link>
+              </Flex>
+            )}
           </Flex>
         </Modal>
       </CustomExpandableCard>
@@ -264,6 +271,7 @@ HomeownersSection.propTypes = {
   reviewedSections: PropTypes.object,
   setReviewedSections: PropTypes.func,
   onReview: PropTypes.func,
+  submitted: PropTypes.bool,
 };
 
 export default HomeownersSection;

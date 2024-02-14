@@ -35,10 +35,7 @@ const ApplicantInfoTable = ({ applicantInfo, email }) => (
           header: 'Work phone number',
           value: applicantInfo?.props?.basicInfo?.workPhone ?? '',
         },
-        {
-          header: 'Age',
-          value: applicantInfo?.props?.basicInfo?.age ?? '',
-        },
+
         {
           header: 'Date of birth',
           value: applicantInfo?.props?.basicInfo?.birthDate ?? '',
@@ -53,6 +50,48 @@ const ApplicantInfoTable = ({ applicantInfo, email }) => (
         },
       ]}
     />
+    {applicantInfo?.props?.unmarriedAddendum && (
+      <DataTable
+        subheading="Unmarried Addendum"
+        subheadingTextAlign="left"
+        divider
+        data={[
+          {
+            header:
+              'Is there a person who is not your legal spouse but who currently has real property rights similar to those of a legal spouse?',
+            value:
+              applicantInfo?.props?.unmarriedAddendum
+                ?.notSpouseButSimilarPropertyRights ?? '',
+          },
+          ...(applicantInfo?.props?.unmarriedAddendum
+            ?.notSpouseButSimilarPropertyRights === 'Yes'
+            ? [
+                {
+                  header: 'Indicate the type of relationship',
+                  value:
+                    applicantInfo?.props?.unmarriedAddendum?.relationshipType ??
+                    '',
+                },
+                ...(applicantInfo?.props?.unmarriedAddendum
+                  ?.relationshipType === 'Other'
+                  ? [
+                      {
+                        header: 'Explain the relationship',
+                        value:
+                          applicantInfo?.props?.unmarriedAddendum
+                            ?.otherRelationshipType ?? '',
+                      },
+                    ]
+                  : []),
+                {
+                  header: 'State in which the relationship was formed',
+                  value: applicantInfo?.props?.unmarriedAddendum?.state ?? '',
+                },
+              ]
+            : []),
+        ]}
+      />
+    )}
     <DataTable
       subheading="Current address"
       subheadingTextAlign="left"

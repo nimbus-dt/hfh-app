@@ -11,6 +11,9 @@
     "env": {
       "Type": "String"
     },
+    "public": {
+      "Type": "String"
+    },
     "sendEmailToApplicantAPI": {
       "Type": "String"
     },

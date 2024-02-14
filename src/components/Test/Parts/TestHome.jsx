@@ -8,8 +8,14 @@ import {
   ThemeProvider,
   useBreakpointValue,
 } from '@aws-amplify/ui-react';
-import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import {
+  Link,
+  useNavigate,
+  useOutletContext,
+  useParams,
+} from 'react-router-dom';
 import useHabitatByUrlName from 'hooks/services/useHabitatByUrlName';
+import { SubmissionStatus } from 'models';
 import { CustomCard } from '../Reusable/CustomCard';
 
 export function TestHome() {
@@ -29,12 +35,20 @@ export function TestHome() {
   }
 
   const content =
-    application && application.submitted ? (
-      <Text fontWeight="bold">
-        {`You have succesfully submitted your Homeownership Program application
+    application &&
+    application.submissionStatus === SubmissionStatus.SUBMITTED ? (
+      <>
+        <Text fontWeight="bold">
+          {`You have succesfully submitted your Homeownership Program application
         for ${habitat?.name}. You will receive an email with updates on your
         application.`}
-      </Text>
+        </Text>
+        <Flex justifyContent="end">
+          <Link to="../review">
+            <Button variation="primary">Review</Button>
+          </Link>
+        </Flex>
+      </>
     ) : (
       <>
         <View as="div">

@@ -4,11 +4,35 @@ import { useEffect, useState } from 'react';
 import { Storage } from 'aws-amplify';
 import { Loader } from '@aws-amplify/ui-react';
 
+const Links = ({ loading, linksObject, question }) => {
+  if (loading > 0) {
+    return <Loader size="large" />;
+  }
+
+  if (linksObject[question.name]) {
+    return linksObject[question.name].map((linkObject) => (
+      <li key={linkObject.link}>
+        <a href={linkObject.link} download>
+          {linkObject.fileName}
+        </a>
+      </li>
+    ));
+  }
+};
+
+Links.propTypes = {
+  loading: PropTypes.number,
+  linksObject: PropTypes.object,
+  question: PropTypes.object,
+};
+
 const RecordsTable = ({ questions, answers }) => {
   const [linksObject, setLinksObject] = useState({});
+  const [loading, setLoading] = useState(0);
 
   useEffect(() => {
     const getDownloadLinks = async () => {
+      setLoading((previousLoading) => previousLoading + 1);
       const newLinksObject = {};
 
       for (const [key, value] of Object.entries(answers)) {
@@ -30,6 +54,7 @@ const RecordsTable = ({ questions, answers }) => {
         newLinksObject[key] = arrayOfLinks;
       }
       setLinksObject(newLinksObject);
+      setLoading((previousLoading) => previousLoading - 1);
     };
 
     getDownloadLinks();
@@ -44,16 +69,14 @@ const RecordsTable = ({ questions, answers }) => {
         header: question.label,
         value: (
           <ul>
-            {linksObject[question.name] ? (
-              linksObject[question.name].map((linkObject) => (
-                <li key={linkObject.link}>
-                  <a href={linkObject.link} download>
-                    {linkObject.fileName}
-                  </a>
-                </li>
-              ))
+            {question.name ? (
+              <Links
+                linksObject={linksObject}
+                loading={loading}
+                question={question}
+              />
             ) : (
-              <Loader size="large" />
+              ''
             )}
           </ul>
         ),

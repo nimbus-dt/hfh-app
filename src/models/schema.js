@@ -1,5 +1,71 @@
 export const schema = {
     "models": {
+        "ApplicantOptional": {
+            "name": "ApplicantOptional",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "ownerID": {
+                    "name": "ownerID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "props": {
+                    "name": "props",
+                    "isArray": false,
+                    "type": "AWSJSON",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "ApplicantOptionals",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "Asset": {
             "name": "Asset",
             "fields": {
@@ -238,13 +304,6 @@ export const schema = {
                         ]
                     }
                 },
-                "submitted": {
-                    "name": "submitted",
-                    "isArray": false,
-                    "type": "Boolean",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "submittedDate": {
                     "name": "submittedDate",
                     "isArray": false,
@@ -270,11 +329,20 @@ export const schema = {
                         ]
                     }
                 },
-                "status": {
-                    "name": "status",
+                "reviewStatus": {
+                    "name": "reviewStatus",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
+                    "attributes": []
+                },
+                "submissionStatus": {
+                    "name": "submissionStatus",
+                    "isArray": false,
+                    "type": {
+                        "enum": "SubmissionStatus"
+                    },
+                    "isRequired": true,
                     "attributes": []
                 },
                 "createdAt": {
@@ -1838,6 +1906,14 @@ export const schema = {
         }
     },
     "enums": {
+        "SubmissionStatus": {
+            "name": "SubmissionStatus",
+            "values": [
+                "SUBMITTED",
+                "UNSUBMITTED",
+                "RETURNED"
+            ]
+        },
         "ApplicationTimeStatus": {
             "name": "ApplicationTimeStatus",
             "values": [
@@ -1910,5 +1986,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "c3b427b2d89b20faf1e38965ef528b7b"
+    "version": "f916b0a9e4469dea8c4e3d4135aacc54"
 };

@@ -13,6 +13,7 @@ import PreLimResultsPage from 'pages/applicant/prescreen/prelim/results';
 import { ApplicantPrescreenLayout } from 'components/PreScreen/ApplicantPrescreenLayout';
 import { TestHome } from 'components/Test/Parts/TestHome';
 import TestApplicantInfo from 'components/Test/Parts/TestApplicantInfo';
+import TestApplicantOptional from 'components/Test/Parts/TestApplicantOptional';
 import TestChecklist from 'components/Test/Parts/TestChecklist';
 import TestWritten from 'components/Test/Parts/TestWritten';
 import TestRecords from 'components/Test/Parts/TestRecords';
@@ -34,6 +35,9 @@ import AffiliatePortalSettingsPage from 'pages/affiliate-portal/settings';
 import { TestTerms } from 'components/Test/Parts/TestTerms';
 import { NewLandingLayout } from 'pages/index/Layout/NewLandingLayout';
 import LandingPage from 'pages/index/LandingPage';
+import TermsPage from 'pages/terms/TermsPage';
+import PrivacyPage from 'pages/privacy';
+import ContactPage from 'pages/contact';
 import { TestLayout } from './components/Test/Layout/TestLayout';
 
 import AffiliateSettingsPage from './pages/affiliate/settings';
@@ -42,10 +46,7 @@ import AffiliateSettingsPage from './pages/affiliate/settings';
 import '@aws-amplify/ui-react/styles.css';
 import { LandingLayout } from './components/Landing/LandingLayout';
 import { LandingAbout } from './components/Landing/LandingAbout';
-import { LandingTerms } from './components/Landing/LandingTerms';
-import { LandingPrivacyPolicy } from './components/Landing/LandingPrivacyPolicy';
 import { LandingReturn } from './components/Landing/LandingReturn';
-import { LandingContact } from './components/Landing/LandingContact';
 import { FormUserForm } from './components/PreScreen/Form/FormUserForm';
 import { FormLayoutNew } from './components/PreScreen/Form/FormLayoutNew';
 import { FormInfoPage } from './components/PreScreen/Form/FormInfoPage';
@@ -79,11 +80,19 @@ function App() {
         />
         <Route
           path="privacy"
-          element={<LandingLayout comp={<LandingPrivacyPolicy />} />}
+          element={
+            <NewLandingLayout>
+              <PrivacyPage />
+            </NewLandingLayout>
+          }
         />
         <Route
           path="terms"
-          element={<LandingLayout comp={<LandingTerms />} />}
+          element={
+            <NewLandingLayout>
+              <TermsPage />
+            </NewLandingLayout>
+          }
         />
         <Route
           path="return"
@@ -91,7 +100,11 @@ function App() {
         />
         <Route
           path="contact"
-          element={<LandingLayout comp={<LandingContact />} />}
+          element={
+            <NewLandingLayout>
+              <ContactPage />
+            </NewLandingLayout>
+          }
         />
         <Route
           path="pricing"
@@ -111,6 +124,10 @@ function App() {
           <Route path="home" element={<TestHome />} />
           <Route path="terms" element={<TestTerms />} />
           <Route path="applicant-info" element={<TestApplicantInfo />} />
+          <Route
+            path="applicant-optional"
+            element={<TestApplicantOptional />}
+          />
           <Route path="checklist" element={<TestChecklist />} />
           <Route path="written" element={<TestWritten />} />
           <Route path="records" element={<TestRecords />} />

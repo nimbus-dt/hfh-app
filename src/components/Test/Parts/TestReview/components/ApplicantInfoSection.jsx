@@ -7,7 +7,7 @@ import {
 } from '@aws-amplify/ui-react';
 import PropTypes from 'prop-types';
 import { Link, useOutletContext } from 'react-router-dom';
-import { forwardRef, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ApplicantInfo } from 'models';
 import { DataStore } from 'aws-amplify';
 import { getCheckOrExEmoji } from 'utils/misc';
@@ -15,6 +15,7 @@ import { CustomExpandableCard } from '../../../Reusable/CustomExpandableCard';
 import {
   maritalStatusValues,
   ownerShipValues,
+  unmarriedRelationshipTypesValues,
 } from '../../TestApplicantInfo/aplicantInfo.schema';
 import LoadingData from './LoadingData';
 
@@ -27,6 +28,7 @@ function BasicInformation({
   reviewedSections,
   setReviewedSections,
   onReview,
+  submitted,
 }) {
   useEffect(() => {
     setReviewedSections((previousReviewedSections) => ({
@@ -49,7 +51,7 @@ function BasicInformation({
   return (
     <CustomExpandableCard
       title={`${getCheckOrExEmoji(
-        reviewedSections.basicInfo
+        reviewedSections.basicInfo || submitted
       )} Basic Information`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
@@ -96,13 +98,6 @@ function BasicInformation({
           />
           <br />
           <TextField
-            label="What is your age?"
-            type="number"
-            value={applicantInfo.props.basicInfo.age}
-            isDisabled
-          />
-          <br />
-          <TextField
             label="What is your date of birth?"
             type="date"
             value={applicantInfo.props.basicInfo.birthDate}
@@ -122,14 +117,16 @@ function BasicInformation({
             ))}
           </RadioGroupField>
           <br />
-          <Flex width="100%" justifyContent="end">
-            <Link to={editRoute}>
-              <Button>Edit</Button>
-            </Link>
-            <Button variation="primary" onClick={onReview}>
-              Confirm
-            </Button>
-          </Flex>
+          {!submitted && (
+            <Flex width="100%" justifyContent="end">
+              <Link to={editRoute}>
+                <Button>Edit</Button>
+              </Link>
+              <Button variation="primary" onClick={onReview}>
+                Confirm
+              </Button>
+            </Flex>
+          )}
         </>
       )}
     </CustomExpandableCard>
@@ -143,6 +140,123 @@ BasicInformation.propTypes = {
   reviewedSections: PropTypes.object,
   setReviewedSections: PropTypes.func,
   onReview: PropTypes.func,
+  submitted: PropTypes.bool,
+};
+
+export function UnmarriedAddendum({
+  expanded,
+  onExpandedChange,
+  applicantInfo,
+  reviewedSections,
+  setReviewedSections,
+  onReview,
+  submitted,
+}) {
+  useEffect(() => {
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      unmarriedAddendum: false,
+    }));
+  }, [setReviewedSections]);
+
+  const customCardReference = useRef(null);
+
+  useEffect(() => {
+    if (expanded) {
+      customCardReference.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+      });
+    }
+  }, [expanded]);
+
+  return (
+    <CustomExpandableCard
+      title={`${getCheckOrExEmoji(
+        reviewedSections.unmarriedAddendum || submitted
+      )} Unmarried Addendum`}
+      expanded={expanded}
+      onExpandedChange={onExpandedChange}
+      ref={customCardReference}
+    >
+      <RadioGroupField
+        name="notSpouseButSimilarPropertyRights"
+        label="Which of these best represents the ownership status of the previous address you lived in?"
+        defaultValue={
+          applicantInfo?.props.unmarriedAddendum
+            ?.notSpouseButSimilarPropertyRights
+        }
+        isDisabled
+      >
+        <Radio value="No">No</Radio>
+        <Radio value="Yes">Yes</Radio>
+      </RadioGroupField>
+
+      <br />
+      {applicantInfo?.props.unmarriedAddendum
+        ?.notSpouseButSimilarPropertyRights === 'Yes' && (
+        <>
+          <RadioGroupField
+            name="relationshipType"
+            label="Which of these best represents the ownership status of the previous address you lived in?"
+            value={applicantInfo?.props.unmarriedAddendum?.relationshipType}
+            isDisabled
+          >
+            {unmarriedRelationshipTypesValues.map(
+              (unmarriedRelationshipType) => (
+                <Radio
+                  key={unmarriedRelationshipType}
+                  value={unmarriedRelationshipType}
+                >
+                  {unmarriedRelationshipType}
+                </Radio>
+              )
+            )}
+          </RadioGroupField>
+          <br />
+          {applicantInfo?.props.unmarriedAddendum?.relationshipType ===
+            'Other' && (
+            <>
+              <TextField
+                label="Explain the relationship"
+                defaultValue={
+                  applicantInfo?.props.unmarriedAddendum?.otherRelationshipType
+                }
+                isDisabled
+              />
+              <br />
+            </>
+          )}
+          <TextField
+            label="State in which the relationship was formed"
+            defaultValue={applicantInfo?.props.unmarriedAddendum?.state}
+            isDisabled
+          />
+          <br />
+        </>
+      )}
+      {!submitted && (
+        <Flex width="100%" justifyContent="end">
+          <Link to={editRoute}>
+            <Button>Edit</Button>
+          </Link>
+          <Button variation="primary" onClick={onReview}>
+            Confirm
+          </Button>
+        </Flex>
+      )}
+    </CustomExpandableCard>
+  );
+}
+
+UnmarriedAddendum.propTypes = {
+  applicantInfo: PropTypes.object,
+  expanded: PropTypes.bool,
+  onExpandedChange: PropTypes.func,
+  reviewedSections: PropTypes.object,
+  setReviewedSections: PropTypes.func,
+  onReview: PropTypes.func,
+  submitted: PropTypes.bool,
 };
 
 const Address = ({
@@ -152,6 +266,7 @@ const Address = ({
   reviewedSections,
   setReviewedSections,
   onReview,
+  submitted,
 }) => {
   const customCardReference = useRef(null);
 
@@ -173,7 +288,9 @@ const Address = ({
 
   return (
     <CustomExpandableCard
-      title={`${getCheckOrExEmoji(reviewedSections.address)} Present Address`}
+      title={`${getCheckOrExEmoji(
+        reviewedSections.address || submitted
+      )} Present Address`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
       ref={customCardReference}
@@ -207,14 +324,16 @@ const Address = ({
               </Radio>
             ))}
           </RadioGroupField>
-          <Flex width="100%" justifyContent="end">
-            <Link to={editRoute}>
-              <Button>Edit</Button>
-            </Link>
-            <Button onClick={onReview} variation="primary">
-              Confirm
-            </Button>
-          </Flex>
+          {!submitted && (
+            <Flex width="100%" justifyContent="end">
+              <Link to={editRoute}>
+                <Button>Edit</Button>
+              </Link>
+              <Button onClick={onReview} variation="primary">
+                Confirm
+              </Button>
+            </Flex>
+          )}
         </>
       )}
     </CustomExpandableCard>
@@ -228,6 +347,7 @@ Address.propTypes = {
   reviewedSections: PropTypes.object,
   setReviewedSections: PropTypes.func,
   onReview: PropTypes.func,
+  submitted: PropTypes.bool,
 };
 
 function PrevAddress({
@@ -237,6 +357,7 @@ function PrevAddress({
   reviewedSections,
   setReviewedSections,
   onReview,
+  submitted,
 }) {
   const customCardReference = useRef(null);
 
@@ -256,10 +377,12 @@ function PrevAddress({
     }
   }, [expanded]);
 
+  useEffect(() => console.log(applicantInfo), [applicantInfo]);
+
   return (
     <CustomExpandableCard
       title={`${getCheckOrExEmoji(
-        reviewedSections.prevAddress
+        reviewedSections.prevAddress || submitted
       )} Previous Address`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
@@ -295,14 +418,16 @@ function PrevAddress({
             ))}
           </RadioGroupField>
 
-          <Flex width="100%" justifyContent="end">
-            <Link to={editRoute}>
-              <Button>Edit</Button>
-            </Link>
-            <Button onClick={onReview} variation="primary">
-              Confirm
-            </Button>
-          </Flex>
+          {!submitted && (
+            <Flex width="100%" justifyContent="end">
+              <Link to={editRoute}>
+                <Button>Edit</Button>
+              </Link>
+              <Button onClick={onReview} variation="primary">
+                Confirm
+              </Button>
+            </Flex>
+          )}
         </>
       )}
     </CustomExpandableCard>
@@ -316,12 +441,16 @@ PrevAddress.propTypes = {
   reviewedSections: PropTypes.object,
   setReviewedSections: PropTypes.func,
   onReview: PropTypes.func,
+  submitted: PropTypes.bool,
 };
 
 const ApplicantInfoSection = ({
   basicInfoOpen,
   setBasicInfoOpen,
   handleBasicInformationOnReview,
+  unmarriedAddendumOpen,
+  setUnmarriedAddendumOpen,
+  handleUnmarriedAddendumOnReview,
   currentAddressOpen,
   setCurrentAddressOpen,
   handleAddressOnReview,
@@ -330,6 +459,7 @@ const ApplicantInfoSection = ({
   handlePreviousAddressOnReview,
   reviewedSections,
   setReviewedSections,
+  submitted,
 }) => {
   const { application } = useOutletContext();
 
@@ -360,16 +490,40 @@ const ApplicantInfoSection = ({
         applicantInfo={applicantInfo}
         reviewedSections={reviewedSections}
         setReviewedSections={setReviewedSections}
-        onReview={handleBasicInformationOnReview}
+        onReview={() =>
+          handleBasicInformationOnReview(
+            applicantInfo?.props?.unmarriedAddendum
+          )
+        }
+        submitted={submitted}
       />
       <br />
+      {applicantInfo?.props?.unmarriedAddendum && (
+        <>
+          <UnmarriedAddendum
+            expanded={unmarriedAddendumOpen}
+            onExpandedChange={setUnmarriedAddendumOpen}
+            applicantInfo={applicantInfo}
+            reviewedSections={reviewedSections}
+            setReviewedSections={setReviewedSections}
+            onReview={handleUnmarriedAddendumOnReview}
+            submitted={submitted}
+          />
+          <br />
+        </>
+      )}
       <Address
         expanded={currentAddressOpen}
         onExpandedChange={setCurrentAddressOpen}
         applicantInfo={applicantInfo}
         reviewedSections={reviewedSections}
         setReviewedSections={setReviewedSections}
-        onReview={handleAddressOnReview}
+        onReview={() =>
+          handleAddressOnReview(
+            applicantInfo?.props?.currentAddress?.monthsLivedHere < 24
+          )
+        }
+        submitted={submitted}
       />
       <br />
       {applicantInfo?.props?.previousAddress && (
@@ -381,6 +535,7 @@ const ApplicantInfoSection = ({
             reviewedSections={reviewedSections}
             setReviewedSections={setReviewedSections}
             onReview={handlePreviousAddressOnReview}
+            submitted={submitted}
           />
           <br />
         </>
@@ -393,6 +548,9 @@ ApplicantInfoSection.propTypes = {
   basicInfoOpen: PropTypes.bool,
   setBasicInfoOpen: PropTypes.func,
   handleBasicInformationOnReview: PropTypes.func,
+  unmarriedAddendumOpen: PropTypes.bool,
+  setUnmarriedAddendumOpen: PropTypes.func,
+  handleUnmarriedAddendumOnReview: PropTypes.func,
   currentAddressOpen: PropTypes.bool,
   setCurrentAddressOpen: PropTypes.func,
   handleAddressOnReview: PropTypes.func,
@@ -401,6 +559,7 @@ ApplicantInfoSection.propTypes = {
   handlePreviousAddressOnReview: PropTypes.func,
   reviewedSections: PropTypes.object,
   setReviewedSections: PropTypes.func,
+  submitted: PropTypes.bool,
 };
 
 export default ApplicantInfoSection;

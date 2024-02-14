@@ -14,6 +14,7 @@ const WrittenSection = ({
   reviewedSections,
   setReviewedSections,
   onReview,
+  submitted,
 }) => {
   const [writtenQuestions, setWrittenQuestions] = useState();
 
@@ -57,7 +58,7 @@ const WrittenSection = ({
     <>
       <CustomExpandableCard
         title={`${getCheckOrExEmoji(
-          reviewedSections.written
+          reviewedSections.written || submitted
         )} Written Response`}
         expanded={expanded}
         onExpandedChange={setExpanded}
@@ -76,14 +77,16 @@ const WrittenSection = ({
                 />
               )
             )}
-            <Flex width="100%" justifyContent="end">
-              <Link to="../written">
-                <Button>Edit</Button>
-              </Link>
-              <Button onClick={onReview} variation="primary">
-                Confirm
-              </Button>
-            </Flex>
+            {!submitted && (
+              <Flex width="100%" justifyContent="end">
+                <Link to="../written">
+                  <Button>Edit</Button>
+                </Link>
+                <Button onClick={onReview} variation="primary">
+                  Confirm
+                </Button>
+              </Flex>
+            )}
           </>
         ) : (
           <LoadingData />
@@ -101,6 +104,7 @@ WrittenSection.propTypes = {
   reviewedSections: PropTypes.object,
   setReviewedSections: PropTypes.func,
   onReview: PropTypes.func,
+  submitted: PropTypes.bool,
 };
 
 export default WrittenSection;

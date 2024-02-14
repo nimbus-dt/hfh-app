@@ -1,8 +1,6 @@
 import { Link, useOutletContext } from 'react-router-dom';
 import {
   Flex,
-  Heading,
-  Divider,
   SelectField,
   Button,
   Table,
@@ -18,18 +16,36 @@ import {
   View,
   ScrollView,
 } from '@aws-amplify/ui-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   useApplicantInfosQuery,
   useTestApplicationsQuery,
 } from 'hooks/services';
-import { DataStore } from 'aws-amplify';
+import { DataStore, SortDirection } from 'aws-amplify';
 import { TestApplication } from 'models';
 import Modal from 'components/Modal';
-import { MdAdd, MdCheck, MdClose, MdDelete, MdEdit } from 'react-icons/md';
+import {
+  MdAdd,
+  MdArrowDownward,
+  MdArrowUpward,
+  MdCheck,
+  MdClose,
+  MdDelete,
+  MdEdit,
+} from 'react-icons/md';
+import { SUBMISSION_STATUS_LIST } from 'utils/constants';
+import { stringToHumanReadable } from 'utils/strings';
+import PageTitle from '../components/PageTitle/PageTitle';
 
-const UNSET = 'Unset';
-const STATUS = ['All', UNSET];
+const PENDING = 'Pending';
+const REVIEW_STATUS = ['All', PENDING];
+const SUBMISSION_STATUS = [
+  {
+    key: 'ALL',
+    value: 'All',
+  },
+  ...SUBMISSION_STATUS_LIST,
+];
 
 const perPage = 5;
 
@@ -40,7 +56,10 @@ const TestApplications = () => {
     removeCustomStatusToHabitat,
     updateCustomStatusToHabitat,
   } = useOutletContext();
-  const [status, setStatus] = useState(STATUS[0]);
+  const [reviewStatus, setReviewStatus] = useState(REVIEW_STATUS[0]);
+  const [submissionStatus, setSubmissionStatus] = useState(
+    SUBMISSION_STATUS[0].key
+  );
   const [trigger, setTrigger] = useState(0);
   const [statusModalOpen, setStatusModalOpen] = useState(false);
   const [editingStatus, setEditingStatus] = useState();
@@ -48,21 +67,37 @@ const TestApplications = () => {
   const [deletingStatus, setDeletingStatus] = useState();
   const [newStatus, setNewStatus] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [submittedDateSort, setSubmittedDateSort] = useState(
+    SortDirection.DESCENDING
+  );
   const { data: applications } = useTestApplicationsQuery({
     criteria: (c1) =>
       c1.and((c2) => {
-        let criteriaArr = [
-          c2.testApplicationAffiliateId.eq(habitat?.id),
-          c2.submitted.eq(true),
-        ];
+        let criteriaArr = [c2.testApplicationAffiliateId.eq(habitat?.id)];
 
-        if (status !== STATUS[0]) {
-          criteriaArr = [...criteriaArr, c2.status.eq(status)];
+        if (reviewStatus !== REVIEW_STATUS[0]) {
+          criteriaArr = [...criteriaArr, c2.reviewStatus.eq(reviewStatus)];
+        }
+
+        if (submissionStatus !== SUBMISSION_STATUS[0].key) {
+          criteriaArr = [
+            ...criteriaArr,
+            c2.submissionStatus.eq(submissionStatus),
+          ];
         }
 
         return criteriaArr;
       }),
-    dependencyArray: [habitat?.id, status, trigger],
+    paginationProducer: {
+      sort: (s) => s.submittedDate(submittedDateSort),
+    },
+    dependencyArray: [
+      habitat?.id,
+      reviewStatus,
+      submissionStatus,
+      trigger,
+      submittedDateSort,
+    ],
   });
 
   const { data: applicantInfos } = useApplicantInfosQuery({
@@ -89,8 +124,8 @@ const TestApplications = () => {
   const statusAlreadyExists = useMemo(
     () =>
       (habitat.props.data.customStatus
-        ? [...habitat.props.data.customStatus, UNSET]
-        : [UNSET]
+        ? [...habitat.props.data.customStatus, PENDING]
+        : [PENDING]
       ).includes(newStatus),
     [habitat, newStatus]
   );
@@ -115,7 +150,7 @@ const TestApplications = () => {
         const original = await DataStore.query(TestApplication, applicationId);
         await DataStore.save(
           TestApplication.copyOf(original, (originalApplication) => {
-            originalApplication.status = newStatusValue;
+            originalApplication.reviewStatus = newStatusValue;
           })
         );
         setTrigger((previousTrigger) => previousTrigger + 1);
@@ -132,14 +167,14 @@ const TestApplications = () => {
       const applicationsToUpdate = await DataStore.query(TestApplication, (c) =>
         c.and((c2) => [
           c2.testApplicationAffiliateId.eq(habitat?.id),
-          c2.status.eq(deletingStatus),
+          c2.reviewStatus.eq(deletingStatus),
         ])
       );
 
       for (const applicationToUpdate of applicationsToUpdate) {
         await DataStore.save(
           TestApplication.copyOf(applicationToUpdate, (originalApplication) => {
-            originalApplication.status = UNSET;
+            originalApplication.reviewStatus = PENDING;
           })
         );
       }
@@ -153,22 +188,19 @@ const TestApplications = () => {
 
   const handleUpdateCustomStatus = async () => {
     try {
-      console.log('editingStatus', editingStatus);
-      console.log('newStatus', newStatus);
-
       await updateCustomStatusToHabitat(editingStatus, newStatus);
 
       const applicationsToUpdate = await DataStore.query(TestApplication, (c) =>
         c.and((c2) => [
           c2.testApplicationAffiliateId.eq(habitat?.id),
-          c2.status.eq(editingStatus),
+          c2.reviewStatus.eq(editingStatus),
         ])
       );
 
       for (const applicationToUpdate of applicationsToUpdate) {
         await DataStore.save(
           TestApplication.copyOf(applicationToUpdate, (originalApplication) => {
-            originalApplication.status = newStatus;
+            originalApplication.reviewStatus = newStatus;
           })
         );
       }
@@ -183,6 +215,13 @@ const TestApplications = () => {
   };
   const handleStatusOnClick = () => setStatusModalOpen(true);
 
+  const handleSubmittedDateOnClick = () =>
+    setSubmittedDateSort((previousSubmittedDateSort) =>
+      previousSubmittedDateSort === SortDirection.ASCENDING
+        ? SortDirection.DESCENDING
+        : SortDirection.ASCENDING
+    );
+
   const handleOnCloseStatusModal = () => setStatusModalOpen(false);
 
   const handleOnCloseEditingAlert = () => setEditingAlert(false);
@@ -194,10 +233,6 @@ const TestApplications = () => {
     setNewStatus('');
   };
 
-  useEffect(() => {
-    console.log('applications', applications);
-  }, [applications]);
-
   return (
     <Flex
       direction="column"
@@ -205,31 +240,45 @@ const TestApplications = () => {
       alignContent="center"
       justifyContent="center"
     >
-      <Heading level={3} fontWeight="bold" textAlign="center">
-        Submitted applications
-      </Heading>
-      <Divider />
+      <PageTitle title="Applications" />
       <Flex
         direction="row"
         width="100%"
         marginLeft="0"
-        justifyContent={responsiveBool ? 'center' : 'left'}
+        justifyContent={responsiveBool ? 'center' : 'space-between'}
+        alignItems="end"
       >
-        <SelectField
-          value={status}
-          onChange={(event) => {
-            setStatus(event.target.value);
-          }}
-        >
-          {[
-            ...STATUS,
-            ...(habitat ? habitat.props.data.customStatus || [] : []),
-          ].map((statusValue) => (
-            <option key={statusValue} value={statusValue}>
-              {statusValue}
-            </option>
-          ))}
-        </SelectField>
+        <Flex>
+          <SelectField
+            label="Submission status"
+            value={submissionStatus}
+            onChange={(event) => {
+              setSubmissionStatus(event.target.value);
+            }}
+          >
+            {SUBMISSION_STATUS.map(({ key, value }) => (
+              <option key={key} value={key}>
+                {value}
+              </option>
+            ))}
+          </SelectField>
+          <SelectField
+            label="Review status"
+            value={reviewStatus}
+            onChange={(event) => {
+              setReviewStatus(event.target.value);
+            }}
+          >
+            {[
+              ...REVIEW_STATUS,
+              ...(habitat ? habitat.props.data.customStatus || [] : []),
+            ].map((statusValue) => (
+              <option key={statusValue} value={statusValue}>
+                {statusValue}
+              </option>
+            ))}
+          </SelectField>
+        </Flex>
 
         <Badge>
           <Flex alignItems="center">Total: {applications.length}</Flex>
@@ -279,7 +328,7 @@ const TestApplications = () => {
               <View>
                 <Text as="p">
                   You want to delete the status? This would update all the
-                  applications with this status to have an Unset status.
+                  applications with this status to have an Pending status.
                 </Text>
                 <Flex marginTop="1rem" justifyContent="center">
                   <Button
@@ -394,22 +443,43 @@ const TestApplications = () => {
           >
             <TableHead>
               <TableRow>
-                <TableCell as="th" width="25%">
+                <TableCell as="th" width="fit-content">
                   Index
                 </TableCell>
-                <TableCell as="th" width="25%">
+                <TableCell as="th" minWidth="25ch">
                   Name
                 </TableCell>
-                <TableCell as="th" width="25%">
-                  Date Submitted
+                <TableCell as="th" minWidth="15ch">
+                  <Flex justifyContent="space-between" alignItems="center">
+                    <Text>Date Submitted</Text>
+
+                    <Button
+                      variation="link"
+                      color="var(--amplify-colors-font-primary)"
+                      onClick={handleSubmittedDateOnClick}
+                      padding="0.5rem"
+                      borderRadius="xxxl"
+                      style={{ aspectRatio: '1/1' }}
+                      height="fit-content"
+                    >
+                      {submittedDateSort === SortDirection.ASCENDING ? (
+                        <MdArrowUpward size="1.25rem" />
+                      ) : (
+                        <MdArrowDownward size="1.25rem" />
+                      )}
+                    </Button>
+                  </Flex>
                 </TableCell>
-                <TableCell as="th" width="25%">
+                <TableCell as="th" minWidth="20ch">
+                  Submission status
+                </TableCell>
+                <TableCell as="th" minWidth="20ch">
                   <Button
                     variation="link"
                     color="var(--amplify-colors-font-primary)"
                     onClick={handleStatusOnClick}
                   >
-                    Status
+                    Review status
                   </Button>
                 </TableCell>
                 <TableCell as="th" width="25%">
@@ -435,9 +505,12 @@ const TestApplications = () => {
                     </TableCell>
                     <TableCell>{application.submittedDate}</TableCell>
                     <TableCell>
+                      {stringToHumanReadable(application.submissionStatus)}
+                    </TableCell>
+                    <TableCell>
                       <SelectField
                         labelHidden
-                        value={application.status}
+                        value={application.reviewStatus}
                         onChange={(event) =>
                           handleUpdateApplicationStatus(
                             application.id,
@@ -446,7 +519,7 @@ const TestApplications = () => {
                         }
                       >
                         {[
-                          UNSET,
+                          PENDING,
                           ...(habitat
                             ? habitat.props.data.customStatus || []
                             : []),

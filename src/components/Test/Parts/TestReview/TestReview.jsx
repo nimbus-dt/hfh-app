@@ -3,7 +3,7 @@ import { useNavigate, useOutletContext } from 'react-router-dom';
 import Modal from 'components/Modal';
 import { useState } from 'react';
 import { DataStore } from 'aws-amplify';
-import { TestApplication } from 'models';
+import { TestApplication, SubmissionStatus } from 'models';
 import dayjs from 'dayjs';
 import { createAlert } from 'utils/factories';
 import { CustomCard } from '../../Reusable/CustomCard';
@@ -14,6 +14,7 @@ import RecordsSection from './components/RecordsSection';
 import HomeownersSection from './components/HomeownersSection';
 import EmploymentSection from './components/EmploymentSection';
 import FinancialSection from './components/FinancialSection';
+import ApplicantOptionalSection from './components/ApplicantOptionalSection/ApplicantOptionalSection';
 
 export function TestReview() {
   const { application, setApplication } = useOutletContext();
@@ -22,8 +23,14 @@ export function TestReview() {
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [alert, setAlert] = useState();
   const [basicInfoOpen, setBasicInfoOpen] = useState(true);
+  const [unmarriedAddendumOpen, setUnmarriedAddendumOpen] = useState(false);
   const [currentAddressOpen, setCurrentAddressOpen] = useState(false);
   const [previousAddressOpen, setPreviousAddressOpen] = useState(false);
+  const [applicantMilitaryServiceOpen, setApplicantMilitaryServiceOpen] =
+    useState(false);
+  const [anyoneElseMilitaryServiceOpen, setAnyoneElseMilitaryServiceOpen] =
+    useState(false);
+  const [demographicOpen, setDemographicOpen] = useState(false);
   const [checklistExpanded, setChecklistExpanded] = useState(false);
   const [writtenExpanded, setWrittenExpanded] = useState(false);
   const [recordsExpanded, setRecordsExpanded] = useState(false);
@@ -33,18 +40,35 @@ export function TestReview() {
   const [previousEmploymentOpen, setPreviousEmploymentOpen] = useState(false);
   const [financialOpen, setFinancialOpen] = useState(false);
 
-  const handleBasicInformationOnReview = () => {
+  const handleBasicInformationOnReview = (unmarried) => {
     setBasicInfoOpen(false);
-    setCurrentAddressOpen(true);
+    if (unmarried) {
+      setUnmarriedAddendumOpen(true);
+    } else {
+      setCurrentAddressOpen(true);
+    }
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
       basicInfo: true,
     }));
   };
 
-  const handleAddressOnReview = () => {
+  const handleUnmarriedAddendumOnReview = () => {
+    setUnmarriedAddendumOpen(false);
+    setCurrentAddressOpen(true);
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      unmarriedAddendum: true,
+    }));
+  };
+
+  const handleAddressOnReview = (hasPreviousEmployment) => {
     setCurrentAddressOpen(false);
-    setPreviousAddressOpen(true);
+    if (hasPreviousEmployment) {
+      setPreviousAddressOpen(true);
+    } else {
+      setApplicantMilitaryServiceOpen(true);
+    }
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
       address: true,
@@ -53,10 +77,37 @@ export function TestReview() {
 
   const handlePreviousAddressOnReview = () => {
     setPreviousAddressOpen(false);
-    setChecklistExpanded(true);
+    setApplicantMilitaryServiceOpen(true);
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
       prevAddress: true,
+    }));
+  };
+
+  const handleApplicantMilitaryServiceOnReview = () => {
+    setApplicantMilitaryServiceOpen(false);
+    setAnyoneElseMilitaryServiceOpen(true);
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      applicantMilitaryService: true,
+    }));
+  };
+
+  const handleAnyoneElseMilitaryServiceOnReview = () => {
+    setAnyoneElseMilitaryServiceOpen(false);
+    setDemographicOpen(true);
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      anyoneElseMilitaryService: true,
+    }));
+  };
+
+  const handleDemographicOnReview = () => {
+    setDemographicOpen(false);
+    setChecklistExpanded(true);
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      demographic: true,
     }));
   };
 
@@ -156,8 +207,7 @@ export function TestReview() {
 
       const persistedApplication = await DataStore.save(
         TestApplication.copyOf(original, (originalApplication) => {
-          originalApplication.submitted = true;
-          originalApplication.status = 'Unset';
+          originalApplication.submissionStatus = SubmissionStatus.SUBMITTED;
           originalApplication.submittedDate = dayjs().format('YYYY-MM-DD');
         })
       );
@@ -194,24 +244,29 @@ export function TestReview() {
           {alert.body}
         </Alert>
       )}
-      <CustomCard>
-        <Text>
-          Before submitting your application,{' '}
-          <Text as="span" fontWeight="bold">
-            please review the information you've submitted
-          </Text>{' '}
-          for accuracy and completeness.{' '}
-          <Text as="span" fontWeight="bold">
-            Click confirm
-          </Text>{' '}
-          on each of the sections below before submitting.
-        </Text>
-      </CustomCard>
+      {application?.submissionStatus !== SubmissionStatus.SUBMITTED && (
+        <CustomCard>
+          <Text>
+            Before submitting your application,{' '}
+            <Text as="span" fontWeight="bold">
+              please review the information you've submitted
+            </Text>{' '}
+            for accuracy and completeness.{' '}
+            <Text as="span" fontWeight="bold">
+              Click confirm
+            </Text>{' '}
+            on each of the sections below before submitting.
+          </Text>
+        </CustomCard>
+      )}
       <br />
       <ApplicantInfoSection
         basicInfoOpen={basicInfoOpen}
         setBasicInfoOpen={setBasicInfoOpen}
         handleBasicInformationOnReview={handleBasicInformationOnReview}
+        unmarriedAddendumOpen={unmarriedAddendumOpen}
+        setUnmarriedAddendumOpen={setUnmarriedAddendumOpen}
+        handleUnmarriedAddendumOnReview={handleUnmarriedAddendumOnReview}
         currentAddressOpen={currentAddressOpen}
         setCurrentAddressOpen={setCurrentAddressOpen}
         handleAddressOnReview={handleAddressOnReview}
@@ -220,6 +275,25 @@ export function TestReview() {
         handlePreviousAddressOnReview={handlePreviousAddressOnReview}
         reviewedSections={reviewedSections}
         setReviewedSections={setReviewedSections}
+        submitted={application?.submissionStatus === SubmissionStatus.SUBMITTED}
+      />
+      <ApplicantOptionalSection
+        applicantMilitaryServiceOpen={applicantMilitaryServiceOpen}
+        setApplicantMilitaryServiceOpen={setApplicantMilitaryServiceOpen}
+        handleApplicantMilitaryServiceOnReview={
+          handleApplicantMilitaryServiceOnReview
+        }
+        anyoneElseMilitaryServiceOpen={anyoneElseMilitaryServiceOpen}
+        setAnyoneElseMilitaryServiceOpen={setAnyoneElseMilitaryServiceOpen}
+        handleAnyoneElseMilitaryServiceOnReview={
+          handleAnyoneElseMilitaryServiceOnReview
+        }
+        demographicOpen={demographicOpen}
+        setDemographicOpen={setDemographicOpen}
+        handleDemographicOnReview={handleDemographicOnReview}
+        reviewedSections={reviewedSections}
+        setReviewedSections={setReviewedSections}
+        submitted={application?.submissionStatus === SubmissionStatus.SUBMITTED}
       />
       <ChecklistSection
         reviewedSections={reviewedSections}
@@ -227,6 +301,7 @@ export function TestReview() {
         expanded={checklistExpanded}
         setExpanded={setChecklistExpanded}
         onReview={handleChecklistOnReview}
+        submitted={application?.submissionStatus === SubmissionStatus.SUBMITTED}
       />
       <WrittenSection
         reviewedSections={reviewedSections}
@@ -234,6 +309,7 @@ export function TestReview() {
         expanded={writtenExpanded}
         setExpanded={setWrittenExpanded}
         onReview={handleWrittenOnReview}
+        submitted={application?.submissionStatus === SubmissionStatus.SUBMITTED}
       />
       <RecordsSection
         reviewedSections={reviewedSections}
@@ -241,6 +317,7 @@ export function TestReview() {
         expanded={recordsExpanded}
         setExpanded={setRecordsExpanded}
         onReview={handleRecordsOnReview}
+        submitted={application?.submissionStatus === SubmissionStatus.SUBMITTED}
       />
       <HomeownersSection
         reviewedSections={reviewedSections}
@@ -248,6 +325,7 @@ export function TestReview() {
         expanded={homeownersExpanded}
         setExpanded={setHomeownersExpanded}
         onReview={handleHomeownersOnReview}
+        submitted={application?.submissionStatus === SubmissionStatus.SUBMITTED}
       />
       <EmploymentSection
         reviewedSections={reviewedSections}
@@ -261,6 +339,7 @@ export function TestReview() {
         handleUnemploymentOnReview={handleUnemploymentOnReview}
         handleCurrentEmploymentOnReview={handleCurrentEmploymentOnReview}
         handlePreviousAddressOnReview={handlePreviousEmploymentOnReview}
+        submitted={application?.submissionStatus === SubmissionStatus.SUBMITTED}
       />
       <FinancialSection
         expanded={financialOpen}
@@ -268,6 +347,7 @@ export function TestReview() {
         reviewedSections={reviewedSections}
         setReviewedSections={setReviewedSections}
         onReview={handleFinancialOnReview}
+        submitted={application?.submissionStatus === SubmissionStatus.SUBMITTED}
       />
       <Modal
         title="Alert"
@@ -289,20 +369,25 @@ export function TestReview() {
           </Button>
         </Flex>
       </Modal>
-      <CustomCard>
-        <Flex width="100%" justifyContent="space-between">
-          <Button variation="primary" onClick={() => navigate('../financial')}>
-            Back
-          </Button>
-          <Button
-            variation="primary"
-            onClick={handleOnClickSubmit}
-            isDisabled={isDisabled()}
-          >
-            Submit
-          </Button>
-        </Flex>
-      </CustomCard>
+      {application?.submissionStatus !== SubmissionStatus.SUBMITTED && (
+        <CustomCard>
+          <Flex width="100%" justifyContent="space-between">
+            <Button
+              variation="primary"
+              onClick={() => navigate('../financial')}
+            >
+              Back
+            </Button>
+            <Button
+              variation="primary"
+              onClick={handleOnClickSubmit}
+              isDisabled={isDisabled()}
+            >
+              Submit
+            </Button>
+          </Flex>
+        </CustomCard>
+      )}
     </Flex>
   );
 }

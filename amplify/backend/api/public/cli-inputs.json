@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "paths": {
+    "/email-admin": {
+      "name": "/email-admin",
+      "lambdaFunction": "sendEmailToAdmin",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}
