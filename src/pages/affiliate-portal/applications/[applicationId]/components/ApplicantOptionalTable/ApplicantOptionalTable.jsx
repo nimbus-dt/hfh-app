@@ -10,7 +10,7 @@ const objectOfBoolToArrayOfStrings = (boolObject, stringObject) => {
 
   const stringArray = [];
   for (const [key, value] of Object.entries(boolObject)) {
-    if (typeof value !== 'boolean') {
+    if (typeof value !== 'boolean' && value) {
       stringArray.push(boolObject[key]);
     } else if (value) {
       stringArray.push(stringObject[key]);
