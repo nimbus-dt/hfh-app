@@ -15,6 +15,7 @@ import { CustomExpandableCard } from '../../../Reusable/CustomExpandableCard';
 import {
   maritalStatusValues,
   ownerShipValues,
+  unmarriedRelationshipTypesValues,
 } from '../../TestApplicantInfo/aplicantInfo.schema';
 import LoadingData from './LoadingData';
 
@@ -97,13 +98,6 @@ function BasicInformation({
           />
           <br />
           <TextField
-            label="What is your age?"
-            type="number"
-            value={applicantInfo.props.basicInfo.age}
-            isDisabled
-          />
-          <br />
-          <TextField
             label="What is your date of birth?"
             type="date"
             value={applicantInfo.props.basicInfo.birthDate}
@@ -140,6 +134,122 @@ function BasicInformation({
 }
 
 BasicInformation.propTypes = {
+  applicantInfo: PropTypes.object,
+  expanded: PropTypes.bool,
+  onExpandedChange: PropTypes.func,
+  reviewedSections: PropTypes.object,
+  setReviewedSections: PropTypes.func,
+  onReview: PropTypes.func,
+  submitted: PropTypes.bool,
+};
+
+export function UnmarriedAddendum({
+  expanded,
+  onExpandedChange,
+  applicantInfo,
+  reviewedSections,
+  setReviewedSections,
+  onReview,
+  submitted,
+}) {
+  useEffect(() => {
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      unmarriedAddendum: false,
+    }));
+  }, [setReviewedSections]);
+
+  const customCardReference = useRef(null);
+
+  useEffect(() => {
+    if (expanded) {
+      customCardReference.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+      });
+    }
+  }, [expanded]);
+
+  return (
+    <CustomExpandableCard
+      title={`${getCheckOrExEmoji(
+        reviewedSections.unmarriedAddendum || submitted
+      )} Unmarried Addendum`}
+      expanded={expanded}
+      onExpandedChange={onExpandedChange}
+      ref={customCardReference}
+    >
+      <RadioGroupField
+        name="notSpouseButSimilarPropertyRights"
+        label="Which of these best represents the ownership status of the previous address you lived in?"
+        defaultValue={
+          applicantInfo?.props.unmarriedAddendum
+            ?.notSpouseButSimilarPropertyRights
+        }
+        isDisabled
+      >
+        <Radio value="No">No</Radio>
+        <Radio value="Yes">Yes</Radio>
+      </RadioGroupField>
+
+      <br />
+      {applicantInfo?.props.unmarriedAddendum
+        ?.notSpouseButSimilarPropertyRights === 'Yes' && (
+        <>
+          <RadioGroupField
+            name="relationshipType"
+            label="Which of these best represents the ownership status of the previous address you lived in?"
+            value={applicantInfo?.props.unmarriedAddendum?.relationshipType}
+            isDisabled
+          >
+            {unmarriedRelationshipTypesValues.map(
+              (unmarriedRelationshipType) => (
+                <Radio
+                  key={unmarriedRelationshipType}
+                  value={unmarriedRelationshipType}
+                >
+                  {unmarriedRelationshipType}
+                </Radio>
+              )
+            )}
+          </RadioGroupField>
+          <br />
+          {applicantInfo?.props.unmarriedAddendum?.relationshipType ===
+            'Other' && (
+            <>
+              <TextField
+                label="Explain the relationship"
+                defaultValue={
+                  applicantInfo?.props.unmarriedAddendum?.otherRelationshipType
+                }
+                isDisabled
+              />
+              <br />
+            </>
+          )}
+          <TextField
+            label="State in which the relationship was formed"
+            defaultValue={applicantInfo?.props.unmarriedAddendum?.state}
+            isDisabled
+          />
+          <br />
+        </>
+      )}
+      {!submitted && (
+        <Flex width="100%" justifyContent="end">
+          <Link to={editRoute}>
+            <Button>Edit</Button>
+          </Link>
+          <Button variation="primary" onClick={onReview}>
+            Confirm
+          </Button>
+        </Flex>
+      )}
+    </CustomExpandableCard>
+  );
+}
+
+UnmarriedAddendum.propTypes = {
   applicantInfo: PropTypes.object,
   expanded: PropTypes.bool,
   onExpandedChange: PropTypes.func,
@@ -267,6 +377,8 @@ function PrevAddress({
     }
   }, [expanded]);
 
+  useEffect(() => console.log(applicantInfo), [applicantInfo]);
+
   return (
     <CustomExpandableCard
       title={`${getCheckOrExEmoji(
@@ -336,6 +448,9 @@ const ApplicantInfoSection = ({
   basicInfoOpen,
   setBasicInfoOpen,
   handleBasicInformationOnReview,
+  unmarriedAddendumOpen,
+  setUnmarriedAddendumOpen,
+  handleUnmarriedAddendumOnReview,
   currentAddressOpen,
   setCurrentAddressOpen,
   handleAddressOnReview,
@@ -375,10 +490,28 @@ const ApplicantInfoSection = ({
         applicantInfo={applicantInfo}
         reviewedSections={reviewedSections}
         setReviewedSections={setReviewedSections}
-        onReview={handleBasicInformationOnReview}
+        onReview={() =>
+          handleBasicInformationOnReview(
+            applicantInfo?.props?.unmarriedAddendum
+          )
+        }
         submitted={submitted}
       />
       <br />
+      {applicantInfo?.props?.unmarriedAddendum && (
+        <>
+          <UnmarriedAddendum
+            expanded={unmarriedAddendumOpen}
+            onExpandedChange={setUnmarriedAddendumOpen}
+            applicantInfo={applicantInfo}
+            reviewedSections={reviewedSections}
+            setReviewedSections={setReviewedSections}
+            onReview={handleUnmarriedAddendumOnReview}
+            submitted={submitted}
+          />
+          <br />
+        </>
+      )}
       <Address
         expanded={currentAddressOpen}
         onExpandedChange={setCurrentAddressOpen}
@@ -415,6 +548,9 @@ ApplicantInfoSection.propTypes = {
   basicInfoOpen: PropTypes.bool,
   setBasicInfoOpen: PropTypes.func,
   handleBasicInformationOnReview: PropTypes.func,
+  unmarriedAddendumOpen: PropTypes.bool,
+  setUnmarriedAddendumOpen: PropTypes.func,
+  handleUnmarriedAddendumOnReview: PropTypes.func,
   currentAddressOpen: PropTypes.bool,
   setCurrentAddressOpen: PropTypes.func,
   handleAddressOnReview: PropTypes.func,

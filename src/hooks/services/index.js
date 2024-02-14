@@ -1,5 +1,6 @@
 import {
   ApplicantInfo,
+  ApplicantOptional,
   Application,
   Asset,
   Checklist,
@@ -70,6 +71,12 @@ export const useChecklistsQuery = dataStoreQueryHookBuilder({
 /* APPLICANTINFO MODEL SERVICES */
 export const useApplicantInfosQuery = dataStoreQueryHookBuilder({
   model: ApplicantInfo,
+  defaultDataValue: [],
+});
+
+/* APPLICANTOPTIONAL MODEL SERVICES */
+export const useApplicantOptionalsQuery = dataStoreQueryHookBuilder({
+  model: ApplicantOptional,
   defaultDataValue: [],
 });
 

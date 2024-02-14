@@ -3,7 +3,6 @@ import { Controller, useForm } from 'react-hook-form';
 import { CustomExpandableCard } from 'components/Test/Reusable/CustomExpandableCard';
 import { Button, Flex, Radio, RadioGroupField } from '@aws-amplify/ui-react';
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
 import { unemployedSchema } from '../TestEmployment.schema';
 
 const Unemployment = ({

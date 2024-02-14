@@ -6,6 +6,8 @@
 
 export { default as ApplicantInfoCreateForm } from "./ApplicantInfoCreateForm";
 export { default as ApplicantInfoUpdateForm } from "./ApplicantInfoUpdateForm";
+export { default as ApplicantOptionalCreateForm } from "./ApplicantOptionalCreateForm";
+export { default as ApplicantOptionalUpdateForm } from "./ApplicantOptionalUpdateForm";
 export { default as ApplicationCreateForm } from "./ApplicationCreateForm";
 export { default as ApplicationUpdateForm } from "./ApplicationUpdateForm";
 export { default as AssetCreateForm } from "./AssetCreateForm";

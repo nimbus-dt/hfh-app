@@ -67,6 +67,36 @@ export enum RelationshipTypes {
 
 
 
+type EagerApplicantOptional = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<ApplicantOptional, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyApplicantOptional = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<ApplicantOptional, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID?: string | null;
+  readonly props?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type ApplicantOptional = LazyLoading extends LazyLoadingDisabled ? EagerApplicantOptional : LazyApplicantOptional
+
+export declare const ApplicantOptional: (new (init: ModelInit<ApplicantOptional>) => ApplicantOptional) & {
+  copyOf(source: ApplicantOptional, mutator: (draft: MutableModel<ApplicantOptional>) => MutableModel<ApplicantOptional> | void): ApplicantOptional;
+}
+
 type EagerAsset = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Asset, 'id'>;
