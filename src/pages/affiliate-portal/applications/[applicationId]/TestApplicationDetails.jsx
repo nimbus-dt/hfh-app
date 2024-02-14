@@ -34,7 +34,7 @@ import Modal from 'components/Modal';
 import { API, DataStore } from 'aws-amplify';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { TestApplication } from 'models';
+import { TestApplication, SubmissionStatus } from 'models';
 import ApplicantInfoTable from './components/ApplicantInfoTable';
 import GeneralInfoTable from './components/GeneralInfoTable';
 import ChecklistTable from './components/ChecklistTable';
@@ -138,7 +138,7 @@ const TestApplicationDetails = () => {
       const original = await DataStore.query(TestApplication, application.id);
       const persistedApplication = await DataStore.save(
         TestApplication.copyOf(original, (originalApplication) => {
-          originalApplication.submitted = false;
+          originalApplication.submissionStatus = SubmissionStatus.RETURNED;
         })
       );
 
@@ -172,7 +172,7 @@ const TestApplicationDetails = () => {
       const original = await DataStore.query(TestApplication, application.id);
       const persistedApplication = await DataStore.save(
         TestApplication.copyOf(original, (originalApplication) => {
-          originalApplication.status = data.status;
+          originalApplication.reviewStatus = data.status;
         })
       );
 
@@ -236,7 +236,8 @@ const TestApplicationDetails = () => {
       </View>
 
       <GeneralInfoTable
-        status={application?.status}
+        reviewStatus={application?.reviewStatus}
+        submissionStatus={application?.submissionStatus}
         submittedDate={application?.submittedDate}
       />
 
@@ -336,7 +337,7 @@ const TestApplicationDetails = () => {
             hasError={errorsDecide?.status}
             errorMessage="Invalid status"
           >
-            <option value="Unset">Unset</option>
+            <option value="Pending">Pending</option>
             {(habitat?.props.data.customStatus
               ? habitat.props.data.customStatus
               : []
@@ -376,12 +377,14 @@ const TestApplicationDetails = () => {
           </Flex>
         </form>
       </Modal>
-      <Flex justifyContent="end">
-        <Button onClick={handleReturnOnClick}>Return</Button>
-        <Button variation="primary" onClick={handleDecideOnClick}>
-          Decide
-        </Button>
-      </Flex>
+      {application?.submissionStatus === SubmissionStatus.SUBMITTED && (
+        <Flex justifyContent="end">
+          <Button onClick={handleReturnOnClick}>Return</Button>
+          <Button variation="primary" onClick={handleDecideOnClick}>
+            Decide
+          </Button>
+        </Flex>
+      )}
     </Flex>
   );
 };

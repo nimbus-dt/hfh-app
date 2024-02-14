@@ -5,6 +5,11 @@ export type AmplifyDependentResourcesAttributes = {
       "GraphQLAPIIdOutput": "string",
       "GraphQLAPIKeyOutput": "string"
     },
+    "public": {
+      "ApiId": "string",
+      "ApiName": "string",
+      "RootUrl": "string"
+    },
     "sendEmailToApplicantAPI": {
       "ApiId": "string",
       "ApiName": "string",
@@ -36,6 +41,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Region": "string"
     },
     "getEmail": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "sendEmailToAdmin": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",

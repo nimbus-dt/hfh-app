@@ -8,7 +8,7 @@ import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import useHabitatByUrlName from 'hooks/services/useHabitatByUrlName';
 import useScrollToTopOnRouteChange from 'hooks/utils/useScrollToTopOnRouteChange';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { TestApplication } from 'models';
+import { TestApplication, SubmissionStatus } from 'models';
 import { DataStore } from 'aws-amplify';
 import { TestNav } from './TestNav';
 import { CustomCard } from '../Reusable/CustomCard';
@@ -62,7 +62,8 @@ export function TestLayout() {
           ownerID: username,
           lastSection: location.pathname,
           members: [],
-          submitted: false,
+          submissionStatus: SubmissionStatus.UNSUBMITTED,
+          reviewStatus: 'Pending',
           testApplicationAffiliateId: habitat.id,
         })
       );
@@ -114,7 +115,10 @@ export function TestLayout() {
     const urlSections = location.pathname.split('/');
     if (
       (authStatus === 'unauthenticated' && urlSections[3] !== 'home') ||
-      (application && application.submitted && authStatus === 'authenticated')
+      (application &&
+        application.submissionStatus === SubmissionStatus.SUBMITTED &&
+        authStatus === 'authenticated' &&
+        urlSections[3] !== 'review')
     ) {
       urlSections[3] = 'home';
       navigate(urlSections.join('/'));
@@ -122,11 +126,10 @@ export function TestLayout() {
   }, [location.pathname, authStatus, application]);
 
   useEffect(() => {
-    const urlSections = location.pathname.split('/');
-    if (application && application.submitted) {
-      urlSections[3] = 'home';
+    if (application && authStatus === 'authenticated') {
+      navigate(application.lastSection);
     }
-  }, [location.pathname]);
+  }, [authStatus, application]);
 
   return (
     <ScrollView height="100vh" ref={scrollViewReference}>

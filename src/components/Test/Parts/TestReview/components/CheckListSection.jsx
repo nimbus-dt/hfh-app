@@ -20,6 +20,7 @@ export function ChecklistSection({
   reviewedSections,
   setReviewedSections,
   onReview,
+  submitted,
 }) {
   const [checklist, setChecklist] = useState();
 
@@ -62,7 +63,9 @@ export function ChecklistSection({
   return (
     <>
       <CustomExpandableCard
-        title={`${getCheckOrExEmoji(reviewedSections.checklist)} Checklist`}
+        title={`${getCheckOrExEmoji(
+          reviewedSections.checklist || submitted
+        )} Checklist`}
         expanded={expanded}
         onExpandedChange={setExpanded}
         ref={customCardReference}
@@ -85,14 +88,16 @@ export function ChecklistSection({
                 </View>
               )
             )}
-            <Flex width="100%" justifyContent="end">
-              <Link to="../checklist">
-                <Button>Edit</Button>
-              </Link>
-              <Button onClick={onReview} variation="primary">
-                Confirm
-              </Button>
-            </Flex>
+            {!submitted && (
+              <Flex width="100%" justifyContent="end">
+                <Link to="../checklist">
+                  <Button>Edit</Button>
+                </Link>
+                <Button onClick={onReview} variation="primary">
+                  Confirm
+                </Button>
+              </Flex>
+            )}
           </>
         ) : (
           <LoadingData />
@@ -109,4 +114,5 @@ ChecklistSection.propTypes = {
   reviewedSections: PropTypes.object,
   setReviewedSections: PropTypes.func,
   onReview: PropTypes.func,
+  submitted: PropTypes.bool,
 };

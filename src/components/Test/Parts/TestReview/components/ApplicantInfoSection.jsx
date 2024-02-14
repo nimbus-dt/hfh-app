@@ -7,7 +7,7 @@ import {
 } from '@aws-amplify/ui-react';
 import PropTypes from 'prop-types';
 import { Link, useOutletContext } from 'react-router-dom';
-import { forwardRef, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ApplicantInfo } from 'models';
 import { DataStore } from 'aws-amplify';
 import { getCheckOrExEmoji } from 'utils/misc';
@@ -27,6 +27,7 @@ function BasicInformation({
   reviewedSections,
   setReviewedSections,
   onReview,
+  submitted,
 }) {
   useEffect(() => {
     setReviewedSections((previousReviewedSections) => ({
@@ -49,7 +50,7 @@ function BasicInformation({
   return (
     <CustomExpandableCard
       title={`${getCheckOrExEmoji(
-        reviewedSections.basicInfo
+        reviewedSections.basicInfo || submitted
       )} Basic Information`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
@@ -122,14 +123,16 @@ function BasicInformation({
             ))}
           </RadioGroupField>
           <br />
-          <Flex width="100%" justifyContent="end">
-            <Link to={editRoute}>
-              <Button>Edit</Button>
-            </Link>
-            <Button variation="primary" onClick={onReview}>
-              Confirm
-            </Button>
-          </Flex>
+          {!submitted && (
+            <Flex width="100%" justifyContent="end">
+              <Link to={editRoute}>
+                <Button>Edit</Button>
+              </Link>
+              <Button variation="primary" onClick={onReview}>
+                Confirm
+              </Button>
+            </Flex>
+          )}
         </>
       )}
     </CustomExpandableCard>
@@ -143,6 +146,7 @@ BasicInformation.propTypes = {
   reviewedSections: PropTypes.object,
   setReviewedSections: PropTypes.func,
   onReview: PropTypes.func,
+  submitted: PropTypes.bool,
 };
 
 const Address = ({
@@ -152,6 +156,7 @@ const Address = ({
   reviewedSections,
   setReviewedSections,
   onReview,
+  submitted,
 }) => {
   const customCardReference = useRef(null);
 
@@ -173,7 +178,9 @@ const Address = ({
 
   return (
     <CustomExpandableCard
-      title={`${getCheckOrExEmoji(reviewedSections.address)} Present Address`}
+      title={`${getCheckOrExEmoji(
+        reviewedSections.address || submitted
+      )} Present Address`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
       ref={customCardReference}
@@ -207,14 +214,16 @@ const Address = ({
               </Radio>
             ))}
           </RadioGroupField>
-          <Flex width="100%" justifyContent="end">
-            <Link to={editRoute}>
-              <Button>Edit</Button>
-            </Link>
-            <Button onClick={onReview} variation="primary">
-              Confirm
-            </Button>
-          </Flex>
+          {!submitted && (
+            <Flex width="100%" justifyContent="end">
+              <Link to={editRoute}>
+                <Button>Edit</Button>
+              </Link>
+              <Button onClick={onReview} variation="primary">
+                Confirm
+              </Button>
+            </Flex>
+          )}
         </>
       )}
     </CustomExpandableCard>
@@ -228,6 +237,7 @@ Address.propTypes = {
   reviewedSections: PropTypes.object,
   setReviewedSections: PropTypes.func,
   onReview: PropTypes.func,
+  submitted: PropTypes.bool,
 };
 
 function PrevAddress({
@@ -237,6 +247,7 @@ function PrevAddress({
   reviewedSections,
   setReviewedSections,
   onReview,
+  submitted,
 }) {
   const customCardReference = useRef(null);
 
@@ -259,7 +270,7 @@ function PrevAddress({
   return (
     <CustomExpandableCard
       title={`${getCheckOrExEmoji(
-        reviewedSections.prevAddress
+        reviewedSections.prevAddress || submitted
       )} Previous Address`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
@@ -295,14 +306,16 @@ function PrevAddress({
             ))}
           </RadioGroupField>
 
-          <Flex width="100%" justifyContent="end">
-            <Link to={editRoute}>
-              <Button>Edit</Button>
-            </Link>
-            <Button onClick={onReview} variation="primary">
-              Confirm
-            </Button>
-          </Flex>
+          {!submitted && (
+            <Flex width="100%" justifyContent="end">
+              <Link to={editRoute}>
+                <Button>Edit</Button>
+              </Link>
+              <Button onClick={onReview} variation="primary">
+                Confirm
+              </Button>
+            </Flex>
+          )}
         </>
       )}
     </CustomExpandableCard>
@@ -316,6 +329,7 @@ PrevAddress.propTypes = {
   reviewedSections: PropTypes.object,
   setReviewedSections: PropTypes.func,
   onReview: PropTypes.func,
+  submitted: PropTypes.bool,
 };
 
 const ApplicantInfoSection = ({
@@ -330,6 +344,7 @@ const ApplicantInfoSection = ({
   handlePreviousAddressOnReview,
   reviewedSections,
   setReviewedSections,
+  submitted,
 }) => {
   const { application } = useOutletContext();
 
@@ -361,6 +376,7 @@ const ApplicantInfoSection = ({
         reviewedSections={reviewedSections}
         setReviewedSections={setReviewedSections}
         onReview={handleBasicInformationOnReview}
+        submitted={submitted}
       />
       <br />
       <Address
@@ -369,7 +385,12 @@ const ApplicantInfoSection = ({
         applicantInfo={applicantInfo}
         reviewedSections={reviewedSections}
         setReviewedSections={setReviewedSections}
-        onReview={handleAddressOnReview}
+        onReview={() =>
+          handleAddressOnReview(
+            applicantInfo?.props?.currentAddress?.monthsLivedHere < 24
+          )
+        }
+        submitted={submitted}
       />
       <br />
       {applicantInfo?.props?.previousAddress && (
@@ -381,6 +402,7 @@ const ApplicantInfoSection = ({
             reviewedSections={reviewedSections}
             setReviewedSections={setReviewedSections}
             onReview={handlePreviousAddressOnReview}
+            submitted={submitted}
           />
           <br />
         </>
@@ -401,6 +423,7 @@ ApplicantInfoSection.propTypes = {
   handlePreviousAddressOnReview: PropTypes.func,
   reviewedSections: PropTypes.object,
   setReviewedSections: PropTypes.func,
+  submitted: PropTypes.bool,
 };
 
 export default ApplicantInfoSection;

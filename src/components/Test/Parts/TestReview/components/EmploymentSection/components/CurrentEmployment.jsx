@@ -19,6 +19,7 @@ const CurrentEmployment = ({
   reviewedSections,
   setReviewedSections,
   onReview,
+  submitted,
 }) => {
   const customCardReference = useRef(null);
 
@@ -41,7 +42,7 @@ const CurrentEmployment = ({
   return (
     <CustomExpandableCard
       title={`${getCheckOrExEmoji(
-        reviewedSections.currentEmployment
+        reviewedSections.currentEmployment || submitted
       )} Employment Information`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
@@ -92,14 +93,16 @@ const CurrentEmployment = ({
           </RadioGroupField>
 
           <br />
-          <Flex width="100%" justifyContent="end">
-            <Link to="../employment">
-              <Button>Edit</Button>
-            </Link>
-            <Button onClick={onReview} variation="primary">
-              Confirm
-            </Button>
-          </Flex>
+          {!submitted && (
+            <Flex width="100%" justifyContent="end">
+              <Link to="../employment">
+                <Button>Edit</Button>
+              </Link>
+              <Button onClick={onReview} variation="primary">
+                Confirm
+              </Button>
+            </Flex>
+          )}
         </>
       ) : (
         <LoadingData />
@@ -115,6 +118,7 @@ CurrentEmployment.propTypes = {
   reviewedSections: PropTypes.object,
   setReviewedSections: PropTypes.func,
   onReview: PropTypes.func,
+  submitted: PropTypes.bool,
 };
 
 export default CurrentEmployment;

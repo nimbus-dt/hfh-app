@@ -15,6 +15,7 @@ const RecordsSection = ({
   expanded,
   setExpanded,
   onReview,
+  submitted,
 }) => {
   const [records, setRecords] = useState();
 
@@ -69,7 +70,9 @@ const RecordsSection = ({
   return (
     <>
       <CustomExpandableCard
-        title={`${getCheckOrExEmoji(reviewedSections.records)} Records`}
+        title={`${getCheckOrExEmoji(
+          reviewedSections.records || submitted
+        )} Records`}
         expanded={expanded}
         onExpandedChange={setExpanded}
         ref={customCardReference}
@@ -87,14 +90,16 @@ const RecordsSection = ({
                 <br />
               </View>
             ))}
-            <Flex width="100%" justifyContent="end">
-              <Link to="../records">
-                <Button>Edit</Button>
-              </Link>
-              <Button onClick={onReview} variation="primary">
-                Confirm
-              </Button>
-            </Flex>
+            {!submitted && (
+              <Flex width="100%" justifyContent="end">
+                <Link to="../records">
+                  <Button>Edit</Button>
+                </Link>
+                <Button onClick={onReview} variation="primary">
+                  Confirm
+                </Button>
+              </Flex>
+            )}
           </>
         ) : (
           <LoadingData />
@@ -111,6 +116,7 @@ RecordsSection.propTypes = {
   expanded: PropTypes.bool,
   setExpanded: PropTypes.func,
   onReview: PropTypes.func,
+  submitted: PropTypes.bool,
 };
 
 export default RecordsSection;

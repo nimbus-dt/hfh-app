@@ -2,6 +2,12 @@ import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-
 // @ts-ignore
 import { LazyLoading, LazyLoadingDisabled, AsyncCollection, AsyncItem } from "@aws-amplify/datastore";
 
+export enum SubmissionStatus {
+  SUBMITTED = "SUBMITTED",
+  UNSUBMITTED = "UNSUBMITTED",
+  RETURNED = "RETURNED"
+}
+
 export enum ApplicationTimeStatus {
   CURRENT = "CURRENT",
   PAST = "PAST"
@@ -160,10 +166,10 @@ type EagerTestApplication = {
   readonly ownerID?: string | null;
   readonly lastSection?: string | null;
   readonly members?: (Member | null)[] | null;
-  readonly submitted: boolean;
   readonly submittedDate?: string | null;
   readonly affiliate: Habitat;
-  readonly status?: string | null;
+  readonly reviewStatus?: string | null;
+  readonly submissionStatus: SubmissionStatus | keyof typeof SubmissionStatus;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly testApplicationAffiliateId: string;
@@ -178,10 +184,10 @@ type LazyTestApplication = {
   readonly ownerID?: string | null;
   readonly lastSection?: string | null;
   readonly members: AsyncCollection<Member>;
-  readonly submitted: boolean;
   readonly submittedDate?: string | null;
   readonly affiliate: AsyncItem<Habitat>;
-  readonly status?: string | null;
+  readonly reviewStatus?: string | null;
+  readonly submissionStatus: SubmissionStatus | keyof typeof SubmissionStatus;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly testApplicationAffiliateId: string;

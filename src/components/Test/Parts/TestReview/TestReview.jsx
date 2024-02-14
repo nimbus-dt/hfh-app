@@ -3,7 +3,7 @@ import { useNavigate, useOutletContext } from 'react-router-dom';
 import Modal from 'components/Modal';
 import { useState } from 'react';
 import { DataStore } from 'aws-amplify';
-import { TestApplication } from 'models';
+import { TestApplication, SubmissionStatus } from 'models';
 import dayjs from 'dayjs';
 import { createAlert } from 'utils/factories';
 import { CustomCard } from '../../Reusable/CustomCard';
@@ -42,9 +42,13 @@ export function TestReview() {
     }));
   };
 
-  const handleAddressOnReview = () => {
+  const handleAddressOnReview = (hasPreviousEmployment) => {
     setCurrentAddressOpen(false);
-    setPreviousAddressOpen(true);
+    if (hasPreviousEmployment) {
+      setPreviousAddressOpen(true);
+    } else {
+      setChecklistExpanded(true);
+    }
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
       address: true,
@@ -156,8 +160,7 @@ export function TestReview() {
 
       const persistedApplication = await DataStore.save(
         TestApplication.copyOf(original, (originalApplication) => {
-          originalApplication.submitted = true;
-          originalApplication.status = 'Unset';
+          originalApplication.submissionStatus = SubmissionStatus.SUBMITTED;
           originalApplication.submittedDate = dayjs().format('YYYY-MM-DD');
         })
       );
@@ -194,19 +197,21 @@ export function TestReview() {
           {alert.body}
         </Alert>
       )}
-      <CustomCard>
-        <Text>
-          Before submitting your application,{' '}
-          <Text as="span" fontWeight="bold">
-            please review the information you've submitted
-          </Text>{' '}
-          for accuracy and completeness.{' '}
-          <Text as="span" fontWeight="bold">
-            Click confirm
-          </Text>{' '}
-          on each of the sections below before submitting.
-        </Text>
-      </CustomCard>
+      {application?.submissionStatus !== SubmissionStatus.SUBMITTED && (
+        <CustomCard>
+          <Text>
+            Before submitting your application,{' '}
+            <Text as="span" fontWeight="bold">
+              please review the information you've submitted
+            </Text>{' '}
+            for accuracy and completeness.{' '}
+            <Text as="span" fontWeight="bold">
+              Click confirm
+            </Text>{' '}
+            on each of the sections below before submitting.
+          </Text>
+        </CustomCard>
+      )}
       <br />
       <ApplicantInfoSection
         basicInfoOpen={basicInfoOpen}
@@ -220,6 +225,7 @@ export function TestReview() {
         handlePreviousAddressOnReview={handlePreviousAddressOnReview}
         reviewedSections={reviewedSections}
         setReviewedSections={setReviewedSections}
+        submitted={application?.submissionStatus === SubmissionStatus.SUBMITTED}
       />
       <ChecklistSection
         reviewedSections={reviewedSections}
@@ -227,6 +233,7 @@ export function TestReview() {
         expanded={checklistExpanded}
         setExpanded={setChecklistExpanded}
         onReview={handleChecklistOnReview}
+        submitted={application?.submissionStatus === SubmissionStatus.SUBMITTED}
       />
       <WrittenSection
         reviewedSections={reviewedSections}
@@ -234,6 +241,7 @@ export function TestReview() {
         expanded={writtenExpanded}
         setExpanded={setWrittenExpanded}
         onReview={handleWrittenOnReview}
+        submitted={application?.submissionStatus === SubmissionStatus.SUBMITTED}
       />
       <RecordsSection
         reviewedSections={reviewedSections}
@@ -241,6 +249,7 @@ export function TestReview() {
         expanded={recordsExpanded}
         setExpanded={setRecordsExpanded}
         onReview={handleRecordsOnReview}
+        submitted={application?.submissionStatus === SubmissionStatus.SUBMITTED}
       />
       <HomeownersSection
         reviewedSections={reviewedSections}
@@ -248,6 +257,7 @@ export function TestReview() {
         expanded={homeownersExpanded}
         setExpanded={setHomeownersExpanded}
         onReview={handleHomeownersOnReview}
+        submitted={application?.submissionStatus === SubmissionStatus.SUBMITTED}
       />
       <EmploymentSection
         reviewedSections={reviewedSections}
@@ -261,6 +271,7 @@ export function TestReview() {
         handleUnemploymentOnReview={handleUnemploymentOnReview}
         handleCurrentEmploymentOnReview={handleCurrentEmploymentOnReview}
         handlePreviousAddressOnReview={handlePreviousEmploymentOnReview}
+        submitted={application?.submissionStatus === SubmissionStatus.SUBMITTED}
       />
       <FinancialSection
         expanded={financialOpen}
@@ -268,6 +279,7 @@ export function TestReview() {
         reviewedSections={reviewedSections}
         setReviewedSections={setReviewedSections}
         onReview={handleFinancialOnReview}
+        submitted={application?.submissionStatus === SubmissionStatus.SUBMITTED}
       />
       <Modal
         title="Alert"
@@ -289,20 +301,25 @@ export function TestReview() {
           </Button>
         </Flex>
       </Modal>
-      <CustomCard>
-        <Flex width="100%" justifyContent="space-between">
-          <Button variation="primary" onClick={() => navigate('../financial')}>
-            Back
-          </Button>
-          <Button
-            variation="primary"
-            onClick={handleOnClickSubmit}
-            isDisabled={isDisabled()}
-          >
-            Submit
-          </Button>
-        </Flex>
-      </CustomCard>
+      {application?.submissionStatus !== SubmissionStatus.SUBMITTED && (
+        <CustomCard>
+          <Flex width="100%" justifyContent="space-between">
+            <Button
+              variation="primary"
+              onClick={() => navigate('../financial')}
+            >
+              Back
+            </Button>
+            <Button
+              variation="primary"
+              onClick={handleOnClickSubmit}
+              isDisabled={isDisabled()}
+            >
+              Submit
+            </Button>
+          </Flex>
+        </CustomCard>
+      )}
     </Flex>
   );
 }

@@ -17,7 +17,6 @@ import {
 import { CustomCard } from 'components/Test/Reusable/CustomCard';
 import { TestNav } from 'components/Test/Layout/TestNav';
 import { Habitat } from '../../models';
-import { Topbar } from './Topbar';
 import { COLORS } from '../../utils/constants';
 import Sidebar from './Sidebar';
 
@@ -62,7 +61,7 @@ const TestAffiliateLayout = () => {
                   ? originalHabitat.props.data.customStatus
                   : []
               ).includes(newCustomStatus) &&
-              newCustomStatus !== 'Unset'
+              newCustomStatus !== 'Pending'
             ) {
               originalHabitat.props.data.customStatus = originalHabitat.props
                 .data.customStatus
@@ -177,6 +176,7 @@ const TestAffiliateLayout = () => {
             direction="column"
             margin="auto"
             alignItems="center"
+            padding="1rem"
           >
             {authStatus === 'unauthenticated' || !isUserAllowed ? (
               <>
@@ -231,29 +231,24 @@ const TestAffiliateLayout = () => {
                 </Flex>
               </>
             ) : (
-              <>
-                <Topbar habitatName={habitat?.name} />
-                <Card
-                  width={responsiveBool ? '100%' : '80%'}
-                  variation={responsiveBool ? '' : 'elevated'}
-                  justifyContent="center"
-                  margin="auto"
-                  marginTop="1rem"
-                  marginBottom="1rem"
-                  grow={1}
-                  wrap
-                >
-                  <Outlet
-                    context={{
-                      habitat,
-                      setHabitat,
-                      addCustomStatusToHabitat,
-                      removeCustomStatusToHabitat,
-                      updateCustomStatusToHabitat,
-                    }}
-                  />
-                </Card>
-              </>
+              <Card
+                width="100%"
+                variation={responsiveBool ? '' : 'elevated'}
+                justifyContent="center"
+                grow={1}
+                wrap
+                alignSelf="start"
+              >
+                <Outlet
+                  context={{
+                    habitat,
+                    setHabitat,
+                    addCustomStatusToHabitat,
+                    removeCustomStatusToHabitat,
+                    updateCustomStatusToHabitat,
+                  }}
+                />
+              </Card>
             )}
           </Flex>
         </ScrollView>

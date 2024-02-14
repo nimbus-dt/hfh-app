@@ -1,0 +1,14 @@
+{
+  "permissions": {},
+  "lambdaLayers": [],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "adminEmail",
+      "environmentVariableName": "ADMIN_EMAIL"
+    },
+    {
+      "cloudFormationParameterName": "sesEmail",
+      "environmentVariableName": "SES_EMAIL"
+    }
+  ]
+}
