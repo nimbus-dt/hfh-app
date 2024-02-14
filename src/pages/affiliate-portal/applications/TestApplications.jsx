@@ -32,6 +32,7 @@ import {
   MdClose,
   MdDelete,
   MdEdit,
+  MdMoreHoriz,
 } from 'react-icons/md';
 import { SUBMISSION_STATUS_LIST } from 'utils/constants';
 import { stringToHumanReadable } from 'utils/strings';
@@ -532,7 +533,14 @@ const TestApplications = () => {
                     </TableCell>
                     <TableCell>
                       <Link to={`../applications/${application?.id}`}>
-                        <Button>View</Button>
+                        <Button
+                          height="2rem"
+                          width="2rem"
+                          padding="0"
+                          title="View"
+                        >
+                          <MdMoreHoriz size="1.25rem" />
+                        </Button>
                       </Link>
                     </TableCell>
                   </TableRow>
