@@ -230,23 +230,24 @@ const TestAffiliateLayout = () => {
                 </Flex>
               </>
             ) : (
-              <Flex padding="1rem" grow={1} width="100%" wrap alignSelf="start">
-                <Card
-                  variation={responsiveBool ? '' : 'elevated'}
-                  justifyContent="center"
-                  grow={1}
-                >
-                  <Outlet
-                    context={{
-                      habitat,
-                      setHabitat,
-                      addCustomStatusToHabitat,
-                      removeCustomStatusToHabitat,
-                      updateCustomStatusToHabitat,
-                    }}
-                  />
-                </Card>
-              </Flex>
+              <Card
+                alignSelf="stretch"
+                variation={responsiveBool ? '' : 'elevated'}
+                justifyContent="center"
+                grow={1}
+                wrap
+                margin={!responsiveBool && '1rem'}
+              >
+                <Outlet
+                  context={{
+                    habitat,
+                    setHabitat,
+                    addCustomStatusToHabitat,
+                    removeCustomStatusToHabitat,
+                    updateCustomStatusToHabitat,
+                  }}
+                />
+              </Card>
             )}
           </Flex>
         </ScrollView>

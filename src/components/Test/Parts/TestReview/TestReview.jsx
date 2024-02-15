@@ -220,6 +220,7 @@ export function TestReview() {
         createAlert('error', 'Error', `The application couldn't be submitted.`)
       );
     }
+    setShowSubmitModal(false);
   };
 
   const isDisabled = () => {
