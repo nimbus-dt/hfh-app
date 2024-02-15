@@ -19,18 +19,21 @@ import {
   useApplicantInfosQuery,
   useTestApplicationsQuery,
 } from 'hooks/services';
-import { DataStore, SortDirection } from 'aws-amplify';
-import { TestApplication } from 'models';
+import { DataStore, SortDirection, Storage } from 'aws-amplify';
+import { TestApplication, ApplicationTypes } from 'models';
 import {
   MdAdd,
   MdArrowDownward,
   MdArrowUpward,
+  MdDelete,
   MdMoreHoriz,
 } from 'react-icons/md';
 import { DEFAULT_REVIEW_STATUS, SUBMISSION_STATUS_LIST } from 'utils/constants';
 import { stringToHumanReadable } from 'utils/strings';
+import Modal from 'components/Modal';
 import PageTitle from '../components/PageTitle/PageTitle';
 import StatusModal from './components/StatusModal';
+import NewApplicationModal from './components/NewApplicationModal';
 
 const REVIEW_STATUS = ['All', DEFAULT_REVIEW_STATUS];
 const SUBMISSION_STATUS = [
@@ -55,8 +58,10 @@ const TestApplications = () => {
     SUBMISSION_STATUS[0].key
   );
   const [statusModalOpen, setStatusModalOpen] = useState(false);
-  const [trigger, setTrigger] = useState(0);
+  const [newApplicationOpen, setNewApplicationOpen] = useState(false);
+  const [applicationToDelete, setApplicationToDelete] = useState();
 
+  const [trigger, setTrigger] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [submittedDateSort, setSubmittedDateSort] = useState(
     SortDirection.DESCENDING
@@ -127,9 +132,11 @@ const TestApplications = () => {
     }
   };
 
+  const handleStatusOnClick = () => setStatusModalOpen(true);
   const handleOnCloseStatusModal = () => setStatusModalOpen(false);
 
-  const handleStatusOnClick = () => setStatusModalOpen(true);
+  const handleAddNewApplicationOnClick = () => setNewApplicationOpen(true);
+  const handleOnCloseNewApplicationModal = () => setNewApplicationOpen(false);
 
   const handleSubmittedDateOnClick = () =>
     setSubmittedDateSort((previousSubmittedDateSort) =>
@@ -137,6 +144,37 @@ const TestApplications = () => {
         ? SortDirection.DESCENDING
         : SortDirection.ASCENDING
     );
+
+  const removeFiles = async (keys) => {
+    try {
+      const promisesArr = keys.map((key) =>
+        Storage.remove(key, {
+          level: 'public',
+        })
+      );
+      await Promise.all(promisesArr);
+    } catch (error) {
+      console.log('Error deleting files.');
+      console.log(error);
+    }
+  };
+  const handleDeleteOnClick = (applicationId) =>
+    setApplicationToDelete(applicationId);
+  const handleDeleteOnClose = () => setApplicationToDelete(undefined);
+  const handleDeleteOnAccept = async () => {
+    try {
+      const application = await DataStore.query(
+        TestApplication,
+        applicationToDelete
+      );
+      removeFiles(application.props.paperApplicationKeys);
+      await DataStore.delete(TestApplication, applicationToDelete);
+      setTrigger((prevTrigger) => prevTrigger + 1);
+    } catch (error) {
+      console.log('Error deleting application.');
+    }
+    setApplicationToDelete(undefined);
+  };
 
   return (
     <Flex
@@ -146,6 +184,12 @@ const TestApplications = () => {
       justifyContent="center"
     >
       <PageTitle title="Applications" />
+      <NewApplicationModal
+        open={newApplicationOpen}
+        onClose={handleOnCloseNewApplicationModal}
+        habitat={habitat}
+        setTrigger={setTrigger}
+      />
       <Flex
         direction="row"
         width="100%"
@@ -188,7 +232,12 @@ const TestApplications = () => {
           <Badge>
             <Flex alignItems="center">Total: {applications.length}</Flex>
           </Badge>
-          <Button height="2rem" width="2rem" padding="0" onClick={() => {}}>
+          <Button
+            height="2rem"
+            width="2rem"
+            padding="0"
+            onClick={handleAddNewApplicationOnClick}
+          >
             <MdAdd size="1.25rem" />
           </Button>
         </Flex>
@@ -203,6 +252,25 @@ const TestApplications = () => {
           updateCustomStatusToHabitat={updateCustomStatusToHabitat}
           setTrigger={setTrigger}
         />
+        <Modal
+          title="Alert"
+          open={applicationToDelete !== undefined}
+          onClickClose={handleDeleteOnClose}
+          width="30rem"
+        >
+          <Flex direction="column">
+            <Text>
+              Are you sure you want to delete the application? This can't be
+              undone.
+            </Text>
+            <Flex justifyContent="end">
+              <Button onClick={handleDeleteOnClose}>Cancel</Button>
+              <Button variation="primary" onClick={handleDeleteOnAccept}>
+                Accept
+              </Button>
+            </Flex>
+          </Flex>
+        </Modal>
         <ScrollView maxWidth="100%">
           <Table
             caption=""
@@ -218,6 +286,9 @@ const TestApplications = () => {
                 </TableCell>
                 <TableCell as="th" minWidth="25ch">
                   Name
+                </TableCell>
+                <TableCell as="th" minWidth="15ch">
+                  Type
                 </TableCell>
                 <TableCell as="th" minWidth="15ch">
                   <Flex justifyContent="space-between" alignItems="center">
@@ -266,12 +337,15 @@ const TestApplications = () => {
                       {index + 1 + (currentPage - 1) * perPage}
                     </TableCell>
                     <TableCell>
-                      {
-                        applicantInfos.find(
-                          (applicantInfo) =>
-                            applicantInfo.ownerID === application.id
-                        )?.props.basicInfo.fullName
-                      }
+                      {application.type === ApplicationTypes.ONLINE
+                        ? applicantInfos.find(
+                            (applicantInfo) =>
+                              applicantInfo.ownerID === application.id
+                          )?.props.basicInfo.fullName
+                        : application.props.name}
+                    </TableCell>
+                    <TableCell>
+                      {stringToHumanReadable(application.type)}
                     </TableCell>
                     <TableCell>
                       {application.submittedDate !== '0001-01-01' &&
@@ -315,6 +389,18 @@ const TestApplications = () => {
                             <MdMoreHoriz size="1.25rem" />
                           </Button>
                         </Link>
+                        {application.type === ApplicationTypes.PAPER && (
+                          <Button
+                            height="2rem"
+                            width="2rem"
+                            padding="0"
+                            title="Delete"
+                            variation="destructive"
+                            onClick={() => handleDeleteOnClick(application.id)}
+                          >
+                            <MdDelete size="1.25rem" />
+                          </Button>
+                        )}
                       </Flex>
                     </TableCell>
                   </TableRow>
