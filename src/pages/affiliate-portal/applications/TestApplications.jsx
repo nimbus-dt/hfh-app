@@ -483,7 +483,7 @@ const TestApplications = () => {
                     Review status
                   </Button>
                 </TableCell>
-                <TableCell as="th" width="25%">
+                <TableCell as="th" width="fit-content">
                   Actions
                 </TableCell>
               </TableRow>
@@ -532,16 +532,18 @@ const TestApplications = () => {
                       </SelectField>
                     </TableCell>
                     <TableCell>
-                      <Link to={`../applications/${application?.id}`}>
-                        <Button
-                          height="2rem"
-                          width="2rem"
-                          padding="0"
-                          title="View"
-                        >
-                          <MdMoreHoriz size="1.25rem" />
-                        </Button>
-                      </Link>
+                      <Flex justifyContent="center">
+                        <Link to={`../applications/${application?.id}`}>
+                          <Button
+                            height="2rem"
+                            width="2rem"
+                            padding="0"
+                            title="View"
+                          >
+                            <MdMoreHoriz size="1.25rem" />
+                          </Button>
+                        </Link>
+                      </Flex>
                     </TableCell>
                   </TableRow>
                 ))}
