@@ -155,7 +155,6 @@ const TestApplications = () => {
       await Promise.all(promisesArr);
     } catch (error) {
       console.log('Error deleting files.');
-      console.log(error);
     }
   };
   const handleDeleteOnClick = (applicationId) =>
@@ -287,7 +286,7 @@ const TestApplications = () => {
                 <TableCell as="th" minWidth="25ch">
                   Name
                 </TableCell>
-                <TableCell as="th" minWidth="15ch">
+                <TableCell as="th" minWidth="10ch">
                   Type
                 </TableCell>
                 <TableCell as="th" minWidth="15ch">
