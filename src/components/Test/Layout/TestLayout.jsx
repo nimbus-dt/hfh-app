@@ -10,6 +10,7 @@ import useScrollToTopOnRouteChange from 'hooks/utils/useScrollToTopOnRouteChange
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { TestApplication, SubmissionStatus, ApplicationTypes } from 'models';
 import { DataStore } from 'aws-amplify';
+import { DEFAULT_REVIEW_STATUS } from 'utils/constants';
 import { TestNav } from './TestNav';
 import { CustomCard } from '../Reusable/CustomCard';
 
@@ -60,7 +61,7 @@ export function TestLayout() {
           lastSection: location.pathname,
           members: [],
           submissionStatus: SubmissionStatus.UNSUBMITTED,
-          reviewStatus: 'Pending',
+          reviewStatus: DEFAULT_REVIEW_STATUS,
           submittedDate: '0001-01-01',
           habitatID: habitat.id,
           type: ApplicationTypes.ONLINE,
