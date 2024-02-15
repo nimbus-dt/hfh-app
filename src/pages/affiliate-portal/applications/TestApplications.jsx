@@ -74,7 +74,7 @@ const TestApplications = () => {
   const { data: applications } = useTestApplicationsQuery({
     criteria: (c1) =>
       c1.and((c2) => {
-        let criteriaArr = [c2.testApplicationAffiliateId.eq(habitat?.id)];
+        let criteriaArr = [c2.habitatID.eq(habitat?.id)];
 
         if (reviewStatus !== REVIEW_STATUS[0]) {
           criteriaArr = [...criteriaArr, c2.reviewStatus.eq(reviewStatus)];
@@ -167,7 +167,7 @@ const TestApplications = () => {
 
       const applicationsToUpdate = await DataStore.query(TestApplication, (c) =>
         c.and((c2) => [
-          c2.testApplicationAffiliateId.eq(habitat?.id),
+          c2.habitatID.eq(habitat?.id),
           c2.reviewStatus.eq(deletingStatus),
         ])
       );
@@ -193,7 +193,7 @@ const TestApplications = () => {
 
       const applicationsToUpdate = await DataStore.query(TestApplication, (c) =>
         c.and((c2) => [
-          c2.testApplicationAffiliateId.eq(habitat?.id),
+          c2.habitatID.eq(habitat?.id),
           c2.reviewStatus.eq(editingStatus),
         ])
       );
