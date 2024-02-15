@@ -11,35 +11,28 @@ import {
   useBreakpointValue,
   TableHead,
   Pagination,
-  TextField,
   Text,
-  View,
   ScrollView,
 } from '@aws-amplify/ui-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useState } from 'react';
 import {
   useApplicantInfosQuery,
   useTestApplicationsQuery,
 } from 'hooks/services';
 import { DataStore, SortDirection } from 'aws-amplify';
 import { TestApplication } from 'models';
-import Modal from 'components/Modal';
 import {
   MdAdd,
   MdArrowDownward,
   MdArrowUpward,
-  MdCheck,
-  MdClose,
-  MdDelete,
-  MdEdit,
   MdMoreHoriz,
 } from 'react-icons/md';
-import { SUBMISSION_STATUS_LIST } from 'utils/constants';
+import { DEFAULT_REVIEW_STATUS, SUBMISSION_STATUS_LIST } from 'utils/constants';
 import { stringToHumanReadable } from 'utils/strings';
 import PageTitle from '../components/PageTitle/PageTitle';
+import StatusModal from './components/StatusModal';
 
-const PENDING = 'Pending';
-const REVIEW_STATUS = ['All', PENDING];
+const REVIEW_STATUS = ['All', DEFAULT_REVIEW_STATUS];
 const SUBMISSION_STATUS = [
   {
     key: 'ALL',
@@ -61,12 +54,9 @@ const TestApplications = () => {
   const [submissionStatus, setSubmissionStatus] = useState(
     SUBMISSION_STATUS[0].key
   );
-  const [trigger, setTrigger] = useState(0);
   const [statusModalOpen, setStatusModalOpen] = useState(false);
-  const [editingStatus, setEditingStatus] = useState();
-  const [editingAlert, setEditingAlert] = useState(false);
-  const [deletingStatus, setDeletingStatus] = useState();
-  const [newStatus, setNewStatus] = useState('');
+  const [trigger, setTrigger] = useState(0);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [submittedDateSort, setSubmittedDateSort] = useState(
     SortDirection.DESCENDING
@@ -118,30 +108,6 @@ const TestApplications = () => {
     large: false,
   });
 
-  const handleNewStatusOnChange = (event) => {
-    setNewStatus(event.currentTarget.value);
-  };
-
-  const statusAlreadyExists = useMemo(
-    () =>
-      (habitat.props.data.customStatus
-        ? [...habitat.props.data.customStatus, PENDING]
-        : [PENDING]
-      ).includes(newStatus),
-    [habitat, newStatus]
-  );
-
-  const handleAddStatus = async () => {
-    try {
-      if (!statusAlreadyExists) {
-        await addCustomStatusToHabitat(newStatus);
-      }
-      setNewStatus('');
-    } catch (error) {
-      console.log('Error while adding the new status');
-    }
-  };
-
   const handleUpdateApplicationStatus = async (
     applicationId,
     newStatusValue
@@ -161,59 +127,8 @@ const TestApplications = () => {
     }
   };
 
-  const handleDeleteCustomStatus = async () => {
-    try {
-      await removeCustomStatusToHabitat(deletingStatus);
+  const handleOnCloseStatusModal = () => setStatusModalOpen(false);
 
-      const applicationsToUpdate = await DataStore.query(TestApplication, (c) =>
-        c.and((c2) => [
-          c2.habitatID.eq(habitat?.id),
-          c2.reviewStatus.eq(deletingStatus),
-        ])
-      );
-
-      for (const applicationToUpdate of applicationsToUpdate) {
-        await DataStore.save(
-          TestApplication.copyOf(applicationToUpdate, (originalApplication) => {
-            originalApplication.reviewStatus = PENDING;
-          })
-        );
-      }
-
-      setTrigger((previousTrigger) => previousTrigger + 1);
-      setDeletingStatus(undefined);
-    } catch (error) {
-      console.log('Error while updating applications status.');
-    }
-  };
-
-  const handleUpdateCustomStatus = async () => {
-    try {
-      await updateCustomStatusToHabitat(editingStatus, newStatus);
-
-      const applicationsToUpdate = await DataStore.query(TestApplication, (c) =>
-        c.and((c2) => [
-          c2.habitatID.eq(habitat?.id),
-          c2.reviewStatus.eq(editingStatus),
-        ])
-      );
-
-      for (const applicationToUpdate of applicationsToUpdate) {
-        await DataStore.save(
-          TestApplication.copyOf(applicationToUpdate, (originalApplication) => {
-            originalApplication.reviewStatus = newStatus;
-          })
-        );
-      }
-
-      setTrigger((previousTrigger) => previousTrigger + 1);
-      setEditingStatus(undefined);
-      setNewStatus('');
-      setEditingAlert(false);
-    } catch (error) {
-      console.log('Error while updating applications status.');
-    }
-  };
   const handleStatusOnClick = () => setStatusModalOpen(true);
 
   const handleSubmittedDateOnClick = () =>
@@ -222,25 +137,6 @@ const TestApplications = () => {
         ? SortDirection.DESCENDING
         : SortDirection.ASCENDING
     );
-
-  const handleOnCloseStatusModal = () => setStatusModalOpen(false);
-
-  const handleOnCloseEditingAlert = () => setEditingAlert(false);
-
-  const handleOnCloseDelete = () => setDeletingStatus(undefined);
-
-  const handleCancelEdit = () => {
-    setEditingStatus(undefined);
-    setNewStatus('');
-  };
-
-  useEffect(() => {
-    console.log('sort', submittedDateSort);
-  }, [submittedDateSort]);
-
-  useEffect(() => {
-    console.log('apps', applications);
-  }, [applications]);
 
   return (
     <Flex
@@ -288,160 +184,25 @@ const TestApplications = () => {
             ))}
           </SelectField>
         </Flex>
-
-        <Badge>
-          <Flex alignItems="center">Total: {applications.length}</Flex>
-        </Badge>
+        <Flex alignItems="end">
+          <Badge>
+            <Flex alignItems="center">Total: {applications.length}</Flex>
+          </Badge>
+          <Button height="2rem" width="2rem" padding="0" onClick={() => {}}>
+            <MdAdd size="1.25rem" />
+          </Button>
+        </Flex>
       </Flex>
       <Flex width="auto" direction="column" justifyContent="center">
-        <Modal
-          title="Status"
+        <StatusModal
           open={statusModalOpen}
-          onClickClose={() => handleOnCloseStatusModal()}
-          width="30rem"
-        >
-          <>
-            <Modal
-              title="Alert"
-              open={editingAlert}
-              onClickClose={handleOnCloseEditingAlert}
-              width="25rem"
-            >
-              <View>
-                <Text as="p">
-                  You want to edit the status? This would update all the
-                  applications with this status.
-                </Text>
-                <Flex marginTop="1rem" justifyContent="center">
-                  <Button
-                    variation="primary"
-                    onClick={handleUpdateCustomStatus}
-                  >
-                    Accept
-                  </Button>
-                  <Button
-                    variation="destructive"
-                    onClick={handleOnCloseEditingAlert}
-                  >
-                    Cancel
-                  </Button>
-                </Flex>
-              </View>
-            </Modal>
-            <Modal
-              title="Alert"
-              open={deletingStatus !== undefined}
-              onClickClose={handleOnCloseDelete}
-              width="25rem"
-            >
-              <View>
-                <Text as="p">
-                  You want to delete the status? This would update all the
-                  applications with this status to have an Pending status.
-                </Text>
-                <Flex marginTop="1rem" justifyContent="center">
-                  <Button
-                    variation="primary"
-                    onClick={handleDeleteCustomStatus}
-                  >
-                    Accept
-                  </Button>
-                  <Button variation="destructive" onClick={handleOnCloseDelete}>
-                    Cancel
-                  </Button>
-                </Flex>
-              </View>
-            </Modal>
-            <Flex width="100%" justifyContent="space-between" alignItems="end">
-              <TextField
-                label="New status:"
-                value={newStatus}
-                onChange={handleNewStatusOnChange}
-                hasError={statusAlreadyExists || newStatus === ''}
-                errorMessage="Invalid status"
-              />
-              {editingStatus ? (
-                <Flex>
-                  <Button
-                    padding="0.5rem"
-                    variation="destructive"
-                    title="Cancel edit"
-                    isDisabled={statusAlreadyExists}
-                    onClick={handleCancelEdit}
-                  >
-                    <MdClose />
-                  </Button>
-                  <Button
-                    padding="0.5rem"
-                    variation="primary"
-                    title="Confirm edit"
-                    isDisabled={statusAlreadyExists}
-                    onClick={() => setEditingAlert(true)}
-                  >
-                    <MdCheck />
-                  </Button>
-                </Flex>
-              ) : (
-                <Button
-                  padding="0.5rem"
-                  variation="primary"
-                  title="Add status"
-                  isDisabled={statusAlreadyExists}
-                  onClick={handleAddStatus}
-                >
-                  <MdAdd />
-                </Button>
-              )}
-            </Flex>
-            <br />
-
-            <Table
-              caption=""
-              highlightOnHover
-              variation="striped"
-              justify-content="center"
-              size={responsiveBool ? 'small' : ''}
-            >
-              <TableHead>
-                <TableRow>
-                  <TableCell as="th" width="70%">
-                    Name
-                  </TableCell>
-                  <TableCell as="th" width="30%">
-                    Actions
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {habitat.props.data.customStatus?.map((statusItem) => (
-                  <TableRow key={statusItem}>
-                    <TableCell>{statusItem}</TableCell>
-                    <TableCell>
-                      <Flex gap="0.5rem">
-                        <Button
-                          padding="0.5rem"
-                          onClick={() => {
-                            setEditingStatus(statusItem);
-                            setNewStatus(statusItem);
-                          }}
-                        >
-                          <MdEdit />
-                        </Button>
-                        <Button
-                          padding="0.5rem"
-                          variation="destructive"
-                          onClick={() => setDeletingStatus(statusItem)}
-                        >
-                          <MdDelete />
-                        </Button>
-                      </Flex>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </>
-        </Modal>
+          onClose={handleOnCloseStatusModal}
+          habitat={habitat}
+          addCustomStatusToHabitat={addCustomStatusToHabitat}
+          removeCustomStatusToHabitat={removeCustomStatusToHabitat}
+          updateCustomStatusToHabitat={updateCustomStatusToHabitat}
+          setTrigger={setTrigger}
+        />
         <ScrollView maxWidth="100%">
           <Table
             caption=""
@@ -531,7 +292,7 @@ const TestApplications = () => {
                         }
                       >
                         {[
-                          PENDING,
+                          DEFAULT_REVIEW_STATUS,
                           ...(habitat
                             ? habitat.props.data.customStatus || []
                             : []),
