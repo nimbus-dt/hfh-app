@@ -2,6 +2,7 @@ import {
   Alert,
   Button,
   Flex,
+  Loader,
   SelectField,
   Text,
   TextField,
@@ -18,6 +19,7 @@ import { newPaperApplicationSchema } from './NewApplicationModal.schema';
 
 const NewApplicationModal = ({ open, onClose, setTrigger, habitat }) => {
   const [showError, setShowError] = useState(false);
+  const [loading, setLoading] = useState(0);
   const {
     handleSubmit,
     register,
@@ -47,6 +49,7 @@ const NewApplicationModal = ({ open, onClose, setTrigger, habitat }) => {
   };
 
   const handleOnValid = async (data) => {
+    setLoading((previousLoading) => previousLoading + 1);
     try {
       const newApplication = await DataStore.save(
         new TestApplication({
@@ -90,6 +93,7 @@ const NewApplicationModal = ({ open, onClose, setTrigger, habitat }) => {
       setShowError(true);
       console.log(error);
     }
+    setLoading((previousLoading) => previousLoading - 1);
   };
 
   return (
@@ -125,6 +129,7 @@ const NewApplicationModal = ({ open, onClose, setTrigger, habitat }) => {
             errorMessage="Invalid name"
             hasError={errors.name}
             isRequired
+            disabled={loading > 0}
           />
           <TextField
             {...register('submittedDate')}
@@ -133,6 +138,7 @@ const NewApplicationModal = ({ open, onClose, setTrigger, habitat }) => {
             errorMessage="Invalid date"
             hasError={errors.date}
             isRequired
+            disabled={loading > 0}
           />
           <SelectField
             {...register('reviewStatus')}
@@ -140,6 +146,7 @@ const NewApplicationModal = ({ open, onClose, setTrigger, habitat }) => {
             errorMessage="Invalid review status"
             hasError={errors.reviewStatus}
             isRequired
+            disabled={loading > 0}
           >
             {habitat.props.data.customStatus?.map((statusItem) => (
               <option key={statusItem} value={statusItem}>
@@ -161,13 +168,22 @@ const NewApplicationModal = ({ open, onClose, setTrigger, habitat }) => {
                   onChange={handleOnChange}
                   isRequired
                   files={value}
+                  disabled={loading > 0}
                 />
               );
             }}
           />
+          {loading > 0 && (
+            <Flex direction="column">
+              <Text>Uploading new application</Text>
+              <Loader variation="linear" />
+            </Flex>
+          )}
           <Flex justifyContent="end">
-            <Button onClick={onClose}>Cancel</Button>
-            <Button type="submit" variation="primary">
+            <Button onClick={onClose} disabled={loading > 0}>
+              Cancel
+            </Button>
+            <Button type="submit" variation="primary" disabled={loading > 0}>
               Submit
             </Button>
           </Flex>
