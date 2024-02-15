@@ -2,6 +2,11 @@
 import { initSchema } from '@aws-amplify/datastore';
 import { schema } from './schema';
 
+const ApplicationTypes = {
+  "ONLINE": "ONLINE",
+  "PAPER": "PAPER"
+};
+
 const SubmissionStatus = {
   "SUBMITTED": "SUBMITTED",
   "UNSUBMITTED": "UNSUBMITTED",
@@ -88,6 +93,7 @@ export {
   HouseholdMember,
   Application,
   Habitat,
+  ApplicationTypes,
   SubmissionStatus,
   ApplicationTimeStatus,
   ApplicationSubmittedStatus,

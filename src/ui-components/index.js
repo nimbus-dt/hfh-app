@@ -34,6 +34,8 @@ export { default as RecordCreateForm } from "./RecordCreateForm";
 export { default as RecordUpdateForm } from "./RecordUpdateForm";
 export { default as SavingRecordCreateForm } from "./SavingRecordCreateForm";
 export { default as SavingRecordUpdateForm } from "./SavingRecordUpdateForm";
+export { default as TestApplicationCreateForm } from "./TestApplicationCreateForm";
+export { default as TestApplicationUpdateForm } from "./TestApplicationUpdateForm";
 export { default as UserPropsCreateForm } from "./UserPropsCreateForm";
 export { default as UserPropsUpdateForm } from "./UserPropsUpdateForm";
 export { default as WrittenCreateForm } from "./WrittenCreateForm";

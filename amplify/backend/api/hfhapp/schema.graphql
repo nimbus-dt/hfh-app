@@ -1,3 +1,8 @@
+enum ApplicationTypes {
+  ONLINE
+  PAPER
+}
+
 type ApplicantOptional @model @auth(rules: [{allow: public}]) {
   id: ID!
   ownerID: ID
@@ -33,10 +38,12 @@ type TestApplication @model @auth(rules: [{allow: public}]) {
   ownerID: ID
   lastSection: String
   members: [Member] @hasMany(indexName: "byTestApplication", fields: ["id"])
-  submittedDate: AWSDate
-  affiliate: Habitat! @hasOne
+  submittedDate: AWSDate!
   reviewStatus: String
   submissionStatus: SubmissionStatus!
+  props: AWSJSON
+  type: ApplicationTypes!
+  habitatID: ID @index(name: "byHabitat")
 }
 
 type EmploymentInfo @model @auth(rules: [{allow: public}]) {
@@ -235,5 +242,6 @@ type Habitat @model @auth(rules: [{allow: public}]) {
   users: [ID]
   AMI: [String]
   Cycles: [Cycles] @hasMany(indexName: "byHabitat", fields: ["id"])
+  TestApplications: [TestApplication] @hasMany(indexName: "byHabitat", fields: ["id"])
 }
  
