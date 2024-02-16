@@ -31,7 +31,7 @@ import {
 import { DEFAULT_REVIEW_STATUS, SUBMISSION_STATUS_LIST } from 'utils/constants';
 import { stringToHumanReadable } from 'utils/strings';
 import Modal from 'components/Modal';
-import PageTitle from '../components/PageTitle/PageTitle';
+import PageTitle from '../../components/PageTitle/PageTitle';
 import StatusModal from './components/StatusModal';
 import NewApplicationModal from './components/NewApplicationModal';
 
