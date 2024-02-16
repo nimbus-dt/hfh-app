@@ -42,10 +42,6 @@ const ApplicantOptionalSection = ({
     }
   }, [application]);
 
-  useEffect(() => {
-    console.log('optional', applicantOptional);
-  }, [applicantOptional]);
-
   return (
     <>
       <ApplicantMilitaryServiceSection

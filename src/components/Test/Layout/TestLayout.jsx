@@ -8,8 +8,9 @@ import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import useHabitatByUrlName from 'hooks/services/useHabitatByUrlName';
 import useScrollToTopOnRouteChange from 'hooks/utils/useScrollToTopOnRouteChange';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { TestApplication, SubmissionStatus } from 'models';
+import { TestApplication, SubmissionStatus, ApplicationTypes } from 'models';
 import { DataStore } from 'aws-amplify';
+import { DEFAULT_REVIEW_STATUS } from 'utils/constants';
 import { TestNav } from './TestNav';
 import { CustomCard } from '../Reusable/CustomCard';
 
@@ -44,10 +45,7 @@ export function TestLayout() {
   const getApplication = async (username) => {
     try {
       const existingApplication = await DataStore.query(TestApplication, (c1) =>
-        c1.and((c2) => [
-          c2.ownerID.eq(username),
-          c2.testApplicationAffiliateId.eq(habitat.id),
-        ])
+        c1.and((c2) => [c2.ownerID.eq(username), c2.habitatID.eq(habitat.id)])
       );
       return existingApplication[0];
     } catch (error) {
@@ -63,9 +61,10 @@ export function TestLayout() {
           lastSection: location.pathname,
           members: [],
           submissionStatus: SubmissionStatus.UNSUBMITTED,
-          reviewStatus: 'Pending',
-          testApplicationAffiliateId: habitat.id,
+          reviewStatus: DEFAULT_REVIEW_STATUS,
           submittedDate: '0001-01-01',
+          habitatID: habitat.id,
+          type: ApplicationTypes.ONLINE,
         })
       );
 

@@ -148,7 +148,6 @@ export function TestReview() {
   };
 
   const handleUnemploymentOnReview = (employed) => {
-    console.log(employed);
     setUnemploymentOpen(false);
     if (employed) {
       setCurrentEmploymentOpen(true);

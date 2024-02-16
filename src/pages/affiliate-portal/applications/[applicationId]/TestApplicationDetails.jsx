@@ -35,7 +35,7 @@ import Modal from 'components/Modal';
 import { API, DataStore } from 'aws-amplify';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { TestApplication, SubmissionStatus } from 'models';
+import { TestApplication, SubmissionStatus, ApplicationTypes } from 'models';
 import ApplicantInfoTable from './components/ApplicantInfoTable';
 import GeneralInfoTable from './components/GeneralInfoTable';
 import ChecklistTable from './components/ChecklistTable';
@@ -47,6 +47,7 @@ import HouseholdTable from './components/HouseholdTable';
 import FinancialSection from './components/FinancialSection';
 import { decideSchema, returnSchema } from '../TestApplicationDetails.schema';
 import ApplicantOptionalTable from './components/ApplicantOptionalTable';
+import PaperApplicationTable from './components/PaperApplicationTable';
 
 const TestApplicationDetails = () => {
   const [userEmail, setUserEmail] = useState();
@@ -216,7 +217,9 @@ const TestApplicationDetails = () => {
       }
     };
 
-    getUser();
+    if (application?.ownerID) {
+      getUser();
+    }
   }, [application]);
 
   return (
@@ -232,7 +235,9 @@ const TestApplicationDetails = () => {
 
       <View>
         <Heading level={1} fontWeight="medium">
-          {applicantInfos[0]?.props.basicInfo.fullName}
+          {application?.type === ApplicationTypes.ONLINE
+            ? applicantInfos[0]?.props.basicInfo.fullName
+            : application?.props.name}
         </Heading>
         <Heading level={1} fontWeight="medium">
           Application
@@ -245,151 +250,165 @@ const TestApplicationDetails = () => {
         submittedDate={application?.submittedDate}
       />
 
-      <ApplicantInfoTable applicantInfo={applicantInfos[0]} email={userEmail} />
-
-      <ApplicantOptionalTable applicantOptional={applicantOptionals[0]} />
-
-      <ChecklistTable
-        questions={habitat?.props?.prePreScreen?.prePreScreenQuestions}
-        answers={checklists[0]?.props || {}}
-      />
-
-      <WrittenTable
-        questions={habitat?.props?.prePreScreen?.prePreScreenWrittenQuestions}
-        answers={writtens[0]?.props || {}}
-      />
-
-      <RecordsTable
-        questions={habitat?.props?.prePreScreen?.prePreScreenRecords}
-        answers={records[0]?.props || {}}
-      />
-
-      <HouseholdTable members={members} />
-
-      <EmploymentTable employmentInfo={employmentInfos[0]} />
-
-      <FinancialSection
-        applicantInfo={applicantInfos[0]}
-        members={members}
-        incomes={incomes}
-        debts={debts}
-        assets={assets}
-        sizeRenderer={sizeRenderer}
-      />
-
-      <ApplicationMetricsTable
-        totalMonthlyIncomes={totalMonthlyIncomes}
-        totalAssets={totalAssetsValue}
-        totalMonthlyDebts={totalMonthlyDebts}
-        totalDebts={totalDebts}
-        debtToIncomeRatio={debtToIncomeRatio}
-      />
-
-      <Modal
-        title="Return"
-        open={returnModalOpen}
-        onClickClose={handleReturnModalOnClose}
-        width="30rem"
-      >
-        <form onSubmit={handleSubmitReturn(handleOnValidReturn)}>
-          <Text>
-            By returning an application you are giving an applicant the chance
-            to edit their info.
-          </Text>
-          <br />
-          <TextAreaField
-            {...registerReturn('message')}
-            label="Return message"
-            descriptiveText="We will email this to the user"
-            placeholder="We are returning your application because you lack correct financial records. For inquiries, email support@test-habitat.com"
-            rows={3}
-            hasError={errorsReturn?.message}
-            errorMessage="Invalid message"
+      {application?.type === ApplicationTypes.PAPER ? (
+        <PaperApplicationTable application={application} />
+      ) : (
+        <>
+          <ApplicantInfoTable
+            applicantInfo={applicantInfos[0]}
+            email={userEmail}
           />
-          {loading > 0 && (
-            <View>
-              <Text>Updating application and sending email to applicant.</Text>
-              <Loader variation="linear" />
-            </View>
-          )}
-          <Flex justifyContent="end" marginTop="1rem">
-            <Button
-              variation="destructive"
-              onClick={handleReturnModalOnClose}
-              isDisabled={loading > 0}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" isDisabled={loading > 0}>
-              Return
-            </Button>
-          </Flex>
-        </form>
-      </Modal>
-      <Modal
-        title="Decide"
-        open={decideModalOpen}
-        onClickClose={handleDecideModalOnClose}
-        width="30rem"
-      >
-        <form onSubmit={handleSubmitDecide(handleOnValidDecide)}>
-          <Text>
-            Here is where you can render a decision for an application.
-          </Text>
-          <br />
-          <SelectField
-            {...registerDecide('status')}
-            label="Status"
-            hasError={errorsDecide?.status}
-            errorMessage="Invalid status"
+
+          <ApplicantOptionalTable applicantOptional={applicantOptionals[0]} />
+
+          <ChecklistTable
+            questions={habitat?.props?.prePreScreen?.prePreScreenQuestions}
+            answers={checklists[0]?.props || {}}
+          />
+
+          <WrittenTable
+            questions={
+              habitat?.props?.prePreScreen?.prePreScreenWrittenQuestions
+            }
+            answers={writtens[0]?.props || {}}
+          />
+
+          <RecordsTable
+            questions={habitat?.props?.prePreScreen?.prePreScreenRecords}
+            answers={records[0]?.props || {}}
+          />
+
+          <HouseholdTable members={members} />
+
+          <EmploymentTable employmentInfo={employmentInfos[0]} />
+
+          <FinancialSection
+            applicantInfo={applicantInfos[0]}
+            members={members}
+            incomes={incomes}
+            debts={debts}
+            assets={assets}
+            sizeRenderer={sizeRenderer}
+          />
+
+          <ApplicationMetricsTable
+            totalMonthlyIncomes={totalMonthlyIncomes}
+            totalAssets={totalAssetsValue}
+            totalMonthlyDebts={totalMonthlyDebts}
+            totalDebts={totalDebts}
+            debtToIncomeRatio={debtToIncomeRatio}
+          />
+          <Modal
+            title="Return"
+            open={returnModalOpen}
+            onClickClose={handleReturnModalOnClose}
+            width="30rem"
           >
-            <option value="Pending">Pending</option>
-            {(habitat?.props.data.customStatus
-              ? habitat.props.data.customStatus
-              : []
-            ).map((customStatusItem) => (
-              <option key={customStatusItem} value={customStatusItem}>
-                {customStatusItem}
-              </option>
-            ))}
-          </SelectField>
-          <br />
-          <TextAreaField
-            {...registerDecide('message')}
-            label="Decision message"
-            descriptiveText="We will email this to the user"
-            placeholder="Congratulations! We have decided to accept your application for our Homeownership Program. We will send further information via email."
-            rows={3}
-            hasError={errorsDecide?.message}
-            errorMessage="Invalid message"
-          />
-          {loading > 0 && (
-            <View>
-              <Text>Updating application and sending email to applicant.</Text>
-              <Loader variation="linear" />
-            </View>
+            <form onSubmit={handleSubmitReturn(handleOnValidReturn)}>
+              <Text>
+                By returning an application you are giving an applicant the
+                chance to edit their info.
+              </Text>
+              <br />
+              <TextAreaField
+                {...registerReturn('message')}
+                label="Return message"
+                descriptiveText="We will email this to the user"
+                placeholder="We are returning your application because you lack correct financial records. For inquiries, email support@test-habitat.com"
+                rows={3}
+                hasError={errorsReturn?.message}
+                errorMessage="Invalid message"
+              />
+              {loading > 0 && (
+                <View>
+                  <Text>
+                    Updating application and sending email to applicant.
+                  </Text>
+                  <Loader variation="linear" />
+                </View>
+              )}
+              <Flex justifyContent="end" marginTop="1rem">
+                <Button
+                  variation="destructive"
+                  onClick={handleReturnModalOnClose}
+                  isDisabled={loading > 0}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" isDisabled={loading > 0}>
+                  Return
+                </Button>
+              </Flex>
+            </form>
+          </Modal>
+          <Modal
+            title="Decide"
+            open={decideModalOpen}
+            onClickClose={handleDecideModalOnClose}
+            width="30rem"
+          >
+            <form onSubmit={handleSubmitDecide(handleOnValidDecide)}>
+              <Text>
+                Here is where you can render a decision for an application.
+              </Text>
+              <br />
+              <SelectField
+                {...registerDecide('status')}
+                label="Status"
+                hasError={errorsDecide?.status}
+                errorMessage="Invalid status"
+              >
+                <option value="Pending">Pending</option>
+                {(habitat?.props.data.customStatus
+                  ? habitat.props.data.customStatus
+                  : []
+                ).map((customStatusItem) => (
+                  <option key={customStatusItem} value={customStatusItem}>
+                    {customStatusItem}
+                  </option>
+                ))}
+              </SelectField>
+              <br />
+              <TextAreaField
+                {...registerDecide('message')}
+                label="Decision message"
+                descriptiveText="We will email this to the user"
+                placeholder="Congratulations! We have decided to accept your application for our Homeownership Program. We will send further information via email."
+                rows={3}
+                hasError={errorsDecide?.message}
+                errorMessage="Invalid message"
+              />
+              {loading > 0 && (
+                <View>
+                  <Text>
+                    Updating application and sending email to applicant.
+                  </Text>
+                  <Loader variation="linear" />
+                </View>
+              )}
+              <Flex justifyContent="end" marginTop="1rem">
+                <Button
+                  variation="destructive"
+                  onClick={handleDecideModalOnClose}
+                  isDisabled={loading > 0}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" isDisabled={loading > 0}>
+                  Send
+                </Button>
+              </Flex>
+            </form>
+          </Modal>
+          {application?.submissionStatus === SubmissionStatus.SUBMITTED && (
+            <Flex justifyContent="end">
+              <Button onClick={handleReturnOnClick}>Return</Button>
+              <Button variation="primary" onClick={handleDecideOnClick}>
+                Decide
+              </Button>
+            </Flex>
           )}
-          <Flex justifyContent="end" marginTop="1rem">
-            <Button
-              variation="destructive"
-              onClick={handleDecideModalOnClose}
-              isDisabled={loading > 0}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" isDisabled={loading > 0}>
-              Send
-            </Button>
-          </Flex>
-        </form>
-      </Modal>
-      {application?.submissionStatus === SubmissionStatus.SUBMITTED && (
-        <Flex justifyContent="end">
-          <Button onClick={handleReturnOnClick}>Return</Button>
-          <Button variation="primary" onClick={handleDecideOnClick}>
-            Decide
-          </Button>
-        </Flex>
+        </>
       )}
     </Flex>
   );

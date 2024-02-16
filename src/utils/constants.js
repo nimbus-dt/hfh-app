@@ -126,3 +126,7 @@ export const RACE_OPTIONS = {
   white: 'White',
   iDoNotWishToProvideThisInfo: 'I do not wish to provide this information',
 };
+/**
+ * This constant is used to store the default review status
+ */
+export const DEFAULT_REVIEW_STATUS = 'Pending';
