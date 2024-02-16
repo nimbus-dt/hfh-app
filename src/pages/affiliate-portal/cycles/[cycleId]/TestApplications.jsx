@@ -188,6 +188,9 @@ const TestApplications = () => {
       alignContent="center"
       justifyContent="center"
     >
+      <Link to="../">
+        <Button width="fit-content">Go back</Button>
+      </Link>
       <PageTitle title="Applications" />
       <NewApplicationModal
         open={newApplicationOpen}
