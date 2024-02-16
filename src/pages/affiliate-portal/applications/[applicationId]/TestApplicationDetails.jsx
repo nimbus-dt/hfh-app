@@ -235,7 +235,9 @@ const TestApplicationDetails = () => {
 
       <View>
         <Heading level={1} fontWeight="medium">
-          {applicantInfos[0]?.props.basicInfo.fullName}
+          {application?.type === ApplicationTypes.ONLINE
+            ? applicantInfos[0]?.props.basicInfo.fullName
+            : application?.props.name}
         </Heading>
         <Heading level={1} fontWeight="medium">
           Application
