@@ -9,7 +9,7 @@ import useHabitatByUrlName from 'hooks/services/useHabitatByUrlName';
 import useScrollToTopOnRouteChange from 'hooks/utils/useScrollToTopOnRouteChange';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { TestApplication, SubmissionStatus, ApplicationTypes } from 'models';
-import { DataStore } from 'aws-amplify';
+import { DataStore, SortDirection } from 'aws-amplify';
 import { DEFAULT_REVIEW_STATUS } from 'utils/constants';
 import { getHabitatOpenCycle } from 'utils/misc';
 import { TestNav } from './TestNav';
@@ -50,13 +50,18 @@ export function TestLayout() {
   const getApplication = async (username) => {
     try {
       const habitatCycles = await habitat?.TestCycles.toArray();
-      const existingApplication = await DataStore.query(TestApplication, (c1) =>
-        c1.and((c2) => [
-          c2.ownerID.eq(username),
-          c2.or((c3) =>
-            habitatCycles.map((cycle) => c3.testcycleID.eq(cycle.id))
-          ),
-        ])
+      const existingApplication = await DataStore.query(
+        TestApplication,
+        (c1) =>
+          c1.and((c2) => [
+            c2.ownerID.eq(username),
+            c2.or((c3) =>
+              habitatCycles.map((cycle) => c3.testcycleID.eq(cycle.id))
+            ),
+          ]),
+        {
+          sort: (c) => c.createdAt(SortDirection.DESCENDING),
+        }
       );
       return existingApplication[0];
     } catch (error) {
@@ -102,7 +107,11 @@ export function TestLayout() {
   useEffect(() => {
     const getOrCreateApplication = async () => {
       const existingApplication = await getApplication(user.username);
-      if (existingApplication !== undefined) {
+      if (
+        existingApplication !== undefined &&
+        openCycle &&
+        existingApplication.testcycleID === openCycle.id
+      ) {
         setApplication(existingApplication);
       } else if (openCycle) {
         const newApplication = await createNewApplication(user.username);
