@@ -17,7 +17,7 @@ import { DataStore, Storage } from 'aws-amplify';
 import { TestApplication, SubmissionStatus, ApplicationTypes } from 'models';
 import { newPaperApplicationSchema } from './NewApplicationModal.schema';
 
-const NewApplicationModal = ({ open, onClose, setTrigger, habitat }) => {
+const NewApplicationModal = ({ open, onClose, setTrigger, habitat, cycle }) => {
   const [showError, setShowError] = useState(false);
   const [loading, setLoading] = useState(0);
   const {
@@ -35,7 +35,7 @@ const NewApplicationModal = ({ open, onClose, setTrigger, habitat }) => {
   const uploadFiles = async (applicationId, files) => {
     const promisesArr = files.map((file) =>
       Storage.put(
-        `application/${habitat?.urlName}/${applicationId}/${file.name}`,
+        `application/${habitat?.urlName}/${cycle?.id}/${applicationId}/${file.name}`,
         file,
         {
           level: 'public',
@@ -59,7 +59,7 @@ const NewApplicationModal = ({ open, onClose, setTrigger, habitat }) => {
           submittedDate: data.submittedDate,
           reviewStatus: data.reviewStatus,
           submissionStatus: SubmissionStatus.SUBMITTED,
-          habitatID: habitat.id,
+          testcycleID: cycle.id,
           type: ApplicationTypes.PAPER,
         })
       );
@@ -199,6 +199,7 @@ NewApplicationModal.propTypes = {
   onClose: PropTypes.func,
   setTrigger: PropTypes.func,
   habitat: PropTypes.object,
+  cycle: PropTypes.object,
 };
 
 export default NewApplicationModal;

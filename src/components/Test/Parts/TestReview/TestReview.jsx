@@ -17,7 +17,7 @@ import FinancialSection from './components/FinancialSection';
 import ApplicantOptionalSection from './components/ApplicantOptionalSection/ApplicantOptionalSection';
 
 export function TestReview() {
-  const { application, setApplication } = useOutletContext();
+  const { application, setApplication, openCycle } = useOutletContext();
   const [reviewedSections, setReviewedSections] = useState({});
 
   const [showSubmitModal, setShowSubmitModal] = useState(false);
@@ -208,6 +208,7 @@ export function TestReview() {
         TestApplication.copyOf(original, (originalApplication) => {
           originalApplication.submissionStatus = SubmissionStatus.SUBMITTED;
           originalApplication.submittedDate = dayjs().format('YYYY-MM-DD');
+          originalApplication.testcycleID = openCycle.id;
         })
       );
 

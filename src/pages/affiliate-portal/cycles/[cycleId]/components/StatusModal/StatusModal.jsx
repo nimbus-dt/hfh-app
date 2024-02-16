@@ -66,10 +66,14 @@ const StatusModal = ({
     try {
       await removeCustomStatusToHabitat(deletingStatus);
 
+      const habitatCycles = await habitat?.TestCycles.toArray();
+
       const applicationsToUpdate = await DataStore.query(TestApplication, (c) =>
         c.and((c2) => [
-          c2.habitatID.eq(habitat?.id),
           c2.reviewStatus.eq(deletingStatus),
+          c2.or((c3) =>
+            habitatCycles.map((cycle) => c3.testcycleID.eq(cycle.id))
+          ),
         ])
       );
 
@@ -92,10 +96,14 @@ const StatusModal = ({
     try {
       await updateCustomStatusToHabitat(editingStatus, newStatus);
 
+      const habitatCycles = await habitat?.TestCycles.toArray();
+
       const applicationsToUpdate = await DataStore.query(TestApplication, (c) =>
         c.and((c2) => [
-          c2.habitatID.eq(habitat?.id),
           c2.reviewStatus.eq(editingStatus),
+          c2.or((c3) =>
+            habitatCycles.map((cycle) => c3.testcycleID.eq(cycle.id))
+          ),
         ])
       );
 

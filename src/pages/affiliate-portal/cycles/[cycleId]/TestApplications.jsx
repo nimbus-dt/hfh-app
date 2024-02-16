@@ -18,6 +18,7 @@ import { useState } from 'react';
 import {
   useApplicantInfosQuery,
   useTestApplicationsQuery,
+  useTestCycleById,
 } from 'hooks/services';
 import { DataStore, SortDirection, Storage } from 'aws-amplify';
 import { TestApplication, ApplicationTypes } from 'models';
@@ -67,6 +68,12 @@ const TestApplications = () => {
   const [submittedDateSort, setSubmittedDateSort] = useState(
     SortDirection.DESCENDING
   );
+
+  const { data: cycle } = useTestCycleById({
+    id: cycleId,
+    dependencyArray: [cycleId],
+  });
+
   const { data: applications } = useTestApplicationsQuery({
     criteria: (c1) =>
       c1.and((c2) => {
@@ -89,11 +96,11 @@ const TestApplications = () => {
       sort: (s) => s.submittedDate(submittedDateSort),
     },
     dependencyArray: [
-      habitat?.id,
       reviewStatus,
       submissionStatus,
       trigger,
       submittedDateSort,
+      cycleId,
     ],
   });
 
@@ -118,18 +125,16 @@ const TestApplications = () => {
     applicationId,
     newStatusValue
   ) => {
-    if (habitat) {
-      try {
-        const original = await DataStore.query(TestApplication, applicationId);
-        await DataStore.save(
-          TestApplication.copyOf(original, (originalApplication) => {
-            originalApplication.reviewStatus = newStatusValue;
-          })
-        );
-        setTrigger((previousTrigger) => previousTrigger + 1);
-      } catch (error) {
-        console.log('Error while updating the status');
-      }
+    try {
+      const original = await DataStore.query(TestApplication, applicationId);
+      await DataStore.save(
+        TestApplication.copyOf(original, (originalApplication) => {
+          originalApplication.reviewStatus = newStatusValue;
+        })
+      );
+      setTrigger((previousTrigger) => previousTrigger + 1);
+    } catch (error) {
+      console.log('Error while updating the status');
     }
   };
 
@@ -188,6 +193,7 @@ const TestApplications = () => {
         open={newApplicationOpen}
         onClose={handleOnCloseNewApplicationModal}
         habitat={habitat}
+        cycle={cycle}
         setTrigger={setTrigger}
       />
       <Flex

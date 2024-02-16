@@ -11,14 +11,19 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { TestApplication, SubmissionStatus, ApplicationTypes } from 'models';
 import { DataStore } from 'aws-amplify';
 import { DEFAULT_REVIEW_STATUS } from 'utils/constants';
+import { getHabitatOpenCycle } from 'utils/misc';
 import { TestNav } from './TestNav';
 import { CustomCard } from '../Reusable/CustomCard';
 
 export function TestLayout() {
   const { habitat: habitatUrlName } = useParams();
+
   const { habitat, error } = useHabitatByUrlName({
     habitatUrlName,
   });
+
+  const [openCycle, setOpenCycle] = useState();
+
   const scrollViewReference = useRef(null);
   useScrollToTopOnRouteChange(scrollViewReference);
 
@@ -44,8 +49,14 @@ export function TestLayout() {
 
   const getApplication = async (username) => {
     try {
+      const habitatCycles = await habitat?.TestCycles.toArray();
       const existingApplication = await DataStore.query(TestApplication, (c1) =>
-        c1.and((c2) => [c2.ownerID.eq(username), c2.habitatID.eq(habitat.id)])
+        c1.and((c2) => [
+          c2.ownerID.eq(username),
+          c2.or((c3) =>
+            habitatCycles.map((cycle) => c3.testcycleID.eq(cycle.id))
+          ),
+        ])
       );
       return existingApplication[0];
     } catch (error) {
@@ -63,7 +74,7 @@ export function TestLayout() {
           submissionStatus: SubmissionStatus.UNSUBMITTED,
           reviewStatus: DEFAULT_REVIEW_STATUS,
           submittedDate: '0001-01-01',
-          habitatID: habitat.id,
+          testcycleID: openCycle.id,
           type: ApplicationTypes.ONLINE,
         })
       );
@@ -93,7 +104,7 @@ export function TestLayout() {
       const existingApplication = await getApplication(user.username);
       if (existingApplication !== undefined) {
         setApplication(existingApplication);
-      } else {
+      } else if (openCycle) {
         const newApplication = await createNewApplication(user.username);
         setApplication(newApplication);
       }
@@ -109,7 +120,7 @@ export function TestLayout() {
     if (authStatus === 'unauthenticated') {
       setApplication();
     }
-  }, [authStatus, application, user, habitat]);
+  }, [authStatus, application, user, habitat, openCycle]);
 
   useEffect(() => {
     const urlSections = location.pathname.split('/');
@@ -118,7 +129,8 @@ export function TestLayout() {
       (application &&
         application.submissionStatus === SubmissionStatus.SUBMITTED &&
         authStatus === 'authenticated' &&
-        urlSections[3] !== 'review')
+        urlSections[3] !== 'review') ||
+      openCycle === undefined
     ) {
       urlSections[3] = 'home';
       navigate(urlSections.join('/'));
@@ -130,6 +142,15 @@ export function TestLayout() {
       navigate(application.lastSection);
     }
   }, [authStatus, application]);
+
+  useEffect(() => {
+    const getOpenCycle = async () => {
+      const currentOpenCycle = await getHabitatOpenCycle(habitat?.id);
+      setOpenCycle(currentOpenCycle);
+    };
+
+    getOpenCycle();
+  }, [habitat?.id]);
 
   return (
     <ScrollView height="100vh" ref={scrollViewReference}>
@@ -144,6 +165,7 @@ export function TestLayout() {
         <CustomCard> {content} </CustomCard>
         <Outlet
           context={{
+            openCycle,
             habitat,
             application,
             setApplication,
