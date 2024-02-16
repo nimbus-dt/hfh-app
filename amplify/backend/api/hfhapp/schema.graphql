@@ -1,3 +1,13 @@
+type TestCycle @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  startDate: AWSDate!
+  endDate: AWSDate
+  isOpen: Boolean!
+  props: AWSJSON
+  habitatID: ID! @index(name: "byHabitat")
+  TestApplications: [TestApplication] @hasMany(indexName: "byTestCycle", fields: ["id"])
+}
+
 enum ApplicationTypes {
   ONLINE
   PAPER
@@ -43,7 +53,7 @@ type TestApplication @model @auth(rules: [{allow: public}]) {
   submissionStatus: SubmissionStatus!
   props: AWSJSON
   type: ApplicationTypes!
-  habitatID: ID @index(name: "byHabitat")
+  testcycleID: ID! @index(name: "byTestCycle")
 }
 
 type EmploymentInfo @model @auth(rules: [{allow: public}]) {
@@ -242,6 +252,6 @@ type Habitat @model @auth(rules: [{allow: public}]) {
   users: [ID]
   AMI: [String]
   Cycles: [Cycles] @hasMany(indexName: "byHabitat", fields: ["id"])
-  TestApplications: [TestApplication] @hasMany(indexName: "byHabitat", fields: ["id"])
+  TestCycles: [TestCycle] @hasMany(indexName: "byHabitat", fields: ["id"])
 }
  

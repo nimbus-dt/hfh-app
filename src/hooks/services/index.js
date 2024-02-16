@@ -14,6 +14,7 @@ import {
   Record,
   SavingRecord,
   TestApplication,
+  TestCycle,
   Written,
 } from 'models';
 import { dataStoreQueryHookBuilder } from './useDataStoreQuery/useDataStoreQuery';
@@ -147,3 +148,9 @@ export const useHouseholdMembersObserveQuery = dataStoreObserveQueryHookBuilder(
     defaultDataValue: [],
   }
 );
+
+/* TESTCYCLE MODEL SERVICES */
+export const useTestCyclesQuery = dataStoreQueryHookBuilder({
+  model: TestCycle,
+  defaultDataValue: [],
+});
