@@ -26,8 +26,9 @@ import AffiliateLayout from 'layouts/AffiliateLayout';
 import AffiliatePrescreensPage from 'pages/affiliate/apps';
 import AffiliateApplicationDetailPage from 'pages/affiliate/application-detail';
 import TestAffiliateLayout from 'layouts/TestAffiliateLayout';
-import TestApplications from 'pages/affiliate-portal/applications';
-import TestApplicationDetails from 'pages/affiliate-portal/applications/[applicationId]';
+import CyclesPage from 'pages/affiliate-portal/cycles';
+import TestApplications from 'pages/affiliate-portal/cycles/[cycleId]';
+import TestApplicationDetails from 'pages/affiliate-portal/cycles/[cycleId]/[applicationId]';
 import AffiliatePortalHomePage from 'pages/affiliate-portal/home';
 import AffiliatePortalRepairsPage from 'pages/affiliate-portal/repairs';
 import AffiliatePortalVolunteersPage from 'pages/affiliate-portal/volunteers';
@@ -170,6 +171,16 @@ function App() {
           }
         >
           <Route path="home" element={<AffiliatePortalHomePage />} />
+          <Route path="cycles">
+            <Route index element={<CyclesPage />} />
+            <Route path=":cycleId">
+              <Route index element={<TestApplications />} />
+              <Route
+                path=":applicationId"
+                element={<TestApplicationDetails />}
+              />
+            </Route>
+          </Route>
           <Route path="applications">
             <Route index element={<TestApplications />} />
             <Route path=":applicationId" element={<TestApplicationDetails />} />
