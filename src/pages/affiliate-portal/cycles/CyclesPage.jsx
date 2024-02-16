@@ -184,7 +184,7 @@ const CyclesPage = () => {
           >
             <option value={-1}>All</option>
             <option value={1}>Open</option>
-            <option value={0}>Close</option>
+            <option value={0}>Closed</option>
           </SelectField>
         </Flex>
         <Flex alignItems="end">
@@ -260,7 +260,7 @@ const CyclesPage = () => {
                     </TableCell>
                     <TableCell>{cycle.startDate}</TableCell>
                     <TableCell>{cycle.endDate}</TableCell>
-                    <TableCell>{cycle.isOpen ? 'Open' : 'Close'}</TableCell>
+                    <TableCell>{cycle.isOpen ? 'Open' : 'Closed'}</TableCell>
                     <TableCell>
                       <CycleApplicationsNumber cycle={cycle} />
                     </TableCell>
