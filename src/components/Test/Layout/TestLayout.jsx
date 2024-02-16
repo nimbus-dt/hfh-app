@@ -110,7 +110,8 @@ export function TestLayout() {
       if (
         existingApplication !== undefined &&
         openCycle &&
-        existingApplication.testcycleID === openCycle.id
+        (existingApplication.testcycleID === openCycle.id ||
+          existingApplication.submissionStatus !== SubmissionStatus.SUBMITTED)
       ) {
         setApplication(existingApplication);
       } else if (openCycle) {
