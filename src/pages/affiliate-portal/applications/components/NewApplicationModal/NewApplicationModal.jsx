@@ -98,7 +98,7 @@ const NewApplicationModal = ({ open, onClose, setTrigger, habitat }) => {
 
   return (
     <Modal
-      title="New Application"
+      title="New Paper Application"
       open={open}
       onClickClose={onClose}
       width="35rem"
@@ -120,6 +120,7 @@ const NewApplicationModal = ({ open, onClose, setTrigger, habitat }) => {
         physically. Please make sure that you enter data correctly, as once you
         have added an application you can not edit this information.
       </Text>
+      <br />
       <form onSubmit={handleSubmit(handleOnValid)}>
         <Flex direction="column">
           <TextField
