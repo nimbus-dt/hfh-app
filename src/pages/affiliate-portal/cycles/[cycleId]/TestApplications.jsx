@@ -1,4 +1,4 @@
-import { Link, useOutletContext } from 'react-router-dom';
+import { Link, useOutletContext, useParams } from 'react-router-dom';
 import {
   Flex,
   SelectField,
@@ -47,6 +47,7 @@ const SUBMISSION_STATUS = [
 const perPage = 5;
 
 const TestApplications = () => {
+  const { cycleId } = useParams();
   const {
     habitat,
     addCustomStatusToHabitat,
@@ -69,7 +70,7 @@ const TestApplications = () => {
   const { data: applications } = useTestApplicationsQuery({
     criteria: (c1) =>
       c1.and((c2) => {
-        let criteriaArr = [c2.habitatID.eq(habitat?.id)];
+        let criteriaArr = [c2.testcycleID.eq(cycleId)];
 
         if (reviewStatus !== REVIEW_STATUS[0]) {
           criteriaArr = [...criteriaArr, c2.reviewStatus.eq(reviewStatus)];
@@ -378,7 +379,7 @@ const TestApplications = () => {
                     </TableCell>
                     <TableCell>
                       <Flex justifyContent="center">
-                        <Link to={`../applications/${application?.id}`}>
+                        <Link to={`${application?.id}`}>
                           <Button
                             height="2rem"
                             width="2rem"
