@@ -154,3 +154,8 @@ export const useTestCyclesQuery = dataStoreQueryHookBuilder({
   model: TestCycle,
   defaultDataValue: [],
 });
+
+export const useTestCycleById = dataStoreQueryByIdHookBuilder({
+  model: TestCycle,
+  defaultDataValue: null,
+});
