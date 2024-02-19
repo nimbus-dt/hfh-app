@@ -50,12 +50,12 @@ const AnyoneElseMilitaryServiceSection = ({
       ref={customCardReference}
     >
       <RadioGroupField
-        name="serveOrServedInUSAF"
         label="Is anyone else in your household serving, or did they save, in the United States Armed Forces?"
-        defaultValue={
+        value={
           applicantOptional?.props?.anyoneElseMilitaryService
             ?.serveOrServedInUSAF
         }
+        isReadOnly
         isDisabled
       >
         <Radio value="Yes">Yes</Radio>
@@ -64,15 +64,15 @@ const AnyoneElseMilitaryServiceSection = ({
 
       <br />
       {applicantOptional?.props?.anyoneElseMilitaryService
-        ?.serveOrServedWatch === 'Yes' && (
+        ?.serveOrServedInUSAF === 'Yes' && (
         <>
           <RadioGroupField
-            name="currentlyServing"
             label="Currently serving on active duty?"
-            defaultValue={
+            value={
               applicantOptional?.props?.anyoneElseMilitaryService
                 ?.currentlyServing
             }
+            isReadOnly
             isDisabled
           >
             <Radio value="Yes">Yes</Radio>
@@ -84,24 +84,25 @@ const AnyoneElseMilitaryServiceSection = ({
             ?.currentlyServingWatch === 'Yes' && (
             <>
               <TextField
-                defaultValue={
+                value={
                   applicantOptional?.props?.anyoneElseMilitaryService
                     .projectedExpirationDateOfServiceTour
                 }
                 type="date"
                 label="Projected expiration date of service/tour"
+                isReadOnly
                 isDisabled
               />
               <br />
             </>
           )}
           <RadioGroupField
-            name="currentlyRetiredDischargedOrSeparated"
             label="Currently retired, discharged, or separted from service?"
-            defaultValue={
+            value={
               applicantOptional?.props?.anyoneElseMilitaryService
                 ?.currentlyRetiredDischargedOrSeparated
             }
+            isReadOnly
             isDisabled
           >
             <Radio value="Yes">Yes</Radio>
@@ -111,12 +112,12 @@ const AnyoneElseMilitaryServiceSection = ({
           <br />
 
           <RadioGroupField
-            name="onlyPeriodWasNonActive"
             label="Only period of service was a non-activated member of the Reserve of National Guard?"
-            defaultValue={
+            value={
               applicantOptional?.props?.anyoneElseMilitaryService
                 ?.onlyPeriodWasNonActive
             }
+            isReadOnly
             isDisabled
           >
             <Radio value="Yes">Yes</Radio>
