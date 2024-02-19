@@ -281,7 +281,7 @@ const CyclesPage = () => {
                             height="2rem"
                             width="2rem"
                             padding="0"
-                            title="Delete"
+                            title="Close"
                             variation="destructive"
                             onClick={() => handleCloseCycleOnClick(cycle.id)}
                           >
