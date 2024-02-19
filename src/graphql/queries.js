@@ -1,6 +1,124 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getTestCycle = /* GraphQL */ `
+  query GetTestCycle($id: ID!) {
+    getTestCycle(id: $id) {
+      id
+      startDate
+      endDate
+      isOpen
+      props
+      habitatID
+      TestApplications {
+        nextToken
+        startedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listTestCycles = /* GraphQL */ `
+  query ListTestCycles(
+    $filter: ModelTestCycleFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listTestCycles(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        startDate
+        endDate
+        isOpen
+        props
+        habitatID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncTestCycles = /* GraphQL */ `
+  query SyncTestCycles(
+    $filter: ModelTestCycleFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncTestCycles(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        startDate
+        endDate
+        isOpen
+        props
+        habitatID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const testCyclesByHabitatID = /* GraphQL */ `
+  query TestCyclesByHabitatID(
+    $habitatID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelTestCycleFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    testCyclesByHabitatID(
+      habitatID: $habitatID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        startDate
+        endDate
+        isOpen
+        props
+        habitatID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
 export const getApplicantOptional = /* GraphQL */ `
   query GetApplicantOptional($id: ID!) {
     getApplicantOptional(id: $id) {
@@ -293,32 +411,16 @@ export const getTestApplication = /* GraphQL */ `
         __typename
       }
       submittedDate
-      affiliate {
-        id
-        name
-        urlName
-        state
-        city
-        county
-        countiesServed
-        props
-        users
-        AMI
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
       reviewStatus
       submissionStatus
+      props
+      type
+      testcycleID
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      testApplicationAffiliateId
       __typename
     }
   }
@@ -341,12 +443,14 @@ export const listTestApplications = /* GraphQL */ `
         submittedDate
         reviewStatus
         submissionStatus
+        props
+        type
+        testcycleID
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        testApplicationAffiliateId
         __typename
       }
       nextToken
@@ -375,12 +479,52 @@ export const syncTestApplications = /* GraphQL */ `
         submittedDate
         reviewStatus
         submissionStatus
+        props
+        type
+        testcycleID
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        testApplicationAffiliateId
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const testApplicationsByTestcycleID = /* GraphQL */ `
+  query TestApplicationsByTestcycleID(
+    $testcycleID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelTestApplicationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    testApplicationsByTestcycleID(
+      testcycleID: $testcycleID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        ownerID
+        lastSection
+        submittedDate
+        reviewStatus
+        submissionStatus
+        props
+        type
+        testcycleID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         __typename
       }
       nextToken
@@ -1806,6 +1950,11 @@ export const getHabitat = /* GraphQL */ `
       users
       AMI
       Cycles {
+        nextToken
+        startedAt
+        __typename
+      }
+      TestCycles {
         nextToken
         startedAt
         __typename
