@@ -50,12 +50,12 @@ const ApplicantMilitaryServiceSection = ({
       ref={customCardReference}
     >
       <RadioGroupField
-        name="serveOrServedInUSAF"
         label="Did you (or your deceased spouse) serve, or are you currently serving, in the United States Armed Forces?"
-        defaultValue={
+        value={
           applicantOptional?.props?.applicantMilitaryService
-            ?.serveOrServedInUSAF || ''
+            ?.serveOrServedInUSAF
         }
+        isReadOnly
         isDisabled
       >
         <Radio value="Yes">Yes</Radio>
@@ -67,12 +67,12 @@ const ApplicantMilitaryServiceSection = ({
         ?.serveOrServedInUSAF === 'Yes' && (
         <>
           <RadioGroupField
-            name="currentlyServing"
             label="Currently serving on active duty?"
-            defaultValue={
+            value={
               applicantOptional?.props?.applicantMilitaryService
                 ?.currentlyServing || ''
             }
+            isReadOnly
             isDisabled
           >
             <Radio value="Yes">Yes</Radio>
@@ -84,10 +84,12 @@ const ApplicantMilitaryServiceSection = ({
             ?.currentlyServing === 'Yes' && (
             <>
               <TextField
-                defaultValue={
+                value={
                   applicantOptional?.props?.applicantMilitaryService
-                    ?.projectedExpirationDateOfServiceTour || ''
+                    ?.projectedExpirationDateOfServiceTour
                 }
+                isReadOnly
+                isDisabled
                 type="date"
                 label="Projected expiration date of service/tour"
               />
@@ -96,12 +98,12 @@ const ApplicantMilitaryServiceSection = ({
           )}
 
           <RadioGroupField
-            name="currentlyRetiredDischargedOrSeparated"
             label="Currently retired, discharged, or separted from service?"
-            defaultValue={
+            value={
               applicantOptional?.props?.applicantMilitaryService
                 ?.currentlyRetiredDischargedOrSeparated || ''
             }
+            isReadOnly
             isDisabled
           >
             <Radio value="Yes">Yes</Radio>
@@ -111,12 +113,12 @@ const ApplicantMilitaryServiceSection = ({
           <br />
 
           <RadioGroupField
-            name="onlyPeriodWasNonActive"
             label="Only period of service was a non-activated member of the Reserve of National Guard?"
-            defaultValue={
+            value={
               applicantOptional?.props?.applicantMilitaryService
                 ?.onlyPeriodWasNonActive || ''
             }
+            isReadOnly
             isDisabled
           >
             <Radio value="Yes">Yes</Radio>
@@ -126,12 +128,12 @@ const ApplicantMilitaryServiceSection = ({
           <br />
 
           <RadioGroupField
-            name="survivingSpouse"
             label="Surviving spouse?"
-            defaultValue={
+            value={
               applicantOptional?.props?.applicantMilitaryService
                 ?.survivingSpouse || ''
             }
+            isReadOnly
             isDisabled
           >
             <Radio value="Yes">Yes</Radio>

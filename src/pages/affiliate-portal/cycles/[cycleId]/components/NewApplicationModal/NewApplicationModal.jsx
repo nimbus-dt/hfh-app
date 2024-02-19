@@ -15,6 +15,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import FileInput from 'components/FileInput';
 import { DataStore, Storage } from 'aws-amplify';
 import { TestApplication, SubmissionStatus, ApplicationTypes } from 'models';
+import { DEFAULT_REVIEW_STATUS } from 'utils/constants';
 import { newPaperApplicationSchema } from './NewApplicationModal.schema';
 
 const NewApplicationModal = ({ open, onClose, setTrigger, habitat, cycle }) => {
@@ -149,6 +150,9 @@ const NewApplicationModal = ({ open, onClose, setTrigger, habitat, cycle }) => {
             isRequired
             disabled={loading > 0}
           >
+            <option value={DEFAULT_REVIEW_STATUS}>
+              {DEFAULT_REVIEW_STATUS}
+            </option>
             {habitat.props.data.customStatus?.map((statusItem) => (
               <option key={statusItem} value={statusItem}>
                 {statusItem}
