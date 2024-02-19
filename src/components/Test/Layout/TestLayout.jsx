@@ -109,9 +109,11 @@ export function TestLayout() {
       const existingApplication = await getApplication(user.username);
       if (
         existingApplication !== undefined &&
-        openCycle &&
-        (existingApplication.testcycleID === openCycle.id ||
-          existingApplication.submissionStatus !== SubmissionStatus.SUBMITTED)
+        ((openCycle &&
+          (existingApplication.testcycleID === openCycle.id ||
+            existingApplication.submissionStatus !==
+              SubmissionStatus.SUBMITTED)) ||
+          existingApplication.submissionStatus === SubmissionStatus.RETURNED)
       ) {
         setApplication(existingApplication);
       } else if (openCycle) {
@@ -140,7 +142,8 @@ export function TestLayout() {
         application.submissionStatus === SubmissionStatus.SUBMITTED &&
         authStatus === 'authenticated' &&
         urlSections[3] !== 'review') ||
-      openCycle === undefined
+      (openCycle === undefined &&
+        application?.submissionStatus !== SubmissionStatus.RETURNED)
     ) {
       urlSections[3] = 'home';
       navigate(urlSections.join('/'));

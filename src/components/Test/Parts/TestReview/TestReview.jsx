@@ -206,9 +206,13 @@ export function TestReview() {
 
       const persistedApplication = await DataStore.save(
         TestApplication.copyOf(original, (originalApplication) => {
+          if (
+            originalApplication.submissionStatus !== SubmissionStatus.RETURNED
+          ) {
+            originalApplication.testcycleID = openCycle.id;
+          }
           originalApplication.submissionStatus = SubmissionStatus.SUBMITTED;
           originalApplication.submittedDate = dayjs().format('YYYY-MM-DD');
-          originalApplication.testcycleID = openCycle.id;
         })
       );
 

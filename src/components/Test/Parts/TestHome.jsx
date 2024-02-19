@@ -22,7 +22,10 @@ export function TestHome() {
   });
 
   const content = () => {
-    if (application && openCycle) {
+    if (
+      application &&
+      (openCycle || application.submissionStatus === SubmissionStatus.RETURNED)
+    ) {
       return application.submissionStatus === SubmissionStatus.SUBMITTED ? (
         <>
           <Text fontWeight="bold">
