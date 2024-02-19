@@ -17,7 +17,7 @@ import FinancialSection from './components/FinancialSection';
 import ApplicantOptionalSection from './components/ApplicantOptionalSection/ApplicantOptionalSection';
 
 export function TestReview() {
-  const { application, setApplication } = useOutletContext();
+  const { application, setApplication, openCycle } = useOutletContext();
   const [reviewedSections, setReviewedSections] = useState({});
 
   const [showSubmitModal, setShowSubmitModal] = useState(false);
@@ -148,7 +148,6 @@ export function TestReview() {
   };
 
   const handleUnemploymentOnReview = (employed) => {
-    console.log(employed);
     setUnemploymentOpen(false);
     if (employed) {
       setCurrentEmploymentOpen(true);
@@ -207,6 +206,11 @@ export function TestReview() {
 
       const persistedApplication = await DataStore.save(
         TestApplication.copyOf(original, (originalApplication) => {
+          if (
+            originalApplication.submissionStatus !== SubmissionStatus.RETURNED
+          ) {
+            originalApplication.testcycleID = openCycle.id;
+          }
           originalApplication.submissionStatus = SubmissionStatus.SUBMITTED;
           originalApplication.submittedDate = dayjs().format('YYYY-MM-DD');
         })
@@ -220,6 +224,7 @@ export function TestReview() {
         createAlert('error', 'Error', `The application couldn't be submitted.`)
       );
     }
+    setShowSubmitModal(false);
   };
 
   const isDisabled = () => {

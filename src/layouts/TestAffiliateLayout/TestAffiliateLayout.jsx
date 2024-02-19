@@ -17,7 +17,7 @@ import {
 import { CustomCard } from 'components/Test/Reusable/CustomCard';
 import { TestNav } from 'components/Test/Layout/TestNav';
 import { Habitat } from '../../models';
-import { COLORS } from '../../utils/constants';
+import { COLORS, DEFAULT_REVIEW_STATUS } from '../../utils/constants';
 import Sidebar from './Sidebar';
 
 const TestAffiliateLayout = () => {
@@ -61,7 +61,7 @@ const TestAffiliateLayout = () => {
                   ? originalHabitat.props.data.customStatus
                   : []
               ).includes(newCustomStatus) &&
-              newCustomStatus !== 'Pending'
+              newCustomStatus !== DEFAULT_REVIEW_STATUS
             ) {
               originalHabitat.props.data.customStatus = originalHabitat.props
                 .data.customStatus
@@ -230,23 +230,24 @@ const TestAffiliateLayout = () => {
                 </Flex>
               </>
             ) : (
-              <Flex padding="1rem" grow={1} width="100%" wrap alignSelf="start">
-                <Card
-                  variation={responsiveBool ? '' : 'elevated'}
-                  justifyContent="center"
-                  grow={1}
-                >
-                  <Outlet
-                    context={{
-                      habitat,
-                      setHabitat,
-                      addCustomStatusToHabitat,
-                      removeCustomStatusToHabitat,
-                      updateCustomStatusToHabitat,
-                    }}
-                  />
-                </Card>
-              </Flex>
+              <Card
+                alignSelf="stretch"
+                variation={responsiveBool ? '' : 'elevated'}
+                justifyContent="center"
+                grow={1}
+                wrap
+                margin={!responsiveBool && '1rem'}
+              >
+                <Outlet
+                  context={{
+                    habitat,
+                    setHabitat,
+                    addCustomStatusToHabitat,
+                    removeCustomStatusToHabitat,
+                    updateCustomStatusToHabitat,
+                  }}
+                />
+              </Card>
             )}
           </Flex>
         </ScrollView>
