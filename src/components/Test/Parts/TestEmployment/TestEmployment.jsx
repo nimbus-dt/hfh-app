@@ -4,7 +4,7 @@ import { EmploymentInfo } from 'models';
 import { DataStore } from 'aws-amplify';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { createAlert } from 'utils/factories';
-import { calculateAge } from 'utils/dates';
+import { calculateAgeInMonths } from 'utils/dates';
 import { CustomCard } from '../../Reusable/CustomCard';
 import Unemployment from './components/Unemployment';
 import CurrentEmployment from './components/CurrentEmployment';
@@ -22,7 +22,8 @@ export function TestEmployment() {
   const [previousEmploymentOpen, setPreviousEmploymentOpen] = useState(false);
   const [previousEmploymentEdit, setPreviousEmploymentEdit] = useState(false);
 
-  const { application, updateApplicationLastSection } = useOutletContext();
+  const { application, updateApplicationLastSection, habitat } =
+    useOutletContext();
 
   const [alert, setAlert] = useState();
   const navigate = useNavigate();
@@ -91,7 +92,8 @@ export function TestEmployment() {
           originalEmploymentInfo.props = {
             ...originalEmploymentInfo.props,
             previousEmployment:
-              calculateAge(data.startDate) >= 1
+              calculateAgeInMonths(data.startDate) >=
+              habitat?.props.minCurrentEmploymentMonths
                 ? undefined
                 : original.props.previousEmployment,
             currentEmployment: data,
@@ -108,7 +110,10 @@ export function TestEmployment() {
         )
       );
 
-      if (calculateAge(data.startDate) < 1) {
+      if (
+        calculateAgeInMonths(data.startDate) <
+        habitat?.props.minCurrentEmploymentMonths
+      ) {
         setPreviousEmploymentOpen(true);
       }
 
@@ -172,7 +177,9 @@ export function TestEmployment() {
         return true;
       }
       if (
-        calculateAge(employmentInfo?.props?.currentEmployment?.startDate) < 1 &&
+        calculateAgeInMonths(
+          employmentInfo?.props?.currentEmployment?.startDate
+        ) < habitat?.props.minCurrentEmploymentMonths &&
         employmentInfo?.props?.currentEmployment?.firstJob === 'No' &&
         employmentInfo.props.previousEmployment === undefined
       ) {
@@ -236,7 +243,9 @@ export function TestEmployment() {
           <br />
         </>
       )}
-      {calculateAge(employmentInfo?.props?.currentEmployment?.startDate) < 1 &&
+      {calculateAgeInMonths(
+        employmentInfo?.props?.currentEmployment?.startDate
+      ) < habitat?.props.minCurrentEmploymentMonths &&
         employmentInfo?.props?.currentEmployment?.firstJob === 'No' && (
           <>
             <PreviousEmployment
