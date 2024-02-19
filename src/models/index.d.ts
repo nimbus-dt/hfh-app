@@ -72,6 +72,44 @@ export enum RelationshipTypes {
 
 
 
+type EagerTestCycle = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<TestCycle, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly startDate: string;
+  readonly endDate?: string | null;
+  readonly isOpen: boolean;
+  readonly props?: string | null;
+  readonly habitatID: string;
+  readonly TestApplications?: (TestApplication | null)[] | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyTestCycle = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<TestCycle, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly startDate: string;
+  readonly endDate?: string | null;
+  readonly isOpen: boolean;
+  readonly props?: string | null;
+  readonly habitatID: string;
+  readonly TestApplications: AsyncCollection<TestApplication>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type TestCycle = LazyLoading extends LazyLoadingDisabled ? EagerTestCycle : LazyTestCycle
+
+export declare const TestCycle: (new (init: ModelInit<TestCycle>) => TestCycle) & {
+  copyOf(source: TestCycle, mutator: (draft: MutableModel<TestCycle>) => MutableModel<TestCycle> | void): TestCycle;
+}
+
 type EagerApplicantOptional = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<ApplicantOptional, 'id'>;
@@ -206,7 +244,7 @@ type EagerTestApplication = {
   readonly submissionStatus: SubmissionStatus | keyof typeof SubmissionStatus;
   readonly props?: string | null;
   readonly type: ApplicationTypes | keyof typeof ApplicationTypes;
-  readonly habitatID?: string | null;
+  readonly testcycleID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -225,7 +263,7 @@ type LazyTestApplication = {
   readonly submissionStatus: SubmissionStatus | keyof typeof SubmissionStatus;
   readonly props?: string | null;
   readonly type: ApplicationTypes | keyof typeof ApplicationTypes;
-  readonly habitatID?: string | null;
+  readonly testcycleID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -757,7 +795,7 @@ type EagerHabitat = {
   readonly users?: (string | null)[] | null;
   readonly AMI?: (string | null)[] | null;
   readonly Cycles?: (Cycles | null)[] | null;
-  readonly TestApplications?: (TestApplication | null)[] | null;
+  readonly TestCycles?: (TestCycle | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -779,7 +817,7 @@ type LazyHabitat = {
   readonly users?: (string | null)[] | null;
   readonly AMI?: (string | null)[] | null;
   readonly Cycles: AsyncCollection<Cycles>;
-  readonly TestApplications: AsyncCollection<TestApplication>;
+  readonly TestCycles: AsyncCollection<TestCycle>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

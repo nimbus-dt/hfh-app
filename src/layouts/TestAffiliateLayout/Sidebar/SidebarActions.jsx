@@ -21,7 +21,7 @@ const buildRoutes = (habitat) => [
   {
     title: 'Applications',
     Icon: HiEnvelope,
-    href: `/affiliate-portal/${habitat}/applications`,
+    href: `/affiliate-portal/${habitat}/cycles`,
   },
   {
     title: 'Repairs',

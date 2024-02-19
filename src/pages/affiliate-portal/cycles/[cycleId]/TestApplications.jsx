@@ -1,4 +1,4 @@
-import { Link, useOutletContext } from 'react-router-dom';
+import { Link, useOutletContext, useParams } from 'react-router-dom';
 import {
   Flex,
   SelectField,
@@ -18,6 +18,7 @@ import { useState } from 'react';
 import {
   useApplicantInfosQuery,
   useTestApplicationsQuery,
+  useTestCycleById,
 } from 'hooks/services';
 import { DataStore, SortDirection, Storage } from 'aws-amplify';
 import { TestApplication, ApplicationTypes } from 'models';
@@ -31,7 +32,7 @@ import {
 import { DEFAULT_REVIEW_STATUS, SUBMISSION_STATUS_LIST } from 'utils/constants';
 import { stringToHumanReadable } from 'utils/strings';
 import Modal from 'components/Modal';
-import PageTitle from '../components/PageTitle/PageTitle';
+import PageTitle from '../../components/PageTitle/PageTitle';
 import StatusModal from './components/StatusModal';
 import NewApplicationModal from './components/NewApplicationModal';
 
@@ -47,6 +48,7 @@ const SUBMISSION_STATUS = [
 const perPage = 5;
 
 const TestApplications = () => {
+  const { cycleId } = useParams();
   const {
     habitat,
     addCustomStatusToHabitat,
@@ -66,10 +68,16 @@ const TestApplications = () => {
   const [submittedDateSort, setSubmittedDateSort] = useState(
     SortDirection.DESCENDING
   );
+
+  const { data: cycle } = useTestCycleById({
+    id: cycleId,
+    dependencyArray: [cycleId],
+  });
+
   const { data: applications } = useTestApplicationsQuery({
     criteria: (c1) =>
       c1.and((c2) => {
-        let criteriaArr = [c2.habitatID.eq(habitat?.id)];
+        let criteriaArr = [c2.testcycleID.eq(cycleId)];
 
         if (reviewStatus !== REVIEW_STATUS[0]) {
           criteriaArr = [...criteriaArr, c2.reviewStatus.eq(reviewStatus)];
@@ -88,11 +96,11 @@ const TestApplications = () => {
       sort: (s) => s.submittedDate(submittedDateSort),
     },
     dependencyArray: [
-      habitat?.id,
       reviewStatus,
       submissionStatus,
       trigger,
       submittedDateSort,
+      cycleId,
     ],
   });
 
@@ -117,18 +125,16 @@ const TestApplications = () => {
     applicationId,
     newStatusValue
   ) => {
-    if (habitat) {
-      try {
-        const original = await DataStore.query(TestApplication, applicationId);
-        await DataStore.save(
-          TestApplication.copyOf(original, (originalApplication) => {
-            originalApplication.reviewStatus = newStatusValue;
-          })
-        );
-        setTrigger((previousTrigger) => previousTrigger + 1);
-      } catch (error) {
-        console.log('Error while updating the status');
-      }
+    try {
+      const original = await DataStore.query(TestApplication, applicationId);
+      await DataStore.save(
+        TestApplication.copyOf(original, (originalApplication) => {
+          originalApplication.reviewStatus = newStatusValue;
+        })
+      );
+      setTrigger((previousTrigger) => previousTrigger + 1);
+    } catch (error) {
+      console.log('Error while updating the status');
     }
   };
 
@@ -182,11 +188,15 @@ const TestApplications = () => {
       alignContent="center"
       justifyContent="center"
     >
+      <Link to="../">
+        <Button width="fit-content">Go back</Button>
+      </Link>
       <PageTitle title="Applications" />
       <NewApplicationModal
         open={newApplicationOpen}
         onClose={handleOnCloseNewApplicationModal}
         habitat={habitat}
+        cycle={cycle}
         setTrigger={setTrigger}
       />
       <Flex
@@ -378,7 +388,7 @@ const TestApplications = () => {
                     </TableCell>
                     <TableCell>
                       <Flex justifyContent="center">
-                        <Link to={`../applications/${application?.id}`}>
+                        <Link to={`${application?.id}`}>
                           <Button
                             height="2rem"
                             width="2rem"

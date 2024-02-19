@@ -1,5 +1,117 @@
 export const schema = {
     "models": {
+        "TestCycle": {
+            "name": "TestCycle",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "startDate": {
+                    "name": "startDate",
+                    "isArray": false,
+                    "type": "AWSDate",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "endDate": {
+                    "name": "endDate",
+                    "isArray": false,
+                    "type": "AWSDate",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "isOpen": {
+                    "name": "isOpen",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "props": {
+                    "name": "props",
+                    "isArray": false,
+                    "type": "AWSJSON",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "habitatID": {
+                    "name": "habitatID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "TestApplications": {
+                    "name": "TestApplications",
+                    "isArray": true,
+                    "type": {
+                        "model": "TestApplication"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "testcycleID"
+                        ]
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "TestCycles",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byHabitat",
+                        "fields": [
+                            "habitatID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "ApplicantOptional": {
             "name": "ApplicantOptional",
             "fields": {
@@ -343,11 +455,11 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "habitatID": {
-                    "name": "habitatID",
+                "testcycleID": {
+                    "name": "testcycleID",
                     "isArray": false,
                     "type": "ID",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "createdAt": {
@@ -377,9 +489,9 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
-                        "name": "byHabitat",
+                        "name": "byTestCycle",
                         "fields": [
-                            "habitatID"
+                            "testcycleID"
                         ]
                     }
                 },
@@ -1869,11 +1981,11 @@ export const schema = {
                         ]
                     }
                 },
-                "TestApplications": {
-                    "name": "TestApplications",
+                "TestCycles": {
+                    "name": "TestCycles",
                     "isArray": true,
                     "type": {
-                        "model": "TestApplication"
+                        "model": "TestCycle"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -2016,5 +2128,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "38943cd4a5f3dbb55ea8a3c1bae0d532"
+    "version": "a46ae68f1046412b9e480352c8f2d79f"
 };
