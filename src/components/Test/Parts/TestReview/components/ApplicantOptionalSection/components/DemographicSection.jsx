@@ -124,7 +124,7 @@ const DemographicSection = ({
         ?.otherHispanicOrLatino && (
         <>
           <TextField
-            defaultValue={
+            value={
               applicantOptional?.props?.demographic?.ethnicity
                 ?.otherHispanicOrLatinoValue
             }
@@ -132,6 +132,7 @@ const DemographicSection = ({
             descriptiveText="For example: Argentinean, Colombian, Dominican, Nicaraguan, Salvadoran, Spaniard, and so on."
             marginLeft="1.5rem"
             isDisabled
+            isReadOnly
           />
           <br />
         </>
@@ -157,8 +158,7 @@ const DemographicSection = ({
         Sex
       </Text>
       <RadioGroupField
-        name="sex"
-        defaultValue={applicantOptional?.props?.demographic?.sex}
+        value={applicantOptional?.props?.demographic?.sex}
         isDisabled
       >
         <Radio value="Female">Female</Radio>
@@ -184,12 +184,13 @@ const DemographicSection = ({
         ?.americanIndianOrAlaskaNative && (
         <>
           <TextField
-            defaultValue={
+            value={
               applicantOptional?.props?.demographic?.race
                 ?.nameOfEnrolledOrPrincipalTribe
             }
             label="Name of enrolled or principal tribe"
             isDisabled
+            isReadOnly
           />
           <br />
         </>
@@ -252,13 +253,12 @@ const DemographicSection = ({
       {applicantOptional?.props?.demographic?.race?.otherAsian && (
         <>
           <TextField
-            defaultValue={
-              applicantOptional?.props?.demographic?.race?.otherAsianValue
-            }
+            value={applicantOptional?.props?.demographic?.race?.otherAsianValue}
             label="Race"
             descriptiveText="For example: Hmong, Laotian, Thai, Pakistani, Cambodian, and so on."
             marginLeft="1.5rem"
             isDisabled
+            isReadOnly
           />
           <br />
         </>
@@ -315,7 +315,7 @@ const DemographicSection = ({
       {applicantOptional?.props?.demographic?.race?.otherPacificIslander && (
         <>
           <TextField
-            defaultValue={
+            value={
               applicantOptional?.props?.demographic?.race
                 .otherPacificIslanderValue
             }
@@ -323,6 +323,7 @@ const DemographicSection = ({
             descriptiveText="For example: Fijian, Tongan, and so on."
             marginLeft="1.5rem"
             isDisabled
+            isReadOnly
           />
           <br />
         </>

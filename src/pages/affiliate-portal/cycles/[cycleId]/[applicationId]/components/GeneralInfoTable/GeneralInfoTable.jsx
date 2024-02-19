@@ -7,7 +7,11 @@ export function GeneralInfoTable({
   submissionStatus,
 }) {
   const data = [
-    { header: 'Date Submitted', value: submittedDate ?? '' },
+    {
+      header: 'Date Submitted',
+      value:
+        submittedDate && submittedDate !== '0001-01-01' ? submittedDate : '',
+    },
     { header: 'Submission Status', value: submissionStatus ?? '' },
     { header: 'Review Status', value: reviewStatus ?? '' },
   ];

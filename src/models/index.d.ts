@@ -1,6 +1,11 @@
 import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-amplify/datastore";
 // @ts-ignore
-import { LazyLoading, LazyLoadingDisabled, AsyncCollection, AsyncItem } from "@aws-amplify/datastore";
+import { LazyLoading, LazyLoadingDisabled, AsyncCollection } from "@aws-amplify/datastore";
+
+export enum ApplicationTypes {
+  ONLINE = "ONLINE",
+  PAPER = "PAPER"
+}
 
 export enum SubmissionStatus {
   SUBMITTED = "SUBMITTED",
@@ -66,6 +71,44 @@ export enum RelationshipTypes {
 }
 
 
+
+type EagerTestCycle = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<TestCycle, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly startDate: string;
+  readonly endDate?: string | null;
+  readonly isOpen: boolean;
+  readonly props?: string | null;
+  readonly habitatID: string;
+  readonly TestApplications?: (TestApplication | null)[] | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyTestCycle = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<TestCycle, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly startDate: string;
+  readonly endDate?: string | null;
+  readonly isOpen: boolean;
+  readonly props?: string | null;
+  readonly habitatID: string;
+  readonly TestApplications: AsyncCollection<TestApplication>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type TestCycle = LazyLoading extends LazyLoadingDisabled ? EagerTestCycle : LazyTestCycle
+
+export declare const TestCycle: (new (init: ModelInit<TestCycle>) => TestCycle) & {
+  copyOf(source: TestCycle, mutator: (draft: MutableModel<TestCycle>) => MutableModel<TestCycle> | void): TestCycle;
+}
 
 type EagerApplicantOptional = {
   readonly [__modelMeta__]: {
@@ -196,13 +239,14 @@ type EagerTestApplication = {
   readonly ownerID?: string | null;
   readonly lastSection?: string | null;
   readonly members?: (Member | null)[] | null;
-  readonly submittedDate?: string | null;
-  readonly affiliate: Habitat;
+  readonly submittedDate: string;
   readonly reviewStatus?: string | null;
   readonly submissionStatus: SubmissionStatus | keyof typeof SubmissionStatus;
+  readonly props?: string | null;
+  readonly type: ApplicationTypes | keyof typeof ApplicationTypes;
+  readonly testcycleID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly testApplicationAffiliateId: string;
 }
 
 type LazyTestApplication = {
@@ -214,13 +258,14 @@ type LazyTestApplication = {
   readonly ownerID?: string | null;
   readonly lastSection?: string | null;
   readonly members: AsyncCollection<Member>;
-  readonly submittedDate?: string | null;
-  readonly affiliate: AsyncItem<Habitat>;
+  readonly submittedDate: string;
   readonly reviewStatus?: string | null;
   readonly submissionStatus: SubmissionStatus | keyof typeof SubmissionStatus;
+  readonly props?: string | null;
+  readonly type: ApplicationTypes | keyof typeof ApplicationTypes;
+  readonly testcycleID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly testApplicationAffiliateId: string;
 }
 
 export declare type TestApplication = LazyLoading extends LazyLoadingDisabled ? EagerTestApplication : LazyTestApplication
@@ -750,6 +795,7 @@ type EagerHabitat = {
   readonly users?: (string | null)[] | null;
   readonly AMI?: (string | null)[] | null;
   readonly Cycles?: (Cycles | null)[] | null;
+  readonly TestCycles?: (TestCycle | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -771,6 +817,7 @@ type LazyHabitat = {
   readonly users?: (string | null)[] | null;
   readonly AMI?: (string | null)[] | null;
   readonly Cycles: AsyncCollection<Cycles>;
+  readonly TestCycles: AsyncCollection<TestCycle>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

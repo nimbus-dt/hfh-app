@@ -1,6 +1,84 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createTestCycle = /* GraphQL */ `
+  mutation CreateTestCycle(
+    $input: CreateTestCycleInput!
+    $condition: ModelTestCycleConditionInput
+  ) {
+    createTestCycle(input: $input, condition: $condition) {
+      id
+      startDate
+      endDate
+      isOpen
+      props
+      habitatID
+      TestApplications {
+        nextToken
+        startedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updateTestCycle = /* GraphQL */ `
+  mutation UpdateTestCycle(
+    $input: UpdateTestCycleInput!
+    $condition: ModelTestCycleConditionInput
+  ) {
+    updateTestCycle(input: $input, condition: $condition) {
+      id
+      startDate
+      endDate
+      isOpen
+      props
+      habitatID
+      TestApplications {
+        nextToken
+        startedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deleteTestCycle = /* GraphQL */ `
+  mutation DeleteTestCycle(
+    $input: DeleteTestCycleInput!
+    $condition: ModelTestCycleConditionInput
+  ) {
+    deleteTestCycle(input: $input, condition: $condition) {
+      id
+      startDate
+      endDate
+      isOpen
+      props
+      habitatID
+      TestApplications {
+        nextToken
+        startedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
 export const createApplicantOptional = /* GraphQL */ `
   mutation CreateApplicantOptional(
     $input: CreateApplicantOptionalInput!
@@ -232,32 +310,16 @@ export const createTestApplication = /* GraphQL */ `
         __typename
       }
       submittedDate
-      affiliate {
-        id
-        name
-        urlName
-        state
-        city
-        county
-        countiesServed
-        props
-        users
-        AMI
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
       reviewStatus
       submissionStatus
+      props
+      type
+      testcycleID
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      testApplicationAffiliateId
       __typename
     }
   }
@@ -277,32 +339,16 @@ export const updateTestApplication = /* GraphQL */ `
         __typename
       }
       submittedDate
-      affiliate {
-        id
-        name
-        urlName
-        state
-        city
-        county
-        countiesServed
-        props
-        users
-        AMI
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
       reviewStatus
       submissionStatus
+      props
+      type
+      testcycleID
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      testApplicationAffiliateId
       __typename
     }
   }
@@ -322,32 +368,16 @@ export const deleteTestApplication = /* GraphQL */ `
         __typename
       }
       submittedDate
-      affiliate {
-        id
-        name
-        urlName
-        state
-        city
-        county
-        countiesServed
-        props
-        users
-        AMI
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
       reviewStatus
       submissionStatus
+      props
+      type
+      testcycleID
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      testApplicationAffiliateId
       __typename
     }
   }
@@ -1320,6 +1350,11 @@ export const createHabitat = /* GraphQL */ `
         startedAt
         __typename
       }
+      TestCycles {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -1355,6 +1390,11 @@ export const updateHabitat = /* GraphQL */ `
         startedAt
         __typename
       }
+      TestCycles {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -1386,6 +1426,11 @@ export const deleteHabitat = /* GraphQL */ `
       users
       AMI
       Cycles {
+        nextToken
+        startedAt
+        __typename
+      }
+      TestCycles {
         nextToken
         startedAt
         __typename

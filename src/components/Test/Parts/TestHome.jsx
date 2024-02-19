@@ -8,68 +8,62 @@ import {
   ThemeProvider,
   useBreakpointValue,
 } from '@aws-amplify/ui-react';
-import {
-  Link,
-  useNavigate,
-  useOutletContext,
-  useParams,
-} from 'react-router-dom';
-import useHabitatByUrlName from 'hooks/services/useHabitatByUrlName';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { SubmissionStatus } from 'models';
 import { CustomCard } from '../Reusable/CustomCard';
 
 export function TestHome() {
-  const { application } = useOutletContext();
+  const { application, habitat, openCycle } = useOutletContext();
   const navigate = useNavigate();
-  const { habitat: habitatUrlName, isAuthenticated } = useParams();
-  const { habitat, error } = useHabitatByUrlName({
-    habitatUrlName,
-  });
+
   const isReallySmall = useBreakpointValue({
     base: true,
     small: false,
   });
 
-  if (error) {
-    console.log('Error retrieving Habitat:', error.message);
-  }
-
-  const content =
-    application &&
-    application.submissionStatus === SubmissionStatus.SUBMITTED ? (
-      <>
-        <Text fontWeight="bold">
-          {`You have succesfully submitted your Homeownership Program application
-        for ${habitat?.name}. You will receive an email with updates on your
-        application.`}
-        </Text>
-        <Flex justifyContent="end">
-          <Link to="../review">
-            <Button variation="primary">Review</Button>
-          </Link>
-        </Flex>
-      </>
-    ) : (
-      <>
-        <View as="div">
-          <Flex marginBottom="30px" direction="column" gap="xl">
-            {habitat?.props?.prePreScreen?.prePreScreenHomeText?.map(
-              (item, index) => (
-                <View as="div" key={index}>
-                  <Heading level="5">{item.title}</Heading>
-                  <Text>{item.text}</Text>
-                </View>
-              )
-            )}
+  const content = () => {
+    if (
+      application &&
+      (openCycle || application.submissionStatus === SubmissionStatus.RETURNED)
+    ) {
+      return application.submissionStatus === SubmissionStatus.SUBMITTED ? (
+        <>
+          <Text fontWeight="bold">
+            {`You have succesfully submitted your Homeownership Program application
+          for ${habitat?.name}. You will receive an email with updates on your
+          application.`}
+          </Text>
+          <Flex justifyContent="end">
+            <Link to="../review">
+              <Button variation="primary">Review</Button>
+            </Link>
           </Flex>
-        </View>
-        <Flex justifyContent="end" width="100%">
-          <Button variation="primary" onClick={() => navigate('../terms')}>
-            Next
-          </Button>
-        </Flex>
-      </>
-    );
+        </>
+      ) : (
+        <>
+          <View as="div">
+            <Flex marginBottom="30px" direction="column" gap="xl">
+              {habitat?.props?.prePreScreen?.prePreScreenHomeText?.map(
+                (item, index) => (
+                  <View as="div" key={index}>
+                    <Heading level="5">{item.title}</Heading>
+                    <Text>{item.text}</Text>
+                  </View>
+                )
+              )}
+            </Flex>
+          </View>
+          <Flex justifyContent="end" width="100%">
+            <Button variation="primary" onClick={() => navigate('../terms')}>
+              Next
+            </Button>
+          </Flex>
+        </>
+      );
+    }
+
+    return <Text fontWeight="bold">{habitat?.props.data.noOpenCycle}</Text>;
+  };
 
   return (
     <CustomCard>
@@ -94,7 +88,7 @@ export function TestHome() {
           },
         }}
       >
-        <Authenticator hideSignUp={isAuthenticated}>{content}</Authenticator>
+        <Authenticator>{content}</Authenticator>
       </ThemeProvider>
     </CustomCard>
   );
