@@ -22,8 +22,6 @@ export { default as DebtRecordUpdateForm } from "./DebtRecordUpdateForm";
 export { default as DebtUpdateForm } from "./DebtUpdateForm";
 export { default as EmploymentInfoCreateForm } from "./EmploymentInfoCreateForm";
 export { default as EmploymentInfoUpdateForm } from "./EmploymentInfoUpdateForm";
-export { default as HabitatCreateForm } from "./HabitatCreateForm";
-export { default as HabitatUpdateForm } from "./HabitatUpdateForm";
 export { default as HouseholdMemberCreateForm } from "./HouseholdMemberCreateForm";
 export { default as HouseholdMemberUpdateForm } from "./HouseholdMemberUpdateForm";
 export { default as IncomeCreateForm } from "./IncomeCreateForm";

@@ -70,7 +70,95 @@ export enum RelationshipTypes {
   OTHER = "OTHER"
 }
 
+type EagerWrittenQuestion = {
+  readonly name: string;
+  readonly label: string;
+  readonly placeholder: string;
+}
 
+type LazyWrittenQuestion = {
+  readonly name: string;
+  readonly label: string;
+  readonly placeholder: string;
+}
+
+export declare type WrittenQuestion = LazyLoading extends LazyLoadingDisabled ? EagerWrittenQuestion : LazyWrittenQuestion
+
+export declare const WrittenQuestion: (new (init: ModelInit<WrittenQuestion>) => WrittenQuestion)
+
+type EagerRecordQuestion = {
+  readonly name: string;
+  readonly max: number;
+  readonly label: string;
+  readonly acceptedFileTypes?: string[] | null;
+}
+
+type LazyRecordQuestion = {
+  readonly name: string;
+  readonly max: number;
+  readonly label: string;
+  readonly acceptedFileTypes?: string[] | null;
+}
+
+export declare type RecordQuestion = LazyLoading extends LazyLoadingDisabled ? EagerRecordQuestion : LazyRecordQuestion
+
+export declare const RecordQuestion: (new (init: ModelInit<RecordQuestion>) => RecordQuestion)
+
+type EagerCheckQuestion = {
+  readonly name: string;
+  readonly label: string;
+}
+
+type LazyCheckQuestion = {
+  readonly name: string;
+  readonly label: string;
+}
+
+export declare type CheckQuestion = LazyLoading extends LazyLoadingDisabled ? EagerCheckQuestion : LazyCheckQuestion
+
+export declare const CheckQuestion: (new (init: ModelInit<CheckQuestion>) => CheckQuestion)
+
+type EagerTextSection = {
+  readonly title: string;
+  readonly body: string;
+}
+
+type LazyTextSection = {
+  readonly title: string;
+  readonly body: string;
+}
+
+export declare type TextSection = LazyLoading extends LazyLoadingDisabled ? EagerTextSection : LazyTextSection
+
+export declare const TextSection: (new (init: ModelInit<TextSection>) => TextSection)
+
+type EagerHabitatProps = {
+  readonly customStatus?: string[] | null;
+  readonly homeownershipTermsText?: TextSection[] | null;
+  readonly homeownershipMinCurrentAddressMonths: number;
+  readonly homeownershipMinCurrentEmploymentMonths: number;
+  readonly homeownershipNoOpenCycle: string;
+  readonly homeownershipHomeText?: TextSection[] | null;
+  readonly homeownershipCheckQuestions?: CheckQuestion[] | null;
+  readonly homeownershipRecordQuestions?: RecordQuestion[] | null;
+  readonly homeownershipWrittenQuestions?: WrittenQuestion[] | null;
+}
+
+type LazyHabitatProps = {
+  readonly customStatus?: string[] | null;
+  readonly homeownershipTermsText?: TextSection[] | null;
+  readonly homeownershipMinCurrentAddressMonths: number;
+  readonly homeownershipMinCurrentEmploymentMonths: number;
+  readonly homeownershipNoOpenCycle: string;
+  readonly homeownershipHomeText?: TextSection[] | null;
+  readonly homeownershipCheckQuestions?: CheckQuestion[] | null;
+  readonly homeownershipRecordQuestions?: RecordQuestion[] | null;
+  readonly homeownershipWrittenQuestions?: WrittenQuestion[] | null;
+}
+
+export declare type HabitatProps = LazyLoading extends LazyLoadingDisabled ? EagerHabitatProps : LazyHabitatProps
+
+export declare const HabitatProps: (new (init: ModelInit<HabitatProps>) => HabitatProps)
 
 type EagerTestCycle = {
   readonly [__modelMeta__]: {
@@ -790,7 +878,7 @@ type EagerHabitat = {
   readonly city?: string | null;
   readonly county?: string | null;
   readonly countiesServed?: (string | null)[] | null;
-  readonly props?: string | null;
+  readonly props: HabitatProps;
   readonly Applications?: (Cycles | null)[] | null;
   readonly users?: (string | null)[] | null;
   readonly AMI?: (string | null)[] | null;
@@ -812,7 +900,7 @@ type LazyHabitat = {
   readonly city?: string | null;
   readonly county?: string | null;
   readonly countiesServed?: (string | null)[] | null;
-  readonly props?: string | null;
+  readonly props: HabitatProps;
   readonly Applications: AsyncCollection<Cycles>;
   readonly users?: (string | null)[] | null;
   readonly AMI?: (string | null)[] | null;
