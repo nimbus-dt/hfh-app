@@ -461,7 +461,7 @@ const ApplicantInfoSection = ({
   setReviewedSections,
   submitted,
 }) => {
-  const { application } = useOutletContext();
+  const { application, habitat } = useOutletContext();
 
   const [applicantInfo, setApplicantInfo] = useState();
 
@@ -520,7 +520,8 @@ const ApplicantInfoSection = ({
         setReviewedSections={setReviewedSections}
         onReview={() =>
           handleAddressOnReview(
-            applicantInfo?.props?.currentAddress?.monthsLivedHere < 24
+            applicantInfo?.props?.currentAddress?.monthsLivedHere <
+              habitat?.props.minCurrentAddressMonths
           )
         }
         submitted={submitted}

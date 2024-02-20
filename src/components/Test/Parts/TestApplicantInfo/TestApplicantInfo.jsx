@@ -14,7 +14,8 @@ import { CustomCard } from '../../Reusable/CustomCard';
 import { maritalStatusValues } from './aplicantInfo.schema';
 
 export function TestApplicantInfo() {
-  const { application, updateApplicationLastSection } = useOutletContext();
+  const { application, updateApplicationLastSection, habitat } =
+    useOutletContext();
 
   const [applicantInfo, setApplicantInfo] = useState();
 
@@ -65,6 +66,7 @@ export function TestApplicantInfo() {
             originalApplicantInfo.props = {
               ...originalApplicantInfo.props,
               basicInfo: { ...data },
+
               unmarriedAddendum:
                 data.maritalStatus === maritalStatusValues[2]
                   ? originalApplicantInfo.unmarriedAddendum
@@ -176,7 +178,7 @@ export function TestApplicantInfo() {
             originalApplicantInfo.props = {
               ...originalApplicantInfo.props,
               previousAddress:
-                data.monthsLivedHere >= 24
+                data.monthsLivedHere >= habitat?.props.minCurrentAddressMonths
                   ? undefined
                   : original.props.previousAddress,
               currentAddress: { ...data },
@@ -262,7 +264,8 @@ export function TestApplicantInfo() {
         return true;
       }
       if (
-        applicantInfo.props.currentAddress.monthsLivedHere < 24 &&
+        applicantInfo.props.currentAddress.monthsLivedHere <
+          habitat?.props.minCurrentAddressMonths &&
         applicantInfo.props.previousAddress === undefined
       ) {
         return true;
@@ -336,7 +339,8 @@ export function TestApplicantInfo() {
           onClickEdit={handleOnClickCurrentAddressEdit}
         />
         <br />
-        {applicantInfo?.props?.currentAddress?.monthsLivedHere < 24 && (
+        {applicantInfo?.props?.currentAddress?.monthsLivedHere <
+          habitat?.props.minCurrentAddressMonths && (
           <>
             <PrevAddress
               expanded={previousAddressOpen}

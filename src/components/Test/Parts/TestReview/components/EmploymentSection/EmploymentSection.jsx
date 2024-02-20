@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { EmploymentInfo } from 'models';
 import { DataStore } from 'aws-amplify';
 import { useOutletContext } from 'react-router-dom';
-import { calculateAge } from 'utils/dates';
+import { calculateAgeInMonths } from 'utils/dates';
 import PropTypes from 'prop-types';
 import Unemployment from './components/Unemployment';
 import CurrentEmployment from './components/CurrentEmployment';
@@ -24,7 +24,7 @@ const EmploymentSection = ({
 }) => {
   const [employmentInfo, setEmploymentInfo] = useState();
 
-  const { application } = useOutletContext();
+  const { application, habitat } = useOutletContext();
 
   useEffect(() => {
     const getEmploymentInfo = async (applicationID) => {
@@ -69,9 +69,9 @@ const EmploymentSection = ({
             setReviewedSections={setReviewedSections}
             onReview={() =>
               handleCurrentEmploymentOnReview(
-                calculateAge(
+                calculateAgeInMonths(
                   employmentInfo?.props?.currentEmployment?.startDate
-                ) < 1 &&
+                ) < habitat?.props.minCurrentEmploymentMonths &&
                   employmentInfo?.props?.currentEmployment?.firstJob === 'No'
               )
             }
@@ -80,7 +80,9 @@ const EmploymentSection = ({
           <br />
         </>
       )}
-      {calculateAge(employmentInfo?.props?.currentEmployment?.startDate) < 1 &&
+      {calculateAgeInMonths(
+        employmentInfo?.props?.currentEmployment?.startDate
+      ) < habitat?.props.minCurrentEmploymentMonths &&
         employmentInfo?.props?.currentEmployment?.firstJob === 'No' && (
           <>
             <PreviousEmployment
