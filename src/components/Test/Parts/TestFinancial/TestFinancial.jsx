@@ -14,7 +14,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { DataStore } from 'aws-amplify';
 import { ApplicantInfo, Member, Income, Debt, Asset } from 'models';
 import Modal from 'components/Modal';
-import { CustomCard } from '../../Reusable/CustomCard';
+import CustomCard from 'components/CustomCard';
 import IncomeSection from './components/IncomeSection';
 import DebtSection from './components/DebtSection';
 import AssetsSection from './components/AssetsSection';

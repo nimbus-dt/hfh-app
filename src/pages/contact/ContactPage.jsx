@@ -7,11 +7,11 @@ import {
   Text,
 } from '@aws-amplify/ui-react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CustomCard } from 'components/Test/Reusable/CustomCard';
 import { useForm } from 'react-hook-form';
 import { API } from 'aws-amplify';
 import { useState } from 'react';
 import Modal from 'components/Modal';
+import CustomCard from 'components/CustomCard';
 import contactSchema from './ContactPage.schema';
 
 const ContactPage = () => {

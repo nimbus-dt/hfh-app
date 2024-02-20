@@ -4,13 +4,13 @@ import { ApplicantInfo } from 'models';
 import { DataStore } from 'aws-amplify';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { createAlert } from 'utils/factories';
+import CustomCard from 'components/CustomCard';
 import {
   BasicInformation,
   Address,
   PrevAddress,
   UnmarriedAddendum,
 } from './components/FormApplicantInfo';
-import { CustomCard } from '../../Reusable/CustomCard';
 import { maritalStatusValues } from './aplicantInfo.schema';
 
 export function TestApplicantInfo() {
@@ -178,7 +178,8 @@ export function TestApplicantInfo() {
             originalApplicantInfo.props = {
               ...originalApplicantInfo.props,
               previousAddress:
-                data.monthsLivedHere >= habitat?.props.homeownershipMinCurrentAddressMonths
+                data.monthsLivedHere >=
+                habitat?.props.homeownershipMinCurrentAddressMonths
                   ? undefined
                   : original.props.previousAddress,
               currentAddress: { ...data },

@@ -14,8 +14,8 @@ import {
   Heading,
   ThemeProvider,
 } from '@aws-amplify/ui-react';
-import { CustomCard } from 'components/Test/Reusable/CustomCard';
 import { TestNav } from 'components/Test/Layout/TestNav';
+import CustomCard from 'components/CustomCard';
 import { Habitat } from '../../models';
 import { COLORS, DEFAULT_REVIEW_STATUS } from '../../utils/constants';
 import Sidebar from './Sidebar';

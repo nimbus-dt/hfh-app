@@ -21,7 +21,7 @@ import { Member } from 'models';
 import { createAlert } from 'utils/factories';
 import Modal from 'components/Modal';
 import { MdAdd, MdClose, MdMoreHoriz } from 'react-icons/md';
-import { CustomCard } from '../../Reusable/CustomCard';
+import CustomCard from 'components/CustomCard';
 import { CustomExpandableCard } from '../../Reusable/CustomExpandableCard';
 import { memberSchema } from './household.schema';
 
