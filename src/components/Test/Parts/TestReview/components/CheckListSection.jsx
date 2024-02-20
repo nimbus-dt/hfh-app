@@ -9,9 +9,9 @@ import { Link, useOutletContext } from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
 import { DataStore } from 'aws-amplify';
 import { Checklist } from 'models';
-import { CustomExpandableCard } from 'components/Test/Reusable/CustomExpandableCard';
 import PropTypes from 'prop-types';
 import { getCheckOrExEmoji } from 'utils/misc';
+import CustomExpandableCard from 'components/CustomExpandableCard';
 import LoadingData from './LoadingData';
 
 export function ChecklistSection({

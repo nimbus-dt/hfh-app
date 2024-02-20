@@ -1,9 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { CustomExpandableCard } from 'components/Test/Reusable/CustomExpandableCard';
 import { Button, Flex, TextField } from '@aws-amplify/ui-react';
 import PropTypes from 'prop-types';
 import { formatPhoneNumber } from 'utils/formatters';
+import CustomExpandableCard from 'components/CustomExpandableCard';
 import { previousEmploymentSchema } from '../TestEmployment.schema';
 
 const PreviousEmployment = ({

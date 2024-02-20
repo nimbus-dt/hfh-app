@@ -8,7 +8,7 @@ import { createAlert } from 'utils/factories';
 import { zodResolver } from '@hookform/resolvers/zod';
 import FileInput from 'components/FileInput';
 import CustomCard from 'components/CustomCard';
-import { CustomExpandableCard } from '../../Reusable/CustomExpandableCard';
+import CustomExpandableCard from 'components/CustomExpandableCard';
 import { recordsSchema } from './records.schema';
 
 export function TestRecords() {

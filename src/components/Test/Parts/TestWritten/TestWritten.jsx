@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Written } from 'models';
 import { createAlert } from 'utils/factories';
 import CustomCard from 'components/CustomCard';
-import { CustomExpandableCard } from '../../Reusable/CustomExpandableCard';
+import CustomExpandableCard from 'components/CustomExpandableCard';
 import { writtenSchema } from './written.schema';
 
 export function TestWritten() {

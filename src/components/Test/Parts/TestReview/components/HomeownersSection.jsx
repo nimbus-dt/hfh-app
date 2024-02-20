@@ -17,9 +17,9 @@ import { useForm } from 'react-hook-form';
 import { Member } from 'models';
 import Modal from 'components/Modal';
 import { MdMoreHoriz } from 'react-icons/md';
-import { CustomExpandableCard } from 'components/Test/Reusable/CustomExpandableCard';
 import PropTypes from 'prop-types';
 import { getCheckOrExEmoji } from 'utils/misc';
+import CustomExpandableCard from 'components/CustomExpandableCard';
 
 const relationshipOptions = [
   'Parent',

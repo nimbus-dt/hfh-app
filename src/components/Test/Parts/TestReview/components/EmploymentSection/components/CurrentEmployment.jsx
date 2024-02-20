@@ -1,4 +1,3 @@
-import { CustomExpandableCard } from 'components/Test/Reusable/CustomExpandableCard';
 import {
   Button,
   Flex,
@@ -10,6 +9,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
 import { getCheckOrExEmoji } from 'utils/misc';
+import CustomExpandableCard from 'components/CustomExpandableCard';
 import LoadingData from '../../LoadingData';
 
 const CurrentEmployment = ({

@@ -14,12 +14,12 @@ import {
   TextField,
   ThemeProvider,
 } from '@aws-amplify/ui-react';
-import { CustomExpandableCard } from 'components/Test/Reusable/CustomExpandableCard';
 import { MdMoreHoriz } from 'react-icons/md';
 import FileInput from 'components/FileInput';
 import CurrencyInput from 'components/CurrencyInput';
 import { assetsTypes } from 'components/Test/Parts/TestFinancial/TestFinancial.schema';
 import { Link } from 'react-router-dom';
+import CustomExpandableCard from 'components/CustomExpandableCard';
 
 const AssetsSection = ({ ownerId, assets, submitted }) => {
   const [modal, setModal] = useState(false);

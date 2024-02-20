@@ -22,7 +22,7 @@ import { createAlert } from 'utils/factories';
 import Modal from 'components/Modal';
 import { MdAdd, MdClose, MdMoreHoriz } from 'react-icons/md';
 import CustomCard from 'components/CustomCard';
-import { CustomExpandableCard } from '../../Reusable/CustomExpandableCard';
+import CustomExpandableCard from 'components/CustomExpandableCard';
 import { memberSchema } from './household.schema';
 
 const relationshipOptions = [
