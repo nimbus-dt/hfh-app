@@ -10,7 +10,7 @@ import {
 } from '@aws-amplify/ui-react';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { SubmissionStatus } from 'models';
-import { CustomCard } from '../Reusable/CustomCard';
+import CustomCard from 'components/CustomCard';
 
 export function TestHome() {
   const { application, habitat, openCycle } = useOutletContext();

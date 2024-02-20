@@ -6,7 +6,7 @@ import { DataStore } from 'aws-amplify';
 import { TestApplication, SubmissionStatus } from 'models';
 import dayjs from 'dayjs';
 import { createAlert } from 'utils/factories';
-import { CustomCard } from '../../Reusable/CustomCard';
+import CustomCard from 'components/CustomCard';
 import ApplicantInfoSection from './components/ApplicantInfoSection';
 import { ChecklistSection } from './components/CheckListSection';
 import WrittenSection from './components/WrittenSection';

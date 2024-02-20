@@ -4,7 +4,7 @@ import { ApplicantOptional } from 'models';
 import { DataStore } from 'aws-amplify';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { createAlert } from 'utils/factories';
-import { CustomCard } from '../../Reusable/CustomCard';
+import CustomCard from 'components/CustomCard';
 import ApplicantMilitaryServiceSection from './components/ApplicantMilitaryServiceSection';
 import AnyoneElseMilitaryServiceSection from './components/AnyoneElseMilitaryServiceSection';
 import DemographicSection from './components/DemographicSection';

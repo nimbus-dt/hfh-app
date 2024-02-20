@@ -12,8 +12,8 @@ import { TestApplication, SubmissionStatus, ApplicationTypes } from 'models';
 import { DataStore, SortDirection } from 'aws-amplify';
 import { DEFAULT_REVIEW_STATUS } from 'utils/constants';
 import { getHabitatOpenCycle } from 'utils/misc';
+import CustomCard from 'components/CustomCard';
 import { TestNav } from './TestNav';
-import { CustomCard } from '../Reusable/CustomCard';
 
 export function TestLayout() {
   const { habitat: habitatUrlName } = useParams();

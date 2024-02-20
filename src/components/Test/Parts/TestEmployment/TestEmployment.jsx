@@ -5,7 +5,7 @@ import { DataStore } from 'aws-amplify';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { createAlert } from 'utils/factories';
 import { calculateAgeInMonths } from 'utils/dates';
-import { CustomCard } from '../../Reusable/CustomCard';
+import CustomCard from 'components/CustomCard';
 import Unemployment from './components/Unemployment';
 import CurrentEmployment from './components/CurrentEmployment';
 import PreviousEmployment from './components/PreviousEmployment';

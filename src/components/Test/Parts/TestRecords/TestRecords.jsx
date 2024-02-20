@@ -7,7 +7,7 @@ import { Record } from 'models';
 import { createAlert } from 'utils/factories';
 import { zodResolver } from '@hookform/resolvers/zod';
 import FileInput from 'components/FileInput';
-import { CustomCard } from '../../Reusable/CustomCard';
+import CustomCard from 'components/CustomCard';
 import { CustomExpandableCard } from '../../Reusable/CustomExpandableCard';
 import { recordsSchema } from './records.schema';
 

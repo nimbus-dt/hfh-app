@@ -13,7 +13,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Checklist } from 'models';
 import { createAlert } from 'utils/factories';
-import { CustomCard } from '../../Reusable/CustomCard';
+import CustomCard from 'components/CustomCard';
 import { CustomExpandableCard } from '../../Reusable/CustomExpandableCard';
 import { checklistSchema } from './checklist.schema';
 

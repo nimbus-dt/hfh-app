@@ -8,7 +8,7 @@ import {
 } from '@aws-amplify/ui-react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useState } from 'react';
-import { CustomCard } from '../Reusable/CustomCard';
+import CustomCard from 'components/CustomCard';
 
 export function TestTerms() {
   const { habitat } = useOutletContext();
