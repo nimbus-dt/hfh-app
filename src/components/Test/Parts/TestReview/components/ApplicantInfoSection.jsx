@@ -521,7 +521,7 @@ const ApplicantInfoSection = ({
         onReview={() =>
           handleAddressOnReview(
             applicantInfo?.props?.currentAddress?.monthsLivedHere <
-              habitat?.props.minCurrentAddressMonths
+              habitat?.props.homeownershipMinCurrentAddressMonths
           )
         }
         submitted={submitted}

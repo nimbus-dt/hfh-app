@@ -229,7 +229,7 @@ const TestApplications = () => {
           >
             {[
               ...REVIEW_STATUS,
-              ...(habitat ? habitat.props.data.customStatus || [] : []),
+              ...(habitat ? habitat.props.customStatus || [] : []),
             ].map((statusValue) => (
               <option key={statusValue} value={statusValue}>
                 {statusValue}
@@ -377,7 +377,7 @@ const TestApplications = () => {
                         {[
                           DEFAULT_REVIEW_STATUS,
                           ...(habitat
-                            ? habitat.props.data.customStatus || []
+                            ? habitat.props.customStatus || []
                             : []),
                         ].map((selectedStatus) => (
                           <option key={selectedStatus} value={selectedStatus}>

@@ -66,7 +66,7 @@ const WrittenSection = ({
       >
         {writtenQuestions ? (
           <>
-            {habitat?.props?.prePreScreen?.prePreScreenWrittenQuestions.map(
+            {habitat?.props.homeownershipWrittenQuestions.map(
               (writtenQuestion) => (
                 <TextAreaField
                   key={writtenQuestion.name}

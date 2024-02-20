@@ -262,19 +262,17 @@ const TestApplicationDetails = () => {
           <ApplicantOptionalTable applicantOptional={applicantOptionals[0]} />
 
           <ChecklistTable
-            questions={habitat?.props?.prePreScreen?.prePreScreenQuestions}
+            questions={habitat?.props.homeownershipCheckQuestions}
             answers={checklists[0]?.props || {}}
           />
 
           <WrittenTable
-            questions={
-              habitat?.props?.prePreScreen?.prePreScreenWrittenQuestions
-            }
+            questions={habitat?.props.homeownershipWrittenQuestions}
             answers={writtens[0]?.props || {}}
           />
 
           <RecordsTable
-            questions={habitat?.props?.prePreScreen?.prePreScreenRecords}
+            questions={habitat?.props.homeownershipRecordQuestions}
             answers={records[0]?.props || {}}
           />
 
@@ -359,8 +357,8 @@ const TestApplicationDetails = () => {
                 errorMessage="Invalid status"
               >
                 <option value="Pending">Pending</option>
-                {(habitat?.props.data.customStatus
-                  ? habitat.props.data.customStatus
+                {(habitat?.props.customStatus
+                  ? habitat.props.customStatus
                   : []
                 ).map((customStatusItem) => (
                   <option key={customStatusItem} value={customStatusItem}>

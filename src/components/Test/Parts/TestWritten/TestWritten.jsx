@@ -112,7 +112,7 @@ export function TestWritten() {
         onExpandedChange={handleOnExpandedChange}
       >
         <form onSubmit={handleSubmit(onValidSubmit)}>
-          {habitat?.props?.prePreScreen?.prePreScreenWrittenQuestions.map(
+          {habitat?.props.homeownershipWrittenQuestions.map(
             (writtenQuestion) => (
               <TextAreaField
                 {...register(writtenQuestion.name)}

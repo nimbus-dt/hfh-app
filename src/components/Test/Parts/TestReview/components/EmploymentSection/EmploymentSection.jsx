@@ -71,7 +71,7 @@ const EmploymentSection = ({
               handleCurrentEmploymentOnReview(
                 calculateAgeInMonths(
                   employmentInfo?.props?.currentEmployment?.startDate
-                ) < habitat?.props.minCurrentEmploymentMonths &&
+                ) < habitat?.props.homeownershipMinCurrentEmploymentMonths &&
                   employmentInfo?.props?.currentEmployment?.firstJob === 'No'
               )
             }
@@ -82,7 +82,7 @@ const EmploymentSection = ({
       )}
       {calculateAgeInMonths(
         employmentInfo?.props?.currentEmployment?.startDate
-      ) < habitat?.props.minCurrentEmploymentMonths &&
+      ) < habitat?.props.homeownershipMinCurrentEmploymentMonths &&
         employmentInfo?.props?.currentEmployment?.firstJob === 'No' && (
           <>
             <PreviousEmployment

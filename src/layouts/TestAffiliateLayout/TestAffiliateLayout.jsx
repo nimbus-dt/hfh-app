@@ -57,15 +57,15 @@ const TestAffiliateLayout = () => {
           Habitat.copyOf(original, (originalHabitat) => {
             if (
               !(
-                originalHabitat.props.data.customStatus
-                  ? originalHabitat.props.data.customStatus
+                originalHabitat.props.customStatus
+                  ? originalHabitat.props.customStatus
                   : []
               ).includes(newCustomStatus) &&
               newCustomStatus !== DEFAULT_REVIEW_STATUS
             ) {
-              originalHabitat.props.data.customStatus = originalHabitat.props
-                .data.customStatus
-                ? [...originalHabitat.props.data.customStatus, newCustomStatus]
+              originalHabitat.props.customStatus = originalHabitat.props
+                .customStatus
+                ? [...originalHabitat.props.customStatus, newCustomStatus]
                 : [newCustomStatus];
             }
           })
@@ -84,8 +84,8 @@ const TestAffiliateLayout = () => {
         const original = await DataStore.query(Habitat, habitat);
         const persistedHabitat = await DataStore.save(
           Habitat.copyOf(original, (originalHabitat) => {
-            originalHabitat.props.data.customStatus =
-              originalHabitat.props.data.customStatus.filter(
+            originalHabitat.props.customStatus =
+              originalHabitat.props.customStatus.filter(
                 (customStatusIntem) => customStatusIntem !== customStatus
               );
           })
@@ -104,8 +104,8 @@ const TestAffiliateLayout = () => {
         const original = await DataStore.query(Habitat, habitat);
         const persistedHabitat = await DataStore.save(
           Habitat.copyOf(original, (originalHabitat) => {
-            originalHabitat.props.data.customStatus = [
-              ...originalHabitat.props.data.customStatus.filter(
+            originalHabitat.props.customStatus = [
+              ...originalHabitat.props.customStatus.filter(
                 (customStatusIntem) => customStatusIntem !== oldCustomStatus
               ),
               newCustomStatus,

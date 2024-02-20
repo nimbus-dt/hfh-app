@@ -72,22 +72,20 @@ export function ChecklistSection({
       >
         {checklist ? (
           <>
-            {habitat?.props?.prePreScreen?.prePreScreenQuestions.map(
-              (question) => (
-                <View key={question.name}>
-                  <RadioGroupField
-                    label={question.label}
-                    value={checklist?.props[question.name] || ''}
-                    isDisabled
-                  >
-                    <Radio value="Yes">Yes</Radio>
-                    <Radio value="No">No</Radio>
-                  </RadioGroupField>
+            {habitat?.props.homeownershipCheckQuestions.map((question) => (
+              <View key={question.name}>
+                <RadioGroupField
+                  label={question.label}
+                  value={checklist?.props[question.name] || ''}
+                  isDisabled
+                >
+                  <Radio value="Yes">Yes</Radio>
+                  <Radio value="No">No</Radio>
+                </RadioGroupField>
 
-                  <br />
-                </View>
-              )
-            )}
+                <br />
+              </View>
+            ))}
             {!submitted && (
               <Flex width="100%" justifyContent="end">
                 <Link to="../checklist">

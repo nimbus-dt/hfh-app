@@ -153,7 +153,7 @@ const NewApplicationModal = ({ open, onClose, setTrigger, habitat, cycle }) => {
             <option value={DEFAULT_REVIEW_STATUS}>
               {DEFAULT_REVIEW_STATUS}
             </option>
-            {habitat.props.data.customStatus?.map((statusItem) => (
+            {habitat.props.customStatus?.map((statusItem) => (
               <option key={statusItem} value={statusItem}>
                 {statusItem}
               </option>

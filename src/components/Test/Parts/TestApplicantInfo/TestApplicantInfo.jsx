@@ -178,7 +178,7 @@ export function TestApplicantInfo() {
             originalApplicantInfo.props = {
               ...originalApplicantInfo.props,
               previousAddress:
-                data.monthsLivedHere >= habitat?.props.minCurrentAddressMonths
+                data.monthsLivedHere >= habitat?.props.homeownershipMinCurrentAddressMonths
                   ? undefined
                   : original.props.previousAddress,
               currentAddress: { ...data },
@@ -265,7 +265,7 @@ export function TestApplicantInfo() {
       }
       if (
         applicantInfo.props.currentAddress.monthsLivedHere <
-          habitat?.props.minCurrentAddressMonths &&
+          habitat?.props.homeownershipMinCurrentAddressMonths &&
         applicantInfo.props.previousAddress === undefined
       ) {
         return true;
@@ -340,7 +340,7 @@ export function TestApplicantInfo() {
         />
         <br />
         {applicantInfo?.props?.currentAddress?.monthsLivedHere <
-          habitat?.props.minCurrentAddressMonths && (
+          habitat?.props.homeownershipMinCurrentAddressMonths && (
           <>
             <PrevAddress
               expanded={previousAddressOpen}

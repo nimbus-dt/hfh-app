@@ -44,8 +44,8 @@ const StatusModal = ({
 
   const statusAlreadyExists = useMemo(
     () =>
-      (habitat.props.data.customStatus
-        ? [...habitat.props.data.customStatus, DEFAULT_REVIEW_STATUS]
+      (habitat.props.customStatus
+        ? [...habitat.props.customStatus, DEFAULT_REVIEW_STATUS]
         : [DEFAULT_REVIEW_STATUS]
       ).includes(newStatus),
     [habitat, newStatus]
@@ -241,7 +241,7 @@ const StatusModal = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {habitat.props.data.customStatus?.map((statusItem) => (
+            {habitat.props.customStatus?.map((statusItem) => (
               <TableRow key={statusItem}>
                 <TableCell>{statusItem}</TableCell>
                 <TableCell>
