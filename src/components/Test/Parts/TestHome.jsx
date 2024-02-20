@@ -43,14 +43,12 @@ export function TestHome() {
         <>
           <View as="div">
             <Flex marginBottom="30px" direction="column" gap="xl">
-              {habitat?.props?.prePreScreen?.prePreScreenHomeText?.map(
-                (item, index) => (
-                  <View as="div" key={index}>
-                    <Heading level="5">{item.title}</Heading>
-                    <Text>{item.text}</Text>
-                  </View>
-                )
-              )}
+              {habitat?.props.homeownershipHomeText?.map((item, index) => (
+                <View as="div" key={index}>
+                  <Heading level="5">{item.title}</Heading>
+                  <Text>{item.body}</Text>
+                </View>
+              ))}
             </Flex>
           </View>
           <Flex justifyContent="end" width="100%">
@@ -62,7 +60,9 @@ export function TestHome() {
       );
     }
 
-    return <Text fontWeight="bold">{habitat?.props.data.noOpenCycle}</Text>;
+    return (
+      <Text fontWeight="bold">{habitat?.props.homeownershipNoOpenCycle}</Text>
+    );
   };
 
   return (

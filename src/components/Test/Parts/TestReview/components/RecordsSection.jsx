@@ -79,7 +79,7 @@ const RecordsSection = ({
       >
         {records ? (
           <>
-            {habitat?.props?.prePreScreen?.prePreScreenRecords.map((record) => (
+            {habitat?.props.homeownershipRecordQuestions.map((record) => (
               <View key={record.name}>
                 <FileInput
                   label={record.label}

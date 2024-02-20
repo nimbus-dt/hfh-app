@@ -162,7 +162,7 @@ export function TestRecords() {
         onExpandedChange={handleOnExpandedChange}
       >
         <form onSubmit={handleSubmit(onValidSubmit)}>
-          {habitat?.props?.prePreScreen?.prePreScreenRecords.map((record) => (
+          {habitat?.props.homeownershipRecordQuestions.map((record) => (
             <View key={record.name}>
               <Controller
                 control={control}

@@ -37,15 +37,13 @@ export function TestTerms() {
             Terms and Services
           </Heading>
           <Text>Please take a moment to read our terms and services:</Text>
-          {habitat?.props?.prePreScreen?.prePreScreenTerms?.map(
-            (item, index) => (
-              <View as="div" key={index}>
-                <Heading level="5">{item.title}</Heading>
-                <Text>{item.body}</Text>
-                <br />
-              </View>
-            )
-          )}
+          {habitat?.props.homeownershipTermsText?.map((item, index) => (
+            <View as="div" key={index}>
+              <Heading level="5">{item.title}</Heading>
+              <Text>{item.body}</Text>
+              <br />
+            </View>
+          ))}
         </Flex>
         <CheckboxField
           checked={agreeTerms}

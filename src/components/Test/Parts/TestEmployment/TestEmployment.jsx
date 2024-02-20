@@ -93,7 +93,7 @@ export function TestEmployment() {
             ...originalEmploymentInfo.props,
             previousEmployment:
               calculateAgeInMonths(data.startDate) >=
-              habitat?.props.minCurrentEmploymentMonths
+              habitat?.props.homeownershipMinCurrentEmploymentMonths
                 ? undefined
                 : original.props.previousEmployment,
             currentEmployment: data,
@@ -112,7 +112,7 @@ export function TestEmployment() {
 
       if (
         calculateAgeInMonths(data.startDate) <
-        habitat?.props.minCurrentEmploymentMonths
+        habitat?.props.homeownershipMinCurrentEmploymentMonths
       ) {
         setPreviousEmploymentOpen(true);
       }
@@ -179,7 +179,7 @@ export function TestEmployment() {
       if (
         calculateAgeInMonths(
           employmentInfo?.props?.currentEmployment?.startDate
-        ) < habitat?.props.minCurrentEmploymentMonths &&
+        ) < habitat?.props.homeownershipMinCurrentEmploymentMonths &&
         employmentInfo?.props?.currentEmployment?.firstJob === 'No' &&
         employmentInfo.props.previousEmployment === undefined
       ) {
@@ -245,7 +245,7 @@ export function TestEmployment() {
       )}
       {calculateAgeInMonths(
         employmentInfo?.props?.currentEmployment?.startDate
-      ) < habitat?.props.minCurrentEmploymentMonths &&
+      ) < habitat?.props.homeownershipMinCurrentEmploymentMonths &&
         employmentInfo?.props?.currentEmployment?.firstJob === 'No' && (
           <>
             <PreviousEmployment

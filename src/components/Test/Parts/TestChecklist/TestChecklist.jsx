@@ -115,33 +115,31 @@ export function TestChecklist() {
         onExpandedChange={handleOnExpandedChange}
       >
         <form onSubmit={handleSubmit(onValidSubmit)}>
-          {habitat?.props?.prePreScreen?.prePreScreenQuestions.map(
-            (question) => (
-              <View key={question.name}>
-                <Controller
-                  control={control}
-                  name={question.name}
-                  defaultValue={null}
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <RadioGroupField
-                      name={question.name}
-                      label={question.label}
-                      onChange={(e) => onChange(e.target.value)}
-                      onBlur={onBlur}
-                      value={value}
-                      isRequired
-                      defaultChecked={false}
-                      isDisabled={!isEnabled}
-                    >
-                      <Radio value="Yes">Yes</Radio>
-                      <Radio value="No">No</Radio>
-                    </RadioGroupField>
-                  )}
-                />
-                <br />
-              </View>
-            )
-          )}
+          {habitat?.props?.homeownershipCheckQuestions.map((question) => (
+            <View key={question.name}>
+              <Controller
+                control={control}
+                name={question.name}
+                defaultValue={null}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <RadioGroupField
+                    name={question.name}
+                    label={question.label}
+                    onChange={(e) => onChange(e.target.value)}
+                    onBlur={onBlur}
+                    value={value}
+                    isRequired
+                    defaultChecked={false}
+                    isDisabled={!isEnabled}
+                  >
+                    <Radio value="Yes">Yes</Radio>
+                    <Radio value="No">No</Radio>
+                  </RadioGroupField>
+                )}
+              />
+              <br />
+            </View>
+          ))}
           <Flex width="100%" justifyContent="end">
             {checklist ? (
               <Button onClick={handleOnClickEdit} variation="secondary">
