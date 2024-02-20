@@ -1929,8 +1929,10 @@ export const schema = {
                 "props": {
                     "name": "props",
                     "isArray": false,
-                    "type": "AWSJSON",
-                    "isRequired": false,
+                    "type": {
+                        "nonModel": "HabitatProps"
+                    },
+                    "isRequired": true,
                     "attributes": []
                 },
                 "Applications": {
@@ -2126,7 +2128,190 @@ export const schema = {
             ]
         }
     },
-    "nonModels": {},
+    "nonModels": {
+        "WrittenQuestion": {
+            "name": "WrittenQuestion",
+            "fields": {
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "label": {
+                    "name": "label",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "placeholder": {
+                    "name": "placeholder",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                }
+            }
+        },
+        "RecordQuestion": {
+            "name": "RecordQuestion",
+            "fields": {
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "max": {
+                    "name": "max",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "label": {
+                    "name": "label",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "acceptedFileTypes": {
+                    "name": "acceptedFileTypes",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": true
+                }
+            }
+        },
+        "CheckQuestion": {
+            "name": "CheckQuestion",
+            "fields": {
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "label": {
+                    "name": "label",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                }
+            }
+        },
+        "TextSection": {
+            "name": "TextSection",
+            "fields": {
+                "title": {
+                    "name": "title",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "body": {
+                    "name": "body",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                }
+            }
+        },
+        "HabitatProps": {
+            "name": "HabitatProps",
+            "fields": {
+                "customStatus": {
+                    "name": "customStatus",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "homeownershipTermsText": {
+                    "name": "homeownershipTermsText",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "TextSection"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "homeownershipMinCurrentAddressMonths": {
+                    "name": "homeownershipMinCurrentAddressMonths",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "homeownershipMinCurrentEmploymentMonths": {
+                    "name": "homeownershipMinCurrentEmploymentMonths",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "homeownershipNoOpenCycle": {
+                    "name": "homeownershipNoOpenCycle",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "homeownershipHomeText": {
+                    "name": "homeownershipHomeText",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "TextSection"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "homeownershipCheckQuestions": {
+                    "name": "homeownershipCheckQuestions",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "CheckQuestion"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "homeownershipRecordQuestions": {
+                    "name": "homeownershipRecordQuestions",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "RecordQuestion"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "homeownershipWrittenQuestions": {
+                    "name": "homeownershipWrittenQuestions",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "WrittenQuestion"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": true
+                }
+            }
+        }
+    },
     "codegenVersion": "3.4.4",
-    "version": "a46ae68f1046412b9e480352c8f2d79f"
+    "version": "87ce9449c389fe7e420d4bab5fb98cbe"
 };

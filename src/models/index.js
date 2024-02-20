@@ -70,7 +70,7 @@ const RelationshipTypes = {
   "OTHER": "OTHER"
 };
 
-const { TestCycle, ApplicantOptional, Asset, Debt, Income, TestApplication, EmploymentInfo, Member, Record, Written, Checklist, ApplicantInfo, Cycles, ContactForm, UserProps, DebtRecord, SavingRecord, IncomeRecord, HouseholdMember, Application, Habitat } = initSchema(schema);
+const { TestCycle, ApplicantOptional, Asset, Debt, Income, TestApplication, EmploymentInfo, Member, Record, Written, Checklist, ApplicantInfo, Cycles, ContactForm, UserProps, DebtRecord, SavingRecord, IncomeRecord, HouseholdMember, Application, Habitat, WrittenQuestion, RecordQuestion, CheckQuestion, TextSection, HabitatProps } = initSchema(schema);
 
 export {
   TestCycle,
@@ -101,5 +101,10 @@ export {
   DebtTypes,
   IncomeTypes,
   SexTypes,
-  RelationshipTypes
+  RelationshipTypes,
+  WrittenQuestion,
+  RecordQuestion,
+  CheckQuestion,
+  TextSection,
+  HabitatProps
 };

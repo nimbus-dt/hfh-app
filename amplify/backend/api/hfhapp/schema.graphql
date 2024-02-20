@@ -1,3 +1,38 @@
+type WrittenQuestion {
+  name: String!
+  label: String!
+  placeholder: String!
+}
+
+type RecordQuestion {
+  name: String!
+  max: Int!
+  label: String!
+  acceptedFileTypes: [String!]
+}
+
+type CheckQuestion {
+  name: String!
+  label: String!
+}
+
+type TextSection {
+  title: String!
+  body: String!
+}
+
+type HabitatProps {
+  customStatus: [String!]
+  homeownershipTermsText: [TextSection!]
+  homeownershipMinCurrentAddressMonths: Int!
+  homeownershipMinCurrentEmploymentMonths: Int!
+  homeownershipNoOpenCycle: String!
+  homeownershipHomeText: [TextSection!]
+  homeownershipCheckQuestions: [CheckQuestion!]
+  homeownershipRecordQuestions: [RecordQuestion!]
+  homeownershipWrittenQuestions: [WrittenQuestion!]
+}
+
 type TestCycle @model @auth(rules: [{allow: public}]) {
   id: ID!
   startDate: AWSDate!
@@ -247,7 +282,7 @@ type Habitat @model @auth(rules: [{allow: public}]) {
   city: String
   county: String
   countiesServed: [String]
-  props: AWSJSON
+  props: HabitatProps!
   Applications: [Cycles] @hasMany(indexName: "byHabitat", fields: ["id"])
   users: [ID]
   AMI: [String]
