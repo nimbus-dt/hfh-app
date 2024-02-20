@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { getCheckOrExEmoji } from 'utils/misc';
-import { CustomExpandableCard } from '../../../Reusable/CustomExpandableCard';
+import CustomExpandableCard from 'components/CustomExpandableCard';
 import {
   addressSchema,
   basicInfoSchema,

@@ -1,4 +1,3 @@
-import { CustomExpandableCard } from 'components/Test/Reusable/CustomExpandableCard';
 import PropTypes from 'prop-types';
 import {
   Button,
@@ -10,6 +9,7 @@ import {
 import { useEffect, useRef } from 'react';
 import { getCheckOrExEmoji } from 'utils/misc';
 import { Link } from 'react-router-dom';
+import CustomExpandableCard from 'components/CustomExpandableCard';
 
 const editRoute = '../applicant-optional';
 

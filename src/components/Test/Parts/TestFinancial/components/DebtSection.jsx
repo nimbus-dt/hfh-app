@@ -18,11 +18,11 @@ import {
   TextField,
   ThemeProvider,
 } from '@aws-amplify/ui-react';
-import { CustomExpandableCard } from 'components/Test/Reusable/CustomExpandableCard';
 import { MdAdd, MdClose, MdMoreHoriz } from 'react-icons/md';
 import FileInput from 'components/FileInput';
 import { createAlert } from 'utils/factories';
 import CurrencyInput from 'components/CurrencyInput';
+import CustomExpandableCard from 'components/CustomExpandableCard';
 import { debtSchema, debtTypes } from '../TestFinancial.schema';
 import UploadingFileLoader from './UploadingFileLoader';
 

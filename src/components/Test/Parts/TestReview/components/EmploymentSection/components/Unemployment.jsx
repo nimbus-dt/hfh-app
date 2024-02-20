@@ -1,9 +1,9 @@
-import { CustomExpandableCard } from 'components/Test/Reusable/CustomExpandableCard';
 import { Button, Flex, Radio, RadioGroupField } from '@aws-amplify/ui-react';
 import PropTypes from 'prop-types';
 import { useEffect, useRef } from 'react';
 import { getCheckOrExEmoji } from 'utils/misc';
 import { Link } from 'react-router-dom';
+import CustomExpandableCard from 'components/CustomExpandableCard';
 import LoadingData from '../../LoadingData';
 
 const Unemployment = ({

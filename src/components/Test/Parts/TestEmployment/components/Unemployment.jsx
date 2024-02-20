@@ -1,8 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
-import { CustomExpandableCard } from 'components/Test/Reusable/CustomExpandableCard';
 import { Button, Flex, Radio, RadioGroupField } from '@aws-amplify/ui-react';
 import PropTypes from 'prop-types';
+import CustomExpandableCard from 'components/CustomExpandableCard';
 import { unemployedSchema } from '../TestEmployment.schema';
 
 const Unemployment = ({

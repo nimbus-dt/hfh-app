@@ -3,9 +3,9 @@ import { Link, useOutletContext } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { DataStore } from 'aws-amplify';
 import { Written } from 'models';
-import { CustomExpandableCard } from 'components/Test/Reusable/CustomExpandableCard';
 import PropTypes from 'prop-types';
 import { getCheckOrExEmoji } from 'utils/misc';
+import CustomExpandableCard from 'components/CustomExpandableCard';
 import LoadingData from './LoadingData';
 
 const WrittenSection = ({

@@ -14,7 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Checklist } from 'models';
 import { createAlert } from 'utils/factories';
 import CustomCard from 'components/CustomCard';
-import { CustomExpandableCard } from '../../Reusable/CustomExpandableCard';
+import CustomExpandableCard from 'components/CustomExpandableCard';
 import { checklistSchema } from './checklist.schema';
 
 export function TestChecklist() {

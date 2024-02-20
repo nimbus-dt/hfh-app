@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CustomExpandableCard } from 'components/Test/Reusable/CustomExpandableCard';
 import PropTypes from 'prop-types';
 import { Controller, useForm } from 'react-hook-form';
 import {
@@ -11,6 +10,7 @@ import {
   Text,
   TextField,
 } from '@aws-amplify/ui-react';
+import CustomExpandableCard from 'components/CustomExpandableCard';
 import { demographicSchema } from '../aplicantOptional.schema';
 
 const DemographicSection = ({

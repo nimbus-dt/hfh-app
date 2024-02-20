@@ -1,6 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
-import { CustomExpandableCard } from 'components/Test/Reusable/CustomExpandableCard';
 import {
   Button,
   Flex,
@@ -10,6 +9,7 @@ import {
 } from '@aws-amplify/ui-react';
 import PropTypes from 'prop-types';
 import { formatPhoneNumber } from 'utils/formatters';
+import CustomExpandableCard from 'components/CustomExpandableCard';
 import { currentEmploymentSchema } from '../TestEmployment.schema';
 
 const CurrentEmployment = ({

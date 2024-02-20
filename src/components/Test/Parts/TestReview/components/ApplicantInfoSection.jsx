@@ -11,7 +11,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ApplicantInfo } from 'models';
 import { DataStore } from 'aws-amplify';
 import { getCheckOrExEmoji } from 'utils/misc';
-import { CustomExpandableCard } from '../../../Reusable/CustomExpandableCard';
+import CustomExpandableCard from 'components/CustomExpandableCard';
 import {
   maritalStatusValues,
   ownerShipValues,

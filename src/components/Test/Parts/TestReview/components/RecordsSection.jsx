@@ -4,9 +4,9 @@ import { useEffect, useRef, useState } from 'react';
 import { DataStore } from 'aws-amplify';
 import { Record } from 'models';
 import FileInput from 'components/FileInput';
-import { CustomExpandableCard } from 'components/Test/Reusable/CustomExpandableCard';
 import PropTypes from 'prop-types';
 import { getCheckOrExEmoji } from 'utils/misc';
+import CustomExpandableCard from 'components/CustomExpandableCard';
 import LoadingData from './LoadingData';
 
 const RecordsSection = ({
