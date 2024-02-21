@@ -12,12 +12,13 @@ import { ApplicantInfo } from 'models';
 import { DataStore } from 'aws-amplify';
 import { getCheckOrExEmoji } from 'utils/misc';
 import CustomExpandableCard from 'components/CustomExpandableCard';
+
+import LoadingData from './LoadingData';
 import {
   maritalStatusValues,
   ownerShipValues,
   unmarriedRelationshipTypesValues,
-} from '../../TestApplicantInfo/aplicantInfo.schema';
-import LoadingData from './LoadingData';
+} from '../../applicant-info/HomeownershipApplicantInfoPage.schema';
 
 const editRoute = '../applicant-info';
 
