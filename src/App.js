@@ -2,7 +2,7 @@ import './assets/styles/App.css';
 import { Routes, Route, Outlet } from 'react-router-dom';
 import { Authenticator, ScrollView } from '@aws-amplify/ui-react';
 
-import TestAffiliateLayout from 'layouts/TestAffiliateLayout';
+import AffiliateLayout from 'pages/affiliate-portal/AffiliateLayout';
 import CyclesPage from 'pages/affiliate-portal/cycles';
 import TestApplications from 'pages/affiliate-portal/cycles/[cycleId]';
 import TestApplicationDetails from 'pages/affiliate-portal/cycles/[cycleId]/[applicationId]';
@@ -127,7 +127,7 @@ function App() {
           path=":habitat"
           element={
             <Authenticator.Provider>
-              <TestAffiliateLayout />
+              <AffiliateLayout />
             </Authenticator.Provider>
           }
         >
