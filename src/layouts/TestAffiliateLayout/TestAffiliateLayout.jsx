@@ -14,8 +14,8 @@ import {
   Heading,
   ThemeProvider,
 } from '@aws-amplify/ui-react';
-import { TestNav } from 'components/Test/Layout/TestNav';
 import CustomCard from 'components/CustomCard';
+import NavBar from 'components/NavBar';
 import { Habitat } from '../../models';
 import { COLORS, DEFAULT_REVIEW_STATUS } from '../../utils/constants';
 import Sidebar from './Sidebar';
@@ -179,7 +179,7 @@ const TestAffiliateLayout = () => {
           >
             {authStatus === 'unauthenticated' || !isUserAllowed ? (
               <>
-                <TestNav isAuthenticated={authStatus === 'authenticated'} />
+                <NavBar isAuthenticated={authStatus === 'authenticated'} />
                 <Flex
                   width={responsiveBool ? '100%' : '80%'}
                   direction="column"
