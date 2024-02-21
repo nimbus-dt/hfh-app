@@ -17,9 +17,9 @@ import {
 import { MdMoreHoriz } from 'react-icons/md';
 import FileInput from 'components/FileInput';
 import CurrencyInput from 'components/CurrencyInput';
-import { assetsTypes } from 'components/Test/Parts/TestFinancial/TestFinancial.schema';
 import { Link } from 'react-router-dom';
 import CustomExpandableCard from 'components/CustomExpandableCard';
+import { assetsTypes } from 'pages/homeownership/[habitat]/financial/HomeownershipFinancialPage.schema';
 
 const AssetsSection = ({ ownerId, assets, submitted }) => {
   const [modal, setModal] = useState(false);
