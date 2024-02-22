@@ -27,7 +27,6 @@ export declare type DebtRecordUpdateFormInputValues = {
     monthlyRecurrence?: number;
     typeOfDebt?: string;
     estimatedAmount?: number;
-    applicationID?: string;
     ownerApplicant?: boolean;
 };
 export declare type DebtRecordUpdateFormValidationValues = {
@@ -35,7 +34,6 @@ export declare type DebtRecordUpdateFormValidationValues = {
     monthlyRecurrence?: ValidationFunction<number>;
     typeOfDebt?: ValidationFunction<string>;
     estimatedAmount?: ValidationFunction<number>;
-    applicationID?: ValidationFunction<string>;
     ownerApplicant?: ValidationFunction<boolean>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
@@ -45,7 +43,6 @@ export declare type DebtRecordUpdateFormOverridesProps = {
     monthlyRecurrence?: PrimitiveOverrideProps<TextFieldProps>;
     typeOfDebt?: PrimitiveOverrideProps<SelectFieldProps>;
     estimatedAmount?: PrimitiveOverrideProps<TextFieldProps>;
-    applicationID?: PrimitiveOverrideProps<TextFieldProps>;
     ownerApplicant?: PrimitiveOverrideProps<SwitchFieldProps>;
 } & EscapeHatchProps;
 export declare type DebtRecordUpdateFormProps = React.PropsWithChildren<{

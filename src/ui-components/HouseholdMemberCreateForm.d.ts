@@ -5,7 +5,7 @@
  **************************************************************************/
 
 import * as React from "react";
-import { GridProps, SelectFieldProps, SwitchFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
+import { GridProps, SwitchFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
 export declare type EscapeHatchProps = {
     [elementHierarchy: string]: Record<string, unknown>;
 } | null;
@@ -24,15 +24,11 @@ export declare type ValidationFunction<T> = (value: T, validationResponse: Valid
 export declare type HouseholdMemberCreateFormInputValues = {
     name?: string;
     dateOfBirth?: string;
-    sex?: string;
-    relationship?: string;
     isUnemployed?: boolean;
 };
 export declare type HouseholdMemberCreateFormValidationValues = {
     name?: ValidationFunction<string>;
     dateOfBirth?: ValidationFunction<string>;
-    sex?: ValidationFunction<string>;
-    relationship?: ValidationFunction<string>;
     isUnemployed?: ValidationFunction<boolean>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
@@ -40,8 +36,6 @@ export declare type HouseholdMemberCreateFormOverridesProps = {
     HouseholdMemberCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
     name?: PrimitiveOverrideProps<TextFieldProps>;
     dateOfBirth?: PrimitiveOverrideProps<TextFieldProps>;
-    sex?: PrimitiveOverrideProps<SelectFieldProps>;
-    relationship?: PrimitiveOverrideProps<SelectFieldProps>;
     isUnemployed?: PrimitiveOverrideProps<SwitchFieldProps>;
 } & EscapeHatchProps;
 export declare type HouseholdMemberCreateFormProps = React.PropsWithChildren<{
