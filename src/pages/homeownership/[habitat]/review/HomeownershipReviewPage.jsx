@@ -19,13 +19,13 @@ import ApplicantOptionalSection from './components/ApplicantOptionalSection/Appl
 export default function HomeownershipReviewPage() {
   const { application, setApplication, openCycle } = useOutletContext();
   const [reviewedSections, setReviewedSections] = useState({});
-
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [alert, setAlert] = useState();
   const [basicInfoOpen, setBasicInfoOpen] = useState(true);
   const [unmarriedAddendumOpen, setUnmarriedAddendumOpen] = useState(false);
   const [currentAddressOpen, setCurrentAddressOpen] = useState(false);
   const [previousAddressOpen, setPreviousAddressOpen] = useState(false);
+  const [typeOfCreditOpen, setTypeOfCreditOpen] = useState(false);
   const [applicantMilitaryServiceOpen, setApplicantMilitaryServiceOpen] =
     useState(false);
   const [anyoneElseMilitaryServiceOpen, setAnyoneElseMilitaryServiceOpen] =
@@ -62,12 +62,12 @@ export default function HomeownershipReviewPage() {
     }));
   };
 
-  const handleAddressOnReview = (hasPreviousEmployment) => {
+  const handleAddressOnReview = (needPreviousAddress) => {
     setCurrentAddressOpen(false);
-    if (hasPreviousEmployment) {
+    if (needPreviousAddress) {
       setPreviousAddressOpen(true);
     } else {
-      setApplicantMilitaryServiceOpen(true);
+      setTypeOfCreditOpen(true);
     }
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
@@ -77,10 +77,19 @@ export default function HomeownershipReviewPage() {
 
   const handlePreviousAddressOnReview = () => {
     setPreviousAddressOpen(false);
-    setApplicantMilitaryServiceOpen(true);
+    setTypeOfCreditOpen(true);
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
       prevAddress: true,
+    }));
+  };
+
+  const handleTypeOfCreditOnReview = () => {
+    setTypeOfCreditOpen(false);
+    setApplicantMilitaryServiceOpen(true);
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      typeOfCredit: true,
     }));
   };
 
@@ -278,6 +287,9 @@ export default function HomeownershipReviewPage() {
         previousAddressOpen={previousAddressOpen}
         setPreviousAddressOpen={setPreviousAddressOpen}
         handlePreviousAddressOnReview={handlePreviousAddressOnReview}
+        typeOfCreditOpen={typeOfCreditOpen}
+        setTypeOfCreditOpen={setTypeOfCreditOpen}
+        handleTypeOfCreditOnReview={handleTypeOfCreditOnReview}
         reviewedSections={reviewedSections}
         setReviewedSections={setReviewedSections}
         submitted={application?.submissionStatus === SubmissionStatus.SUBMITTED}
