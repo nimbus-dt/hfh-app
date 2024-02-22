@@ -10,6 +10,7 @@ import {
   Address,
   PrevAddress,
   UnmarriedAddendum,
+  TypeOfCredit,
 } from './components/FormApplicantInfo';
 import { maritalStatusValues } from './HomeownershipApplicantInfoPage.schema';
 
@@ -30,6 +31,9 @@ export default function HomeownershipApplicantInfoPage() {
 
   const [previousAddressOpen, setPreviousAddressOpen] = useState(false);
   const [previousAddressEdit, setPreviousAddressEdit] = useState(false);
+
+  const [typeOfCreditOpen, setTypeOfCreditOpen] = useState(false);
+  const [typeOfCreditEdit, setTypeOfCreditEdit] = useState(false);
 
   const [alert, setAlert] = useState();
   const navigate = useNavigate();
@@ -199,7 +203,14 @@ export default function HomeownershipApplicantInfoPage() {
           )
         );
       }
-      setPreviousAddressOpen(true);
+      if (
+        data.monthsLivedHere <
+        habitat?.props.homeownershipMinCurrentAddressMonths
+      ) {
+        setPreviousAddressOpen(true);
+      } else {
+        setTypeOfCreditOpen(true);
+      }
       setCurrentAddressOpen(false);
       updateApplicationLastSection();
     } catch {
@@ -240,6 +251,7 @@ export default function HomeownershipApplicantInfoPage() {
       );
 
       setPreviousAddressOpen(false);
+      setTypeOfCreditOpen(true);
       updateApplicationLastSection();
     } catch {
       setAlert(
@@ -253,6 +265,60 @@ export default function HomeownershipApplicantInfoPage() {
       (previousPreviousAddressEdit) => !previousPreviousAddressEdit
     );
 
+  const onValidTypeOfCredit = async (data) => {
+    try {
+      if (applicantInfo === undefined) {
+        const persistedApplicantInfo = await DataStore.save(
+          new ApplicantInfo({
+            ownerID: application.id,
+            props: {
+              typeOfCredit: data,
+            },
+          })
+        );
+        setApplicantInfo(persistedApplicantInfo);
+        setAlert(
+          createAlert(
+            'success',
+            'Success',
+            'The type of credit was saved successfully.'
+          )
+        );
+      } else {
+        const original = await DataStore.query(ApplicantInfo, applicantInfo.id);
+        const persistedApplicantInfo = await DataStore.save(
+          ApplicantInfo.copyOf(original, (originalApplicantInfo) => {
+            originalApplicantInfo.ownerID = application.id;
+            originalApplicantInfo.props = {
+              ...originalApplicantInfo.props,
+              typeOfCredit: { ...data },
+            };
+          })
+        );
+        setApplicantInfo(persistedApplicantInfo);
+        setTypeOfCreditEdit(false);
+        setAlert(
+          createAlert(
+            'success',
+            'Success',
+            'The type of credit was updated successfully.'
+          )
+        );
+      }
+      setTypeOfCreditOpen(false);
+      updateApplicationLastSection();
+    } catch {
+      setAlert(
+        createAlert('error', 'Error', "The type of credit couldn't be saved.")
+      );
+    }
+  };
+
+  const handleOnClickTypeOfCreditEdit = () =>
+    setTypeOfCreditEdit(
+      (previousTypeOfCreditEdit) => !previousTypeOfCreditEdit
+    );
+
   const handleOnClickNext = () => {
     navigate('../applicant-optional');
   };
@@ -261,7 +327,8 @@ export default function HomeownershipApplicantInfoPage() {
     if (
       applicantInfo !== undefined &&
       applicantInfo?.props?.basicInfo !== undefined &&
-      applicantInfo?.props?.currentAddress !== undefined
+      applicantInfo?.props?.currentAddress !== undefined &&
+      applicantInfo?.props?.typeOfCredit !== undefined
     ) {
       if (
         applicantInfo.props.basicInfo.maritalStatus ===
@@ -360,6 +427,15 @@ export default function HomeownershipApplicantInfoPage() {
             <br />
           </>
         )}
+        <TypeOfCredit
+          expanded={typeOfCreditOpen}
+          onExpandedChange={setTypeOfCreditOpen}
+          applicantInfo={applicantInfo}
+          onValid={onValidTypeOfCredit}
+          edit={typeOfCreditEdit}
+          onClickEdit={handleOnClickTypeOfCreditEdit}
+        />
+        <br />
         <CustomCard>
           <Flex width="100%" justifyContent="space-between">
             <Button variation="primary" onClick={() => navigate('../terms')}>
