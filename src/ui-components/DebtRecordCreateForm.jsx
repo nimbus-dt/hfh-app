@@ -33,7 +33,6 @@ export default function DebtRecordCreateForm(props) {
     monthlyRecurrence: "",
     typeOfDebt: "",
     estimatedAmount: "",
-    applicationID: "",
     ownerApplicant: false,
   };
   const [ownerID, setOwnerID] = React.useState(initialValues.ownerID);
@@ -44,9 +43,6 @@ export default function DebtRecordCreateForm(props) {
   const [estimatedAmount, setEstimatedAmount] = React.useState(
     initialValues.estimatedAmount
   );
-  const [applicationID, setApplicationID] = React.useState(
-    initialValues.applicationID
-  );
   const [ownerApplicant, setOwnerApplicant] = React.useState(
     initialValues.ownerApplicant
   );
@@ -56,7 +52,6 @@ export default function DebtRecordCreateForm(props) {
     setMonthlyRecurrence(initialValues.monthlyRecurrence);
     setTypeOfDebt(initialValues.typeOfDebt);
     setEstimatedAmount(initialValues.estimatedAmount);
-    setApplicationID(initialValues.applicationID);
     setOwnerApplicant(initialValues.ownerApplicant);
     setErrors({});
   };
@@ -65,7 +60,6 @@ export default function DebtRecordCreateForm(props) {
     monthlyRecurrence: [],
     typeOfDebt: [],
     estimatedAmount: [],
-    applicationID: [],
     ownerApplicant: [],
   };
   const runValidationTasks = async (
@@ -98,7 +92,6 @@ export default function DebtRecordCreateForm(props) {
           monthlyRecurrence,
           typeOfDebt,
           estimatedAmount,
-          applicationID,
           ownerApplicant,
         };
         const validationResponses = await Promise.all(
@@ -158,7 +151,6 @@ export default function DebtRecordCreateForm(props) {
               monthlyRecurrence,
               typeOfDebt,
               estimatedAmount,
-              applicationID,
               ownerApplicant,
             };
             const result = onChange(modelFields);
@@ -191,7 +183,6 @@ export default function DebtRecordCreateForm(props) {
               monthlyRecurrence: value,
               typeOfDebt,
               estimatedAmount,
-              applicationID,
               ownerApplicant,
             };
             const result = onChange(modelFields);
@@ -222,7 +213,6 @@ export default function DebtRecordCreateForm(props) {
               monthlyRecurrence,
               typeOfDebt: value,
               estimatedAmount,
-              applicationID,
               ownerApplicant,
             };
             const result = onChange(modelFields);
@@ -306,7 +296,6 @@ export default function DebtRecordCreateForm(props) {
               monthlyRecurrence,
               typeOfDebt,
               estimatedAmount: value,
-              applicationID,
               ownerApplicant,
             };
             const result = onChange(modelFields);
@@ -322,35 +311,6 @@ export default function DebtRecordCreateForm(props) {
         hasError={errors.estimatedAmount?.hasError}
         {...getOverrideProps(overrides, "estimatedAmount")}
       ></TextField>
-      <TextField
-        label="Application id"
-        isRequired={false}
-        isReadOnly={false}
-        value={applicationID}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              ownerID,
-              monthlyRecurrence,
-              typeOfDebt,
-              estimatedAmount,
-              applicationID: value,
-              ownerApplicant,
-            };
-            const result = onChange(modelFields);
-            value = result?.applicationID ?? value;
-          }
-          if (errors.applicationID?.hasError) {
-            runValidationTasks("applicationID", value);
-          }
-          setApplicationID(value);
-        }}
-        onBlur={() => runValidationTasks("applicationID", applicationID)}
-        errorMessage={errors.applicationID?.errorMessage}
-        hasError={errors.applicationID?.hasError}
-        {...getOverrideProps(overrides, "applicationID")}
-      ></TextField>
       <SwitchField
         label="Owner applicant"
         defaultChecked={false}
@@ -364,7 +324,6 @@ export default function DebtRecordCreateForm(props) {
               monthlyRecurrence,
               typeOfDebt,
               estimatedAmount,
-              applicationID,
               ownerApplicant: value,
             };
             const result = onChange(modelFields);

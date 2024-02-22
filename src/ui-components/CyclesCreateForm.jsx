@@ -13,13 +13,12 @@ import {
   SwitchField,
   TextField,
 } from "@aws-amplify/ui-react";
-import { HouseholdMember } from "../models";
+import { Cycles } from "../models";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
-export default function HouseholdMemberUpdateForm(props) {
+export default function CyclesCreateForm(props) {
   const {
-    id: idProp,
-    householdMember: householdMemberModelProp,
+    clearOnSuccess = true,
     onSuccess,
     onError,
     onSubmit,
@@ -29,44 +28,36 @@ export default function HouseholdMemberUpdateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    name: "",
-    dateOfBirth: "",
-    isUnemployed: false,
+    cycleStartDate: "",
+    cycleEndDate: "",
+    cycleStatus: false,
+    cycleSeason: "",
   };
-  const [name, setName] = React.useState(initialValues.name);
-  const [dateOfBirth, setDateOfBirth] = React.useState(
-    initialValues.dateOfBirth
+  const [cycleStartDate, setCycleStartDate] = React.useState(
+    initialValues.cycleStartDate
   );
-  const [isUnemployed, setIsUnemployed] = React.useState(
-    initialValues.isUnemployed
+  const [cycleEndDate, setCycleEndDate] = React.useState(
+    initialValues.cycleEndDate
+  );
+  const [cycleStatus, setCycleStatus] = React.useState(
+    initialValues.cycleStatus
+  );
+  const [cycleSeason, setCycleSeason] = React.useState(
+    initialValues.cycleSeason
   );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    const cleanValues = householdMemberRecord
-      ? { ...initialValues, ...householdMemberRecord }
-      : initialValues;
-    setName(cleanValues.name);
-    setDateOfBirth(cleanValues.dateOfBirth);
-    setIsUnemployed(cleanValues.isUnemployed);
+    setCycleStartDate(initialValues.cycleStartDate);
+    setCycleEndDate(initialValues.cycleEndDate);
+    setCycleStatus(initialValues.cycleStatus);
+    setCycleSeason(initialValues.cycleSeason);
     setErrors({});
   };
-  const [householdMemberRecord, setHouseholdMemberRecord] = React.useState(
-    householdMemberModelProp
-  );
-  React.useEffect(() => {
-    const queryData = async () => {
-      const record = idProp
-        ? await DataStore.query(HouseholdMember, idProp)
-        : householdMemberModelProp;
-      setHouseholdMemberRecord(record);
-    };
-    queryData();
-  }, [idProp, householdMemberModelProp]);
-  React.useEffect(resetStateValues, [householdMemberRecord]);
   const validations = {
-    name: [],
-    dateOfBirth: [],
-    isUnemployed: [],
+    cycleStartDate: [],
+    cycleEndDate: [],
+    cycleStatus: [],
+    cycleSeason: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -94,9 +85,10 @@ export default function HouseholdMemberUpdateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          name,
-          dateOfBirth,
-          isUnemployed,
+          cycleStartDate,
+          cycleEndDate,
+          cycleStatus,
+          cycleSeason,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -126,13 +118,12 @@ export default function HouseholdMemberUpdateForm(props) {
               modelFields[key] = null;
             }
           });
-          await DataStore.save(
-            HouseholdMember.copyOf(householdMemberRecord, (updated) => {
-              Object.assign(updated, modelFields);
-            })
-          );
+          await DataStore.save(new Cycles(modelFields));
           if (onSuccess) {
             onSuccess(modelFields);
+          }
+          if (clearOnSuccess) {
+            resetStateValues();
           }
         } catch (err) {
           if (onError) {
@@ -140,101 +131,131 @@ export default function HouseholdMemberUpdateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "HouseholdMemberUpdateForm")}
+      {...getOverrideProps(overrides, "CyclesCreateForm")}
       {...rest}
     >
       <TextField
-        label="Name"
-        isRequired={false}
-        isReadOnly={false}
-        value={name}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              name: value,
-              dateOfBirth,
-              isUnemployed,
-            };
-            const result = onChange(modelFields);
-            value = result?.name ?? value;
-          }
-          if (errors.name?.hasError) {
-            runValidationTasks("name", value);
-          }
-          setName(value);
-        }}
-        onBlur={() => runValidationTasks("name", name)}
-        errorMessage={errors.name?.errorMessage}
-        hasError={errors.name?.hasError}
-        {...getOverrideProps(overrides, "name")}
-      ></TextField>
-      <TextField
-        label="Date of birth"
+        label="Cycle start date"
         isRequired={false}
         isReadOnly={false}
         type="date"
-        value={dateOfBirth}
+        value={cycleStartDate}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              name,
-              dateOfBirth: value,
-              isUnemployed,
+              cycleStartDate: value,
+              cycleEndDate,
+              cycleStatus,
+              cycleSeason,
             };
             const result = onChange(modelFields);
-            value = result?.dateOfBirth ?? value;
+            value = result?.cycleStartDate ?? value;
           }
-          if (errors.dateOfBirth?.hasError) {
-            runValidationTasks("dateOfBirth", value);
+          if (errors.cycleStartDate?.hasError) {
+            runValidationTasks("cycleStartDate", value);
           }
-          setDateOfBirth(value);
+          setCycleStartDate(value);
         }}
-        onBlur={() => runValidationTasks("dateOfBirth", dateOfBirth)}
-        errorMessage={errors.dateOfBirth?.errorMessage}
-        hasError={errors.dateOfBirth?.hasError}
-        {...getOverrideProps(overrides, "dateOfBirth")}
+        onBlur={() => runValidationTasks("cycleStartDate", cycleStartDate)}
+        errorMessage={errors.cycleStartDate?.errorMessage}
+        hasError={errors.cycleStartDate?.hasError}
+        {...getOverrideProps(overrides, "cycleStartDate")}
+      ></TextField>
+      <TextField
+        label="Cycle end date"
+        isRequired={false}
+        isReadOnly={false}
+        type="date"
+        value={cycleEndDate}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              cycleStartDate,
+              cycleEndDate: value,
+              cycleStatus,
+              cycleSeason,
+            };
+            const result = onChange(modelFields);
+            value = result?.cycleEndDate ?? value;
+          }
+          if (errors.cycleEndDate?.hasError) {
+            runValidationTasks("cycleEndDate", value);
+          }
+          setCycleEndDate(value);
+        }}
+        onBlur={() => runValidationTasks("cycleEndDate", cycleEndDate)}
+        errorMessage={errors.cycleEndDate?.errorMessage}
+        hasError={errors.cycleEndDate?.hasError}
+        {...getOverrideProps(overrides, "cycleEndDate")}
       ></TextField>
       <SwitchField
-        label="Is unemployed"
+        label="Cycle status"
         defaultChecked={false}
         isDisabled={false}
-        isChecked={isUnemployed}
+        isChecked={cycleStatus}
         onChange={(e) => {
           let value = e.target.checked;
           if (onChange) {
             const modelFields = {
-              name,
-              dateOfBirth,
-              isUnemployed: value,
+              cycleStartDate,
+              cycleEndDate,
+              cycleStatus: value,
+              cycleSeason,
             };
             const result = onChange(modelFields);
-            value = result?.isUnemployed ?? value;
+            value = result?.cycleStatus ?? value;
           }
-          if (errors.isUnemployed?.hasError) {
-            runValidationTasks("isUnemployed", value);
+          if (errors.cycleStatus?.hasError) {
+            runValidationTasks("cycleStatus", value);
           }
-          setIsUnemployed(value);
+          setCycleStatus(value);
         }}
-        onBlur={() => runValidationTasks("isUnemployed", isUnemployed)}
-        errorMessage={errors.isUnemployed?.errorMessage}
-        hasError={errors.isUnemployed?.hasError}
-        {...getOverrideProps(overrides, "isUnemployed")}
+        onBlur={() => runValidationTasks("cycleStatus", cycleStatus)}
+        errorMessage={errors.cycleStatus?.errorMessage}
+        hasError={errors.cycleStatus?.hasError}
+        {...getOverrideProps(overrides, "cycleStatus")}
       ></SwitchField>
+      <TextField
+        label="Cycle season"
+        isRequired={false}
+        isReadOnly={false}
+        value={cycleSeason}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              cycleStartDate,
+              cycleEndDate,
+              cycleStatus,
+              cycleSeason: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.cycleSeason ?? value;
+          }
+          if (errors.cycleSeason?.hasError) {
+            runValidationTasks("cycleSeason", value);
+          }
+          setCycleSeason(value);
+        }}
+        onBlur={() => runValidationTasks("cycleSeason", cycleSeason)}
+        errorMessage={errors.cycleSeason?.errorMessage}
+        hasError={errors.cycleSeason?.hasError}
+        {...getOverrideProps(overrides, "cycleSeason")}
+      ></TextField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}
       >
         <Button
-          children="Reset"
+          children="Clear"
           type="reset"
           onClick={(event) => {
             event.preventDefault();
             resetStateValues();
           }}
-          isDisabled={!(idProp || householdMemberModelProp)}
-          {...getOverrideProps(overrides, "ResetButton")}
+          {...getOverrideProps(overrides, "ClearButton")}
         ></Button>
         <Flex
           gap="15px"
@@ -244,10 +265,7 @@ export default function HouseholdMemberUpdateForm(props) {
             children="Submit"
             type="submit"
             variation="primary"
-            isDisabled={
-              !(idProp || householdMemberModelProp) ||
-              Object.values(errors).some((e) => e?.hasError)
-            }
+            isDisabled={Object.values(errors).some((e) => e?.hasError)}
             {...getOverrideProps(overrides, "SubmitButton")}
           ></Button>
         </Flex>

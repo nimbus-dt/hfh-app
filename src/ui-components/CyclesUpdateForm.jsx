@@ -13,13 +13,13 @@ import {
   SwitchField,
   TextField,
 } from "@aws-amplify/ui-react";
-import { SavingRecord } from "../models";
+import { Cycles } from "../models";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
-export default function SavingRecordUpdateForm(props) {
+export default function CyclesUpdateForm(props) {
   const {
     id: idProp,
-    savingRecord: savingRecordModelProp,
+    cycles: cyclesModelProp,
     onSuccess,
     onError,
     onSubmit,
@@ -29,50 +29,50 @@ export default function SavingRecordUpdateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    ownerID: "",
-    institution: "",
-    estimatedAmount: "",
-    ownerApplicant: false,
+    cycleStartDate: "",
+    cycleEndDate: "",
+    cycleStatus: false,
+    cycleSeason: "",
   };
-  const [ownerID, setOwnerID] = React.useState(initialValues.ownerID);
-  const [institution, setInstitution] = React.useState(
-    initialValues.institution
+  const [cycleStartDate, setCycleStartDate] = React.useState(
+    initialValues.cycleStartDate
   );
-  const [estimatedAmount, setEstimatedAmount] = React.useState(
-    initialValues.estimatedAmount
+  const [cycleEndDate, setCycleEndDate] = React.useState(
+    initialValues.cycleEndDate
   );
-  const [ownerApplicant, setOwnerApplicant] = React.useState(
-    initialValues.ownerApplicant
+  const [cycleStatus, setCycleStatus] = React.useState(
+    initialValues.cycleStatus
+  );
+  const [cycleSeason, setCycleSeason] = React.useState(
+    initialValues.cycleSeason
   );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    const cleanValues = savingRecordRecord
-      ? { ...initialValues, ...savingRecordRecord }
+    const cleanValues = cyclesRecord
+      ? { ...initialValues, ...cyclesRecord }
       : initialValues;
-    setOwnerID(cleanValues.ownerID);
-    setInstitution(cleanValues.institution);
-    setEstimatedAmount(cleanValues.estimatedAmount);
-    setOwnerApplicant(cleanValues.ownerApplicant);
+    setCycleStartDate(cleanValues.cycleStartDate);
+    setCycleEndDate(cleanValues.cycleEndDate);
+    setCycleStatus(cleanValues.cycleStatus);
+    setCycleSeason(cleanValues.cycleSeason);
     setErrors({});
   };
-  const [savingRecordRecord, setSavingRecordRecord] = React.useState(
-    savingRecordModelProp
-  );
+  const [cyclesRecord, setCyclesRecord] = React.useState(cyclesModelProp);
   React.useEffect(() => {
     const queryData = async () => {
       const record = idProp
-        ? await DataStore.query(SavingRecord, idProp)
-        : savingRecordModelProp;
-      setSavingRecordRecord(record);
+        ? await DataStore.query(Cycles, idProp)
+        : cyclesModelProp;
+      setCyclesRecord(record);
     };
     queryData();
-  }, [idProp, savingRecordModelProp]);
-  React.useEffect(resetStateValues, [savingRecordRecord]);
+  }, [idProp, cyclesModelProp]);
+  React.useEffect(resetStateValues, [cyclesRecord]);
   const validations = {
-    ownerID: [],
-    institution: [],
-    estimatedAmount: [],
-    ownerApplicant: [],
+    cycleStartDate: [],
+    cycleEndDate: [],
+    cycleStatus: [],
+    cycleSeason: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -100,10 +100,10 @@ export default function SavingRecordUpdateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          ownerID,
-          institution,
-          estimatedAmount,
-          ownerApplicant,
+          cycleStartDate,
+          cycleEndDate,
+          cycleStatus,
+          cycleSeason,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -134,7 +134,7 @@ export default function SavingRecordUpdateForm(props) {
             }
           });
           await DataStore.save(
-            SavingRecord.copyOf(savingRecordRecord, (updated) => {
+            Cycles.copyOf(cyclesRecord, (updated) => {
               Object.assign(updated, modelFields);
             })
           );
@@ -147,121 +147,119 @@ export default function SavingRecordUpdateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "SavingRecordUpdateForm")}
+      {...getOverrideProps(overrides, "CyclesUpdateForm")}
       {...rest}
     >
       <TextField
-        label="Owner id"
+        label="Cycle start date"
         isRequired={false}
         isReadOnly={false}
-        value={ownerID}
+        type="date"
+        value={cycleStartDate}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              ownerID: value,
-              institution,
-              estimatedAmount,
-              ownerApplicant,
+              cycleStartDate: value,
+              cycleEndDate,
+              cycleStatus,
+              cycleSeason,
             };
             const result = onChange(modelFields);
-            value = result?.ownerID ?? value;
+            value = result?.cycleStartDate ?? value;
           }
-          if (errors.ownerID?.hasError) {
-            runValidationTasks("ownerID", value);
+          if (errors.cycleStartDate?.hasError) {
+            runValidationTasks("cycleStartDate", value);
           }
-          setOwnerID(value);
+          setCycleStartDate(value);
         }}
-        onBlur={() => runValidationTasks("ownerID", ownerID)}
-        errorMessage={errors.ownerID?.errorMessage}
-        hasError={errors.ownerID?.hasError}
-        {...getOverrideProps(overrides, "ownerID")}
+        onBlur={() => runValidationTasks("cycleStartDate", cycleStartDate)}
+        errorMessage={errors.cycleStartDate?.errorMessage}
+        hasError={errors.cycleStartDate?.hasError}
+        {...getOverrideProps(overrides, "cycleStartDate")}
       ></TextField>
       <TextField
-        label="Institution"
+        label="Cycle end date"
         isRequired={false}
         isReadOnly={false}
-        value={institution}
+        type="date"
+        value={cycleEndDate}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              ownerID,
-              institution: value,
-              estimatedAmount,
-              ownerApplicant,
+              cycleStartDate,
+              cycleEndDate: value,
+              cycleStatus,
+              cycleSeason,
             };
             const result = onChange(modelFields);
-            value = result?.institution ?? value;
+            value = result?.cycleEndDate ?? value;
           }
-          if (errors.institution?.hasError) {
-            runValidationTasks("institution", value);
+          if (errors.cycleEndDate?.hasError) {
+            runValidationTasks("cycleEndDate", value);
           }
-          setInstitution(value);
+          setCycleEndDate(value);
         }}
-        onBlur={() => runValidationTasks("institution", institution)}
-        errorMessage={errors.institution?.errorMessage}
-        hasError={errors.institution?.hasError}
-        {...getOverrideProps(overrides, "institution")}
-      ></TextField>
-      <TextField
-        label="Estimated amount"
-        isRequired={false}
-        isReadOnly={false}
-        type="number"
-        step="any"
-        value={estimatedAmount}
-        onChange={(e) => {
-          let value = isNaN(parseFloat(e.target.value))
-            ? e.target.value
-            : parseFloat(e.target.value);
-          if (onChange) {
-            const modelFields = {
-              ownerID,
-              institution,
-              estimatedAmount: value,
-              ownerApplicant,
-            };
-            const result = onChange(modelFields);
-            value = result?.estimatedAmount ?? value;
-          }
-          if (errors.estimatedAmount?.hasError) {
-            runValidationTasks("estimatedAmount", value);
-          }
-          setEstimatedAmount(value);
-        }}
-        onBlur={() => runValidationTasks("estimatedAmount", estimatedAmount)}
-        errorMessage={errors.estimatedAmount?.errorMessage}
-        hasError={errors.estimatedAmount?.hasError}
-        {...getOverrideProps(overrides, "estimatedAmount")}
+        onBlur={() => runValidationTasks("cycleEndDate", cycleEndDate)}
+        errorMessage={errors.cycleEndDate?.errorMessage}
+        hasError={errors.cycleEndDate?.hasError}
+        {...getOverrideProps(overrides, "cycleEndDate")}
       ></TextField>
       <SwitchField
-        label="Owner applicant"
+        label="Cycle status"
         defaultChecked={false}
         isDisabled={false}
-        isChecked={ownerApplicant}
+        isChecked={cycleStatus}
         onChange={(e) => {
           let value = e.target.checked;
           if (onChange) {
             const modelFields = {
-              ownerID,
-              institution,
-              estimatedAmount,
-              ownerApplicant: value,
+              cycleStartDate,
+              cycleEndDate,
+              cycleStatus: value,
+              cycleSeason,
             };
             const result = onChange(modelFields);
-            value = result?.ownerApplicant ?? value;
+            value = result?.cycleStatus ?? value;
           }
-          if (errors.ownerApplicant?.hasError) {
-            runValidationTasks("ownerApplicant", value);
+          if (errors.cycleStatus?.hasError) {
+            runValidationTasks("cycleStatus", value);
           }
-          setOwnerApplicant(value);
+          setCycleStatus(value);
         }}
-        onBlur={() => runValidationTasks("ownerApplicant", ownerApplicant)}
-        errorMessage={errors.ownerApplicant?.errorMessage}
-        hasError={errors.ownerApplicant?.hasError}
-        {...getOverrideProps(overrides, "ownerApplicant")}
+        onBlur={() => runValidationTasks("cycleStatus", cycleStatus)}
+        errorMessage={errors.cycleStatus?.errorMessage}
+        hasError={errors.cycleStatus?.hasError}
+        {...getOverrideProps(overrides, "cycleStatus")}
       ></SwitchField>
+      <TextField
+        label="Cycle season"
+        isRequired={false}
+        isReadOnly={false}
+        value={cycleSeason}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              cycleStartDate,
+              cycleEndDate,
+              cycleStatus,
+              cycleSeason: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.cycleSeason ?? value;
+          }
+          if (errors.cycleSeason?.hasError) {
+            runValidationTasks("cycleSeason", value);
+          }
+          setCycleSeason(value);
+        }}
+        onBlur={() => runValidationTasks("cycleSeason", cycleSeason)}
+        errorMessage={errors.cycleSeason?.errorMessage}
+        hasError={errors.cycleSeason?.hasError}
+        {...getOverrideProps(overrides, "cycleSeason")}
+      ></TextField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}
@@ -273,7 +271,7 @@ export default function SavingRecordUpdateForm(props) {
             event.preventDefault();
             resetStateValues();
           }}
-          isDisabled={!(idProp || savingRecordModelProp)}
+          isDisabled={!(idProp || cyclesModelProp)}
           {...getOverrideProps(overrides, "ResetButton")}
         ></Button>
         <Flex
@@ -285,7 +283,7 @@ export default function SavingRecordUpdateForm(props) {
             type="submit"
             variation="primary"
             isDisabled={
-              !(idProp || savingRecordModelProp) ||
+              !(idProp || cyclesModelProp) ||
               Object.values(errors).some((e) => e?.hasError)
             }
             {...getOverrideProps(overrides, "SubmitButton")}

@@ -172,11 +172,6 @@
         "hfhapp": {}
       },
       "function": {
-        "applicationchangenotification": {
-          "sesEmail": "support@nimbus-dt.com",
-          "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
-          "s3Key": "amplify-builds/applicationchangenotification-564d6c2b306867486b47-build.zip"
-        },
         "getEmail": {
           "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
           "s3Key": "amplify-builds/getEmail-32656859502b666c474d-build.zip"

@@ -196,7 +196,6 @@ export default function IncomeRecordUpdateForm(props) {
     employer: "",
     estimatedMonthlyIncome: "",
     proofOfIncome: [],
-    applicationID: "",
     ownerApplicant: false,
     employmentTime: "",
   };
@@ -210,9 +209,6 @@ export default function IncomeRecordUpdateForm(props) {
   );
   const [proofOfIncome, setProofOfIncome] = React.useState(
     initialValues.proofOfIncome
-  );
-  const [applicationID, setApplicationID] = React.useState(
-    initialValues.applicationID
   );
   const [ownerApplicant, setOwnerApplicant] = React.useState(
     initialValues.ownerApplicant
@@ -231,7 +227,6 @@ export default function IncomeRecordUpdateForm(props) {
     setEstimatedMonthlyIncome(cleanValues.estimatedMonthlyIncome);
     setProofOfIncome(cleanValues.proofOfIncome ?? []);
     setCurrentProofOfIncomeValue("");
-    setApplicationID(cleanValues.applicationID);
     setOwnerApplicant(cleanValues.ownerApplicant);
     setEmploymentTime(cleanValues.employmentTime);
     setErrors({});
@@ -258,7 +253,6 @@ export default function IncomeRecordUpdateForm(props) {
     employer: [],
     estimatedMonthlyIncome: [],
     proofOfIncome: [],
-    applicationID: [],
     ownerApplicant: [],
     employmentTime: [],
   };
@@ -293,7 +287,6 @@ export default function IncomeRecordUpdateForm(props) {
           employer,
           estimatedMonthlyIncome,
           proofOfIncome,
-          applicationID,
           ownerApplicant,
           employmentTime,
         };
@@ -356,7 +349,6 @@ export default function IncomeRecordUpdateForm(props) {
               employer,
               estimatedMonthlyIncome,
               proofOfIncome,
-              applicationID,
               ownerApplicant,
               employmentTime,
             };
@@ -387,7 +379,6 @@ export default function IncomeRecordUpdateForm(props) {
               employer,
               estimatedMonthlyIncome,
               proofOfIncome,
-              applicationID,
               ownerApplicant,
               employmentTime,
             };
@@ -484,7 +475,6 @@ export default function IncomeRecordUpdateForm(props) {
               employer: value,
               estimatedMonthlyIncome,
               proofOfIncome,
-              applicationID,
               ownerApplicant,
               employmentTime,
             };
@@ -519,7 +509,6 @@ export default function IncomeRecordUpdateForm(props) {
               employer,
               estimatedMonthlyIncome: value,
               proofOfIncome,
-              applicationID,
               ownerApplicant,
               employmentTime,
             };
@@ -548,7 +537,6 @@ export default function IncomeRecordUpdateForm(props) {
               employer,
               estimatedMonthlyIncome,
               proofOfIncome: values,
-              applicationID,
               ownerApplicant,
               employmentTime,
             };
@@ -592,37 +580,6 @@ export default function IncomeRecordUpdateForm(props) {
           {...getOverrideProps(overrides, "proofOfIncome")}
         ></TextField>
       </ArrayField>
-      <TextField
-        label="Application id"
-        isRequired={false}
-        isReadOnly={false}
-        value={applicationID}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              ownerID,
-              typeOfIncome,
-              employer,
-              estimatedMonthlyIncome,
-              proofOfIncome,
-              applicationID: value,
-              ownerApplicant,
-              employmentTime,
-            };
-            const result = onChange(modelFields);
-            value = result?.applicationID ?? value;
-          }
-          if (errors.applicationID?.hasError) {
-            runValidationTasks("applicationID", value);
-          }
-          setApplicationID(value);
-        }}
-        onBlur={() => runValidationTasks("applicationID", applicationID)}
-        errorMessage={errors.applicationID?.errorMessage}
-        hasError={errors.applicationID?.hasError}
-        {...getOverrideProps(overrides, "applicationID")}
-      ></TextField>
       <SwitchField
         label="Owner applicant"
         defaultChecked={false}
@@ -637,7 +594,6 @@ export default function IncomeRecordUpdateForm(props) {
               employer,
               estimatedMonthlyIncome,
               proofOfIncome,
-              applicationID,
               ownerApplicant: value,
               employmentTime,
             };
@@ -672,7 +628,6 @@ export default function IncomeRecordUpdateForm(props) {
               employer,
               estimatedMonthlyIncome,
               proofOfIncome,
-              applicationID,
               ownerApplicant,
               employmentTime: value,
             };

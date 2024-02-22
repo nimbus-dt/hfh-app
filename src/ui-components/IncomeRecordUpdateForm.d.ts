@@ -28,7 +28,6 @@ export declare type IncomeRecordUpdateFormInputValues = {
     employer?: string;
     estimatedMonthlyIncome?: number;
     proofOfIncome?: string[];
-    applicationID?: string;
     ownerApplicant?: boolean;
     employmentTime?: number;
 };
@@ -38,7 +37,6 @@ export declare type IncomeRecordUpdateFormValidationValues = {
     employer?: ValidationFunction<string>;
     estimatedMonthlyIncome?: ValidationFunction<number>;
     proofOfIncome?: ValidationFunction<string>;
-    applicationID?: ValidationFunction<string>;
     ownerApplicant?: ValidationFunction<boolean>;
     employmentTime?: ValidationFunction<number>;
 };
@@ -50,7 +48,6 @@ export declare type IncomeRecordUpdateFormOverridesProps = {
     employer?: PrimitiveOverrideProps<TextFieldProps>;
     estimatedMonthlyIncome?: PrimitiveOverrideProps<TextFieldProps>;
     proofOfIncome?: PrimitiveOverrideProps<TextFieldProps>;
-    applicationID?: PrimitiveOverrideProps<TextFieldProps>;
     ownerApplicant?: PrimitiveOverrideProps<SwitchFieldProps>;
     employmentTime?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
