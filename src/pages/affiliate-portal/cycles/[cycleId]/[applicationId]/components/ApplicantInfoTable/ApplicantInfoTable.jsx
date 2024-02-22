@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import DataTable from 'components/DataTable';
 import { Flex } from '@aws-amplify/ui-react';
 import { getStateName } from 'utils/misc';
+import { creditTypes } from 'pages/homeownership/[habitat]/applicant-info/HomeownershipApplicantInfoPage.schema';
 
 const ApplicantInfoTable = ({ applicantInfo, email }) => (
   <Flex direction="column">
@@ -156,6 +157,34 @@ const ApplicantInfoTable = ({ applicantInfo, email }) => (
         ]}
       />
     )}
+    <DataTable
+      subheading="Type of credit"
+      subheadingTextAlign="left"
+      data={[
+        {
+          header: 'Credit type',
+          value: applicantInfo?.props?.typeOfCredit?.creditType ?? '',
+        },
+        ...(applicantInfo?.props.typeOfCredit.creditType === creditTypes[1]
+          ? [
+              {
+                header: 'Total number of borrowers:',
+                value:
+                  applicantInfo?.props?.typeOfCredit?.totalNumberOfBorrowers ??
+                  '',
+              },
+            ]
+          : []),
+        ...(applicantInfo?.props.typeOfCredit.creditType === creditTypes[2]
+          ? [
+              {
+                header: 'Your initials:',
+                value: applicantInfo?.props?.typeOfCredit?.yourInitials ?? '',
+              },
+            ]
+          : []),
+      ]}
+    />
   </Flex>
 );
 
