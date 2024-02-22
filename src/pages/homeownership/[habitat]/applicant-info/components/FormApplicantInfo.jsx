@@ -18,8 +18,10 @@ import { debounce } from 'lodash';
 import {
   addressSchema,
   basicInfoSchema,
+  creditTypes,
   maritalStatusValues,
   ownerShipValues,
+  typeOfCreditSchema,
   unmarriedAddendumSchema,
   unmarriedRelationshipTypesValues,
 } from '../HomeownershipApplicantInfoPage.schema';
@@ -749,6 +751,115 @@ export function UnmarriedAddendum({
 }
 
 UnmarriedAddendum.propTypes = {
+  applicantInfo: PropTypes.object,
+  expanded: PropTypes.bool,
+  onExpandedChange: PropTypes.func,
+  onValid: PropTypes.func,
+  edit: PropTypes.bool,
+  onClickEdit: PropTypes.func,
+};
+
+export function TypeOfCredit({
+  expanded,
+  onExpandedChange,
+  applicantInfo,
+  onValid,
+  edit,
+  onClickEdit,
+}) {
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(typeOfCreditSchema),
+    shouldFocusError: false,
+    reValidateMode: 'onBlur',
+    values: applicantInfo?.props?.typeOfCredit,
+  });
+
+  const isEnabled = !applicantInfo?.props?.typeOfCredit || edit;
+
+  const creditTypeWatch = watch('creditType');
+
+  return (
+    <CustomExpandableCard
+      title={`${getCheckOrExEmoji(
+        applicantInfo?.props?.typeOfCredit !== undefined
+      )} Type of Credit`}
+      expanded={expanded}
+      onExpandedChange={onExpandedChange}
+    >
+      <form onSubmit={handleSubmit(onValid)}>
+        <Controller
+          control={control}
+          name="creditType"
+          defaultValue={creditTypes[0]}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <RadioGroupField
+              name="creditType"
+              label="Credit type:"
+              onChange={(e) => onChange(e.target.value)}
+              onBlur={onBlur}
+              value={value}
+              isRequired
+              isDisabled={!isEnabled}
+            >
+              {creditTypes.map((creditType) => (
+                <Radio key={creditType} value={creditType}>
+                  {creditType}
+                </Radio>
+              ))}
+            </RadioGroupField>
+          )}
+        />
+        <br />
+        {creditTypeWatch === creditTypes[1] && (
+          <>
+            <TextField
+              label="Total number of borrowers:"
+              type="number"
+              {...register('totalNumberOfBorrowers')}
+              errorMessage="Invalid number of borrowers"
+              hasError={errors?.totalNumberOfBorrowers !== undefined}
+              isRequired
+              isDisabled={!isEnabled}
+            />
+            <br />
+          </>
+        )}
+        {creditTypeWatch === creditTypes[2] && (
+          <>
+            <TextField
+              label="Your initials:"
+              {...register('youtInitials')}
+              hasError={errors?.youtInitials !== undefined}
+              isRequired
+              isDisabled={!isEnabled}
+            />
+            <br />
+          </>
+        )}
+        <Flex width="100%" justifyContent="end">
+          {applicantInfo?.props?.typeOfCredit ? (
+            <Button onClick={onClickEdit} variation="secondary">
+              {edit ? 'Cancel' : 'Edit'}
+            </Button>
+          ) : null}
+          {isEnabled ? (
+            <Button type="submit" variation="primary">
+              Save
+            </Button>
+          ) : null}
+        </Flex>
+      </form>
+    </CustomExpandableCard>
+  );
+}
+
+TypeOfCredit.propTypes = {
   applicantInfo: PropTypes.object,
   expanded: PropTypes.bool,
   onExpandedChange: PropTypes.func,
