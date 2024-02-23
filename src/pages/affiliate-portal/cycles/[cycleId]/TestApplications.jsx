@@ -376,9 +376,7 @@ const TestApplications = () => {
                       >
                         {[
                           DEFAULT_REVIEW_STATUS,
-                          ...(habitat
-                            ? habitat.props.customStatus || []
-                            : []),
+                          ...(habitat ? habitat.props.customStatus || [] : []),
                         ].map((selectedStatus) => (
                           <option key={selectedStatus} value={selectedStatus}>
                             {selectedStatus}
