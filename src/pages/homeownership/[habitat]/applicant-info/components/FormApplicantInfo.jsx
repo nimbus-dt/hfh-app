@@ -4,12 +4,17 @@ import {
   Radio,
   Button,
   Flex,
+  SelectField,
 } from '@aws-amplify/ui-react';
 import PropTypes from 'prop-types';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { getCheckOrExEmoji } from 'utils/misc';
 import CustomExpandableCard from 'components/CustomExpandableCard';
+import SearchableSelectInput from 'components/SearchableSelectInput';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { API } from 'aws-amplify';
+import { debounce } from 'lodash';
 import {
   addressSchema,
   basicInfoSchema,
@@ -18,6 +23,7 @@ import {
   unmarriedAddendumSchema,
   unmarriedRelationshipTypesValues,
 } from '../HomeownershipApplicantInfoPage.schema';
+import states from '../../../../../assets/jsons/states.json';
 
 export function BasicInformation({
   applicantInfo,
@@ -197,19 +203,74 @@ export function Address({
   edit,
   onClickEdit,
 }) {
+  const [cities, setCities] = useState([]);
+
+  const formattedValues = useMemo(() => {
+    if (applicantInfo?.props?.currentAddress !== undefined) {
+      return {
+        ...applicantInfo.props.currentAddress,
+        city: {
+          selectedCity: {
+            id: applicantInfo.props.currentAddress.city,
+            label: applicantInfo.props.currentAddress.city,
+          },
+          query: applicantInfo.props.currentAddress.city,
+        },
+      };
+    }
+  }, [applicantInfo]);
+
   const {
+    resetField,
     register,
     handleSubmit,
     control,
     formState: { errors },
+    watch,
   } = useForm({
     resolver: zodResolver(addressSchema),
-    shouldFocusError: false,
-    reValidateMode: 'onBlur',
-    values: applicantInfo?.props?.currentAddress,
+    values: formattedValues,
   });
 
   const isEnabled = !applicantInfo?.props?.currentAddress || edit;
+
+  const watchState = watch('state');
+
+  const watchCityQuery = watch('city');
+
+  const getApplicantCurrentAddressCities = useCallback(
+    debounce(async (cityNameQuery, state) => {
+      try {
+        const newCities = await API.get(
+          'public',
+          `/cities?cityNameQuery=${cityNameQuery}&state=${state}`
+        );
+
+        setCities(
+          newCities.map((city) => ({
+            id: city.city,
+            label: city.city,
+          }))
+        );
+      } catch (error) {
+        console.log('Error fetching cities.');
+      }
+    }, 350),
+    []
+  );
+
+  useEffect(() => {
+    getApplicantCurrentAddressCities(watchCityQuery?.query, watchState);
+  }, [watchCityQuery, watchState]);
+
+  useEffect(() => {
+    resetField('city', {
+      defaultValue: {
+        query: '',
+      },
+    });
+    setCities([]);
+  }, [watchState]);
 
   return (
     <CustomExpandableCard
@@ -221,13 +282,60 @@ export function Address({
     >
       <form onSubmit={handleSubmit(onValid)}>
         <TextField
-          label="What is your present address?"
+          label="What is your present street address?"
           placeholder="70 Morningside Dr, New York, New York, 10027"
-          {...register('address')}
-          errorMessage="Address must contain at least 1 character"
+          {...register('street')}
+          errorMessage="Street address must contain at least 1 character"
           hasError={errors?.address !== undefined}
           isRequired
           isDisabled={!isEnabled}
+        />
+        <br />
+        <SelectField
+          label="State"
+          {...register('state')}
+          errorMessage="Invalid state"
+          hasError={errors?.address !== undefined}
+          isRequired
+          isDisabled={!isEnabled}
+          defaultValue=""
+        >
+          {states.map((state) => (
+            <option key={state.abbreviation} value={state.abbreviation}>
+              {state.name}
+            </option>
+          ))}
+        </SelectField>
+        <br />
+        <Controller
+          control={control}
+          name="city"
+          defaultValue={{
+            query: '',
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <SearchableSelectInput
+              name="city"
+              label="City:"
+              options={cities}
+              value={value?.query}
+              selectedOption={value?.selectedCity}
+              onClickOption={(newSelectedOption) =>
+                onChange({ ...value, selectedCity: newSelectedOption })
+              }
+              onChange={(event) => {
+                onChange({ ...value, query: event.currentTarget.value });
+              }}
+              onBlur={onBlur}
+              onUnselect={() =>
+                onChange({ query: '', selectedCity: undefined })
+              }
+              isDisabled={!isEnabled}
+              errorMessage="Invalid city"
+              hasError={errors?.city?.selectedCity !== undefined}
+              isRequired
+            />
+          )}
         />
         <br />
         <TextField
@@ -297,19 +405,76 @@ export function PrevAddress({
   edit,
   onClickEdit,
 }) {
+  const [cities, setCities] = useState([]);
+
+  const formattedValues = useMemo(() => {
+    if (applicantInfo?.props?.previousAddress !== undefined) {
+      return {
+        ...applicantInfo.props.previousAddress,
+        city: {
+          selectedCity: {
+            id: applicantInfo.props.previousAddress.city,
+            label: applicantInfo.props.previousAddress.city,
+          },
+          query: applicantInfo.props.previousAddress.city,
+        },
+      };
+    }
+  }, [applicantInfo]);
+
   const {
     register,
     handleSubmit,
     control,
     formState: { errors },
+    watch,
+    resetField,
   } = useForm({
     resolver: zodResolver(addressSchema),
     shouldFocusError: false,
     reValidateMode: 'onBlur',
-    values: applicantInfo?.props?.previousAddress,
+    values: formattedValues,
   });
 
   const isEnabled = !applicantInfo?.props?.previousAddress || edit;
+
+  const watchState = watch('state');
+
+  const watchCityQuery = watch('city');
+
+  const getApplicantCurrentAddressCities = useCallback(
+    debounce(async (cityNameQuery, state) => {
+      try {
+        const newCities = await API.get(
+          'public',
+          `/cities?cityNameQuery=${cityNameQuery}&state=${state}`
+        );
+
+        setCities(
+          newCities.map((city) => ({
+            id: city.city,
+            label: city.city,
+          }))
+        );
+      } catch (error) {
+        console.log('Error fetching cities.');
+      }
+    }, 350),
+    []
+  );
+
+  useEffect(() => {
+    getApplicantCurrentAddressCities(watchCityQuery?.query, watchState);
+  }, [watchCityQuery, watchState]);
+
+  useEffect(() => {
+    resetField('city', {
+      defaultValue: {
+        query: '',
+      },
+    });
+    setCities([]);
+  }, [watchState]);
 
   return (
     <CustomExpandableCard
@@ -321,13 +486,60 @@ export function PrevAddress({
     >
       <form onSubmit={handleSubmit(onValid)}>
         <TextField
-          label="What is your previous address?"
+          label="What is your previous street address?"
           placeholder="70 Morningside Dr, New York, New York, 10027"
-          {...register('address')}
-          errorMessage="Address must contain at least 1 character"
+          {...register('street')}
+          errorMessage="Street address must contain at least 1 character"
           hasError={errors?.address !== undefined}
           isRequired
           isDisabled={!isEnabled}
+        />
+        <br />
+        <SelectField
+          label="State"
+          {...register('state')}
+          errorMessage="Invalid state"
+          hasError={errors?.address !== undefined}
+          isRequired
+          isDisabled={!isEnabled}
+          defaultValue=""
+        >
+          {states.map((state) => (
+            <option key={state.abbreviation} value={state.abbreviation}>
+              {state.name}
+            </option>
+          ))}
+        </SelectField>
+        <br />
+        <Controller
+          control={control}
+          name="city"
+          defaultValue={{
+            query: '',
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <SearchableSelectInput
+              name="city"
+              label="City:"
+              options={cities}
+              value={value?.query}
+              selectedOption={value?.selectedCity}
+              onClickOption={(newSelectedOption) =>
+                onChange({ ...value, selectedCity: newSelectedOption })
+              }
+              onChange={(event) => {
+                onChange({ ...value, query: event.currentTarget.value });
+              }}
+              onBlur={onBlur}
+              onUnselect={() =>
+                onChange({ query: '', selectedCity: undefined })
+              }
+              isDisabled={!isEnabled}
+              errorMessage="Invalid city"
+              hasError={errors?.city?.selectedCity !== undefined}
+              isRequired
+            />
+          )}
         />
         <br />
         <TextField
