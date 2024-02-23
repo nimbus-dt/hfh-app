@@ -5,12 +5,18 @@ import {
   Flex,
   Radio,
   RadioGroupField,
+  SelectField,
   TextField,
 } from '@aws-amplify/ui-react';
 import PropTypes from 'prop-types';
 import { formatPhoneNumber } from 'utils/formatters';
 import CustomExpandableCard from 'components/CustomExpandableCard';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { debounce } from 'lodash';
+import { API } from 'aws-amplify';
+import SearchableSelectInput from 'components/SearchableSelectInput';
 import { currentEmploymentSchema } from '../HomeownershipEmploymentPage.schema';
+import states from '../../../../../assets/jsons/states.json';
 
 const CurrentEmployment = ({
   employmentInfo,
@@ -20,16 +26,35 @@ const CurrentEmployment = ({
   edit,
   onClickEdit,
 }) => {
+  const [cities, setCities] = useState([]);
+
+  const formattedValues = useMemo(() => {
+    if (employmentInfo?.props?.currentEmployment !== undefined) {
+      return {
+        ...employmentInfo.props.currentEmployment,
+        employerCity: {
+          selectedCity: {
+            id: employmentInfo.props.currentEmployment.employerCity,
+            label: employmentInfo.props.currentEmployment.employerCity,
+          },
+          query: employmentInfo.props.currentEmployment.employerCity,
+        },
+      };
+    }
+  }, [employmentInfo]);
+
   const {
     control,
     register,
     handleSubmit,
     formState: { errors },
+    watch,
+    resetField,
   } = useForm({
     resolver: zodResolver(currentEmploymentSchema),
     shouldFocusError: false,
     reValidateMode: 'onBlur',
-    values: employmentInfo?.props?.currentEmployment,
+    values: formattedValues,
   });
 
   const isEnabled = !employmentInfo?.props?.currentEmployment || edit;
@@ -38,6 +63,43 @@ const CurrentEmployment = ({
     const formattedNumber = formatPhoneNumber(event.target.value);
     event.target.value = formattedNumber;
   };
+  const watchState = watch('employerState');
+
+  const watchCityQuery = watch('employerCity');
+
+  const getApplicantCurrentAddressCities = useCallback(
+    debounce(async (cityNameQuery, state) => {
+      try {
+        const newCities = await API.get(
+          'public',
+          `/cities?cityNameQuery=${cityNameQuery}&state=${state}`
+        );
+
+        setCities(
+          newCities.map((city) => ({
+            id: city.city,
+            label: city.city,
+          }))
+        );
+      } catch (error) {
+        console.log('Error fetching cities.');
+      }
+    }, 350),
+    []
+  );
+
+  useEffect(() => {
+    getApplicantCurrentAddressCities(watchCityQuery?.query, watchState);
+  }, [watchCityQuery, watchState]);
+
+  useEffect(() => {
+    resetField('employerCity', {
+      defaultValue: {
+        query: '',
+      },
+    });
+    setCities([]);
+  }, [watchState]);
 
   return (
     <CustomExpandableCard
@@ -58,12 +120,60 @@ const CurrentEmployment = ({
         />
         <br />
         <TextField
-          label="What is the address of your current employer?"
-          {...register('employerAddress')}
-          errorMessage="Address must contain at least 1 character"
-          hasError={errors?.employerAddress !== undefined}
+          label="What is the street address of your current employer?"
+          placeholder="70 Morningside Dr, New York, New York, 10027"
+          {...register('employerStreet')}
+          errorMessage="Street address must contain at least 1 character"
+          hasError={errors?.employerStreet !== undefined}
           isRequired
           isDisabled={!isEnabled}
+        />
+        <br />
+        <SelectField
+          label="State"
+          {...register('employerState')}
+          errorMessage="Invalid state"
+          hasError={errors?.address !== undefined}
+          isRequired
+          isDisabled={!isEnabled}
+          defaultValue=""
+        >
+          {states.map((state) => (
+            <option key={state.abbreviation} value={state.abbreviation}>
+              {state.name}
+            </option>
+          ))}
+        </SelectField>
+        <br />
+        <Controller
+          control={control}
+          name="employerCity"
+          defaultValue={{
+            query: '',
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <SearchableSelectInput
+              name="employerCity"
+              label="City:"
+              options={cities}
+              value={value?.query}
+              selectedOption={value?.selectedCity}
+              onClickOption={(newSelectedOption) =>
+                onChange({ ...value, selectedCity: newSelectedOption })
+              }
+              onChange={(event) => {
+                onChange({ ...value, query: event.currentTarget.value });
+              }}
+              onBlur={onBlur}
+              onUnselect={() =>
+                onChange({ query: '', selectedCity: undefined })
+              }
+              isDisabled={!isEnabled}
+              errorMessage="Invalid city"
+              hasError={errors?.city?.selectedCity !== undefined}
+              isRequired
+            />
+          )}
         />
         <br />
         <TextField
