@@ -86,6 +86,9 @@ export default function HomeownershipEmploymentPage() {
 
   const onValidCurrentEmployment = async (data) => {
     try {
+      const { employerCity, ...newData } = data;
+
+      newData.employerCity = employerCity.selectedCity.label;
       const original = await DataStore.query(EmploymentInfo, employmentInfo.id);
       const persistedEmploymentInfo = await DataStore.save(
         EmploymentInfo.copyOf(original, (originalEmploymentInfo) => {
@@ -96,7 +99,7 @@ export default function HomeownershipEmploymentPage() {
               habitat?.props.homeownershipMinCurrentEmploymentMonths
                 ? undefined
                 : original.props.previousEmployment,
-            currentEmployment: data,
+            currentEmployment: newData,
           };
         })
       );
@@ -132,6 +135,9 @@ export default function HomeownershipEmploymentPage() {
 
   const onValidPreviousEmployment = async (data) => {
     try {
+      const { employerCity, ...newData } = data;
+
+      newData.employerCity = employerCity.selectedCity.label;
       const original = await DataStore.query(EmploymentInfo, employmentInfo.id);
       const persistedEmploymentInfo = await DataStore.save(
         EmploymentInfo.copyOf(original, (originalEmploymentInfo) => {
