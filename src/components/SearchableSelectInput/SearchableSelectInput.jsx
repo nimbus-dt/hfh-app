@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import useCloseContextMenu from 'hooks/utils/useCloseContextMenu';
 import { Button, Flex, TextField, View } from '@aws-amplify/ui-react';
-import { boolean } from 'zod';
 import { MdClose } from 'react-icons/md';
 
 const SelectWithSearch = ({
@@ -52,7 +51,9 @@ const SelectWithSearch = ({
         label={label}
         {...inputProperties}
         value={selectedOption === undefined ? value : selectedOption.label}
-        isDisabled={selectedOption === undefined ? isDisabled : true}
+        isDisabled={isDisabled}
+        isReadOnly={selectedOption !== undefined}
+        autoComplete="off"
         outerEndComponent={
           selectedOption !== undefined && (
             <Button
@@ -63,6 +64,7 @@ const SelectWithSearch = ({
               //   }`}
               title="Cancelar seleccion"
               onClick={onUnselect}
+              isDisabled={isDisabled}
             >
               <MdClose size="1.25rem" />
             </Button>
@@ -71,7 +73,7 @@ const SelectWithSearch = ({
         onFocus={handleOpen}
       />
 
-      {isFocused && (
+      {isFocused && options.length > 0 && (
         <Flex
           direction="column"
           position="absolute"
@@ -92,7 +94,7 @@ const SelectWithSearch = ({
               key={option.id}
               onClick={(event) => {
                 event.stopPropagation();
-                onClickOption(option.id);
+                onClickOption(option);
                 handleClose();
               }}
             >
@@ -105,7 +107,7 @@ const SelectWithSearch = ({
   );
 };
 
-const TId = PropTypes.oneOfType((PropTypes.string, PropTypes.number));
+const TId = PropTypes.oneOfType([PropTypes.string, PropTypes.number]);
 
 const IOption = PropTypes.shape({
   id: TId,
@@ -119,7 +121,7 @@ SelectWithSearch.propTypes = {
   onClickOption: PropTypes.func,
   onUnselect: PropTypes.func,
   value: TId,
-  isDisabled: boolean,
+  isDisabled: PropTypes.bool,
 };
 
 export default SelectWithSearch;
