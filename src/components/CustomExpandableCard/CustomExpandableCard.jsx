@@ -48,16 +48,19 @@ const CustomExpandableCard = forwardRef(
         wrap
         width={width}
         borderRadius="10px"
-        height={getExpandedValue() ? '100%' : '50px'}
-        overflow="clip"
         ref={ref}
       >
         <Flex direction="column" width="100%" height="100%">
-          <Flex direction="row" width="100%" justifyContent="space-between">
+          <Flex
+            direction="row"
+            width="100%"
+            justifyContent="space-between"
+            alignItems="center"
+          >
             <Text fontWeight="bold">{title}</Text>
             {getExpandedValue() ? upArrow : downArrow}
           </Flex>
-          {children}
+          {getExpandedValue() && children}
         </Flex>
       </Card>
     );
