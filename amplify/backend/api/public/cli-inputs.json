@@ -7,6 +7,13 @@
       "permissions": {
         "setting": "open"
       }
+    },
+    "/cities": {
+      "name": "/cities",
+      "lambdaFunction": "getCitiesByNameAndState",
+      "permissions": {
+        "setting": "open"
+      }
     }
   }
 }

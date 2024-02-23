@@ -33,6 +33,13 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
+    "getCitiesByNameAndState": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "getEmail": {
       "Arn": "string",
       "LambdaExecutionRole": "string",

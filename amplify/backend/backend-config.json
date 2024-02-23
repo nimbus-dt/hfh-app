@@ -30,6 +30,14 @@
           ],
           "category": "function",
           "resourceName": "sendEmailToAdmin"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "getCitiesByNameAndState"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -91,6 +99,11 @@
     }
   },
   "function": {
+    "getCitiesByNameAndState": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "getEmail": {
       "build": true,
       "dependsOn": [
@@ -128,6 +141,22 @@
   },
   "hosting": {},
   "parameters": {
+    "AMPLIFY_function_getCitiesByNameAndState_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getCitiesByNameAndState"
+        }
+      ]
+    },
+    "AMPLIFY_function_getCitiesByNameAndState_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getCitiesByNameAndState"
+        }
+      ]
+    },
     "AMPLIFY_function_getEmail_deploymentBucketName": {
       "usedBy": [
         {
