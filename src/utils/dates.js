@@ -30,7 +30,6 @@ export const calculateAge = (dob) => {
 export const calculateAgeInMonths = (dob) => {
   const dobDate = new Date(dob);
   const currentDate = new Date();
-
   const monthsDiff = (currentDate.getFullYear() - dobDate.getFullYear()) * 12;
   const currentMonth = currentDate.getMonth();
   const dobMonth = dobDate.getMonth();
@@ -43,7 +42,7 @@ export const calculateAgeInMonths = (dob) => {
     return monthsDiff + (currentMonth - 12);
   }
 
-  return monthsDiff + (currentDate - dobMonth);
+  return monthsDiff + (currentMonth - dobMonth);
 };
 
 /**
