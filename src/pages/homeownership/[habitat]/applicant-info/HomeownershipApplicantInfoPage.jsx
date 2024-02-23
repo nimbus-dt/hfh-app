@@ -153,12 +153,15 @@ export default function HomeownershipApplicantInfoPage() {
 
   const onValidCurrentAddress = async (data) => {
     try {
+      const { city, ...newData } = data;
+
+      newData.city = data.city.selectedCity.label;
       if (applicantInfo === undefined) {
         const persistedApplicantInfo = await DataStore.save(
           new ApplicantInfo({
             ownerID: application.id,
             props: {
-              currentAddress: data,
+              currentAddress: newData,
             },
           })
         );
@@ -182,7 +185,7 @@ export default function HomeownershipApplicantInfoPage() {
                 habitat?.props.homeownershipMinCurrentAddressMonths
                   ? undefined
                   : original.props.previousAddress,
-              currentAddress: { ...data },
+              currentAddress: newData,
             };
           })
         );
@@ -213,13 +216,16 @@ export default function HomeownershipApplicantInfoPage() {
 
   const onValidPreviousAddress = async (data) => {
     try {
+      const { city, ...newData } = data;
+
+      newData.city = data.city.selectedCity.label;
       const original = await DataStore.query(ApplicantInfo, applicantInfo.id);
       const persistedApplicantInfo = await DataStore.save(
         ApplicantInfo.copyOf(original, (originalApplicantInfo) => {
           originalApplicantInfo.ownerID = application.id;
           originalApplicantInfo.props = {
             ...originalApplicantInfo.props,
-            previousAddress: { ...data },
+            previousAddress: newData,
           };
         })
       );
