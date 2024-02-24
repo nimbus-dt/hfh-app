@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import DataTable from 'components/DataTable';
 import { Flex } from '@aws-amplify/ui-react';
+import { getStateName } from 'utils/misc';
 
 const ApplicantInfoTable = ({ applicantInfo, email }) => (
   <Flex direction="column">
@@ -97,8 +98,16 @@ const ApplicantInfoTable = ({ applicantInfo, email }) => (
       subheadingTextAlign="left"
       data={[
         {
-          header: 'Address',
-          value: applicantInfo?.props?.currentAddress?.address ?? '',
+          header: 'Street address',
+          value: applicantInfo?.props?.currentAddress?.street ?? '',
+        },
+        {
+          header: 'State',
+          value: getStateName(applicantInfo?.props?.currentAddress?.state),
+        },
+        {
+          header: 'City',
+          value: applicantInfo?.props?.currentAddress?.city ?? '',
         },
         {
           header: 'Months lived at this address',
@@ -117,8 +126,16 @@ const ApplicantInfoTable = ({ applicantInfo, email }) => (
         divider
         data={[
           {
-            header: 'Address',
-            value: applicantInfo?.props?.previousAddress?.address ?? '',
+            header: 'Street address',
+            value: applicantInfo?.props?.previousAddress?.street ?? '',
+          },
+          {
+            header: 'State',
+            value: getStateName(applicantInfo?.props?.previousAddress?.state),
+          },
+          {
+            header: 'City',
+            value: applicantInfo?.props?.previousAddress?.city ?? '',
           },
           {
             header: 'Months lived at this address',
