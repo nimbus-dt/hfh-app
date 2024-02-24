@@ -3,6 +3,7 @@ import {
   Flex,
   Radio,
   RadioGroupField,
+  SelectField,
   TextField,
 } from '@aws-amplify/ui-react';
 import PropTypes from 'prop-types';
@@ -10,7 +11,9 @@ import { Link } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
 import { getCheckOrExEmoji } from 'utils/misc';
 import CustomExpandableCard from 'components/CustomExpandableCard';
+import SearchableSelectInput from 'components/SearchableSelectInput';
 import LoadingData from '../../LoadingData';
+import states from '../../../../../../../assets/jsons/states.json';
 
 const CurrentEmployment = ({
   employmentInfo,
@@ -57,8 +60,29 @@ const CurrentEmployment = ({
           />
           <br />
           <TextField
-            label="What is the address of your current employer?"
-            value={employmentInfo?.props?.currentEmployment.employerAddress}
+            label="What is the street address of your current employer?"
+            value={employmentInfo?.props?.currentEmployment.employerStreet}
+            isDisabled
+          />
+          <br />
+          <SelectField
+            label="State"
+            value={employmentInfo?.props?.currentEmployment.employerState}
+            isDisabled
+          >
+            {states.map((state) => (
+              <option key={state.abbreviation} value={state.abbreviation}>
+                {state.name}
+              </option>
+            ))}
+          </SelectField>
+          <br />
+          <SearchableSelectInput
+            label="City:"
+            selectedOption={{
+              id: employmentInfo?.props?.currentEmployment.employerCity,
+              label: employmentInfo?.props?.currentEmployment.employerCity,
+            }}
             isDisabled
           />
           <br />
