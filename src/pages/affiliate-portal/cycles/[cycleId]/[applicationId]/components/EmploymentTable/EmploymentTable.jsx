@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import DataTable from 'components/DataTable';
 import { Flex } from '@aws-amplify/ui-react';
+import { getStateName } from 'utils/misc';
 
 const EmploymentTable = ({ employmentInfo }) => (
   <Flex direction="column">
@@ -28,9 +29,19 @@ const EmploymentTable = ({ employmentInfo }) => (
             value: employmentInfo?.props?.currentEmployment?.employerName ?? '',
           },
           {
-            header: 'Address of current employer',
+            header: 'Street address of current employer',
             value:
-              employmentInfo?.props?.currentEmployment?.employerAddress ?? '',
+              employmentInfo?.props?.currentEmployment?.employerStreet ?? '',
+          },
+          {
+            header: 'State',
+            value: getStateName(
+              employmentInfo?.props?.currentEmployment?.employerState
+            ),
+          },
+          {
+            header: 'City',
+            value: employmentInfo?.props?.currentEmployment?.employerCity ?? '',
           },
           {
             header: 'Approximate start date with this employer',
@@ -64,9 +75,20 @@ const EmploymentTable = ({ employmentInfo }) => (
               employmentInfo?.props?.previousEmployment?.employerName ?? '',
           },
           {
-            header: 'Address of previous employer',
+            header: 'Street address of previous employer',
             value:
-              employmentInfo?.props?.previousEmployment?.employerAddress ?? '',
+              employmentInfo?.props?.previousEmployment?.employerStreet ?? '',
+          },
+          {
+            header: 'State',
+            value: getStateName(
+              employmentInfo?.props?.previousEmployment?.employerState
+            ),
+          },
+          {
+            header: 'City',
+            value:
+              employmentInfo?.props?.previousEmployment?.employerCity ?? '',
           },
           {
             header: 'Approximate start date with this employer',
