@@ -4,8 +4,8 @@ import { Authenticator, ScrollView } from '@aws-amplify/ui-react';
 
 import AffiliateLayout from 'pages/affiliate-portal/AffiliateLayout';
 import CyclesPage from 'pages/affiliate-portal/cycles';
-import TestApplications from 'pages/affiliate-portal/cycles/[cycleId]';
-import TestApplicationDetails from 'pages/affiliate-portal/cycles/[cycleId]/[applicationId]';
+import ApplicationsPage from 'pages/affiliate-portal/cycles/[cycleId]';
+import ApplicationDetailsPage from 'pages/affiliate-portal/cycles/[cycleId]/[applicationId]';
 import AffiliatePortalHomePage from 'pages/affiliate-portal/home';
 import AffiliatePortalRepairsPage from 'pages/affiliate-portal/repairs';
 import AffiliatePortalVolunteersPage from 'pages/affiliate-portal/volunteers';
@@ -135,16 +135,16 @@ function App() {
           <Route path="cycles">
             <Route index element={<CyclesPage />} />
             <Route path=":cycleId">
-              <Route index element={<TestApplications />} />
+              <Route index element={<ApplicationsPage />} />
               <Route
                 path=":applicationId"
-                element={<TestApplicationDetails />}
+                element={<ApplicationDetailsPage />}
               />
             </Route>
           </Route>
           <Route path="applications">
-            <Route index element={<TestApplications />} />
-            <Route path=":applicationId" element={<TestApplicationDetails />} />
+            <Route index element={<ApplicationsPage />} />
+            <Route path=":applicationId" element={<ApplicationDetailsPage />} />
           </Route>
           <Route path="repairs" element={<AffiliatePortalRepairsPage />} />
           <Route
