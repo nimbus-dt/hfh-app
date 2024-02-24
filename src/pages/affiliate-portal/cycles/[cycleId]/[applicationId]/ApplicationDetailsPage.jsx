@@ -45,11 +45,11 @@ import EmploymentTable from './components/EmploymentTable';
 import ApplicationMetricsTable from './components/ApplicationMetricsTable';
 import HouseholdTable from './components/HouseholdTable';
 import FinancialSection from './components/FinancialSection';
-import { decideSchema, returnSchema } from '../TestApplicationDetails.schema';
+import { decideSchema, returnSchema } from './ApplicationDetailsPage.schema';
 import ApplicantOptionalTable from './components/ApplicantOptionalTable';
 import PaperApplicationTable from './components/PaperApplicationTable';
 
-const TestApplicationDetails = () => {
+const ApplicationDetailsPage = () => {
   const [userEmail, setUserEmail] = useState();
   const [trigger, setTrigger] = useState(true);
   const [returnModalOpen, setReturnModalOpen] = useState(false);
@@ -412,4 +412,4 @@ const TestApplicationDetails = () => {
   );
 };
 
-export default TestApplicationDetails;
+export default ApplicationDetailsPage;

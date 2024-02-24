@@ -47,7 +47,7 @@ const SUBMISSION_STATUS = [
 
 const perPage = 5;
 
-const TestApplications = () => {
+const ApplicationsPage = () => {
   const { cycleId } = useParams();
   const {
     habitat,
@@ -431,4 +431,4 @@ const TestApplications = () => {
   );
 };
 
-export default TestApplications;
+export default ApplicationsPage;
