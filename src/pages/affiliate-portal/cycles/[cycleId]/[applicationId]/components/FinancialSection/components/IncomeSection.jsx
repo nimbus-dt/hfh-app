@@ -17,8 +17,8 @@ import {
 } from '@aws-amplify/ui-react';
 import { MdMoreHoriz } from 'react-icons/md';
 import CurrencyInput from 'components/CurrencyInput';
-import { incomeTypes } from 'components/Test/Parts/TestFinancial/TestFinancial.schema';
 import { Storage } from 'aws-amplify';
+import { incomeTypes } from 'pages/homeownership/[habitat]/financial/HomeownershipFinancialPage.schema';
 
 const IncomeSection = ({ incomes }) => {
   const [modal, setModal] = useState(false);

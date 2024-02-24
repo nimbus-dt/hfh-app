@@ -10,7 +10,6 @@ import {
   Button,
   Flex,
   Grid,
-  SelectField,
   SwitchField,
   TextField,
 } from "@aws-amplify/ui-react";
@@ -31,17 +30,11 @@ export default function HouseholdMemberCreateForm(props) {
   const initialValues = {
     name: "",
     dateOfBirth: "",
-    sex: "",
-    relationship: "",
     isUnemployed: false,
   };
   const [name, setName] = React.useState(initialValues.name);
   const [dateOfBirth, setDateOfBirth] = React.useState(
     initialValues.dateOfBirth
-  );
-  const [sex, setSex] = React.useState(initialValues.sex);
-  const [relationship, setRelationship] = React.useState(
-    initialValues.relationship
   );
   const [isUnemployed, setIsUnemployed] = React.useState(
     initialValues.isUnemployed
@@ -50,16 +43,12 @@ export default function HouseholdMemberCreateForm(props) {
   const resetStateValues = () => {
     setName(initialValues.name);
     setDateOfBirth(initialValues.dateOfBirth);
-    setSex(initialValues.sex);
-    setRelationship(initialValues.relationship);
     setIsUnemployed(initialValues.isUnemployed);
     setErrors({});
   };
   const validations = {
     name: [],
     dateOfBirth: [],
-    sex: [],
-    relationship: [],
     isUnemployed: [],
   };
   const runValidationTasks = async (
@@ -90,8 +79,6 @@ export default function HouseholdMemberCreateForm(props) {
         let modelFields = {
           name,
           dateOfBirth,
-          sex,
-          relationship,
           isUnemployed,
         };
         const validationResponses = await Promise.all(
@@ -149,8 +136,6 @@ export default function HouseholdMemberCreateForm(props) {
             const modelFields = {
               name: value,
               dateOfBirth,
-              sex,
-              relationship,
               isUnemployed,
             };
             const result = onChange(modelFields);
@@ -178,8 +163,6 @@ export default function HouseholdMemberCreateForm(props) {
             const modelFields = {
               name,
               dateOfBirth: value,
-              sex,
-              relationship,
               isUnemployed,
             };
             const result = onChange(modelFields);
@@ -195,119 +178,6 @@ export default function HouseholdMemberCreateForm(props) {
         hasError={errors.dateOfBirth?.hasError}
         {...getOverrideProps(overrides, "dateOfBirth")}
       ></TextField>
-      <SelectField
-        label="Sex"
-        placeholder="Please select an option"
-        isDisabled={false}
-        value={sex}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              name,
-              dateOfBirth,
-              sex: value,
-              relationship,
-              isUnemployed,
-            };
-            const result = onChange(modelFields);
-            value = result?.sex ?? value;
-          }
-          if (errors.sex?.hasError) {
-            runValidationTasks("sex", value);
-          }
-          setSex(value);
-        }}
-        onBlur={() => runValidationTasks("sex", sex)}
-        errorMessage={errors.sex?.errorMessage}
-        hasError={errors.sex?.hasError}
-        {...getOverrideProps(overrides, "sex")}
-      >
-        <option
-          children="Male"
-          value="MALE"
-          {...getOverrideProps(overrides, "sexoption0")}
-        ></option>
-        <option
-          children="Female"
-          value="FEMALE"
-          {...getOverrideProps(overrides, "sexoption1")}
-        ></option>
-        <option
-          children="Other"
-          value="OTHER"
-          {...getOverrideProps(overrides, "sexoption2")}
-        ></option>
-      </SelectField>
-      <SelectField
-        label="Relationship"
-        placeholder="Please select an option"
-        isDisabled={false}
-        value={relationship}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              name,
-              dateOfBirth,
-              sex,
-              relationship: value,
-              isUnemployed,
-            };
-            const result = onChange(modelFields);
-            value = result?.relationship ?? value;
-          }
-          if (errors.relationship?.hasError) {
-            runValidationTasks("relationship", value);
-          }
-          setRelationship(value);
-        }}
-        onBlur={() => runValidationTasks("relationship", relationship)}
-        errorMessage={errors.relationship?.errorMessage}
-        hasError={errors.relationship?.hasError}
-        {...getOverrideProps(overrides, "relationship")}
-      >
-        <option
-          children="Spouse"
-          value="SPOUSE"
-          {...getOverrideProps(overrides, "relationshipoption0")}
-        ></option>
-        <option
-          children="Son"
-          value="SON"
-          {...getOverrideProps(overrides, "relationshipoption1")}
-        ></option>
-        <option
-          children="Daughter"
-          value="DAUGHTER"
-          {...getOverrideProps(overrides, "relationshipoption2")}
-        ></option>
-        <option
-          children="Nephew"
-          value="NEPHEW"
-          {...getOverrideProps(overrides, "relationshipoption3")}
-        ></option>
-        <option
-          children="Niece"
-          value="NIECE"
-          {...getOverrideProps(overrides, "relationshipoption4")}
-        ></option>
-        <option
-          children="Parent"
-          value="PARENT"
-          {...getOverrideProps(overrides, "relationshipoption5")}
-        ></option>
-        <option
-          children="Sibling"
-          value="SIBLING"
-          {...getOverrideProps(overrides, "relationshipoption6")}
-        ></option>
-        <option
-          children="Other"
-          value="OTHER"
-          {...getOverrideProps(overrides, "relationshipoption7")}
-        ></option>
-      </SelectField>
       <SwitchField
         label="Is unemployed"
         defaultChecked={false}
@@ -319,8 +189,6 @@ export default function HouseholdMemberCreateForm(props) {
             const modelFields = {
               name,
               dateOfBirth,
-              sex,
-              relationship,
               isUnemployed: value,
             };
             const result = onChange(modelFields);

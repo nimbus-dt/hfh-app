@@ -91,29 +91,6 @@
     }
   },
   "function": {
-    "applicationchangenotification": {
-      "build": true,
-      "dependsOn": [
-        {
-          "attributes": [
-            "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput",
-            "GraphQLAPIKeyOutput"
-          ],
-          "category": "api",
-          "resourceName": "hfhapp"
-        },
-        {
-          "attributes": [
-            "BucketName"
-          ],
-          "category": "storage",
-          "resourceName": "s3hfhappstoragebucket"
-        }
-      ],
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
     "getEmail": {
       "build": true,
       "dependsOn": [
@@ -151,30 +128,6 @@
   },
   "hosting": {},
   "parameters": {
-    "AMPLIFY_function_applicationchangenotification_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "applicationchangenotification"
-        }
-      ]
-    },
-    "AMPLIFY_function_applicationchangenotification_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "applicationchangenotification"
-        }
-      ]
-    },
-    "AMPLIFY_function_applicationchangenotification_sesEmail": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "applicationchangenotification"
-        }
-      ]
-    },
     "AMPLIFY_function_getEmail_deploymentBucketName": {
       "usedBy": [
         {
