@@ -25,7 +25,7 @@ const PreviousEmployment = ({
     if (employmentInfo?.props?.previousEmployment !== undefined) {
       return {
         ...employmentInfo.props.previousEmployment,
-        city: {
+        employerCity: {
           selectedCity: {
             id: employmentInfo.props.previousEmployment.employerCity,
             label: employmentInfo.props.previousEmployment.employerCity,

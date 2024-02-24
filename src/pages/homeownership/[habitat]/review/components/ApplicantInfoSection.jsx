@@ -4,6 +4,7 @@ import {
   Radio,
   Button,
   Flex,
+  SelectField,
 } from '@aws-amplify/ui-react';
 import PropTypes from 'prop-types';
 import { Link, useOutletContext } from 'react-router-dom';
@@ -13,12 +14,14 @@ import { DataStore } from 'aws-amplify';
 import { getCheckOrExEmoji } from 'utils/misc';
 import CustomExpandableCard from 'components/CustomExpandableCard';
 
+import SearchableSelectInput from 'components/SearchableSelectInput';
 import LoadingData from './LoadingData';
 import {
   maritalStatusValues,
   ownerShipValues,
   unmarriedRelationshipTypesValues,
 } from '../../applicant-info/HomeownershipApplicantInfoPage.schema';
+import states from '../../../../../assets/jsons/states.json';
 
 const editRoute = '../applicant-info';
 
@@ -301,8 +304,29 @@ const Address = ({
       ) : (
         <>
           <TextField
-            label="What is your present address?"
-            value={applicantInfo.props.currentAddress.address}
+            label="What is your present street address?"
+            isDisabled
+            value={applicantInfo.props.currentAddress.street}
+          />
+          <br />
+          <SelectField
+            label="State"
+            value={applicantInfo.props.currentAddress.state}
+            isDisabled
+          >
+            {states.map((state) => (
+              <option key={state.abbreviation} value={state.abbreviation}>
+                {state.name}
+              </option>
+            ))}
+          </SelectField>
+          <br />
+          <SearchableSelectInput
+            label="City:"
+            selectedOption={{
+              id: applicantInfo.props.currentAddress.city,
+              label: applicantInfo.props.currentAddress.city,
+            }}
             isDisabled
           />
           <br />
@@ -378,8 +402,6 @@ function PrevAddress({
     }
   }, [expanded]);
 
-  useEffect(() => console.log(applicantInfo), [applicantInfo]);
-
   return (
     <CustomExpandableCard
       title={`${getCheckOrExEmoji(
@@ -394,10 +416,33 @@ function PrevAddress({
       ) : (
         <>
           <TextField
-            label="What is your previous address?"
-            value={applicantInfo.props.previousAddress.address}
+            label="What is your previous street address?"
+            value={applicantInfo.props.previousAddress.street}
             isDisabled
           />
+          <br />
+          <SelectField
+            label="State"
+            value={applicantInfo.props.previousAddress.state}
+            isDisabled
+          >
+            {states.map((state) => (
+              <option key={state.abbreviation} value={state.abbreviation}>
+                {state.name}
+              </option>
+            ))}
+          </SelectField>
+          <br />
+
+          <SearchableSelectInput
+            label="City:"
+            selectedOption={{
+              id: applicantInfo.props.previousAddress.city,
+              label: applicantInfo.props.previousAddress.city,
+            }}
+            isDisabled
+          />
+
           <br />
           <TextField
             label="How long did you live at this address, in months?"
