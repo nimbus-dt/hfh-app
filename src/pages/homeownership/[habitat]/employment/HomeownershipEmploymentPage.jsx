@@ -143,7 +143,7 @@ export default function HomeownershipEmploymentPage() {
         EmploymentInfo.copyOf(original, (originalEmploymentInfo) => {
           originalEmploymentInfo.props = {
             ...originalEmploymentInfo.props,
-            previousEmployment: data,
+            previousEmployment: newData,
           };
         })
       );
