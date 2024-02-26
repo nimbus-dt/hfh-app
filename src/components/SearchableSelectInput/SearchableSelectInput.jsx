@@ -97,6 +97,8 @@ const SelectWithSearch = ({
                 onClickOption(option);
                 handleClose();
               }}
+              variation="menu"
+              fontWeight="normal"
             >
               {option.label}
             </Button>
