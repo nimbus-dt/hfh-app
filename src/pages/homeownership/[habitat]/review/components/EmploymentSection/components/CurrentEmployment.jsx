@@ -59,12 +59,7 @@ const CurrentEmployment = ({
             isDisabled
           />
           <br />
-          <TextField
-            label="What is the street address of your current employer?"
-            value={employmentInfo?.props?.currentEmployment.employerStreet}
-            isDisabled
-          />
-          <br />
+
           <SelectField
             label="State"
             value={employmentInfo?.props?.currentEmployment.employerState}
@@ -83,6 +78,12 @@ const CurrentEmployment = ({
               id: employmentInfo?.props?.currentEmployment.employerCity,
               label: employmentInfo?.props?.currentEmployment.employerCity,
             }}
+            isDisabled
+          />
+          <br />
+          <TextField
+            label="Street"
+            value={employmentInfo?.props?.currentEmployment.employerStreet}
             isDisabled
           />
           <br />

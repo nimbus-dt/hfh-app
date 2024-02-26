@@ -303,12 +303,6 @@ const Address = ({
         <LoadingData />
       ) : (
         <>
-          <TextField
-            label="What is your present street address?"
-            isDisabled
-            value={applicantInfo.props.currentAddress.street}
-          />
-          <br />
           <SelectField
             label="State"
             value={applicantInfo.props.currentAddress.state}
@@ -328,6 +322,12 @@ const Address = ({
               label: applicantInfo.props.currentAddress.city,
             }}
             isDisabled
+          />
+          <br />
+          <TextField
+            label="Street"
+            isDisabled
+            value={applicantInfo.props.currentAddress.street}
           />
           <br />
           <TextField
@@ -421,12 +421,6 @@ function PrevAddress({
         <LoadingData />
       ) : (
         <>
-          <TextField
-            label="What is your previous street address?"
-            value={applicantInfo.props.previousAddress.street}
-            isDisabled
-          />
-          <br />
           <SelectField
             label="State"
             value={applicantInfo.props.previousAddress.state}
@@ -445,6 +439,12 @@ function PrevAddress({
               id: applicantInfo.props.previousAddress.city,
               label: applicantInfo.props.previousAddress.city,
             }}
+            isDisabled
+          />
+          <br />
+          <TextField
+            label="Street"
+            value={applicantInfo.props.previousAddress.street}
             isDisabled
           />
           <br />
