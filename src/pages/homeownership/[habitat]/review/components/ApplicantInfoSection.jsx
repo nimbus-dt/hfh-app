@@ -322,11 +322,17 @@ const Address = ({
           </SelectField>
           <br />
           <SearchableSelectInput
-            label="City:"
+            label="City"
             selectedOption={{
               id: applicantInfo.props.currentAddress.city,
               label: applicantInfo.props.currentAddress.city,
             }}
+            isDisabled
+          />
+          <br />
+          <TextField
+            label="Zip code"
+            value={applicantInfo.props.currentAddress.zipCode}
             isDisabled
           />
           <br />
@@ -433,16 +439,20 @@ function PrevAddress({
             ))}
           </SelectField>
           <br />
-
           <SearchableSelectInput
-            label="City:"
+            label="City"
             selectedOption={{
               id: applicantInfo.props.previousAddress.city,
               label: applicantInfo.props.previousAddress.city,
             }}
             isDisabled
           />
-
+          <br />
+          <TextField
+            label="Zip code"
+            value={applicantInfo.props.previousAddress.zipCode}
+            isDisabled
+          />
           <br />
           <TextField
             label="How long did you live at this address, in months?"
