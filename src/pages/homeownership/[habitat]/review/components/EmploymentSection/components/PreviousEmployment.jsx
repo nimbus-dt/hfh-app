@@ -52,12 +52,6 @@ const PreviousEmployment = ({
             isDisabled
           />
           <br />
-          <TextField
-            label="What is the street address of your previous employer?"
-            value={employmentInfo?.props?.previousEmployment.employerStreet}
-            isDisabled
-          />
-          <br />
           <SelectField
             label="State"
             value={employmentInfo?.props?.previousEmployment.employerState}
@@ -70,13 +64,18 @@ const PreviousEmployment = ({
             ))}
           </SelectField>
           <br />
-
           <SearchableSelectInput
             label="City"
             selectedOption={{
               id: employmentInfo?.props?.previousEmployment.employerCity,
               label: employmentInfo?.props?.previousEmployment.employerCity,
             }}
+            isDisabled
+          />
+          <br />
+          <TextField
+            label="Street"
+            value={employmentInfo?.props?.previousEmployment.employerStreet}
             isDisabled
           />
           <br />
