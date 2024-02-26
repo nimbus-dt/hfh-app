@@ -316,7 +316,7 @@ export function Address({
           render={({ field: { onChange, onBlur, value } }) => (
             <SearchableSelectInput
               name="city"
-              label="City:"
+              label="City"
               options={cities}
               value={value?.query}
               selectedOption={value?.selectedCity}
@@ -336,6 +336,16 @@ export function Address({
               isRequired
             />
           )}
+        />
+        <br />
+        <TextField
+          label="Zip code"
+          placeholder="12345"
+          {...register('zipCode')}
+          errorMessage={errors?.zipCode?.message}
+          hasError={errors?.zipCode !== undefined}
+          isRequired
+          isDisabled={!isEnabled}
         />
         <br />
         <TextField
@@ -520,7 +530,7 @@ export function PrevAddress({
           render={({ field: { onChange, onBlur, value } }) => (
             <SearchableSelectInput
               name="city"
-              label="City:"
+              label="City"
               options={cities}
               value={value?.query}
               selectedOption={value?.selectedCity}
@@ -540,6 +550,16 @@ export function PrevAddress({
               isRequired
             />
           )}
+        />
+        <br />
+        <TextField
+          label="Zip code"
+          placeholder="12345"
+          {...register('zipCode')}
+          errorMessage={errors?.zipCode?.message}
+          hasError={errors?.zipCode !== undefined}
+          isRequired
+          isDisabled={!isEnabled}
         />
         <br />
         <TextField
