@@ -255,7 +255,7 @@ export function Address({
       } catch (error) {
         console.log('Error fetching cities.');
       }
-    }, 350),
+    }, 150),
     []
   );
 
@@ -459,7 +459,7 @@ export function PrevAddress({
       } catch (error) {
         console.log('Error fetching cities.');
       }
-    }, 350),
+    }, 150),
     []
   );
 
