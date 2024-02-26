@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { searchableOptionSchema } from 'utils/schemas';
+import { searchableOptionSchema, zipCodeSchema } from 'utils/schemas';
 import states from '../../../../assets/jsons/states.json';
 
 export const maritalStatusValues = [
@@ -52,6 +52,7 @@ export const addressSchema = z.object({
     query: z.string().optional(),
     selectedCity: searchableOptionSchema,
   }),
+  zipCode: zipCodeSchema,
   ownershipStatus: z.enum(ownerShipValues),
   monthsLivedHere: z.coerce.number().int().positive(),
 });
