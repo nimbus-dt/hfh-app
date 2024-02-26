@@ -115,7 +115,7 @@ const PreviousEmployment = ({
         <br />
         <TextField
           label="What is the street address of your previous employer?"
-          placeholder="70 Morningside Dr, New York, New York, 10027"
+          placeholder="70 Morningside Dr"
           {...register('employerStreet')}
           errorMessage="Street address must contain at least 1 character"
           hasError={errors?.employerStreet !== undefined}
