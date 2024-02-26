@@ -98,16 +98,16 @@ const ApplicantInfoTable = ({ applicantInfo, email }) => (
       subheadingTextAlign="left"
       data={[
         {
-          header: 'Street address',
-          value: applicantInfo?.props?.currentAddress?.street ?? '',
-        },
-        {
           header: 'State',
           value: getStateName(applicantInfo?.props?.currentAddress?.state),
         },
         {
           header: 'City',
           value: applicantInfo?.props?.currentAddress?.city ?? '',
+        },
+        {
+          header: 'Street',
+          value: applicantInfo?.props?.currentAddress?.street ?? '',
         },
         {
           header: 'Zip code',
@@ -130,16 +130,16 @@ const ApplicantInfoTable = ({ applicantInfo, email }) => (
         divider
         data={[
           {
-            header: 'Street address',
-            value: applicantInfo?.props?.previousAddress?.street ?? '',
-          },
-          {
             header: 'State',
             value: getStateName(applicantInfo?.props?.previousAddress?.state),
           },
           {
             header: 'City',
             value: applicantInfo?.props?.previousAddress?.city ?? '',
+          },
+          {
+            header: 'Street',
+            value: applicantInfo?.props?.previousAddress?.street ?? '',
           },
           {
             header: 'Zip code',
