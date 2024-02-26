@@ -148,7 +148,7 @@ const PreviousEmployment = ({
           render={({ field: { onChange, onBlur, value } }) => (
             <SearchableSelectInput
               name="employerCity"
-              label="City:"
+              label="City"
               options={cities}
               value={value?.query}
               selectedOption={value?.selectedCity}
@@ -168,6 +168,16 @@ const PreviousEmployment = ({
               isRequired
             />
           )}
+        />
+        <br />
+        <TextField
+          label="Zip code"
+          placeholder="12345"
+          {...register('employerZipCode')}
+          errorMessage={errors?.employerZipCode?.message}
+          hasError={errors?.employerZipCode !== undefined}
+          isRequired
+          isDisabled={!isEnabled}
         />
         <br />
         <TextField

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { searchableOptionSchema } from 'utils/schemas';
+import { searchableOptionSchema, zipCodeSchema } from 'utils/schemas';
 import states from '../../../../assets/jsons/states.json';
 
 const phoneSchema = z
@@ -21,6 +21,7 @@ const employmentSchema = z.object({
     query: z.string().optional(),
     selectedCity: searchableOptionSchema,
   }),
+  employerZipCode: zipCodeSchema,
   startDate: z.string(),
   businessType: z.string().min(1),
   businessPhone: phoneSchema,
