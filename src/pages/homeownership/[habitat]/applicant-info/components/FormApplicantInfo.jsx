@@ -283,7 +283,7 @@ export function Address({
       <form onSubmit={handleSubmit(onValid)}>
         <TextField
           label="What is your present street address?"
-          placeholder="70 Morningside Dr, New York, New York, 10027"
+          placeholder="70 Morningside Dr"
           {...register('street')}
           errorMessage="Street address must contain at least 1 character"
           hasError={errors?.address !== undefined}
@@ -497,7 +497,7 @@ export function PrevAddress({
       <form onSubmit={handleSubmit(onValid)}>
         <TextField
           label="What is your previous street address?"
-          placeholder="70 Morningside Dr, New York, New York, 10027"
+          placeholder="70 Morningside Dr"
           {...register('street')}
           errorMessage="Street address must contain at least 1 character"
           hasError={errors?.address !== undefined}
