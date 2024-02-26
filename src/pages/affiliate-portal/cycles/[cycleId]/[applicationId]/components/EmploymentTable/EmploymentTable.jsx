@@ -44,6 +44,11 @@ const EmploymentTable = ({ employmentInfo }) => (
             value: employmentInfo?.props?.currentEmployment?.employerCity ?? '',
           },
           {
+            header: 'Zip code',
+            value:
+              employmentInfo?.props?.currentEmployment?.employerZipCode ?? '',
+          },
+          {
             header: 'Approximate start date with this employer',
             value: employmentInfo?.props?.currentEmployment?.startDate ?? '',
           },
@@ -89,6 +94,11 @@ const EmploymentTable = ({ employmentInfo }) => (
             header: 'City',
             value:
               employmentInfo?.props?.previousEmployment?.employerCity ?? '',
+          },
+          {
+            header: 'Zip code',
+            value:
+              employmentInfo?.props?.previousEmployment?.employerZipCode ?? '',
           },
           {
             header: 'Approximate start date with this employer',
