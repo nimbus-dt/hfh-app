@@ -119,16 +119,7 @@ const CurrentEmployment = ({
           isDisabled={!isEnabled}
         />
         <br />
-        <TextField
-          label="What is the street address of your current employer?"
-          placeholder="70 Morningside Dr"
-          {...register('employerStreet')}
-          errorMessage="Street address must contain at least 1 character"
-          hasError={errors?.employerStreet !== undefined}
-          isRequired
-          isDisabled={!isEnabled}
-        />
-        <br />
+
         <SelectField
           label="State"
           {...register('employerState')}
@@ -174,6 +165,16 @@ const CurrentEmployment = ({
               isRequired
             />
           )}
+        />
+        <br />
+        <TextField
+          label="Street"
+          placeholder="70 Morningside Dr"
+          {...register('employerStreet')}
+          errorMessage="Street address must contain at least 1 character"
+          hasError={errors?.employerStreet !== undefined}
+          isRequired
+          isDisabled={!isEnabled}
         />
         <br />
         <TextField
