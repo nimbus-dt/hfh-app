@@ -10,7 +10,6 @@ import {
   Button,
   Flex,
   Grid,
-  SelectField,
   SwitchField,
   TextField,
 } from "@aws-amplify/ui-react";
@@ -30,23 +29,16 @@ export default function ApplicationCreateForm(props) {
   } = props;
   const initialValues = {
     ownerID: "",
-    habitatID: "",
     submitted: false,
     dateSubmitted: "",
-    submittedStatus: "",
     habitatRevisor: "",
     dateRevised: "",
     ownerName: "",
-    timeStatus: "",
   };
   const [ownerID, setOwnerID] = React.useState(initialValues.ownerID);
-  const [habitatID, setHabitatID] = React.useState(initialValues.habitatID);
   const [submitted, setSubmitted] = React.useState(initialValues.submitted);
   const [dateSubmitted, setDateSubmitted] = React.useState(
     initialValues.dateSubmitted
-  );
-  const [submittedStatus, setSubmittedStatus] = React.useState(
-    initialValues.submittedStatus
   );
   const [habitatRevisor, setHabitatRevisor] = React.useState(
     initialValues.habitatRevisor
@@ -55,30 +47,23 @@ export default function ApplicationCreateForm(props) {
     initialValues.dateRevised
   );
   const [ownerName, setOwnerName] = React.useState(initialValues.ownerName);
-  const [timeStatus, setTimeStatus] = React.useState(initialValues.timeStatus);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setOwnerID(initialValues.ownerID);
-    setHabitatID(initialValues.habitatID);
     setSubmitted(initialValues.submitted);
     setDateSubmitted(initialValues.dateSubmitted);
-    setSubmittedStatus(initialValues.submittedStatus);
     setHabitatRevisor(initialValues.habitatRevisor);
     setDateRevised(initialValues.dateRevised);
     setOwnerName(initialValues.ownerName);
-    setTimeStatus(initialValues.timeStatus);
     setErrors({});
   };
   const validations = {
     ownerID: [],
-    habitatID: [{ type: "Required" }],
     submitted: [],
     dateSubmitted: [],
-    submittedStatus: [],
     habitatRevisor: [],
     dateRevised: [],
     ownerName: [],
-    timeStatus: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -107,14 +92,11 @@ export default function ApplicationCreateForm(props) {
         event.preventDefault();
         let modelFields = {
           ownerID,
-          habitatID,
           submitted,
           dateSubmitted,
-          submittedStatus,
           habitatRevisor,
           dateRevised,
           ownerName,
-          timeStatus,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -170,14 +152,11 @@ export default function ApplicationCreateForm(props) {
           if (onChange) {
             const modelFields = {
               ownerID: value,
-              habitatID,
               submitted,
               dateSubmitted,
-              submittedStatus,
               habitatRevisor,
               dateRevised,
               ownerName,
-              timeStatus,
             };
             const result = onChange(modelFields);
             value = result?.ownerID ?? value;
@@ -192,38 +171,6 @@ export default function ApplicationCreateForm(props) {
         hasError={errors.ownerID?.hasError}
         {...getOverrideProps(overrides, "ownerID")}
       ></TextField>
-      <TextField
-        label="Habitat id"
-        isRequired={true}
-        isReadOnly={false}
-        value={habitatID}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              ownerID,
-              habitatID: value,
-              submitted,
-              dateSubmitted,
-              submittedStatus,
-              habitatRevisor,
-              dateRevised,
-              ownerName,
-              timeStatus,
-            };
-            const result = onChange(modelFields);
-            value = result?.habitatID ?? value;
-          }
-          if (errors.habitatID?.hasError) {
-            runValidationTasks("habitatID", value);
-          }
-          setHabitatID(value);
-        }}
-        onBlur={() => runValidationTasks("habitatID", habitatID)}
-        errorMessage={errors.habitatID?.errorMessage}
-        hasError={errors.habitatID?.hasError}
-        {...getOverrideProps(overrides, "habitatID")}
-      ></TextField>
       <SwitchField
         label="Submitted"
         defaultChecked={false}
@@ -234,14 +181,11 @@ export default function ApplicationCreateForm(props) {
           if (onChange) {
             const modelFields = {
               ownerID,
-              habitatID,
               submitted: value,
               dateSubmitted,
-              submittedStatus,
               habitatRevisor,
               dateRevised,
               ownerName,
-              timeStatus,
             };
             const result = onChange(modelFields);
             value = result?.submitted ?? value;
@@ -267,14 +211,11 @@ export default function ApplicationCreateForm(props) {
           if (onChange) {
             const modelFields = {
               ownerID,
-              habitatID,
               submitted,
               dateSubmitted: value,
-              submittedStatus,
               habitatRevisor,
               dateRevised,
               ownerName,
-              timeStatus,
             };
             const result = onChange(modelFields);
             value = result?.dateSubmitted ?? value;
@@ -289,54 +230,6 @@ export default function ApplicationCreateForm(props) {
         hasError={errors.dateSubmitted?.hasError}
         {...getOverrideProps(overrides, "dateSubmitted")}
       ></TextField>
-      <SelectField
-        label="Submitted status"
-        placeholder="Please select an option"
-        isDisabled={false}
-        value={submittedStatus}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              ownerID,
-              habitatID,
-              submitted,
-              dateSubmitted,
-              submittedStatus: value,
-              habitatRevisor,
-              dateRevised,
-              ownerName,
-              timeStatus,
-            };
-            const result = onChange(modelFields);
-            value = result?.submittedStatus ?? value;
-          }
-          if (errors.submittedStatus?.hasError) {
-            runValidationTasks("submittedStatus", value);
-          }
-          setSubmittedStatus(value);
-        }}
-        onBlur={() => runValidationTasks("submittedStatus", submittedStatus)}
-        errorMessage={errors.submittedStatus?.errorMessage}
-        hasError={errors.submittedStatus?.hasError}
-        {...getOverrideProps(overrides, "submittedStatus")}
-      >
-        <option
-          children="Accepted"
-          value="ACCEPTED"
-          {...getOverrideProps(overrides, "submittedStatusoption0")}
-        ></option>
-        <option
-          children="Pending"
-          value="PENDING"
-          {...getOverrideProps(overrides, "submittedStatusoption1")}
-        ></option>
-        <option
-          children="Rejected"
-          value="REJECTED"
-          {...getOverrideProps(overrides, "submittedStatusoption2")}
-        ></option>
-      </SelectField>
       <TextField
         label="Habitat revisor"
         isRequired={false}
@@ -347,14 +240,11 @@ export default function ApplicationCreateForm(props) {
           if (onChange) {
             const modelFields = {
               ownerID,
-              habitatID,
               submitted,
               dateSubmitted,
-              submittedStatus,
               habitatRevisor: value,
               dateRevised,
               ownerName,
-              timeStatus,
             };
             const result = onChange(modelFields);
             value = result?.habitatRevisor ?? value;
@@ -380,14 +270,11 @@ export default function ApplicationCreateForm(props) {
           if (onChange) {
             const modelFields = {
               ownerID,
-              habitatID,
               submitted,
               dateSubmitted,
-              submittedStatus,
               habitatRevisor,
               dateRevised: value,
               ownerName,
-              timeStatus,
             };
             const result = onChange(modelFields);
             value = result?.dateRevised ?? value;
@@ -412,14 +299,11 @@ export default function ApplicationCreateForm(props) {
           if (onChange) {
             const modelFields = {
               ownerID,
-              habitatID,
               submitted,
               dateSubmitted,
-              submittedStatus,
               habitatRevisor,
               dateRevised,
               ownerName: value,
-              timeStatus,
             };
             const result = onChange(modelFields);
             value = result?.ownerName ?? value;
@@ -434,49 +318,6 @@ export default function ApplicationCreateForm(props) {
         hasError={errors.ownerName?.hasError}
         {...getOverrideProps(overrides, "ownerName")}
       ></TextField>
-      <SelectField
-        label="Time status"
-        placeholder="Please select an option"
-        isDisabled={false}
-        value={timeStatus}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              ownerID,
-              habitatID,
-              submitted,
-              dateSubmitted,
-              submittedStatus,
-              habitatRevisor,
-              dateRevised,
-              ownerName,
-              timeStatus: value,
-            };
-            const result = onChange(modelFields);
-            value = result?.timeStatus ?? value;
-          }
-          if (errors.timeStatus?.hasError) {
-            runValidationTasks("timeStatus", value);
-          }
-          setTimeStatus(value);
-        }}
-        onBlur={() => runValidationTasks("timeStatus", timeStatus)}
-        errorMessage={errors.timeStatus?.errorMessage}
-        hasError={errors.timeStatus?.hasError}
-        {...getOverrideProps(overrides, "timeStatus")}
-      >
-        <option
-          children="Current"
-          value="CURRENT"
-          {...getOverrideProps(overrides, "timeStatusoption0")}
-        ></option>
-        <option
-          children="Past"
-          value="PAST"
-          {...getOverrideProps(overrides, "timeStatusoption1")}
-        ></option>
-      </SelectField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}

@@ -2,59 +2,39 @@ import './assets/styles/App.css';
 import { Routes, Route, Outlet } from 'react-router-dom';
 import { Authenticator, ScrollView } from '@aws-amplify/ui-react';
 
-import PreLimLayout from 'layouts/PreLimLayout';
-import FormApplicationsPage from 'pages/applicant/prescreen/form/apps';
-import FormPreScreenPage from 'pages/applicant/prescreen/form/app';
-import PreLimHomePage from 'pages/applicant/prescreen/prelim/home';
-import PreLimTermsPage from 'pages/applicant/prescreen/prelim/terms';
-import PreLimQuestionsPage from 'pages/applicant/prescreen/prelim/questions';
-import PreLimResultsPage from 'pages/applicant/prescreen/prelim/results';
-
-import { ApplicantPrescreenLayout } from 'components/PreScreen/ApplicantPrescreenLayout';
-import { TestHome } from 'components/Test/Parts/TestHome';
-import TestApplicantInfo from 'components/Test/Parts/TestApplicantInfo';
-import TestApplicantOptional from 'components/Test/Parts/TestApplicantOptional';
-import TestChecklist from 'components/Test/Parts/TestChecklist';
-import TestWritten from 'components/Test/Parts/TestWritten';
-import TestRecords from 'components/Test/Parts/TestRecords';
-import TestHomeowners from 'components/Test/Parts/TestHomeowners';
-import TestEmployment from 'components/Test/Parts/TestEmployment';
-import TestFinancial from 'components/Test/Parts/TestFinancial';
-import TestReview from 'components/Test/Parts/TestReview';
-
-import AffiliateLayout from 'layouts/AffiliateLayout';
-import AffiliatePrescreensPage from 'pages/affiliate/apps';
-import AffiliateApplicationDetailPage from 'pages/affiliate/application-detail';
-import TestAffiliateLayout from 'layouts/TestAffiliateLayout';
+import AffiliateLayout from 'pages/affiliate-portal/AffiliateLayout';
 import CyclesPage from 'pages/affiliate-portal/cycles';
-import TestApplications from 'pages/affiliate-portal/cycles/[cycleId]';
-import TestApplicationDetails from 'pages/affiliate-portal/cycles/[cycleId]/[applicationId]';
+import ApplicationsPage from 'pages/affiliate-portal/cycles/[cycleId]';
+import ApplicationDetailsPage from 'pages/affiliate-portal/cycles/[cycleId]/[applicationId]';
 import AffiliatePortalHomePage from 'pages/affiliate-portal/home';
 import AffiliatePortalRepairsPage from 'pages/affiliate-portal/repairs';
 import AffiliatePortalVolunteersPage from 'pages/affiliate-portal/volunteers';
 import AffiliatePortalSettingsPage from 'pages/affiliate-portal/settings';
-import { TestTerms } from 'components/Test/Parts/TestTerms';
+
 import { NewLandingLayout } from 'pages/index/Layout/NewLandingLayout';
 import LandingPage from 'pages/index/LandingPage';
 import TermsPage from 'pages/terms/TermsPage';
 import PrivacyPage from 'pages/privacy';
 import ContactPage from 'pages/contact';
-import { TestLayout } from './components/Test/Layout/TestLayout';
-
-import AffiliateSettingsPage from './pages/affiliate/settings';
 
 // eslint-disable-next-line import/no-unresolved
 import '@aws-amplify/ui-react/styles.css';
+import HomeownershipLayout from 'pages/homeownership/HomeownershipLayout';
+import HomeownershipHomePage from 'pages/homeownership/[habitat]/home';
+import HomeownershipTermsPage from 'pages/homeownership/[habitat]/terms';
+import HomeownershipApplicantInfoPage from 'pages/homeownership/[habitat]/applicant-info';
+import HomeownershipApplicantOptionalPage from 'pages/homeownership/[habitat]/applicant-optional';
+import HomeownershipChecklistPage from 'pages/homeownership/[habitat]/checklist';
+import HomeownershipWrittenPage from 'pages/homeownership/[habitat]/written';
+import HomeownershipRecordsPage from 'pages/homeownership/[habitat]/records';
+import HomeownershipHomeownersPage from 'pages/homeownership/[habitat]/homeowners';
+import HomeownershipEmploymentPage from 'pages/homeownership/[habitat]/employment';
+import HomeownershipFinancialPage from 'pages/homeownership/[habitat]/financial';
+import HomeownershipReviewPage from 'pages/homeownership/[habitat]/review';
 import { LandingLayout } from './components/Landing/LandingLayout';
 import { LandingAbout } from './components/Landing/LandingAbout';
 import { LandingReturn } from './components/Landing/LandingReturn';
-import { FormUserForm } from './components/PreScreen/Form/FormUserForm';
-import { FormLayoutNew } from './components/PreScreen/Form/FormLayoutNew';
-import { FormInfoPage } from './components/PreScreen/Form/FormInfoPage';
 import { LandingNewPricing } from './components/Landing/LandingNewPricing';
-import AffiliateHomePage from './pages/affiliate/home';
-import AffiliateRepairsPage from './pages/affiliate/repairs';
-import AffiliateVolunteersPage from './pages/affiliate/volunteers';
 
 function App() {
   return (
@@ -117,47 +97,28 @@ function App() {
         path="homeownership"
         element={
           <Authenticator.Provider>
-            <TestLayout />
+            <HomeownershipLayout />
           </Authenticator.Provider>
         }
       >
         <Route path=":habitat">
-          <Route path="home" element={<TestHome />} />
-          <Route path="terms" element={<TestTerms />} />
-          <Route path="applicant-info" element={<TestApplicantInfo />} />
+          <Route path="home" element={<HomeownershipHomePage />} />
+          <Route path="terms" element={<HomeownershipTermsPage />} />
+          <Route
+            path="applicant-info"
+            element={<HomeownershipApplicantInfoPage />}
+          />
           <Route
             path="applicant-optional"
-            element={<TestApplicantOptional />}
+            element={<HomeownershipApplicantOptionalPage />}
           />
-          <Route path="checklist" element={<TestChecklist />} />
-          <Route path="written" element={<TestWritten />} />
-          <Route path="records" element={<TestRecords />} />
-          <Route path="homeowners" element={<TestHomeowners />} />
-          <Route path="employment" element={<TestEmployment />} />
-          <Route path="financial" element={<TestFinancial />} />
-          <Route path="review" element={<TestReview />} />
-        </Route>
-      </Route>
-
-      <Route path="affiliate">
-        <Route
-          path=":habitat"
-          element={
-            <Authenticator hideDefault>
-              <AffiliateLayout />
-            </Authenticator>
-          }
-        >
-          <Route path="home" element={<AffiliateHomePage />} />
-          <Route path="apps" element={<AffiliatePrescreensPage />} />
-          <Route path="repairs" element={<AffiliateRepairsPage />} />
-          <Route path="volunteers" element={<AffiliateVolunteersPage />} />
-
-          <Route
-            path="applications/:applicationId"
-            element={<AffiliateApplicationDetailPage />}
-          />
-          <Route path="settings" element={<AffiliateSettingsPage />} />
+          <Route path="checklist" element={<HomeownershipChecklistPage />} />
+          <Route path="written" element={<HomeownershipWrittenPage />} />
+          <Route path="records" element={<HomeownershipRecordsPage />} />
+          <Route path="homeowners" element={<HomeownershipHomeownersPage />} />
+          <Route path="employment" element={<HomeownershipEmploymentPage />} />
+          <Route path="financial" element={<HomeownershipFinancialPage />} />
+          <Route path="review" element={<HomeownershipReviewPage />} />
         </Route>
       </Route>
 
@@ -166,7 +127,7 @@ function App() {
           path=":habitat"
           element={
             <Authenticator.Provider>
-              <TestAffiliateLayout />
+              <AffiliateLayout />
             </Authenticator.Provider>
           }
         >
@@ -174,16 +135,16 @@ function App() {
           <Route path="cycles">
             <Route index element={<CyclesPage />} />
             <Route path=":cycleId">
-              <Route index element={<TestApplications />} />
+              <Route index element={<ApplicationsPage />} />
               <Route
                 path=":applicationId"
-                element={<TestApplicationDetails />}
+                element={<ApplicationDetailsPage />}
               />
             </Route>
           </Route>
           <Route path="applications">
-            <Route index element={<TestApplications />} />
-            <Route path=":applicationId" element={<TestApplicationDetails />} />
+            <Route index element={<ApplicationsPage />} />
+            <Route path=":applicationId" element={<ApplicationDetailsPage />} />
           </Route>
           <Route path="repairs" element={<AffiliatePortalRepairsPage />} />
           <Route
@@ -194,31 +155,6 @@ function App() {
         </Route>
       </Route>
 
-      <Route
-        path="applicant"
-        element={
-          <ScrollView height="100vh" width="100%">
-            <Outlet />
-          </ScrollView>
-        }
-      >
-        <Route path=":habitat">
-          <Route path="prescreen" element={<ApplicantPrescreenLayout />}>
-            <Route path="prelim" element={<PreLimLayout />}>
-              <Route path="home" element={<PreLimHomePage />} />
-              <Route path="terms" element={<PreLimTermsPage />} />
-              <Route path="questions" element={<PreLimQuestionsPage />} />
-              <Route path="results" element={<PreLimResultsPage />} />
-            </Route>
-            <Route path="form" element={<FormLayoutNew />}>
-              <Route path="info" element={<FormInfoPage />} />
-              <Route path="user" element={<FormUserForm />} />
-              <Route path="apps" element={<FormApplicationsPage />} />
-              <Route path="app" element={<FormPreScreenPage />} />
-            </Route>
-          </Route>
-        </Route>
-      </Route>
       <Route path="/*" element={<h1>404</h1>} />
     </Routes>
   );

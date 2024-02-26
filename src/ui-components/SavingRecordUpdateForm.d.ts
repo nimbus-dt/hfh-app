@@ -26,14 +26,12 @@ export declare type SavingRecordUpdateFormInputValues = {
     ownerID?: string;
     institution?: string;
     estimatedAmount?: number;
-    applicationID?: string;
     ownerApplicant?: boolean;
 };
 export declare type SavingRecordUpdateFormValidationValues = {
     ownerID?: ValidationFunction<string>;
     institution?: ValidationFunction<string>;
     estimatedAmount?: ValidationFunction<number>;
-    applicationID?: ValidationFunction<string>;
     ownerApplicant?: ValidationFunction<boolean>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
@@ -42,7 +40,6 @@ export declare type SavingRecordUpdateFormOverridesProps = {
     ownerID?: PrimitiveOverrideProps<TextFieldProps>;
     institution?: PrimitiveOverrideProps<TextFieldProps>;
     estimatedAmount?: PrimitiveOverrideProps<TextFieldProps>;
-    applicationID?: PrimitiveOverrideProps<TextFieldProps>;
     ownerApplicant?: PrimitiveOverrideProps<SwitchFieldProps>;
 } & EscapeHatchProps;
 export declare type SavingRecordUpdateFormProps = React.PropsWithChildren<{

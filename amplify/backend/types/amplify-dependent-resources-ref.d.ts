@@ -33,7 +33,7 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
-    "applicationchangenotification": {
+    "getCitiesByNameAndState": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",

@@ -1,3 +1,3 @@
-import TestApplications from './TestApplications';
+import ApplicationsPage from './ApplicationsPage';
 
-export default TestApplications;
+export default ApplicationsPage;
