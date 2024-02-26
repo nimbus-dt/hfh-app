@@ -78,7 +78,7 @@ const PreviousEmployment = ({
       } catch (error) {
         console.log('Error fetching cities.');
       }
-    }, 350),
+    }, 150),
     []
   );
 

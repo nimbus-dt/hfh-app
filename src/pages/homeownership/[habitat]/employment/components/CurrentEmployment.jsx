@@ -84,7 +84,7 @@ const CurrentEmployment = ({
       } catch (error) {
         console.log('Error fetching cities.');
       }
-    }, 350),
+    }, 150),
     []
   );
 
