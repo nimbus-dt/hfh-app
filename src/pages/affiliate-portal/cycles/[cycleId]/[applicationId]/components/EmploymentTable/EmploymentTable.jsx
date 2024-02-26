@@ -29,11 +29,6 @@ const EmploymentTable = ({ employmentInfo }) => (
             value: employmentInfo?.props?.currentEmployment?.employerName ?? '',
           },
           {
-            header: 'Street address of current employer',
-            value:
-              employmentInfo?.props?.currentEmployment?.employerStreet ?? '',
-          },
-          {
             header: 'State',
             value: getStateName(
               employmentInfo?.props?.currentEmployment?.employerState
@@ -42,6 +37,11 @@ const EmploymentTable = ({ employmentInfo }) => (
           {
             header: 'City',
             value: employmentInfo?.props?.currentEmployment?.employerCity ?? '',
+          },
+          {
+            header: 'Street',
+            value:
+              employmentInfo?.props?.currentEmployment?.employerStreet ?? '',
           },
           {
             header: 'Zip code',
@@ -80,11 +80,6 @@ const EmploymentTable = ({ employmentInfo }) => (
               employmentInfo?.props?.previousEmployment?.employerName ?? '',
           },
           {
-            header: 'Street address of previous employer',
-            value:
-              employmentInfo?.props?.previousEmployment?.employerStreet ?? '',
-          },
-          {
             header: 'State',
             value: getStateName(
               employmentInfo?.props?.previousEmployment?.employerState
@@ -94,6 +89,11 @@ const EmploymentTable = ({ employmentInfo }) => (
             header: 'City',
             value:
               employmentInfo?.props?.previousEmployment?.employerCity ?? '',
+          },
+          {
+            header: 'Street',
+            value:
+              employmentInfo?.props?.previousEmployment?.employerStreet ?? '',
           },
           {
             header: 'Zip code',
