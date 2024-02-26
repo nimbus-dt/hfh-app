@@ -110,6 +110,10 @@ const ApplicantInfoTable = ({ applicantInfo, email }) => (
           value: applicantInfo?.props?.currentAddress?.city ?? '',
         },
         {
+          header: 'Zip code',
+          value: applicantInfo?.props?.currentAddress?.zipCode ?? '',
+        },
+        {
           header: 'Months lived at this address',
           value: applicantInfo?.props?.currentAddress?.monthsLivedHere ?? '',
         },
@@ -136,6 +140,10 @@ const ApplicantInfoTable = ({ applicantInfo, email }) => (
           {
             header: 'City',
             value: applicantInfo?.props?.previousAddress?.city ?? '',
+          },
+          {
+            header: 'Zip code',
+            value: applicantInfo?.props?.previousAddress?.zipCode ?? '',
           },
           {
             header: 'Months lived at this address',
