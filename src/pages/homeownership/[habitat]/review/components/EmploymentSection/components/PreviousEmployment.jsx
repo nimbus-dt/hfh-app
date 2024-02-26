@@ -72,11 +72,17 @@ const PreviousEmployment = ({
           <br />
 
           <SearchableSelectInput
-            label="City:"
+            label="City"
             selectedOption={{
               id: employmentInfo?.props?.previousEmployment.employerCity,
               label: employmentInfo?.props?.previousEmployment.employerCity,
             }}
+            isDisabled
+          />
+          <br />
+          <TextField
+            label="Zip code"
+            value={employmentInfo?.props?.previousEmployment.employerZipCode}
             isDisabled
           />
           <br />
