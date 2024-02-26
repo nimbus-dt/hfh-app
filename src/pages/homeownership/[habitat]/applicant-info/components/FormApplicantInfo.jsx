@@ -281,16 +281,6 @@ export function Address({
       onExpandedChange={onExpandedChange}
     >
       <form onSubmit={handleSubmit(onValid)}>
-        <TextField
-          label="What is your present street address?"
-          placeholder="70 Morningside Dr"
-          {...register('street')}
-          errorMessage="Street address must contain at least 1 character"
-          hasError={errors?.address !== undefined}
-          isRequired
-          isDisabled={!isEnabled}
-        />
-        <br />
         <SelectField
           label="State"
           {...register('state')}
@@ -336,6 +326,16 @@ export function Address({
               isRequired
             />
           )}
+        />
+        <br />
+        <TextField
+          label="Street"
+          placeholder="70 Morningside Dr"
+          {...register('street')}
+          errorMessage="Street address must contain at least 1 character"
+          hasError={errors?.address !== undefined}
+          isRequired
+          isDisabled={!isEnabled}
         />
         <br />
         <TextField
@@ -495,16 +495,6 @@ export function PrevAddress({
       onExpandedChange={onExpandedChange}
     >
       <form onSubmit={handleSubmit(onValid)}>
-        <TextField
-          label="What is your previous street address?"
-          placeholder="70 Morningside Dr"
-          {...register('street')}
-          errorMessage="Street address must contain at least 1 character"
-          hasError={errors?.address !== undefined}
-          isRequired
-          isDisabled={!isEnabled}
-        />
-        <br />
         <SelectField
           label="State"
           {...register('state')}
@@ -550,6 +540,16 @@ export function PrevAddress({
               isRequired
             />
           )}
+        />
+        <br />
+        <TextField
+          label="Street"
+          placeholder="70 Morningside Dr"
+          {...register('street')}
+          errorMessage="Street address must contain at least 1 character"
+          hasError={errors?.address !== undefined}
+          isRequired
+          isDisabled={!isEnabled}
         />
         <br />
         <TextField
