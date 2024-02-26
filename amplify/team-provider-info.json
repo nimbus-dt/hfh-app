@@ -172,11 +172,6 @@
         "hfhapp": {}
       },
       "function": {
-        "applicationchangenotification": {
-          "sesEmail": "support@nimbus-dt.com",
-          "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
-          "s3Key": "amplify-builds/applicationchangenotification-564d6c2b306867486b47-build.zip"
-        },
         "getEmail": {
           "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
           "s3Key": "amplify-builds/getEmail-32656859502b666c474d-build.zip"
@@ -192,6 +187,10 @@
           "sesEmail": "support@nimbus-dt.com",
           "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
           "s3Key": "amplify-builds/sendEmailToAdmin-552f6736526d6c454868-build.zip"
+        },
+        "getCitiesByNameAndState": {
+          "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
+          "s3Key": "amplify-builds/getCitiesByNameAndState-6f57346f43326566336a-build.zip"
         }
       },
       "api": {
@@ -223,11 +222,6 @@
         "hfhapp": {}
       },
       "function": {
-        "applicationchangenotification": {
-          "sesEmail": "support@nimbus-dt.com",
-          "deploymentBucketName": "amplify-hfhapp-prod-160335-deployment",
-          "s3Key": "amplify-builds/applicationchangenotification-564d6c2b306867486b47-build.zip"
-        },
         "getEmail": {
           "deploymentBucketName": "amplify-hfhapp-prod-160335-deployment",
           "s3Key": "amplify-builds/getEmail-32656859502b666c474d-build.zip"
@@ -243,6 +237,10 @@
           "sesEmail": "support@nimbus-dt.com",
           "deploymentBucketName": "amplify-hfhapp-prod-160335-deployment",
           "s3Key": "amplify-builds/sendEmailToAdmin-552f6736526d6c454868-build.zip"
+        },
+        "getCitiesByNameAndState": {
+          "deploymentBucketName": "amplify-hfhapp-prod-160335-deployment",
+          "s3Key": "amplify-builds/getCitiesByNameAndState-6f57346f43326566336a-build.zip"
         }
       },
       "api": {

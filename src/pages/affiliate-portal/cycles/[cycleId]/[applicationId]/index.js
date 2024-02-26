@@ -1,3 +1,3 @@
-import TestApplicationDetails from './TestApplicationDetails';
+import ApplicationDetailsPage from './ApplicationDetailsPage';
 
-export default TestApplicationDetails;
+export default ApplicationDetailsPage;

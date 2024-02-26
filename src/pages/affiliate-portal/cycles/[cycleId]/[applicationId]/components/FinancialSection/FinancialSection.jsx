@@ -9,8 +9,8 @@ import {
   Divider,
 } from '@aws-amplify/ui-react';
 import { useMemo, useState } from 'react';
-import { CustomCard } from 'components/Test/Reusable/CustomCard';
 import PropTypes from 'prop-types';
+import CustomCard from 'components/CustomCard';
 import IncomeSection from './components/IncomeSection';
 import DebtSection from './components/DebtSection';
 import AssetsSection from './components/AssetsSection';

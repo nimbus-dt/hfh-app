@@ -10,7 +10,6 @@ import {
   Button,
   Flex,
   Grid,
-  SelectField,
   TextAreaField,
   TextField,
 } from "@aws-amplify/ui-react";
@@ -32,7 +31,6 @@ export default function UserPropsCreateForm(props) {
     ownerID: "",
     name: "",
     dob: "",
-    sex: "",
     phone: "",
     props: "",
     address: "",
@@ -43,7 +41,6 @@ export default function UserPropsCreateForm(props) {
   const [ownerID, setOwnerID] = React.useState(initialValues.ownerID);
   const [name, setName] = React.useState(initialValues.name);
   const [dob, setDob] = React.useState(initialValues.dob);
-  const [sex, setSex] = React.useState(initialValues.sex);
   const [phone, setPhone] = React.useState(initialValues.phone);
   const [props, setProps] = React.useState(initialValues.props);
   const [address, setAddress] = React.useState(initialValues.address);
@@ -55,7 +52,6 @@ export default function UserPropsCreateForm(props) {
     setOwnerID(initialValues.ownerID);
     setName(initialValues.name);
     setDob(initialValues.dob);
-    setSex(initialValues.sex);
     setPhone(initialValues.phone);
     setProps(initialValues.props);
     setAddress(initialValues.address);
@@ -68,7 +64,6 @@ export default function UserPropsCreateForm(props) {
     ownerID: [],
     name: [],
     dob: [],
-    sex: [],
     phone: [{ type: "Phone" }],
     props: [{ type: "JSON" }],
     address: [],
@@ -105,7 +100,6 @@ export default function UserPropsCreateForm(props) {
           ownerID,
           name,
           dob,
-          sex,
           phone,
           props,
           address,
@@ -169,7 +163,6 @@ export default function UserPropsCreateForm(props) {
               ownerID: value,
               name,
               dob,
-              sex,
               phone,
               props,
               address,
@@ -202,7 +195,6 @@ export default function UserPropsCreateForm(props) {
               ownerID,
               name: value,
               dob,
-              sex,
               phone,
               props,
               address,
@@ -236,7 +228,6 @@ export default function UserPropsCreateForm(props) {
               ownerID,
               name,
               dob: value,
-              sex,
               phone,
               props,
               address,
@@ -257,55 +248,6 @@ export default function UserPropsCreateForm(props) {
         hasError={errors.dob?.hasError}
         {...getOverrideProps(overrides, "dob")}
       ></TextField>
-      <SelectField
-        label="Sex"
-        placeholder="Please select an option"
-        isDisabled={false}
-        value={sex}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              ownerID,
-              name,
-              dob,
-              sex: value,
-              phone,
-              props,
-              address,
-              zip,
-              email,
-              identityID,
-            };
-            const result = onChange(modelFields);
-            value = result?.sex ?? value;
-          }
-          if (errors.sex?.hasError) {
-            runValidationTasks("sex", value);
-          }
-          setSex(value);
-        }}
-        onBlur={() => runValidationTasks("sex", sex)}
-        errorMessage={errors.sex?.errorMessage}
-        hasError={errors.sex?.hasError}
-        {...getOverrideProps(overrides, "sex")}
-      >
-        <option
-          children="Male"
-          value="MALE"
-          {...getOverrideProps(overrides, "sexoption0")}
-        ></option>
-        <option
-          children="Female"
-          value="FEMALE"
-          {...getOverrideProps(overrides, "sexoption1")}
-        ></option>
-        <option
-          children="Other"
-          value="OTHER"
-          {...getOverrideProps(overrides, "sexoption2")}
-        ></option>
-      </SelectField>
       <TextField
         label="Phone"
         isRequired={false}
@@ -319,7 +261,6 @@ export default function UserPropsCreateForm(props) {
               ownerID,
               name,
               dob,
-              sex,
               phone: value,
               props,
               address,
@@ -351,7 +292,6 @@ export default function UserPropsCreateForm(props) {
               ownerID,
               name,
               dob,
-              sex,
               phone,
               props: value,
               address,
@@ -384,7 +324,6 @@ export default function UserPropsCreateForm(props) {
               ownerID,
               name,
               dob,
-              sex,
               phone,
               props,
               address: value,
@@ -421,7 +360,6 @@ export default function UserPropsCreateForm(props) {
               ownerID,
               name,
               dob,
-              sex,
               phone,
               props,
               address,
@@ -454,7 +392,6 @@ export default function UserPropsCreateForm(props) {
               ownerID,
               name,
               dob,
-              sex,
               phone,
               props,
               address,
@@ -487,7 +424,6 @@ export default function UserPropsCreateForm(props) {
               ownerID,
               name,
               dob,
-              sex,
               phone,
               props,
               address,

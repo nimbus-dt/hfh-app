@@ -30,6 +30,14 @@
           ],
           "category": "function",
           "resourceName": "sendEmailToAdmin"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "getCitiesByNameAndState"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -91,26 +99,8 @@
     }
   },
   "function": {
-    "applicationchangenotification": {
+    "getCitiesByNameAndState": {
       "build": true,
-      "dependsOn": [
-        {
-          "attributes": [
-            "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput",
-            "GraphQLAPIKeyOutput"
-          ],
-          "category": "api",
-          "resourceName": "hfhapp"
-        },
-        {
-          "attributes": [
-            "BucketName"
-          ],
-          "category": "storage",
-          "resourceName": "s3hfhappstoragebucket"
-        }
-      ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
@@ -151,27 +141,19 @@
   },
   "hosting": {},
   "parameters": {
-    "AMPLIFY_function_applicationchangenotification_deploymentBucketName": {
+    "AMPLIFY_function_getCitiesByNameAndState_deploymentBucketName": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "applicationchangenotification"
+          "resourceName": "getCitiesByNameAndState"
         }
       ]
     },
-    "AMPLIFY_function_applicationchangenotification_s3Key": {
+    "AMPLIFY_function_getCitiesByNameAndState_s3Key": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "applicationchangenotification"
-        }
-      ]
-    },
-    "AMPLIFY_function_applicationchangenotification_sesEmail": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "applicationchangenotification"
+          "resourceName": "getCitiesByNameAndState"
         }
       ]
     },

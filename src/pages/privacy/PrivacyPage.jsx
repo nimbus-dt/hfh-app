@@ -1,5 +1,5 @@
 import { Heading, Flex, Text } from '@aws-amplify/ui-react';
-import { CustomCard } from 'components/Test/Reusable/CustomCard';
+import CustomCard from 'components/CustomCard';
 
 const PrivacyPage = () => (
   <Flex
