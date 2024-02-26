@@ -1,10 +1,12 @@
-import { Button, Flex, TextField } from '@aws-amplify/ui-react';
+import { Button, Flex, SelectField, TextField } from '@aws-amplify/ui-react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
 import { getCheckOrExEmoji } from 'utils/misc';
 import CustomExpandableCard from 'components/CustomExpandableCard';
+import SearchableSelectInput from 'components/SearchableSelectInput';
 import LoadingData from '../../LoadingData';
+import states from '../../../../../../../assets/jsons/states.json';
 
 const PreviousEmployment = ({
   employmentInfo,
@@ -50,9 +52,36 @@ const PreviousEmployment = ({
             isDisabled
           />
           <br />
+          <SelectField
+            label="State"
+            value={employmentInfo?.props?.previousEmployment.employerState}
+            isDisabled
+          >
+            {states.map((state) => (
+              <option key={state.abbreviation} value={state.abbreviation}>
+                {state.name}
+              </option>
+            ))}
+          </SelectField>
+          <br />
+          <SearchableSelectInput
+            label="City"
+            selectedOption={{
+              id: employmentInfo?.props?.previousEmployment.employerCity,
+              label: employmentInfo?.props?.previousEmployment.employerCity,
+            }}
+            isDisabled
+          />
+          <br />
           <TextField
-            label="What is the address of your previous employer?"
-            value={employmentInfo?.props?.previousEmployment.employerAddress}
+            label="Street"
+            value={employmentInfo?.props?.previousEmployment.employerStreet}
+            isDisabled
+          />
+          <br />
+          <TextField
+            label="Zip code"
+            value={employmentInfo?.props?.previousEmployment.employerZipCode}
             isDisabled
           />
           <br />

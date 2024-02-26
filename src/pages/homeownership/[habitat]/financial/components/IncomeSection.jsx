@@ -23,7 +23,10 @@ import FileInput from 'components/FileInput';
 import { createAlert } from 'utils/factories';
 import CurrencyInput from 'components/CurrencyInput';
 import CustomExpandableCard from 'components/CustomExpandableCard';
-import { incomeSchema, incomeTypes } from '../HomeownershipFinancialPage.schema';
+import {
+  incomeSchema,
+  incomeTypes,
+} from '../HomeownershipFinancialPage.schema';
 import UploadingFileLoader from './UploadingFileLoader';
 
 const IncomeSection = ({
