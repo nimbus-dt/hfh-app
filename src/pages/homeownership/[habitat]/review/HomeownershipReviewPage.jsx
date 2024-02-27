@@ -26,6 +26,17 @@ export default function HomeownershipReviewPage() {
   const [currentAddressOpen, setCurrentAddressOpen] = useState(false);
   const [previousAddressOpen, setPreviousAddressOpen] = useState(false);
   const [typeOfCreditOpen, setTypeOfCreditOpen] = useState(false);
+  const [coApplicantOpen, setCoApplicantOpen] = useState(false);
+  const [coApplicantBasicInfoOpen, setCoApplicantBasicInfoOpen] =
+    useState(false);
+  const [
+    coApplicantUnmarriedAddendumOpen,
+    setCoApplicantUnmarriedAddendumOpen,
+  ] = useState(false);
+  const [coApplicantCurrentAddressOpen, setCoApplicantCurrentAddressOpen] =
+    useState(false);
+  const [coApplicantPreviousAddressOpen, setCoApplicantPreviousAddressOpen] =
+    useState(false);
   const [applicantMilitaryServiceOpen, setApplicantMilitaryServiceOpen] =
     useState(false);
   const [anyoneElseMilitaryServiceOpen, setAnyoneElseMilitaryServiceOpen] =
@@ -86,10 +97,67 @@ export default function HomeownershipReviewPage() {
 
   const handleTypeOfCreditOnReview = () => {
     setTypeOfCreditOpen(false);
-    setApplicantMilitaryServiceOpen(true);
+    setCoApplicantOpen(true);
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
       typeOfCredit: true,
+    }));
+  };
+
+  const handleCoApplicantOnReview = (hasCoApplicant) => {
+    setCoApplicantOpen(false);
+    if (hasCoApplicant) {
+      setCoApplicantBasicInfoOpen(true);
+    } else {
+      setApplicantMilitaryServiceOpen(true);
+    }
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      coApplicant: true,
+    }));
+  };
+
+  const handleCoApplicantBasicInformationOnReview = (unmarried) => {
+    setCoApplicantBasicInfoOpen(false);
+    if (unmarried) {
+      setCoApplicantUnmarriedAddendumOpen(true);
+    } else {
+      setCoApplicantCurrentAddressOpen(true);
+    }
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      coApplicantBasicInfo: true,
+    }));
+  };
+
+  const handleCoApplicantUnmarriedAddendumOnReview = () => {
+    setCoApplicantUnmarriedAddendumOpen(false);
+    setCoApplicantCurrentAddressOpen(true);
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      coApplicantUnmarriedAddendum: true,
+    }));
+  };
+
+  const handleCoApplicantAddressOnReview = (needPreviousAddress) => {
+    setCoApplicantCurrentAddressOpen(false);
+    if (needPreviousAddress) {
+      setCoApplicantPreviousAddressOpen(true);
+    } else {
+      setApplicantMilitaryServiceOpen(true);
+    }
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      coApplicantAddress: true,
+    }));
+  };
+
+  const handleCoApplicantPreviousAddressOnReview = () => {
+    setCoApplicantPreviousAddressOpen(false);
+    setApplicantMilitaryServiceOpen(true);
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      coApplicantPrevAddress: true,
     }));
   };
 
@@ -290,6 +358,29 @@ export default function HomeownershipReviewPage() {
         typeOfCreditOpen={typeOfCreditOpen}
         setTypeOfCreditOpen={setTypeOfCreditOpen}
         handleTypeOfCreditOnReview={handleTypeOfCreditOnReview}
+        coApplicantOpen={coApplicantOpen}
+        setCoApplicantOpen={setCoApplicantOpen}
+        handleCoApplicantOnReview={handleCoApplicantOnReview}
+        coApplicantBasicInfoOpen={coApplicantBasicInfoOpen}
+        setCoApplicantBasicInfoOpen={setCoApplicantBasicInfoOpen}
+        handleCoApplicantBasicInformationOnReview={
+          handleCoApplicantBasicInformationOnReview
+        }
+        coApplicantUnmarriedAddendumOpen={coApplicantUnmarriedAddendumOpen}
+        setCoApplicantUnmarriedAddendumOpen={
+          setCoApplicantUnmarriedAddendumOpen
+        }
+        handleCoApplicantUnmarriedAddendumOnReview={
+          handleCoApplicantUnmarriedAddendumOnReview
+        }
+        coApplicantCurrentAddressOpen={coApplicantCurrentAddressOpen}
+        setCoApplicantCurrentAddressOpen={setCoApplicantCurrentAddressOpen}
+        handleCoApplicantAddressOnReview={handleCoApplicantAddressOnReview}
+        coApplicantPreviousAddressOpen={coApplicantPreviousAddressOpen}
+        setCoApplicantPreviousAddressOpen={setCoApplicantPreviousAddressOpen}
+        handleCoApplicantPreviousAddressOnReview={
+          handleCoApplicantPreviousAddressOnReview
+        }
         reviewedSections={reviewedSections}
         setReviewedSections={setReviewedSections}
         submitted={application?.submissionStatus === SubmissionStatus.SUBMITTED}
