@@ -34,11 +34,12 @@ function BasicInformation({
   setReviewedSections,
   onReview,
   submitted,
+  coApplicant,
 }) {
   useEffect(() => {
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
-      basicInfo: false,
+      ...(coApplicant ? { coApplicantBasicInfo: false } : { basicInfo: false }),
     }));
   }, [setReviewedSections]);
 
@@ -56,8 +57,10 @@ function BasicInformation({
   return (
     <CustomExpandableCard
       title={`${getCheckOrExEmoji(
-        reviewedSections.basicInfo || submitted
-      )} Basic Information`}
+        coApplicant
+          ? reviewedSections.coApplicantBasicInfo
+          : reviewedSections.basicInfo || submitted
+      )}${coApplicant ? ' Co-applicant' : ''} Basic Information`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
       ref={customCardReference}
@@ -67,52 +70,116 @@ function BasicInformation({
       ) : (
         <>
           <TextField
-            label="What is your full name?"
-            value={applicantInfo.props.basicInfo.fullName}
+            label={
+              coApplicant
+                ? "What is the co-applicant's full name?"
+                : 'What is your full name?'
+            }
+            value={
+              coApplicant
+                ? applicantInfo.props.coApplicantBasicInfo.fullName
+                : applicantInfo.props.basicInfo.fullName
+            }
             isDisabled
           />
           <br />
           <TextField
-            label="If you have an alternative or a former name, please write it here."
-            value={applicantInfo.props.basicInfo.altOrFormerName}
+            label={
+              coApplicant
+                ? 'If the co-applicant have an alternative or a former name, please write it here.'
+                : 'If you have an alternative or a former name, please write it here.'
+            }
+            value={
+              coApplicant
+                ? applicantInfo.props.coApplicantBasicInfo.altOrFormerName
+                : applicantInfo.props.basicInfo.altOrFormerName
+            }
             isDisabled
           />
           <br />
           <TextField
-            label="What is your social security number?"
-            value={applicantInfo.props.basicInfo.socialSecurityNumber}
+            label={
+              coApplicant
+                ? "What is the co-applicant's social security number?"
+                : 'What is your social security number?'
+            }
+            value={
+              coApplicant
+                ? applicantInfo.props.coApplicantBasicInfo.socialSecurityNumber
+                : applicantInfo.props.basicInfo.socialSecurityNumber
+            }
             isDisabled
           />
           <br />
           <TextField
-            label="What is your home phone?"
-            value={applicantInfo.props.basicInfo.homePhone}
+            label={
+              coApplicant
+                ? "What is the co-applicant's home phone?"
+                : 'What is your home phone?'
+            }
+            value={
+              coApplicant
+                ? applicantInfo.props.coApplicantBasicInfo.homePhone
+                : applicantInfo.props.basicInfo.homePhone
+            }
             isDisabled
           />
           <br />
           <TextField
-            label="What is your cell phone?"
-            value={applicantInfo.props.basicInfo.cellPhone}
+            label={
+              coApplicant
+                ? "What is the co-applicant's cell phone?"
+                : 'What is your cell phone?'
+            }
+            value={
+              coApplicant
+                ? applicantInfo.props.coApplicantBasicInfo.cellPhone
+                : applicantInfo.props.basicInfo.cellPhone
+            }
             isDisabled
           />
           <br />
           <TextField
-            label="What is your work phone?"
-            value={applicantInfo.props.basicInfo.workPhone}
+            label={
+              coApplicant
+                ? "What is the co-applicant's work phone?"
+                : 'What is your work phone?'
+            }
+            value={
+              coApplicant
+                ? applicantInfo.props.coApplicantBasicInfo.workPhone
+                : applicantInfo.props.basicInfo.workPhone
+            }
             isDisabled
           />
           <br />
           <TextField
-            label="What is your date of birth?"
+            label={
+              coApplicant
+                ? "What is the co-applicant's date of birth?"
+                : 'What is your date of birth?'
+            }
             type="date"
-            value={applicantInfo.props.basicInfo.birthDate}
+            value={
+              coApplicant
+                ? applicantInfo.props.coApplicantBasicInfo.birthDate
+                : applicantInfo.props.basicInfo.birthDate
+            }
             isDisabled
           />
           <br />
 
           <RadioGroupField
-            label="Which of these best represents your current marital status?"
-            value={applicantInfo.props.basicInfo.maritalStatus}
+            label={
+              coApplicant
+                ? 'Which of these best represents the co-applicant current marital status?'
+                : 'Which of these best represents your current marital status?'
+            }
+            value={
+              coApplicant
+                ? applicantInfo.props.coApplicantBasicInfo.maritalStatus
+                : applicantInfo.props.basicInfo.maritalStatus
+            }
             isDisabled
           >
             {maritalStatusValues.map((maritalStatus) => (
@@ -146,6 +213,7 @@ BasicInformation.propTypes = {
   setReviewedSections: PropTypes.func,
   onReview: PropTypes.func,
   submitted: PropTypes.bool,
+  coApplicant: PropTypes.bool,
 };
 
 function UnmarriedAddendum({
@@ -156,11 +224,14 @@ function UnmarriedAddendum({
   setReviewedSections,
   onReview,
   submitted,
+  coApplicant,
 }) {
   useEffect(() => {
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
-      unmarriedAddendum: false,
+      ...(coApplicant
+        ? { coApplicantUnmarriedAddendum: false }
+        : { unmarriedAddendum: false }),
     }));
   }, [setReviewedSections]);
 
@@ -178,19 +249,29 @@ function UnmarriedAddendum({
   return (
     <CustomExpandableCard
       title={`${getCheckOrExEmoji(
-        reviewedSections.unmarriedAddendum || submitted
-      )} Unmarried Addendum`}
+        coApplicant
+          ? reviewedSections.coApplicantUnmarriedAddendum
+          : reviewedSections.unmarriedAddendum || submitted
+      )}${coApplicant ? ' Co-applicant' : ''} Unmarried Addendum`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
       ref={customCardReference}
     >
       <RadioGroupField
         name="notSpouseButSimilarPropertyRights"
-        label="Which of these best represents the ownership status of the previous address you lived in?"
-        defaultValue={
-          applicantInfo?.props.unmarriedAddendum
-            ?.notSpouseButSimilarPropertyRights
+        label={
+          coApplicant
+            ? "Is there a person who is not the co-applicant's legal spouse but who currently has real property rights similar to those of a legal spouse?"
+            : 'Is there a person who is not your legal spouse but who currently has real property rights similar to those of a legal spouse?'
         }
+        value={
+          coApplicant
+            ? applicantInfo?.props.coApplicantUnmarriedAddendum
+                ?.notSpouseButSimilarPropertyRights
+            : applicantInfo?.props.unmarriedAddendum
+                ?.notSpouseButSimilarPropertyRights
+        }
+        isReadOnly
         isDisabled
       >
         <Radio value="No">No</Radio>
@@ -198,13 +279,18 @@ function UnmarriedAddendum({
       </RadioGroupField>
 
       <br />
-      {applicantInfo?.props.unmarriedAddendum
-        ?.notSpouseButSimilarPropertyRights === 'Yes' && (
+      {applicantInfo?.props[
+        coApplicant ? 'coApplicantUnmarriedAddendum' : 'unmarriedAddendum'
+      ]?.notSpouseButSimilarPropertyRights === 'Yes' && (
         <>
           <RadioGroupField
-            name="relationshipType"
-            label="Which of these best represents the ownership status of the previous address you lived in?"
-            value={applicantInfo?.props.unmarriedAddendum?.relationshipType}
+            label="Indicate the type of relationship"
+            value={
+              coApplicant
+                ? applicantInfo?.props.coApplicantUnmarriedAddendum
+                    ?.relationshipType
+                : applicantInfo?.props.unmarriedAddendum?.relationshipType
+            }
             isDisabled
           >
             {unmarriedRelationshipTypesValues.map(
@@ -219,13 +305,18 @@ function UnmarriedAddendum({
             )}
           </RadioGroupField>
           <br />
-          {applicantInfo?.props.unmarriedAddendum?.relationshipType ===
-            'Other' && (
+          {applicantInfo?.props[
+            coApplicant ? 'coApplicantUnmarriedAddendum' : 'unmarriedAddendum'
+          ]?.relationshipType === 'Other' && (
             <>
               <TextField
                 label="Explain the relationship"
                 defaultValue={
-                  applicantInfo?.props.unmarriedAddendum?.otherRelationshipType
+                  coApplicant
+                    ? applicantInfo?.props.coApplicantUnmarriedAddendum
+                        ?.otherRelationshipType
+                    : applicantInfo?.props.unmarriedAddendum
+                        ?.otherRelationshipType
                 }
                 isDisabled
               />
@@ -234,7 +325,11 @@ function UnmarriedAddendum({
           )}
           <TextField
             label="State in which the relationship was formed"
-            defaultValue={applicantInfo?.props.unmarriedAddendum?.state}
+            defaultValue={
+              coApplicant
+                ? applicantInfo?.props.coApplicantUnmarriedAddendum?.state
+                : applicantInfo?.props.unmarriedAddendum?.state
+            }
             isDisabled
           />
           <br />
@@ -262,6 +357,7 @@ UnmarriedAddendum.propTypes = {
   setReviewedSections: PropTypes.func,
   onReview: PropTypes.func,
   submitted: PropTypes.bool,
+  coApplicant: PropTypes.bool,
 };
 
 const Address = ({
@@ -272,13 +368,14 @@ const Address = ({
   setReviewedSections,
   onReview,
   submitted,
+  coApplicant,
 }) => {
   const customCardReference = useRef(null);
 
   useEffect(() => {
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
-      address: false,
+      ...(coApplicant ? { coApplicantAddress: false } : { address: false }),
     }));
   }, [setReviewedSections]);
 
@@ -294,8 +391,10 @@ const Address = ({
   return (
     <CustomExpandableCard
       title={`${getCheckOrExEmoji(
-        reviewedSections.address || submitted
-      )} Present Address`}
+        coApplicant
+          ? reviewedSections.coApplicantAddress
+          : reviewedSections.address || submitted
+      )}${coApplicant ? ' Co-applicant' : ''} Present Address`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
       ref={customCardReference}
@@ -306,7 +405,11 @@ const Address = ({
         <>
           <SelectField
             label="State"
-            value={applicantInfo.props.currentAddress.state}
+            value={
+              coApplicant
+                ? applicantInfo.props.coApplicantCurrentAddress.state
+                : applicantInfo.props.currentAddress.state
+            }
             isDisabled
           >
             {states.map((state) => (
@@ -319,8 +422,12 @@ const Address = ({
           <SearchableSelectInput
             label="City"
             selectedOption={{
-              id: applicantInfo.props.currentAddress.city,
-              label: applicantInfo.props.currentAddress.city,
+              id: coApplicant
+                ? applicantInfo.props.coApplicantCurrentAddress.city
+                : applicantInfo.props.currentAddress.city,
+              label: coApplicant
+                ? applicantInfo.props.coApplicantCurrentAddress.city
+                : applicantInfo.props.currentAddress.city,
             }}
             isDisabled
           />
@@ -328,26 +435,50 @@ const Address = ({
           <TextField
             label="Street"
             isDisabled
-            value={applicantInfo.props.currentAddress.street}
+            value={
+              coApplicant
+                ? applicantInfo.props.coApplicantCurrentAddress.street
+                : applicantInfo.props.currentAddress.street
+            }
           />
           <br />
           <TextField
             label="Zip code"
-            value={applicantInfo.props.currentAddress.zipCode}
+            value={
+              coApplicant
+                ? applicantInfo.props.coApplicantCurrentAddress.zipCode
+                : applicantInfo.props.currentAddress.zipCode
+            }
             isDisabled
           />
           <br />
           <TextField
-            label="How long have you lived at this address, in months?"
+            label={
+              coApplicant
+                ? 'How long have the co-applicant lived at this address, in months?'
+                : 'How long have you lived at this address, in months?'
+            }
             type="number"
-            value={applicantInfo.props.currentAddress.monthsLivedHere}
+            value={
+              coApplicant
+                ? applicantInfo.props.coApplicantCurrentAddress.monthsLivedHere
+                : applicantInfo.props.currentAddress.monthsLivedHere
+            }
             isDisabled
           />
           <br />
 
           <RadioGroupField
-            label="Which of these best represents the ownership status of the address you currently live in?"
-            value={applicantInfo.props.currentAddress.ownershipStatus}
+            label={
+              coApplicant
+                ? 'Which of these best represents the ownership status of the address the co-applicant currently live in?'
+                : 'Which of these best represents the ownership status of the address you currently live in?'
+            }
+            value={
+              coApplicant
+                ? applicantInfo.props.coApplicantCurrentAddress.ownershipStatus
+                : applicantInfo.props.currentAddress.ownershipStatus
+            }
             isDisabled
           >
             {ownerShipValues.map((ownerShip) => (
@@ -380,6 +511,7 @@ Address.propTypes = {
   setReviewedSections: PropTypes.func,
   onReview: PropTypes.func,
   submitted: PropTypes.bool,
+  coApplicant: PropTypes.bool,
 };
 
 function PrevAddress({
@@ -390,13 +522,16 @@ function PrevAddress({
   setReviewedSections,
   onReview,
   submitted,
+  coApplicant,
 }) {
   const customCardReference = useRef(null);
 
   useEffect(() => {
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
-      prevAddress: false,
+      ...(coApplicant
+        ? { prevAddress: false }
+        : { coApplicantPrevAddress: false }),
     }));
   }, [setReviewedSections]);
 
@@ -412,8 +547,10 @@ function PrevAddress({
   return (
     <CustomExpandableCard
       title={`${getCheckOrExEmoji(
-        reviewedSections.prevAddress || submitted
-      )} Previous Address`}
+        coApplicant
+          ? reviewedSections.coApplicantPrevAddress
+          : reviewedSections.prevAddress || submitted
+      )}${coApplicant ? ' Co-applicant' : ''} Previous Address`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
       ref={customCardReference}
@@ -424,7 +561,11 @@ function PrevAddress({
         <>
           <SelectField
             label="State"
-            value={applicantInfo.props.previousAddress.state}
+            value={
+              coApplicant
+                ? applicantInfo.props.coApplicantPreviousAddress.state
+                : applicantInfo.props.previousAddress.state
+            }
             isDisabled
           >
             {states.map((state) => (
@@ -437,34 +578,58 @@ function PrevAddress({
           <SearchableSelectInput
             label="City"
             selectedOption={{
-              id: applicantInfo.props.previousAddress.city,
-              label: applicantInfo.props.previousAddress.city,
+              id: coApplicant
+                ? applicantInfo.props.coApplicantPreviousAddress.city
+                : applicantInfo.props.previousAddress.city,
+              label: coApplicant
+                ? applicantInfo.props.coApplicantPreviousAddress.city
+                : applicantInfo.props.previousAddress.city,
             }}
             isDisabled
           />
           <br />
           <TextField
             label="Street"
-            value={applicantInfo.props.previousAddress.street}
+            value={
+              coApplicant
+                ? applicantInfo.props.coApplicantPreviousAddress.street
+                : applicantInfo.props.previousAddress.street
+            }
             isDisabled
           />
           <br />
           <TextField
             label="Zip code"
-            value={applicantInfo.props.previousAddress.zipCode}
+            value={
+              coApplicant
+                ? applicantInfo.props.coApplicantPreviousAddress.zipCode
+                : applicantInfo.props.previousAddress.zipCode
+            }
             isDisabled
           />
           <br />
           <TextField
-            label="How long did you live at this address, in months?"
+            label={
+              coApplicant
+                ? 'How long did the co-applicant live at this address, in months?'
+                : 'How long did you live at this address, in months?'
+            }
             type="number"
-            value={applicantInfo.props.previousAddress.monthsLivedHere}
+            value={
+              coApplicant
+                ? applicantInfo.props.coApplicantPreviousAddress.monthsLivedHere
+                : applicantInfo.props.previousAddress.monthsLivedHere
+            }
             isDisabled
           />
           <br />
           <RadioGroupField
             name="ownershipStatus"
-            label="Which of these best represents the ownership status of the previous address you lived in?"
+            label={
+              coApplicant
+                ? 'Which of these best represents the ownership status of the previous address the co-applicant lived in?'
+                : 'Which of these best represents the ownership status of the previous address you lived in?'
+            }
             value={applicantInfo.props.previousAddress.ownershipStatus}
             isDisabled
           >
@@ -499,6 +664,7 @@ PrevAddress.propTypes = {
   setReviewedSections: PropTypes.func,
   onReview: PropTypes.func,
   submitted: PropTypes.bool,
+  coApplicant: PropTypes.bool,
 };
 
 export function TypeOfCredit({
@@ -598,6 +764,76 @@ TypeOfCredit.propTypes = {
   submitted: PropTypes.bool,
 };
 
+export function CoApplicant({
+  expanded,
+  onExpandedChange,
+  applicantInfo,
+  reviewedSections,
+  setReviewedSections,
+  onReview,
+  submitted,
+}) {
+  const customCardReference = useRef(null);
+
+  useEffect(() => {
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      coApplicant: false,
+    }));
+  }, [setReviewedSections]);
+
+  useEffect(() => {
+    if (expanded) {
+      customCardReference.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+      });
+    }
+  }, [expanded]);
+
+  return (
+    <CustomExpandableCard
+      title={`${getCheckOrExEmoji(
+        reviewedSections.coApplicant || submitted
+      )} Co-applicant`}
+      expanded={expanded}
+      onExpandedChange={onExpandedChange}
+      ref={customCardReference}
+    >
+      <RadioGroupField
+        label="You have a co-applicant?"
+        value={applicantInfo?.props.hasCoApplicant}
+        isDisabled
+      >
+        <Radio value="No">No</Radio>
+        <Radio value="Yes">Yes</Radio>
+      </RadioGroupField>
+
+      <br />
+      {!submitted && (
+        <Flex width="100%" justifyContent="end">
+          <Link to={editRoute}>
+            <Button>Edit</Button>
+          </Link>
+          <Button onClick={onReview} variation="primary">
+            Confirm
+          </Button>
+        </Flex>
+      )}
+    </CustomExpandableCard>
+  );
+}
+
+CoApplicant.propTypes = {
+  applicantInfo: PropTypes.object,
+  expanded: PropTypes.bool,
+  onExpandedChange: PropTypes.func,
+  reviewedSections: PropTypes.object,
+  setReviewedSections: PropTypes.func,
+  onReview: PropTypes.func,
+  submitted: PropTypes.bool,
+};
+
 const ApplicantInfoSection = ({
   basicInfoOpen,
   setBasicInfoOpen,
@@ -614,6 +850,21 @@ const ApplicantInfoSection = ({
   typeOfCreditOpen,
   setTypeOfCreditOpen,
   handleTypeOfCreditOnReview,
+  coApplicantOpen,
+  setCoApplicantOpen,
+  handleCoApplicantOnReview,
+  coApplicantBasicInfoOpen,
+  setCoApplicantBasicInfoOpen,
+  handleCoApplicantBasicInformationOnReview,
+  coApplicantUnmarriedAddendumOpen,
+  setCoApplicantUnmarriedAddendumOpen,
+  handleCoApplicantUnmarriedAddendumOnReview,
+  coApplicantCurrentAddressOpen,
+  setCoApplicantCurrentAddressOpen,
+  handleCoApplicantAddressOnReview,
+  coApplicantPreviousAddressOpen,
+  setCoApplicantPreviousAddressOpen,
+  handleCoApplicantPreviousAddressOnReview,
   reviewedSections,
   setReviewedSections,
   submitted,
@@ -708,6 +959,74 @@ const ApplicantInfoSection = ({
         submitted={submitted}
       />
       <br />
+      <CoApplicant
+        expanded={coApplicantOpen}
+        onExpandedChange={setCoApplicantOpen}
+        applicantInfo={applicantInfo}
+        reviewedSections={reviewedSections}
+        setReviewedSections={setReviewedSections}
+        onReview={handleCoApplicantOnReview}
+        submitted={submitted}
+      />
+      <br />
+      {applicantInfo?.props?.hasCoApplicant === 'Yes' && (
+        <>
+          <BasicInformation
+            expanded={coApplicantBasicInfoOpen}
+            onExpandedChange={setCoApplicantBasicInfoOpen}
+            applicantInfo={applicantInfo}
+            reviewedSections={reviewedSections}
+            setReviewedSections={setReviewedSections}
+            onReview={handleCoApplicantBasicInformationOnReview}
+            submitted={submitted}
+            coApplicant
+          />
+          <br />
+          {applicantInfo?.props?.coApplicantBasicInfo?.maritalStatus ===
+            maritalStatusValues[2] && (
+            <>
+              <UnmarriedAddendum
+                expanded={coApplicantUnmarriedAddendumOpen}
+                onExpandedChange={setCoApplicantUnmarriedAddendumOpen}
+                applicantInfo={applicantInfo}
+                reviewedSections={reviewedSections}
+                setReviewedSections={setReviewedSections}
+                onReview={handleCoApplicantUnmarriedAddendumOnReview}
+                submitted={submitted}
+                coApplicant
+              />
+              <br />
+            </>
+          )}
+          <Address
+            expanded={coApplicantCurrentAddressOpen}
+            onExpandedChange={setCoApplicantCurrentAddressOpen}
+            applicantInfo={applicantInfo}
+            reviewedSections={reviewedSections}
+            setReviewedSections={setReviewedSections}
+            onReview={handleCoApplicantAddressOnReview}
+            submitted={submitted}
+            coApplicant
+          />
+          <br />
+          {applicantInfo?.props?.coApplicantCurrentAddress?.monthsLivedHere <
+            habitat?.props.homeownershipMinCurrentAddressMonths && (
+            <>
+              <PrevAddress
+                expanded={coApplicantPreviousAddressOpen}
+                onExpandedChange={setCoApplicantPreviousAddressOpen}
+                applicantInfo={applicantInfo}
+                reviewedSections={reviewedSections}
+                setReviewedSections={setReviewedSections}
+                onReview={handleCoApplicantPreviousAddressOnReview}
+                submitted={submitted}
+                coApplicant
+              />
+              <br />
+            </>
+          )}
+        </>
+      )}
     </>
   );
 };
@@ -728,6 +1047,21 @@ ApplicantInfoSection.propTypes = {
   typeOfCreditOpen: PropTypes.bool,
   setTypeOfCreditOpen: PropTypes.func,
   handleTypeOfCreditOnReview: PropTypes.func,
+  coApplicantOpen: PropTypes.bool,
+  setCoApplicantOpen: PropTypes.func,
+  handleCoApplicantOnReview: PropTypes.func,
+  coApplicantBasicInfoOpen: PropTypes.bool,
+  setCoApplicantBasicInfoOpen: PropTypes.func,
+  handleCoApplicantBasicInformationOnReview: PropTypes.func,
+  coApplicantUnmarriedAddendumOpen: PropTypes.bool,
+  setCoApplicantUnmarriedAddendumOpen: PropTypes.func,
+  handleCoApplicantUnmarriedAddendumOnReview: PropTypes.func,
+  coApplicantCurrentAddressOpen: PropTypes.bool,
+  setCoApplicantCurrentAddressOpen: PropTypes.func,
+  handleCoApplicantAddressOnReview: PropTypes.func,
+  coApplicantPreviousAddressOpen: PropTypes.bool,
+  setCoApplicantPreviousAddressOpen: PropTypes.func,
+  handleCoApplicantPreviousAddressOnReview: PropTypes.func,
   reviewedSections: PropTypes.object,
   setReviewedSections: PropTypes.func,
   submitted: PropTypes.bool,
