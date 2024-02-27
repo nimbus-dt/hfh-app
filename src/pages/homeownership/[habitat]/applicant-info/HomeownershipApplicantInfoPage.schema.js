@@ -75,3 +75,7 @@ export const typeOfCreditSchema = z.object({
   totalNumberOfBorrowers: z.coerce.number().positive().optional(),
   yourInitials: z.string().min(1).optional(),
 });
+
+export const coApplicantSchema = z.object({
+  hasCoApplicant: z.enum(['Yes', 'No']),
+});
