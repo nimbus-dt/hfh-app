@@ -280,7 +280,7 @@ export function Address({
             },
           };
     }
-  }, [applicantInfo]);
+  }, [applicantInfo, coApplicant]);
 
   const {
     resetField,
@@ -524,7 +524,7 @@ export function PrevAddress({
             },
           };
     }
-  }, [applicantInfo]);
+  }, [applicantInfo, coApplicant]);
 
   const {
     register,
