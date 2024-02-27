@@ -6,6 +6,7 @@ import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { createAlert } from 'utils/factories';
 import { calculateAgeInMonths } from 'utils/dates';
 import CustomCard from 'components/CustomCard';
+import { useApplicantInfosQuery } from 'hooks/services';
 import Unemployment from './components/Unemployment';
 import CurrentEmployment from './components/CurrentEmployment';
 import PreviousEmployment from './components/PreviousEmployment';
@@ -22,11 +23,39 @@ export default function HomeownershipEmploymentPage() {
   const [previousEmploymentOpen, setPreviousEmploymentOpen] = useState(false);
   const [previousEmploymentEdit, setPreviousEmploymentEdit] = useState(false);
 
+  const [coApplicantUnemploymentOpen, setCoApplicantUnemploymentOpen] =
+    useState(false);
+  const [coApplicantUnemploymentEdit, setCoApplicantUnemploymentEdit] =
+    useState(false);
+
+  const [
+    coApplicantCurrentEmploymentOpen,
+    setCoApplicantCurrentEmploymentOpen,
+  ] = useState(false);
+  const [
+    coApplicantCurrentEmploymentEdit,
+    setCoApplicantCurrentEmploymentEdit,
+  ] = useState(false);
+
+  const [
+    coApplicantPreviousEmploymentOpen,
+    setCoApplicantPreviousEmploymentOpen,
+  ] = useState(false);
+  const [
+    coApplicantPreviousEmploymentEdit,
+    setCoApplicantPreviousEmploymentEdit,
+  ] = useState(false);
+
   const { application, updateApplicationLastSection, habitat } =
     useOutletContext();
 
   const [alert, setAlert] = useState();
   const navigate = useNavigate();
+
+  const { data: applicantInfos } = useApplicantInfosQuery({
+    criteria: (c1) => c1.ownerID.eq(application?.id),
+    dependencyArray: [application?.id],
+  });
 
   const onValidCurrentlyUnemployed = async (data) => {
     try {
@@ -50,6 +79,14 @@ export default function HomeownershipEmploymentPage() {
             originalEmploymentInfo.props = {
               ...originalEmploymentInfo.props,
               currentlyUnemployed: data.currentlyUnemployed,
+              currentEmployment:
+                data.currentlyUnemployed === 'Yes'
+                  ? undefined
+                  : originalEmploymentInfo.props.currentEmployment,
+              previousEmployment:
+                data.currentlyUnemployed === 'Yes'
+                  ? undefined
+                  : originalEmploymentInfo.props.previousEmployment,
             };
           })
         );
@@ -73,7 +110,7 @@ export default function HomeownershipEmploymentPage() {
         createAlert(
           'error',
           'Error',
-          "The basic information couldn't be saved."
+          "The co-applicant's unemployment status couldn't be saved."
         )
       );
     }
@@ -123,7 +160,11 @@ export default function HomeownershipEmploymentPage() {
       setCurrentEmploymentOpen(false);
     } catch {
       setAlert(
-        createAlert('error', 'Error', "The current address couldn't be saved.")
+        createAlert(
+          'error',
+          'Error',
+          "The current employment couldn't be saved."
+        )
       );
     }
   };
@@ -159,7 +200,11 @@ export default function HomeownershipEmploymentPage() {
       );
     } catch {
       setAlert(
-        createAlert('error', 'Error', "The previous address couldn't be saved.")
+        createAlert(
+          'error',
+          'Error',
+          "The previous employment couldn't be saved."
+        )
       );
     }
   };
@@ -167,6 +212,155 @@ export default function HomeownershipEmploymentPage() {
   const handleOnClickPreviousEmploymentEdit = () =>
     setPreviousEmploymentEdit(
       (previousPreviousEmploymentEdit) => !previousPreviousEmploymentEdit
+    );
+
+  const onValidCoApplicantCurrentlyUnemployed = async (data) => {
+    try {
+      const original = await DataStore.query(EmploymentInfo, employmentInfo.id);
+      const persistedEmploymentInfo = await DataStore.save(
+        EmploymentInfo.copyOf(original, (originalEmploymentInfo) => {
+          originalEmploymentInfo.ownerID = application.id;
+          originalEmploymentInfo.props = {
+            ...originalEmploymentInfo.props,
+            coApplicantCurrentlyUnemployed: data.currentlyUnemployed,
+            coApplicantCurrentEmployment:
+              data.currentlyUnemployed === 'Yes'
+                ? undefined
+                : originalEmploymentInfo.props.coApplicantCurrentEmployment,
+            coApplicantPreviousEmployment:
+              data.currentlyUnemployed === 'Yes'
+                ? undefined
+                : originalEmploymentInfo.props.coApplicantPreviousEmployment,
+          };
+        })
+      );
+      setEmploymentInfo(persistedEmploymentInfo);
+      setCoApplicantUnemploymentEdit(false);
+
+      setAlert(
+        createAlert(
+          'success',
+          'Success',
+          "The co-applicant's unemployment status was saved successfully."
+        )
+      );
+
+      setCoApplicantUnemploymentOpen(false);
+      if (data.currentlyUnemployed === 'No') {
+        setCoApplicantCurrentEmploymentOpen(true);
+      }
+
+      updateApplicationLastSection();
+    } catch {
+      setAlert(
+        createAlert(
+          'error',
+          'Error',
+          "The co-applicant's unemployment status couldn't be saved."
+        )
+      );
+    }
+  };
+
+  const handleOnClickCoApplicantUnemploymentEdit = () =>
+    setCoApplicantUnemploymentEdit(
+      (previousCoApplicantUnemploymentEdit) =>
+        !previousCoApplicantUnemploymentEdit
+    );
+
+  const onValidCoApplicantCurrentEmployment = async (data) => {
+    try {
+      const { employerCity, ...newData } = data;
+
+      newData.employerCity = employerCity.selectedCity.label;
+      const original = await DataStore.query(EmploymentInfo, employmentInfo.id);
+      const persistedEmploymentInfo = await DataStore.save(
+        EmploymentInfo.copyOf(original, (originalEmploymentInfo) => {
+          originalEmploymentInfo.props = {
+            ...originalEmploymentInfo.props,
+            coApplicantPreviousEmployment:
+              calculateAgeInMonths(data.startDate) >=
+              habitat?.props.homeownershipMinCurrentEmploymentMonths
+                ? undefined
+                : original.props.coApplicantPreviousEmployment,
+            coApplicantCurrentEmployment: newData,
+          };
+        })
+      );
+      setEmploymentInfo(persistedEmploymentInfo);
+      setCoApplicantCurrentEmploymentEdit(false);
+      setAlert(
+        createAlert(
+          'success',
+          'Success',
+          "The co-applicant's current employment information was saved successfully."
+        )
+      );
+
+      if (
+        calculateAgeInMonths(data.startDate) <
+        habitat?.props.homeownershipMinCurrentEmploymentMonths
+      ) {
+        setCoApplicantPreviousEmploymentOpen(true);
+      }
+
+      setCoApplicantCurrentEmploymentOpen(false);
+    } catch {
+      setAlert(
+        createAlert(
+          'error',
+          'Error',
+          "The co-applicant's current employment couldn't be saved."
+        )
+      );
+    }
+  };
+
+  const handleOnClickCoApplicantCurrentEmploymentEdit = () =>
+    setCoApplicantCurrentEmploymentEdit(
+      (previousCoApplicantCurrentEmploymentEdit) =>
+        !previousCoApplicantCurrentEmploymentEdit
+    );
+
+  const onValidCoApplicantPreviousEmployment = async (data) => {
+    try {
+      const { employerCity, ...newData } = data;
+
+      newData.employerCity = employerCity.selectedCity.label;
+      const original = await DataStore.query(EmploymentInfo, employmentInfo.id);
+      const persistedEmploymentInfo = await DataStore.save(
+        EmploymentInfo.copyOf(original, (originalEmploymentInfo) => {
+          originalEmploymentInfo.props = {
+            ...originalEmploymentInfo.props,
+            coApplicantPreviousEmployment: newData,
+          };
+        })
+      );
+      setEmploymentInfo(persistedEmploymentInfo);
+      setCoApplicantPreviousEmploymentEdit(false);
+      setCoApplicantPreviousEmploymentOpen(false);
+      setAlert(
+        createAlert(
+          'success',
+          'Success',
+          "The co-applicant's previous employment information was saved successfully."
+        )
+      );
+    } catch {
+      setAlert(
+        createAlert(
+          'error',
+          'Error',
+          "The co-applicant's previous employment couldn't be saved."
+        )
+      );
+    }
+  };
+
+  const handleOnClickCoApplicantPreviousEmploymentEdit = () =>
+    setCoApplicantPreviousEmploymentEdit(
+      (previousCoApplicantPreviousEmploymentEdit) =>
+        !previousCoApplicantPreviousEmploymentEdit
     );
 
   const handleOnClickNext = () => navigate('../financial');
@@ -191,6 +385,28 @@ export default function HomeownershipEmploymentPage() {
       ) {
         return true;
       }
+
+      if (applicantInfos[0]?.props?.hasCoApplicant === 'Yes') {
+        if (employmentInfo.props.coApplicantCurrentlyUnemployed) {
+          if (
+            employmentInfo?.props?.coApplicantCurrentlyUnemployed === 'No' &&
+            employmentInfo?.props?.coApplicantCurrentEmployment === undefined
+          ) {
+            return true;
+          }
+          if (
+            calculateAgeInMonths(
+              employmentInfo?.props?.coApplicantCurrentEmployment?.startDate
+            ) < habitat?.props.homeownershipMinCurrentEmploymentMonths &&
+            employmentInfo?.props?.coApplicantCurrentEmployment?.firstJob ===
+              'No' &&
+            employmentInfo.props.coApplicantPreviousEmployment === undefined
+          ) {
+            return true;
+          }
+        }
+      }
+
       return false;
     }
     return true;
@@ -265,6 +481,52 @@ export default function HomeownershipEmploymentPage() {
             <br />
           </>
         )}
+      {applicantInfos[0]?.props?.hasCoApplicant === 'Yes' && (
+        <>
+          <Unemployment
+            expanded={coApplicantUnemploymentOpen}
+            onExpandedChange={setCoApplicantUnemploymentOpen}
+            employmentInfo={employmentInfo}
+            onValid={onValidCoApplicantCurrentlyUnemployed}
+            edit={coApplicantUnemploymentEdit}
+            onClickEdit={handleOnClickCoApplicantUnemploymentEdit}
+            coApplicant
+          />
+          <br />
+          {employmentInfo?.props?.coApplicantCurrentlyUnemployed === 'No' && (
+            <>
+              <CurrentEmployment
+                expanded={coApplicantCurrentEmploymentOpen}
+                onExpandedChange={setCoApplicantCurrentEmploymentOpen}
+                employmentInfo={employmentInfo}
+                onValid={onValidCoApplicantCurrentEmployment}
+                edit={coApplicantCurrentEmploymentEdit}
+                onClickEdit={handleOnClickCoApplicantCurrentEmploymentEdit}
+                coApplicant
+              />
+              <br />
+            </>
+          )}
+          {calculateAgeInMonths(
+            employmentInfo?.props?.coApplicantCurrentEmployment?.startDate
+          ) < habitat?.props.homeownershipMinCurrentEmploymentMonths &&
+            employmentInfo?.props?.coApplicantCurrentEmployment?.firstJob ===
+              'No' && (
+              <>
+                <PreviousEmployment
+                  expanded={coApplicantPreviousEmploymentOpen}
+                  onExpandedChange={setCoApplicantPreviousEmploymentOpen}
+                  employmentInfo={employmentInfo}
+                  onValid={onValidCoApplicantPreviousEmployment}
+                  edit={coApplicantPreviousEmploymentEdit}
+                  onClickEdit={handleOnClickCoApplicantPreviousEmploymentEdit}
+                  coApplicant
+                />
+                <br />
+              </>
+            )}
+        </>
+      )}
       <CustomCard>
         <Flex width="100%" justifyContent="space-between">
           <Link to="../homeowners">

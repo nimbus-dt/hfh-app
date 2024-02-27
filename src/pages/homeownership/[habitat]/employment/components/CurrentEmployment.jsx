@@ -15,6 +15,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { debounce } from 'lodash';
 import { API } from 'aws-amplify';
 import SearchableSelectInput from 'components/SearchableSelectInput';
+import { getCheckOrExEmoji } from 'utils/misc';
 import { currentEmploymentSchema } from '../HomeownershipEmploymentPage.schema';
 import states from '../../../../../assets/jsons/states.json';
 
@@ -25,23 +26,36 @@ const CurrentEmployment = ({
   onValid,
   edit,
   onClickEdit,
+  coApplicant,
 }) => {
   const [cities, setCities] = useState([]);
 
   const formattedValues = useMemo(() => {
-    if (employmentInfo?.props?.currentEmployment !== undefined) {
+    if (
+      coApplicant
+        ? employmentInfo?.props?.coApplicantCurrentEmployment !== undefined
+        : employmentInfo?.props?.currentEmployment !== undefined
+    ) {
       return {
-        ...employmentInfo.props.currentEmployment,
+        ...(coApplicant
+          ? employmentInfo.props.coApplicantCurrentEmployment
+          : employmentInfo.props.currentEmployment),
         employerCity: {
           selectedCity: {
-            id: employmentInfo.props.currentEmployment.employerCity,
-            label: employmentInfo.props.currentEmployment.employerCity,
+            id: coApplicant
+              ? employmentInfo.props.coApplicantCurrentEmployment.employerCity
+              : employmentInfo.props.currentEmployment.employerCity,
+            label: coApplicant
+              ? employmentInfo.props.coApplicantCurrentEmployment.employerCity
+              : employmentInfo.props.currentEmployment.employerCity,
           },
-          query: employmentInfo.props.currentEmployment.employerCity,
+          query: coApplicant
+            ? employmentInfo.props.coApplicantCurrentEmployment.employerCity
+            : employmentInfo.props.currentEmployment.employerCity,
         },
       };
     }
-  }, [employmentInfo]);
+  }, [employmentInfo, coApplicant]);
 
   const {
     control,
@@ -57,7 +71,10 @@ const CurrentEmployment = ({
     values: formattedValues,
   });
 
-  const isEnabled = !employmentInfo?.props?.currentEmployment || edit;
+  const isEnabled =
+    (coApplicant
+      ? !employmentInfo?.props?.coApplicantCurrentEmployment
+      : !employmentInfo?.props?.currentEmployment) || edit;
 
   const handleOnChangePhone = (event) => {
     const formattedNumber = formatPhoneNumber(event.target.value);
@@ -103,15 +120,21 @@ const CurrentEmployment = ({
 
   return (
     <CustomExpandableCard
-      title={`${
-        employmentInfo?.props?.currentEmployment !== undefined ? '✔️' : '❌'
-      } Employment Information`}
+      title={`${getCheckOrExEmoji(
+        coApplicant
+          ? employmentInfo?.props?.coApplicantCurrentEmployment !== undefined
+          : employmentInfo?.props?.currentEmployment !== undefined
+      )}${coApplicant ? ' Co-applicant' : ''} Employment Information`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
     >
       <form onSubmit={handleSubmit(onValid)}>
         <TextField
-          label="What is the name of your current employer?"
+          label={
+            coApplicant
+              ? "What is the name of the co-applicant's current employer?"
+              : 'What is the name of your current employer?'
+          }
           {...register('employerName')}
           errorMessage="Name must contain at least 1 character"
           hasError={errors?.employerName !== undefined}
@@ -188,7 +211,11 @@ const CurrentEmployment = ({
         />
         <br />
         <TextField
-          label="What was your approximate start date with this employer?"
+          label={
+            coApplicant
+              ? "What was the co-applicant's approximate start date with this employer?"
+              : 'What was your approximate start date with this employer?'
+          }
           type="date"
           isRequired
           {...register('startDate')}
@@ -222,7 +249,11 @@ const CurrentEmployment = ({
           render={({ field: { onChange, onBlur, value } }) => (
             <RadioGroupField
               name="firstJob"
-              label="Is this your first job?"
+              label={
+                coApplicant
+                  ? "Is this the co-applicant's first job?"
+                  : 'Is this your first job?'
+              }
               onChange={(e) => onChange(e.target.value)}
               onBlur={onBlur}
               value={value}
@@ -237,7 +268,9 @@ const CurrentEmployment = ({
         />
         <br />
         <Flex width="100%" justifyContent="end">
-          {employmentInfo?.props?.currentEmployment ? (
+          {employmentInfo?.props?.[
+            coApplicant ? 'coApplicantCurrentEmployment' : 'currentEmployment'
+          ] ? (
             <Button onClick={onClickEdit} variation="secondary">
               {edit ? 'Cancel' : 'Edit'}
             </Button>
@@ -260,6 +293,7 @@ CurrentEmployment.propTypes = {
   onValid: PropTypes.func,
   edit: PropTypes.bool,
   onClickEdit: PropTypes.func,
+  coApplicant: PropTypes.bool,
 };
 
 export default CurrentEmployment;
