@@ -343,7 +343,7 @@ export function Address({
         coApplicant
           ? applicantInfo?.props?.coApplicantCurrentAddress !== undefined
           : applicantInfo?.props?.currentAddress !== undefined
-      )}${coApplicant ? ' Co-applicant Present Address' : ''} Present Address`}
+      )}${coApplicant ? ' Co-applicant' : ''} Present Address`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
     >
@@ -589,7 +589,7 @@ export function PrevAddress({
         coApplicant
           ? applicantInfo?.props?.coApplicantPreviousAddress !== undefined
           : applicantInfo?.props?.previousAddress !== undefined
-      )}${' Co-applicant'} Previous Address`}
+      )}${coApplicant ? ' Co-applicant' : ''} Previous Address`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
     >
