@@ -23,3 +23,13 @@ export const zipCodeSchema = z.union([
       'Invalid Zip Code should be in the format 12345 or 12345-6789'
     ),
 ]);
+
+export const positiveNumberSchema = z.coerce.number().nonnegative();
+
+export const intPositiveNumberSchema = positiveNumberSchema.int();
+
+export const moneyNumberSchema = positiveNumberSchema
+  .refine((x) => x * 100 - Math.trunc(x * 100) < Number.EPSILON)
+  .transform((x) => x.toFixed(2));
+
+export const yesNoSchema = z.enum(['Yes', 'No']);
