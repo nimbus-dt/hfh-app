@@ -49,6 +49,16 @@ export default function HomeownershipReviewPage() {
   const [unemploymentOpen, setUnemploymentOpen] = useState(false);
   const [currentEmploymentOpen, setCurrentEmploymentOpen] = useState(false);
   const [previousEmploymentOpen, setPreviousEmploymentOpen] = useState(false);
+  const [coApplicantUnemploymentOpen, setCoApplicantUnemploymentOpen] =
+    useState(false);
+  const [
+    coApplicantCurrentEmploymentOpen,
+    setCoApplicantCurrentEmploymentOpen,
+  ] = useState(false);
+  const [
+    coApplicantPreviousEmploymentOpen,
+    setCoApplicantPreviousEmploymentOpen,
+  ] = useState(false);
   const [financialOpen, setFinancialOpen] = useState(false);
 
   const handleBasicInformationOnReview = (unmarried) => {
@@ -250,12 +260,53 @@ export default function HomeownershipReviewPage() {
     }));
   };
 
-  const handlePreviousEmploymentOnReview = () => {
+  const handlePreviousEmploymentOnReview = (hasCoApplicant) => {
     setPreviousEmploymentOpen(false);
-    setFinancialOpen(true);
+    if (hasCoApplicant) {
+      setCoApplicantUnemploymentOpen(true);
+    } else {
+      setFinancialOpen(true);
+    }
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
       previousEmployment: true,
+    }));
+  };
+
+  const handleCoApplicantUnemploymentOnReview = (employed) => {
+    setCoApplicantUnemploymentOpen(false);
+    if (employed) {
+      setCoApplicantCurrentEmploymentOpen(true);
+    } else {
+      setFinancialOpen(true);
+    }
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      coApplicantUnemployment: true,
+    }));
+  };
+
+  const handleCoApplicantCurrentEmploymentOnReview = (
+    hasPreviousEmployment
+  ) => {
+    setCoApplicantCurrentEmploymentOpen(false);
+    if (hasPreviousEmployment) {
+      setCoApplicantPreviousEmploymentOpen(true);
+    } else {
+      setFinancialOpen(true);
+    }
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      coApplicantCurrentEmployment: true,
+    }));
+  };
+
+  const handleCoApplicantPreviousEmploymentOnReview = () => {
+    setCoApplicantPreviousEmploymentOpen(false);
+    setFinancialOpen(true);
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      coApplicantPreviousEmployment: true,
     }));
   };
 
@@ -436,17 +487,36 @@ export default function HomeownershipReviewPage() {
         submitted={application?.submissionStatus === SubmissionStatus.SUBMITTED}
       />
       <EmploymentSection
-        reviewedSections={reviewedSections}
-        setReviewedSections={setReviewedSections}
         unemploymentOpen={unemploymentOpen}
         setUnemploymentOpen={setUnemploymentOpen}
+        handleUnemploymentOnReview={handleUnemploymentOnReview}
         currentEmploymentOpen={currentEmploymentOpen}
         setCurrentEmploymentOpen={setCurrentEmploymentOpen}
+        handleCurrentEmploymentOnReview={handleCurrentEmploymentOnReview}
         previousEmploymentOpen={previousEmploymentOpen}
         setPreviousEmploymentOpen={setPreviousEmploymentOpen}
-        handleUnemploymentOnReview={handleUnemploymentOnReview}
-        handleCurrentEmploymentOnReview={handleCurrentEmploymentOnReview}
         handlePreviousAddressOnReview={handlePreviousEmploymentOnReview}
+        coApplicantUnemploymentOpen={coApplicantUnemploymentOpen}
+        setCoApplicantUnemploymentOpen={setCoApplicantUnemploymentOpen}
+        handleCoApplicantUnemploymentOnReview={
+          handleCoApplicantUnemploymentOnReview
+        }
+        coApplicantCurrentEmploymentOpen={coApplicantCurrentEmploymentOpen}
+        setCoApplicantCurrentEmploymentOpen={
+          setCoApplicantCurrentEmploymentOpen
+        }
+        handleCoApplicantCurrentEmploymentOnReview={
+          handleCoApplicantCurrentEmploymentOnReview
+        }
+        coApplicantPreviousEmploymentOpen={coApplicantPreviousEmploymentOpen}
+        setCoApplicantPreviousEmploymentOpen={
+          setCoApplicantPreviousEmploymentOpen
+        }
+        handleCoApplicantPreviousAddressOnReview={
+          handleCoApplicantPreviousEmploymentOnReview
+        }
+        reviewedSections={reviewedSections}
+        setReviewedSections={setReviewedSections}
         submitted={application?.submissionStatus === SubmissionStatus.SUBMITTED}
       />
       <FinancialSection
