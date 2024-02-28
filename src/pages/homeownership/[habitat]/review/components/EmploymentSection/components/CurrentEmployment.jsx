@@ -23,15 +23,18 @@ const CurrentEmployment = ({
   setReviewedSections,
   onReview,
   submitted,
+  coApplicant,
 }) => {
   const customCardReference = useRef(null);
 
   useEffect(() => {
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
-      currentEmployment: false,
+      ...(coApplicant
+        ? { coApplicantCurrentEmployment: false }
+        : { currentEmployment: false }),
     }));
-  }, [setReviewedSections]);
+  }, [setReviewedSections, coApplicant]);
 
   useEffect(() => {
     if (expanded) {
@@ -45,8 +48,10 @@ const CurrentEmployment = ({
   return (
     <CustomExpandableCard
       title={`${getCheckOrExEmoji(
-        reviewedSections.currentEmployment || submitted
-      )} Employment Information`}
+        (coApplicant
+          ? reviewedSections.coApplicantCurrentEmployment
+          : reviewedSections.currentEmployment) || submitted
+      )}${coApplicant ? ' Co-applicant' : ''} Employment Information`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
       ref={customCardReference}
@@ -54,15 +59,29 @@ const CurrentEmployment = ({
       {employmentInfo ? (
         <>
           <TextField
-            label="What is the name of your current employer?"
-            value={employmentInfo?.props?.currentEmployment.employerName}
+            label={
+              coApplicant
+                ? "What is the name of the co-applicant's current employer?"
+                : 'What is the name of your current employer?'
+            }
+            value={
+              coApplicant
+                ? employmentInfo?.props?.coApplicantCurrentEmployment
+                    .employerName
+                : employmentInfo?.props?.currentEmployment.employerName
+            }
             isDisabled
           />
           <br />
 
           <SelectField
             label="State"
-            value={employmentInfo?.props?.currentEmployment.employerState}
+            value={
+              coApplicant
+                ? employmentInfo?.props?.coApplicantCurrentEmployment
+                    .employerState
+                : employmentInfo?.props?.currentEmployment.employerState
+            }
             isDisabled
           >
             {states.map((state) => (
@@ -75,26 +94,46 @@ const CurrentEmployment = ({
           <SearchableSelectInput
             label="City"
             selectedOption={{
-              id: employmentInfo?.props?.currentEmployment.employerCity,
-              label: employmentInfo?.props?.currentEmployment.employerCity,
+              id: coApplicant
+                ? employmentInfo?.props?.coApplicantCurrentEmployment
+                    .employerCity
+                : employmentInfo?.props?.currentEmployment.employerCity,
+              label: coApplicant
+                ? employmentInfo?.props?.coApplicantCurrentEmployment
+                    .employerCity
+                : employmentInfo?.props?.currentEmployment.employerCity,
             }}
             isDisabled
           />
           <br />
           <TextField
             label="Street"
-            value={employmentInfo?.props?.currentEmployment.employerStreet}
+            value={
+              coApplicant
+                ? employmentInfo?.props?.coApplicantCurrentEmployment
+                    .employerStreet
+                : employmentInfo?.props?.currentEmployment.employerStreet
+            }
             isDisabled
           />
           <br />
           <TextField
             label="Zip code"
-            value={employmentInfo?.props?.currentEmployment.employerZipCode}
+            value={
+              coApplicant
+                ? employmentInfo?.props?.coApplicantCurrentEmployment
+                    .employerZipCode
+                : employmentInfo?.props?.currentEmployment.employerZipCode
+            }
             isDisabled
           />
           <br />
           <TextField
-            label="What was your approximate start date with this employer?"
+            label={
+              coApplicant
+                ? "What was the co-applicant's approximate start date with this employer?"
+                : 'What was your approximate start date with this employer?'
+            }
             value={employmentInfo?.props?.currentEmployment.startDate}
             type="date"
             isDisabled
@@ -102,21 +141,38 @@ const CurrentEmployment = ({
           <br />
           <TextField
             label="Type of Business?"
-            value={employmentInfo?.props?.currentEmployment.businessType}
+            value={
+              coApplicant
+                ? employmentInfo?.props?.coApplicantCurrentEmployment
+                    .businessType
+                : employmentInfo?.props?.currentEmployment.businessType
+            }
             isDisabled
           />
           <br />
           <TextField
             label="Business phone?"
-            value={employmentInfo?.props?.currentEmployment.businessPhone}
+            value={
+              coApplicant
+                ? employmentInfo?.props?.coApplicantCurrentEmployment
+                    .businessPhone
+                : employmentInfo?.props?.currentEmployment.businessPhone
+            }
             isDisabled
           />
           <br />
 
           <RadioGroupField
-            name="firstJob"
-            label="Is this your first job?"
-            value={employmentInfo?.props?.currentEmployment.firstJob}
+            label={
+              coApplicant
+                ? "Is this the co-applicant's first job?"
+                : 'Is this your first job?'
+            }
+            value={
+              coApplicant
+                ? employmentInfo?.props?.coApplicantCurrentEmployment.firstJob
+                : employmentInfo?.props?.currentEmployment.firstJob
+            }
             isDisabled
           >
             <Radio value="Yes">Yes</Radio>
@@ -150,6 +206,7 @@ CurrentEmployment.propTypes = {
   setReviewedSections: PropTypes.func,
   onReview: PropTypes.func,
   submitted: PropTypes.bool,
+  coApplicant: PropTypes.bool,
 };
 
 export default CurrentEmployment;
