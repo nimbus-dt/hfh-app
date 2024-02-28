@@ -42,6 +42,8 @@ export default function HomeownershipReviewPage() {
   const [anyoneElseMilitaryServiceOpen, setAnyoneElseMilitaryServiceOpen] =
     useState(false);
   const [demographicOpen, setDemographicOpen] = useState(false);
+  const [coApplicantDemographicOpen, setCoApplicantDemographicOpen] =
+    useState(false);
   const [checklistExpanded, setChecklistExpanded] = useState(false);
   const [writtenExpanded, setWrittenExpanded] = useState(false);
   const [recordsExpanded, setRecordsExpanded] = useState(false);
@@ -189,12 +191,25 @@ export default function HomeownershipReviewPage() {
     }));
   };
 
-  const handleDemographicOnReview = () => {
+  const handleDemographicOnReview = (hasCoApplicant) => {
     setDemographicOpen(false);
-    setChecklistExpanded(true);
+    if (hasCoApplicant) {
+      setCoApplicantDemographicOpen(true);
+    } else {
+      setChecklistExpanded(true);
+    }
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
       demographic: true,
+    }));
+  };
+
+  const handleCoApplicantDemographicOnReview = () => {
+    setCoApplicantDemographicOpen(false);
+    setChecklistExpanded(true);
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      coApplicantDemographic: true,
     }));
   };
 
@@ -450,6 +465,11 @@ export default function HomeownershipReviewPage() {
         demographicOpen={demographicOpen}
         setDemographicOpen={setDemographicOpen}
         handleDemographicOnReview={handleDemographicOnReview}
+        coApplicantDemographicOpen={coApplicantDemographicOpen}
+        setCoApplicantDemographicOpen={setCoApplicantDemographicOpen}
+        handleCoApplicantDemographicOnReview={
+          handleCoApplicantDemographicOnReview
+        }
         reviewedSections={reviewedSections}
         setReviewedSections={setReviewedSections}
         submitted={application?.submissionStatus === SubmissionStatus.SUBMITTED}
