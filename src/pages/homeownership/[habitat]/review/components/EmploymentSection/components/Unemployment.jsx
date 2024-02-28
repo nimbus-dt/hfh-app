@@ -39,11 +39,9 @@ const Unemployment = ({
   return (
     <CustomExpandableCard
       title={`${getCheckOrExEmoji(
-        getCheckOrExEmoji(
-          coApplicant
-            ? reviewedSections.coApplicantUnemployment
-            : reviewedSections.unemployment
-        ) || submitted
+        (coApplicant
+          ? reviewedSections.coApplicantUnemployment
+          : reviewedSections.unemployment) || submitted
       )}${coApplicant ? ' Co-applicant' : ''} Unemployment`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
