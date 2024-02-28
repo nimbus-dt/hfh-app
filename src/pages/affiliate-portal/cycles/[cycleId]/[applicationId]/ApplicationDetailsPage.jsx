@@ -259,7 +259,10 @@ const ApplicationDetailsPage = () => {
             email={userEmail}
           />
 
-          <ApplicantOptionalTable applicantOptional={applicantOptionals[0]} />
+          <ApplicantOptionalTable
+            applicantOptional={applicantOptionals[0]}
+            applicantInfo={applicantInfos[0]}
+          />
 
           <ChecklistTable
             questions={habitat?.props.homeownershipCheckQuestions}

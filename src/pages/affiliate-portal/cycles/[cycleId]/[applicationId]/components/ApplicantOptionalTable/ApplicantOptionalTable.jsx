@@ -19,158 +19,204 @@ const objectOfBoolToArrayOfStrings = (boolObject, stringObject) => {
   return stringArray;
 };
 
-const ApplicantOptionalTable = ({ applicantOptional }) => (
-  <Flex direction="column">
-    <DataTable
-      heading="Applicant Optional Information"
-      subheading="Applicant Military Service"
-      headingTextAlign="left"
-      subheadingTextAlign="left"
-      divider
-      data={[
-        {
-          header:
-            'Did you (or your deceased spouse) serve, or are you currently serving, in the United States Armed Forces?',
-          value:
-            applicantOptional?.props?.applicantMilitaryService
-              ?.serveOrServedInUSAF ?? '',
-        },
-        ...(applicantOptional?.props?.applicantMilitaryService
-          ?.serveOrServedInUSAF === 'Yes'
-          ? [
-              {
-                header: 'Currently serving on active duty?',
-                value:
-                  applicantOptional?.props?.applicantMilitaryService
-                    ?.currentlyServing ?? '',
-              },
-              ...(applicantOptional?.props?.applicantMilitaryService
-                ?.currentlyServing === 'Yes'
-                ? [
-                    {
-                      header: 'Projected expiration date of service/tour',
-                      value:
-                        applicantOptional?.props?.applicantMilitaryService
-                          ?.projectedExpirationDateOfServiceTour ?? '',
-                    },
-                  ]
-                : []),
-              {
-                header:
-                  'Currently retired, discharged, or separted from service?',
-                value:
-                  applicantOptional?.props?.applicantMilitaryService
-                    ?.currentlyRetiredDischargedOrSeparated ?? '',
-              },
-              {
-                header:
-                  'Only period of service was a non-activated member of the Reserve of National Guard?',
-                value:
-                  applicantOptional?.props?.applicantMilitaryService
-                    ?.onlyPeriodWasNonActive ?? '',
-              },
-              {
-                header: 'Surviving spouse?',
-                value:
-                  applicantOptional?.props?.applicantMilitaryService
-                    ?.survivingSpouse ?? '',
-              },
-            ]
-          : []),
-      ]}
-    />
-    <DataTable
-      subheading="Household Member Military Service"
-      subheadingTextAlign="left"
-      data={[
-        {
-          header:
-            'Did you (or your deceased spouse) serve, or are you currently serving, in the United States Armed Forces?',
-          value:
-            applicantOptional?.props?.anyoneElseMilitaryService
-              ?.serveOrServedInUSAF ?? '',
-        },
-        ...(applicantOptional?.props?.anyoneElseMilitaryService
-          ?.serveOrServedInUSAF === 'Yes'
-          ? [
-              {
-                header: 'Currently serving on active duty?',
-                value:
-                  applicantOptional?.props?.anyoneElseMilitaryService
-                    ?.currentlyServing ?? '',
-              },
-              ...(applicantOptional?.props?.anyoneElseMilitaryService
-                ?.currentlyServing === 'Yes'
-                ? [
-                    {
-                      header: 'Projected expiration date of service/tour',
-                      value:
-                        applicantOptional?.props?.anyoneElseMilitaryService
-                          ?.projectedExpirationDateOfServiceTour ?? '',
-                    },
-                  ]
-                : []),
-              {
-                header:
-                  'Currently retired, discharged, or separted from service?',
-                value:
-                  applicantOptional?.props?.anyoneElseMilitaryService
-                    ?.currentlyRetiredDischargedOrSeparated ?? '',
-              },
-              {
-                header:
-                  'Only period of service was a non-activated member of the Reserve of National Guard?',
-                value:
-                  applicantOptional?.props?.anyoneElseMilitaryService
-                    ?.onlyPeriodWasNonActive ?? '',
-              },
-            ]
-          : []),
-      ]}
-    />
+const ApplicantOptionalTable = ({ applicantOptional, applicantInfo }) => {
+  const hasCoApplicant = applicantInfo?.props?.hasCoApplicant === 'Yes';
+  return (
+    <Flex direction="column">
+      <DataTable
+        heading="Applicant Optional Information"
+        subheading="Applicant Military Service"
+        headingTextAlign="left"
+        subheadingTextAlign="left"
+        divider
+        data={[
+          {
+            header:
+              'Did you (or your deceased spouse) serve, or are you currently serving, in the United States Armed Forces?',
+            value:
+              applicantOptional?.props?.applicantMilitaryService
+                ?.serveOrServedInUSAF ?? '',
+          },
+          ...(applicantOptional?.props?.applicantMilitaryService
+            ?.serveOrServedInUSAF === 'Yes'
+            ? [
+                {
+                  header: 'Currently serving on active duty?',
+                  value:
+                    applicantOptional?.props?.applicantMilitaryService
+                      ?.currentlyServing ?? '',
+                },
+                ...(applicantOptional?.props?.applicantMilitaryService
+                  ?.currentlyServing === 'Yes'
+                  ? [
+                      {
+                        header: 'Projected expiration date of service/tour',
+                        value:
+                          applicantOptional?.props?.applicantMilitaryService
+                            ?.projectedExpirationDateOfServiceTour ?? '',
+                      },
+                    ]
+                  : []),
+                {
+                  header:
+                    'Currently retired, discharged, or separted from service?',
+                  value:
+                    applicantOptional?.props?.applicantMilitaryService
+                      ?.currentlyRetiredDischargedOrSeparated ?? '',
+                },
+                {
+                  header:
+                    'Only period of service was a non-activated member of the Reserve of National Guard?',
+                  value:
+                    applicantOptional?.props?.applicantMilitaryService
+                      ?.onlyPeriodWasNonActive ?? '',
+                },
+                {
+                  header: 'Surviving spouse?',
+                  value:
+                    applicantOptional?.props?.applicantMilitaryService
+                      ?.survivingSpouse ?? '',
+                },
+              ]
+            : []),
+        ]}
+      />
+      <DataTable
+        subheading="Household Member Military Service"
+        subheadingTextAlign="left"
+        data={[
+          {
+            header:
+              'Did you (or your deceased spouse) serve, or are you currently serving, in the United States Armed Forces?',
+            value:
+              applicantOptional?.props?.anyoneElseMilitaryService
+                ?.serveOrServedInUSAF ?? '',
+          },
+          ...(applicantOptional?.props?.anyoneElseMilitaryService
+            ?.serveOrServedInUSAF === 'Yes'
+            ? [
+                {
+                  header: 'Currently serving on active duty?',
+                  value:
+                    applicantOptional?.props?.anyoneElseMilitaryService
+                      ?.currentlyServing ?? '',
+                },
+                ...(applicantOptional?.props?.anyoneElseMilitaryService
+                  ?.currentlyServing === 'Yes'
+                  ? [
+                      {
+                        header: 'Projected expiration date of service/tour',
+                        value:
+                          applicantOptional?.props?.anyoneElseMilitaryService
+                            ?.projectedExpirationDateOfServiceTour ?? '',
+                      },
+                    ]
+                  : []),
+                {
+                  header:
+                    'Currently retired, discharged, or separted from service?',
+                  value:
+                    applicantOptional?.props?.anyoneElseMilitaryService
+                      ?.currentlyRetiredDischargedOrSeparated ?? '',
+                },
+                {
+                  header:
+                    'Only period of service was a non-activated member of the Reserve of National Guard?',
+                  value:
+                    applicantOptional?.props?.anyoneElseMilitaryService
+                      ?.onlyPeriodWasNonActive ?? '',
+                },
+              ]
+            : []),
+        ]}
+      />
 
-    <DataTable
-      subheading="Demographic"
-      subheadingTextAlign="left"
-      divider
-      data={[
-        {
-          header: 'Ethinicity',
-          value: (
-            <ul>
-              {objectOfBoolToArrayOfStrings(
-                applicantOptional?.props?.demographic?.ethnicity,
-                ETHNICITY_OPTIONS
-              ).map((ethnicity) => (
-                <li>{ethnicity}</li>
-              ))}
-            </ul>
-          ),
-        },
-        {
-          header: 'Sex',
-          value: applicantOptional?.props?.demographic?.sex ?? '',
-        },
-        {
-          header: 'Race',
-          value: (
-            <ul>
-              {objectOfBoolToArrayOfStrings(
-                applicantOptional?.props?.demographic?.race,
-                RACE_OPTIONS
-              ).map((ethnicity) => (
-                <li>{ethnicity}</li>
-              ))}
-            </ul>
-          ),
-        },
-      ]}
-    />
-  </Flex>
-);
+      <DataTable
+        subheading="Demographic"
+        subheadingTextAlign="left"
+        divider
+        data={[
+          {
+            header: 'Ethinicity',
+            value: (
+              <ul>
+                {objectOfBoolToArrayOfStrings(
+                  applicantOptional?.props?.demographic?.ethnicity,
+                  ETHNICITY_OPTIONS
+                ).map((ethnicity) => (
+                  <li>{ethnicity}</li>
+                ))}
+              </ul>
+            ),
+          },
+          {
+            header: 'Sex',
+            value: applicantOptional?.props?.demographic?.sex ?? '',
+          },
+          {
+            header: 'Race',
+            value: (
+              <ul>
+                {objectOfBoolToArrayOfStrings(
+                  applicantOptional?.props?.demographic?.race,
+                  RACE_OPTIONS
+                ).map((ethnicity) => (
+                  <li>{ethnicity}</li>
+                ))}
+              </ul>
+            ),
+          },
+        ]}
+      />
+      {hasCoApplicant && (
+        <DataTable
+          heading="Co-applicant Optional Information"
+          headingTextAlign="left"
+          subheading="Demographic"
+          subheadingTextAlign="left"
+          divider
+          data={[
+            {
+              header: 'Ethinicity',
+              value: (
+                <ul>
+                  {objectOfBoolToArrayOfStrings(
+                    applicantOptional?.props?.coApplicantDemographic?.ethnicity,
+                    ETHNICITY_OPTIONS
+                  ).map((ethnicity) => (
+                    <li>{ethnicity}</li>
+                  ))}
+                </ul>
+              ),
+            },
+            {
+              header: 'Sex',
+              value:
+                applicantOptional?.props?.coApplicantDemographic?.sex ?? '',
+            },
+            {
+              header: 'Race',
+              value: (
+                <ul>
+                  {objectOfBoolToArrayOfStrings(
+                    applicantOptional?.props?.coApplicantDemographic?.race,
+                    RACE_OPTIONS
+                  ).map((ethnicity) => (
+                    <li>{ethnicity}</li>
+                  ))}
+                </ul>
+              ),
+            },
+          ]}
+        />
+      )}
+    </Flex>
+  );
+};
 
 ApplicantOptionalTable.propTypes = {
   applicantOptional: PropTypes.object,
+  applicantInfo: PropTypes.object,
 };
 
 export default ApplicantOptionalTable;
