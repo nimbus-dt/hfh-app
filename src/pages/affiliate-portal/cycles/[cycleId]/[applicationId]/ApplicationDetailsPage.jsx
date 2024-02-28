@@ -278,7 +278,10 @@ const ApplicationDetailsPage = () => {
 
           <HouseholdTable members={members} />
 
-          <EmploymentTable employmentInfo={employmentInfos[0]} />
+          <EmploymentTable
+            employmentInfo={employmentInfos[0]}
+            applicantInfo={applicantInfos[0]}
+          />
 
           <FinancialSection
             applicantInfo={applicantInfos[0]}
