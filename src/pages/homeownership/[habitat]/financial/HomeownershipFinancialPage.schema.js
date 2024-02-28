@@ -1,12 +1,5 @@
+import { intPositiveNumberSchema, moneyNumberSchema } from 'utils/schemas';
 import { z } from 'zod';
-
-const positiveNumber = z.coerce.number().nonnegative();
-
-const intPositiveNumber = positiveNumber.int();
-
-const moneyNumber = positiveNumber
-  .refine((x) => x * 100 - Math.trunc(x * 100) < Number.EPSILON)
-  .transform((x) => x.toFixed(2));
 
 const fileArray = z.array(z.instanceof(File));
 
@@ -30,7 +23,7 @@ export const incomeSchema = z.object({
   type: z.enum(incomeTypes),
   otherType: z.string().min(1).optional(),
   source: z.string().min(1),
-  monthlyIncome: moneyNumber,
+  monthlyIncome: moneyNumberSchema,
   proofs: fileArray,
 });
 
@@ -51,9 +44,9 @@ export const debtSchema = z.object({
   type: z.enum(debtTypes),
   otherType: z.string().min(1).optional(),
   description: z.string().min(1),
-  monthlyPayment: moneyNumber,
-  unpaidBalance: moneyNumber,
-  monthsLeftToPaid: intPositiveNumber,
+  monthlyPayment: moneyNumberSchema,
+  unpaidBalance: moneyNumberSchema,
+  monthsLeftToPaid: intPositiveNumberSchema,
   proofs: fileArray,
 });
 
@@ -76,6 +69,6 @@ export const assetsSchema = z.object({
   type: z.enum(assetsTypes),
   otherType: z.string().min(1).optional(),
   heldByOrLocation: z.string().min(1),
-  currentValue: moneyNumber,
+  currentValue: moneyNumberSchema,
   proofs: fileArray,
 });
