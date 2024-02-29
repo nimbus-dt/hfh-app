@@ -190,7 +190,7 @@ const ApplicantInfoTable = ({ applicantInfo, email }) => (
       subheadingTextAlign="left"
       data={[
         {
-          header: 'You have a co-applicant?',
+          header: 'Do you have a co-applicant?',
           value: applicantInfo?.props?.hasCoApplicant ?? '',
         },
       ]}

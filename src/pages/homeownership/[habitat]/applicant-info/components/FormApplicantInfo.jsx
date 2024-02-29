@@ -1022,7 +1022,7 @@ export function CoApplicant({
           render={({ field: { onChange, onBlur, value } }) => (
             <RadioGroupField
               name="hasCoApplicant"
-              label="You have a co-applicant?"
+              label="Do you have a co-applicant?"
               onChange={(e) => onChange(e.target.value)}
               onBlur={onBlur}
               value={value}

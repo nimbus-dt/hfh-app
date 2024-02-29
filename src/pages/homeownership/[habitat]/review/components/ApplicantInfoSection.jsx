@@ -801,7 +801,7 @@ export function CoApplicant({
       ref={customCardReference}
     >
       <RadioGroupField
-        label="You have a co-applicant?"
+        label="Do you have a co-applicant?"
         value={applicantInfo?.props.hasCoApplicant}
         isDisabled
       >
