@@ -363,7 +363,7 @@ export default function HomeownershipEmploymentPage() {
         !previousCoApplicantPreviousEmploymentEdit
     );
 
-  const handleOnClickNext = () => navigate('../financial');
+  const handleOnClickNext = () => navigate('../property');
 
   const isNextDisabled = () => {
     if (
