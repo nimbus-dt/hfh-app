@@ -23,7 +23,9 @@ import { assetsTypes } from 'pages/homeownership/[habitat]/financial/Homeownersh
 const AssetsSection = ({ assets }) => {
   const [modal, setModal] = useState(false);
 
-  const { control, register, reset, unregister, watch } = useForm();
+  const { control, register, reset, unregister, watch } = useForm({
+    shouldUnregister: true,
+  });
 
   const watchType = watch('type');
 

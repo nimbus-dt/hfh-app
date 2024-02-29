@@ -60,6 +60,7 @@ export default function HomeownershipHomeownersPage() {
     resolver: zodResolver(memberSchema),
     shouldFocusError: false,
     reValidateMode: 'onBlur',
+    shouldUnregister: true,
   });
 
   const watchRelationship = watch('relationship');

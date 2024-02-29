@@ -33,7 +33,9 @@ const relationshipOptions = [
 function HouseholdTable({ members }) {
   const [memberModal, setMemberModal] = useState(false);
 
-  const { unregister, register, reset, watch } = useForm();
+  const { unregister, register, reset, watch } = useForm({
+    shouldUnregister: true,
+  });
 
   const watchRelationship = watch('relationship');
 

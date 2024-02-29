@@ -23,7 +23,9 @@ import { debtTypes } from 'pages/homeownership/[habitat]/financial/Homeownership
 const DebtSection = ({ debts }) => {
   const [modal, setModal] = useState(false);
 
-  const { control, register, reset, unregister, watch } = useForm();
+  const { control, register, reset, unregister, watch } = useForm({
+    shouldUnregister: true,
+  });
 
   const watchType = watch('type');
 

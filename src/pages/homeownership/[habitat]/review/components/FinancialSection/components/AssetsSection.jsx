@@ -26,7 +26,9 @@ const AssetsSection = ({ ownerId, assets, submitted }) => {
 
   const [expanded, setExpanded] = useState(false);
 
-  const { control, register, reset, unregister, watch } = useForm();
+  const { control, register, reset, unregister, watch } = useForm({
+    shouldUnregister: true,
+  });
 
   const watchType = watch('type');
 
