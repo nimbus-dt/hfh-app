@@ -407,6 +407,9 @@ export default function HomeownershipApplicantInfoPage() {
         );
       }
       setCoApplicantOpen(false);
+      if (data.hasCoApplicant === 'Yes') {
+        setCoApplicantBasicInfoOpen(true);
+      }
       updateApplicationLastSection();
     } catch {
       setAlert(
