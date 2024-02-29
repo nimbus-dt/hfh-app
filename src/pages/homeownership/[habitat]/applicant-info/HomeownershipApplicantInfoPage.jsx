@@ -635,7 +635,11 @@ export default function HomeownershipApplicantInfoPage() {
       applicantInfo?.props?.basicInfo !== undefined &&
       applicantInfo?.props?.currentAddress !== undefined &&
       applicantInfo?.props?.typeOfCredit !== undefined &&
-      applicantInfo?.props?.hasCoApplicant !== undefined
+      applicantInfo?.props?.hasCoApplicant !== undefined &&
+      (applicantInfo?.props?.hasCoApplicant === 'Yes'
+        ? applicantInfo?.props?.coApplicantBasicInfo !== undefined &&
+          applicantInfo?.props?.coApplicantCurrentAddress !== undefined
+        : true)
     ) {
       if (
         applicantInfo.props.basicInfo.maritalStatus ===
@@ -651,28 +655,22 @@ export default function HomeownershipApplicantInfoPage() {
       ) {
         return true;
       }
+      if (
+        applicantInfo?.props?.hasCoApplicant === 'Yes' &&
+        applicantInfo.props.coApplicantBasicInfo.maritalStatus ===
+          maritalStatusValues[2] &&
+        applicantInfo.props.coApplicantUnmarriedAddendum === undefined
+      ) {
+        return true;
+      }
 
       if (
         applicantInfo?.props?.hasCoApplicant === 'Yes' &&
-        applicantInfo?.props?.coApplicantBasicInfo !== undefined &&
-        applicantInfo?.props?.coApplicantCurrentAddress !== undefined
+        applicantInfo.props.coApplicantCurrentAddress.monthsLivedHere <
+          habitat?.props.homeownershipMinCurrentAddressMonths &&
+        applicantInfo.props.coApplicantPreviousAddress === undefined
       ) {
-        if (
-          applicantInfo.props.coApplicantBasicInfo.maritalStatus ===
-            maritalStatusValues[2] &&
-          applicantInfo.props.coApplicantUnmarriedAddendum === undefined
-        ) {
-          return true;
-        }
-
-        if (
-          applicantInfo.props.coApplicantCurrentAddress.monthsLivedHere <
-            habitat?.props.homeownershipMinCurrentAddressMonths &&
-          applicantInfo.props.coApplicantPreviousAddress === undefined
-        ) {
-          return true;
-        }
-        return false;
+        return true;
       }
 
       return false;
