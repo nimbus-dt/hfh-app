@@ -921,7 +921,7 @@ export function TypeOfCredit({
           render={({ field: { onChange, onBlur, value } }) => (
             <RadioGroupField
               name="creditType"
-              label="Credit type:"
+              label="Please select the type of credit you are applying for."
               onChange={(e) => onChange(e.target.value)}
               onBlur={onBlur}
               value={value}

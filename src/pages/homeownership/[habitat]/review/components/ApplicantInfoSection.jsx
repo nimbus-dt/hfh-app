@@ -704,7 +704,7 @@ export function TypeOfCredit({
       ref={customCardReference}
     >
       <RadioGroupField
-        label="Credit type:"
+        label="Please select the type of credit you are applying for."
         value={applicantInfo?.props.typeOfCredit.creditType}
         isDisabled
         isReadOnly
