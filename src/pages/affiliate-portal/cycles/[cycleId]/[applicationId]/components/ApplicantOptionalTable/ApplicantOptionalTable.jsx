@@ -144,7 +144,7 @@ const ApplicantOptionalTable = ({ applicantOptional, applicantInfo }) => {
                   applicantOptional?.props?.demographic?.ethnicity,
                   ETHNICITY_OPTIONS
                 ).map((ethnicity) => (
-                  <li>{ethnicity}</li>
+                  <li key={ethnicity}>{ethnicity}</li>
                 ))}
               </ul>
             ),
@@ -160,8 +160,8 @@ const ApplicantOptionalTable = ({ applicantOptional, applicantInfo }) => {
                 {objectOfBoolToArrayOfStrings(
                   applicantOptional?.props?.demographic?.race,
                   RACE_OPTIONS
-                ).map((ethnicity) => (
-                  <li>{ethnicity}</li>
+                ).map((race) => (
+                  <li key={race}>{race}</li>
                 ))}
               </ul>
             ),
@@ -184,7 +184,7 @@ const ApplicantOptionalTable = ({ applicantOptional, applicantInfo }) => {
                     applicantOptional?.props?.coApplicantDemographic?.ethnicity,
                     ETHNICITY_OPTIONS
                   ).map((ethnicity) => (
-                    <li>{ethnicity}</li>
+                    <li key={ethnicity}>{ethnicity}</li>
                   ))}
                 </ul>
               ),
@@ -201,8 +201,8 @@ const ApplicantOptionalTable = ({ applicantOptional, applicantInfo }) => {
                   {objectOfBoolToArrayOfStrings(
                     applicantOptional?.props?.coApplicantDemographic?.race,
                     RACE_OPTIONS
-                  ).map((ethnicity) => (
-                    <li>{ethnicity}</li>
+                  ).map((race) => (
+                    <li key={race}>{race}</li>
                   ))}
                 </ul>
               ),
