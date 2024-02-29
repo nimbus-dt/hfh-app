@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 import CustomExpandableCard from 'components/CustomExpandableCard';
 import { getCheckOrExEmoji } from 'utils/misc';
 import CurrencyInput from 'components/CurrencyInput';
-import { mortagePaymentSchema } from '../HomeownershipPropertyPage.schema';
+import { mortgagePaymentSchema } from '../HomeownershipPropertyPage.schema';
 
-const MortagePayment = ({
+const MortgagePayment = ({
   property,
   expanded,
   onExpandedChange,
@@ -20,26 +20,26 @@ const MortagePayment = ({
     control,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(mortagePaymentSchema),
+    resolver: zodResolver(mortgagePaymentSchema),
     shouldFocusError: false,
     reValidateMode: 'onBlur',
-    values: property?.props?.mortagePayment,
+    values: property?.props?.mortgagePayment,
   });
 
-  const isEnabled = !property?.props?.mortagePayment || edit;
+  const isEnabled = !property?.props?.mortgagePayment || edit;
 
   return (
     <CustomExpandableCard
       title={`${getCheckOrExEmoji(
-        property?.props?.mortagePayment !== undefined
-      )} Mortage Payment`}
+        property?.props?.mortgagePayment !== undefined
+      )} Mortgage Payment`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
     >
       <form onSubmit={handleSubmit(onValid)}>
         <Controller
           control={control}
-          name="montlyMortage"
+          name="montlyMortgage"
           defaultValue=""
           render={({ field: { value, onChange } }) => (
             <CurrencyInput
@@ -47,7 +47,7 @@ const MortagePayment = ({
               value={value}
               onChange={onChange}
               errorMessage="Invalid value"
-              hasError={errors?.montlyMortage !== undefined}
+              hasError={errors?.montlyMortgage !== undefined}
               isRequired
               isDisabled={!isEnabled}
             />
@@ -74,7 +74,7 @@ const MortagePayment = ({
         <br />
 
         <Flex width="100%" justifyContent="end">
-          {property?.props?.mortagePayment ? (
+          {property?.props?.mortgagePayment ? (
             <Button onClick={onClickEdit} variation="secondary">
               {edit ? 'Cancel' : 'Edit'}
             </Button>
@@ -90,7 +90,7 @@ const MortagePayment = ({
   );
 };
 
-MortagePayment.propTypes = {
+MortgagePayment.propTypes = {
   property: PropTypes.object,
   expanded: PropTypes.bool,
   onExpandedChange: PropTypes.func,
@@ -99,4 +99,4 @@ MortagePayment.propTypes = {
   onClickEdit: PropTypes.func,
 };
 
-export default MortagePayment;
+export default MortgagePayment;

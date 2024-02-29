@@ -5,8 +5,8 @@ export const ownRealStateSchema = z.object({
   ownRealState: yesNoSchema,
 });
 
-export const mortagePaymentSchema = z.object({
-  montlyMortage: moneyNumberSchema,
+export const mortgagePaymentSchema = z.object({
+  montlyMortgage: moneyNumberSchema,
   unpaidBalance: moneyNumberSchema,
 });
 

@@ -6,7 +6,7 @@ import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { createAlert } from 'utils/factories';
 import CustomCard from 'components/CustomCard';
 import RealStateOwnership from './components/RealStateOwnership';
-import MortagePayment from './components/MortagePayment';
+import MortgagePayment from './components/MortgagePayment';
 import RentPayment from './components/RentPayment';
 import LandOwnership from './components/LandOwnership';
 
@@ -16,8 +16,8 @@ export default function HomeownershipPropertyPage() {
   const [ownRealStateOpen, setOwnRealStateOpen] = useState(true);
   const [ownRealStateEdit, setOwnRealStateEdit] = useState(false);
 
-  const [mortagePaymentOpen, setMortagePaymentOpen] = useState(false);
-  const [mortagePaymentEdit, setMortagePaymentEdit] = useState(false);
+  const [mortgagePaymentOpen, setMortgagePaymentOpen] = useState(false);
+  const [mortgagePaymentEdit, setMortgagePaymentEdit] = useState(false);
 
   const [rentPaymentOpen, setRentPaymentOpen] = useState(false);
   const [rentPaymentEdit, setRentPaymentEdit] = useState(false);
@@ -39,7 +39,7 @@ export default function HomeownershipPropertyPage() {
             props: data,
           })
         );
-        setMortagePaymentOpen(true);
+        setMortgagePaymentOpen(true);
         setProperty(persistedProperty);
       } else {
         const original = await DataStore.query(Property, property.id);
@@ -49,14 +49,14 @@ export default function HomeownershipPropertyPage() {
             originalProperty.props = {
               ...originalProperty.props,
               ownRealState: data.ownRealState,
-              mortagePayment:
+              mortgagePayment:
                 data.ownRealState === 'No'
                   ? undefined
-                  : originalProperty.props.mortagePayment,
+                  : originalProperty.props.mortgagePayment,
               landOwnership:
                 data.ownRealState === 'No'
                   ? undefined
-                  : originalProperty.props.mortagePayment,
+                  : originalProperty.props.mortgagePayment,
               rentPayment:
                 data.ownRealState === 'Yes'
                   ? undefined
@@ -77,7 +77,7 @@ export default function HomeownershipPropertyPage() {
       );
 
       if (data.ownRealState === 'Yes') {
-        setMortagePaymentOpen(true);
+        setMortgagePaymentOpen(true);
       } else {
         setRentPaymentOpen(true);
       }
@@ -101,40 +101,40 @@ export default function HomeownershipPropertyPage() {
       (previousOwnRealStateEdit) => !previousOwnRealStateEdit
     );
 
-  const onValidMortagePayment = async (data) => {
+  const onValidMortgagePayment = async (data) => {
     try {
       const original = await DataStore.query(Property, property.id);
       const persistedProperty = await DataStore.save(
         Property.copyOf(original, (originalProperty) => {
           originalProperty.props = {
             ...originalProperty.props,
-            mortagePayment: data,
+            mortgagePayment: data,
           };
         })
       );
       setProperty(persistedProperty);
-      setMortagePaymentEdit(false);
+      setMortgagePaymentEdit(false);
       setAlert(
         createAlert(
           'success',
           'Success',
-          'The mortage payment was saved successfully.'
+          'The mortgage payment was saved successfully.'
         )
       );
 
       setLandOwnershipOpen(true);
 
-      setMortagePaymentOpen(false);
+      setMortgagePaymentOpen(false);
     } catch {
       setAlert(
-        createAlert('error', 'Error', "The mortage payment couldn't be saved.")
+        createAlert('error', 'Error', "The mortgage payment couldn't be saved.")
       );
     }
   };
 
-  const handleOnClickMortagePaymentEdit = () =>
-    setMortagePaymentEdit(
-      (previousMortagePaymentEdit) => !previousMortagePaymentEdit
+  const handleOnClickMortgagePaymentEdit = () =>
+    setMortgagePaymentEdit(
+      (previousMortgagePaymentEdit) => !previousMortgagePaymentEdit
     );
 
   const onValidRentPayment = async (data) => {
@@ -212,7 +212,7 @@ export default function HomeownershipPropertyPage() {
     if (property !== undefined && property.props.ownRealState) {
       if (
         (property.props.ownRealState === 'Yes' &&
-          (property?.props?.mortagePayment === undefined ||
+          (property?.props?.mortgagePayment === undefined ||
             property?.props?.landOwnership === undefined)) ||
         (property.props.ownRealState === 'No' &&
           property?.props?.rentPayment === undefined)
@@ -266,13 +266,13 @@ export default function HomeownershipPropertyPage() {
       <br />
       {property?.props?.ownRealState === 'Yes' && (
         <>
-          <MortagePayment
-            expanded={mortagePaymentOpen}
-            onExpandedChange={setMortagePaymentOpen}
+          <MortgagePayment
+            expanded={mortgagePaymentOpen}
+            onExpandedChange={setMortgagePaymentOpen}
             property={property}
-            onValid={onValidMortagePayment}
-            edit={mortagePaymentEdit}
-            onClickEdit={handleOnClickMortagePaymentEdit}
+            onValid={onValidMortgagePayment}
+            edit={mortgagePaymentEdit}
+            onClickEdit={handleOnClickMortgagePaymentEdit}
           />
           <br />
           <LandOwnership
