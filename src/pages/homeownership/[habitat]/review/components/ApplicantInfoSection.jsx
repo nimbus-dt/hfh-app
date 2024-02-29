@@ -1004,7 +1004,13 @@ const ApplicantInfoSection = ({
             applicantInfo={applicantInfo}
             reviewedSections={reviewedSections}
             setReviewedSections={setReviewedSections}
-            onReview={handleCoApplicantAddressOnReview}
+            onReview={() =>
+              handleCoApplicantAddressOnReview(
+                applicantInfo?.props?.coApplicantCurrentAddress
+                  ?.monthsLivedHere <
+                  habitat?.props.homeownershipMinCurrentAddressMonths
+              )
+            }
             submitted={submitted}
             coApplicant
           />
