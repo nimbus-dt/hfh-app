@@ -57,9 +57,9 @@ function BasicInformation({
   return (
     <CustomExpandableCard
       title={`${getCheckOrExEmoji(
-        coApplicant
+        (coApplicant
           ? reviewedSections.coApplicantBasicInfo
-          : reviewedSections.basicInfo || submitted
+          : reviewedSections.basicInfo) || submitted
       )}${coApplicant ? ' Co-applicant' : ''} Basic Information`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
@@ -249,9 +249,9 @@ function UnmarriedAddendum({
   return (
     <CustomExpandableCard
       title={`${getCheckOrExEmoji(
-        coApplicant
+        (coApplicant
           ? reviewedSections.coApplicantUnmarriedAddendum
-          : reviewedSections.unmarriedAddendum || submitted
+          : reviewedSections.unmarriedAddendum) || submitted
       )}${coApplicant ? ' Co-applicant' : ''} Unmarried Addendum`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
@@ -391,9 +391,9 @@ const Address = ({
   return (
     <CustomExpandableCard
       title={`${getCheckOrExEmoji(
-        coApplicant
+        (coApplicant
           ? reviewedSections.coApplicantAddress
-          : reviewedSections.address || submitted
+          : reviewedSections.address) || submitted
       )}${coApplicant ? ' Co-applicant' : ''} Present Address`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
@@ -547,9 +547,9 @@ function PrevAddress({
   return (
     <CustomExpandableCard
       title={`${getCheckOrExEmoji(
-        coApplicant
+        (coApplicant
           ? reviewedSections.coApplicantPrevAddress
-          : reviewedSections.prevAddress || submitted
+          : reviewedSections.prevAddress) || submitted
       )}${coApplicant ? ' Co-applicant' : ''} Previous Address`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
