@@ -1,6 +1,6 @@
 import { Alert, Button, Flex, View } from '@aws-amplify/ui-react';
 import { useEffect, useState } from 'react';
-import { ApplicantInfo } from 'models';
+import { ApplicantInfo, Member } from 'models';
 import { DataStore } from 'aws-amplify';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { createAlert } from 'utils/factories';
@@ -409,6 +409,13 @@ export default function HomeownershipApplicantInfoPage() {
       setCoApplicantOpen(false);
       if (data.hasCoApplicant === 'Yes') {
         setCoApplicantBasicInfoOpen(true);
+      } else {
+        await DataStore.delete(Member, (c) =>
+          c.and((c2) => [
+            c2.testapplicationID.eq(application.id),
+            c2.isCoApplicant.eq(true),
+          ])
+        );
       }
       updateApplicationLastSection();
     } catch {
@@ -442,6 +449,36 @@ export default function HomeownershipApplicantInfoPage() {
           };
         })
       );
+      const persistedMember = await DataStore.query(Member, (c) =>
+        c.and((c2) => [
+          c2.testapplicationID.eq(application.id),
+          c2.isCoApplicant.eq(true),
+        ])
+      );
+
+      const memberProps = {
+        fullName: data.fullName,
+        birthDay: data.birthDate,
+        sex: 'Other',
+        relationship: 'Co-Applicant',
+      };
+
+      if (persistedMember.length > 0) {
+        await DataStore.save(
+          Member.copyOf(persistedMember[0], (originalMember) => {
+            originalMember.props = memberProps;
+          })
+        );
+      } else {
+        await DataStore.save(
+          new Member({
+            testapplicationID: application.id,
+            props: memberProps,
+            isCoApplicant: true,
+          })
+        );
+      }
+
       setApplicantInfo(persistedApplicantInfo);
       setCoApplicantBasicInfoEdit(false);
       setAlert(
