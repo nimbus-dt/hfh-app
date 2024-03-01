@@ -28,7 +28,12 @@ export const positiveNumberSchema = z.coerce.number().nonnegative();
 
 export const intPositiveNumberSchema = positiveNumberSchema.int();
 
-export const moneyNumberSchema = positiveNumberSchema
+export const positiveMoneyNumberSchema = positiveNumberSchema
+  .refine((x) => x * 100 - Math.trunc(x * 100) < Number.EPSILON)
+  .transform((x) => x.toFixed(2));
+
+export const moneyNumberSchema = z.coerce
+  .number()
   .refine((x) => x * 100 - Math.trunc(x * 100) < Number.EPSILON)
   .transform((x) => x.toFixed(2));
 

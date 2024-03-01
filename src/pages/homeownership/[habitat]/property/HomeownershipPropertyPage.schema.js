@@ -1,4 +1,4 @@
-import { moneyNumberSchema, yesNoSchema } from 'utils/schemas';
+import { positiveMoneyNumberSchema, yesNoSchema } from 'utils/schemas';
 import { z } from 'zod';
 
 export const ownRealStateSchema = z.object({
@@ -6,15 +6,15 @@ export const ownRealStateSchema = z.object({
 });
 
 export const mortgagePaymentSchema = z.object({
-  montlyMortgage: moneyNumberSchema,
-  unpaidBalance: moneyNumberSchema,
+  montlyMortgage: positiveMoneyNumberSchema,
+  unpaidBalance: positiveMoneyNumberSchema,
 });
 
 export const rentPaymentSchema = z.object({
-  montlyRent: moneyNumberSchema,
+  montlyRent: positiveMoneyNumberSchema,
 });
 
 export const landOwnershipSchema = z.object({
   ownLand: yesNoSchema,
-  montlyPayment: moneyNumberSchema.optional(),
+  montlyPayment: positiveMoneyNumberSchema.optional(),
 });
