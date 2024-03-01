@@ -30,7 +30,6 @@ const ApplicantMilitaryServiceSection = ({
     shouldFocusError: false,
     reValidateMode: 'onBlur',
     values: applicantOptional?.props.applicantMilitaryService,
-    shouldUnregister: true,
   });
 
   const serveOrServedWatch = watch('serveOrServedInUSAF');

@@ -26,9 +26,7 @@ const IncomeSection = ({ ownerId, incomes, submitted }) => {
 
   const [expanded, setExpanded] = useState(true);
 
-  const { register, reset, unregister, watch, control } = useForm({
-    shouldUnregister: true,
-  });
+  const { register, reset, unregister, watch, control } = useForm();
 
   const watchType = watch('type');
 

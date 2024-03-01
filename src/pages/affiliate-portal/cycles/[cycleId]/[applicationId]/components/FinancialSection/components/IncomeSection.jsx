@@ -23,9 +23,7 @@ import { incomeTypes } from 'pages/homeownership/[habitat]/financial/Homeownersh
 const IncomeSection = ({ incomes }) => {
   const [modal, setModal] = useState(false);
 
-  const { register, reset, unregister, watch, control } = useForm({
-    shouldUnregister: true,
-  });
+  const { register, reset, unregister, watch, control } = useForm();
 
   const watchType = watch('type');
 

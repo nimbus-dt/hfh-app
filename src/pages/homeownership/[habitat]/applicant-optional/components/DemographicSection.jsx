@@ -38,7 +38,6 @@ const DemographicSection = ({
     shouldFocusError: false,
     reValidateMode: 'onBlur',
     values: demographic,
-    shouldUnregister: true,
   });
 
   const otherHispanicOrLatino = watch('ethnicity.otherHispanicOrLatino');

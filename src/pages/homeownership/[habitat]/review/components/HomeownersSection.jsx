@@ -47,9 +47,7 @@ function HomeownersSection({
   const customCardReference = useRef(null);
 
   const { application } = useOutletContext();
-  const { unregister, register, reset, watch } = useForm({
-    shouldUnregister: true,
-  });
+  const { unregister, register, reset, watch } = useForm();
 
   const watchRelationship = watch('relationship');
 

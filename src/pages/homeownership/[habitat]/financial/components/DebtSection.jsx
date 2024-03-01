@@ -54,7 +54,6 @@ const DebtSection = ({
     resolver: zodResolver(debtSchema),
     shouldFocusError: false,
     reValidateMode: 'onBlur',
-    shouldUnregister: true,
   });
 
   const watchType = watch('type');

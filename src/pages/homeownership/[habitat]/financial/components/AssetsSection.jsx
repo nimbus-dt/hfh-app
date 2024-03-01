@@ -57,7 +57,6 @@ const AssetsSection = ({
     resolver: zodResolver(assetsSchema),
     shouldFocusError: false,
     reValidateMode: 'onBlur',
-    shouldUnregister: true,
   });
 
   const watchType = watch('type');

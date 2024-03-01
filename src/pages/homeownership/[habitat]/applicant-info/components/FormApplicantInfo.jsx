@@ -751,7 +751,6 @@ export function UnmarriedAddendum({
     values: coApplicant
       ? applicantInfo?.props?.coApplicantUnmarriedAddendum
       : applicantInfo?.props?.unmarriedAddendum,
-    shouldUnregister: true,
   });
 
   const isEnabled =
@@ -898,7 +897,6 @@ export function TypeOfCredit({
     shouldFocusError: false,
     reValidateMode: 'onBlur',
     values: applicantInfo?.props?.typeOfCredit,
-    shouldUnregister: true,
   });
 
   const isEnabled = !applicantInfo?.props?.typeOfCredit || edit;

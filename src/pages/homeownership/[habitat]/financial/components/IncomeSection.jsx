@@ -57,7 +57,6 @@ const IncomeSection = ({
     resolver: zodResolver(incomeSchema),
     shouldFocusError: false,
     reValidateMode: 'onBlur',
-    shouldUnregister: true,
   });
 
   const watchType = watch('type');
