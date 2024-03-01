@@ -332,15 +332,17 @@ export default function HomeownershipHomeownersPage() {
                           justifyContent="center"
                           gap="0.5rem"
                         >
-                          <Button
-                            height="2rem"
-                            width="2rem"
-                            padding="0"
-                            title="Delete"
-                            onClick={handleOnClickDelete}
-                          >
-                            <MdClose size="1.25rem" />
-                          </Button>
+                          {!member.isCoApplicant && (
+                            <Button
+                              height="2rem"
+                              width="2rem"
+                              padding="0"
+                              title="Delete"
+                              onClick={handleOnClickDelete}
+                            >
+                              <MdClose size="1.25rem" />
+                            </Button>
+                          )}
                           <Button
                             height="2rem"
                             width="2rem"
@@ -434,11 +436,13 @@ export default function HomeownershipHomeownersPage() {
                 />
               )}
               <Flex width="100%" justifyContent="end">
-                {editingMember ? (
-                  <Button onClick={handleOnClickEdit} variation="secondary">
-                    {edit ? 'Cancel' : 'Edit'}
-                  </Button>
-                ) : null}
+                {editingMember
+                  ? !editingMember.isCoApplicant && (
+                      <Button onClick={handleOnClickEdit} variation="secondary">
+                        {edit ? 'Cancel' : 'Edit'}
+                      </Button>
+                    )
+                  : null}
                 {isEnabled ? (
                   <Button type="submit" variation="primary">
                     Save
