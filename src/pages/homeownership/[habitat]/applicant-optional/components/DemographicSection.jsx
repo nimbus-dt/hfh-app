@@ -12,6 +12,7 @@ import {
 } from '@aws-amplify/ui-react';
 import CustomExpandableCard from 'components/CustomExpandableCard';
 import { getCheckOrExEmoji } from 'utils/misc';
+import { useEffect } from 'react';
 import { demographicSchema } from '../HomeownershipApplicantOptionalPage.schema';
 
 const DemographicSection = ({
@@ -32,6 +33,7 @@ const DemographicSection = ({
     control,
     watch,
     register,
+    unregister,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(demographicSchema),
@@ -51,6 +53,30 @@ const DemographicSection = ({
   const otherPacificIslander = watch('race.otherPacificIslander');
 
   const isEnabled = !demographic || edit;
+
+  useEffect(() => {
+    if (!otherHispanicOrLatino) {
+      unregister('ethnicity.otherHispanicOrLatinoValue');
+    }
+  }, [otherHispanicOrLatino]);
+
+  useEffect(() => {
+    if (!otherAsian) {
+      unregister('race.otherAsianValue');
+    }
+  }, [otherAsian]);
+
+  useEffect(() => {
+    if (!americanIndianOrAlaskaNative) {
+      unregister('race.nameOfEnrolledOrPrincipalTribe');
+    }
+  }, [americanIndianOrAlaskaNative]);
+
+  useEffect(() => {
+    if (!otherPacificIslander) {
+      unregister('race.otherPacificIslanderValue');
+    }
+  }, [otherPacificIslander]);
 
   return (
     <CustomExpandableCard

@@ -743,6 +743,7 @@ export function UnmarriedAddendum({
     handleSubmit,
     control,
     watch,
+    unregister,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(unmarriedAddendumSchema),
@@ -763,6 +764,20 @@ export function UnmarriedAddendum({
   );
 
   const relationshipTypeWatch = watch('relationshipType');
+
+  useEffect(() => {
+    if (notSpouseButSimilarPropertyRightsWatch !== 'Yes') {
+      unregister('relationshipType');
+      unregister('otherRelationshipType');
+      unregister('state');
+    }
+  }, [notSpouseButSimilarPropertyRightsWatch]);
+
+  useEffect(() => {
+    if (relationshipTypeWatch !== 'Other') {
+      unregister('otherRelationshipType');
+    }
+  }, [relationshipTypeWatch]);
 
   return (
     <CustomExpandableCard
@@ -891,6 +906,7 @@ export function TypeOfCredit({
     handleSubmit,
     control,
     watch,
+    unregister,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(typeOfCreditSchema),
@@ -902,6 +918,15 @@ export function TypeOfCredit({
   const isEnabled = !applicantInfo?.props?.typeOfCredit || edit;
 
   const creditTypeWatch = watch('creditType');
+
+  useEffect(() => {
+    if (creditTypeWatch !== creditTypes[1]) {
+      unregister('totalNumberOfBorrowers');
+    }
+    if (creditTypeWatch !== creditTypes[2]) {
+      unregister('youtInitials');
+    }
+  }, [creditTypeWatch]);
 
   return (
     <CustomExpandableCard
