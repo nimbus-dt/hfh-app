@@ -48,9 +48,9 @@ export default function HomeownershipTermsPage() {
         <CheckboxField
           checked={agreeTerms}
           onChange={handleOnChangeAgreeTerms}
-          label="I have read and agreed to the terms and services."
+          label="I have read and agreed to the terms of service."
           hasError={error}
-          errorMessage="You can't continue the application process without agreeing the terms."
+          errorMessage="You can't continue the application process without agreeing the terms of service."
         />
       </View>
       <Flex width="100%" justifyContent="space-between">
