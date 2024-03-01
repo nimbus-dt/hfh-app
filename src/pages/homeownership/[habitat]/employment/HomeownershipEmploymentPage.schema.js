@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import {
-  positiveMoneyNumberSchema,
+  moneyNumberSchema,
   searchableOptionSchema,
   yesNoSchema,
   zipCodeSchema,
@@ -48,5 +48,5 @@ export const previousEmploymentSchema = employmentSchema.extend({
 export const businessOwnerOrSelfEmployedSchema = z.object({
   currentlyBusinessOwnerOrSelfEmployed: yesNoSchema,
   ownershipShare: z.enum(ownershipShareOptions).optional(),
-  montlyIncome: positiveMoneyNumberSchema.optional(),
+  montlyIncome: moneyNumberSchema.optional(),
 });
