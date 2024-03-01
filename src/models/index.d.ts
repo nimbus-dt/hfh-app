@@ -103,6 +103,36 @@ export declare type HabitatProps = LazyLoading extends LazyLoadingDisabled ? Eag
 
 export declare const HabitatProps: (new (init: ModelInit<HabitatProps>) => HabitatProps)
 
+type EagerProperty = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Property, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID: string;
+  readonly props: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyProperty = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Property, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID: string;
+  readonly props: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Property = LazyLoading extends LazyLoadingDisabled ? EagerProperty : LazyProperty
+
+export declare const Property: (new (init: ModelInit<Property>) => Property) & {
+  copyOf(source: Property, mutator: (draft: MutableModel<Property>) => MutableModel<Property> | void): Property;
+}
+
 type EagerTestCycle = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<TestCycle, 'id'>;
@@ -343,6 +373,7 @@ type EagerMember = {
   readonly id: string;
   readonly props?: string | null;
   readonly testapplicationID: string;
+  readonly isCoApplicant?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -355,6 +386,7 @@ type LazyMember = {
   readonly id: string;
   readonly props?: string | null;
   readonly testapplicationID: string;
+  readonly isCoApplicant?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

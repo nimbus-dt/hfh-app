@@ -1,3 +1,9 @@
+type Property @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ownerID: ID!
+  props: AWSJSON!
+}
+
 type WrittenQuestion {
   name: String!
   label: String!
@@ -101,6 +107,7 @@ type Member @model @auth(rules: [{allow: public}]) {
   id: ID!
   props: AWSJSON
   testapplicationID: ID! @index(name: "byTestApplication")
+  isCoApplicant: Boolean
 }
 
 type Record @model @auth(rules: [{allow: public}]) {
