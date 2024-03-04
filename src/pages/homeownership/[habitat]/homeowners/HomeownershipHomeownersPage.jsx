@@ -17,7 +17,7 @@ import { useEffect, useState } from 'react';
 import { DataStore } from 'aws-amplify';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Member } from 'models';
+import { ApplicantInfo, Member } from 'models';
 import { createAlert } from 'utils/factories';
 import Modal from 'components/Modal';
 import { MdAdd, MdClose, MdMoreHoriz } from 'react-icons/md';
@@ -134,6 +134,26 @@ export default function HomeownershipHomeownersPage() {
           }
           return [...previousMembers];
         });
+
+        if (persistedMember.isCoApplicant) {
+          const applicantInfo = await DataStore.query(ApplicantInfo, (c) =>
+            c.and((c2) => [c2.ownerID.eq(application.id)])
+          );
+
+          await DataStore.save(
+            ApplicantInfo.copyOf(applicantInfo[0], (originalApplicantInfo) => {
+              originalApplicantInfo.props = {
+                ...originalApplicantInfo.props,
+                coApplicantBasicInfo: {
+                  ...originalApplicantInfo.props.coApplicantBasicInfo,
+                  fullName: data.fullName,
+                  birthDate: data.birthDay,
+                },
+              };
+            })
+          );
+        }
+
         setAlert(
           createAlert(
             'success',
@@ -157,8 +177,9 @@ export default function HomeownershipHomeownersPage() {
       handleOnClickCloseMemberModal();
 
       updateApplicationLastSection();
-    } catch {
+    } catch (error) {
       setAlert(createAlert('error', 'Error', "The member couldn't be saved."));
+      console.log(error);
     }
   };
 
@@ -435,13 +456,11 @@ export default function HomeownershipHomeownersPage() {
                 />
               )}
               <Flex width="100%" justifyContent="end">
-                {editingMember
-                  ? !editingMember.isCoApplicant && (
-                      <Button onClick={handleOnClickEdit} variation="secondary">
-                        {edit ? 'Cancel' : 'Edit'}
-                      </Button>
-                    )
-                  : null}
+                {editingMember ? (
+                  <Button onClick={handleOnClickEdit} variation="secondary">
+                    {edit ? 'Cancel' : 'Edit'}
+                  </Button>
+                ) : null}
                 {isEnabled ? (
                   <Button type="submit" variation="primary">
                     Save
