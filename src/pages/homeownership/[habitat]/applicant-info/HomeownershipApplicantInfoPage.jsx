@@ -334,6 +334,7 @@ export default function HomeownershipApplicantInfoPage() {
         );
       }
       setTypeOfCreditOpen(false);
+      setCoApplicantOpen(true);
       updateApplicationLastSection();
     } catch {
       setAlert(
