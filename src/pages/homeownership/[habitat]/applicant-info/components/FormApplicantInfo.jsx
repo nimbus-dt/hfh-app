@@ -963,9 +963,9 @@ export function TypeOfCredit({
         {creditTypeWatch === creditTypes[1] && (
           <>
             <TextField
+              {...register('totalNumberOfBorrowers')}
               label="Total number of borrowers:"
               type="number"
-              {...register('totalNumberOfBorrowers')}
               errorMessage="Invalid number of borrowers"
               hasError={errors?.totalNumberOfBorrowers !== undefined}
               isRequired
@@ -977,8 +977,8 @@ export function TypeOfCredit({
         {creditTypeWatch === creditTypes[2] && (
           <>
             <TextField
+              {...register('yourInitials')}
               label="Your initials:"
-              {...register('youtInitials')}
               hasError={errors?.youtInitials !== undefined}
               isRequired
               isDisabled={!isEnabled}
