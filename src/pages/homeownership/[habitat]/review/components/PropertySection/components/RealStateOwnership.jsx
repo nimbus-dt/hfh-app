@@ -45,6 +45,7 @@ const RealStateOwnership = ({
         label="Do you own any real state?"
         value={property?.props?.ownRealState}
         disabled
+        isReadOnly
       >
         <Radio value="Yes">Yes</Radio>
         <Radio value="No">No</Radio>
