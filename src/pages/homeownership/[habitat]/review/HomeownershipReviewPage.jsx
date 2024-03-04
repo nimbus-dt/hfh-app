@@ -50,10 +50,16 @@ export default function HomeownershipReviewPage() {
   const [recordsExpanded, setRecordsExpanded] = useState(false);
   const [homeownersExpanded, setHomeownersExpanded] = useState(false);
   const [unemploymentOpen, setUnemploymentOpen] = useState(false);
+  const [businessOwnerOrSelfEmployedOpen, setBusinessOwnerOrSelfEmployedOpen] =
+    useState(false);
   const [currentEmploymentOpen, setCurrentEmploymentOpen] = useState(false);
   const [previousEmploymentOpen, setPreviousEmploymentOpen] = useState(false);
   const [coApplicantUnemploymentOpen, setCoApplicantUnemploymentOpen] =
     useState(false);
+  const [
+    coApplicantBusinessOwnerOrSelfEmployedOpen,
+    setCoApplicantBusinessOwnerOrSelfEmployedOpen,
+  ] = useState(false);
   const [
     coApplicantCurrentEmploymentOpen,
     setCoApplicantCurrentEmploymentOpen,
@@ -257,7 +263,7 @@ export default function HomeownershipReviewPage() {
   const handleUnemploymentOnReview = (employed, hasCoApplicant) => {
     setUnemploymentOpen(false);
     if (employed) {
-      setCurrentEmploymentOpen(true);
+      setBusinessOwnerOrSelfEmployedOpen(true);
     } else if (hasCoApplicant) {
       setCoApplicantUnemploymentOpen(true);
     } else {
@@ -266,6 +272,15 @@ export default function HomeownershipReviewPage() {
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
       unemployment: true,
+    }));
+  };
+
+  const handleBusinessOwnerOrSelfEmployedOnReview = () => {
+    setBusinessOwnerOrSelfEmployedOpen(false);
+    setCurrentEmploymentOpen(true);
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      businessOwnerOrSelfEmployed: true,
     }));
   };
 
@@ -303,13 +318,22 @@ export default function HomeownershipReviewPage() {
   const handleCoApplicantUnemploymentOnReview = (employed) => {
     setCoApplicantUnemploymentOpen(false);
     if (employed) {
-      setCoApplicantCurrentEmploymentOpen(true);
+      setCoApplicantBusinessOwnerOrSelfEmployedOpen(true);
     } else {
       setRealStateOwnershipOpen(true);
     }
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
       coApplicantUnemployment: true,
+    }));
+  };
+
+  const handleCoApplicantBusinessOwnerOrSelfEmployedOnReview = () => {
+    setCoApplicantBusinessOwnerOrSelfEmployedOpen(false);
+    setCoApplicantCurrentEmploymentOpen(true);
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      coApplicantBusinessOwnerOrSelfEmployed: true,
     }));
   };
 
@@ -562,6 +586,11 @@ export default function HomeownershipReviewPage() {
         unemploymentOpen={unemploymentOpen}
         setUnemploymentOpen={setUnemploymentOpen}
         handleUnemploymentOnReview={handleUnemploymentOnReview}
+        businessOwnerOrSelfEmployedOpen={businessOwnerOrSelfEmployedOpen}
+        setBusinessOwnerOrSelfEmployedOpen={setBusinessOwnerOrSelfEmployedOpen}
+        handleBusinessOwnerOrSelfEmployedOnReview={
+          handleBusinessOwnerOrSelfEmployedOnReview
+        }
         currentEmploymentOpen={currentEmploymentOpen}
         setCurrentEmploymentOpen={setCurrentEmploymentOpen}
         handleCurrentEmploymentOnReview={handleCurrentEmploymentOnReview}
@@ -572,6 +601,15 @@ export default function HomeownershipReviewPage() {
         setCoApplicantUnemploymentOpen={setCoApplicantUnemploymentOpen}
         handleCoApplicantUnemploymentOnReview={
           handleCoApplicantUnemploymentOnReview
+        }
+        coApplicantBusinessOwnerOrSelfEmployedOpen={
+          coApplicantBusinessOwnerOrSelfEmployedOpen
+        }
+        setCoApplicantBusinessOwnerOrSelfEmployedOpen={
+          setCoApplicantBusinessOwnerOrSelfEmployedOpen
+        }
+        handleCoApplicantBusinessOwnerOrSelfEmployedOnReview={
+          handleCoApplicantBusinessOwnerOrSelfEmployedOnReview
         }
         coApplicantCurrentEmploymentOpen={coApplicantCurrentEmploymentOpen}
         setCoApplicantCurrentEmploymentOpen={

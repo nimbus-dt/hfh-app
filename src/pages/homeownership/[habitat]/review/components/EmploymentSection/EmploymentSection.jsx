@@ -8,11 +8,15 @@ import { useApplicantInfosQuery } from 'hooks/services';
 import Unemployment from './components/Unemployment';
 import CurrentEmployment from './components/CurrentEmployment';
 import PreviousEmployment from './components/PreviousEmployment';
+import BusinessOwnerOrSelfEmployed from './components/BusinessOwnerOrSelfEmployed';
 
 const EmploymentSection = ({
   unemploymentOpen,
   setUnemploymentOpen,
   handleUnemploymentOnReview,
+  businessOwnerOrSelfEmployedOpen,
+  setBusinessOwnerOrSelfEmployedOpen,
+  handleBusinessOwnerOrSelfEmployedOnReview,
   currentEmploymentOpen,
   setCurrentEmploymentOpen,
   handleCurrentEmploymentOnReview,
@@ -22,6 +26,9 @@ const EmploymentSection = ({
   coApplicantUnemploymentOpen,
   setCoApplicantUnemploymentOpen,
   handleCoApplicantUnemploymentOnReview,
+  coApplicantBusinessOwnerOrSelfEmployedOpen,
+  setCoApplicantBusinessOwnerOrSelfEmployedOpen,
+  handleCoApplicantBusinessOwnerOrSelfEmployedOnReview,
   coApplicantCurrentEmploymentOpen,
   setCoApplicantCurrentEmploymentOpen,
   handleCoApplicantCurrentEmploymentOnReview,
@@ -77,6 +84,16 @@ const EmploymentSection = ({
       <br />
       {employmentInfo?.props?.currentlyUnemployed === 'No' && (
         <>
+          <BusinessOwnerOrSelfEmployed
+            expanded={businessOwnerOrSelfEmployedOpen}
+            onExpandedChange={setBusinessOwnerOrSelfEmployedOpen}
+            employmentInfo={employmentInfo}
+            reviewedSections={reviewedSections}
+            setReviewedSections={setReviewedSections}
+            onReview={handleBusinessOwnerOrSelfEmployedOnReview}
+            submitted={submitted}
+          />
+          <br />
           <CurrentEmployment
             expanded={currentEmploymentOpen}
             onExpandedChange={setCurrentEmploymentOpen}
@@ -137,6 +154,17 @@ const EmploymentSection = ({
           <br />
           {employmentInfo?.props?.coApplicantCurrentlyUnemployed === 'No' && (
             <>
+              <BusinessOwnerOrSelfEmployed
+                expanded={coApplicantBusinessOwnerOrSelfEmployedOpen}
+                onExpandedChange={setCoApplicantBusinessOwnerOrSelfEmployedOpen}
+                employmentInfo={employmentInfo}
+                reviewedSections={reviewedSections}
+                setReviewedSections={setReviewedSections}
+                onReview={handleCoApplicantBusinessOwnerOrSelfEmployedOnReview}
+                submitted={submitted}
+                coApplicant
+              />
+              <br />
               <CurrentEmployment
                 expanded={coApplicantCurrentEmploymentOpen}
                 onExpandedChange={setCoApplicantCurrentEmploymentOpen}
@@ -189,6 +217,9 @@ EmploymentSection.propTypes = {
   unemploymentOpen: PropTypes.bool,
   setUnemploymentOpen: PropTypes.func,
   handleUnemploymentOnReview: PropTypes.func,
+  businessOwnerOrSelfEmployedOpen: PropTypes.bool,
+  setBusinessOwnerOrSelfEmployedOpen: PropTypes.func,
+  handleBusinessOwnerOrSelfEmployedOnReview: PropTypes.func,
   currentEmploymentOpen: PropTypes.bool,
   setCurrentEmploymentOpen: PropTypes.func,
   handleCurrentEmploymentOnReview: PropTypes.func,
@@ -198,6 +229,9 @@ EmploymentSection.propTypes = {
   coApplicantUnemploymentOpen: PropTypes.bool,
   setCoApplicantUnemploymentOpen: PropTypes.func,
   handleCoApplicantUnemploymentOnReview: PropTypes.func,
+  coApplicantBusinessOwnerOrSelfEmployedOpen: PropTypes.bool,
+  setCoApplicantBusinessOwnerOrSelfEmployedOpen: PropTypes.func,
+  handleCoApplicantBusinessOwnerOrSelfEmployedOnReview: PropTypes.func,
   coApplicantCurrentEmploymentOpen: PropTypes.bool,
   setCoApplicantCurrentEmploymentOpen: PropTypes.func,
   handleCoApplicantCurrentEmploymentOnReview: PropTypes.func,
