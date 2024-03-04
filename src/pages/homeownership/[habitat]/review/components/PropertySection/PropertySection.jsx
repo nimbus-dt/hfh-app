@@ -20,7 +20,7 @@ export default function PropertySection({
   handleRealStateOwnershipOnReview,
   rentPaymentOpen,
   setRentPaymentOpen,
-  handlerentPaymentOnReview,
+  handleRentPaymentOnReview,
   reviewedSections,
   setReviewedSections,
   submitted,
@@ -53,7 +53,11 @@ export default function PropertySection({
         property={property}
         reviewedSections={reviewedSections}
         setReviewedSections={setReviewedSections}
-        onReview={handleRealStateOwnershipOnReview}
+        onReview={() =>
+          handleRealStateOwnershipOnReview(
+            property?.props?.ownRealState === 'Yes'
+          )
+        }
         submitted={submitted}
       />
       <br />
@@ -89,7 +93,7 @@ export default function PropertySection({
             property={property}
             reviewedSections={reviewedSections}
             setReviewedSections={setReviewedSections}
-            onReview={handlerentPaymentOnReview}
+            onReview={handleRentPaymentOnReview}
             submitted={submitted}
           />
           <br />
@@ -111,7 +115,7 @@ PropertySection.propTypes = {
   handleRealStateOwnershipOnReview: PropTypes.func,
   rentPaymentOpen: PropTypes.bool,
   setRentPaymentOpen: PropTypes.func,
-  handlerentPaymentOnReview: PropTypes.func,
+  handleRentPaymentOnReview: PropTypes.func,
   reviewedSections: PropTypes.object,
   setReviewedSections: PropTypes.func,
   submitted: PropTypes.bool,
