@@ -965,7 +965,11 @@ const ApplicantInfoSection = ({
         applicantInfo={applicantInfo}
         reviewedSections={reviewedSections}
         setReviewedSections={setReviewedSections}
-        onReview={handleCoApplicantOnReview}
+        onReview={() =>
+          handleCoApplicantOnReview(
+            applicantInfo?.props?.hasCoApplicant === 'Yes'
+          )
+        }
         submitted={submitted}
       />
       <br />

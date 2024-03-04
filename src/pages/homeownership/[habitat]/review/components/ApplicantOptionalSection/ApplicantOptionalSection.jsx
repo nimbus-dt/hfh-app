@@ -81,7 +81,7 @@ const ApplicantOptionalSection = ({
         applicantOptional={applicantOptional}
         reviewedSections={reviewedSections}
         setReviewedSections={setReviewedSections}
-        onReview={handleDemographicOnReview}
+        onReview={() => handleDemographicOnReview(hasCoApplicant)}
         submitted={submitted}
       />
       <br />
