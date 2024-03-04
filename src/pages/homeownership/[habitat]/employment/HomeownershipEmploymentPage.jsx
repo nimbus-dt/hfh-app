@@ -472,16 +472,15 @@ export default function HomeownershipEmploymentPage() {
   const isNextDisabled = () => {
     if (
       employmentInfo !== undefined &&
-      employmentInfo.props.businessOwnerOrSelfEmployed &&
       employmentInfo.props.currentlyUnemployed &&
       (applicantInfos[0]?.props?.hasCoApplicant === 'Yes'
-        ? employmentInfo.props.coApplicantCurrentlyUnemployed &&
-          employmentInfo.props.coApplicantBusinessOwnerOrSelfEmployed
+        ? employmentInfo.props.coApplicantCurrentlyUnemployed
         : true)
     ) {
       if (
         employmentInfo?.props?.currentlyUnemployed === 'No' &&
-        employmentInfo?.props?.currentEmployment === undefined
+        (employmentInfo.props.businessOwnerOrSelfEmployed === undefined ||
+          employmentInfo?.props?.currentEmployment === undefined)
       ) {
         return true;
       }
@@ -498,7 +497,9 @@ export default function HomeownershipEmploymentPage() {
       if (
         applicantInfos[0]?.props?.hasCoApplicant === 'Yes' &&
         employmentInfo?.props?.coApplicantCurrentlyUnemployed === 'No' &&
-        employmentInfo?.props?.coApplicantCurrentEmployment === undefined
+        (employmentInfo?.props?.coApplicantCurrentEmployment === undefined ||
+          employmentInfo.props.coApplicantBusinessOwnerOrSelfEmployed ===
+            undefined)
       ) {
         return true;
       }
