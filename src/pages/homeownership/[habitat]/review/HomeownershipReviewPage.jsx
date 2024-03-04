@@ -249,10 +249,12 @@ export default function HomeownershipReviewPage() {
     }));
   };
 
-  const handleUnemploymentOnReview = (employed) => {
+  const handleUnemploymentOnReview = (employed, hasCoApplicant) => {
     setUnemploymentOpen(false);
     if (employed) {
       setCurrentEmploymentOpen(true);
+    } else if (hasCoApplicant) {
+      setCoApplicantUnemploymentOpen(true);
     } else {
       setFinancialOpen(true);
     }
@@ -262,10 +264,15 @@ export default function HomeownershipReviewPage() {
     }));
   };
 
-  const handleCurrentEmploymentOnReview = (hasPreviousEmployment) => {
+  const handleCurrentEmploymentOnReview = (
+    hasPreviousEmployment,
+    hasCoApplicant
+  ) => {
     setCurrentEmploymentOpen(false);
     if (hasPreviousEmployment) {
       setPreviousEmploymentOpen(true);
+    } else if (hasCoApplicant) {
+      setCoApplicantUnemploymentOpen(true);
     } else {
       setFinancialOpen(true);
     }

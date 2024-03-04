@@ -68,7 +68,8 @@ const EmploymentSection = ({
         setReviewedSections={setReviewedSections}
         onReview={() =>
           handleUnemploymentOnReview(
-            employmentInfo?.props?.currentlyUnemployed === 'No'
+            employmentInfo?.props?.currentlyUnemployed === 'No',
+            applicantInfos[0]?.props?.hasCoApplicant === 'Yes'
           )
         }
         submitted={submitted}
@@ -87,7 +88,8 @@ const EmploymentSection = ({
                 calculateAgeInMonths(
                   employmentInfo?.props?.currentEmployment?.startDate
                 ) < habitat?.props.homeownershipMinCurrentEmploymentMonths &&
-                  employmentInfo?.props?.currentEmployment?.firstJob === 'No'
+                  employmentInfo?.props?.currentEmployment?.firstJob === 'No',
+                applicantInfos[0]?.props?.hasCoApplicant === 'Yes'
               )
             }
             submitted={submitted}
