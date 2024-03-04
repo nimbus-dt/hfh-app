@@ -177,9 +177,8 @@ export default function HomeownershipHomeownersPage() {
       handleOnClickCloseMemberModal();
 
       updateApplicationLastSection();
-    } catch (error) {
+    } catch {
       setAlert(createAlert('error', 'Error', "The member couldn't be saved."));
-      console.log(error);
     }
   };
 
