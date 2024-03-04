@@ -18,6 +18,38 @@ const EmploymentTable = ({ employmentInfo, applicantInfo }) => (
         },
       ]}
     />
+    {employmentInfo?.props?.businessOwnerOrSelfEmployed && (
+      <DataTable
+        subheading="Business owner or self employed"
+        subheadingTextAlign="left"
+        divider
+        data={[
+          {
+            header: 'Are you currently a business owner or are self-employed?',
+            value:
+              employmentInfo?.props?.businessOwnerOrSelfEmployed
+                ?.currentlyBusinessOwnerOrSelfEmployed ?? '',
+          },
+          ...(employmentInfo?.props?.businessOwnerOrSelfEmployed
+            ?.currentlyBusinessOwnerOrSelfEmployed === 'Yes'
+            ? [
+                {
+                  header: 'What is your ownership share?',
+                  value:
+                    employmentInfo?.props?.businessOwnerOrSelfEmployed
+                      ?.ownershipShare ?? '',
+                },
+                {
+                  header: 'Montly income (or loss)',
+                  value:
+                    employmentInfo?.props?.businessOwnerOrSelfEmployed
+                      ?.montlyIncome ?? '',
+                },
+              ]
+            : []),
+        ]}
+      />
+    )}
     {employmentInfo?.props?.currentEmployment && (
       <DataTable
         subheading="Current employment"
@@ -137,6 +169,41 @@ const EmploymentTable = ({ employmentInfo, applicantInfo }) => (
             },
           ]}
         />
+        {employmentInfo?.props?.coApplicantBusinessOwnerOrSelfEmployed && (
+          <DataTable
+            subheading="Business owner or self employed"
+            subheadingTextAlign="left"
+            divider
+            data={[
+              {
+                header:
+                  'Is the co-applicant currently a business owner or are self-employed?',
+                value:
+                  employmentInfo?.props?.coApplicantBusinessOwnerOrSelfEmployed
+                    ?.currentlyBusinessOwnerOrSelfEmployed ?? '',
+              },
+              ...(employmentInfo?.props?.coApplicantBusinessOwnerOrSelfEmployed
+                ?.currentlyBusinessOwnerOrSelfEmployed === 'Yes'
+                ? [
+                    {
+                      header: "What is the co-applicant's ownership share?",
+                      value:
+                        employmentInfo?.props
+                          ?.coApplicantBusinessOwnerOrSelfEmployed
+                          ?.ownershipShare ?? '',
+                    },
+                    {
+                      header: 'Montly income (or loss)',
+                      value:
+                        employmentInfo?.props
+                          ?.coApplicantBusinessOwnerOrSelfEmployed
+                          ?.montlyIncome ?? '',
+                    },
+                  ]
+                : []),
+            ]}
+          />
+        )}
         {employmentInfo?.props?.coApplicantCurrentEmployment && (
           <DataTable
             subheading="Current employment"
