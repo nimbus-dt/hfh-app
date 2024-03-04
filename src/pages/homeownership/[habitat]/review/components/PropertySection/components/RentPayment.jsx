@@ -35,6 +35,7 @@ const RentPayment = ({
 
   return (
     <CustomExpandableCard
+      ref={customCardReference}
       title={`${getCheckOrExEmoji(
         reviewedSections.rentPayment || submitted
       )} Rent Payment`}
