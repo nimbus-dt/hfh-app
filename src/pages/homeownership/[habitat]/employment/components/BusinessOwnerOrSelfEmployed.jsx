@@ -87,6 +87,7 @@ const BusinessOwnerOrSelfEmployed = ({
             <Controller
               control={control}
               name="ownershipShare"
+              defaultValue={ownershipShareOptions[0]}
               render={({ field: { onChange, onBlur, value } }) => (
                 <RadioGroupField
                   name="ownershipShare"
