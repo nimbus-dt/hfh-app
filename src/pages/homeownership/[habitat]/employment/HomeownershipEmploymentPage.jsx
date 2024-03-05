@@ -88,7 +88,11 @@ export default function HomeownershipEmploymentPage() {
             props: data,
           })
         );
-
+        if (shouldRenderBusinessOwnerOrSelfEmployed) {
+          setBusinessOwnerOrSelfEmployedOpen(true);
+        } else {
+          setCurrentEmploymentOpen(true);
+        }
         setEmploymentInfo(persistedEmploymentInfo);
       } else {
         const original = await DataStore.query(
@@ -338,8 +342,13 @@ export default function HomeownershipEmploymentPage() {
       );
 
       setCoApplicantUnemploymentOpen(false);
-
-      setCoApplicantBusinessOwnerOrSelfEmployedOpen(true);
+      if (data.currentlyUnemployed === 'No') {
+        if (shouldRenderBusinessOwnerOrSelfEmployed) {
+          setCoApplicantBusinessOwnerOrSelfEmployedOpen(true);
+        } else {
+          setCoApplicantCurrentEmploymentOpen(true);
+        }
+      }
 
       updateApplicationLastSection();
     } catch {
@@ -511,7 +520,9 @@ export default function HomeownershipEmploymentPage() {
     ) {
       if (
         employmentInfo?.props?.currentlyUnemployed === 'No' &&
-        employmentInfo?.props?.currentEmployment === undefined
+        ((shouldRenderBusinessOwnerOrSelfEmployed &&
+          employmentInfo.props.businessOwnerOrSelfEmployed === undefined) ||
+          employmentInfo?.props?.currentEmployment === undefined)
       ) {
         return true;
       }
@@ -529,7 +540,10 @@ export default function HomeownershipEmploymentPage() {
         applicantInfos[0]?.props?.hasCoApplicant === 'Yes' &&
         shouldRenderCoApplicant &&
         employmentInfo?.props?.coApplicantCurrentlyUnemployed === 'No' &&
-        employmentInfo?.props?.coApplicantCurrentEmployment === undefined
+        (employmentInfo?.props?.coApplicantCurrentEmployment === undefined ||
+          (shouldRenderBusinessOwnerOrSelfEmployed &&
+            employmentInfo.props.coApplicantBusinessOwnerOrSelfEmployed ===
+              undefined))
       ) {
         return true;
       }
