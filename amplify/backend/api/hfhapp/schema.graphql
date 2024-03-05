@@ -1,3 +1,9 @@
+type OptionalSections {
+  coApplicant: Boolean!
+  propertyInfo: Boolean!
+  businessOwnerOrSelfEmployed: Boolean!
+}
+
 type Property @model @auth(rules: [{allow: public}]) {
   id: ID!
   ownerID: ID!
@@ -37,6 +43,7 @@ type HabitatProps {
   homeownershipCheckQuestions: [CheckQuestion!]
   homeownershipRecordQuestions: [RecordQuestion!]
   homeownershipWrittenQuestions: [WrittenQuestion!]
+  optionalSections: OptionalSections!
 }
 
 type TestCycle @model @auth(rules: [{allow: public}]) {
