@@ -58,6 +58,14 @@ const ApplicationDetailsPage = () => {
   const [decideModalOpen, setDecideModalOpen] = useState(false);
   const [loading, setLoading] = useState(0);
   const { habitat } = useOutletContext();
+
+  const shouldRenderProperty = habitat?.props.optionalSections.propertyInfo;
+
+  const shouldRenderBusinessOwnerOrSelfEmployed =
+    habitat?.props.optionalSections.businessOwnerOrSelfEmployed;
+
+  const shouldRenderCoApplicant = habitat?.props.optionalSections.coApplicant;
+
   const { applicationId } = useParams();
   const { data: application } = useTestApplicationById({
     id: applicationId,
@@ -260,11 +268,13 @@ const ApplicationDetailsPage = () => {
           <ApplicantInfoTable
             applicantInfo={applicantInfos[0]}
             email={userEmail}
+            shouldRenderCoApplicant={shouldRenderCoApplicant}
           />
 
           <ApplicantOptionalTable
             applicantOptional={applicantOptionals[0]}
             applicantInfo={applicantInfos[0]}
+            shouldRenderCoApplicant={shouldRenderCoApplicant}
           />
 
           <ChecklistTable
@@ -287,9 +297,13 @@ const ApplicationDetailsPage = () => {
           <EmploymentTable
             employmentInfo={employmentInfos[0]}
             applicantInfo={applicantInfos[0]}
+            shouldRenderBusinessOwnerOrSelfEmployed={
+              shouldRenderBusinessOwnerOrSelfEmployed
+            }
+            shouldRenderCoApplicant={shouldRenderCoApplicant}
           />
 
-          <PropertyTable property={properties[0]} />
+          {shouldRenderProperty && <PropertyTable property={properties[0]} />}
 
           <FinancialSection
             applicantInfo={applicantInfos[0]}
