@@ -1,7 +1,7 @@
 import { Alert, Button, Flex, Text } from '@aws-amplify/ui-react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import Modal from 'components/Modal';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { DataStore } from 'aws-amplify';
 import { TestApplication, SubmissionStatus } from 'models';
 import dayjs from 'dayjs';
@@ -485,8 +485,6 @@ export default function HomeownershipReviewPage() {
     }
     return false;
   };
-
-  useEffect(() => console.log('review', reviewedSections), [reviewedSections]);
 
   return (
     <Flex direction="column" gap="unset" alignItems="center" width="100%">
