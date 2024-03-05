@@ -64,6 +64,8 @@ export default function HomeownershipEmploymentPage() {
   const { application, updateApplicationLastSection, habitat } =
     useOutletContext();
 
+  const shouldRedirectToProperty = habitat?.props.optionalSections.propertyInfo;
+
   const [alert, setAlert] = useState();
   const navigate = useNavigate();
 
@@ -489,7 +491,8 @@ export default function HomeownershipEmploymentPage() {
         !previousCoApplicantPreviousEmploymentEdit
     );
 
-  const handleOnClickNext = () => navigate('../property');
+  const handleOnClickNext = () =>
+    navigate(shouldRedirectToProperty ? '../property' : '../financial');
 
   const isNextDisabled = () => {
     if (
