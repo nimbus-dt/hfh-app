@@ -66,6 +66,11 @@ export default function HomeownershipEmploymentPage() {
 
   const shouldRedirectToProperty = habitat?.props.optionalSections.propertyInfo;
 
+  const shouldRenderBusinessOwnerOrSelfEmployed =
+    habitat?.props.optionalSections.businessOwnerOrSelfEmployed;
+
+  const shouldRenderCoApplicant = habitat?.props.optionalSections.coApplicant;
+
   const [alert, setAlert] = useState();
   const navigate = useNavigate();
 
@@ -499,9 +504,9 @@ export default function HomeownershipEmploymentPage() {
       employmentInfo !== undefined &&
       employmentInfo.props.currentlyUnemployed &&
       employmentInfo.props.businessOwnerOrSelfEmployed &&
-      (applicantInfos[0]?.props?.hasCoApplicant === 'Yes'
-        ? employmentInfo.props.coApplicantCurrentlyUnemployed &&
-          employmentInfo.props.coApplicantBusinessOwnerOrSelfEmployed
+      (applicantInfos[0]?.props?.hasCoApplicant === 'Yes' &&
+      shouldRenderCoApplicant
+        ? employmentInfo.props.coApplicantCurrentlyUnemployed
         : true)
     ) {
       if (
@@ -522,6 +527,7 @@ export default function HomeownershipEmploymentPage() {
 
       if (
         applicantInfos[0]?.props?.hasCoApplicant === 'Yes' &&
+        shouldRenderCoApplicant &&
         employmentInfo?.props?.coApplicantCurrentlyUnemployed === 'No' &&
         employmentInfo?.props?.coApplicantCurrentEmployment === undefined
       ) {
@@ -529,6 +535,7 @@ export default function HomeownershipEmploymentPage() {
       }
       if (
         applicantInfos[0]?.props?.hasCoApplicant === 'Yes' &&
+        shouldRenderCoApplicant &&
         calculateAgeInMonths(
           employmentInfo?.props?.coApplicantCurrentEmployment?.startDate
         ) < habitat?.props.homeownershipMinCurrentEmploymentMonths &&
@@ -584,15 +591,19 @@ export default function HomeownershipEmploymentPage() {
         onClickEdit={handleOnClickUnemploymentEdit}
       />
       <br />
-      <BusinessOwnerOrSelfEmployed
-        expanded={businessOwnerOrSelfEmployedOpen}
-        onExpandedChange={setBusinessOwnerOrSelfEmployedOpen}
-        employmentInfo={employmentInfo}
-        onValid={onValidBusinessOwnerOrSelfEmployed}
-        edit={businessOwnerOrSelfEmployedEdit}
-        onClickEdit={handleOnClickBusinessOwnerOrSelfEmployedEdit}
-      />
-      <br />
+      {shouldRenderBusinessOwnerOrSelfEmployed && (
+        <>
+          <BusinessOwnerOrSelfEmployed
+            expanded={businessOwnerOrSelfEmployedOpen}
+            onExpandedChange={setBusinessOwnerOrSelfEmployedOpen}
+            employmentInfo={employmentInfo}
+            onValid={onValidBusinessOwnerOrSelfEmployed}
+            edit={businessOwnerOrSelfEmployedEdit}
+            onClickEdit={handleOnClickBusinessOwnerOrSelfEmployedEdit}
+          />
+          <br />
+        </>
+      )}
       {employmentInfo?.props?.currentlyUnemployed === 'No' && (
         <>
           <CurrentEmployment
@@ -622,64 +633,67 @@ export default function HomeownershipEmploymentPage() {
             <br />
           </>
         )}
-      {applicantInfos[0]?.props?.hasCoApplicant === 'Yes' && (
-        <>
-          <Unemployment
-            expanded={coApplicantUnemploymentOpen}
-            onExpandedChange={setCoApplicantUnemploymentOpen}
-            employmentInfo={employmentInfo}
-            onValid={onValidCoApplicantCurrentlyUnemployed}
-            edit={coApplicantUnemploymentEdit}
-            onClickEdit={handleOnClickCoApplicantUnemploymentEdit}
-            coApplicant
-          />
-          <br />
-          <BusinessOwnerOrSelfEmployed
-            expanded={coApplicantBusinessOwnerOrSelfEmployedOpen}
-            onExpandedChange={setCoApplicantBusinessOwnerOrSelfEmployedOpen}
-            employmentInfo={employmentInfo}
-            onValid={onValidCoApplicantBusinessOwnerOrSelfEmployed}
-            edit={coApplicantBusinessOwnerOrSelfEmployedEdit}
-            onClickEdit={
-              handleOnClickCoApplicantBusinessOwnerOrSelfEmployedEdit
-            }
-            coApplicant
-          />
-          <br />
-          {employmentInfo?.props?.coApplicantCurrentlyUnemployed === 'No' && (
-            <>
-              <CurrentEmployment
-                expanded={coApplicantCurrentEmploymentOpen}
-                onExpandedChange={setCoApplicantCurrentEmploymentOpen}
-                employmentInfo={employmentInfo}
-                onValid={onValidCoApplicantCurrentEmployment}
-                edit={coApplicantCurrentEmploymentEdit}
-                onClickEdit={handleOnClickCoApplicantCurrentEmploymentEdit}
-                coApplicant
-              />
-              <br />
-            </>
-          )}
-          {calculateAgeInMonths(
-            employmentInfo?.props?.coApplicantCurrentEmployment?.startDate
-          ) < habitat?.props.homeownershipMinCurrentEmploymentMonths &&
-            employmentInfo?.props?.coApplicantCurrentEmployment?.firstJob ===
-              'No' && (
+      {applicantInfos[0]?.props?.hasCoApplicant === 'Yes' &&
+        shouldRenderCoApplicant && (
+          <>
+            <Unemployment
+              expanded={coApplicantUnemploymentOpen}
+              onExpandedChange={setCoApplicantUnemploymentOpen}
+              employmentInfo={employmentInfo}
+              onValid={onValidCoApplicantCurrentlyUnemployed}
+              edit={coApplicantUnemploymentEdit}
+              onClickEdit={handleOnClickCoApplicantUnemploymentEdit}
+              coApplicant
+            />
+            <br />
+            {employmentInfo?.props?.coApplicantCurrentlyUnemployed === 'No' && (
               <>
-                <PreviousEmployment
-                  expanded={coApplicantPreviousEmploymentOpen}
-                  onExpandedChange={setCoApplicantPreviousEmploymentOpen}
+                <BusinessOwnerOrSelfEmployed
+                  expanded={coApplicantBusinessOwnerOrSelfEmployedOpen}
+                  onExpandedChange={
+                    setCoApplicantBusinessOwnerOrSelfEmployedOpen
+                  }
                   employmentInfo={employmentInfo}
-                  onValid={onValidCoApplicantPreviousEmployment}
-                  edit={coApplicantPreviousEmploymentEdit}
-                  onClickEdit={handleOnClickCoApplicantPreviousEmploymentEdit}
+                  onValid={onValidCoApplicantBusinessOwnerOrSelfEmployed}
+                  edit={coApplicantBusinessOwnerOrSelfEmployedEdit}
+                  onClickEdit={
+                    handleOnClickCoApplicantBusinessOwnerOrSelfEmployedEdit
+                  }
+                  coApplicant
+                />
+                <br />
+                <CurrentEmployment
+                  expanded={coApplicantCurrentEmploymentOpen}
+                  onExpandedChange={setCoApplicantCurrentEmploymentOpen}
+                  employmentInfo={employmentInfo}
+                  onValid={onValidCoApplicantCurrentEmployment}
+                  edit={coApplicantCurrentEmploymentEdit}
+                  onClickEdit={handleOnClickCoApplicantCurrentEmploymentEdit}
                   coApplicant
                 />
                 <br />
               </>
             )}
-        </>
-      )}
+            {calculateAgeInMonths(
+              employmentInfo?.props?.coApplicantCurrentEmployment?.startDate
+            ) < habitat?.props.homeownershipMinCurrentEmploymentMonths &&
+              employmentInfo?.props?.coApplicantCurrentEmployment?.firstJob ===
+                'No' && (
+                <>
+                  <PreviousEmployment
+                    expanded={coApplicantPreviousEmploymentOpen}
+                    onExpandedChange={setCoApplicantPreviousEmploymentOpen}
+                    employmentInfo={employmentInfo}
+                    onValid={onValidCoApplicantPreviousEmployment}
+                    edit={coApplicantPreviousEmploymentEdit}
+                    onClickEdit={handleOnClickCoApplicantPreviousEmploymentEdit}
+                    coApplicant
+                  />
+                  <br />
+                </>
+              )}
+          </>
+        )}
       <CustomCard>
         <Flex width="100%" justifyContent="space-between">
           <Link to="../homeowners">
