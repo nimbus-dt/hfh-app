@@ -19,6 +19,10 @@ export default function HomeownershipApplicantInfoPage() {
   const { application, updateApplicationLastSection, habitat } =
     useOutletContext();
 
+  const shouldRenderCoApplicant = habitat?.props.optionalSections.coApplicant;
+
+  console.log(shouldRenderCoApplicant);
+
   const [applicantInfo, setApplicantInfo] = useState();
 
   const [basicInfoOpen, setBasicInfoOpen] = useState(true);
@@ -674,9 +678,11 @@ export default function HomeownershipApplicantInfoPage() {
       applicantInfo !== undefined &&
       applicantInfo?.props?.basicInfo !== undefined &&
       applicantInfo?.props?.currentAddress !== undefined &&
-      applicantInfo?.props?.typeOfCredit !== undefined &&
-      applicantInfo?.props?.hasCoApplicant !== undefined &&
-      (applicantInfo?.props?.hasCoApplicant === 'Yes'
+      (shouldRenderCoApplicant
+        ? applicantInfo?.props?.typeOfCredit !== undefined &&
+          applicantInfo?.props?.hasCoApplicant !== undefined
+        : true) &&
+      (applicantInfo?.props?.hasCoApplicant === 'Yes' && shouldRenderCoApplicant
         ? applicantInfo?.props?.coApplicantBasicInfo !== undefined &&
           applicantInfo?.props?.coApplicantCurrentAddress !== undefined
         : true)
@@ -796,74 +802,81 @@ export default function HomeownershipApplicantInfoPage() {
             <br />
           </>
         )}
-        <TypeOfCredit
-          expanded={typeOfCreditOpen}
-          onExpandedChange={setTypeOfCreditOpen}
-          applicantInfo={applicantInfo}
-          onValid={onValidTypeOfCredit}
-          edit={typeOfCreditEdit}
-          onClickEdit={handleOnClickTypeOfCreditEdit}
-        />
-        <br />
-        <CoApplicant
-          expanded={coApplicantOpen}
-          onExpandedChange={setCoApplicantOpen}
-          applicantInfo={applicantInfo}
-          onValid={onValidCoApplicant}
-          edit={coApplicantEdit}
-          onClickEdit={handleOnClickCoApplicantEdit}
-        />
-        <br />
-        {applicantInfo?.props?.hasCoApplicant === 'Yes' && (
+        {shouldRenderCoApplicant && (
           <>
-            <BasicInformation
-              expanded={coApplicantBasicInfoOpen}
-              onExpandedChange={setCoApplicantBasicInfoOpen}
+            <TypeOfCredit
+              expanded={typeOfCreditOpen}
+              onExpandedChange={setTypeOfCreditOpen}
               applicantInfo={applicantInfo}
-              onValid={onValidCoApplicantBasicInfo}
-              edit={coApplicantBasicInfoEdit}
-              onClickEdit={handleOnClickCoApplicantBasicInfoEdit}
-              coApplicant
+              onValid={onValidTypeOfCredit}
+              edit={typeOfCreditEdit}
+              onClickEdit={handleOnClickTypeOfCreditEdit}
             />
             <br />
-            {applicantInfo?.props?.coApplicantBasicInfo?.maritalStatus ===
-              maritalStatusValues[2] && (
+            <CoApplicant
+              expanded={coApplicantOpen}
+              onExpandedChange={setCoApplicantOpen}
+              applicantInfo={applicantInfo}
+              onValid={onValidCoApplicant}
+              edit={coApplicantEdit}
+              onClickEdit={handleOnClickCoApplicantEdit}
+            />
+            <br />
+            {applicantInfo?.props?.hasCoApplicant === 'Yes' && (
               <>
-                <UnmarriedAddendum
-                  expanded={coApplicantUnmarriedAddendumOpen}
-                  onExpandedChange={setCoApplicantUnmarriedAddendumOpen}
+                <BasicInformation
+                  expanded={coApplicantBasicInfoOpen}
+                  onExpandedChange={setCoApplicantBasicInfoOpen}
                   applicantInfo={applicantInfo}
-                  onValid={onValidCoApplicantUnmarriedAddendum}
-                  edit={coApplicantUnmarriedAddendumEdit}
-                  onClickEdit={handleOnClickCoApplicantUnmarriedAddendumEdit}
+                  onValid={onValidCoApplicantBasicInfo}
+                  edit={coApplicantBasicInfoEdit}
+                  onClickEdit={handleOnClickCoApplicantBasicInfoEdit}
                   coApplicant
                 />
                 <br />
-              </>
-            )}
-            <Address
-              expanded={coApplicantCurrentAddressOpen}
-              onExpandedChange={setCoApplicantCurrentAddressOpen}
-              applicantInfo={applicantInfo}
-              onValid={onValidCoApplicantCurrentAddress}
-              edit={coApplicantCurrentAddressEdit}
-              onClickEdit={handleOnClickCoApplicantCurrentAddressEdit}
-              coApplicant
-            />
-            <br />
-            {applicantInfo?.props?.coApplicantCurrentAddress?.monthsLivedHere <
-              habitat?.props.homeownershipMinCurrentAddressMonths && (
-              <>
-                <PrevAddress
-                  expanded={coApplicantPreviousAddressOpen}
-                  onExpandedChange={setCoApplicantPreviousAddressOpen}
+                {applicantInfo?.props?.coApplicantBasicInfo?.maritalStatus ===
+                  maritalStatusValues[2] && (
+                  <>
+                    <UnmarriedAddendum
+                      expanded={coApplicantUnmarriedAddendumOpen}
+                      onExpandedChange={setCoApplicantUnmarriedAddendumOpen}
+                      applicantInfo={applicantInfo}
+                      onValid={onValidCoApplicantUnmarriedAddendum}
+                      edit={coApplicantUnmarriedAddendumEdit}
+                      onClickEdit={
+                        handleOnClickCoApplicantUnmarriedAddendumEdit
+                      }
+                      coApplicant
+                    />
+                    <br />
+                  </>
+                )}
+                <Address
+                  expanded={coApplicantCurrentAddressOpen}
+                  onExpandedChange={setCoApplicantCurrentAddressOpen}
                   applicantInfo={applicantInfo}
-                  onValid={onValidCoApplicantPreviousAddress}
-                  edit={coApplicantPreviousAddressEdit}
-                  onClickEdit={handleOnClickCoApplicantPreviousAddressEdit}
+                  onValid={onValidCoApplicantCurrentAddress}
+                  edit={coApplicantCurrentAddressEdit}
+                  onClickEdit={handleOnClickCoApplicantCurrentAddressEdit}
                   coApplicant
                 />
                 <br />
+                {applicantInfo?.props?.coApplicantCurrentAddress
+                  ?.monthsLivedHere <
+                  habitat?.props.homeownershipMinCurrentAddressMonths && (
+                  <>
+                    <PrevAddress
+                      expanded={coApplicantPreviousAddressOpen}
+                      onExpandedChange={setCoApplicantPreviousAddressOpen}
+                      applicantInfo={applicantInfo}
+                      onValid={onValidCoApplicantPreviousAddress}
+                      edit={coApplicantPreviousAddressEdit}
+                      onClickEdit={handleOnClickCoApplicantPreviousAddressEdit}
+                      coApplicant
+                    />
+                    <br />
+                  </>
+                )}
               </>
             )}
           </>
