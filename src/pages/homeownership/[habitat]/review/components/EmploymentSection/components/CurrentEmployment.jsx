@@ -134,7 +134,7 @@ const CurrentEmployment = ({
                 ? "What was the co-applicant's approximate start date with this employer?"
                 : 'What was your approximate start date with this employer?'
             }
-            value={employmentInfo?.props?.currentEmployment.startDate}
+            value={employmentInfo?.props?.currentEmployment?.startDate}
             type="date"
             isDisabled
           />
