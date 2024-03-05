@@ -371,7 +371,7 @@ export default function HomeownershipApplicantInfoPage() {
             'The co-applicant question was saved successfully.'
           )
         );
-        if (data.hasCoApplicant === 'Yes') {
+        if (data.hasCoApplicant === 'Yes' && shouldRenderCoApplicant) {
           setCoApplicantBasicInfoOpen(true);
         }
       } else {
@@ -383,19 +383,19 @@ export default function HomeownershipApplicantInfoPage() {
               ...originalApplicantInfo.props,
               hasCoApplicant: data.hasCoApplicant,
               coApplicantBasicInfo:
-                data.hasCoApplicant === 'Yes'
+                data.hasCoApplicant === 'Yes' && shouldRenderCoApplicant
                   ? originalApplicantInfo.props.coApplicantBasicInfo
                   : undefined,
               coApplicantUnmarriedAddendum:
-                data.hasCoApplicant === 'Yes'
+                data.hasCoApplicant === 'Yes' && shouldRenderCoApplicant
                   ? originalApplicantInfo.props.coApplicantUnmarriedAddendum
                   : undefined,
               coApplicantCurrentAddress:
-                data.hasCoApplicant === 'Yes'
+                data.hasCoApplicant === 'Yes' && shouldRenderCoApplicant
                   ? originalApplicantInfo.props.coApplicantCurrentAddress
                   : undefined,
               coApplicantPreviousAddress:
-                data.hasCoApplicant === 'Yes'
+                data.hasCoApplicant === 'Yes' && shouldRenderCoApplicant
                   ? originalApplicantInfo.props.coApplicantPreviousAddress
                   : undefined,
             };
@@ -412,7 +412,7 @@ export default function HomeownershipApplicantInfoPage() {
         );
       }
       setCoApplicantOpen(false);
-      if (data.hasCoApplicant === 'Yes') {
+      if (data.hasCoApplicant === 'Yes' && shouldRenderCoApplicant) {
         setCoApplicantBasicInfoOpen(true);
       } else {
         await DataStore.delete(Member, (c) =>
@@ -703,6 +703,7 @@ export default function HomeownershipApplicantInfoPage() {
       }
       if (
         applicantInfo?.props?.hasCoApplicant === 'Yes' &&
+        shouldRenderCoApplicant &&
         applicantInfo.props.coApplicantBasicInfo.maritalStatus ===
           maritalStatusValues[2] &&
         applicantInfo.props.coApplicantUnmarriedAddendum === undefined
@@ -712,6 +713,7 @@ export default function HomeownershipApplicantInfoPage() {
 
       if (
         applicantInfo?.props?.hasCoApplicant === 'Yes' &&
+        shouldRenderCoApplicant &&
         applicantInfo.props.coApplicantCurrentAddress.monthsLivedHere <
           habitat?.props.homeownershipMinCurrentAddressMonths &&
         applicantInfo.props.coApplicantPreviousAddress === undefined
@@ -822,63 +824,66 @@ export default function HomeownershipApplicantInfoPage() {
               onClickEdit={handleOnClickCoApplicantEdit}
             />
             <br />
-            {applicantInfo?.props?.hasCoApplicant === 'Yes' && (
-              <>
-                <BasicInformation
-                  expanded={coApplicantBasicInfoOpen}
-                  onExpandedChange={setCoApplicantBasicInfoOpen}
-                  applicantInfo={applicantInfo}
-                  onValid={onValidCoApplicantBasicInfo}
-                  edit={coApplicantBasicInfoEdit}
-                  onClickEdit={handleOnClickCoApplicantBasicInfoEdit}
-                  coApplicant
-                />
-                <br />
-                {applicantInfo?.props?.coApplicantBasicInfo?.maritalStatus ===
-                  maritalStatusValues[2] && (
-                  <>
-                    <UnmarriedAddendum
-                      expanded={coApplicantUnmarriedAddendumOpen}
-                      onExpandedChange={setCoApplicantUnmarriedAddendumOpen}
-                      applicantInfo={applicantInfo}
-                      onValid={onValidCoApplicantUnmarriedAddendum}
-                      edit={coApplicantUnmarriedAddendumEdit}
-                      onClickEdit={
-                        handleOnClickCoApplicantUnmarriedAddendumEdit
-                      }
-                      coApplicant
-                    />
-                    <br />
-                  </>
-                )}
-                <Address
-                  expanded={coApplicantCurrentAddressOpen}
-                  onExpandedChange={setCoApplicantCurrentAddressOpen}
-                  applicantInfo={applicantInfo}
-                  onValid={onValidCoApplicantCurrentAddress}
-                  edit={coApplicantCurrentAddressEdit}
-                  onClickEdit={handleOnClickCoApplicantCurrentAddressEdit}
-                  coApplicant
-                />
-                <br />
-                {applicantInfo?.props?.coApplicantCurrentAddress
-                  ?.monthsLivedHere <
-                  habitat?.props.homeownershipMinCurrentAddressMonths && (
-                  <>
-                    <PrevAddress
-                      expanded={coApplicantPreviousAddressOpen}
-                      onExpandedChange={setCoApplicantPreviousAddressOpen}
-                      applicantInfo={applicantInfo}
-                      onValid={onValidCoApplicantPreviousAddress}
-                      edit={coApplicantPreviousAddressEdit}
-                      onClickEdit={handleOnClickCoApplicantPreviousAddressEdit}
-                      coApplicant
-                    />
-                    <br />
-                  </>
-                )}
-              </>
-            )}
+            {applicantInfo?.props?.hasCoApplicant === 'Yes' &&
+              shouldRenderCoApplicant && (
+                <>
+                  <BasicInformation
+                    expanded={coApplicantBasicInfoOpen}
+                    onExpandedChange={setCoApplicantBasicInfoOpen}
+                    applicantInfo={applicantInfo}
+                    onValid={onValidCoApplicantBasicInfo}
+                    edit={coApplicantBasicInfoEdit}
+                    onClickEdit={handleOnClickCoApplicantBasicInfoEdit}
+                    coApplicant
+                  />
+                  <br />
+                  {applicantInfo?.props?.coApplicantBasicInfo?.maritalStatus ===
+                    maritalStatusValues[2] && (
+                    <>
+                      <UnmarriedAddendum
+                        expanded={coApplicantUnmarriedAddendumOpen}
+                        onExpandedChange={setCoApplicantUnmarriedAddendumOpen}
+                        applicantInfo={applicantInfo}
+                        onValid={onValidCoApplicantUnmarriedAddendum}
+                        edit={coApplicantUnmarriedAddendumEdit}
+                        onClickEdit={
+                          handleOnClickCoApplicantUnmarriedAddendumEdit
+                        }
+                        coApplicant
+                      />
+                      <br />
+                    </>
+                  )}
+                  <Address
+                    expanded={coApplicantCurrentAddressOpen}
+                    onExpandedChange={setCoApplicantCurrentAddressOpen}
+                    applicantInfo={applicantInfo}
+                    onValid={onValidCoApplicantCurrentAddress}
+                    edit={coApplicantCurrentAddressEdit}
+                    onClickEdit={handleOnClickCoApplicantCurrentAddressEdit}
+                    coApplicant
+                  />
+                  <br />
+                  {applicantInfo?.props?.coApplicantCurrentAddress
+                    ?.monthsLivedHere <
+                    habitat?.props.homeownershipMinCurrentAddressMonths && (
+                    <>
+                      <PrevAddress
+                        expanded={coApplicantPreviousAddressOpen}
+                        onExpandedChange={setCoApplicantPreviousAddressOpen}
+                        applicantInfo={applicantInfo}
+                        onValid={onValidCoApplicantPreviousAddress}
+                        edit={coApplicantPreviousAddressEdit}
+                        onClickEdit={
+                          handleOnClickCoApplicantPreviousAddressEdit
+                        }
+                        coApplicant
+                      />
+                      <br />
+                    </>
+                  )}
+                </>
+              )}
           </>
         )}
         <CustomCard>
