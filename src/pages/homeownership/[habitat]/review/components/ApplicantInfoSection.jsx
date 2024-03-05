@@ -868,6 +868,7 @@ const ApplicantInfoSection = ({
   reviewedSections,
   setReviewedSections,
   submitted,
+  shouldRenderCoApplicant,
 }) => {
   const { application, habitat } = useOutletContext();
 
@@ -949,94 +950,99 @@ const ApplicantInfoSection = ({
           <br />
         </>
       )}
-      <TypeOfCredit
-        expanded={typeOfCreditOpen}
-        onExpandedChange={setTypeOfCreditOpen}
-        applicantInfo={applicantInfo}
-        reviewedSections={reviewedSections}
-        setReviewedSections={setReviewedSections}
-        onReview={handleTypeOfCreditOnReview}
-        submitted={submitted}
-      />
-      <br />
-      <CoApplicant
-        expanded={coApplicantOpen}
-        onExpandedChange={setCoApplicantOpen}
-        applicantInfo={applicantInfo}
-        reviewedSections={reviewedSections}
-        setReviewedSections={setReviewedSections}
-        onReview={() =>
-          handleCoApplicantOnReview(
-            applicantInfo?.props?.hasCoApplicant === 'Yes'
-          )
-        }
-        submitted={submitted}
-      />
-      <br />
-      {applicantInfo?.props?.hasCoApplicant === 'Yes' && (
+      {shouldRenderCoApplicant && (
         <>
-          <BasicInformation
-            expanded={coApplicantBasicInfoOpen}
-            onExpandedChange={setCoApplicantBasicInfoOpen}
+          <TypeOfCredit
+            expanded={typeOfCreditOpen}
+            onExpandedChange={setTypeOfCreditOpen}
+            applicantInfo={applicantInfo}
+            reviewedSections={reviewedSections}
+            setReviewedSections={setReviewedSections}
+            onReview={handleTypeOfCreditOnReview}
+            submitted={submitted}
+          />
+          <br />
+          <CoApplicant
+            expanded={coApplicantOpen}
+            onExpandedChange={setCoApplicantOpen}
             applicantInfo={applicantInfo}
             reviewedSections={reviewedSections}
             setReviewedSections={setReviewedSections}
             onReview={() =>
-              handleCoApplicantBasicInformationOnReview(
-                applicantInfo?.props?.coApplicantUnmarriedAddendum
+              handleCoApplicantOnReview(
+                applicantInfo?.props?.hasCoApplicant === 'Yes'
               )
             }
             submitted={submitted}
-            coApplicant
           />
           <br />
-          {applicantInfo?.props?.coApplicantBasicInfo?.maritalStatus ===
-            maritalStatusValues[2] && (
+          {applicantInfo?.props?.hasCoApplicant === 'Yes' && (
             <>
-              <UnmarriedAddendum
-                expanded={coApplicantUnmarriedAddendumOpen}
-                onExpandedChange={setCoApplicantUnmarriedAddendumOpen}
+              <BasicInformation
+                expanded={coApplicantBasicInfoOpen}
+                onExpandedChange={setCoApplicantBasicInfoOpen}
                 applicantInfo={applicantInfo}
                 reviewedSections={reviewedSections}
                 setReviewedSections={setReviewedSections}
-                onReview={handleCoApplicantUnmarriedAddendumOnReview}
+                onReview={() =>
+                  handleCoApplicantBasicInformationOnReview(
+                    applicantInfo?.props?.coApplicantUnmarriedAddendum
+                  )
+                }
                 submitted={submitted}
                 coApplicant
               />
               <br />
-            </>
-          )}
-          <Address
-            expanded={coApplicantCurrentAddressOpen}
-            onExpandedChange={setCoApplicantCurrentAddressOpen}
-            applicantInfo={applicantInfo}
-            reviewedSections={reviewedSections}
-            setReviewedSections={setReviewedSections}
-            onReview={() =>
-              handleCoApplicantAddressOnReview(
-                applicantInfo?.props?.coApplicantCurrentAddress
-                  ?.monthsLivedHere <
-                  habitat?.props.homeownershipMinCurrentAddressMonths
-              )
-            }
-            submitted={submitted}
-            coApplicant
-          />
-          <br />
-          {applicantInfo?.props?.coApplicantCurrentAddress?.monthsLivedHere <
-            habitat?.props.homeownershipMinCurrentAddressMonths && (
-            <>
-              <PrevAddress
-                expanded={coApplicantPreviousAddressOpen}
-                onExpandedChange={setCoApplicantPreviousAddressOpen}
+              {applicantInfo?.props?.coApplicantBasicInfo?.maritalStatus ===
+                maritalStatusValues[2] && (
+                <>
+                  <UnmarriedAddendum
+                    expanded={coApplicantUnmarriedAddendumOpen}
+                    onExpandedChange={setCoApplicantUnmarriedAddendumOpen}
+                    applicantInfo={applicantInfo}
+                    reviewedSections={reviewedSections}
+                    setReviewedSections={setReviewedSections}
+                    onReview={handleCoApplicantUnmarriedAddendumOnReview}
+                    submitted={submitted}
+                    coApplicant
+                  />
+                  <br />
+                </>
+              )}
+              <Address
+                expanded={coApplicantCurrentAddressOpen}
+                onExpandedChange={setCoApplicantCurrentAddressOpen}
                 applicantInfo={applicantInfo}
                 reviewedSections={reviewedSections}
                 setReviewedSections={setReviewedSections}
-                onReview={handleCoApplicantPreviousAddressOnReview}
+                onReview={() =>
+                  handleCoApplicantAddressOnReview(
+                    applicantInfo?.props?.coApplicantCurrentAddress
+                      ?.monthsLivedHere <
+                      habitat?.props.homeownershipMinCurrentAddressMonths
+                  )
+                }
                 submitted={submitted}
                 coApplicant
               />
               <br />
+              {applicantInfo?.props?.coApplicantCurrentAddress
+                ?.monthsLivedHere <
+                habitat?.props.homeownershipMinCurrentAddressMonths && (
+                <>
+                  <PrevAddress
+                    expanded={coApplicantPreviousAddressOpen}
+                    onExpandedChange={setCoApplicantPreviousAddressOpen}
+                    applicantInfo={applicantInfo}
+                    reviewedSections={reviewedSections}
+                    setReviewedSections={setReviewedSections}
+                    onReview={handleCoApplicantPreviousAddressOnReview}
+                    submitted={submitted}
+                    coApplicant
+                  />
+                  <br />
+                </>
+              )}
             </>
           )}
         </>
@@ -1079,6 +1085,7 @@ ApplicantInfoSection.propTypes = {
   reviewedSections: PropTypes.object,
   setReviewedSections: PropTypes.func,
   submitted: PropTypes.bool,
+  shouldRenderCoApplicant: PropTypes.bool,
 };
 
 export default ApplicantInfoSection;

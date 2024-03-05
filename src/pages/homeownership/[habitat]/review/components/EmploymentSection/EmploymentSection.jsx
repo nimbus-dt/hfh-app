@@ -38,6 +38,8 @@ const EmploymentSection = ({
   reviewedSections,
   setReviewedSections,
   submitted,
+  shouldRenderCoApplicant,
+  shouldRenderBusinessOwnerOrSelfEmployed,
 }) => {
   const [employmentInfo, setEmploymentInfo] = useState();
 
@@ -241,6 +243,8 @@ EmploymentSection.propTypes = {
   reviewedSections: PropTypes.object,
   setReviewedSections: PropTypes.func,
   submitted: PropTypes.bool,
+  shouldRenderCoApplicant: PropTypes.bool,
+  shouldRenderBusinessOwnerOrSelfEmployed: PropTypes.bool,
 };
 
 export default EmploymentSection;
