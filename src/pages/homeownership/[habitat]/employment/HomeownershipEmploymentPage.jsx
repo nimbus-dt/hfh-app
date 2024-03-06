@@ -81,7 +81,7 @@ export default function HomeownershipEmploymentPage() {
             props: data,
           })
         );
-        setCurrentEmploymentOpen(true);
+
         setEmploymentInfo(persistedEmploymentInfo);
       } else {
         const original = await DataStore.query(
@@ -112,6 +112,7 @@ export default function HomeownershipEmploymentPage() {
         setEmploymentInfo(persistedEmploymentInfo);
         setUnemploymentEdit(false);
       }
+      setBusinessOwnerOrSelfEmployedOpen(true);
 
       setAlert(
         createAlert(
@@ -142,17 +143,33 @@ export default function HomeownershipEmploymentPage() {
 
   const onValidBusinessOwnerOrSelfEmployed = async (data) => {
     try {
-      const original = await DataStore.query(EmploymentInfo, employmentInfo.id);
-      const persistedEmploymentInfo = await DataStore.save(
-        EmploymentInfo.copyOf(original, (originalEmploymentInfo) => {
-          originalEmploymentInfo.props = {
-            ...originalEmploymentInfo.props,
-            businessOwnerOrSelfEmployed: data,
-          };
-        })
-      );
-      setEmploymentInfo(persistedEmploymentInfo);
-      setBusinessOwnerOrSelfEmployedEdit(false);
+      if (employmentInfo === undefined) {
+        const persistedEmploymentInfo = await DataStore.save(
+          new EmploymentInfo({
+            ownerID: application.id,
+            props: {
+              businessOwnerOrSelfEmployed: data,
+            },
+          })
+        );
+        setBusinessOwnerOrSelfEmployedOpen(true);
+        setEmploymentInfo(persistedEmploymentInfo);
+      } else {
+        const original = await DataStore.query(
+          EmploymentInfo,
+          employmentInfo.id
+        );
+        const persistedEmploymentInfo = await DataStore.save(
+          EmploymentInfo.copyOf(original, (originalEmploymentInfo) => {
+            originalEmploymentInfo.props = {
+              ...originalEmploymentInfo.props,
+              businessOwnerOrSelfEmployed: data,
+            };
+          })
+        );
+        setEmploymentInfo(persistedEmploymentInfo);
+        setBusinessOwnerOrSelfEmployedEdit(false);
+      }
       setAlert(
         createAlert(
           'success',
@@ -161,7 +178,11 @@ export default function HomeownershipEmploymentPage() {
         )
       );
 
-      setCurrentEmploymentOpen(true);
+      if (employmentInfo.props.currentlyUnemployed === 'Yes') {
+        setCoApplicantUnemploymentOpen(true);
+      } else {
+        setCurrentEmploymentOpen(true);
+      }
       setBusinessOwnerOrSelfEmployedOpen(false);
     } catch {
       setAlert(
@@ -310,9 +331,8 @@ export default function HomeownershipEmploymentPage() {
       );
 
       setCoApplicantUnemploymentOpen(false);
-      if (data.currentlyUnemployed === 'No') {
-        setCoApplicantCurrentEmploymentOpen(true);
-      }
+
+      setCoApplicantBusinessOwnerOrSelfEmployedOpen(true);
 
       updateApplicationLastSection();
     } catch {
@@ -353,7 +373,9 @@ export default function HomeownershipEmploymentPage() {
         )
       );
 
-      setCoApplicantCurrentEmploymentOpen(true);
+      if (employmentInfo.coApplicantCurrentlyUnemployed === 'No') {
+        setCoApplicantCurrentEmploymentOpen(true);
+      }
       setCoApplicantBusinessOwnerOrSelfEmployedOpen(false);
     } catch {
       setAlert(
@@ -473,14 +495,15 @@ export default function HomeownershipEmploymentPage() {
     if (
       employmentInfo !== undefined &&
       employmentInfo.props.currentlyUnemployed &&
+      employmentInfo.props.businessOwnerOrSelfEmployed &&
       (applicantInfos[0]?.props?.hasCoApplicant === 'Yes'
-        ? employmentInfo.props.coApplicantCurrentlyUnemployed
+        ? employmentInfo.props.coApplicantCurrentlyUnemployed &&
+          employmentInfo.props.coApplicantBusinessOwnerOrSelfEmployed
         : true)
     ) {
       if (
         employmentInfo?.props?.currentlyUnemployed === 'No' &&
-        (employmentInfo.props.businessOwnerOrSelfEmployed === undefined ||
-          employmentInfo?.props?.currentEmployment === undefined)
+        employmentInfo?.props?.currentEmployment === undefined
       ) {
         return true;
       }
@@ -497,9 +520,7 @@ export default function HomeownershipEmploymentPage() {
       if (
         applicantInfos[0]?.props?.hasCoApplicant === 'Yes' &&
         employmentInfo?.props?.coApplicantCurrentlyUnemployed === 'No' &&
-        (employmentInfo?.props?.coApplicantCurrentEmployment === undefined ||
-          employmentInfo.props.coApplicantBusinessOwnerOrSelfEmployed ===
-            undefined)
+        employmentInfo?.props?.coApplicantCurrentEmployment === undefined
       ) {
         return true;
       }
@@ -560,17 +581,17 @@ export default function HomeownershipEmploymentPage() {
         onClickEdit={handleOnClickUnemploymentEdit}
       />
       <br />
+      <BusinessOwnerOrSelfEmployed
+        expanded={businessOwnerOrSelfEmployedOpen}
+        onExpandedChange={setBusinessOwnerOrSelfEmployedOpen}
+        employmentInfo={employmentInfo}
+        onValid={onValidBusinessOwnerOrSelfEmployed}
+        edit={businessOwnerOrSelfEmployedEdit}
+        onClickEdit={handleOnClickBusinessOwnerOrSelfEmployedEdit}
+      />
+      <br />
       {employmentInfo?.props?.currentlyUnemployed === 'No' && (
         <>
-          <BusinessOwnerOrSelfEmployed
-            expanded={businessOwnerOrSelfEmployedOpen}
-            onExpandedChange={setBusinessOwnerOrSelfEmployedOpen}
-            employmentInfo={employmentInfo}
-            onValid={onValidBusinessOwnerOrSelfEmployed}
-            edit={businessOwnerOrSelfEmployedEdit}
-            onClickEdit={handleOnClickBusinessOwnerOrSelfEmployedEdit}
-          />
-          <br />
           <CurrentEmployment
             expanded={currentEmploymentOpen}
             onExpandedChange={setCurrentEmploymentOpen}
@@ -610,20 +631,20 @@ export default function HomeownershipEmploymentPage() {
             coApplicant
           />
           <br />
+          <BusinessOwnerOrSelfEmployed
+            expanded={coApplicantBusinessOwnerOrSelfEmployedOpen}
+            onExpandedChange={setCoApplicantBusinessOwnerOrSelfEmployedOpen}
+            employmentInfo={employmentInfo}
+            onValid={onValidCoApplicantBusinessOwnerOrSelfEmployed}
+            edit={coApplicantBusinessOwnerOrSelfEmployedEdit}
+            onClickEdit={
+              handleOnClickCoApplicantBusinessOwnerOrSelfEmployedEdit
+            }
+            coApplicant
+          />
+          <br />
           {employmentInfo?.props?.coApplicantCurrentlyUnemployed === 'No' && (
             <>
-              <BusinessOwnerOrSelfEmployed
-                expanded={coApplicantBusinessOwnerOrSelfEmployedOpen}
-                onExpandedChange={setCoApplicantBusinessOwnerOrSelfEmployedOpen}
-                employmentInfo={employmentInfo}
-                onValid={onValidCoApplicantBusinessOwnerOrSelfEmployed}
-                edit={coApplicantBusinessOwnerOrSelfEmployedEdit}
-                onClickEdit={
-                  handleOnClickCoApplicantBusinessOwnerOrSelfEmployedEdit
-                }
-                coApplicant
-              />
-              <br />
               <CurrentEmployment
                 expanded={coApplicantCurrentEmploymentOpen}
                 onExpandedChange={setCoApplicantCurrentEmploymentOpen}
