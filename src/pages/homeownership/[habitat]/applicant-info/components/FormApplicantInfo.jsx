@@ -230,7 +230,7 @@ export function BasicInformation({
           <>
             <SelectField
               {...register('sex')}
-              label="Sex"
+              label="What is the co-applicant's sex?"
               hasError={errors.sex !== undefined}
               errorMessage={errors.sex?.message}
               isRequired
@@ -243,7 +243,7 @@ export function BasicInformation({
             <br />
             <SelectField
               {...register('relationship')}
-              label="Relationship"
+              label="What is your relationship with the co-applicant?"
               hasError={errors.relationship !== undefined}
               errorMessage={errors.relationship?.message}
               isRequired
