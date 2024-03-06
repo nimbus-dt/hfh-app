@@ -256,6 +256,7 @@ export function BasicInformation({
               ))}
               <br />
             </SelectField>
+            <br />
             {watchRelationship === 'Other' && (
               <TextField
                 {...register('otherRelationship')}
