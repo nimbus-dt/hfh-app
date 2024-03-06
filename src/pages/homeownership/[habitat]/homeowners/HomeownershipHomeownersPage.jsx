@@ -23,20 +23,8 @@ import Modal from 'components/Modal';
 import { MdAdd, MdClose, MdMoreHoriz } from 'react-icons/md';
 import CustomCard from 'components/CustomCard';
 import CustomExpandableCard from 'components/CustomExpandableCard';
+import { RELATIONSHIP_OPTIONS } from 'utils/constants';
 import { memberSchema } from './HomeownershipHomeownersPage.schema';
-
-const relationshipOptions = [
-  'Parent',
-  'Child',
-  'Sibling',
-  'Spouse',
-  'Grandparent',
-  'Grandchild',
-  'Aunt/Uncle',
-  'Niece/Nephew',
-  'Cousin',
-  'Other',
-];
 
 export default function HomeownershipHomeownersPage() {
   const [members, setMembers] = useState([]);
@@ -327,7 +315,7 @@ export default function HomeownershipHomeownersPage() {
 
                   const handleOnClickMore = () => {
                     setEditingMember(member);
-                    const hasOtherRelationship = !relationshipOptions.includes(
+                    const hasOtherRelationship = !RELATIONSHIP_OPTIONS.includes(
                       member.props.relationship
                     );
                     reset({
@@ -438,7 +426,7 @@ export default function HomeownershipHomeownersPage() {
                 isRequired
                 isDisabled={!isEnabled}
               >
-                {relationshipOptions.map((relationshipOption) => (
+                {RELATIONSHIP_OPTIONS.map((relationshipOption) => (
                   <option key={relationshipOption} value={relationshipOption}>
                     {relationshipOption}
                   </option>
