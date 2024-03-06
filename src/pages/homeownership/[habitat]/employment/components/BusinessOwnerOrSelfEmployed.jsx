@@ -135,7 +135,9 @@ const BusinessOwnerOrSelfEmployed = ({
 
         <Flex width="100%" justifyContent="end">
           {employmentInfo?.props?.[
-            coApplicant ? 'coApplicantCurrentEmployment' : 'currentEmployment'
+            coApplicant
+              ? 'coApplicantBusinessOwnerOrSelfEmployed'
+              : 'businessOwnerOrSelfEmployed'
           ] ? (
             <Button onClick={onClickEdit} variation="secondary">
               {edit ? 'Cancel' : 'Edit'}
