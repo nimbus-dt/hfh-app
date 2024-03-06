@@ -1,7 +1,7 @@
 import { Alert, Button, Flex, Text } from '@aws-amplify/ui-react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import Modal from 'components/Modal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DataStore } from 'aws-amplify';
 import { TestApplication, SubmissionStatus } from 'models';
 import dayjs from 'dayjs';
@@ -260,24 +260,28 @@ export default function HomeownershipReviewPage() {
     }));
   };
 
-  const handleUnemploymentOnReview = (employed, hasCoApplicant) => {
+  const handleUnemploymentOnReview = () => {
     setUnemploymentOpen(false);
-    if (employed) {
-      setBusinessOwnerOrSelfEmployedOpen(true);
-    } else if (hasCoApplicant) {
-      setCoApplicantUnemploymentOpen(true);
-    } else {
-      setRealStateOwnershipOpen(true);
-    }
+    setBusinessOwnerOrSelfEmployedOpen(true);
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
       unemployment: true,
     }));
   };
 
-  const handleBusinessOwnerOrSelfEmployedOnReview = () => {
+  const handleBusinessOwnerOrSelfEmployedOnReview = (
+    employed,
+    hasCoApplicant
+  ) => {
     setBusinessOwnerOrSelfEmployedOpen(false);
-    setCurrentEmploymentOpen(true);
+    if (employed) {
+      setCurrentEmploymentOpen(true);
+    } else if (hasCoApplicant) {
+      setCoApplicantUnemploymentOpen(true);
+    } else {
+      setRealStateOwnershipOpen(true);
+    }
+
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
       businessOwnerOrSelfEmployed: true,
@@ -315,22 +319,24 @@ export default function HomeownershipReviewPage() {
     }));
   };
 
-  const handleCoApplicantUnemploymentOnReview = (employed) => {
+  const handleCoApplicantUnemploymentOnReview = () => {
     setCoApplicantUnemploymentOpen(false);
-    if (employed) {
-      setCoApplicantBusinessOwnerOrSelfEmployedOpen(true);
-    } else {
-      setRealStateOwnershipOpen(true);
-    }
+    setCoApplicantBusinessOwnerOrSelfEmployedOpen(true);
+
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
       coApplicantUnemployment: true,
     }));
   };
 
-  const handleCoApplicantBusinessOwnerOrSelfEmployedOnReview = () => {
+  const handleCoApplicantBusinessOwnerOrSelfEmployedOnReview = (employed) => {
     setCoApplicantBusinessOwnerOrSelfEmployedOpen(false);
-    setCoApplicantCurrentEmploymentOpen(true);
+    if (employed) {
+      setCoApplicantCurrentEmploymentOpen(true);
+    } else {
+      setRealStateOwnershipOpen(true);
+    }
+
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
       coApplicantBusinessOwnerOrSelfEmployed: true,
@@ -445,6 +451,8 @@ export default function HomeownershipReviewPage() {
     }
     setShowSubmitModal(false);
   };
+
+  useEffect(() => console.log('reviews', reviewedSections), [reviewedSections]);
 
   const isDisabled = () => {
     for (const [, value] of Object.entries(reviewedSections)) {

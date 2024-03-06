@@ -73,8 +73,18 @@ const EmploymentSection = ({
         employmentInfo={employmentInfo}
         reviewedSections={reviewedSections}
         setReviewedSections={setReviewedSections}
+        onReview={() => handleUnemploymentOnReview()}
+        submitted={submitted}
+      />
+      <br />
+      <BusinessOwnerOrSelfEmployed
+        expanded={businessOwnerOrSelfEmployedOpen}
+        onExpandedChange={setBusinessOwnerOrSelfEmployedOpen}
+        employmentInfo={employmentInfo}
+        reviewedSections={reviewedSections}
+        setReviewedSections={setReviewedSections}
         onReview={() =>
-          handleUnemploymentOnReview(
+          handleBusinessOwnerOrSelfEmployedOnReview(
             employmentInfo?.props?.currentlyUnemployed === 'No',
             applicantInfos[0]?.props?.hasCoApplicant === 'Yes'
           )
@@ -84,16 +94,6 @@ const EmploymentSection = ({
       <br />
       {employmentInfo?.props?.currentlyUnemployed === 'No' && (
         <>
-          <BusinessOwnerOrSelfEmployed
-            expanded={businessOwnerOrSelfEmployedOpen}
-            onExpandedChange={setBusinessOwnerOrSelfEmployedOpen}
-            employmentInfo={employmentInfo}
-            reviewedSections={reviewedSections}
-            setReviewedSections={setReviewedSections}
-            onReview={handleBusinessOwnerOrSelfEmployedOnReview}
-            submitted={submitted}
-          />
-          <br />
           <CurrentEmployment
             expanded={currentEmploymentOpen}
             onExpandedChange={setCurrentEmploymentOpen}
@@ -143,8 +143,19 @@ const EmploymentSection = ({
             employmentInfo={employmentInfo}
             reviewedSections={reviewedSections}
             setReviewedSections={setReviewedSections}
+            onReview={handleCoApplicantUnemploymentOnReview}
+            submitted={submitted}
+            coApplicant
+          />
+          <br />
+          <BusinessOwnerOrSelfEmployed
+            expanded={coApplicantBusinessOwnerOrSelfEmployedOpen}
+            onExpandedChange={setCoApplicantBusinessOwnerOrSelfEmployedOpen}
+            employmentInfo={employmentInfo}
+            reviewedSections={reviewedSections}
+            setReviewedSections={setReviewedSections}
             onReview={() =>
-              handleCoApplicantUnemploymentOnReview(
+              handleCoApplicantBusinessOwnerOrSelfEmployedOnReview(
                 employmentInfo?.props?.coApplicantCurrentlyUnemployed === 'No'
               )
             }
@@ -154,17 +165,6 @@ const EmploymentSection = ({
           <br />
           {employmentInfo?.props?.coApplicantCurrentlyUnemployed === 'No' && (
             <>
-              <BusinessOwnerOrSelfEmployed
-                expanded={coApplicantBusinessOwnerOrSelfEmployedOpen}
-                onExpandedChange={setCoApplicantBusinessOwnerOrSelfEmployedOpen}
-                employmentInfo={employmentInfo}
-                reviewedSections={reviewedSections}
-                setReviewedSections={setReviewedSections}
-                onReview={handleCoApplicantBusinessOwnerOrSelfEmployedOnReview}
-                submitted={submitted}
-                coApplicant
-              />
-              <br />
               <CurrentEmployment
                 expanded={coApplicantCurrentEmploymentOpen}
                 onExpandedChange={setCoApplicantCurrentEmploymentOpen}
