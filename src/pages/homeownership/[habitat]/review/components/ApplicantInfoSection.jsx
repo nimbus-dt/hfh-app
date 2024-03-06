@@ -530,8 +530,8 @@ function PrevAddress({
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
       ...(coApplicant
-        ? { prevAddress: false }
-        : { coApplicantPrevAddress: false }),
+        ? { coApplicantPrevAddress: false }
+        : { prevAddress: false }),
     }));
   }, [setReviewedSections]);
 
