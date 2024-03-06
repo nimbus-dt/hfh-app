@@ -117,7 +117,7 @@ export default function HomeownershipEmploymentPage() {
       }
       if (shouldRenderBusinessOwnerOrSelfEmployed) {
         setBusinessOwnerOrSelfEmployedOpen(true);
-      } else if (data.currentlyUnemployed === 'Yes') {
+      } else if (data.currentlyUnemployed === 'No') {
         setCurrentEmploymentOpen(true);
       } else if (shouldRenderCoApplicant) {
         setCoApplicantUnemploymentOpen(true);
