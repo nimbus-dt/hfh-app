@@ -389,7 +389,7 @@ export default function HomeownershipEmploymentPage() {
         )
       );
 
-      if (employmentInfo.coApplicantCurrentlyUnemployed === 'No') {
+      if (employmentInfo.props.coApplicantCurrentlyUnemployed === 'No') {
         setCoApplicantCurrentEmploymentOpen(true);
       }
       setCoApplicantBusinessOwnerOrSelfEmployedOpen(false);
