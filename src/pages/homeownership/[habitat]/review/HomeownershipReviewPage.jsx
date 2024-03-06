@@ -273,9 +273,19 @@ export default function HomeownershipReviewPage() {
     }));
   };
 
-  const handleUnemploymentOnReview = () => {
+  const handleUnemploymentOnReview = (employed, hasCoApplicant) => {
     setUnemploymentOpen(false);
-    setBusinessOwnerOrSelfEmployedOpen(true);
+    if (shouldRenderBusinessOwnerOrSelfEmployed) {
+      setBusinessOwnerOrSelfEmployedOpen(true);
+    } else if (employed) {
+      setCurrentEmploymentOpen(true);
+    } else if (shouldRenderCoApplicant && hasCoApplicant) {
+      setCoApplicantUnemploymentOpen(true);
+    } else if (shouldRenderProperty) {
+      setRealStateOwnershipOpen(true);
+    } else {
+      setFinancialOpen(true);
+    }
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
       unemployment: true,
@@ -289,7 +299,7 @@ export default function HomeownershipReviewPage() {
     setBusinessOwnerOrSelfEmployedOpen(false);
     if (employed) {
       setCurrentEmploymentOpen(true);
-    } else if (hasCoApplicant) {
+    } else if (hasCoApplicant && shouldRenderCoApplicant) {
       setCoApplicantUnemploymentOpen(true);
     } else {
       setRealStateOwnershipOpen(true);
@@ -336,8 +346,17 @@ export default function HomeownershipReviewPage() {
     }));
   };
 
-  const handleCoApplicantUnemploymentOnReview = () => {
+  const handleCoApplicantUnemploymentOnReview = (employed) => {
     setCoApplicantUnemploymentOpen(false);
+    if (shouldRenderBusinessOwnerOrSelfEmployed) {
+      setCoApplicantBusinessOwnerOrSelfEmployedOpen(true);
+    } else if (employed) {
+      setCoApplicantCurrentEmploymentOpen(true);
+    } else if (shouldRenderProperty) {
+      setRealStateOwnershipOpen(true);
+    } else {
+      setFinancialOpen(true);
+    }
     setCoApplicantBusinessOwnerOrSelfEmployedOpen(true);
 
     setReviewedSections((previousReviewedSections) => ({
@@ -350,8 +369,10 @@ export default function HomeownershipReviewPage() {
     setCoApplicantBusinessOwnerOrSelfEmployedOpen(false);
     if (employed) {
       setCoApplicantCurrentEmploymentOpen(true);
-    } else {
+    } else if (shouldRenderProperty) {
       setRealStateOwnershipOpen(true);
+    } else {
+      setFinancialOpen(true);
     }
 
     setReviewedSections((previousReviewedSections) => ({
@@ -474,8 +495,6 @@ export default function HomeownershipReviewPage() {
     }
     setShowSubmitModal(false);
   };
-
-  useEffect(() => console.log('reviews', reviewedSections), [reviewedSections]);
 
   const isDisabled = () => {
     for (const [, value] of Object.entries(reviewedSections)) {
