@@ -34,7 +34,7 @@ export default function HomeownershipTermsPage() {
       <View as="div">
         <Flex marginBottom="30px" direction="column" gap="xl">
           <Heading level="4" fontWeight="bold" marginBottom="-30px">
-            Terms of Services
+            Terms of Service
           </Heading>
           <Text>Please take a moment to read our terms of service.</Text>
           {habitat?.props.homeownershipTermsText?.map((item, index) => (
