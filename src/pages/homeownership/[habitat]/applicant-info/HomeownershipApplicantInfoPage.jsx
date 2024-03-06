@@ -460,8 +460,10 @@ export default function HomeownershipApplicantInfoPage() {
       const memberProps = {
         fullName: data.fullName,
         birthDay: data.birthDate,
-        sex: 'Other',
-        relationship: 'Co-Applicant',
+        sex: data.sex,
+        relationship: data.otherRelationship
+          ? data.otherRelationship
+          : data.relationship,
       };
 
       if (persistedMember.length > 0) {

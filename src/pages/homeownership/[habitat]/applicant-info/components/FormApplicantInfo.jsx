@@ -15,9 +15,11 @@ import SearchableSelectInput from 'components/SearchableSelectInput';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { API } from 'aws-amplify';
 import { debounce } from 'lodash';
+import { RELATIONSHIP_OPTIONS } from 'utils/constants';
 import {
   addressSchema,
   basicInfoSchema,
+  coApplicantBasicSchema,
   coApplicantSchema,
   creditTypes,
   maritalStatusValues,
@@ -39,11 +41,15 @@ export function BasicInformation({
 }) {
   const {
     register,
+    unregister,
     handleSubmit,
     control,
     formState: { errors },
+    watch,
   } = useForm({
-    resolver: zodResolver(basicInfoSchema),
+    resolver: zodResolver(
+      coApplicant ? coApplicantBasicSchema : basicInfoSchema
+    ),
     shouldFocusError: false,
     reValidateMode: 'onBlur',
     values: coApplicant
@@ -75,6 +81,14 @@ export function BasicInformation({
       .replace(/^(\(\d{3}\))\s(\d{3})(\d{1})/, '$1 $2-$3');
     event.target.value = formattedNumber;
   };
+
+  const watchRelationship = watch('relationship');
+
+  useEffect(() => {
+    if (watchRelationship !== 'Other') {
+      unregister('otherRelationship');
+    }
+  }, [watchRelationship]);
 
   return (
     <CustomExpandableCard
@@ -212,6 +226,49 @@ export function BasicInformation({
           )}
         />
         <br />
+        {coApplicant && (
+          <>
+            <SelectField
+              {...register('sex')}
+              label="Sex"
+              hasError={errors.sex !== undefined}
+              errorMessage={errors.sex?.message}
+              isRequired
+              isDisabled={!isEnabled}
+            >
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </SelectField>
+            <br />
+            <SelectField
+              {...register('relationship')}
+              label="Relationship"
+              hasError={errors.relationship !== undefined}
+              errorMessage={errors.relationship?.message}
+              isRequired
+              isDisabled={!isEnabled}
+            >
+              {RELATIONSHIP_OPTIONS.map((relationshipOption) => (
+                <option key={relationshipOption} value={relationshipOption}>
+                  {relationshipOption}
+                </option>
+              ))}
+              <br />
+            </SelectField>
+            {watchRelationship === 'Other' && (
+              <TextField
+                {...register('otherRelationship')}
+                label="Please describe this relationship"
+                hasError={errors.otherRelationship !== undefined}
+                errorMessage={errors.otherRelationship?.message}
+                isRequired
+                isDisabled={!isEnabled}
+              />
+            )}
+            <br />
+          </>
+        )}
         <Flex width="100%" justifyContent="end">
           {applicantInfo?.props[
             coApplicant ? 'coApplicantBasicInfo' : 'basicInfo'

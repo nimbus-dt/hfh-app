@@ -51,6 +51,12 @@ export const basicInfoSchema = z.object({
   maritalStatus: z.enum(maritalStatusValues),
 });
 
+export const coApplicantBasicSchema = basicInfoSchema.extend({
+  sex: z.enum(['Male', 'Female', 'Other']),
+  relationship: z.string().min(1),
+  otherRelationship: z.string().min(1).optional(),
+});
+
 export const addressSchema = z.object({
   street: z.string().min(1),
   state: z.enum(states.map((state) => state.abbreviation)),
