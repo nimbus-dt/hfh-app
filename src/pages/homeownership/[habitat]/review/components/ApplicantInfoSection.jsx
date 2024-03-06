@@ -9,12 +9,13 @@ import {
 import PropTypes from 'prop-types';
 import { Link, useOutletContext } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
-import { ApplicantInfo } from 'models';
+import { ApplicantInfo, Member } from 'models';
 import { DataStore } from 'aws-amplify';
 import { getCheckOrExEmoji } from 'utils/misc';
 import CustomExpandableCard from 'components/CustomExpandableCard';
 
 import SearchableSelectInput from 'components/SearchableSelectInput';
+import { RELATIONSHIP_OPTIONS } from 'utils/constants';
 import LoadingData from './LoadingData';
 import {
   creditTypes,
@@ -35,6 +36,7 @@ function BasicInformation({
   onReview,
   submitted,
   coApplicant,
+  coApplicantMember,
 }) {
   useEffect(() => {
     setReviewedSections((previousReviewedSections) => ({
@@ -189,6 +191,49 @@ function BasicInformation({
             ))}
           </RadioGroupField>
           <br />
+          {coApplicant && (
+            <>
+              <SelectField
+                label="What is the co-applicant's sex?"
+                value={coApplicantMember?.props.sex}
+                isDisabled
+              >
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </SelectField>
+              <br />
+              <SelectField
+                label="What is your relationship with the co-applicant?"
+                value={
+                  RELATIONSHIP_OPTIONS.includes(
+                    coApplicantMember?.props.relationship
+                  )
+                    ? coApplicantMember?.props.relationship
+                    : 'Other'
+                }
+                isDisabled
+              >
+                {RELATIONSHIP_OPTIONS.map((relationshipOption) => (
+                  <option key={relationshipOption} value={relationshipOption}>
+                    {relationshipOption}
+                  </option>
+                ))}
+                <br />
+              </SelectField>
+              <br />
+              {!RELATIONSHIP_OPTIONS.includes(
+                coApplicantMember?.props.relationship
+              ) && (
+                <TextField
+                  label="Please describe this relationship"
+                  value={coApplicantMember?.props.relationship}
+                  isDisabled
+                />
+              )}
+              <br />
+            </>
+          )}
           {!submitted && (
             <Flex width="100%" justifyContent="end">
               <Link to={editRoute}>
@@ -214,6 +259,7 @@ BasicInformation.propTypes = {
   onReview: PropTypes.func,
   submitted: PropTypes.bool,
   coApplicant: PropTypes.bool,
+  coApplicantMember: PropTypes.object,
 };
 
 function UnmarriedAddendum({
@@ -874,6 +920,8 @@ const ApplicantInfoSection = ({
 
   const [applicantInfo, setApplicantInfo] = useState();
 
+  const [coApplicantMember, setCoApplicantMember] = useState();
+
   useEffect(() => {
     const getApplicationInfo = async (applicationID) => {
       try {
@@ -888,6 +936,25 @@ const ApplicantInfoSection = ({
     };
     if (application) {
       getApplicationInfo(application.id);
+    }
+  }, [application]);
+
+  useEffect(() => {
+    const getCoApplicantMember = async (applicationID) => {
+      try {
+        const existingMembers = await DataStore.query(Member, (c) =>
+          c.and((c2) => [
+            c2.testapplicationID.eq(applicationID),
+            c2.isCoApplicant.eq(true),
+          ])
+        );
+        setCoApplicantMember(existingMembers[0]);
+      } catch (error) {
+        console.log('Error fetching the members data.');
+      }
+    };
+    if (application) {
+      getCoApplicantMember(application.id);
     }
   }, [application]);
 
@@ -991,6 +1058,7 @@ const ApplicantInfoSection = ({
                 }
                 submitted={submitted}
                 coApplicant
+                coApplicantMember={coApplicantMember}
               />
               <br />
               {applicantInfo?.props?.coApplicantBasicInfo?.maritalStatus ===
