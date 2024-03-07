@@ -86,6 +86,10 @@ const ApplicationDetailsPage = () => {
     criteria: (c1) => c1.testapplicationID.eq(application?.id),
     dependencyArray: [application?.id],
   });
+  const { data: coApplicantMember } = useMembersQuery({
+    criteria: (c1) => c1.testapplicationID.eq(application?.id),
+    dependencyArray: [application?.id],
+  });
   const { data: employmentInfos } = useEmploymentInfosQuery(queriesProps2);
   const { data: properties } = usePropertiesQuery(queriesProps2);
   const queriesProps1 = {
@@ -269,6 +273,7 @@ const ApplicationDetailsPage = () => {
             applicantInfo={applicantInfos[0]}
             email={userEmail}
             shouldRenderCoApplicant={shouldRenderCoApplicant}
+            coApplicantMember={coApplicantMember[0]}
           />
 
           <ApplicantOptionalTable

@@ -8,6 +8,7 @@ const ApplicantInfoTable = ({
   applicantInfo,
   email,
   shouldRenderCoApplicant,
+  coApplicantMember,
 }) => (
   <Flex direction="column">
     <DataTable
@@ -171,7 +172,7 @@ const ApplicantInfoTable = ({
               header: 'Credit type',
               value: applicantInfo?.props?.typeOfCredit?.creditType ?? '',
             },
-            ...(applicantInfo?.props.typeOfCredit.creditType === creditTypes[1]
+            ...(applicantInfo?.props.typeOfCredit?.creditType === creditTypes[1]
               ? [
                   {
                     header: 'Total number of borrowers:',
@@ -181,7 +182,7 @@ const ApplicantInfoTable = ({
                   },
                 ]
               : []),
-            ...(applicantInfo?.props.typeOfCredit.creditType === creditTypes[2]
+            ...(applicantInfo?.props.typeOfCredit?.creditType === creditTypes[2]
               ? [
                   {
                     header: 'Your initials:',
@@ -254,6 +255,14 @@ const ApplicantInfoTable = ({
                   value:
                     applicantInfo?.props?.coApplicantBasicInfo?.maritalStatus ??
                     '',
+                },
+                {
+                  header: 'Sex',
+                  value: coApplicantMember?.props?.sex ?? '',
+                },
+                {
+                  header: 'Relationship',
+                  value: coApplicantMember?.props?.relationship ?? '',
                 },
               ]}
             />
@@ -399,6 +408,7 @@ ApplicantInfoTable.propTypes = {
   applicantInfo: PropTypes.object,
   email: PropTypes.string,
   shouldRenderCoApplicant: PropTypes.bool,
+  coApplicantMember: PropTypes.object,
 };
 
 export default ApplicantInfoTable;
