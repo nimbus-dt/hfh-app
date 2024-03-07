@@ -751,7 +751,7 @@ export function TypeOfCredit({
     >
       <RadioGroupField
         label="Please select the type of credit you are applying for."
-        value={applicantInfo?.props.typeOfCredit.creditType}
+        value={applicantInfo?.props.typeOfCredit?.creditType}
         isDisabled
         isReadOnly
       >
@@ -763,7 +763,7 @@ export function TypeOfCredit({
       </RadioGroupField>
 
       <br />
-      {applicantInfo?.props.typeOfCredit.creditType === creditTypes[1] && (
+      {applicantInfo?.props.typeOfCredit?.creditType === creditTypes[1] && (
         <>
           <TextField
             label="Total number of borrowers:"
@@ -775,7 +775,7 @@ export function TypeOfCredit({
           <br />
         </>
       )}
-      {applicantInfo?.props.typeOfCredit.creditType === creditTypes[2] && (
+      {applicantInfo?.props.typeOfCredit?.creditType === creditTypes[2] && (
         <>
           <TextField
             label="Your initials:"
