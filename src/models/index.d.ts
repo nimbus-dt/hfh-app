@@ -97,7 +97,7 @@ type EagerHabitatProps = {
   readonly homeownershipMinCurrentAddressMonths: number;
   readonly homeownershipMinCurrentEmploymentMonths: number;
   readonly homeownershipNoOpenCycle: string;
-  readonly homeownershipHomeText?: TextSection[] | null;
+  readonly homeownershipHomeText: string;
   readonly homeownershipCheckQuestions?: CheckQuestion[] | null;
   readonly homeownershipRecordQuestions?: RecordQuestion[] | null;
   readonly homeownershipWrittenQuestions?: WrittenQuestion[] | null;
@@ -110,7 +110,7 @@ type LazyHabitatProps = {
   readonly homeownershipMinCurrentAddressMonths: number;
   readonly homeownershipMinCurrentEmploymentMonths: number;
   readonly homeownershipNoOpenCycle: string;
-  readonly homeownershipHomeText?: TextSection[] | null;
+  readonly homeownershipHomeText: string;
   readonly homeownershipCheckQuestions?: CheckQuestion[] | null;
   readonly homeownershipRecordQuestions?: RecordQuestion[] | null;
   readonly homeownershipWrittenQuestions?: WrittenQuestion[] | null;

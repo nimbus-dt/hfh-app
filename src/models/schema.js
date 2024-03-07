@@ -1314,13 +1314,10 @@ export const schema = {
                 },
                 "homeownershipHomeText": {
                     "name": "homeownershipHomeText",
-                    "isArray": true,
-                    "type": {
-                        "nonModel": "TextSection"
-                    },
+                    "isArray": false,
+                    "type": "String",
                     "isRequired": true,
-                    "attributes": [],
-                    "isArrayNullable": true
+                    "attributes": []
                 },
                 "homeownershipCheckQuestions": {
                     "name": "homeownershipCheckQuestions",
@@ -1365,5 +1362,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "63873401ed57c50fc2696010f4097829"
+    "version": "e1c1824df96c177401f7d71deb083339"
 };

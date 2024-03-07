@@ -39,7 +39,7 @@ type HabitatProps {
   homeownershipMinCurrentAddressMonths: Int!
   homeownershipMinCurrentEmploymentMonths: Int!
   homeownershipNoOpenCycle: String!
-  homeownershipHomeText: [TextSection!]
+  homeownershipHomeText: String!
   homeownershipCheckQuestions: [CheckQuestion!]
   homeownershipRecordQuestions: [RecordQuestion!]
   homeownershipWrittenQuestions: [WrittenQuestion!]
