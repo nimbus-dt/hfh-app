@@ -1251,25 +1251,6 @@ export const schema = {
                 }
             }
         },
-        "TextSection": {
-            "name": "TextSection",
-            "fields": {
-                "title": {
-                    "name": "title",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "body": {
-                    "name": "body",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                }
-            }
-        },
         "HabitatProps": {
             "name": "HabitatProps",
             "fields": {
@@ -1283,13 +1264,10 @@ export const schema = {
                 },
                 "homeownershipTermsText": {
                     "name": "homeownershipTermsText",
-                    "isArray": true,
-                    "type": {
-                        "nonModel": "TextSection"
-                    },
+                    "isArray": false,
+                    "type": "String",
                     "isRequired": true,
-                    "attributes": [],
-                    "isArrayNullable": true
+                    "attributes": []
                 },
                 "homeownershipMinCurrentAddressMonths": {
                     "name": "homeownershipMinCurrentAddressMonths",
@@ -1362,5 +1340,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "e1c1824df96c177401f7d71deb083339"
+    "version": "5f0a7df21af6ff7dc30bec225b3949dd"
 };
