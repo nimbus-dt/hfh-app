@@ -15,29 +15,72 @@ import HomeownersSection from './components/HomeownersSection';
 import EmploymentSection from './components/EmploymentSection';
 import FinancialSection from './components/FinancialSection';
 import ApplicantOptionalSection from './components/ApplicantOptionalSection/ApplicantOptionalSection';
+import PropertySection from './components/PropertySection';
 
 export default function HomeownershipReviewPage() {
-  const { application, setApplication, openCycle } = useOutletContext();
-  const [reviewedSections, setReviewedSections] = useState({});
+  const { application, setApplication, openCycle, habitat } =
+    useOutletContext();
 
+  const shouldRenderProperty = habitat?.props.optionalSections.propertyInfo;
+
+  const shouldRenderBusinessOwnerOrSelfEmployed =
+    habitat?.props.optionalSections.businessOwnerOrSelfEmployed;
+
+  const shouldRenderCoApplicant = habitat?.props.optionalSections.coApplicant;
+
+  const [reviewedSections, setReviewedSections] = useState({});
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [alert, setAlert] = useState();
   const [basicInfoOpen, setBasicInfoOpen] = useState(true);
   const [unmarriedAddendumOpen, setUnmarriedAddendumOpen] = useState(false);
   const [currentAddressOpen, setCurrentAddressOpen] = useState(false);
   const [previousAddressOpen, setPreviousAddressOpen] = useState(false);
+  const [typeOfCreditOpen, setTypeOfCreditOpen] = useState(false);
+  const [coApplicantOpen, setCoApplicantOpen] = useState(false);
+  const [coApplicantBasicInfoOpen, setCoApplicantBasicInfoOpen] =
+    useState(false);
+  const [
+    coApplicantUnmarriedAddendumOpen,
+    setCoApplicantUnmarriedAddendumOpen,
+  ] = useState(false);
+  const [coApplicantCurrentAddressOpen, setCoApplicantCurrentAddressOpen] =
+    useState(false);
+  const [coApplicantPreviousAddressOpen, setCoApplicantPreviousAddressOpen] =
+    useState(false);
   const [applicantMilitaryServiceOpen, setApplicantMilitaryServiceOpen] =
     useState(false);
   const [anyoneElseMilitaryServiceOpen, setAnyoneElseMilitaryServiceOpen] =
     useState(false);
   const [demographicOpen, setDemographicOpen] = useState(false);
+  const [coApplicantDemographicOpen, setCoApplicantDemographicOpen] =
+    useState(false);
   const [checklistExpanded, setChecklistExpanded] = useState(false);
   const [writtenExpanded, setWrittenExpanded] = useState(false);
   const [recordsExpanded, setRecordsExpanded] = useState(false);
   const [homeownersExpanded, setHomeownersExpanded] = useState(false);
   const [unemploymentOpen, setUnemploymentOpen] = useState(false);
+  const [businessOwnerOrSelfEmployedOpen, setBusinessOwnerOrSelfEmployedOpen] =
+    useState(false);
   const [currentEmploymentOpen, setCurrentEmploymentOpen] = useState(false);
   const [previousEmploymentOpen, setPreviousEmploymentOpen] = useState(false);
+  const [coApplicantUnemploymentOpen, setCoApplicantUnemploymentOpen] =
+    useState(false);
+  const [
+    coApplicantBusinessOwnerOrSelfEmployedOpen,
+    setCoApplicantBusinessOwnerOrSelfEmployedOpen,
+  ] = useState(false);
+  const [
+    coApplicantCurrentEmploymentOpen,
+    setCoApplicantCurrentEmploymentOpen,
+  ] = useState(false);
+  const [
+    coApplicantPreviousEmploymentOpen,
+    setCoApplicantPreviousEmploymentOpen,
+  ] = useState(false);
+  const [landOwnershipOpen, setLandOwnershipOpen] = useState(false);
+  const [mortgageOpen, setMortgageOpen] = useState(false);
+  const [realStateOwnershipOpen, setRealStateOwnershipOpen] = useState(false);
+  const [rentPaymentOpen, setRentPaymentOpen] = useState(false);
   const [financialOpen, setFinancialOpen] = useState(false);
 
   const handleBasicInformationOnReview = (unmarried) => {
@@ -62,12 +105,12 @@ export default function HomeownershipReviewPage() {
     }));
   };
 
-  const handleAddressOnReview = (hasPreviousEmployment) => {
+  const handleAddressOnReview = (needPreviousAddress) => {
     setCurrentAddressOpen(false);
-    if (hasPreviousEmployment) {
+    if (needPreviousAddress) {
       setPreviousAddressOpen(true);
     } else {
-      setApplicantMilitaryServiceOpen(true);
+      setTypeOfCreditOpen(true);
     }
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
@@ -77,10 +120,80 @@ export default function HomeownershipReviewPage() {
 
   const handlePreviousAddressOnReview = () => {
     setPreviousAddressOpen(false);
-    setApplicantMilitaryServiceOpen(true);
+    if (shouldRenderCoApplicant) {
+      setTypeOfCreditOpen(true);
+    } else {
+      setApplicantMilitaryServiceOpen(true);
+    }
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
       prevAddress: true,
+    }));
+  };
+
+  const handleTypeOfCreditOnReview = () => {
+    setTypeOfCreditOpen(false);
+    setCoApplicantOpen(true);
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      typeOfCredit: true,
+    }));
+  };
+
+  const handleCoApplicantOnReview = (hasCoApplicant) => {
+    setCoApplicantOpen(false);
+    if (hasCoApplicant) {
+      setCoApplicantBasicInfoOpen(true);
+    } else {
+      setApplicantMilitaryServiceOpen(true);
+    }
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      coApplicant: true,
+    }));
+  };
+
+  const handleCoApplicantBasicInformationOnReview = (unmarried) => {
+    setCoApplicantBasicInfoOpen(false);
+    if (unmarried) {
+      setCoApplicantUnmarriedAddendumOpen(true);
+    } else {
+      setCoApplicantCurrentAddressOpen(true);
+    }
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      coApplicantBasicInfo: true,
+    }));
+  };
+
+  const handleCoApplicantUnmarriedAddendumOnReview = () => {
+    setCoApplicantUnmarriedAddendumOpen(false);
+    setCoApplicantCurrentAddressOpen(true);
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      coApplicantUnmarriedAddendum: true,
+    }));
+  };
+
+  const handleCoApplicantAddressOnReview = (needPreviousAddress) => {
+    setCoApplicantCurrentAddressOpen(false);
+    if (needPreviousAddress) {
+      setCoApplicantPreviousAddressOpen(true);
+    } else {
+      setApplicantMilitaryServiceOpen(true);
+    }
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      coApplicantAddress: true,
+    }));
+  };
+
+  const handleCoApplicantPreviousAddressOnReview = () => {
+    setCoApplicantPreviousAddressOpen(false);
+    setApplicantMilitaryServiceOpen(true);
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      coApplicantPrevAddress: true,
     }));
   };
 
@@ -102,12 +215,25 @@ export default function HomeownershipReviewPage() {
     }));
   };
 
-  const handleDemographicOnReview = () => {
+  const handleDemographicOnReview = (hasCoApplicant) => {
     setDemographicOpen(false);
-    setChecklistExpanded(true);
+    if (hasCoApplicant && shouldRenderCoApplicant) {
+      setCoApplicantDemographicOpen(true);
+    } else {
+      setChecklistExpanded(true);
+    }
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
       demographic: true,
+    }));
+  };
+
+  const handleCoApplicantDemographicOnReview = () => {
+    setCoApplicantDemographicOpen(false);
+    setChecklistExpanded(true);
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      coApplicantDemographic: true,
     }));
   };
 
@@ -147,10 +273,16 @@ export default function HomeownershipReviewPage() {
     }));
   };
 
-  const handleUnemploymentOnReview = (employed) => {
+  const handleUnemploymentOnReview = (employed, hasCoApplicant) => {
     setUnemploymentOpen(false);
-    if (employed) {
+    if (shouldRenderBusinessOwnerOrSelfEmployed) {
+      setBusinessOwnerOrSelfEmployedOpen(true);
+    } else if (employed) {
       setCurrentEmploymentOpen(true);
+    } else if (shouldRenderCoApplicant && hasCoApplicant) {
+      setCoApplicantUnemploymentOpen(true);
+    } else if (shouldRenderProperty) {
+      setRealStateOwnershipOpen(true);
     } else {
       setFinancialOpen(true);
     }
@@ -160,10 +292,36 @@ export default function HomeownershipReviewPage() {
     }));
   };
 
-  const handleCurrentEmploymentOnReview = (hasPreviousEmployment) => {
+  const handleBusinessOwnerOrSelfEmployedOnReview = (
+    employed,
+    hasCoApplicant
+  ) => {
+    setBusinessOwnerOrSelfEmployedOpen(false);
+    if (employed) {
+      setCurrentEmploymentOpen(true);
+    } else if (hasCoApplicant && shouldRenderCoApplicant) {
+      setCoApplicantUnemploymentOpen(true);
+    } else {
+      setRealStateOwnershipOpen(true);
+    }
+
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      businessOwnerOrSelfEmployed: true,
+    }));
+  };
+
+  const handleCurrentEmploymentOnReview = (
+    hasPreviousEmployment,
+    hasCoApplicant
+  ) => {
     setCurrentEmploymentOpen(false);
     if (hasPreviousEmployment) {
       setPreviousEmploymentOpen(true);
+    } else if (hasCoApplicant && shouldRenderCoApplicant) {
+      setCoApplicantUnemploymentOpen(true);
+    } else if (shouldRenderProperty) {
+      setRealStateOwnershipOpen(true);
     } else {
       setFinancialOpen(true);
     }
@@ -173,12 +331,123 @@ export default function HomeownershipReviewPage() {
     }));
   };
 
-  const handlePreviousEmploymentOnReview = () => {
+  const handlePreviousEmploymentOnReview = (hasCoApplicant) => {
     setPreviousEmploymentOpen(false);
-    setFinancialOpen(true);
+    if (hasCoApplicant && shouldRenderCoApplicant) {
+      setCoApplicantUnemploymentOpen(true);
+    } else if (shouldRenderProperty) {
+      setRealStateOwnershipOpen(true);
+    } else {
+      setFinancialOpen(true);
+    }
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
       previousEmployment: true,
+    }));
+  };
+
+  const handleCoApplicantUnemploymentOnReview = (employed) => {
+    setCoApplicantUnemploymentOpen(false);
+    if (shouldRenderBusinessOwnerOrSelfEmployed) {
+      setCoApplicantBusinessOwnerOrSelfEmployedOpen(true);
+    } else if (employed) {
+      setCoApplicantCurrentEmploymentOpen(true);
+    } else if (shouldRenderProperty) {
+      setRealStateOwnershipOpen(true);
+    } else {
+      setFinancialOpen(true);
+    }
+    setCoApplicantBusinessOwnerOrSelfEmployedOpen(true);
+
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      coApplicantUnemployment: true,
+    }));
+  };
+
+  const handleCoApplicantBusinessOwnerOrSelfEmployedOnReview = (employed) => {
+    setCoApplicantBusinessOwnerOrSelfEmployedOpen(false);
+    if (employed) {
+      setCoApplicantCurrentEmploymentOpen(true);
+    } else if (shouldRenderProperty) {
+      setRealStateOwnershipOpen(true);
+    } else {
+      setFinancialOpen(true);
+    }
+
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      coApplicantBusinessOwnerOrSelfEmployed: true,
+    }));
+  };
+
+  const handleCoApplicantCurrentEmploymentOnReview = (
+    hasPreviousEmployment
+  ) => {
+    setCoApplicantCurrentEmploymentOpen(false);
+    if (hasPreviousEmployment) {
+      setCoApplicantPreviousEmploymentOpen(true);
+    } else if (shouldRenderProperty) {
+      setRealStateOwnershipOpen(true);
+    } else {
+      setFinancialOpen(true);
+    }
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      coApplicantCurrentEmployment: true,
+    }));
+  };
+
+  const handleCoApplicantPreviousEmploymentOnReview = () => {
+    setCoApplicantPreviousEmploymentOpen(false);
+    if (shouldRenderProperty) {
+      setRealStateOwnershipOpen(true);
+    } else {
+      setFinancialOpen(true);
+    }
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      coApplicantPreviousEmployment: true,
+    }));
+  };
+
+  const handleRealStateOwnershipOnReview = (hasRealState) => {
+    setRealStateOwnershipOpen(false);
+    if (hasRealState) {
+      setMortgageOpen(true);
+    } else {
+      setRentPaymentOpen(true);
+    }
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      ownRealState: true,
+    }));
+  };
+
+  const handleMortgageOnReview = () => {
+    setMortgageOpen(false);
+    setLandOwnershipOpen(true);
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      mortgagePayment: true,
+    }));
+  };
+
+  const handleLandOwnershipOnReview = () => {
+    setLandOwnershipOpen(false);
+    setFinancialOpen(true);
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      landOwnership: true,
+    }));
+  };
+
+  const handleRentPaymentOnReview = () => {
+    setRentPaymentOpen(false);
+    setFinancialOpen(true);
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      rentPayment: true,
     }));
   };
 
@@ -278,9 +547,36 @@ export default function HomeownershipReviewPage() {
         previousAddressOpen={previousAddressOpen}
         setPreviousAddressOpen={setPreviousAddressOpen}
         handlePreviousAddressOnReview={handlePreviousAddressOnReview}
+        typeOfCreditOpen={typeOfCreditOpen}
+        setTypeOfCreditOpen={setTypeOfCreditOpen}
+        handleTypeOfCreditOnReview={handleTypeOfCreditOnReview}
+        coApplicantOpen={coApplicantOpen}
+        setCoApplicantOpen={setCoApplicantOpen}
+        handleCoApplicantOnReview={handleCoApplicantOnReview}
+        coApplicantBasicInfoOpen={coApplicantBasicInfoOpen}
+        setCoApplicantBasicInfoOpen={setCoApplicantBasicInfoOpen}
+        handleCoApplicantBasicInformationOnReview={
+          handleCoApplicantBasicInformationOnReview
+        }
+        coApplicantUnmarriedAddendumOpen={coApplicantUnmarriedAddendumOpen}
+        setCoApplicantUnmarriedAddendumOpen={
+          setCoApplicantUnmarriedAddendumOpen
+        }
+        handleCoApplicantUnmarriedAddendumOnReview={
+          handleCoApplicantUnmarriedAddendumOnReview
+        }
+        coApplicantCurrentAddressOpen={coApplicantCurrentAddressOpen}
+        setCoApplicantCurrentAddressOpen={setCoApplicantCurrentAddressOpen}
+        handleCoApplicantAddressOnReview={handleCoApplicantAddressOnReview}
+        coApplicantPreviousAddressOpen={coApplicantPreviousAddressOpen}
+        setCoApplicantPreviousAddressOpen={setCoApplicantPreviousAddressOpen}
+        handleCoApplicantPreviousAddressOnReview={
+          handleCoApplicantPreviousAddressOnReview
+        }
         reviewedSections={reviewedSections}
         setReviewedSections={setReviewedSections}
         submitted={application?.submissionStatus === SubmissionStatus.SUBMITTED}
+        shouldRenderCoApplicant={shouldRenderCoApplicant}
       />
       <ApplicantOptionalSection
         applicantMilitaryServiceOpen={applicantMilitaryServiceOpen}
@@ -296,9 +592,15 @@ export default function HomeownershipReviewPage() {
         demographicOpen={demographicOpen}
         setDemographicOpen={setDemographicOpen}
         handleDemographicOnReview={handleDemographicOnReview}
+        coApplicantDemographicOpen={coApplicantDemographicOpen}
+        setCoApplicantDemographicOpen={setCoApplicantDemographicOpen}
+        handleCoApplicantDemographicOnReview={
+          handleCoApplicantDemographicOnReview
+        }
         reviewedSections={reviewedSections}
         setReviewedSections={setReviewedSections}
         submitted={application?.submissionStatus === SubmissionStatus.SUBMITTED}
+        shouldRenderCoApplicant={shouldRenderCoApplicant}
       />
       <ChecklistSection
         reviewedSections={reviewedSections}
@@ -333,19 +635,77 @@ export default function HomeownershipReviewPage() {
         submitted={application?.submissionStatus === SubmissionStatus.SUBMITTED}
       />
       <EmploymentSection
-        reviewedSections={reviewedSections}
-        setReviewedSections={setReviewedSections}
         unemploymentOpen={unemploymentOpen}
         setUnemploymentOpen={setUnemploymentOpen}
+        handleUnemploymentOnReview={handleUnemploymentOnReview}
+        businessOwnerOrSelfEmployedOpen={businessOwnerOrSelfEmployedOpen}
+        setBusinessOwnerOrSelfEmployedOpen={setBusinessOwnerOrSelfEmployedOpen}
+        handleBusinessOwnerOrSelfEmployedOnReview={
+          handleBusinessOwnerOrSelfEmployedOnReview
+        }
         currentEmploymentOpen={currentEmploymentOpen}
         setCurrentEmploymentOpen={setCurrentEmploymentOpen}
+        handleCurrentEmploymentOnReview={handleCurrentEmploymentOnReview}
         previousEmploymentOpen={previousEmploymentOpen}
         setPreviousEmploymentOpen={setPreviousEmploymentOpen}
-        handleUnemploymentOnReview={handleUnemploymentOnReview}
-        handleCurrentEmploymentOnReview={handleCurrentEmploymentOnReview}
         handlePreviousAddressOnReview={handlePreviousEmploymentOnReview}
+        coApplicantUnemploymentOpen={coApplicantUnemploymentOpen}
+        setCoApplicantUnemploymentOpen={setCoApplicantUnemploymentOpen}
+        handleCoApplicantUnemploymentOnReview={
+          handleCoApplicantUnemploymentOnReview
+        }
+        coApplicantBusinessOwnerOrSelfEmployedOpen={
+          coApplicantBusinessOwnerOrSelfEmployedOpen
+        }
+        setCoApplicantBusinessOwnerOrSelfEmployedOpen={
+          setCoApplicantBusinessOwnerOrSelfEmployedOpen
+        }
+        handleCoApplicantBusinessOwnerOrSelfEmployedOnReview={
+          handleCoApplicantBusinessOwnerOrSelfEmployedOnReview
+        }
+        coApplicantCurrentEmploymentOpen={coApplicantCurrentEmploymentOpen}
+        setCoApplicantCurrentEmploymentOpen={
+          setCoApplicantCurrentEmploymentOpen
+        }
+        handleCoApplicantCurrentEmploymentOnReview={
+          handleCoApplicantCurrentEmploymentOnReview
+        }
+        coApplicantPreviousEmploymentOpen={coApplicantPreviousEmploymentOpen}
+        setCoApplicantPreviousEmploymentOpen={
+          setCoApplicantPreviousEmploymentOpen
+        }
+        handleCoApplicantPreviousAddressOnReview={
+          handleCoApplicantPreviousEmploymentOnReview
+        }
+        reviewedSections={reviewedSections}
+        setReviewedSections={setReviewedSections}
         submitted={application?.submissionStatus === SubmissionStatus.SUBMITTED}
+        shouldRenderCoApplicant={shouldRenderCoApplicant}
+        shouldRenderBusinessOwnerOrSelfEmployed={
+          shouldRenderBusinessOwnerOrSelfEmployed
+        }
       />
+      {shouldRenderProperty && (
+        <PropertySection
+          landOwnershipOpen={landOwnershipOpen}
+          setLandOwnershipOpen={setLandOwnershipOpen}
+          handleLandOwnershipOnReview={handleLandOwnershipOnReview}
+          mortgageOpen={mortgageOpen}
+          setMortgageOpen={setMortgageOpen}
+          handleMortgageOnReview={handleMortgageOnReview}
+          realStateOwnershipOpen={realStateOwnershipOpen}
+          setRealStateOwnershipOpen={setRealStateOwnershipOpen}
+          handleRealStateOwnershipOnReview={handleRealStateOwnershipOnReview}
+          rentPaymentOpen={rentPaymentOpen}
+          setRentPaymentOpen={setRentPaymentOpen}
+          handleRentPaymentOnReview={handleRentPaymentOnReview}
+          reviewedSections={reviewedSections}
+          setReviewedSections={setReviewedSections}
+          submitted={
+            application?.submissionStatus === SubmissionStatus.SUBMITTED
+          }
+        />
+      )}
       <FinancialSection
         expanded={financialOpen}
         setExpanded={setFinancialOpen}

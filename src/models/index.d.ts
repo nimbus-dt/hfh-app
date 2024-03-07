@@ -13,6 +13,22 @@ export enum SubmissionStatus {
   RETURNED = "RETURNED"
 }
 
+type EagerOptionalSections = {
+  readonly coApplicant: boolean;
+  readonly propertyInfo: boolean;
+  readonly businessOwnerOrSelfEmployed: boolean;
+}
+
+type LazyOptionalSections = {
+  readonly coApplicant: boolean;
+  readonly propertyInfo: boolean;
+  readonly businessOwnerOrSelfEmployed: boolean;
+}
+
+export declare type OptionalSections = LazyLoading extends LazyLoadingDisabled ? EagerOptionalSections : LazyOptionalSections
+
+export declare const OptionalSections: (new (init: ModelInit<OptionalSections>) => OptionalSections)
+
 type EagerWrittenQuestion = {
   readonly name: string;
   readonly label: string;
@@ -85,6 +101,7 @@ type EagerHabitatProps = {
   readonly homeownershipCheckQuestions?: CheckQuestion[] | null;
   readonly homeownershipRecordQuestions?: RecordQuestion[] | null;
   readonly homeownershipWrittenQuestions?: WrittenQuestion[] | null;
+  readonly optionalSections: OptionalSections;
 }
 
 type LazyHabitatProps = {
@@ -97,11 +114,42 @@ type LazyHabitatProps = {
   readonly homeownershipCheckQuestions?: CheckQuestion[] | null;
   readonly homeownershipRecordQuestions?: RecordQuestion[] | null;
   readonly homeownershipWrittenQuestions?: WrittenQuestion[] | null;
+  readonly optionalSections: OptionalSections;
 }
 
 export declare type HabitatProps = LazyLoading extends LazyLoadingDisabled ? EagerHabitatProps : LazyHabitatProps
 
 export declare const HabitatProps: (new (init: ModelInit<HabitatProps>) => HabitatProps)
+
+type EagerProperty = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Property, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID: string;
+  readonly props: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyProperty = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Property, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly ownerID: string;
+  readonly props: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Property = LazyLoading extends LazyLoadingDisabled ? EagerProperty : LazyProperty
+
+export declare const Property: (new (init: ModelInit<Property>) => Property) & {
+  copyOf(source: Property, mutator: (draft: MutableModel<Property>) => MutableModel<Property> | void): Property;
+}
 
 type EagerTestCycle = {
   readonly [__modelMeta__]: {
@@ -343,6 +391,7 @@ type EagerMember = {
   readonly id: string;
   readonly props?: string | null;
   readonly testapplicationID: string;
+  readonly isCoApplicant?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -355,6 +404,7 @@ type LazyMember = {
   readonly id: string;
   readonly props?: string | null;
   readonly testapplicationID: string;
+  readonly isCoApplicant?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

@@ -16,15 +16,18 @@ const PreviousEmployment = ({
   setReviewedSections,
   onReview,
   submitted,
+  coApplicant,
 }) => {
   const customCardReference = useRef(null);
 
   useEffect(() => {
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
-      previousEmployment: false,
+      ...(coApplicant
+        ? { coApplicantPreviousEmployment: false }
+        : { previousEmployment: false }),
     }));
-  }, [setReviewedSections]);
+  }, [setReviewedSections, coApplicant]);
 
   useEffect(() => {
     if (expanded) {
@@ -38,8 +41,10 @@ const PreviousEmployment = ({
   return (
     <CustomExpandableCard
       title={`${getCheckOrExEmoji(
-        reviewedSections.previousEmployment || submitted
-      )} Previous Employment Information`}
+        (coApplicant
+          ? reviewedSections.coApplicantPreviousEmployment
+          : reviewedSections.previousEmployment) || submitted
+      )}${coApplicant ? ' Co-applicant' : ''} Previous Employment Information`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
       ref={customCardReference}
@@ -47,14 +52,28 @@ const PreviousEmployment = ({
       {employmentInfo ? (
         <>
           <TextField
-            label="What is the name of your previous employer?"
-            value={employmentInfo?.props?.previousEmployment.employerName}
+            label={
+              coApplicant
+                ? "What is the name of the co-applicant's previous employer?"
+                : 'What is the name of your previous employer?'
+            }
+            value={
+              coApplicant
+                ? employmentInfo?.props?.coApplicantPreviousEmployment
+                    .employerName
+                : employmentInfo?.props?.previousEmployment.employerName
+            }
             isDisabled
           />
           <br />
           <SelectField
             label="State"
-            value={employmentInfo?.props?.previousEmployment.employerState}
+            value={
+              coApplicant
+                ? employmentInfo?.props?.coApplicantPreviousEmployment
+                    .employerState
+                : employmentInfo?.props?.previousEmployment.employerState
+            }
             isDisabled
           >
             {states.map((state) => (
@@ -67,47 +86,89 @@ const PreviousEmployment = ({
           <SearchableSelectInput
             label="City"
             selectedOption={{
-              id: employmentInfo?.props?.previousEmployment.employerCity,
-              label: employmentInfo?.props?.previousEmployment.employerCity,
+              id: coApplicant
+                ? employmentInfo?.props?.coApplicantPreviousEmployment
+                    .employerCity
+                : employmentInfo?.props?.previousEmployment.employerCity,
+              label: coApplicant
+                ? employmentInfo?.props?.coApplicantPreviousEmployment
+                    .employerCity
+                : employmentInfo?.props?.previousEmployment.employerCity,
             }}
             isDisabled
           />
           <br />
           <TextField
             label="Street"
-            value={employmentInfo?.props?.previousEmployment.employerStreet}
+            value={
+              coApplicant
+                ? employmentInfo?.props?.coApplicantPreviousEmployment
+                    .employerStreet
+                : employmentInfo?.props?.previousEmployment.employerStreet
+            }
             isDisabled
           />
           <br />
           <TextField
             label="Zip code"
-            value={employmentInfo?.props?.previousEmployment.employerZipCode}
+            value={
+              coApplicant
+                ? employmentInfo?.props?.coApplicantPreviousEmployment
+                    .employerZipCode
+                : employmentInfo?.props?.previousEmployment.employerZipCode
+            }
             isDisabled
           />
           <br />
           <TextField
-            label="What was your approximate start date with this employer?"
-            value={employmentInfo?.props?.previousEmployment.startDate}
+            label={
+              coApplicant
+                ? "What was the co-applicant's approximate start date with this employer?"
+                : 'What was your approximate start date with this employer?'
+            }
+            value={
+              coApplicant
+                ? employmentInfo?.props?.coApplicantPreviousEmployment.startDate
+                : employmentInfo?.props?.previousEmployment.startDate
+            }
             type="date"
             isDisabled
           />
           <br />
           <TextField
-            label="What was your approximate end date with this employer?"
-            value={employmentInfo?.props?.previousEmployment.endDate}
+            label={
+              coApplicant
+                ? "What was the co-applicant's approximate end date with this employer?"
+                : 'What was your approximate end date with this employer?'
+            }
+            value={
+              coApplicant
+                ? employmentInfo?.props?.coApplicantPreviousEmployment.endDate
+                : employmentInfo?.props?.previousEmployment.endDate
+            }
             type="date"
             isDisabled
           />
           <br />
           <TextField
             label="Type of Business?"
-            value={employmentInfo?.props?.previousEmployment.businessType}
+            value={
+              coApplicant
+                ? employmentInfo?.props?.coApplicantPreviousEmployment
+                    .businessType
+                : employmentInfo?.props?.previousEmployment.businessType
+            }
             isDisabled
           />
           <br />
           <TextField
             label="Business phone?"
-            value={employmentInfo?.props?.previousEmployment.businessPhone}
+            value={
+              coApplicant
+                ? employmentInfo?.props?.coApplicantPreviousEmployment
+                    .businessPhone
+                : employmentInfo?.props?.previousEmployment.businessPhone
+            }
             isDisabled
           />
           <br />
@@ -138,6 +199,7 @@ PreviousEmployment.propTypes = {
   setReviewedSections: PropTypes.func,
   onReview: PropTypes.func,
   submitted: PropTypes.bool,
+  coApplicant: PropTypes.bool,
 };
 
 export default PreviousEmployment;

@@ -15,11 +15,16 @@ import SearchableSelectInput from 'components/SearchableSelectInput';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { API } from 'aws-amplify';
 import { debounce } from 'lodash';
+import { RELATIONSHIP_OPTIONS } from 'utils/constants';
 import {
   addressSchema,
   basicInfoSchema,
+  coApplicantBasicSchema,
+  coApplicantSchema,
+  creditTypes,
   maritalStatusValues,
   ownerShipValues,
+  typeOfCreditSchema,
   unmarriedAddendumSchema,
   unmarriedRelationshipTypesValues,
 } from '../HomeownershipApplicantInfoPage.schema';
@@ -32,20 +37,30 @@ export function BasicInformation({
   onValid,
   edit,
   onClickEdit,
+  coApplicant,
 }) {
   const {
     register,
+    unregister,
     handleSubmit,
     control,
     formState: { errors },
+    watch,
   } = useForm({
-    resolver: zodResolver(basicInfoSchema),
+    resolver: zodResolver(
+      coApplicant ? coApplicantBasicSchema : basicInfoSchema
+    ),
     shouldFocusError: false,
     reValidateMode: 'onBlur',
-    values: applicantInfo?.props?.basicInfo,
+    values: coApplicant
+      ? applicantInfo?.props?.coApplicantBasicInfo
+      : applicantInfo?.props?.basicInfo,
   });
 
-  const isEnabled = !applicantInfo?.props?.basicInfo || edit;
+  const isEnabled =
+    (coApplicant
+      ? !applicantInfo?.props?.coApplicantBasicInfo
+      : !applicantInfo?.props?.basicInfo) || edit;
 
   const handleOnChangeSecurityNumber = (event) => {
     const inputValue = event.target.value.replace(/[^\d\b]/g, '');
@@ -67,17 +82,31 @@ export function BasicInformation({
     event.target.value = formattedNumber;
   };
 
+  const watchRelationship = watch('relationship');
+
+  useEffect(() => {
+    if (watchRelationship !== 'Other') {
+      unregister('otherRelationship');
+    }
+  }, [watchRelationship]);
+
   return (
     <CustomExpandableCard
-      title={`${
-        applicantInfo?.props?.basicInfo !== undefined ? '✔️' : '❌'
-      } Basic Information`}
+      title={`${getCheckOrExEmoji(
+        coApplicant
+          ? applicantInfo?.props?.coApplicantBasicInfo !== undefined
+          : applicantInfo?.props?.basicInfo !== undefined
+      )}${coApplicant ? ' Co-applicant' : ''} Basic Information`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
     >
       <form onSubmit={handleSubmit(onValid)}>
         <TextField
-          label="What is your full name?"
+          label={
+            coApplicant
+              ? "What is the co-applicant's full name?"
+              : 'What is your full name?'
+          }
           placeholder="John Doe"
           {...register('fullName')}
           errorMessage="Full name must contain at least 1 character"
@@ -87,14 +116,22 @@ export function BasicInformation({
         />
         <br />
         <TextField
-          label="If you have an alternative or a former name, please write it here."
+          label={
+            coApplicant
+              ? 'If the co-applicant have an alternative or a former name, please write it here.'
+              : 'If you have an alternative or a former name, please write it here.'
+          }
           placeholder="James Doe"
           {...register('altOrFormerName')}
           isDisabled={!isEnabled}
         />
         <br />
         <TextField
-          label="What is your social security number?"
+          label={
+            coApplicant
+              ? "What is the co-applicant's social security number?"
+              : 'What is your social security number?'
+          }
           placeholder="AAA-GG-SSSS"
           {...register('socialSecurityNumber')}
           onChange={handleOnChangeSecurityNumber}
@@ -105,7 +142,11 @@ export function BasicInformation({
         />
         <br />
         <TextField
-          label="What is your home phone?"
+          label={
+            coApplicant
+              ? "What is the co-applicant's home phone?"
+              : 'What is your home phone?'
+          }
           placeholder="(800) 555‑0100"
           {...register('homePhone')}
           onChange={handleOnChangePhone}
@@ -115,7 +156,11 @@ export function BasicInformation({
         />
         <br />
         <TextField
-          label="What is your cell phone?"
+          label={
+            coApplicant
+              ? "What is the co-applicant's cell phone?"
+              : 'What is your cell phone?'
+          }
           placeholder="(800) 555‑0100"
           {...register('cellPhone')}
           onChange={handleOnChangePhone}
@@ -126,7 +171,11 @@ export function BasicInformation({
         />
         <br />
         <TextField
-          label="What is your work phone?"
+          label={
+            coApplicant
+              ? "What is the co-applicant's work phone?"
+              : 'What is your work phone?'
+          }
           placeholder="(800) 555‑0100"
           {...register('workPhone')}
           onChange={handleOnChangePhone}
@@ -136,7 +185,11 @@ export function BasicInformation({
         />
         <br />
         <TextField
-          label="What is your date of birth?"
+          label={
+            coApplicant
+              ? "What is the co-applicant's date of birth?"
+              : 'What is your date of birth?'
+          }
           type="date"
           isRequired
           {...register('birthDate')}
@@ -152,7 +205,11 @@ export function BasicInformation({
           render={({ field: { onChange, onBlur, value } }) => (
             <RadioGroupField
               name="maritalStatus"
-              label="Which of these best represents your current marital status?"
+              label={
+                coApplicant
+                  ? 'Which of these best represents the co-applicant current marital status?'
+                  : 'Which of these best represents your current marital status?'
+              }
               onChange={(e) => onChange(e.target.value)}
               onBlur={onBlur}
               value={value}
@@ -169,8 +226,54 @@ export function BasicInformation({
           )}
         />
         <br />
+        {coApplicant && (
+          <>
+            <SelectField
+              {...register('sex')}
+              label="What is the co-applicant's sex?"
+              hasError={errors.sex !== undefined}
+              errorMessage={errors.sex?.message}
+              isRequired
+              isDisabled={!isEnabled}
+            >
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </SelectField>
+            <br />
+            <SelectField
+              {...register('relationship')}
+              label="What is your relationship with the co-applicant?"
+              hasError={errors.relationship !== undefined}
+              errorMessage={errors.relationship?.message}
+              isRequired
+              isDisabled={!isEnabled}
+            >
+              {RELATIONSHIP_OPTIONS.map((relationshipOption) => (
+                <option key={relationshipOption} value={relationshipOption}>
+                  {relationshipOption}
+                </option>
+              ))}
+              <br />
+            </SelectField>
+            <br />
+            {watchRelationship === 'Other' && (
+              <TextField
+                {...register('otherRelationship')}
+                label="Please describe this relationship"
+                hasError={errors.otherRelationship !== undefined}
+                errorMessage={errors.otherRelationship?.message}
+                isRequired
+                isDisabled={!isEnabled}
+              />
+            )}
+            <br />
+          </>
+        )}
         <Flex width="100%" justifyContent="end">
-          {applicantInfo?.props?.basicInfo ? (
+          {applicantInfo?.props[
+            coApplicant ? 'coApplicantBasicInfo' : 'basicInfo'
+          ] ? (
             <Button onClick={onClickEdit} variation="secondary">
               {edit ? 'Cancel' : 'Edit'}
             </Button>
@@ -193,6 +296,7 @@ BasicInformation.propTypes = {
   onValid: PropTypes.func,
   edit: PropTypes.bool,
   onClickEdit: PropTypes.func,
+  coApplicant: PropTypes.bool,
 };
 
 export function Address({
@@ -202,23 +306,39 @@ export function Address({
   onValid,
   edit,
   onClickEdit,
+  coApplicant,
 }) {
   const [cities, setCities] = useState([]);
 
   const formattedValues = useMemo(() => {
-    if (applicantInfo?.props?.currentAddress !== undefined) {
-      return {
-        ...applicantInfo.props.currentAddress,
-        city: {
-          selectedCity: {
-            id: applicantInfo.props.currentAddress.city,
-            label: applicantInfo.props.currentAddress.city,
-          },
-          query: applicantInfo.props.currentAddress.city,
-        },
-      };
+    if (
+      coApplicant
+        ? applicantInfo?.props?.coApplicantCurrentAddress !== undefined
+        : applicantInfo?.props?.currentAddress !== undefined
+    ) {
+      return coApplicant
+        ? {
+            ...applicantInfo.props.coApplicantCurrentAddress,
+            city: {
+              selectedCity: {
+                id: applicantInfo.props.coApplicantCurrentAddress.city,
+                label: applicantInfo.props.coApplicantCurrentAddress.city,
+              },
+              query: applicantInfo.props.coApplicantCurrentAddress.city,
+            },
+          }
+        : {
+            ...applicantInfo.props.currentAddress,
+            city: {
+              selectedCity: {
+                id: applicantInfo.props.currentAddress.city,
+                label: applicantInfo.props.currentAddress.city,
+              },
+              query: applicantInfo.props.currentAddress.city,
+            },
+          };
     }
-  }, [applicantInfo]);
+  }, [applicantInfo, coApplicant]);
 
   const {
     resetField,
@@ -232,7 +352,10 @@ export function Address({
     values: formattedValues,
   });
 
-  const isEnabled = !applicantInfo?.props?.currentAddress || edit;
+  const isEnabled =
+    (coApplicant
+      ? !applicantInfo?.props?.coApplicantCurrentAddress
+      : !applicantInfo?.props?.currentAddress) || edit;
 
   const watchState = watch('state');
 
@@ -274,9 +397,11 @@ export function Address({
 
   return (
     <CustomExpandableCard
-      title={`${
-        applicantInfo?.props?.currentAddress !== undefined ? '✔️' : '❌'
-      } Present Address`}
+      title={`${getCheckOrExEmoji(
+        coApplicant
+          ? applicantInfo?.props?.coApplicantCurrentAddress !== undefined
+          : applicantInfo?.props?.currentAddress !== undefined
+      )}${coApplicant ? ' Co-applicant' : ''} Present Address`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
     >
@@ -349,7 +474,11 @@ export function Address({
         />
         <br />
         <TextField
-          label="How long have you lived at this address, in months?"
+          label={
+            coApplicant
+              ? 'How long have the co-applicant lived at this address, in months?'
+              : 'How long have you lived at this address, in months?'
+          }
           placeholder="48"
           type="number"
           {...register('monthsLivedHere')}
@@ -366,7 +495,11 @@ export function Address({
           render={({ field: { onChange, onBlur, value } }) => (
             <RadioGroupField
               name="ownershipStatus"
-              label="Which of these best represents the ownership status of the address you currently live in?"
+              label={
+                coApplicant
+                  ? 'Which of these best represents the ownership status of the address the co-applicant currently live in?'
+                  : 'Which of these best represents the ownership status of the address you currently live in?'
+              }
               onChange={(e) => onChange(e.target.value)}
               onBlur={onBlur}
               value={value}
@@ -382,7 +515,9 @@ export function Address({
           )}
         />
         <Flex width="100%" justifyContent="end">
-          {applicantInfo?.props?.currentAddress ? (
+          {applicantInfo?.props[
+            coApplicant ? 'coApplicantCurrentAddress' : 'currentAddress'
+          ] ? (
             <Button onClick={onClickEdit} variation="secondary">
               {edit ? 'Cancel' : 'Edit'}
             </Button>
@@ -405,6 +540,7 @@ Address.propTypes = {
   onValid: PropTypes.func,
   edit: PropTypes.bool,
   onClickEdit: PropTypes.func,
+  coApplicant: PropTypes.bool,
 };
 
 export function PrevAddress({
@@ -414,23 +550,39 @@ export function PrevAddress({
   onValid,
   edit,
   onClickEdit,
+  coApplicant,
 }) {
   const [cities, setCities] = useState([]);
 
   const formattedValues = useMemo(() => {
-    if (applicantInfo?.props?.previousAddress !== undefined) {
-      return {
-        ...applicantInfo.props.previousAddress,
-        city: {
-          selectedCity: {
-            id: applicantInfo.props.previousAddress.city,
-            label: applicantInfo.props.previousAddress.city,
-          },
-          query: applicantInfo.props.previousAddress.city,
-        },
-      };
+    if (
+      coApplicant
+        ? applicantInfo?.props?.coApplicantPreviousAddress !== undefined
+        : applicantInfo?.props?.previousAddress !== undefined
+    ) {
+      return coApplicant
+        ? {
+            ...applicantInfo.props.coApplicantPreviousAddress,
+            city: {
+              selectedCity: {
+                id: applicantInfo.props.coApplicantPreviousAddress.city,
+                label: applicantInfo.props.coApplicantPreviousAddress.city,
+              },
+              query: applicantInfo.props.coApplicantPreviousAddress.city,
+            },
+          }
+        : {
+            ...applicantInfo.props.previousAddress,
+            city: {
+              selectedCity: {
+                id: applicantInfo.props.previousAddress.city,
+                label: applicantInfo.props.previousAddress.city,
+              },
+              query: applicantInfo.props.previousAddress.city,
+            },
+          };
     }
-  }, [applicantInfo]);
+  }, [applicantInfo, coApplicant]);
 
   const {
     register,
@@ -446,7 +598,10 @@ export function PrevAddress({
     values: formattedValues,
   });
 
-  const isEnabled = !applicantInfo?.props?.previousAddress || edit;
+  const isEnabled =
+    (coApplicant
+      ? !applicantInfo?.props?.coApplicantPreviousAddress
+      : !applicantInfo?.props?.previousAddress) || edit;
 
   const watchState = watch('state');
 
@@ -488,9 +643,11 @@ export function PrevAddress({
 
   return (
     <CustomExpandableCard
-      title={`${
-        applicantInfo?.props?.previousAddress !== undefined ? '✔️' : '❌'
-      } Previous Address`}
+      title={`${getCheckOrExEmoji(
+        coApplicant
+          ? applicantInfo?.props?.coApplicantPreviousAddress !== undefined
+          : applicantInfo?.props?.previousAddress !== undefined
+      )}${coApplicant ? ' Co-applicant' : ''} Previous Address`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
     >
@@ -563,7 +720,11 @@ export function PrevAddress({
         />
         <br />
         <TextField
-          label="How long did you live at this address, in months?"
+          label={
+            coApplicant
+              ? 'How long did the co-applicant live at this address, in months?'
+              : 'How long did you live at this address, in months?'
+          }
           placeholder="48"
           type="number"
           {...register('monthsLivedHere')}
@@ -580,7 +741,11 @@ export function PrevAddress({
           render={({ field: { onChange, onBlur, value } }) => (
             <RadioGroupField
               name="ownershipStatus"
-              label="Which of these best represents the ownership status of the previous address you lived in?"
+              label={
+                coApplicant
+                  ? 'Which of these best represents the ownership status of the previous address the co-applicant lived in?'
+                  : 'Which of these best represents the ownership status of the previous address you lived in?'
+              }
               onChange={(e) => onChange(e.target.value)}
               onBlur={onBlur}
               value={value}
@@ -619,6 +784,7 @@ PrevAddress.propTypes = {
   onValid: PropTypes.func,
   edit: PropTypes.bool,
   onClickEdit: PropTypes.func,
+  coApplicant: PropTypes.bool,
 };
 
 export function UnmarriedAddendum({
@@ -628,21 +794,28 @@ export function UnmarriedAddendum({
   onValid,
   edit,
   onClickEdit,
+  coApplicant,
 }) {
   const {
     register,
     handleSubmit,
     control,
     watch,
+    unregister,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(unmarriedAddendumSchema),
     shouldFocusError: false,
     reValidateMode: 'onBlur',
-    values: applicantInfo?.props?.unmarriedAddendum,
+    values: coApplicant
+      ? applicantInfo?.props?.coApplicantUnmarriedAddendum
+      : applicantInfo?.props?.unmarriedAddendum,
   });
 
-  const isEnabled = !applicantInfo?.props?.unmarriedAddendum || edit;
+  const isEnabled =
+    (coApplicant
+      ? !applicantInfo?.props?.coApplicantUnmarriedAddendum
+      : !applicantInfo?.props?.unmarriedAddendum) || edit;
 
   const notSpouseButSimilarPropertyRightsWatch = watch(
     'notSpouseButSimilarPropertyRights'
@@ -650,11 +823,27 @@ export function UnmarriedAddendum({
 
   const relationshipTypeWatch = watch('relationshipType');
 
+  useEffect(() => {
+    if (notSpouseButSimilarPropertyRightsWatch !== 'Yes') {
+      unregister('relationshipType');
+      unregister('otherRelationshipType');
+      unregister('state');
+    }
+  }, [notSpouseButSimilarPropertyRightsWatch]);
+
+  useEffect(() => {
+    if (relationshipTypeWatch !== 'Other') {
+      unregister('otherRelationshipType');
+    }
+  }, [relationshipTypeWatch]);
+
   return (
     <CustomExpandableCard
       title={`${getCheckOrExEmoji(
-        applicantInfo?.props?.unmarriedAddendum !== undefined
-      )} Unmarried Addendum`}
+        coApplicant
+          ? applicantInfo?.props?.coApplicantUnmarriedAddendum !== undefined
+          : applicantInfo?.props?.unmarriedAddendum !== undefined
+      )}${coApplicant ? ' Co-applicant' : ''} Unmarried Addendum`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
     >
@@ -666,7 +855,11 @@ export function UnmarriedAddendum({
           render={({ field: { onChange, onBlur, value } }) => (
             <RadioGroupField
               name="notSpouseButSimilarPropertyRights"
-              label="Is there a person who is not your legal spouse but who currently has real property rights similar to those of a legal spouse?"
+              label={
+                coApplicant
+                  ? "Is there a person who is not the co-applicant's legal spouse but who currently has real property rights similar to those of a legal spouse?"
+                  : 'Is there a person who is not your legal spouse but who currently has real property rights similar to those of a legal spouse?'
+              }
               onChange={(e) => onChange(e.target.value)}
               onBlur={onBlur}
               value={value}
@@ -749,6 +942,198 @@ export function UnmarriedAddendum({
 }
 
 UnmarriedAddendum.propTypes = {
+  applicantInfo: PropTypes.object,
+  expanded: PropTypes.bool,
+  onExpandedChange: PropTypes.func,
+  onValid: PropTypes.func,
+  edit: PropTypes.bool,
+  onClickEdit: PropTypes.func,
+  coApplicant: PropTypes.bool,
+};
+
+export function TypeOfCredit({
+  expanded,
+  onExpandedChange,
+  applicantInfo,
+  onValid,
+  edit,
+  onClickEdit,
+}) {
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    unregister,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(typeOfCreditSchema),
+    shouldFocusError: false,
+    reValidateMode: 'onBlur',
+    values: applicantInfo?.props?.typeOfCredit,
+  });
+
+  const isEnabled = !applicantInfo?.props?.typeOfCredit || edit;
+
+  const creditTypeWatch = watch('creditType');
+
+  useEffect(() => {
+    if (creditTypeWatch !== creditTypes[1]) {
+      unregister('totalNumberOfBorrowers');
+    }
+    if (creditTypeWatch !== creditTypes[2]) {
+      unregister('youtInitials');
+    }
+  }, [creditTypeWatch]);
+
+  return (
+    <CustomExpandableCard
+      title={`${getCheckOrExEmoji(
+        applicantInfo?.props?.typeOfCredit !== undefined
+      )} Type of Credit`}
+      expanded={expanded}
+      onExpandedChange={onExpandedChange}
+    >
+      <form onSubmit={handleSubmit(onValid)}>
+        <Controller
+          control={control}
+          name="creditType"
+          defaultValue={creditTypes[0]}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <RadioGroupField
+              name="creditType"
+              label="Please select the type of credit you are applying for."
+              onChange={(e) => onChange(e.target.value)}
+              onBlur={onBlur}
+              value={value}
+              isRequired
+              isDisabled={!isEnabled}
+            >
+              {creditTypes.map((creditType) => (
+                <Radio key={creditType} value={creditType}>
+                  {creditType}
+                </Radio>
+              ))}
+            </RadioGroupField>
+          )}
+        />
+        <br />
+        {creditTypeWatch === creditTypes[1] && (
+          <>
+            <TextField
+              {...register('totalNumberOfBorrowers')}
+              label="Total number of borrowers:"
+              type="number"
+              errorMessage="Invalid number of borrowers"
+              hasError={errors?.totalNumberOfBorrowers !== undefined}
+              isRequired
+              isDisabled={!isEnabled}
+            />
+            <br />
+          </>
+        )}
+        {creditTypeWatch === creditTypes[2] && (
+          <>
+            <TextField
+              {...register('yourInitials')}
+              label="Your initials:"
+              hasError={errors?.youtInitials !== undefined}
+              isRequired
+              isDisabled={!isEnabled}
+            />
+            <br />
+          </>
+        )}
+        <Flex width="100%" justifyContent="end">
+          {applicantInfo?.props?.typeOfCredit ? (
+            <Button onClick={onClickEdit} variation="secondary">
+              {edit ? 'Cancel' : 'Edit'}
+            </Button>
+          ) : null}
+          {isEnabled ? (
+            <Button type="submit" variation="primary">
+              Save
+            </Button>
+          ) : null}
+        </Flex>
+      </form>
+    </CustomExpandableCard>
+  );
+}
+
+TypeOfCredit.propTypes = {
+  applicantInfo: PropTypes.object,
+  expanded: PropTypes.bool,
+  onExpandedChange: PropTypes.func,
+  onValid: PropTypes.func,
+  edit: PropTypes.bool,
+  onClickEdit: PropTypes.func,
+};
+
+export function CoApplicant({
+  expanded,
+  onExpandedChange,
+  applicantInfo,
+  onValid,
+  edit,
+  onClickEdit,
+}) {
+  const { handleSubmit, control } = useForm({
+    resolver: zodResolver(coApplicantSchema),
+    shouldFocusError: false,
+    reValidateMode: 'onBlur',
+    values: applicantInfo?.props,
+  });
+
+  const isEnabled = !applicantInfo?.props?.hasCoApplicant || edit;
+
+  return (
+    <CustomExpandableCard
+      title={`${getCheckOrExEmoji(
+        applicantInfo?.props?.hasCoApplicant !== undefined
+      )} Co-applicant`}
+      expanded={expanded}
+      onExpandedChange={onExpandedChange}
+    >
+      <form onSubmit={handleSubmit(onValid)}>
+        <Controller
+          control={control}
+          name="hasCoApplicant"
+          defaultValue="No"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <RadioGroupField
+              name="hasCoApplicant"
+              label="Do you have a co-applicant?"
+              onChange={(e) => onChange(e.target.value)}
+              onBlur={onBlur}
+              value={value}
+              isRequired
+              isDisabled={!isEnabled}
+            >
+              <Radio value="No">No</Radio>
+              <Radio value="Yes">Yes</Radio>
+            </RadioGroupField>
+          )}
+        />
+        <br />
+        <Flex width="100%" justifyContent="end">
+          {applicantInfo?.props?.hasCoApplicant ? (
+            <Button onClick={onClickEdit} variation="secondary">
+              {edit ? 'Cancel' : 'Edit'}
+            </Button>
+          ) : null}
+          {isEnabled ? (
+            <Button type="submit" variation="primary">
+              Save
+            </Button>
+          ) : null}
+        </Flex>
+      </form>
+    </CustomExpandableCard>
+  );
+}
+
+CoApplicant.propTypes = {
   applicantInfo: PropTypes.object,
   expanded: PropTypes.bool,
   onExpandedChange: PropTypes.func,

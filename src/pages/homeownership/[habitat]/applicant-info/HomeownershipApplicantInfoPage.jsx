@@ -1,6 +1,6 @@
 import { Alert, Button, Flex, View } from '@aws-amplify/ui-react';
 import { useEffect, useState } from 'react';
-import { ApplicantInfo } from 'models';
+import { ApplicantInfo, Member } from 'models';
 import { DataStore } from 'aws-amplify';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { createAlert } from 'utils/factories';
@@ -10,12 +10,18 @@ import {
   Address,
   PrevAddress,
   UnmarriedAddendum,
+  TypeOfCredit,
+  CoApplicant,
 } from './components/FormApplicantInfo';
 import { maritalStatusValues } from './HomeownershipApplicantInfoPage.schema';
 
 export default function HomeownershipApplicantInfoPage() {
   const { application, updateApplicationLastSection, habitat } =
     useOutletContext();
+
+  const shouldRenderCoApplicant = habitat?.props.optionalSections.coApplicant;
+
+  console.log(shouldRenderCoApplicant);
 
   const [applicantInfo, setApplicantInfo] = useState();
 
@@ -30,6 +36,36 @@ export default function HomeownershipApplicantInfoPage() {
 
   const [previousAddressOpen, setPreviousAddressOpen] = useState(false);
   const [previousAddressEdit, setPreviousAddressEdit] = useState(false);
+
+  const [typeOfCreditOpen, setTypeOfCreditOpen] = useState(false);
+  const [typeOfCreditEdit, setTypeOfCreditEdit] = useState(false);
+
+  const [coApplicantOpen, setCoApplicantOpen] = useState(false);
+  const [coApplicantEdit, setCoApplicantEdit] = useState(false);
+
+  const [coApplicantBasicInfoOpen, setCoApplicantBasicInfoOpen] =
+    useState(false);
+  const [coApplicantBasicInfoEdit, setCoApplicantBasicInfoEdit] =
+    useState(false);
+
+  const [
+    coApplicantUnmarriedAddendumOpen,
+    setCoApplicantUnmarriedAddendumOpen,
+  ] = useState(false);
+  const [
+    coApplicantUnmarriedAddendumEdit,
+    setCoApplicantUnmarriedAddendumEdit,
+  ] = useState(false);
+
+  const [coApplicantCurrentAddressOpen, setCoApplicantCurrentAddressOpen] =
+    useState(false);
+  const [coApplicantCurrentAddressEdit, setCoApplicantCurrentAddressEdit] =
+    useState(false);
+
+  const [coApplicantPreviousAddressOpen, setCoApplicantPreviousAddressOpen] =
+    useState(false);
+  const [coApplicantPreviousAddressEdit, setCoApplicantPreviousAddressEdit] =
+    useState(false);
 
   const [alert, setAlert] = useState();
   const navigate = useNavigate();
@@ -199,7 +235,14 @@ export default function HomeownershipApplicantInfoPage() {
           )
         );
       }
-      setPreviousAddressOpen(true);
+      if (
+        data.monthsLivedHere <
+        habitat?.props.homeownershipMinCurrentAddressMonths
+      ) {
+        setPreviousAddressOpen(true);
+      } else {
+        setTypeOfCreditOpen(true);
+      }
       setCurrentAddressOpen(false);
       updateApplicationLastSection();
     } catch {
@@ -240,6 +283,7 @@ export default function HomeownershipApplicantInfoPage() {
       );
 
       setPreviousAddressOpen(false);
+      setTypeOfCreditOpen(true);
       updateApplicationLastSection();
     } catch {
       setAlert(
@@ -253,6 +297,378 @@ export default function HomeownershipApplicantInfoPage() {
       (previousPreviousAddressEdit) => !previousPreviousAddressEdit
     );
 
+  const onValidTypeOfCredit = async (data) => {
+    try {
+      if (applicantInfo === undefined) {
+        const persistedApplicantInfo = await DataStore.save(
+          new ApplicantInfo({
+            ownerID: application.id,
+            props: {
+              typeOfCredit: data,
+            },
+          })
+        );
+        setApplicantInfo(persistedApplicantInfo);
+        setAlert(
+          createAlert(
+            'success',
+            'Success',
+            'The type of credit was saved successfully.'
+          )
+        );
+      } else {
+        const original = await DataStore.query(ApplicantInfo, applicantInfo.id);
+        const persistedApplicantInfo = await DataStore.save(
+          ApplicantInfo.copyOf(original, (originalApplicantInfo) => {
+            originalApplicantInfo.ownerID = application.id;
+            originalApplicantInfo.props = {
+              ...originalApplicantInfo.props,
+              typeOfCredit: { ...data },
+            };
+          })
+        );
+        setApplicantInfo(persistedApplicantInfo);
+        setTypeOfCreditEdit(false);
+        setAlert(
+          createAlert(
+            'success',
+            'Success',
+            'The type of credit was updated successfully.'
+          )
+        );
+      }
+      setTypeOfCreditOpen(false);
+      setCoApplicantOpen(true);
+      updateApplicationLastSection();
+    } catch {
+      setAlert(
+        createAlert('error', 'Error', "The type of credit couldn't be saved.")
+      );
+    }
+  };
+
+  const handleOnClickTypeOfCreditEdit = () =>
+    setTypeOfCreditEdit(
+      (previousTypeOfCreditEdit) => !previousTypeOfCreditEdit
+    );
+
+  const onValidCoApplicant = async (data) => {
+    try {
+      if (applicantInfo === undefined) {
+        const persistedApplicantInfo = await DataStore.save(
+          new ApplicantInfo({
+            ownerID: application.id,
+            props: {
+              hasCoApplicant: data.hasCoApplicant,
+            },
+          })
+        );
+        setApplicantInfo(persistedApplicantInfo);
+        setAlert(
+          createAlert(
+            'success',
+            'Success',
+            'The co-applicant question was saved successfully.'
+          )
+        );
+        if (data.hasCoApplicant === 'Yes' && shouldRenderCoApplicant) {
+          setCoApplicantBasicInfoOpen(true);
+        }
+      } else {
+        const original = await DataStore.query(ApplicantInfo, applicantInfo.id);
+        const persistedApplicantInfo = await DataStore.save(
+          ApplicantInfo.copyOf(original, (originalApplicantInfo) => {
+            originalApplicantInfo.ownerID = application.id;
+            originalApplicantInfo.props = {
+              ...originalApplicantInfo.props,
+              hasCoApplicant: data.hasCoApplicant,
+              coApplicantBasicInfo:
+                data.hasCoApplicant === 'Yes' && shouldRenderCoApplicant
+                  ? originalApplicantInfo.props.coApplicantBasicInfo
+                  : undefined,
+              coApplicantUnmarriedAddendum:
+                data.hasCoApplicant === 'Yes' && shouldRenderCoApplicant
+                  ? originalApplicantInfo.props.coApplicantUnmarriedAddendum
+                  : undefined,
+              coApplicantCurrentAddress:
+                data.hasCoApplicant === 'Yes' && shouldRenderCoApplicant
+                  ? originalApplicantInfo.props.coApplicantCurrentAddress
+                  : undefined,
+              coApplicantPreviousAddress:
+                data.hasCoApplicant === 'Yes' && shouldRenderCoApplicant
+                  ? originalApplicantInfo.props.coApplicantPreviousAddress
+                  : undefined,
+            };
+          })
+        );
+        setApplicantInfo(persistedApplicantInfo);
+        setCoApplicantEdit(false);
+        setAlert(
+          createAlert(
+            'success',
+            'Success',
+            'The co-applicant question was updated successfully.'
+          )
+        );
+      }
+      setCoApplicantOpen(false);
+      if (data.hasCoApplicant === 'Yes' && shouldRenderCoApplicant) {
+        setCoApplicantBasicInfoOpen(true);
+      } else {
+        await DataStore.delete(Member, (c) =>
+          c.and((c2) => [
+            c2.testapplicationID.eq(application.id),
+            c2.isCoApplicant.eq(true),
+          ])
+        );
+      }
+      updateApplicationLastSection();
+    } catch {
+      setAlert(
+        createAlert(
+          'error',
+          'Error',
+          "The co-applicant question couldn't be saved."
+        )
+      );
+    }
+  };
+
+  const handleOnClickCoApplicantEdit = () =>
+    setCoApplicantEdit((previousCoApplicantEdit) => !previousCoApplicantEdit);
+
+  const onValidCoApplicantBasicInfo = async (data) => {
+    try {
+      const original = await DataStore.query(ApplicantInfo, applicantInfo.id);
+      const persistedApplicantInfo = await DataStore.save(
+        ApplicantInfo.copyOf(original, (originalApplicantInfo) => {
+          originalApplicantInfo.ownerID = application.id;
+          originalApplicantInfo.props = {
+            ...originalApplicantInfo.props,
+            coApplicantBasicInfo: { ...data },
+
+            coApplicantUnmarriedAddendum:
+              data.maritalStatus === maritalStatusValues[2]
+                ? originalApplicantInfo.coApplicantUnmarriedAddendum
+                : undefined,
+          };
+        })
+      );
+      const persistedMember = await DataStore.query(Member, (c) =>
+        c.and((c2) => [
+          c2.testapplicationID.eq(application.id),
+          c2.isCoApplicant.eq(true),
+        ])
+      );
+
+      const memberProps = {
+        fullName: data.fullName,
+        birthDay: data.birthDate,
+        sex: data.sex,
+        relationship: data.otherRelationship
+          ? data.otherRelationship
+          : data.relationship,
+      };
+
+      if (persistedMember.length > 0) {
+        await DataStore.save(
+          Member.copyOf(persistedMember[0], (originalMember) => {
+            originalMember.props = memberProps;
+          })
+        );
+      } else {
+        await DataStore.save(
+          new Member({
+            testapplicationID: application.id,
+            props: memberProps,
+            isCoApplicant: true,
+          })
+        );
+      }
+
+      setApplicantInfo(persistedApplicantInfo);
+      setCoApplicantBasicInfoEdit(false);
+      setAlert(
+        createAlert(
+          'success',
+          'Success',
+          "The co-applicant's basic information was updated successfully."
+        )
+      );
+
+      setCoApplicantBasicInfoOpen(false);
+      if (data.maritalStatus === maritalStatusValues[2]) {
+        setCoApplicantUnmarriedAddendumOpen(true);
+      } else {
+        setCoApplicantCurrentAddressOpen(true);
+      }
+      updateApplicationLastSection();
+    } catch {
+      setAlert(
+        createAlert(
+          'error',
+          'Error',
+          "The co-applicant's basic information couldn't be saved."
+        )
+      );
+    }
+  };
+
+  const handleOnClickCoApplicantBasicInfoEdit = () =>
+    setCoApplicantBasicInfoEdit(
+      (previousCoApplicantBasicInfoEdit) => !previousCoApplicantBasicInfoEdit
+    );
+
+  const onValidCoApplicantUnmarriedAddendum = async (data) => {
+    try {
+      const original = await DataStore.query(ApplicantInfo, applicantInfo.id);
+
+      const newUnmarriedAddendum = {
+        ...data,
+        otherRelationshipType:
+          data.relationshipType === 'Other'
+            ? data.otherRelationshipType
+            : undefined,
+      };
+
+      const persistedApplicantInfo = await DataStore.save(
+        ApplicantInfo.copyOf(original, (originalApplicantInfo) => {
+          originalApplicantInfo.ownerID = application.id;
+          originalApplicantInfo.props = {
+            ...originalApplicantInfo.props,
+            coApplicantUnmarriedAddendum: newUnmarriedAddendum,
+          };
+        })
+      );
+      setApplicantInfo(persistedApplicantInfo);
+      setCoApplicantUnmarriedAddendumEdit(false);
+      setCoApplicantCurrentAddressOpen(true);
+      setAlert(
+        createAlert(
+          'success',
+          'Success',
+          "The co-applicant's unmarried addendum information was saved successfully."
+        )
+      );
+
+      setCoApplicantUnmarriedAddendumOpen(false);
+      updateApplicationLastSection();
+    } catch {
+      setAlert(
+        createAlert(
+          'error',
+          'Error',
+          "The co-applicant's unmarried addendum information couldn't be saved."
+        )
+      );
+    }
+  };
+
+  const handleOnClickCoApplicantUnmarriedAddendumEdit = () =>
+    setCoApplicantUnmarriedAddendumEdit(
+      (previousCoApplicantUnmarriedAddendumEdit) =>
+        !previousCoApplicantUnmarriedAddendumEdit
+    );
+
+  const onValidCoApplicantCurrentAddress = async (data) => {
+    try {
+      const { city, ...newData } = data;
+
+      newData.city = data.city.selectedCity.label;
+      const original = await DataStore.query(ApplicantInfo, applicantInfo.id);
+      const persistedApplicantInfo = await DataStore.save(
+        ApplicantInfo.copyOf(original, (originalApplicantInfo) => {
+          originalApplicantInfo.ownerID = application.id;
+          originalApplicantInfo.props = {
+            ...originalApplicantInfo.props,
+            coApplicantPreviousAddress:
+              data.monthsLivedHere >=
+              habitat?.props.homeownershipMinCurrentAddressMonths
+                ? undefined
+                : original.props.coApplicantPreviousAddress,
+            coApplicantCurrentAddress: newData,
+          };
+        })
+      );
+      setApplicantInfo(persistedApplicantInfo);
+      setCoApplicantCurrentAddressEdit(false);
+      setAlert(
+        createAlert(
+          'success',
+          'Success',
+          "The co-applicant's current address was updated successfully."
+        )
+      );
+
+      if (
+        data.monthsLivedHere <
+        habitat?.props.homeownershipMinCurrentAddressMonths
+      ) {
+        setCoApplicantPreviousAddressOpen(true);
+      }
+      setCoApplicantCurrentAddressOpen(false);
+      updateApplicationLastSection();
+    } catch {
+      setAlert(
+        createAlert(
+          'error',
+          'Error',
+          "The co-applicant's current address couldn't be saved."
+        )
+      );
+    }
+  };
+
+  const handleOnClickCoApplicantCurrentAddressEdit = () =>
+    setCoApplicantCurrentAddressEdit(
+      (previousCoApplicantCurrentAddressEdit) =>
+        !previousCoApplicantCurrentAddressEdit
+    );
+
+  const onValidCoApplicantPreviousAddress = async (data) => {
+    try {
+      const { city, ...newData } = data;
+
+      newData.city = data.city.selectedCity.label;
+      const original = await DataStore.query(ApplicantInfo, applicantInfo.id);
+      const persistedApplicantInfo = await DataStore.save(
+        ApplicantInfo.copyOf(original, (originalApplicantInfo) => {
+          originalApplicantInfo.ownerID = application.id;
+          originalApplicantInfo.props = {
+            ...originalApplicantInfo.props,
+            coApplicantPreviousAddress: newData,
+          };
+        })
+      );
+      setApplicantInfo(persistedApplicantInfo);
+      setCoApplicantPreviousAddressEdit(false);
+      setAlert(
+        createAlert(
+          'success',
+          'Success',
+          "The co-applicant's previous address was saved successfully."
+        )
+      );
+
+      setCoApplicantPreviousAddressOpen(false);
+      updateApplicationLastSection();
+    } catch {
+      setAlert(
+        createAlert(
+          'error',
+          'Error',
+          "The co-applicant's previous address couldn't be saved."
+        )
+      );
+    }
+  };
+
+  const handleOnClickCoApplicantPreviousAddressEdit = () =>
+    setCoApplicantPreviousAddressEdit(
+      (previousCoApplicantPreviousAddressEdit) =>
+        !previousCoApplicantPreviousAddressEdit
+    );
+
   const handleOnClickNext = () => {
     navigate('../applicant-optional');
   };
@@ -261,7 +677,15 @@ export default function HomeownershipApplicantInfoPage() {
     if (
       applicantInfo !== undefined &&
       applicantInfo?.props?.basicInfo !== undefined &&
-      applicantInfo?.props?.currentAddress !== undefined
+      applicantInfo?.props?.currentAddress !== undefined &&
+      (shouldRenderCoApplicant
+        ? applicantInfo?.props?.typeOfCredit !== undefined &&
+          applicantInfo?.props?.hasCoApplicant !== undefined
+        : true) &&
+      (applicantInfo?.props?.hasCoApplicant === 'Yes' && shouldRenderCoApplicant
+        ? applicantInfo?.props?.coApplicantBasicInfo !== undefined &&
+          applicantInfo?.props?.coApplicantCurrentAddress !== undefined
+        : true)
     ) {
       if (
         applicantInfo.props.basicInfo.maritalStatus ===
@@ -277,6 +701,26 @@ export default function HomeownershipApplicantInfoPage() {
       ) {
         return true;
       }
+      if (
+        applicantInfo?.props?.hasCoApplicant === 'Yes' &&
+        shouldRenderCoApplicant &&
+        applicantInfo.props.coApplicantBasicInfo.maritalStatus ===
+          maritalStatusValues[2] &&
+        applicantInfo.props.coApplicantUnmarriedAddendum === undefined
+      ) {
+        return true;
+      }
+
+      if (
+        applicantInfo?.props?.hasCoApplicant === 'Yes' &&
+        shouldRenderCoApplicant &&
+        applicantInfo.props.coApplicantCurrentAddress.monthsLivedHere <
+          habitat?.props.homeownershipMinCurrentAddressMonths &&
+        applicantInfo.props.coApplicantPreviousAddress === undefined
+      ) {
+        return true;
+      }
+
       return false;
     }
     return true;
@@ -358,6 +802,88 @@ export default function HomeownershipApplicantInfoPage() {
               onClickEdit={handleOnClickPreviousAddressEdit}
             />
             <br />
+          </>
+        )}
+        {shouldRenderCoApplicant && (
+          <>
+            <TypeOfCredit
+              expanded={typeOfCreditOpen}
+              onExpandedChange={setTypeOfCreditOpen}
+              applicantInfo={applicantInfo}
+              onValid={onValidTypeOfCredit}
+              edit={typeOfCreditEdit}
+              onClickEdit={handleOnClickTypeOfCreditEdit}
+            />
+            <br />
+            <CoApplicant
+              expanded={coApplicantOpen}
+              onExpandedChange={setCoApplicantOpen}
+              applicantInfo={applicantInfo}
+              onValid={onValidCoApplicant}
+              edit={coApplicantEdit}
+              onClickEdit={handleOnClickCoApplicantEdit}
+            />
+            <br />
+            {applicantInfo?.props?.hasCoApplicant === 'Yes' &&
+              shouldRenderCoApplicant && (
+                <>
+                  <BasicInformation
+                    expanded={coApplicantBasicInfoOpen}
+                    onExpandedChange={setCoApplicantBasicInfoOpen}
+                    applicantInfo={applicantInfo}
+                    onValid={onValidCoApplicantBasicInfo}
+                    edit={coApplicantBasicInfoEdit}
+                    onClickEdit={handleOnClickCoApplicantBasicInfoEdit}
+                    coApplicant
+                  />
+                  <br />
+                  {applicantInfo?.props?.coApplicantBasicInfo?.maritalStatus ===
+                    maritalStatusValues[2] && (
+                    <>
+                      <UnmarriedAddendum
+                        expanded={coApplicantUnmarriedAddendumOpen}
+                        onExpandedChange={setCoApplicantUnmarriedAddendumOpen}
+                        applicantInfo={applicantInfo}
+                        onValid={onValidCoApplicantUnmarriedAddendum}
+                        edit={coApplicantUnmarriedAddendumEdit}
+                        onClickEdit={
+                          handleOnClickCoApplicantUnmarriedAddendumEdit
+                        }
+                        coApplicant
+                      />
+                      <br />
+                    </>
+                  )}
+                  <Address
+                    expanded={coApplicantCurrentAddressOpen}
+                    onExpandedChange={setCoApplicantCurrentAddressOpen}
+                    applicantInfo={applicantInfo}
+                    onValid={onValidCoApplicantCurrentAddress}
+                    edit={coApplicantCurrentAddressEdit}
+                    onClickEdit={handleOnClickCoApplicantCurrentAddressEdit}
+                    coApplicant
+                  />
+                  <br />
+                  {applicantInfo?.props?.coApplicantCurrentAddress
+                    ?.monthsLivedHere <
+                    habitat?.props.homeownershipMinCurrentAddressMonths && (
+                    <>
+                      <PrevAddress
+                        expanded={coApplicantPreviousAddressOpen}
+                        onExpandedChange={setCoApplicantPreviousAddressOpen}
+                        applicantInfo={applicantInfo}
+                        onValid={onValidCoApplicantPreviousAddress}
+                        edit={coApplicantPreviousAddressEdit}
+                        onClickEdit={
+                          handleOnClickCoApplicantPreviousAddressEdit
+                        }
+                        coApplicant
+                      />
+                      <br />
+                    </>
+                  )}
+                </>
+              )}
           </>
         )}
         <CustomCard>

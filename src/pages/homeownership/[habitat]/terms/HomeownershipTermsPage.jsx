@@ -34,9 +34,9 @@ export default function HomeownershipTermsPage() {
       <View as="div">
         <Flex marginBottom="30px" direction="column" gap="xl">
           <Heading level="4" fontWeight="bold" marginBottom="-30px">
-            Terms and Services
+            Terms of Service
           </Heading>
-          <Text>Please take a moment to read our terms and services:</Text>
+          <Text>Please take a moment to read our terms of service.</Text>
           {habitat?.props.homeownershipTermsText?.map((item, index) => (
             <View as="div" key={index}>
               <Heading level="5">{item.title}</Heading>
@@ -48,9 +48,9 @@ export default function HomeownershipTermsPage() {
         <CheckboxField
           checked={agreeTerms}
           onChange={handleOnChangeAgreeTerms}
-          label="I have read and agreed to the terms and services."
+          label="I have read and agreed to the terms of service."
           hasError={error}
-          errorMessage="You can't continue the application process without agreeing the terms."
+          errorMessage="You can't continue the application process without agreeing the terms of service."
         />
       </View>
       <Flex width="100%" justifyContent="space-between">

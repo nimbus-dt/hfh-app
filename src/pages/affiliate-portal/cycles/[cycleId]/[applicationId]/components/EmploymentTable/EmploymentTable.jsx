@@ -3,7 +3,12 @@ import DataTable from 'components/DataTable';
 import { Flex } from '@aws-amplify/ui-react';
 import { getStateName } from 'utils/misc';
 
-const EmploymentTable = ({ employmentInfo }) => (
+const EmploymentTable = ({
+  employmentInfo,
+  applicantInfo,
+  shouldRenderBusinessOwnerOrSelfEmployed,
+  shouldRenderCoApplicant,
+}) => (
   <Flex direction="column">
     <DataTable
       heading="Employment Information"
@@ -18,6 +23,40 @@ const EmploymentTable = ({ employmentInfo }) => (
         },
       ]}
     />
+    {employmentInfo?.props?.businessOwnerOrSelfEmployed &&
+      shouldRenderBusinessOwnerOrSelfEmployed && (
+        <DataTable
+          subheading="Business owner or self employed"
+          subheadingTextAlign="left"
+          divider
+          data={[
+            {
+              header:
+                'Are you currently a business owner or are self-employed?',
+              value:
+                employmentInfo?.props?.businessOwnerOrSelfEmployed
+                  ?.currentlyBusinessOwnerOrSelfEmployed ?? '',
+            },
+            ...(employmentInfo?.props?.businessOwnerOrSelfEmployed
+              ?.currentlyBusinessOwnerOrSelfEmployed === 'Yes'
+              ? [
+                  {
+                    header: 'What is your ownership share?',
+                    value:
+                      employmentInfo?.props?.businessOwnerOrSelfEmployed
+                        ?.ownershipShare ?? '',
+                  },
+                  {
+                    header: 'Montly income (or loss)',
+                    value:
+                      employmentInfo?.props?.businessOwnerOrSelfEmployed
+                        ?.montlyIncome ?? '',
+                  },
+                ]
+              : []),
+          ]}
+        />
+      )}
     {employmentInfo?.props?.currentEmployment && (
       <DataTable
         subheading="Current employment"
@@ -121,11 +160,199 @@ const EmploymentTable = ({ employmentInfo }) => (
         ]}
       />
     )}
+    {applicantInfo?.props?.hasCoApplicant === 'Yes' &&
+      shouldRenderCoApplicant && (
+        <>
+          <DataTable
+            heading="Co-applicant's Employment Information"
+            subheading="Current status"
+            headingTextAlign="left"
+            subheadingTextAlign="left"
+            divider
+            data={[
+              {
+                header: 'Unemployed',
+                value:
+                  employmentInfo?.props?.coApplicantCurrentlyUnemployed ?? '',
+              },
+            ]}
+          />
+          {employmentInfo?.props?.coApplicantBusinessOwnerOrSelfEmployed &&
+            shouldRenderCoApplicant && (
+              <DataTable
+                subheading="Business owner or self employed"
+                subheadingTextAlign="left"
+                divider
+                data={[
+                  {
+                    header:
+                      'Is the co-applicant currently a business owner or are self-employed?',
+                    value:
+                      employmentInfo?.props
+                        ?.coApplicantBusinessOwnerOrSelfEmployed
+                        ?.currentlyBusinessOwnerOrSelfEmployed ?? '',
+                  },
+                  ...(employmentInfo?.props
+                    ?.coApplicantBusinessOwnerOrSelfEmployed
+                    ?.currentlyBusinessOwnerOrSelfEmployed === 'Yes'
+                    ? [
+                        {
+                          header: "What is the co-applicant's ownership share?",
+                          value:
+                            employmentInfo?.props
+                              ?.coApplicantBusinessOwnerOrSelfEmployed
+                              ?.ownershipShare ?? '',
+                        },
+                        {
+                          header: 'Montly income (or loss)',
+                          value:
+                            employmentInfo?.props
+                              ?.coApplicantBusinessOwnerOrSelfEmployed
+                              ?.montlyIncome ?? '',
+                        },
+                      ]
+                    : []),
+                ]}
+              />
+            )}
+          {employmentInfo?.props?.coApplicantCurrentEmployment && (
+            <DataTable
+              subheading="Current employment"
+              subheadingTextAlign="left"
+              divider
+              data={[
+                {
+                  header: 'Name of current employer',
+                  value:
+                    employmentInfo?.props?.coApplicantCurrentEmployment
+                      ?.employerName ?? '',
+                },
+                {
+                  header: 'State',
+                  value: getStateName(
+                    employmentInfo?.props?.coApplicantCurrentEmployment
+                      ?.employerState
+                  ),
+                },
+                {
+                  header: 'City',
+                  value:
+                    employmentInfo?.props?.coApplicantCurrentEmployment
+                      ?.employerCity ?? '',
+                },
+                {
+                  header: 'Street',
+                  value:
+                    employmentInfo?.props?.coApplicantCurrentEmployment
+                      ?.employerStreet ?? '',
+                },
+                {
+                  header: 'Zip code',
+                  value:
+                    employmentInfo?.props?.coApplicantCurrentEmployment
+                      ?.employerZipCode ?? '',
+                },
+                {
+                  header: 'Approximate start date with this employer',
+                  value:
+                    employmentInfo?.props?.coApplicantCurrentEmployment
+                      ?.startDate ?? '',
+                },
+                {
+                  header: 'Type of business',
+                  value:
+                    employmentInfo?.props?.coApplicantCurrentEmployment
+                      ?.businessType ?? '',
+                },
+                {
+                  header: 'Business phone',
+                  value:
+                    employmentInfo?.props?.coApplicantCurrentEmployment
+                      ?.businessPhone ?? '',
+                },
+                {
+                  header: 'First job',
+                  value:
+                    employmentInfo?.props?.coApplicantCurrentEmployment
+                      ?.firstJob ?? '',
+                },
+              ]}
+            />
+          )}
+          {employmentInfo?.props?.coApplicantPreviousEmployment && (
+            <DataTable
+              subheading="Previous employment"
+              subheadingTextAlign="left"
+              divider
+              data={[
+                {
+                  header: 'Name of previous employer',
+                  value:
+                    employmentInfo?.props?.coApplicantPreviousEmployment
+                      ?.employerName ?? '',
+                },
+                {
+                  header: 'State',
+                  value: getStateName(
+                    employmentInfo?.props?.coApplicantPreviousEmployment
+                      ?.employerState
+                  ),
+                },
+                {
+                  header: 'City',
+                  value:
+                    employmentInfo?.props?.coApplicantPreviousEmployment
+                      ?.employerCity ?? '',
+                },
+                {
+                  header: 'Street',
+                  value:
+                    employmentInfo?.props?.coApplicantPreviousEmployment
+                      ?.employerStreet ?? '',
+                },
+                {
+                  header: 'Zip code',
+                  value:
+                    employmentInfo?.props?.coApplicantPreviousEmployment
+                      ?.employerZipCode ?? '',
+                },
+                {
+                  header: 'Approximate start date with this employer',
+                  value:
+                    employmentInfo?.props?.coApplicantPreviousEmployment
+                      ?.startDate ?? '',
+                },
+                {
+                  header: 'Approximate end date with this employer',
+                  value:
+                    employmentInfo?.props?.coApplicantPreviousEmployment
+                      ?.endDate ?? '',
+                },
+                {
+                  header: 'Type of business',
+                  value:
+                    employmentInfo?.props?.coApplicantPreviousEmployment
+                      ?.businessType ?? '',
+                },
+                {
+                  header: 'Business phone',
+                  value:
+                    employmentInfo?.props?.coApplicantPreviousEmployment
+                      ?.businessPhone ?? '',
+                },
+              ]}
+            />
+          )}
+        </>
+      )}
   </Flex>
 );
 
 EmploymentTable.propTypes = {
   employmentInfo: PropTypes.object,
+  applicantInfo: PropTypes.object,
+  shouldRenderBusinessOwnerOrSelfEmployed: PropTypes.bool,
+  shouldRenderCoApplicant: PropTypes.bool,
 };
 
 export default EmploymentTable;

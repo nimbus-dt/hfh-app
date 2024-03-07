@@ -3,6 +3,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { Button, Flex, Radio, RadioGroupField } from '@aws-amplify/ui-react';
 import PropTypes from 'prop-types';
 import CustomExpandableCard from 'components/CustomExpandableCard';
+import { getCheckOrExEmoji } from 'utils/misc';
 import { unemployedSchema } from '../HomeownershipEmploymentPage.schema';
 
 const Unemployment = ({
@@ -12,6 +13,7 @@ const Unemployment = ({
   onValid,
   edit,
   onClickEdit,
+  coApplicant,
 }) => {
   const {
     handleSubmit,
@@ -21,16 +23,25 @@ const Unemployment = ({
     resolver: zodResolver(unemployedSchema),
     shouldFocusError: false,
     reValidateMode: 'onBlur',
-    values: employmentInfo?.props,
+    values: {
+      currentlyUnemployed: coApplicant
+        ? employmentInfo?.props?.coApplicantCurrentlyUnemployed
+        : employmentInfo?.props?.currentlyUnemployed,
+    },
   });
 
-  const isEnabled = !employmentInfo?.props?.currentlyUnemployed || edit;
+  const isEnabled =
+    (coApplicant
+      ? !employmentInfo?.props?.coApplicantCurrentlyUnemployed
+      : !employmentInfo?.props?.currentlyUnemployed) || edit;
 
   return (
     <CustomExpandableCard
-      title={`${
-        employmentInfo?.props?.currentlyUnemployed !== undefined ? '✔️' : '❌'
-      } Unemployment`}
+      title={`${getCheckOrExEmoji(
+        coApplicant
+          ? employmentInfo?.props?.coApplicantCurrentlyUnemployed !== undefined
+          : employmentInfo?.props?.currentlyUnemployed !== undefined
+      )}${coApplicant ? ' Co-applicant' : ''} Unemployment`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
     >
@@ -42,7 +53,11 @@ const Unemployment = ({
           render={({ field: { onChange, onBlur, value } }) => (
             <RadioGroupField
               name="currentlyUnemployed"
-              label="Are you currently unemployed?"
+              label={
+                coApplicant
+                  ? 'Is the co-applicant currently unemployed?'
+                  : 'Are you currently unemployed?'
+              }
               onChange={(e) => onChange(e.target.value)}
               onBlur={onBlur}
               value={value}
@@ -58,7 +73,11 @@ const Unemployment = ({
         />
         <br />
         <Flex width="100%" justifyContent="end">
-          {employmentInfo?.props?.currentlyUnemployed !== undefined ? (
+          {employmentInfo?.props?.[
+            coApplicant
+              ? 'coApplicantCurrentlyUnemployed'
+              : 'currentlyUnemployed'
+          ] !== undefined ? (
             <Button onClick={onClickEdit} variation="secondary">
               {edit ? 'Cancel' : 'Edit'}
             </Button>
@@ -81,6 +100,7 @@ Unemployment.propTypes = {
   onValid: PropTypes.func,
   edit: PropTypes.bool,
   onClickEdit: PropTypes.func,
+  coApplicant: PropTypes.bool,
 };
 
 export default Unemployment;

@@ -11,6 +11,8 @@ import {
   TextField,
 } from '@aws-amplify/ui-react';
 import CustomExpandableCard from 'components/CustomExpandableCard';
+import { getCheckOrExEmoji } from 'utils/misc';
+import { useEffect } from 'react';
 import { demographicSchema } from '../HomeownershipApplicantOptionalPage.schema';
 
 const DemographicSection = ({
@@ -20,18 +22,24 @@ const DemographicSection = ({
   onValid,
   edit,
   onClickEdit,
+  coApplicant,
 }) => {
+  const demographic = coApplicant
+    ? applicantOptional?.props?.coApplicantDemographic
+    : applicantOptional?.props?.demographic;
+
   const {
     handleSubmit,
     control,
     watch,
     register,
+    unregister,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(demographicSchema),
     shouldFocusError: false,
     reValidateMode: 'onBlur',
-    values: applicantOptional?.props.demographic,
+    values: demographic,
   });
 
   const otherHispanicOrLatino = watch('ethnicity.otherHispanicOrLatino');
@@ -44,12 +52,36 @@ const DemographicSection = ({
 
   const otherPacificIslander = watch('race.otherPacificIslander');
 
-  const isEnabled = !applicantOptional?.props?.demographic || edit;
+  const isEnabled = !demographic || edit;
+
+  useEffect(() => {
+    if (!otherHispanicOrLatino) {
+      unregister('ethnicity.otherHispanicOrLatinoValue');
+    }
+  }, [otherHispanicOrLatino]);
+
+  useEffect(() => {
+    if (!otherAsian) {
+      unregister('race.otherAsianValue');
+    }
+  }, [otherAsian]);
+
+  useEffect(() => {
+    if (!americanIndianOrAlaskaNative) {
+      unregister('race.nameOfEnrolledOrPrincipalTribe');
+    }
+  }, [americanIndianOrAlaskaNative]);
+
+  useEffect(() => {
+    if (!otherPacificIslander) {
+      unregister('race.otherPacificIslanderValue');
+    }
+  }, [otherPacificIslander]);
 
   return (
     <CustomExpandableCard
-      title={`${
-        applicantOptional?.props?.demographic !== undefined ? '✔️' : '❌'
+      title={`${getCheckOrExEmoji(demographic !== undefined)}${
+        coApplicant ? ' Co-Applicant' : ''
       } Demographic Information`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
@@ -61,16 +93,17 @@ const DemographicSection = ({
         <Text as="span" fontWeight="bold">
           The purpose of collecting this information
         </Text>{' '}
-        is to help ensure that all applicants are being treated fairly, that the
-        housing needs of communities and neighborhoods are being fulfilled, and
-        to otherwise evaluate our programs and reports to our funders. For
-        residential mortgage lending, Federal law requires that we ask
-        applicants for their demographic information (ethnicity, sex and race)
-        in order to monitor our compliance with equal credit opportunity, fair
-        housing and home mortgage disclousure laws. You are not required to
-        provide this information but are encouraged to do so. You may select one
-        or more signations for "Ethnicity" and one or more designations for
-        "Race".{' '}
+        is to help ensure that all{' '}
+        {coApplicant ? 'co-applicants' : 'applicants'} are being treated fairly,
+        that the housing needs of communities and neighborhoods are being
+        fulfilled, and to otherwise evaluate our programs and reports to our
+        funders. For residential mortgage lending, Federal law requires that we
+        ask {coApplicant ? 'co-applicants' : 'applicants'} for their demographic
+        information (ethnicity, sex and race) in order to monitor our compliance
+        with equal credit opportunity, fair housing and home mortgage
+        disclousure laws. You are not required to provide this information but
+        are encouraged to do so. You may select one or more signations for
+        "Ethnicity" and one or more designations for "Race".{' '}
         <Text as="span" fontWeight="bold">
           The law provides that we may not discriminate
         </Text>{' '}
@@ -581,6 +614,7 @@ DemographicSection.propTypes = {
   onValid: PropTypes.func,
   edit: PropTypes.bool,
   onClickEdit: PropTypes.func,
+  coApplicant: PropTypes.bool,
 };
 
 export default DemographicSection;
