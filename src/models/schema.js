@@ -1,5 +1,71 @@
 export const schema = {
     "models": {
+        "Property": {
+            "name": "Property",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "ownerID": {
+                    "name": "ownerID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "props": {
+                    "name": "props",
+                    "isArray": false,
+                    "type": "AWSJSON",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Properties",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "TestCycle": {
             "name": "TestCycle",
             "fields": {
@@ -601,6 +667,13 @@ export const schema = {
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
+                    "attributes": []
+                },
+                "isCoApplicant": {
+                    "name": "isCoApplicant",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "createdAt": {
@@ -1257,5 +1330,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "348c0be4f9006b6d4f57d2efafa8790b"
+    "version": "00b8bfab6a1104057541e8fde450a474"
 };

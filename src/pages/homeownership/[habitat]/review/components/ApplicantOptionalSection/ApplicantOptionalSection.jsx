@@ -3,6 +3,7 @@ import { ApplicantOptional } from 'models';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
+import { useApplicantInfosQuery } from 'hooks/services';
 import ApplicantMilitaryServiceSection from './components/ApplicantMilitaryServiceSection';
 import AnyoneElseMilitaryServiceSection from './components/AnyoneElseMilitaryServiceSection';
 import DemographicSection from './components/DemographicSection';
@@ -17,11 +18,21 @@ const ApplicantOptionalSection = ({
   demographicOpen,
   setDemographicOpen,
   handleDemographicOnReview,
+  coApplicantDemographicOpen,
+  setCoApplicantDemographicOpen,
+  handleCoApplicantDemographicOnReview,
   reviewedSections,
   setReviewedSections,
   submitted,
 }) => {
   const { application } = useOutletContext();
+
+  const { data: applicantInfos } = useApplicantInfosQuery({
+    criteria: (c1) => c1.ownerID.eq(application?.id),
+    dependencyArray: [application?.id],
+  });
+
+  const hasCoApplicant = applicantInfos[0]?.props?.hasCoApplicant === 'Yes';
 
   const [applicantOptional, setApplicantOptional] = useState();
 
@@ -70,10 +81,25 @@ const ApplicantOptionalSection = ({
         applicantOptional={applicantOptional}
         reviewedSections={reviewedSections}
         setReviewedSections={setReviewedSections}
-        onReview={handleDemographicOnReview}
+        onReview={() => handleDemographicOnReview(hasCoApplicant)}
         submitted={submitted}
       />
       <br />
+      {hasCoApplicant && (
+        <>
+          <DemographicSection
+            expanded={coApplicantDemographicOpen}
+            onExpandedChange={setCoApplicantDemographicOpen}
+            applicantOptional={applicantOptional}
+            reviewedSections={reviewedSections}
+            setReviewedSections={setReviewedSections}
+            onReview={handleCoApplicantDemographicOnReview}
+            submitted={submitted}
+            coApplicant
+          />
+          <br />
+        </>
+      )}
     </>
   );
 };
@@ -88,6 +114,9 @@ ApplicantOptionalSection.propTypes = {
   demographicOpen: PropTypes.bool,
   setDemographicOpen: PropTypes.func,
   handleDemographicOnReview: PropTypes.func,
+  coApplicantDemographicOpen: PropTypes.bool,
+  setCoApplicantDemographicOpen: PropTypes.func,
+  handleCoApplicantDemographicOnReview: PropTypes.func,
   reviewedSections: PropTypes.object,
   setReviewedSections: PropTypes.func,
   submitted: PropTypes.bool,

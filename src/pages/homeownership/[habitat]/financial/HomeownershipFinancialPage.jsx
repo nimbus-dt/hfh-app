@@ -304,7 +304,7 @@ export default function HomeownershipFinancialPage() {
       )}
       <CustomCard>
         <Flex width="100%" justifyContent="space-between">
-          <Link to="../employment">
+          <Link to="../property">
             <Button variation="primary">Back</Button>
           </Link>
           <Button variation="primary" onClick={handleOnClickNext}>

@@ -14,13 +14,16 @@ const Unemployment = ({
   setReviewedSections,
   onReview,
   submitted,
+  coApplicant,
 }) => {
   const customCardReference = useRef(null);
 
   useEffect(() => {
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
-      unemployment: false,
+      ...(coApplicant
+        ? { coApplicantUnemployment: false }
+        : { unemployment: false }),
     }));
   }, [setReviewedSections]);
 
@@ -36,8 +39,10 @@ const Unemployment = ({
   return (
     <CustomExpandableCard
       title={`${getCheckOrExEmoji(
-        reviewedSections.unemployment || submitted
-      )} Unemployment`}
+        (coApplicant
+          ? reviewedSections.coApplicantUnemployment
+          : reviewedSections.unemployment) || submitted
+      )}${coApplicant ? ' Co-applicant' : ''} Unemployment`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
       ref={customCardReference}
@@ -45,8 +50,16 @@ const Unemployment = ({
       {employmentInfo ? (
         <>
           <RadioGroupField
-            label="Are you currently unemployed?"
-            value={employmentInfo?.props?.currentlyUnemployed}
+            label={
+              coApplicant
+                ? 'Is the co-applicant currently unemployed?'
+                : 'Are you currently unemployed?'
+            }
+            value={
+              coApplicant
+                ? employmentInfo?.props?.coApplicantCurrentlyUnemployed
+                : employmentInfo?.props?.currentlyUnemployed
+            }
             isDisabled
           >
             <Radio value="Yes">Yes</Radio>
@@ -80,6 +93,7 @@ Unemployment.propTypes = {
   setReviewedSections: PropTypes.func,
   onReview: PropTypes.func,
   submitted: PropTypes.bool,
+  coApplicant: PropTypes.bool,
 };
 
 export default Unemployment;

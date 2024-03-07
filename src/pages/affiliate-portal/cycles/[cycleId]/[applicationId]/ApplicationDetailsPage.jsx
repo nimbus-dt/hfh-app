@@ -22,6 +22,7 @@ import {
   useAssetsQuery,
   useChecklistsQuery,
   useApplicantOptionalsQuery,
+  usePropertiesQuery,
 } from 'hooks/services';
 import {
   getDebtToIncomeRatio,
@@ -48,6 +49,7 @@ import FinancialSection from './components/FinancialSection';
 import { decideSchema, returnSchema } from './ApplicationDetailsPage.schema';
 import ApplicantOptionalTable from './components/ApplicantOptionalTable';
 import PaperApplicationTable from './components/PaperApplicationTable';
+import PropertyTable from './components/PropertyTable';
 
 const ApplicationDetailsPage = () => {
   const [userEmail, setUserEmail] = useState();
@@ -77,6 +79,7 @@ const ApplicationDetailsPage = () => {
     dependencyArray: [application?.id],
   });
   const { data: employmentInfos } = useEmploymentInfosQuery(queriesProps2);
+  const { data: properties } = usePropertiesQuery(queriesProps2);
   const queriesProps1 = {
     criteria: (c1) => {
       const membersIdArray = members.map((member) => member.id);
@@ -259,7 +262,10 @@ const ApplicationDetailsPage = () => {
             email={userEmail}
           />
 
-          <ApplicantOptionalTable applicantOptional={applicantOptionals[0]} />
+          <ApplicantOptionalTable
+            applicantOptional={applicantOptionals[0]}
+            applicantInfo={applicantInfos[0]}
+          />
 
           <ChecklistTable
             questions={habitat?.props.homeownershipCheckQuestions}
@@ -278,7 +284,12 @@ const ApplicationDetailsPage = () => {
 
           <HouseholdTable members={members} />
 
-          <EmploymentTable employmentInfo={employmentInfos[0]} />
+          <EmploymentTable
+            employmentInfo={employmentInfos[0]}
+            applicantInfo={applicantInfos[0]}
+          />
+
+          <PropertyTable property={properties[0]} />
 
           <FinancialSection
             applicantInfo={applicantInfos[0]}

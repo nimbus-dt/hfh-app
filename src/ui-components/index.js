@@ -18,6 +18,8 @@ export { default as EmploymentInfoCreateForm } from "./EmploymentInfoCreateForm"
 export { default as EmploymentInfoUpdateForm } from "./EmploymentInfoUpdateForm";
 export { default as IncomeCreateForm } from "./IncomeCreateForm";
 export { default as IncomeUpdateForm } from "./IncomeUpdateForm";
+export { default as PropertyCreateForm } from "./PropertyCreateForm";
+export { default as PropertyUpdateForm } from "./PropertyUpdateForm";
 export { default as RecordCreateForm } from "./RecordCreateForm";
 export { default as RecordUpdateForm } from "./RecordUpdateForm";
 export { default as WrittenCreateForm } from "./WrittenCreateForm";

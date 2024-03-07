@@ -70,3 +70,20 @@ export const RACE_OPTIONS = {
  * This constant is used to store the default review status
  */
 export const DEFAULT_REVIEW_STATUS = 'Pending';
+
+/**
+ * This constant is used to store household member relationship options
+ */
+
+export const RELATIONSHIP_OPTIONS = [
+  'Parent',
+  'Child',
+  'Sibling',
+  'Spouse',
+  'Grandparent',
+  'Grandchild',
+  'Aunt/Uncle',
+  'Niece/Nephew',
+  'Cousin',
+  'Other',
+];

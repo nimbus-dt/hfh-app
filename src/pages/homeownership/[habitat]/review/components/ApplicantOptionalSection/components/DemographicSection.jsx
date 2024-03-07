@@ -23,11 +23,12 @@ const DemographicSection = ({
   setReviewedSections,
   onReview,
   submitted,
+  coApplicant,
 }) => {
   useEffect(() => {
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
-      basicInfo: false,
+      ...(coApplicant ? { coApplicantBasicInfo: false } : { basicInfo: false }),
     }));
   }, [setReviewedSections]);
 
@@ -42,11 +43,17 @@ const DemographicSection = ({
     }
   }, [expanded]);
 
+  const demographic = coApplicant
+    ? applicantOptional?.props?.coApplicantDemographic
+    : applicantOptional?.props?.demographic;
+
   return (
     <CustomExpandableCard
       title={`${getCheckOrExEmoji(
-        reviewedSections.demographic || submitted
-      )} Demographic Information`}
+        (coApplicant
+          ? reviewedSections.coApplicantDemographic
+          : reviewedSections.demographic) || submitted
+      )}${coApplicant ? ' Co-applicant' : ''} Demographic Information`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
       ref={customCardReference}
@@ -58,16 +65,17 @@ const DemographicSection = ({
         <Text as="span" fontWeight="bold">
           The purpose of collecting this information
         </Text>{' '}
-        is to help ensure that all applicants are being treated fairly, that the
-        housing needs of communities and neighborhoods are being fulfilled, and
-        to otherwise evaluate our programs and reports to our funders. For
-        residential mortgage lending, Federal law requires that we ask
-        applicants for their demographic information (ethnicity, sex and race)
-        in order to monitor our compliance with equal credit opportunity, fair
-        housing and home mortgage disclousure laws. You are not required to
-        provide this information but are encouraged to do so. You may select one
-        or more signations for "Ethnicity" and one or more designations for
-        "Race".{' '}
+        is to help ensure that all{' '}
+        {coApplicant ? 'co-applicants' : 'applicants'} are being treated fairly,
+        that the housing needs of communities and neighborhoods are being
+        fulfilled, and to otherwise evaluate our programs and reports to our
+        funders. For residential mortgage lending, Federal law requires that we
+        ask {coApplicant ? 'co-applicants' : 'applicants'} for their demographic
+        information (ethnicity, sex and race) in order to monitor our compliance
+        with equal credit opportunity, fair housing and home mortgage
+        disclousure laws. You are not required to provide this information but
+        are encouraged to do so. You may select one or more signations for
+        "Ethnicity" and one or more designations for "Race".{' '}
         <Text as="span" fontWeight="bold">
           The law provides that we may not discriminate
         </Text>{' '}
@@ -82,52 +90,43 @@ const DemographicSection = ({
       <Text fontWeight="bold">Ethnicity (check one or more)</Text>
       <br />
       <CheckboxField
-        checked={
-          applicantOptional?.props?.demographic?.ethnicity?.hispanicOrLatino
-        }
+        checked={demographic?.ethnicity?.hispanicOrLatino}
         label="Hispanic or Latino"
         isDisabled
       />
       <br />
       <CheckboxField
-        checked={applicantOptional?.props?.demographic?.ethnicity?.mexican}
+        checked={demographic?.ethnicity?.mexican}
         label="Mexican"
         marginLeft="1.5rem"
         isDisabled
       />
       <br />
       <CheckboxField
-        checked={applicantOptional?.props?.demographic?.ethnicity?.puertoRican}
+        checked={demographic?.ethnicity?.puertoRican}
         label="Puerto Rican"
         marginLeft="1.5rem"
         isDisabled
       />
       <br />
       <CheckboxField
-        checked={applicantOptional?.props?.demographic?.ethnicity?.cuban}
+        checked={demographic?.ethnicity?.cuban}
         label="Cuban"
         marginLeft="1.5rem"
         isDisabled
       />
       <br />
       <CheckboxField
-        checked={
-          applicantOptional?.props?.demographic?.ethnicity
-            ?.otherHispanicOrLatino
-        }
+        checked={demographic?.ethnicity?.otherHispanicOrLatino}
         label="Other Hispanic or Latino"
         marginLeft="1.5rem"
         isDisabled
       />
       <br />
-      {applicantOptional?.props?.demographic?.ethnicity
-        ?.otherHispanicOrLatino && (
+      {demographic?.ethnicity?.otherHispanicOrLatino && (
         <>
           <TextField
-            value={
-              applicantOptional?.props?.demographic?.ethnicity
-                ?.otherHispanicOrLatinoValue
-            }
+            value={demographic?.ethnicity?.otherHispanicOrLatinoValue}
             label="Origin"
             descriptiveText="For example: Argentinean, Colombian, Dominican, Nicaraguan, Salvadoran, Spaniard, and so on."
             marginLeft="1.5rem"
@@ -138,18 +137,13 @@ const DemographicSection = ({
         </>
       )}
       <CheckboxField
-        checked={
-          applicantOptional?.props?.demographic?.ethnicity?.notHispanicOrLatino
-        }
+        checked={demographic?.ethnicity?.notHispanicOrLatino}
         label="Not Hispanic or Latino"
         isDisabled
       />
       <br />
       <CheckboxField
-        checked={
-          applicantOptional?.props?.demographic?.ethnicity
-            ?.iDoNotWishToProvideThisInfo
-        }
+        checked={demographic?.ethnicity?.iDoNotWishToProvideThisInfo}
         label="I do not wish to provide this information"
         isDisabled
       />
@@ -157,10 +151,7 @@ const DemographicSection = ({
       <Text as="label" htmlFor="sex" fontWeight="bold">
         Sex
       </Text>
-      <RadioGroupField
-        value={applicantOptional?.props?.demographic?.sex}
-        isDisabled
-      >
+      <RadioGroupField value={demographic?.sex} isDisabled>
         <Radio value="Female">Female</Radio>
         <Radio value="Male">Male</Radio>
         <Radio value="I do not wish to provide this information">
@@ -172,22 +163,15 @@ const DemographicSection = ({
       <Text fontWeight="bold">Race (check one or more)</Text>
       <br />
       <CheckboxField
-        checked={
-          applicantOptional?.props?.demographic?.race
-            ?.americanIndianOrAlaskaNative
-        }
+        checked={demographic?.race?.americanIndianOrAlaskaNative}
         label="American Indian or Alaska Native"
         isDisabled
       />
       <br />
-      {applicantOptional?.props?.demographic?.race
-        ?.americanIndianOrAlaskaNative && (
+      {demographic?.race?.americanIndianOrAlaskaNative && (
         <>
           <TextField
-            value={
-              applicantOptional?.props?.demographic?.race
-                ?.nameOfEnrolledOrPrincipalTribe
-            }
+            value={demographic?.race?.nameOfEnrolledOrPrincipalTribe}
             label="Name of enrolled or principal tribe"
             isDisabled
             isReadOnly
@@ -196,64 +180,64 @@ const DemographicSection = ({
         </>
       )}
       <CheckboxField
-        checked={applicantOptional?.props?.demographic?.race?.asian}
+        checked={demographic?.race?.asian}
         label="Asian"
         isDisabled
       />
       <br />
       <CheckboxField
-        checked={applicantOptional?.props?.demographic?.race?.asianIndian}
+        checked={demographic?.race?.asianIndian}
         label="Asian Indian"
         marginLeft="1.5rem"
         isDisabled
       />
       <br />
       <CheckboxField
-        checked={applicantOptional?.props?.demographic?.race?.chinese}
+        checked={demographic?.race?.chinese}
         label="Chinese"
         marginLeft="1.5rem"
         isDisabled
       />
       <br />
       <CheckboxField
-        checked={applicantOptional?.props?.demographic?.race?.filipino}
+        checked={demographic?.race?.filipino}
         label="Filipino"
         marginLeft="1.5rem"
         isDisabled
       />
       <br />
       <CheckboxField
-        checked={applicantOptional?.props?.demographic?.race?.japanese}
+        checked={demographic?.race?.japanese}
         label="Japanese"
         marginLeft="1.5rem"
         isDisabled
       />
       <br />
       <CheckboxField
-        checked={applicantOptional?.props?.demographic?.race?.korean}
+        checked={demographic?.race?.korean}
         label="Korean"
         marginLeft="1.5rem"
         isDisabled
       />
       <br />
       <CheckboxField
-        checked={applicantOptional?.props?.demographic?.race?.vietnamese}
+        checked={demographic?.race?.vietnamese}
         label="Vietnamese"
         marginLeft="1.5rem"
         isDisabled
       />
       <br />
       <CheckboxField
-        checked={applicantOptional?.props?.demographic?.race?.otherAsian}
+        checked={demographic?.race?.otherAsian}
         label="Other Asian"
         marginLeft="1.5rem"
         isDisabled
       />
       <br />
-      {applicantOptional?.props?.demographic?.race?.otherAsian && (
+      {demographic?.race?.otherAsian && (
         <>
           <TextField
-            value={applicantOptional?.props?.demographic?.race?.otherAsianValue}
+            value={demographic?.race?.otherAsianValue}
             label="Race"
             descriptiveText="For example: Hmong, Laotian, Thai, Pakistani, Cambodian, and so on."
             marginLeft="1.5rem"
@@ -264,61 +248,49 @@ const DemographicSection = ({
         </>
       )}
       <CheckboxField
-        checked={
-          applicantOptional?.props?.demographic?.race?.blackOrAfricanAmerican
-        }
+        checked={demographic?.race?.blackOrAfricanAmerican}
         label="Black or African American"
         isDisabled
       />
       <br />
       <CheckboxField
-        checked={
-          applicantOptional?.props?.demographic?.race
-            ?.nativeHawaiianOrOtherPacificIslander
-        }
+        checked={demographic?.race?.nativeHawaiianOrOtherPacificIslander}
         label="Native Hawaiian or Other Pacific Islander"
         isDisabled
       />
       <br />
       <CheckboxField
-        checked={applicantOptional?.props?.demographic?.race?.nativeHawaiian}
+        checked={demographic?.race?.nativeHawaiian}
         label="Native Hawaiian"
         marginLeft="1.5rem"
         isDisabled
       />
       <br />
       <CheckboxField
-        checked={
-          applicantOptional?.props?.demographic?.race?.guamanianOrChamorro
-        }
+        checked={demographic?.race?.guamanianOrChamorro}
         label="Guamanian or Chamorro"
         marginLeft="1.5rem"
         isDisabled
       />
       <br />
       <CheckboxField
-        checked={applicantOptional?.props?.demographic?.race?.samoan}
+        checked={demographic?.race?.samoan}
         label="Samoan"
         marginLeft="1.5rem"
         isDisabled
       />
       <br />
       <CheckboxField
-        checked={
-          applicantOptional?.props?.demographic?.race?.otherPacificIslander
-        }
+        checked={demographic?.race?.otherPacificIslander}
         label="Other Pacifil Islander"
         marginLeft="1.5rem"
         isDisabled
       />
       <br />
-      {applicantOptional?.props?.demographic?.race?.otherPacificIslander && (
+      {demographic?.race?.otherPacificIslander && (
         <>
           <TextField
-            value={
-              applicantOptional?.props?.demographic?.race
-                .otherPacificIslanderValue
-            }
+            value={demographic?.race.otherPacificIslanderValue}
             label="Race"
             descriptiveText="For example: Fijian, Tongan, and so on."
             marginLeft="1.5rem"
@@ -329,16 +301,13 @@ const DemographicSection = ({
         </>
       )}
       <CheckboxField
-        checked={applicantOptional?.props?.race?.demographic}
+        checked={demographic?.race?.white}
         label="White"
         isDisabled
       />
       <br />
       <CheckboxField
-        checked={
-          applicantOptional?.props?.demographic?.race
-            ?.iDoNotWishToProvideThisInfo
-        }
+        checked={demographic?.race?.iDoNotWishToProvideThisInfo}
         label="I do not wish to provide this information"
         isDisabled
       />
@@ -365,6 +334,7 @@ DemographicSection.propTypes = {
   setReviewedSections: PropTypes.func,
   onReview: PropTypes.func,
   submitted: PropTypes.bool,
+  coApplicant: PropTypes.bool,
 };
 
 export default DemographicSection;
