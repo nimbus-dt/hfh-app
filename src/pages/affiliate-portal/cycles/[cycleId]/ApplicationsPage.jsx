@@ -350,7 +350,7 @@ const ApplicationsPage = () => {
                         ? applicantInfos.find(
                             (applicantInfo) =>
                               applicantInfo.ownerID === application.id
-                          )?.props.basicInfo.fullName
+                          )?.props?.basicInfo?.fullName
                         : application.props.name}
                     </TableCell>
                     <TableCell>

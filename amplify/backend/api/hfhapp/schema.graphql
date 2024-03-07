@@ -1,3 +1,15 @@
+type OptionalSections {
+  coApplicant: Boolean!
+  propertyInfo: Boolean!
+  businessOwnerOrSelfEmployed: Boolean!
+}
+
+type Property @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ownerID: ID!
+  props: AWSJSON!
+}
+
 type WrittenQuestion {
   name: String!
   label: String!
@@ -31,6 +43,7 @@ type HabitatProps {
   homeownershipCheckQuestions: [CheckQuestion!]
   homeownershipRecordQuestions: [RecordQuestion!]
   homeownershipWrittenQuestions: [WrittenQuestion!]
+  optionalSections: OptionalSections!
 }
 
 type TestCycle @model @auth(rules: [{allow: public}]) {
@@ -101,6 +114,7 @@ type Member @model @auth(rules: [{allow: public}]) {
   id: ID!
   props: AWSJSON
   testapplicationID: ID! @index(name: "byTestApplication")
+  isCoApplicant: Boolean
 }
 
 type Record @model @auth(rules: [{allow: public}]) {

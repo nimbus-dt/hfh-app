@@ -1,5 +1,71 @@
 export const schema = {
     "models": {
+        "Property": {
+            "name": "Property",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "ownerID": {
+                    "name": "ownerID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "props": {
+                    "name": "props",
+                    "isArray": false,
+                    "type": "AWSJSON",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Properties",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "TestCycle": {
             "name": "TestCycle",
             "fields": {
@@ -603,6 +669,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "isCoApplicant": {
+                    "name": "isCoApplicant",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -1073,6 +1146,32 @@ export const schema = {
         }
     },
     "nonModels": {
+        "OptionalSections": {
+            "name": "OptionalSections",
+            "fields": {
+                "coApplicant": {
+                    "name": "coApplicant",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "propertyInfo": {
+                    "name": "propertyInfo",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "businessOwnerOrSelfEmployed": {
+                    "name": "businessOwnerOrSelfEmployed",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": true,
+                    "attributes": []
+                }
+            }
+        },
         "WrittenQuestion": {
             "name": "WrittenQuestion",
             "fields": {
@@ -1252,10 +1351,19 @@ export const schema = {
                     "isRequired": true,
                     "attributes": [],
                     "isArrayNullable": true
+                },
+                "optionalSections": {
+                    "name": "optionalSections",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "OptionalSections"
+                    },
+                    "isRequired": true,
+                    "attributes": []
                 }
             }
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "348c0be4f9006b6d4f57d2efafa8790b"
+    "version": "63873401ed57c50fc2696010f4097829"
 };

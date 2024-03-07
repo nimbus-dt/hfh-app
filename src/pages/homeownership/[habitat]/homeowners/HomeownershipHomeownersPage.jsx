@@ -17,26 +17,14 @@ import { useEffect, useState } from 'react';
 import { DataStore } from 'aws-amplify';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Member } from 'models';
+import { ApplicantInfo, Member } from 'models';
 import { createAlert } from 'utils/factories';
 import Modal from 'components/Modal';
 import { MdAdd, MdClose, MdMoreHoriz } from 'react-icons/md';
 import CustomCard from 'components/CustomCard';
 import CustomExpandableCard from 'components/CustomExpandableCard';
+import { RELATIONSHIP_OPTIONS } from 'utils/constants';
 import { memberSchema } from './HomeownershipHomeownersPage.schema';
-
-const relationshipOptions = [
-  'Parent',
-  'Child',
-  'Sibling',
-  'Spouse',
-  'Grandparent',
-  'Grandchild',
-  'Aunt/Uncle',
-  'Niece/Nephew',
-  'Cousin',
-  'Other',
-];
 
 export default function HomeownershipHomeownersPage() {
   const [members, setMembers] = useState([]);
@@ -134,6 +122,26 @@ export default function HomeownershipHomeownersPage() {
           }
           return [...previousMembers];
         });
+
+        if (persistedMember.isCoApplicant) {
+          const applicantInfo = await DataStore.query(ApplicantInfo, (c) =>
+            c.and((c2) => [c2.ownerID.eq(application.id)])
+          );
+
+          await DataStore.save(
+            ApplicantInfo.copyOf(applicantInfo[0], (originalApplicantInfo) => {
+              originalApplicantInfo.props = {
+                ...originalApplicantInfo.props,
+                coApplicantBasicInfo: {
+                  ...originalApplicantInfo.props.coApplicantBasicInfo,
+                  fullName: data.fullName,
+                  birthDate: data.birthDay,
+                },
+              };
+            })
+          );
+        }
+
         setAlert(
           createAlert(
             'success',
@@ -307,7 +315,7 @@ export default function HomeownershipHomeownersPage() {
 
                   const handleOnClickMore = () => {
                     setEditingMember(member);
-                    const hasOtherRelationship = !relationshipOptions.includes(
+                    const hasOtherRelationship = !RELATIONSHIP_OPTIONS.includes(
                       member.props.relationship
                     );
                     reset({
@@ -331,15 +339,17 @@ export default function HomeownershipHomeownersPage() {
                           justifyContent="center"
                           gap="0.5rem"
                         >
-                          <Button
-                            height="2rem"
-                            width="2rem"
-                            padding="0"
-                            title="Delete"
-                            onClick={handleOnClickDelete}
-                          >
-                            <MdClose size="1.25rem" />
-                          </Button>
+                          {!member.isCoApplicant && (
+                            <Button
+                              height="2rem"
+                              width="2rem"
+                              padding="0"
+                              title="Delete"
+                              onClick={handleOnClickDelete}
+                            >
+                              <MdClose size="1.25rem" />
+                            </Button>
+                          )}
                           <Button
                             height="2rem"
                             width="2rem"
@@ -416,7 +426,7 @@ export default function HomeownershipHomeownersPage() {
                 isRequired
                 isDisabled={!isEnabled}
               >
-                {relationshipOptions.map((relationshipOption) => (
+                {RELATIONSHIP_OPTIONS.map((relationshipOption) => (
                   <option key={relationshipOption} value={relationshipOption}>
                     {relationshipOption}
                   </option>

@@ -1,6 +1,16 @@
 import { z } from 'zod';
-import { searchableOptionSchema, zipCodeSchema } from 'utils/schemas';
+import {
+  moneyNumberSchema,
+  searchableOptionSchema,
+  yesNoSchema,
+  zipCodeSchema,
+} from 'utils/schemas';
 import states from '../../../../assets/jsons/states.json';
+
+export const ownershipShareOptions = [
+  'I have an ownership share of less than 25%.',
+  'I have an ownership share of 25% or more.',
+];
 
 const phoneSchema = z
   .string()
@@ -33,4 +43,10 @@ export const currentEmploymentSchema = employmentSchema.extend({
 
 export const previousEmploymentSchema = employmentSchema.extend({
   endDate: z.string(),
+});
+
+export const businessOwnerOrSelfEmployedSchema = z.object({
+  currentlyBusinessOwnerOrSelfEmployed: yesNoSchema,
+  ownershipShare: z.enum(ownershipShareOptions).optional(),
+  montlyIncome: moneyNumberSchema.optional(),
 });

@@ -8,6 +8,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { debounce } from 'lodash';
 import { API } from 'aws-amplify';
 import SearchableSelectInput from 'components/SearchableSelectInput';
+import { getCheckOrExEmoji } from 'utils/misc';
 import { previousEmploymentSchema } from '../HomeownershipEmploymentPage.schema';
 import states from '../../../../../assets/jsons/states.json';
 
@@ -18,23 +19,36 @@ const PreviousEmployment = ({
   onValid,
   edit,
   onClickEdit,
+  coApplicant,
 }) => {
   const [cities, setCities] = useState([]);
 
   const formattedValues = useMemo(() => {
-    if (employmentInfo?.props?.previousEmployment !== undefined) {
+    if (
+      coApplicant
+        ? employmentInfo?.props?.coApplicantPreviousEmployment !== undefined
+        : employmentInfo?.props?.previousEmployment !== undefined
+    ) {
       return {
-        ...employmentInfo.props.previousEmployment,
+        ...(coApplicant
+          ? employmentInfo.props.coApplicantPreviousEmployment
+          : employmentInfo.props.previousEmployment),
         employerCity: {
           selectedCity: {
-            id: employmentInfo.props.previousEmployment.employerCity,
-            label: employmentInfo.props.previousEmployment.employerCity,
+            id: coApplicant
+              ? employmentInfo.props.coApplicantPreviousEmployment.employerCity
+              : employmentInfo.props.previousEmployment.employerCity,
+            label: coApplicant
+              ? employmentInfo.props.coApplicantPreviousEmployment.employerCity
+              : employmentInfo.props.previousEmployment.employerCity,
           },
-          query: employmentInfo.props.previousEmployment.employerCity,
+          query: coApplicant
+            ? employmentInfo.props.coApplicantPreviousEmployment.employerCity
+            : employmentInfo.props.previousEmployment.employerCity,
         },
       };
     }
-  }, [employmentInfo]);
+  }, [employmentInfo, coApplicant]);
 
   const {
     register,
@@ -50,7 +64,10 @@ const PreviousEmployment = ({
     values: formattedValues,
   });
 
-  const isEnabled = !employmentInfo?.props?.previousEmployment || edit;
+  const isEnabled =
+    (coApplicant
+      ? !employmentInfo?.props?.coApplicantPreviousEmployment
+      : !employmentInfo?.props?.previousEmployment) || edit;
 
   const handleOnChangePhone = (event) => {
     const formattedNumber = formatPhoneNumber(event.target.value);
@@ -97,15 +114,21 @@ const PreviousEmployment = ({
 
   return (
     <CustomExpandableCard
-      title={`${
-        employmentInfo?.props?.previousEmployment !== undefined ? '✔️' : '❌'
-      } Previous Employment Information`}
+      title={`${getCheckOrExEmoji(
+        coApplicant
+          ? employmentInfo?.props?.coApplicantPreviousEmployment !== undefined
+          : employmentInfo?.props?.previousEmployment !== undefined
+      )}${coApplicant ? ' Co-applicant' : ''} Previous Employment Information`}
       expanded={expanded}
       onExpandedChange={onExpandedChange}
     >
       <form onSubmit={handleSubmit(onValid)}>
         <TextField
-          label="What is the name of your previous employer?"
+          label={
+            coApplicant
+              ? "What is the name of the co-applicant's previous employer?"
+              : 'What is the name of your previous employer?'
+          }
           {...register('employerName')}
           errorMessage="Name must contain at least 1 character"
           hasError={errors?.employerName !== undefined}
@@ -182,7 +205,11 @@ const PreviousEmployment = ({
         />
         <br />
         <TextField
-          label="What was your approximate start date with this employer?"
+          label={
+            coApplicant
+              ? "What was the co-applicant's approximate start date with this employer?"
+              : 'What was your approximate start date with this employer?'
+          }
           type="date"
           isRequired
           {...register('startDate')}
@@ -192,7 +219,11 @@ const PreviousEmployment = ({
         />
         <br />
         <TextField
-          label="What was your approximate end date with this employer?"
+          label={
+            coApplicant
+              ? "What was the co-applicant's approximate end date with this employer?"
+              : 'What was your approximate end date with this employer?'
+          }
           type="date"
           isRequired
           {...register('endDate')}
@@ -221,7 +252,9 @@ const PreviousEmployment = ({
         <br />
 
         <Flex width="100%" justifyContent="end">
-          {employmentInfo?.props?.previousEmployment ? (
+          {employmentInfo?.props?.[
+            coApplicant ? 'coApplicantPreviousEmployment' : 'previousEmployment'
+          ] ? (
             <Button onClick={onClickEdit} variation="secondary">
               {edit ? 'Cancel' : 'Edit'}
             </Button>
@@ -244,6 +277,7 @@ PreviousEmployment.propTypes = {
   onValid: PropTypes.func,
   edit: PropTypes.bool,
   onClickEdit: PropTypes.func,
+  coApplicant: PropTypes.bool,
 };
 
 export default PreviousEmployment;

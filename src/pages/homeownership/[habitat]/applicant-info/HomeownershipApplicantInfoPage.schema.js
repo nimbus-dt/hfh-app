@@ -17,6 +17,12 @@ export const unmarriedRelationshipTypesValues = [
   'Other',
 ];
 
+export const creditTypes = [
+  'I am applying for individual credit.',
+  'I am applying for joint credit.',
+  'Each borrower intends to apply for joint credit.',
+];
+
 const phoneSchema = z
   .string()
   .regex(
@@ -45,6 +51,12 @@ export const basicInfoSchema = z.object({
   maritalStatus: z.enum(maritalStatusValues),
 });
 
+export const coApplicantBasicSchema = basicInfoSchema.extend({
+  sex: z.enum(['Male', 'Female', 'Other']),
+  relationship: z.string().min(1),
+  otherRelationship: z.string().min(1).optional(),
+});
+
 export const addressSchema = z.object({
   street: z.string().min(1),
   state: z.enum(states.map((state) => state.abbreviation)),
@@ -62,4 +74,14 @@ export const unmarriedAddendumSchema = z.object({
   relationshipType: z.enum(unmarriedRelationshipTypesValues).optional(),
   otherRelationshipType: z.string().min(0).optional(),
   state: z.string().min(0).optional(),
+});
+
+export const typeOfCreditSchema = z.object({
+  creditType: z.enum(creditTypes),
+  totalNumberOfBorrowers: z.coerce.number().positive().optional(),
+  yourInitials: z.string().min(1).optional(),
+});
+
+export const coApplicantSchema = z.object({
+  hasCoApplicant: z.enum(['Yes', 'No']),
 });
