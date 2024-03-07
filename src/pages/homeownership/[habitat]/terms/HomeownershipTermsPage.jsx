@@ -9,6 +9,7 @@ import {
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useState } from 'react';
 import CustomCard from 'components/CustomCard';
+import DOMPurify from 'dompurify';
 
 export default function HomeownershipTermsPage() {
   const { habitat } = useOutletContext();
@@ -33,17 +34,12 @@ export default function HomeownershipTermsPage() {
     <>
       <View as="div">
         <Flex marginBottom="30px" direction="column" gap="xl">
-          <Heading level="4" fontWeight="bold" marginBottom="-30px">
-            Terms of Service
-          </Heading>
-          <Text>Please take a moment to read our terms of service.</Text>
-          {habitat?.props.homeownershipTermsText?.map((item, index) => (
-            <View as="div" key={index}>
-              <Heading level="5">{item.title}</Heading>
-              <Text>{item.body}</Text>
-              <br />
-            </View>
-          ))}
+          <View
+            as="div"
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(habitat?.props.homeownershipTermsText),
+            }}
+          />
         </Flex>
         <CheckboxField
           checked={agreeTerms}
