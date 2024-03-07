@@ -1,6 +1,75 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getProperty = /* GraphQL */ `
+  query GetProperty($id: ID!) {
+    getProperty(id: $id) {
+      id
+      ownerID
+      props
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listProperties = /* GraphQL */ `
+  query ListProperties(
+    $filter: ModelPropertyFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listProperties(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        ownerID
+        props
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncProperties = /* GraphQL */ `
+  query SyncProperties(
+    $filter: ModelPropertyFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncProperties(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        ownerID
+        props
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
 export const getTestCycle = /* GraphQL */ `
   query GetTestCycle($id: ID!) {
     getTestCycle(id: $id) {
@@ -608,6 +677,7 @@ export const getMember = /* GraphQL */ `
       id
       props
       testapplicationID
+      isCoApplicant
       createdAt
       updatedAt
       _version
@@ -628,6 +698,7 @@ export const listMembers = /* GraphQL */ `
         id
         props
         testapplicationID
+        isCoApplicant
         createdAt
         updatedAt
         _version
@@ -658,6 +729,7 @@ export const syncMembers = /* GraphQL */ `
         id
         props
         testapplicationID
+        isCoApplicant
         createdAt
         updatedAt
         _version
@@ -690,6 +762,7 @@ export const membersByTestapplicationID = /* GraphQL */ `
         id
         props
         testapplicationID
+        isCoApplicant
         createdAt
         updatedAt
         _version
