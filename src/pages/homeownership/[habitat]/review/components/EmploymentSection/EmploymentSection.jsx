@@ -38,6 +38,8 @@ const EmploymentSection = ({
   reviewedSections,
   setReviewedSections,
   submitted,
+  shouldRenderCoApplicant,
+  shouldRenderBusinessOwnerOrSelfEmployed,
 }) => {
   const [employmentInfo, setEmploymentInfo] = useState();
 
@@ -73,18 +75,8 @@ const EmploymentSection = ({
         employmentInfo={employmentInfo}
         reviewedSections={reviewedSections}
         setReviewedSections={setReviewedSections}
-        onReview={() => handleUnemploymentOnReview()}
-        submitted={submitted}
-      />
-      <br />
-      <BusinessOwnerOrSelfEmployed
-        expanded={businessOwnerOrSelfEmployedOpen}
-        onExpandedChange={setBusinessOwnerOrSelfEmployedOpen}
-        employmentInfo={employmentInfo}
-        reviewedSections={reviewedSections}
-        setReviewedSections={setReviewedSections}
         onReview={() =>
-          handleBusinessOwnerOrSelfEmployedOnReview(
+          handleUnemploymentOnReview(
             employmentInfo?.props?.currentlyUnemployed === 'No',
             applicantInfos[0]?.props?.hasCoApplicant === 'Yes'
           )
@@ -92,6 +84,25 @@ const EmploymentSection = ({
         submitted={submitted}
       />
       <br />
+      {shouldRenderBusinessOwnerOrSelfEmployed && (
+        <>
+          <BusinessOwnerOrSelfEmployed
+            expanded={businessOwnerOrSelfEmployedOpen}
+            onExpandedChange={setBusinessOwnerOrSelfEmployedOpen}
+            employmentInfo={employmentInfo}
+            reviewedSections={reviewedSections}
+            setReviewedSections={setReviewedSections}
+            onReview={() =>
+              handleBusinessOwnerOrSelfEmployedOnReview(
+                employmentInfo?.props?.currentlyUnemployed === 'No',
+                applicantInfos[0]?.props?.hasCoApplicant === 'Yes'
+              )
+            }
+            submitted={submitted}
+          />
+          <br />
+        </>
+      )}
       {employmentInfo?.props?.currentlyUnemployed === 'No' && (
         <>
           <CurrentEmployment
@@ -135,80 +146,93 @@ const EmploymentSection = ({
             <br />
           </>
         )}
-      {applicantInfos[0]?.props?.hasCoApplicant === 'Yes' && (
-        <>
-          <Unemployment
-            expanded={coApplicantUnemploymentOpen}
-            onExpandedChange={setCoApplicantUnemploymentOpen}
-            employmentInfo={employmentInfo}
-            reviewedSections={reviewedSections}
-            setReviewedSections={setReviewedSections}
-            onReview={handleCoApplicantUnemploymentOnReview}
-            submitted={submitted}
-            coApplicant
-          />
-          <br />
-          <BusinessOwnerOrSelfEmployed
-            expanded={coApplicantBusinessOwnerOrSelfEmployedOpen}
-            onExpandedChange={setCoApplicantBusinessOwnerOrSelfEmployedOpen}
-            employmentInfo={employmentInfo}
-            reviewedSections={reviewedSections}
-            setReviewedSections={setReviewedSections}
-            onReview={() =>
-              handleCoApplicantBusinessOwnerOrSelfEmployedOnReview(
-                employmentInfo?.props?.coApplicantCurrentlyUnemployed === 'No'
-              )
-            }
-            submitted={submitted}
-            coApplicant
-          />
-          <br />
-          {employmentInfo?.props?.coApplicantCurrentlyUnemployed === 'No' && (
-            <>
-              <CurrentEmployment
-                expanded={coApplicantCurrentEmploymentOpen}
-                onExpandedChange={setCoApplicantCurrentEmploymentOpen}
-                employmentInfo={employmentInfo}
-                reviewedSections={reviewedSections}
-                setReviewedSections={setReviewedSections}
-                onReview={() =>
-                  handleCoApplicantCurrentEmploymentOnReview(
-                    calculateAgeInMonths(
-                      employmentInfo?.props?.coApplicantCurrentEmployment
-                        ?.startDate
-                    ) <
-                      habitat?.props.homeownershipMinCurrentEmploymentMonths &&
-                      employmentInfo?.props?.coApplicantCurrentEmployment
-                        ?.firstJob === 'No'
-                  )
-                }
-                submitted={submitted}
-                coApplicant
-              />
-              <br />
-            </>
-          )}
-          {calculateAgeInMonths(
-            employmentInfo?.props?.coApplicantCurrentEmployment?.startDate
-          ) < habitat?.props.homeownershipMinCurrentEmploymentMonths &&
-            employmentInfo?.props?.coApplicantCurrentEmployment?.firstJob ===
-              'No' && (
+      {applicantInfos[0]?.props?.hasCoApplicant === 'Yes' &&
+        shouldRenderCoApplicant && (
+          <>
+            <Unemployment
+              expanded={coApplicantUnemploymentOpen}
+              onExpandedChange={setCoApplicantUnemploymentOpen}
+              employmentInfo={employmentInfo}
+              reviewedSections={reviewedSections}
+              setReviewedSections={setReviewedSections}
+              onReview={() =>
+                handleCoApplicantUnemploymentOnReview(
+                  employmentInfo?.props?.coApplicantCurrentlyUnemployed === 'No'
+                )
+              }
+              submitted={submitted}
+              coApplicant
+            />
+            <br />
+            {shouldRenderBusinessOwnerOrSelfEmployed && (
               <>
-                <PreviousEmployment
-                  expanded={coApplicantPreviousEmploymentOpen}
-                  onExpandedChange={setCoApplicantPreviousEmploymentOpen}
+                <BusinessOwnerOrSelfEmployed
+                  expanded={coApplicantBusinessOwnerOrSelfEmployedOpen}
+                  onExpandedChange={
+                    setCoApplicantBusinessOwnerOrSelfEmployedOpen
+                  }
                   employmentInfo={employmentInfo}
                   reviewedSections={reviewedSections}
                   setReviewedSections={setReviewedSections}
-                  onReview={handleCoApplicantPreviousAddressOnReview}
+                  onReview={() =>
+                    handleCoApplicantBusinessOwnerOrSelfEmployedOnReview(
+                      employmentInfo?.props?.coApplicantCurrentlyUnemployed ===
+                        'No'
+                    )
+                  }
                   submitted={submitted}
                   coApplicant
                 />
                 <br />
               </>
             )}
-        </>
-      )}
+            {employmentInfo?.props?.coApplicantCurrentlyUnemployed === 'No' && (
+              <>
+                <CurrentEmployment
+                  expanded={coApplicantCurrentEmploymentOpen}
+                  onExpandedChange={setCoApplicantCurrentEmploymentOpen}
+                  employmentInfo={employmentInfo}
+                  reviewedSections={reviewedSections}
+                  setReviewedSections={setReviewedSections}
+                  onReview={() =>
+                    handleCoApplicantCurrentEmploymentOnReview(
+                      calculateAgeInMonths(
+                        employmentInfo?.props?.coApplicantCurrentEmployment
+                          ?.startDate
+                      ) <
+                        habitat?.props
+                          .homeownershipMinCurrentEmploymentMonths &&
+                        employmentInfo?.props?.coApplicantCurrentEmployment
+                          ?.firstJob === 'No'
+                    )
+                  }
+                  submitted={submitted}
+                  coApplicant
+                />
+                <br />
+              </>
+            )}
+            {calculateAgeInMonths(
+              employmentInfo?.props?.coApplicantCurrentEmployment?.startDate
+            ) < habitat?.props.homeownershipMinCurrentEmploymentMonths &&
+              employmentInfo?.props?.coApplicantCurrentEmployment?.firstJob ===
+                'No' && (
+                <>
+                  <PreviousEmployment
+                    expanded={coApplicantPreviousEmploymentOpen}
+                    onExpandedChange={setCoApplicantPreviousEmploymentOpen}
+                    employmentInfo={employmentInfo}
+                    reviewedSections={reviewedSections}
+                    setReviewedSections={setReviewedSections}
+                    onReview={handleCoApplicantPreviousAddressOnReview}
+                    submitted={submitted}
+                    coApplicant
+                  />
+                  <br />
+                </>
+              )}
+          </>
+        )}
     </>
   );
 };
@@ -241,6 +265,8 @@ EmploymentSection.propTypes = {
   reviewedSections: PropTypes.object,
   setReviewedSections: PropTypes.func,
   submitted: PropTypes.bool,
+  shouldRenderCoApplicant: PropTypes.bool,
+  shouldRenderBusinessOwnerOrSelfEmployed: PropTypes.bool,
 };
 
 export default EmploymentSection;

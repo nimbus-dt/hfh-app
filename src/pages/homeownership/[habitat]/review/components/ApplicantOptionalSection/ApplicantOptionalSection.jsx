@@ -24,6 +24,7 @@ const ApplicantOptionalSection = ({
   reviewedSections,
   setReviewedSections,
   submitted,
+  shouldRenderCoApplicant,
 }) => {
   const { application } = useOutletContext();
 
@@ -85,7 +86,7 @@ const ApplicantOptionalSection = ({
         submitted={submitted}
       />
       <br />
-      {hasCoApplicant && (
+      {hasCoApplicant && shouldRenderCoApplicant && (
         <>
           <DemographicSection
             expanded={coApplicantDemographicOpen}
@@ -120,6 +121,7 @@ ApplicantOptionalSection.propTypes = {
   reviewedSections: PropTypes.object,
   setReviewedSections: PropTypes.func,
   submitted: PropTypes.bool,
+  shouldRenderCoApplicant: PropTypes.bool,
 };
 
 export default ApplicantOptionalSection;

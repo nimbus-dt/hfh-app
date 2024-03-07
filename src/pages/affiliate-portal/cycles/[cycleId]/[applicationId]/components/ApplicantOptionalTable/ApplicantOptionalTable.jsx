@@ -19,7 +19,11 @@ const objectOfBoolToArrayOfStrings = (boolObject, stringObject) => {
   return stringArray;
 };
 
-const ApplicantOptionalTable = ({ applicantOptional, applicantInfo }) => {
+const ApplicantOptionalTable = ({
+  applicantOptional,
+  applicantInfo,
+  shouldRenderCoApplicant,
+}) => {
   const hasCoApplicant = applicantInfo?.props?.hasCoApplicant === 'Yes';
   return (
     <Flex direction="column">
@@ -168,7 +172,7 @@ const ApplicantOptionalTable = ({ applicantOptional, applicantInfo }) => {
           },
         ]}
       />
-      {hasCoApplicant && (
+      {hasCoApplicant && shouldRenderCoApplicant && (
         <DataTable
           heading="Co-applicant Optional Information"
           headingTextAlign="left"
@@ -217,6 +221,7 @@ const ApplicantOptionalTable = ({ applicantOptional, applicantInfo }) => {
 ApplicantOptionalTable.propTypes = {
   applicantOptional: PropTypes.object,
   applicantInfo: PropTypes.object,
+  shouldRenderCoApplicant: PropTypes.bool,
 };
 
 export default ApplicantOptionalTable;

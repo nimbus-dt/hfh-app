@@ -64,6 +64,13 @@ export default function HomeownershipEmploymentPage() {
   const { application, updateApplicationLastSection, habitat } =
     useOutletContext();
 
+  const shouldRedirectToProperty = habitat?.props.optionalSections.propertyInfo;
+
+  const shouldRenderBusinessOwnerOrSelfEmployed =
+    habitat?.props.optionalSections.businessOwnerOrSelfEmployed;
+
+  const shouldRenderCoApplicant = habitat?.props.optionalSections.coApplicant;
+
   const [alert, setAlert] = useState();
   const navigate = useNavigate();
 
@@ -94,10 +101,6 @@ export default function HomeownershipEmploymentPage() {
             originalEmploymentInfo.props = {
               ...originalEmploymentInfo.props,
               currentlyUnemployed: data.currentlyUnemployed,
-              businessOwnerOrSelfEmployed:
-                data.currentlyUnemployed === 'Yes'
-                  ? undefined
-                  : originalEmploymentInfo.props.businessOwnerOrSelfEmployed,
               currentEmployment:
                 data.currentlyUnemployed === 'Yes'
                   ? undefined
@@ -112,7 +115,13 @@ export default function HomeownershipEmploymentPage() {
         setEmploymentInfo(persistedEmploymentInfo);
         setUnemploymentEdit(false);
       }
-      setBusinessOwnerOrSelfEmployedOpen(true);
+      if (shouldRenderBusinessOwnerOrSelfEmployed) {
+        setBusinessOwnerOrSelfEmployedOpen(true);
+      } else if (data.currentlyUnemployed === 'No') {
+        setCurrentEmploymentOpen(true);
+      } else if (shouldRenderCoApplicant) {
+        setCoApplicantUnemploymentOpen(true);
+      }
 
       setAlert(
         createAlert(
@@ -179,7 +188,9 @@ export default function HomeownershipEmploymentPage() {
       );
 
       if (employmentInfo.props.currentlyUnemployed === 'Yes') {
-        setCoApplicantUnemploymentOpen(true);
+        if (shouldRenderCoApplicant) {
+          setCoApplicantUnemploymentOpen(true);
+        }
       } else {
         setCurrentEmploymentOpen(true);
       }
@@ -235,6 +246,8 @@ export default function HomeownershipEmploymentPage() {
         habitat?.props.homeownershipMinCurrentEmploymentMonths
       ) {
         setPreviousEmploymentOpen(true);
+      } else if (shouldRenderCoApplicant) {
+        setCoApplicantUnemploymentOpen(true);
       }
 
       setCurrentEmploymentOpen(false);
@@ -271,6 +284,9 @@ export default function HomeownershipEmploymentPage() {
       setEmploymentInfo(persistedEmploymentInfo);
       setPreviousEmploymentEdit(false);
       setPreviousEmploymentOpen(false);
+      if (shouldRenderCoApplicant) {
+        setCoApplicantUnemploymentOpen(true);
+      }
       setAlert(
         createAlert(
           'success',
@@ -303,11 +319,6 @@ export default function HomeownershipEmploymentPage() {
           originalEmploymentInfo.props = {
             ...originalEmploymentInfo.props,
             coApplicantCurrentlyUnemployed: data.currentlyUnemployed,
-            coApplicantBusinessOwnerOrSelfEmployed:
-              data.currentlyUnemployed === 'Yes'
-                ? undefined
-                : originalEmploymentInfo.props
-                    .coApplicantBusinessOwnerOrSelfEmployed,
             coApplicantCurrentEmployment:
               data.currentlyUnemployed === 'Yes'
                 ? undefined
@@ -331,8 +342,13 @@ export default function HomeownershipEmploymentPage() {
       );
 
       setCoApplicantUnemploymentOpen(false);
-
-      setCoApplicantBusinessOwnerOrSelfEmployedOpen(true);
+      if (data.currentlyUnemployed === 'No') {
+        if (shouldRenderBusinessOwnerOrSelfEmployed) {
+          setCoApplicantBusinessOwnerOrSelfEmployedOpen(true);
+        } else {
+          setCoApplicantCurrentEmploymentOpen(true);
+        }
+      }
 
       updateApplicationLastSection();
     } catch {
@@ -373,7 +389,7 @@ export default function HomeownershipEmploymentPage() {
         )
       );
 
-      if (employmentInfo.coApplicantCurrentlyUnemployed === 'No') {
+      if (employmentInfo.props.coApplicantCurrentlyUnemployed === 'No') {
         setCoApplicantCurrentEmploymentOpen(true);
       }
       setCoApplicantBusinessOwnerOrSelfEmployedOpen(false);
@@ -489,16 +505,21 @@ export default function HomeownershipEmploymentPage() {
         !previousCoApplicantPreviousEmploymentEdit
     );
 
-  const handleOnClickNext = () => navigate('../property');
+  const handleOnClickNext = () =>
+    navigate(shouldRedirectToProperty ? '../property' : '../financial');
 
   const isNextDisabled = () => {
     if (
       employmentInfo !== undefined &&
       employmentInfo.props.currentlyUnemployed &&
-      employmentInfo.props.businessOwnerOrSelfEmployed &&
-      (applicantInfos[0]?.props?.hasCoApplicant === 'Yes'
-        ? employmentInfo.props.coApplicantCurrentlyUnemployed &&
-          employmentInfo.props.coApplicantBusinessOwnerOrSelfEmployed
+      (shouldRenderBusinessOwnerOrSelfEmployed
+        ? employmentInfo.props.businessOwnerOrSelfEmployed
+        : true) &&
+      (applicantInfos[0]?.props?.hasCoApplicant === 'Yes' &&
+      shouldRenderCoApplicant
+        ? (shouldRenderBusinessOwnerOrSelfEmployed
+            ? employmentInfo.props.coApplicantBusinessOwnerOrSelfEmployed
+            : true) && employmentInfo.props.coApplicantCurrentlyUnemployed
         : true)
     ) {
       if (
@@ -519,6 +540,7 @@ export default function HomeownershipEmploymentPage() {
 
       if (
         applicantInfos[0]?.props?.hasCoApplicant === 'Yes' &&
+        shouldRenderCoApplicant &&
         employmentInfo?.props?.coApplicantCurrentlyUnemployed === 'No' &&
         employmentInfo?.props?.coApplicantCurrentEmployment === undefined
       ) {
@@ -526,6 +548,7 @@ export default function HomeownershipEmploymentPage() {
       }
       if (
         applicantInfos[0]?.props?.hasCoApplicant === 'Yes' &&
+        shouldRenderCoApplicant &&
         calculateAgeInMonths(
           employmentInfo?.props?.coApplicantCurrentEmployment?.startDate
         ) < habitat?.props.homeownershipMinCurrentEmploymentMonths &&
@@ -581,15 +604,19 @@ export default function HomeownershipEmploymentPage() {
         onClickEdit={handleOnClickUnemploymentEdit}
       />
       <br />
-      <BusinessOwnerOrSelfEmployed
-        expanded={businessOwnerOrSelfEmployedOpen}
-        onExpandedChange={setBusinessOwnerOrSelfEmployedOpen}
-        employmentInfo={employmentInfo}
-        onValid={onValidBusinessOwnerOrSelfEmployed}
-        edit={businessOwnerOrSelfEmployedEdit}
-        onClickEdit={handleOnClickBusinessOwnerOrSelfEmployedEdit}
-      />
-      <br />
+      {shouldRenderBusinessOwnerOrSelfEmployed && (
+        <>
+          <BusinessOwnerOrSelfEmployed
+            expanded={businessOwnerOrSelfEmployedOpen}
+            onExpandedChange={setBusinessOwnerOrSelfEmployedOpen}
+            employmentInfo={employmentInfo}
+            onValid={onValidBusinessOwnerOrSelfEmployed}
+            edit={businessOwnerOrSelfEmployedEdit}
+            onClickEdit={handleOnClickBusinessOwnerOrSelfEmployedEdit}
+          />
+          <br />
+        </>
+      )}
       {employmentInfo?.props?.currentlyUnemployed === 'No' && (
         <>
           <CurrentEmployment
@@ -619,64 +646,67 @@ export default function HomeownershipEmploymentPage() {
             <br />
           </>
         )}
-      {applicantInfos[0]?.props?.hasCoApplicant === 'Yes' && (
-        <>
-          <Unemployment
-            expanded={coApplicantUnemploymentOpen}
-            onExpandedChange={setCoApplicantUnemploymentOpen}
-            employmentInfo={employmentInfo}
-            onValid={onValidCoApplicantCurrentlyUnemployed}
-            edit={coApplicantUnemploymentEdit}
-            onClickEdit={handleOnClickCoApplicantUnemploymentEdit}
-            coApplicant
-          />
-          <br />
-          <BusinessOwnerOrSelfEmployed
-            expanded={coApplicantBusinessOwnerOrSelfEmployedOpen}
-            onExpandedChange={setCoApplicantBusinessOwnerOrSelfEmployedOpen}
-            employmentInfo={employmentInfo}
-            onValid={onValidCoApplicantBusinessOwnerOrSelfEmployed}
-            edit={coApplicantBusinessOwnerOrSelfEmployedEdit}
-            onClickEdit={
-              handleOnClickCoApplicantBusinessOwnerOrSelfEmployedEdit
-            }
-            coApplicant
-          />
-          <br />
-          {employmentInfo?.props?.coApplicantCurrentlyUnemployed === 'No' && (
-            <>
-              <CurrentEmployment
-                expanded={coApplicantCurrentEmploymentOpen}
-                onExpandedChange={setCoApplicantCurrentEmploymentOpen}
-                employmentInfo={employmentInfo}
-                onValid={onValidCoApplicantCurrentEmployment}
-                edit={coApplicantCurrentEmploymentEdit}
-                onClickEdit={handleOnClickCoApplicantCurrentEmploymentEdit}
-                coApplicant
-              />
-              <br />
-            </>
-          )}
-          {calculateAgeInMonths(
-            employmentInfo?.props?.coApplicantCurrentEmployment?.startDate
-          ) < habitat?.props.homeownershipMinCurrentEmploymentMonths &&
-            employmentInfo?.props?.coApplicantCurrentEmployment?.firstJob ===
-              'No' && (
+      {applicantInfos[0]?.props?.hasCoApplicant === 'Yes' &&
+        shouldRenderCoApplicant && (
+          <>
+            <Unemployment
+              expanded={coApplicantUnemploymentOpen}
+              onExpandedChange={setCoApplicantUnemploymentOpen}
+              employmentInfo={employmentInfo}
+              onValid={onValidCoApplicantCurrentlyUnemployed}
+              edit={coApplicantUnemploymentEdit}
+              onClickEdit={handleOnClickCoApplicantUnemploymentEdit}
+              coApplicant
+            />
+            <br />
+            {employmentInfo?.props?.coApplicantCurrentlyUnemployed === 'No' && (
               <>
-                <PreviousEmployment
-                  expanded={coApplicantPreviousEmploymentOpen}
-                  onExpandedChange={setCoApplicantPreviousEmploymentOpen}
+                <BusinessOwnerOrSelfEmployed
+                  expanded={coApplicantBusinessOwnerOrSelfEmployedOpen}
+                  onExpandedChange={
+                    setCoApplicantBusinessOwnerOrSelfEmployedOpen
+                  }
                   employmentInfo={employmentInfo}
-                  onValid={onValidCoApplicantPreviousEmployment}
-                  edit={coApplicantPreviousEmploymentEdit}
-                  onClickEdit={handleOnClickCoApplicantPreviousEmploymentEdit}
+                  onValid={onValidCoApplicantBusinessOwnerOrSelfEmployed}
+                  edit={coApplicantBusinessOwnerOrSelfEmployedEdit}
+                  onClickEdit={
+                    handleOnClickCoApplicantBusinessOwnerOrSelfEmployedEdit
+                  }
+                  coApplicant
+                />
+                <br />
+                <CurrentEmployment
+                  expanded={coApplicantCurrentEmploymentOpen}
+                  onExpandedChange={setCoApplicantCurrentEmploymentOpen}
+                  employmentInfo={employmentInfo}
+                  onValid={onValidCoApplicantCurrentEmployment}
+                  edit={coApplicantCurrentEmploymentEdit}
+                  onClickEdit={handleOnClickCoApplicantCurrentEmploymentEdit}
                   coApplicant
                 />
                 <br />
               </>
             )}
-        </>
-      )}
+            {calculateAgeInMonths(
+              employmentInfo?.props?.coApplicantCurrentEmployment?.startDate
+            ) < habitat?.props.homeownershipMinCurrentEmploymentMonths &&
+              employmentInfo?.props?.coApplicantCurrentEmployment?.firstJob ===
+                'No' && (
+                <>
+                  <PreviousEmployment
+                    expanded={coApplicantPreviousEmploymentOpen}
+                    onExpandedChange={setCoApplicantPreviousEmploymentOpen}
+                    employmentInfo={employmentInfo}
+                    onValid={onValidCoApplicantPreviousEmployment}
+                    edit={coApplicantPreviousEmploymentEdit}
+                    onClickEdit={handleOnClickCoApplicantPreviousEmploymentEdit}
+                    coApplicant
+                  />
+                  <br />
+                </>
+              )}
+          </>
+        )}
       <CustomCard>
         <Flex width="100%" justifyContent="space-between">
           <Link to="../homeowners">

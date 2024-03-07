@@ -32,6 +32,9 @@ export default function HomeownershipFinancialPage() {
   const [alert, setAlert] = useState();
   const { habitat, application, updateApplicationLastSection } =
     useOutletContext();
+
+  const shouldRedirectToProperty = habitat?.props.optionalSections.propertyInfo;
+
   const navigate = useNavigate();
 
   const handleSelectedTabOnChange = (newTab) => setSelectedTab(Number(newTab));
@@ -304,7 +307,7 @@ export default function HomeownershipFinancialPage() {
       )}
       <CustomCard>
         <Flex width="100%" justifyContent="space-between">
-          <Link to="../property">
+          <Link to={shouldRedirectToProperty ? '../property' : '../employment'}>
             <Button variation="primary">Back</Button>
           </Link>
           <Button variation="primary" onClick={handleOnClickNext}>

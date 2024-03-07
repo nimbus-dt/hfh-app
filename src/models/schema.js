@@ -1146,6 +1146,32 @@ export const schema = {
         }
     },
     "nonModels": {
+        "OptionalSections": {
+            "name": "OptionalSections",
+            "fields": {
+                "coApplicant": {
+                    "name": "coApplicant",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "propertyInfo": {
+                    "name": "propertyInfo",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "businessOwnerOrSelfEmployed": {
+                    "name": "businessOwnerOrSelfEmployed",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": true,
+                    "attributes": []
+                }
+            }
+        },
         "WrittenQuestion": {
             "name": "WrittenQuestion",
             "fields": {
@@ -1325,10 +1351,19 @@ export const schema = {
                     "isRequired": true,
                     "attributes": [],
                     "isArrayNullable": true
+                },
+                "optionalSections": {
+                    "name": "optionalSections",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "OptionalSections"
+                    },
+                    "isRequired": true,
+                    "attributes": []
                 }
             }
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "00b8bfab6a1104057541e8fde450a474"
+    "version": "63873401ed57c50fc2696010f4097829"
 };

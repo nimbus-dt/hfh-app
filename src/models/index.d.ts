@@ -13,6 +13,22 @@ export enum SubmissionStatus {
   RETURNED = "RETURNED"
 }
 
+type EagerOptionalSections = {
+  readonly coApplicant: boolean;
+  readonly propertyInfo: boolean;
+  readonly businessOwnerOrSelfEmployed: boolean;
+}
+
+type LazyOptionalSections = {
+  readonly coApplicant: boolean;
+  readonly propertyInfo: boolean;
+  readonly businessOwnerOrSelfEmployed: boolean;
+}
+
+export declare type OptionalSections = LazyLoading extends LazyLoadingDisabled ? EagerOptionalSections : LazyOptionalSections
+
+export declare const OptionalSections: (new (init: ModelInit<OptionalSections>) => OptionalSections)
+
 type EagerWrittenQuestion = {
   readonly name: string;
   readonly label: string;
@@ -85,6 +101,7 @@ type EagerHabitatProps = {
   readonly homeownershipCheckQuestions?: CheckQuestion[] | null;
   readonly homeownershipRecordQuestions?: RecordQuestion[] | null;
   readonly homeownershipWrittenQuestions?: WrittenQuestion[] | null;
+  readonly optionalSections: OptionalSections;
 }
 
 type LazyHabitatProps = {
@@ -97,6 +114,7 @@ type LazyHabitatProps = {
   readonly homeownershipCheckQuestions?: CheckQuestion[] | null;
   readonly homeownershipRecordQuestions?: RecordQuestion[] | null;
   readonly homeownershipWrittenQuestions?: WrittenQuestion[] | null;
+  readonly optionalSections: OptionalSections;
 }
 
 export declare type HabitatProps = LazyLoading extends LazyLoadingDisabled ? EagerHabitatProps : LazyHabitatProps

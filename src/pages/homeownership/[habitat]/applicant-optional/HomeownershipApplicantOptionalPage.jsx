@@ -11,7 +11,10 @@ import AnyoneElseMilitaryServiceSection from './components/AnyoneElseMilitarySer
 import DemographicSection from './components/DemographicSection';
 
 export default function HomeownershipApplicantOptionalPage() {
-  const { application, updateApplicationLastSection } = useOutletContext();
+  const { application, updateApplicationLastSection, habitat } =
+    useOutletContext();
+
+  const shouldRenderCoApplicant = habitat?.props.optionalSections.coApplicant;
 
   const { data: applicantInfos } = useApplicantInfosQuery({
     criteria: (c1) => c1.ownerID.eq(application?.id),
@@ -352,7 +355,7 @@ export default function HomeownershipApplicantOptionalPage() {
           onClickEdit={handleOnClickDemographicEdit}
         />
         <br />
-        {hasCoapplicant && (
+        {hasCoapplicant && shouldRenderCoApplicant && (
           <>
             <DemographicSection
               expanded={coApplicantDemographicOpen}
