@@ -82,7 +82,7 @@
         },
         "sendConfirmSubmitEmail": {
           "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
-          "s3Key": "amplify-builds/sendConfirmSubmitEmail-4e366f7469307066424a-build.zip"
+          "s3Key": "amplify-builds/sendConfirmSubmitEmail-39445a71686c556c4945-build.zip"
         }
       },
       "auth": {

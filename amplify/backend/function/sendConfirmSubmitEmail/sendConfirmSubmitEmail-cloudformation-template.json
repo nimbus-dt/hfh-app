@@ -27,6 +27,10 @@
     "authhfhappUserPoolId": {
       "Type": "String",
       "Default": "authhfhappUserPoolId"
+    },
+    "apihfhappGraphQLAPIKeyOutput": {
+      "Type": "String",
+      "Default": "apihfhappGraphQLAPIKeyOutput"
     }
   },
   "Conditions": {
@@ -84,6 +88,15 @@
             },
             "AUTH_HFHAPP_USERPOOLID": {
               "Ref": "authhfhappUserPoolId"
+            },
+            "API_HFHAPP_GRAPHQLAPIIDOUTPUT": {
+              "Ref": "apihfhappGraphQLAPIIdOutput"
+            },
+            "API_HFHAPP_GRAPHQLAPIENDPOINTOUTPUT": {
+              "Ref": "apihfhappGraphQLAPIEndpointOutput"
+            },
+            "API_HFHAPP_GRAPHQLAPIKEYOUTPUT": {
+              "Ref": "apihfhappGraphQLAPIKeyOutput"
             }
           }
         },
@@ -195,6 +208,34 @@
         "PolicyDocument": {
           "Version": "2012-10-17",
           "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "appsync:GraphQL"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:appsync:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":apis/",
+                      {
+                        "Ref": "apihfhappGraphQLAPIIdOutput"
+                      },
+                      "/types/Query/*"
+                    ]
+                  ]
+                }
+              ]
+            },
             {
               "Effect": "Allow",
               "Action": [
