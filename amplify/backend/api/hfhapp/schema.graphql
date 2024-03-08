@@ -28,18 +28,13 @@ type CheckQuestion {
   label: String!
 }
 
-type TextSection {
-  title: String!
-  body: String!
-}
-
 type HabitatProps {
   customStatus: [String!]
-  homeownershipTermsText: [TextSection!]
+  homeownershipTermsText: String!
   homeownershipMinCurrentAddressMonths: Int!
   homeownershipMinCurrentEmploymentMonths: Int!
   homeownershipNoOpenCycle: String!
-  homeownershipHomeText: [TextSection!]
+  homeownershipHomeText: String!
   homeownershipCheckQuestions: [CheckQuestion!]
   homeownershipRecordQuestions: [RecordQuestion!]
   homeownershipWrittenQuestions: [WrittenQuestion!]

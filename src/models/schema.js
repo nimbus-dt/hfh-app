@@ -1251,25 +1251,6 @@ export const schema = {
                 }
             }
         },
-        "TextSection": {
-            "name": "TextSection",
-            "fields": {
-                "title": {
-                    "name": "title",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "body": {
-                    "name": "body",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                }
-            }
-        },
         "HabitatProps": {
             "name": "HabitatProps",
             "fields": {
@@ -1283,13 +1264,10 @@ export const schema = {
                 },
                 "homeownershipTermsText": {
                     "name": "homeownershipTermsText",
-                    "isArray": true,
-                    "type": {
-                        "nonModel": "TextSection"
-                    },
+                    "isArray": false,
+                    "type": "String",
                     "isRequired": true,
-                    "attributes": [],
-                    "isArrayNullable": true
+                    "attributes": []
                 },
                 "homeownershipMinCurrentAddressMonths": {
                     "name": "homeownershipMinCurrentAddressMonths",
@@ -1314,13 +1292,10 @@ export const schema = {
                 },
                 "homeownershipHomeText": {
                     "name": "homeownershipHomeText",
-                    "isArray": true,
-                    "type": {
-                        "nonModel": "TextSection"
-                    },
+                    "isArray": false,
+                    "type": "String",
                     "isRequired": true,
-                    "attributes": [],
-                    "isArrayNullable": true
+                    "attributes": []
                 },
                 "homeownershipCheckQuestions": {
                     "name": "homeownershipCheckQuestions",
@@ -1365,5 +1340,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "63873401ed57c50fc2696010f4097829"
+    "version": "5f0a7df21af6ff7dc30bec225b3949dd"
 };

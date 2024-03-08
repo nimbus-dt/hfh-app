@@ -77,27 +77,13 @@ export declare type CheckQuestion = LazyLoading extends LazyLoadingDisabled ? Ea
 
 export declare const CheckQuestion: (new (init: ModelInit<CheckQuestion>) => CheckQuestion)
 
-type EagerTextSection = {
-  readonly title: string;
-  readonly body: string;
-}
-
-type LazyTextSection = {
-  readonly title: string;
-  readonly body: string;
-}
-
-export declare type TextSection = LazyLoading extends LazyLoadingDisabled ? EagerTextSection : LazyTextSection
-
-export declare const TextSection: (new (init: ModelInit<TextSection>) => TextSection)
-
 type EagerHabitatProps = {
   readonly customStatus?: string[] | null;
-  readonly homeownershipTermsText?: TextSection[] | null;
+  readonly homeownershipTermsText: string;
   readonly homeownershipMinCurrentAddressMonths: number;
   readonly homeownershipMinCurrentEmploymentMonths: number;
   readonly homeownershipNoOpenCycle: string;
-  readonly homeownershipHomeText?: TextSection[] | null;
+  readonly homeownershipHomeText: string;
   readonly homeownershipCheckQuestions?: CheckQuestion[] | null;
   readonly homeownershipRecordQuestions?: RecordQuestion[] | null;
   readonly homeownershipWrittenQuestions?: WrittenQuestion[] | null;
@@ -106,11 +92,11 @@ type EagerHabitatProps = {
 
 type LazyHabitatProps = {
   readonly customStatus?: string[] | null;
-  readonly homeownershipTermsText?: TextSection[] | null;
+  readonly homeownershipTermsText: string;
   readonly homeownershipMinCurrentAddressMonths: number;
   readonly homeownershipMinCurrentEmploymentMonths: number;
   readonly homeownershipNoOpenCycle: string;
-  readonly homeownershipHomeText?: TextSection[] | null;
+  readonly homeownershipHomeText: string;
   readonly homeownershipCheckQuestions?: CheckQuestion[] | null;
   readonly homeownershipRecordQuestions?: RecordQuestion[] | null;
   readonly homeownershipWrittenQuestions?: WrittenQuestion[] | null;
