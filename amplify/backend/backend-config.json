@@ -118,6 +118,28 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "sendConfirmSubmitEmail": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "hfhapp"
+        },
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "hfhapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "sendEmailToAdmin": {
       "build": true,
       "dependsOn": [],
@@ -170,6 +192,22 @@
         {
           "category": "function",
           "resourceName": "getEmail"
+        }
+      ]
+    },
+    "AMPLIFY_function_sendConfirmSubmitEmail_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendConfirmSubmitEmail"
+        }
+      ]
+    },
+    "AMPLIFY_function_sendConfirmSubmitEmail_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendConfirmSubmitEmail"
         }
       ]
     },
