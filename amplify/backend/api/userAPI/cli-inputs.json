@@ -10,6 +10,16 @@
           "read"
         ]
       }
+    },
+    "/submitted-applications/email": {
+      "name": "/submitted-applications/email",
+      "lambdaFunction": "getSubmittedApplicationsEmails",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "read"
+        ]
+      }
     }
   }
 }
