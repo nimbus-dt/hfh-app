@@ -29,7 +29,7 @@ export const handler = async (event) => {
     console.log(record.eventName);
     const dynamoRecord = record.dynamodb;
     console.log('DynamoDB Record: %j', dynamoRecord);
-    if(dynamoRecord.NewImage.submissionStatus.S === "SUBMITTED" && (dynamoRecord.OldImage ? dynamoRecord.OldImage.submissionStatus.S !== dynamoRecord.NewImage.submissionStatus.S : true)){
+    if(record.eventName === "MODIFY" && dynamoRecord.NewImage.submissionStatus.S === "SUBMITTED" && dynamoRecord.OldImage.submissionStatus.S !== dynamoRecord.NewImage.submissionStatus.S){
       console.log("Application was submitted.")
       try {
         const cycleQuery = /* GraphQL */ `
