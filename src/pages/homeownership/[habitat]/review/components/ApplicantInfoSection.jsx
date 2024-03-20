@@ -676,7 +676,11 @@ function PrevAddress({
                 ? 'Which of these best represents the ownership status of the previous address the co-applicant lived in?'
                 : 'Which of these best represents the ownership status of the previous address you lived in?'
             }
-            value={applicantInfo.props.previousAddress.ownershipStatus}
+            value={
+              coApplicant
+                ? applicantInfo.props.coApplicantPreviousAddress.ownershipStatus
+                : applicantInfo.props.previousAddress.ownershipStatus
+            }
             isDisabled
           >
             {ownerShipValues.map((ownerShip) => (
@@ -929,6 +933,7 @@ const ApplicantInfoSection = ({
           ApplicantInfo,
           (c) => c.ownerID.eq(applicationID)
         );
+
         setApplicantInfo(existingApplicantInfo[0]);
       } catch (error) {
         console.log('Error fetching the applicant info data.');
