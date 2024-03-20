@@ -982,7 +982,7 @@ export function TypeOfCredit({
       unregister('totalNumberOfBorrowers');
     }
     if (creditTypeWatch !== creditTypes[2]) {
-      unregister('youtInitials');
+      unregister('yourInitials');
     }
   }, [creditTypeWatch]);
 
