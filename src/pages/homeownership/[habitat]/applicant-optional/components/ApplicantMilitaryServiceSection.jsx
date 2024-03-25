@@ -9,6 +9,7 @@ import {
   TextField,
 } from '@aws-amplify/ui-react';
 import CustomExpandableCard from 'components/CustomExpandableCard';
+import { useEffect } from 'react';
 import { militaryServiceSchema } from '../HomeownershipApplicantOptionalPage.schema';
 
 const ApplicantMilitaryServiceSection = ({
@@ -24,6 +25,7 @@ const ApplicantMilitaryServiceSection = ({
     control,
     watch,
     register,
+    unregister,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(militaryServiceSchema),
@@ -37,6 +39,22 @@ const ApplicantMilitaryServiceSection = ({
   const currentlyServingWatch = watch('currentlyServing');
 
   const isEnabled = !applicantOptional?.props?.applicantMilitaryService || edit;
+
+  useEffect(() => {
+    if (serveOrServedWatch !== 'Yes') {
+      unregister('currentlyServing');
+      unregister('projectedExpirationDateOfServiceTour');
+      unregister('currentlyRetiredDischargedOrSeparated');
+      unregister('onlyPeriodWasNonActive');
+      unregister('survivingSpouse|');
+    }
+  }, [serveOrServedWatch]);
+
+  useEffect(() => {
+    if (currentlyServingWatch !== 'Yes') {
+      unregister('projectedExpirationDateOfServiceTour');
+    }
+  }, [currentlyServingWatch]);
 
   return (
     <CustomExpandableCard

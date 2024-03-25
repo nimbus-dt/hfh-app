@@ -1,6 +1,51 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateProperty = /* GraphQL */ `
+  subscription OnCreateProperty($filter: ModelSubscriptionPropertyFilterInput) {
+    onCreateProperty(filter: $filter) {
+      id
+      ownerID
+      props
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateProperty = /* GraphQL */ `
+  subscription OnUpdateProperty($filter: ModelSubscriptionPropertyFilterInput) {
+    onUpdateProperty(filter: $filter) {
+      id
+      ownerID
+      props
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteProperty = /* GraphQL */ `
+  subscription OnDeleteProperty($filter: ModelSubscriptionPropertyFilterInput) {
+    onDeleteProperty(filter: $filter) {
+      id
+      ownerID
+      props
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
 export const onCreateTestCycle = /* GraphQL */ `
   subscription OnCreateTestCycle(
     $filter: ModelSubscriptionTestCycleFilterInput
@@ -403,6 +448,7 @@ export const onCreateMember = /* GraphQL */ `
       id
       props
       testapplicationID
+      isCoApplicant
       createdAt
       updatedAt
       _version
@@ -418,6 +464,7 @@ export const onUpdateMember = /* GraphQL */ `
       id
       props
       testapplicationID
+      isCoApplicant
       createdAt
       updatedAt
       _version
@@ -433,6 +480,7 @@ export const onDeleteMember = /* GraphQL */ `
       id
       props
       testapplicationID
+      isCoApplicant
       createdAt
       updatedAt
       _version

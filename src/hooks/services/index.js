@@ -7,6 +7,7 @@ import {
   EmploymentInfo,
   Income,
   Member,
+  Property,
   Record,
   TestApplication,
   TestCycle,
@@ -95,4 +96,10 @@ export const useTestCyclesQuery = dataStoreQueryHookBuilder({
 export const useTestCycleById = dataStoreQueryByIdHookBuilder({
   model: TestCycle,
   defaultDataValue: null,
+});
+
+/* PROPERTY MODEL SERVICES */
+export const usePropertiesQuery = dataStoreQueryHookBuilder({
+  model: Property,
+  defaultDataValue: [],
 });

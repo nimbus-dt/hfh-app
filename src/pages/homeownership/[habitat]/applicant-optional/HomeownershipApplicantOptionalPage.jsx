@@ -5,12 +5,23 @@ import { DataStore } from 'aws-amplify';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { createAlert } from 'utils/factories';
 import CustomCard from 'components/CustomCard';
+import { useApplicantInfosQuery } from 'hooks/services';
 import ApplicantMilitaryServiceSection from './components/ApplicantMilitaryServiceSection';
 import AnyoneElseMilitaryServiceSection from './components/AnyoneElseMilitaryServiceSection';
 import DemographicSection from './components/DemographicSection';
 
 export default function HomeownershipApplicantOptionalPage() {
-  const { application, updateApplicationLastSection } = useOutletContext();
+  const { application, updateApplicationLastSection, habitat } =
+    useOutletContext();
+
+  const shouldRenderCoApplicant = habitat?.props.optionalSections.coApplicant;
+
+  const { data: applicantInfos } = useApplicantInfosQuery({
+    criteria: (c1) => c1.ownerID.eq(application?.id),
+    dependencyArray: [application?.id],
+  });
+
+  const hasCoapplicant = applicantInfos[0]?.props?.hasCoApplicant === 'Yes';
 
   const [optional, setOptional] = useState();
 
@@ -26,6 +37,11 @@ export default function HomeownershipApplicantOptionalPage() {
 
   const [demographicOpen, setDemographicOpen] = useState(false);
   const [demographicEdit, setDemographicEdit] = useState(false);
+
+  const [coApplicantDemographicOpen, setCoApplicantDemographicOpen] =
+    useState(false);
+  const [coApplicantDemographicEdit, setCoApplicantDemographicEdit] =
+    useState(false);
 
   const [alert, setAlert] = useState();
   const navigate = useNavigate();
@@ -184,6 +200,9 @@ export default function HomeownershipApplicantOptionalPage() {
       }
 
       setDemographicOpen(false);
+      if (hasCoapplicant) {
+        setCoApplicantDemographicOpen(true);
+      }
       updateApplicationLastSection();
     } catch (error) {
       console.log('error', error);
@@ -192,6 +211,61 @@ export default function HomeownershipApplicantOptionalPage() {
           'error',
           'Error',
           "The demographic information couldn't be saved."
+        )
+      );
+    }
+  };
+
+  const onValidCoApplicantDemographic = async (data) => {
+    try {
+      if (optional === undefined) {
+        const persistedApplicantOptional = await DataStore.save(
+          new ApplicantOptional({
+            ownerID: application.id,
+            props: {
+              coApplicantDemographic: data,
+            },
+          })
+        );
+        setOptional(persistedApplicantOptional);
+        setAlert(
+          createAlert(
+            'success',
+            'Success',
+            "The co-applicant's demographic information was saved successfully."
+          )
+        );
+      } else {
+        const original = await DataStore.query(ApplicantOptional, optional.id);
+        const persistedApplicantOptional = await DataStore.save(
+          ApplicantOptional.copyOf(original, (originalApplicantOptional) => {
+            originalApplicantOptional.ownerID = application.id;
+            originalApplicantOptional.props = {
+              ...originalApplicantOptional.props,
+              coApplicantDemographic: data,
+            };
+          })
+        );
+        setOptional(persistedApplicantOptional);
+        setCoApplicantDemographicEdit(false);
+        setAlert(
+          createAlert(
+            'success',
+            'Success',
+            "The co-applicant's demographic information was updated successfully."
+          )
+        );
+      }
+
+      setCoApplicantDemographicOpen(false);
+      updateApplicationLastSection();
+    } catch (error) {
+      console.log('error', error);
+      setAlert(
+        createAlert(
+          'error',
+          'Error',
+          "The co-applicant's demographic information couldn't be saved."
         )
       );
     }
@@ -211,6 +285,12 @@ export default function HomeownershipApplicantOptionalPage() {
 
   const handleOnClickDemographicEdit = () =>
     setDemographicEdit((previousDemographicEdit) => !previousDemographicEdit);
+
+  const handleOnClickCoApplicantDemographicEdit = () =>
+    setCoApplicantDemographicEdit(
+      (previousCoApplicantDemographicEdit) =>
+        !previousCoApplicantDemographicEdit
+    );
 
   const handleOnClickNext = () => {
     navigate('../checklist');
@@ -275,6 +355,20 @@ export default function HomeownershipApplicantOptionalPage() {
           onClickEdit={handleOnClickDemographicEdit}
         />
         <br />
+        {hasCoapplicant && shouldRenderCoApplicant && (
+          <>
+            <DemographicSection
+              expanded={coApplicantDemographicOpen}
+              onExpandedChange={setCoApplicantDemographicOpen}
+              applicantOptional={optional}
+              onValid={onValidCoApplicantDemographic}
+              edit={coApplicantDemographicEdit}
+              onClickEdit={handleOnClickCoApplicantDemographicEdit}
+              coApplicant
+            />
+            <br />
+          </>
+        )}
         <CustomCard>
           <Flex width="100%" justifyContent="space-between">
             <Button

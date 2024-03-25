@@ -31,6 +31,7 @@ import HomeownershipHomeownersPage from 'pages/homeownership/[habitat]/homeowner
 import HomeownershipEmploymentPage from 'pages/homeownership/[habitat]/employment';
 import HomeownershipFinancialPage from 'pages/homeownership/[habitat]/financial';
 import HomeownershipReviewPage from 'pages/homeownership/[habitat]/review';
+import HomeownershipPropertyPage from 'pages/homeownership/[habitat]/property';
 import { LandingLayout } from './components/Landing/LandingLayout';
 import { LandingAbout } from './components/Landing/LandingAbout';
 import { LandingReturn } from './components/Landing/LandingReturn';
@@ -117,6 +118,7 @@ function App() {
           <Route path="records" element={<HomeownershipRecordsPage />} />
           <Route path="homeowners" element={<HomeownershipHomeownersPage />} />
           <Route path="employment" element={<HomeownershipEmploymentPage />} />
+          <Route path="property" element={<HomeownershipPropertyPage />} />
           <Route path="financial" element={<HomeownershipFinancialPage />} />
           <Route path="review" element={<HomeownershipReviewPage />} />
         </Route>
