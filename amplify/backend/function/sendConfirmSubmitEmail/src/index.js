@@ -96,7 +96,7 @@ export const handler = async (event) => {
           Message: {
             Body: {
               Html: {
-                Data: `<div><span>Hello,</span><br/><p>Your submission for your Habitat for Humanity application was uploaded succesfully.</p><br/><span>Thanks,</span><br/><span>${habitatBody.data.getHabitat.name}</span></div>`,
+                Data: `<div><span>Hello,</span><br/><p>Your submission for your Habitat for Humanity application was uploaded succesfully.</p><span>Thanks,</span><br/><span>${habitatBody.data.getHabitat.name}</span></div>`,
               },
             },
     
