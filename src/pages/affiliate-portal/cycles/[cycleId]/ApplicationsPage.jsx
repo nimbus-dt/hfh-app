@@ -226,6 +226,7 @@ const ApplicationsPage = () => {
             onChange={(event) => {
               setReviewStatus(event.target.value);
             }}
+            maxWidth="10rem"
           >
             {[
               ...REVIEW_STATUS,
