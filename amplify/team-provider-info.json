@@ -79,6 +79,10 @@
         "sendEmailToApplicant": {
           "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
           "s3Key": "amplify-builds/sendEmailToApplicant-494f4a4e754a7533616d-build.zip"
+        },
+        "sendConfirmSubmitEmail": {
+          "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
+          "s3Key": "amplify-builds/sendConfirmSubmitEmail-6e612b2b30577371336c-build.zip"
         }
       },
       "auth": {
@@ -86,6 +90,12 @@
       },
       "storage": {
         "s3hfhappstoragebucket": {}
+      },
+      "api": {
+        "hfhapp": {},
+        "public": {},
+        "sendEmailToApplicantAPI": {},
+        "userAPI": {}
       }
     }
   }
