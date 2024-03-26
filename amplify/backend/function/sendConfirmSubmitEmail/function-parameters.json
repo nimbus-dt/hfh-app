@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "api": {
+      "hfhapp": [
+        "Query"
+      ]
+    },
+    "auth": {
+      "hfhapp": [
+        "read"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

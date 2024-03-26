@@ -694,9 +694,11 @@ export const onCreateHabitat = /* GraphQL */ `
       countiesServed
       props {
         customStatus
+        homeownershipTermsText
         homeownershipMinCurrentAddressMonths
         homeownershipMinCurrentEmploymentMonths
         homeownershipNoOpenCycle
+        homeownershipHomeText
         __typename
       }
       users
@@ -727,9 +729,11 @@ export const onUpdateHabitat = /* GraphQL */ `
       countiesServed
       props {
         customStatus
+        homeownershipTermsText
         homeownershipMinCurrentAddressMonths
         homeownershipMinCurrentEmploymentMonths
         homeownershipNoOpenCycle
+        homeownershipHomeText
         __typename
       }
       users
@@ -760,9 +764,11 @@ export const onDeleteHabitat = /* GraphQL */ `
       countiesServed
       props {
         customStatus
+        homeownershipTermsText
         homeownershipMinCurrentAddressMonths
         homeownershipMinCurrentEmploymentMonths
         homeownershipNoOpenCycle
+        homeownershipHomeText
         __typename
       }
       users

@@ -66,6 +66,14 @@
           ],
           "category": "function",
           "resourceName": "getEmail"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "getSubmittedApplicationsEmails"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -107,6 +115,52 @@
     "getEmail": {
       "build": true,
       "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "hfhapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "getSubmittedApplicationsEmails": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "hfhapp"
+        },
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "hfhapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "sendConfirmSubmitEmail": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "hfhapp"
+        },
         {
           "attributes": [
             "UserPoolId"
@@ -170,6 +224,38 @@
         {
           "category": "function",
           "resourceName": "getEmail"
+        }
+      ]
+    },
+    "AMPLIFY_function_getSubmittedApplicationsEmails_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getSubmittedApplicationsEmails"
+        }
+      ]
+    },
+    "AMPLIFY_function_getSubmittedApplicationsEmails_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getSubmittedApplicationsEmails"
+        }
+      ]
+    },
+    "AMPLIFY_function_sendConfirmSubmitEmail_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendConfirmSubmitEmail"
+        }
+      ]
+    },
+    "AMPLIFY_function_sendConfirmSubmitEmail_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendConfirmSubmitEmail"
         }
       ]
     },

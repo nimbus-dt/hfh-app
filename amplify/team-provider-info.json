@@ -31,6 +31,14 @@
         "sendEmailToApplicant": {
           "deploymentBucketName": "amplify-hfhapp-prod-160335-deployment",
           "s3Key": "amplify-builds/sendEmailToApplicant-494f4a4e754a7533616d-build.zip"
+        },
+        "getSubmittedApplicationsEmails": {
+          "deploymentBucketName": "amplify-hfhapp-prod-160335-deployment",
+          "s3Key": "amplify-builds/getSubmittedApplicationsEmails-434e66354c6f53536d78-build.zip"
+        },
+        "sendConfirmSubmitEmail": {
+          "deploymentBucketName": "amplify-hfhapp-prod-160335-deployment",
+          "s3Key": "amplify-builds/sendConfirmSubmitEmail-5537767178654e47545a-build.zip"
         }
       },
       "auth": {
@@ -79,6 +87,14 @@
         "sendEmailToApplicant": {
           "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
           "s3Key": "amplify-builds/sendEmailToApplicant-494f4a4e754a7533616d-build.zip"
+        },
+        "sendConfirmSubmitEmail": {
+          "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
+          "s3Key": "amplify-builds/sendConfirmSubmitEmail-5537767178654e47545a-build.zip"
+        },
+        "getSubmittedApplicationsEmails": {
+          "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
+          "s3Key": "amplify-builds/getSubmittedApplicationsEmails-4b7a4c6e35382b726443-build.zip"
         }
       },
       "auth": {
@@ -86,6 +102,12 @@
       },
       "storage": {
         "s3hfhappstoragebucket": {}
+      },
+      "api": {
+        "hfhapp": {},
+        "public": {},
+        "sendEmailToApplicantAPI": {},
+        "userAPI": {}
       }
     }
   }

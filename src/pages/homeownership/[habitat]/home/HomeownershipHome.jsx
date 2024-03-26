@@ -11,6 +11,7 @@ import {
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { SubmissionStatus } from 'models';
 import CustomCard from 'components/CustomCard';
+import DOMPurify from 'dompurify';
 
 export default function HomeownershipHomePage() {
   const { application, habitat, openCycle } = useOutletContext();
@@ -43,12 +44,14 @@ export default function HomeownershipHomePage() {
         <>
           <View as="div">
             <Flex marginBottom="30px" direction="column" gap="xl">
-              {habitat?.props.homeownershipHomeText?.map((item, index) => (
-                <View as="div" key={index}>
-                  <Heading level="5">{item.title}</Heading>
-                  <Text>{item.body}</Text>
-                </View>
-              ))}
+              <View
+                as="div"
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(
+                    habitat?.props.homeownershipHomeText
+                  ),
+                }}
+              />
             </Flex>
           </View>
           <Flex justifyContent="end" width="100%">

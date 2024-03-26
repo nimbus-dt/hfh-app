@@ -1064,9 +1064,11 @@ export const getHabitat = /* GraphQL */ `
       countiesServed
       props {
         customStatus
+        homeownershipTermsText
         homeownershipMinCurrentAddressMonths
         homeownershipMinCurrentEmploymentMonths
         homeownershipNoOpenCycle
+        homeownershipHomeText
         __typename
       }
       users

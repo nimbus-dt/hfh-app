@@ -13,7 +13,7 @@ const SubmissionStatus = {
   "RETURNED": "RETURNED"
 };
 
-const { Property, TestCycle, ApplicantOptional, Asset, Debt, Income, TestApplication, EmploymentInfo, Member, Record, Written, Checklist, ApplicantInfo, Habitat, OptionalSections, WrittenQuestion, RecordQuestion, CheckQuestion, TextSection, HabitatProps } = initSchema(schema);
+const { Property, TestCycle, ApplicantOptional, Asset, Debt, Income, TestApplication, EmploymentInfo, Member, Record, Written, Checklist, ApplicantInfo, Habitat, OptionalSections, WrittenQuestion, RecordQuestion, CheckQuestion, HabitatProps } = initSchema(schema);
 
 export {
   Property,
@@ -36,6 +36,5 @@ export {
   WrittenQuestion,
   RecordQuestion,
   CheckQuestion,
-  TextSection,
   HabitatProps
 };
