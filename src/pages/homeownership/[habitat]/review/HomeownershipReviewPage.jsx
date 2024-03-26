@@ -7,7 +7,7 @@ import { TestApplication, SubmissionStatus } from 'models';
 import dayjs from 'dayjs';
 import { createAlert } from 'utils/factories';
 import CustomCard from 'components/CustomCard';
-import ApplicantInfoSection from './components/ApplicantInfoSection';
+import ApplicantInfoSection from './components/ApplicantInfoSection/ApplicantInfoSection';
 import { ChecklistSection } from './components/CheckListSection';
 import WrittenSection from './components/WrittenSection';
 import RecordsSection from './components/RecordsSection';
