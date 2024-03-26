@@ -69,6 +69,7 @@ export const handler = async (event) => {
         const formattedApplications = []
 
         for (const item of testApplicationsBody.data.listTestApplications.items) {
+            console.log('item', item)
             const applicantInfoQuery = /* GraphQL */ `
               query GetApplicantInfoQuery {
                 listApplicantInfos(filter: {ownerID: {eq: "${item.id}"}}) {
@@ -78,6 +79,8 @@ export const handler = async (event) => {
                 }
               }
             `;
+
+            console.log('query', applicantInfoQuery)
 
             const applicantInfoOptions = {
               method: 'POST',
@@ -93,6 +96,8 @@ export const handler = async (event) => {
             const applicantInfoResponse = await fetch(applicantInfoRequest);
 
             const applicantInfoBody = await applicantInfoResponse.json();
+
+            console.log('applicantInfoBody', applicantInfoBody)
 
             const fullName = applicantInfoBody.data.listApplicantInfos.items[0] && JSON.parse(applicantInfoBody.data.listApplicantInfos.items[0]?.props).basicInfo?.fullName;
 

@@ -36,7 +36,10 @@
           "deploymentBucketName": "amplify-hfhapp-prod-160335-deployment",
           "s3Key": "amplify-builds/getSubmittedApplicationsEmails-434e66354c6f53536d78-build.zip"
         },
-        "sendConfirmSubmitEmail": {}
+        "sendConfirmSubmitEmail": {
+          "deploymentBucketName": "amplify-hfhapp-prod-160335-deployment",
+          "s3Key": "amplify-builds/sendConfirmSubmitEmail-5537767178654e47545a-build.zip"
+        }
       },
       "auth": {
         "hfhapp": {}
@@ -87,7 +90,7 @@
         },
         "sendConfirmSubmitEmail": {
           "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
-          "s3Key": "amplify-builds/sendConfirmSubmitEmail-6e612b2b30577371336c-build.zip"
+          "s3Key": "amplify-builds/sendConfirmSubmitEmail-5537767178654e47545a-build.zip"
         },
         "getSubmittedApplicationsEmails": {
           "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
