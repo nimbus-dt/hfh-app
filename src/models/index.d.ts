@@ -17,12 +17,14 @@ type EagerOptionalSections = {
   readonly coApplicant: boolean;
   readonly propertyInfo: boolean;
   readonly businessOwnerOrSelfEmployed: boolean;
+  readonly typeOfOwnership: boolean;
 }
 
 type LazyOptionalSections = {
   readonly coApplicant: boolean;
   readonly propertyInfo: boolean;
   readonly businessOwnerOrSelfEmployed: boolean;
+  readonly typeOfOwnership: boolean;
 }
 
 export declare type OptionalSections = LazyLoading extends LazyLoadingDisabled ? EagerOptionalSections : LazyOptionalSections

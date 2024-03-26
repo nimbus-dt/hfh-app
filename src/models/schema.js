@@ -1169,6 +1169,13 @@ export const schema = {
                     "type": "Boolean",
                     "isRequired": true,
                     "attributes": []
+                },
+                "typeOfOwnership": {
+                    "name": "typeOfOwnership",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": true,
+                    "attributes": []
                 }
             }
         },
@@ -1340,5 +1347,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "5f0a7df21af6ff7dc30bec225b3949dd"
+    "version": "bd3e214a267dfa90b4fc3bf146595c5b"
 };
