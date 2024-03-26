@@ -5,7 +5,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { getCheckOrExEmoji } from 'utils/misc';
 import CustomExpandableCard from 'components/CustomExpandableCard';
 import {
-  creditTypes,
   ownershipTypes,
   typeOfOwnershipSchema,
 } from '../HomeownershipApplicantInfoPage.schema';
@@ -43,7 +42,7 @@ export default function TypeOfOwnership({
         <Controller
           control={control}
           name="ownershipType"
-          defaultValue={creditTypes[0]}
+          defaultValue={ownershipTypes[0]}
           render={({ field: { onChange, onBlur, value } }) => (
             <RadioGroupField
               name="ownershipType"
