@@ -39,7 +39,7 @@ export default function TypeOfOwnership({
       expanded={expanded}
       onExpandedChange={onExpandedChange}
     >
-      <form onSubmit={handleSubmit(onValid, (errors2) => console.log(errors2))}>
+      <form onSubmit={handleSubmit(onValid)}>
         <Controller
           control={control}
           name="ownershipType"
