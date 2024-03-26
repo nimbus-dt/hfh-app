@@ -5,15 +5,13 @@ import { DataStore } from 'aws-amplify';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { createAlert } from 'utils/factories';
 import CustomCard from 'components/CustomCard';
-import {
-  BasicInformation,
-  Address,
-  PrevAddress,
-  UnmarriedAddendum,
-  TypeOfCredit,
-  CoApplicant,
-} from './components/FormApplicantInfo';
 import { maritalStatusValues } from './HomeownershipApplicantInfoPage.schema';
+import BasicInformation from './components/BasicInformation';
+import UnmarriedAddendum from './components/UnmarriedAddendum';
+import Address from './components/Address';
+import PrevAddress from './components/PrevAddress';
+import TypeOfCredit from './components/TypeOfCredit';
+import CoApplicant from './components/CoApplicant';
 
 export default function HomeownershipApplicantInfoPage() {
   const { application, updateApplicationLastSection, habitat } =
