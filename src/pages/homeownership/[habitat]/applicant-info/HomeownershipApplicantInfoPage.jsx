@@ -19,8 +19,6 @@ export default function HomeownershipApplicantInfoPage() {
 
   const shouldRenderCoApplicant = habitat?.props.optionalSections.coApplicant;
 
-  console.log(shouldRenderCoApplicant);
-
   const [applicantInfo, setApplicantInfo] = useState();
 
   const [basicInfoOpen, setBasicInfoOpen] = useState(true);
