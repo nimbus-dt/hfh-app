@@ -52,7 +52,7 @@ export default function TypeOfOwnership({
               value={value}
               isRequired
               isDisabled={!isEnabled}
-              hasError={errors?.typeOfOwnership}
+              hasError={errors?.ownershipType}
               errorMessage="Invalid type of ownership"
             >
               {ownershipTypes.map((ownershipType) => (
