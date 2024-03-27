@@ -30,7 +30,11 @@ function Placeholder() {
   );
 }
 
-const LexicalEditor = ({ initialEditorState, onChange, editable }) => (
+const LexicalEditor = ({
+  initialEditorState,
+  onChange = () => {},
+  editable,
+}) => (
   <LexicalComposer
     initialConfig={{
       editorState: initialEditorState,
