@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import ToolbarPlugin from './components/ToolbarPlugin';
 import LexicalEditorTheme from './LexicalEditor.Theme';
 import './LexicalEditor.style.css';
+import RestoreStatePlugin from './components/RestoreStatePlugin';
 
 function Placeholder() {
   return (
@@ -31,13 +32,12 @@ function Placeholder() {
 }
 
 const LexicalEditor = ({
-  initialEditorState,
   onChange = () => {},
   editable,
+  serializedEditorState,
 }) => (
   <LexicalComposer
     initialConfig={{
-      editorState: initialEditorState,
       editable,
       theme: LexicalEditorTheme,
       namespace: 'MyEditor',
@@ -53,7 +53,11 @@ const LexicalEditor = ({
       {editable && <ToolbarPlugin />}
       <View position="relative">
         <RichTextPlugin
-          contentEditable={<ContentEditable className="editor-input" />}
+          contentEditable={
+            <ContentEditable
+              className={`editor-input ${!editable ? 'editor-readonly' : ''}`}
+            />
+          }
           ErrorBoundary={LexicalErrorBoundary}
           placeholder={editable && <Placeholder />}
         />
@@ -64,13 +68,14 @@ const LexicalEditor = ({
             <OnChangePlugin onChange={onChange} />
           </>
         )}
+        <RestoreStatePlugin serializedEditorState={serializedEditorState} />
       </View>
     </View>
   </LexicalComposer>
 );
 
 LexicalEditor.propTypes = {
-  initialEditorState: PropTypes.object,
+  serializedEditorState: PropTypes.string,
   onChange: PropTypes.func,
   editable: PropTypes.bool,
 };

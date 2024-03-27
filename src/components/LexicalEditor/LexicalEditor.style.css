@@ -11,6 +11,10 @@
     padding: 0.75rem 0.5rem;
     caret-color: #444;
 }
+
+.editor-readonly {
+    caret-color: transparent;
+}
   
 .editor-text-bold {
     font-weight: bold;
