@@ -94,7 +94,12 @@ const ToolbarPlugin = () => {
   );
 
   return (
-    <View position="sticky" top="0rem">
+    <View
+      position="sticky"
+      top="0rem"
+      backgroundColor="Background"
+      style={{ zIndex: 1 }}
+    >
       <Flex gap="0.25rem" ref={toolbarRef} padding="0.25rem">
         <Button
           isDisabled={!canUndo}
