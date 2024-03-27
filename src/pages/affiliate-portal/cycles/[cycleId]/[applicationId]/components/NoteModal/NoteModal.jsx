@@ -18,9 +18,15 @@ const NoteModal = ({ open, onClose, onSave }) => {
 
   return (
     <Modal title="Note" open={open} onClickClose={onClose} width="45rem">
-      <LexicalEditor editorState={editorState} onChange={handleOnChange} />
-      <Flex justifyContent="right">
-        <Button onClick={handleOnSave}>Save</Button>
+      <LexicalEditor
+        editorState={editorState}
+        onChange={handleOnChange}
+        editable
+      />
+      <Flex justifyContent="right" marginTop="1rem">
+        <Button onClick={handleOnSave} variation="primary">
+          Save
+        </Button>
       </Flex>
     </Modal>
   );
