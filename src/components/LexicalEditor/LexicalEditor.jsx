@@ -30,10 +30,11 @@ function Placeholder() {
   );
 }
 
-const LexicalEditor = ({ editorState, onChange }) => (
+const LexicalEditor = ({ initialEditorState, onChange, editable }) => (
   <LexicalComposer
     initialConfig={{
-      editorState,
+      editorState: initialEditorState,
+      editable,
       theme: LexicalEditorTheme,
       namespace: 'MyEditor',
       onError: (error) => console.log('Lexical error', error),
@@ -45,24 +46,29 @@ const LexicalEditor = ({ editorState, onChange }) => (
       borderRadius="small"
       borderWidth="medium"
     >
-      <ToolbarPlugin />
+      {editable && <ToolbarPlugin />}
       <View position="relative">
         <RichTextPlugin
           contentEditable={<ContentEditable className="editor-input" />}
           ErrorBoundary={LexicalErrorBoundary}
-          placeholder={<Placeholder />}
+          placeholder={editable && <Placeholder />}
         />
-        <HistoryPlugin />
-        <AutoFocusPlugin />
-        <OnChangePlugin onChange={onChange} />
+        {editable && (
+          <>
+            <HistoryPlugin />
+            <AutoFocusPlugin />
+            <OnChangePlugin onChange={onChange} />
+          </>
+        )}
       </View>
     </View>
   </LexicalComposer>
 );
 
 LexicalEditor.propTypes = {
-  editorState: PropTypes.object,
+  initialEditorState: PropTypes.object,
   onChange: PropTypes.func,
+  editable: PropTypes.bool,
 };
 
 export default LexicalEditor;
