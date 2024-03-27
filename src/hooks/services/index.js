@@ -7,6 +7,7 @@ import {
   EmploymentInfo,
   Income,
   Member,
+  Note,
   Property,
   Record,
   TestApplication,
@@ -101,5 +102,11 @@ export const useTestCycleById = dataStoreQueryByIdHookBuilder({
 /* PROPERTY MODEL SERVICES */
 export const usePropertiesQuery = dataStoreQueryHookBuilder({
   model: Property,
+  defaultDataValue: [],
+});
+
+/* NOTE MODEL SERVICES */
+export const useNotesQuery = dataStoreQueryHookBuilder({
+  model: Note,
   defaultDataValue: [],
 });
