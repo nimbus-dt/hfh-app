@@ -504,6 +504,7 @@ const ApplicationDetailsPage = () => {
                 key={note.id}
                 ownerID={note.ownerID}
                 createdAt={note.createdAt}
+                serializedEditorState={note.serializedEditorState}
               />
             ))}
           </Flex>
