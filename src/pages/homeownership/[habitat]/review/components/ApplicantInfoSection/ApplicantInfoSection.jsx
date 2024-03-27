@@ -10,6 +10,7 @@ import Address from './components/Address';
 import PrevAddress from './components/PrevAddress';
 import TypeOfCredit from './components/TypeOfCredit';
 import CoApplicant from './components/CoApplicant';
+import TypeOfOwnership from './components/TypeOfOwnership';
 
 const ApplicantInfoSection = ({
   basicInfoOpen,
@@ -27,6 +28,9 @@ const ApplicantInfoSection = ({
   typeOfCreditOpen,
   setTypeOfCreditOpen,
   handleTypeOfCreditOnReview,
+  typeOfOwnershipOpen,
+  setTypeOfOwnershipOpen,
+  handleTypeOfOwnershipOnReview,
   coApplicantOpen,
   setCoApplicantOpen,
   handleCoApplicantOnReview,
@@ -46,6 +50,7 @@ const ApplicantInfoSection = ({
   setReviewedSections,
   submitted,
   shouldRenderCoApplicant,
+  shouldRenderTypeOfOwnership,
 }) => {
   const { application, habitat } = useOutletContext();
 
@@ -149,6 +154,20 @@ const ApplicantInfoSection = ({
           <br />
         </>
       )}
+      {!shouldRenderCoApplicant && shouldRenderTypeOfOwnership && (
+        <>
+          <TypeOfOwnership
+            expanded={typeOfOwnershipOpen}
+            onExpandedChange={setTypeOfOwnershipOpen}
+            applicantInfo={applicantInfo}
+            reviewedSections={reviewedSections}
+            setReviewedSections={setReviewedSections}
+            onReview={handleTypeOfOwnershipOnReview}
+            submitted={submitted}
+          />
+          <br />
+        </>
+      )}
       {shouldRenderCoApplicant && (
         <>
           <TypeOfCredit
@@ -161,6 +180,20 @@ const ApplicantInfoSection = ({
             submitted={submitted}
           />
           <br />
+          {shouldRenderTypeOfOwnership && (
+            <>
+              <TypeOfOwnership
+                expanded={typeOfOwnershipOpen}
+                onExpandedChange={setTypeOfOwnershipOpen}
+                applicantInfo={applicantInfo}
+                reviewedSections={reviewedSections}
+                setReviewedSections={setReviewedSections}
+                onReview={handleTypeOfOwnershipOnReview}
+                submitted={submitted}
+              />
+              <br />
+            </>
+          )}
           <CoApplicant
             expanded={coApplicantOpen}
             onExpandedChange={setCoApplicantOpen}
@@ -267,6 +300,9 @@ ApplicantInfoSection.propTypes = {
   typeOfCreditOpen: PropTypes.bool,
   setTypeOfCreditOpen: PropTypes.func,
   handleTypeOfCreditOnReview: PropTypes.func,
+  typeOfOwnershipOpen: PropTypes.bool,
+  setTypeOfOwnershipOpen: PropTypes.func,
+  handleTypeOfOwnershipOnReview: PropTypes.func,
   coApplicantOpen: PropTypes.bool,
   setCoApplicantOpen: PropTypes.func,
   handleCoApplicantOnReview: PropTypes.func,
@@ -286,6 +322,7 @@ ApplicantInfoSection.propTypes = {
   setReviewedSections: PropTypes.func,
   submitted: PropTypes.bool,
   shouldRenderCoApplicant: PropTypes.bool,
+  shouldRenderTypeOfOwnership: PropTypes.bool,
 };
 
 export default ApplicantInfoSection;
