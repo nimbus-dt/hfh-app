@@ -66,6 +66,9 @@ const ApplicationDetailsPage = () => {
 
   const shouldRenderCoApplicant = habitat?.props.optionalSections.coApplicant;
 
+  const shouldRenderTypeOfOwnership =
+    habitat?.props.optionalSections.typeOfOwnership;
+
   const { applicationId } = useParams();
   const { data: application } = useTestApplicationById({
     id: applicationId,
@@ -273,6 +276,7 @@ const ApplicationDetailsPage = () => {
             applicantInfo={applicantInfos[0]}
             email={userEmail}
             shouldRenderCoApplicant={shouldRenderCoApplicant}
+            shouldRenderTypeOfOwnership={shouldRenderTypeOfOwnership}
             coApplicantMember={coApplicantMember[0]}
           />
 
