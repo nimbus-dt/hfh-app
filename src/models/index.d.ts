@@ -109,6 +109,38 @@ export declare type HabitatProps = LazyLoading extends LazyLoadingDisabled ? Eag
 
 export declare const HabitatProps: (new (init: ModelInit<HabitatProps>) => HabitatProps)
 
+type EagerNote = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Note, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly serializedEditorState: string;
+  readonly ownerID: string;
+  readonly testapplicationID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyNote = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Note, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly serializedEditorState: string;
+  readonly ownerID: string;
+  readonly testapplicationID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Note = LazyLoading extends LazyLoadingDisabled ? EagerNote : LazyNote
+
+export declare const Note: (new (init: ModelInit<Note>) => Note) & {
+  copyOf(source: Note, mutator: (draft: MutableModel<Note>) => MutableModel<Note> | void): Note;
+}
+
 type EagerProperty = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Property, 'id'>;
@@ -312,6 +344,7 @@ type EagerTestApplication = {
   readonly props?: string | null;
   readonly type: ApplicationTypes | keyof typeof ApplicationTypes;
   readonly testcycleID: string;
+  readonly Notes?: (Note | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -331,6 +364,7 @@ type LazyTestApplication = {
   readonly props?: string | null;
   readonly type: ApplicationTypes | keyof typeof ApplicationTypes;
   readonly testcycleID: string;
+  readonly Notes: AsyncCollection<Note>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
