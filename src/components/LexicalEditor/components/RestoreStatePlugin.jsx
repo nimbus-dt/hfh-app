@@ -8,7 +8,9 @@ const RestoreStatePlugin = ({ serializedEditorState }) => {
   useEffect(() => {
     if (serializedEditorState) {
       const initialEditorState = editor.parseEditorState(serializedEditorState);
-      editor.setEditorState(initialEditorState);
+      queueMicrotask(() => {
+        editor.setEditorState(initialEditorState);
+      });
     }
   }, [serializedEditorState, editor]);
 };
