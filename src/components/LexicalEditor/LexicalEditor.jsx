@@ -12,6 +12,7 @@ import ToolbarPlugin from './components/ToolbarPlugin';
 import LexicalEditorTheme from './LexicalEditor.Theme';
 import './LexicalEditor.style.css';
 import RestoreStatePlugin from './components/RestoreStatePlugin';
+import EditablePlugin from './components/EditablePlugin';
 
 function Placeholder() {
   return (
@@ -38,7 +39,6 @@ const LexicalEditor = ({
 }) => (
   <LexicalComposer
     initialConfig={{
-      editable,
       theme: LexicalEditorTheme,
       namespace: 'MyEditor',
       onError: (error) => console.log('Lexical error', error),
@@ -46,7 +46,7 @@ const LexicalEditor = ({
   >
     <View
       border="var(--amplify-colors-border-primary)"
-      borderStyle="solid"
+      borderStyle={editable ? 'solid' : ''}
       borderRadius="small"
       borderWidth="medium"
     >
@@ -61,13 +61,14 @@ const LexicalEditor = ({
           ErrorBoundary={LexicalErrorBoundary}
           placeholder={editable && <Placeholder />}
         />
-        {editable && (
+        {!!editable && (
           <>
             <HistoryPlugin />
             <AutoFocusPlugin />
             <OnChangePlugin onChange={onChange} />
           </>
         )}
+        <EditablePlugin editable={!!editable} />
         <RestoreStatePlugin serializedEditorState={serializedEditorState} />
       </View>
     </View>
