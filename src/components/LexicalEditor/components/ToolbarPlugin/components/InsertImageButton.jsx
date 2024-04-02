@@ -24,20 +24,24 @@ const InsertImageButton = ({ buttonProps }) => {
   };
 
   const handleAddUrlOnClick = () => {
-    editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
-      src: url,
-      altText,
-    });
-    handleOpenClose();
+    if (url.length > 0) {
+      editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
+        src: url,
+        altText,
+      });
+      handleOpenClose();
+    }
   };
 
   const handleAddFileOnClick = () => {
-    editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
-      src: URL.createObjectURL(files[0]),
-      altText,
-      name: files[0]?.name,
-    });
-    handleOpenClose();
+    if (files.length > 0) {
+      editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
+        src: URL.createObjectURL(files[0]),
+        altText,
+        name: files[0]?.name,
+      });
+      handleOpenClose();
+    }
   };
 
   return (
