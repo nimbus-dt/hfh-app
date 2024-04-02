@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import Modal from 'components/Modal';
 import FileInput from 'components/FileInput';
-import { INSERT_IMAGE_COMMAND } from '../../ImagePlugin';
+import { INSERT_FILE_COMMAND } from '../../FilePlugin';
 
 const InsertFileButton = ({ buttonProps }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -19,11 +19,11 @@ const InsertFileButton = ({ buttonProps }) => {
 
   const handleAddFileOnClick = () => {
     if (files.length > 0) {
-      // editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
-      //   src: URL.createObjectURL(files[0]),
-      //   altText,
-      //   name: files[0]?.name,
-      // });
+      console.log(files[0]);
+      editor.dispatchCommand(INSERT_FILE_COMMAND, {
+        path: URL.createObjectURL(files[0]),
+        name: files[0]?.name,
+      });
       handleOpenClose();
     }
   };
@@ -55,7 +55,7 @@ const InsertFileButton = ({ buttonProps }) => {
       <Button
         onClick={handleOpenClose}
         {...buttonProps}
-        aria-label="Insert image"
+        aria-label="Insert file"
       >
         <MdInsertDriveFile />
       </Button>
