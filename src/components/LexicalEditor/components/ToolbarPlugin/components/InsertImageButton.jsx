@@ -80,6 +80,7 @@ const InsertImageButton = ({ buttonProps }) => {
               multiple={false}
               files={files}
               onChange={(newFiles) => setFiles(newFiles)}
+              accept="image/*"
             />
             <TextField label="Alt text" id="image-alt" />
             <Flex justifyContent="end">
