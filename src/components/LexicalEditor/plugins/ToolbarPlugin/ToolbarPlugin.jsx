@@ -27,6 +27,7 @@ import {
   MdUndo,
 } from 'react-icons/md';
 import InsertImageButton from './components/InsertImageButton';
+import InsertFileButton from './components/InsertFileButton';
 
 const LowPriority = 1;
 
@@ -202,6 +203,7 @@ const ToolbarPlugin = () => {
         </Button>
         <VerticalDivider />
         <InsertImageButton buttonProps={buttonProps} />
+        <InsertFileButton buttonProps={buttonProps} />
       </Flex>
       <Divider opacity={1} />
     </View>

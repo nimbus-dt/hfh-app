@@ -8,13 +8,13 @@ import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import { Text, View } from '@aws-amplify/ui-react';
 import PropTypes from 'prop-types';
-import ToolbarPlugin from './components/ToolbarPlugin';
+import ToolbarPlugin from './plugins/ToolbarPlugin';
 import LexicalEditorTheme from './LexicalEditor.Theme';
 import './LexicalEditor.style.css';
-import RestoreStatePlugin from './components/RestoreStatePlugin';
-import EditablePlugin from './components/EditablePlugin';
+import RestoreStatePlugin from './plugins/RestoreStatePlugin';
+import EditablePlugin from './plugins/EditablePlugin';
 import { ImageNode } from './nodes/ImageNode';
-import ImagePlugin from './components/ImagePlugin';
+import ImagePlugin from './plugins/ImagePlugin';
 
 function Placeholder() {
   return (
