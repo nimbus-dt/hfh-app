@@ -2,9 +2,9 @@ import LexicalEditor from 'components/LexicalEditor';
 import Modal from 'components/Modal';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Flex } from '@aws-amplify/ui-react';
+import { Button, Flex, Loader } from '@aws-amplify/ui-react';
 
-const NoteModal = ({ open, onClose, onSave }) => {
+const NoteModal = ({ open, onClose, onSave, uploading }) => {
   const [editorState, setEditorState] = useState();
 
   const handleOnChange = (state) => {
@@ -25,7 +25,14 @@ const NoteModal = ({ open, onClose, onSave }) => {
       />
       <Flex justifyContent="right" marginTop="1rem">
         <Button onClick={handleOnSave} variation="primary">
-          Save
+          {uploading ? (
+            <>
+              <Loader />
+              Uploading
+            </>
+          ) : (
+            'Save'
+          )}
         </Button>
       </Flex>
     </Modal>
@@ -36,6 +43,7 @@ NoteModal.propTypes = {
   open: PropTypes.bool,
   onClose: PropTypes.func,
   onSave: PropTypes.func,
+  uploading: PropTypes.bool,
 };
 
 export default NoteModal;
