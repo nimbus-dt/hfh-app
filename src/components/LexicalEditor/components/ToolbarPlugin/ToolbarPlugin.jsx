@@ -26,6 +26,7 @@ import {
   MdRedo,
   MdUndo,
 } from 'react-icons/md';
+import InsertImageButton from './components/InsertImageButton';
 
 const LowPriority = 1;
 
@@ -198,7 +199,9 @@ const ToolbarPlugin = () => {
           aria-label="Justify Align"
         >
           <MdFormatAlignJustify />
-        </Button>{' '}
+        </Button>
+        <VerticalDivider />
+        <InsertImageButton buttonProps={buttonProps} />
       </Flex>
       <Divider opacity={1} />
     </View>

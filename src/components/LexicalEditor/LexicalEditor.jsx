@@ -13,6 +13,8 @@ import LexicalEditorTheme from './LexicalEditor.Theme';
 import './LexicalEditor.style.css';
 import RestoreStatePlugin from './components/RestoreStatePlugin';
 import EditablePlugin from './components/EditablePlugin';
+import { ImageNode } from './nodes/ImageNode';
+import ImagePlugin from './components/ImagePlugin';
 
 function Placeholder() {
   return (
@@ -42,6 +44,7 @@ const LexicalEditor = ({
       theme: LexicalEditorTheme,
       namespace: 'MyEditor',
       onError: (error) => console.log('Lexical error', error),
+      nodes: [ImageNode],
     }}
   >
     <View
@@ -68,6 +71,7 @@ const LexicalEditor = ({
             <OnChangePlugin onChange={onChange} />
           </>
         )}
+        <ImagePlugin />
         <EditablePlugin editable={!!editable} />
         <RestoreStatePlugin serializedEditorState={serializedEditorState} />
       </View>
