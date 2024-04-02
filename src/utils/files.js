@@ -4,9 +4,14 @@ import { Storage } from 'aws-amplify';
  * Downloads a file from a valid URL
  * @param {string} url
  */
-export const downloadWithUrl = (url) => {
+export const downloadWithUrl = (url, name) => {
   const a = document.createElement('a');
+
   a.href = url;
+
+  a.target = '_blank';
+
+  a.setAttribute('download', name);
 
   a.click();
 
