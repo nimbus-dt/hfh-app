@@ -48,6 +48,7 @@ import {
 } from 'models';
 import { ImageNode } from 'components/LexicalEditor/nodes/ImageNode';
 import { fileFromObjectURL } from 'utils/files';
+import { FileNode } from 'components/LexicalEditor/nodes/FileNode';
 import ApplicantInfoTable from './components/ApplicantInfoTable';
 import GeneralInfoTable from './components/GeneralInfoTable';
 import ChecklistTable from './components/ChecklistTable';
@@ -71,6 +72,8 @@ const ApplicationDetailsPage = () => {
   const [decideModalOpen, setDecideModalOpen] = useState(false);
   const [loading, setLoading] = useState(0);
   const [noteModal, setNoteModal] = useState(false);
+  const [uploadingNote, setUploadingNote] = useState(false);
+  const [triggerNotes, setTriggerNotes] = useState(true);
   const { habitat } = useOutletContext();
   const { user } = useAuthenticator((context) => [context.user]);
 
@@ -134,7 +137,7 @@ const ApplicationDetailsPage = () => {
   const { data: assets } = useAssetsQuery(queriesProps1);
   const { data: notes } = useNotesQuery({
     criteria: (c) => c.testapplicationID.eq(applicationId),
-    dependencyArray: [applicationId],
+    dependencyArray: [applicationId, triggerNotes],
   });
   const totalAssetsValue = getTotalAssetsValue(assets);
   const totalMonthlyIncomes = getTestTotalMonthlyIncomes(incomes);
@@ -241,7 +244,7 @@ const ApplicationDetailsPage = () => {
     setNoteModal((prevNoteModal) => !prevNoteModal);
   };
 
-  const uploadNoteImage = async (file) => {
+  const uploadNoteFile = async (file) => {
     const result = await Storage.put(
       `notes/${habitat?.urlName}/${application.id}/${file.name}`,
       file,
@@ -251,6 +254,28 @@ const ApplicationDetailsPage = () => {
     );
 
     return result;
+  };
+
+  const editorStateWithFilesOnBucket = async (editorState) => {
+    const childrens = editorState.root.children;
+
+    const newChildrens = [];
+
+    for (const children of childrens) {
+      if (children.type === FileNode.getType() && children.path !== undefined) {
+        const file = await fileFromObjectURL(children.path, children.name);
+        const result = await uploadNoteFile(file);
+        const { path, ...newChildren } = children;
+        newChildren.s3Key = result.key;
+        newChildrens.push(newChildren);
+      } else {
+        newChildrens.push(children);
+      }
+    }
+
+    const newEditorState = { ...editorState };
+    newEditorState.root.children = newChildrens;
+    return newEditorState;
   };
 
   const editorStateWithImagesOnBucket = async (editorState) => {
@@ -264,7 +289,7 @@ const ApplicationDetailsPage = () => {
         children.src.startsWith('blob:')
       ) {
         const file = await fileFromObjectURL(children.src, children.name);
-        const result = await uploadNoteImage(file);
+        const result = await uploadNoteFile(file);
         const { src, ...newChildren } = children;
         newChildren.s3Key = result.key;
         newChildrens.push(newChildren);
@@ -280,8 +305,9 @@ const ApplicationDetailsPage = () => {
 
   const handleOnSaveNote = async (editorState) => {
     try {
-      const editorStateWithS3Keys = await editorStateWithImagesOnBucket(
-        editorState
+      setUploadingNote(true);
+      const editorStateWithS3Keys = await editorStateWithFilesOnBucket(
+        await editorStateWithImagesOnBucket(editorState)
       );
       const serializedEditorState = JSON.stringify(editorStateWithS3Keys);
 
@@ -296,6 +322,9 @@ const ApplicationDetailsPage = () => {
       handleNoteOpenClose();
     } catch (error) {
       console.log('Error saving note', error);
+    } finally {
+      setTriggerNotes((prevTrigger) => !prevTrigger);
+      setUploadingNote(false);
     }
   };
 
@@ -534,6 +563,7 @@ const ApplicationDetailsPage = () => {
               open={noteModal}
               onClose={handleNoteOpenClose}
               onSave={handleOnSaveNote}
+              uploading={uploadingNote}
             />
             <Button variation="primary" onClick={handleNoteOpenClose}>
               Create Note
