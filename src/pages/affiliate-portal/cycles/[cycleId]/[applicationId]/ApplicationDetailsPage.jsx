@@ -37,7 +37,7 @@ import {
 } from 'utils/applicationMetrics';
 import { useEffect, useState } from 'react';
 import Modal from 'components/Modal';
-import { API, DataStore } from 'aws-amplify';
+import { API, DataStore, Storage } from 'aws-amplify';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -46,6 +46,8 @@ import {
   ApplicationTypes,
   Note,
 } from 'models';
+import { ImageNode } from 'components/LexicalEditor/nodes/ImageNode';
+import { fileFromObjectURL } from 'utils/files';
 import ApplicantInfoTable from './components/ApplicantInfoTable';
 import GeneralInfoTable from './components/GeneralInfoTable';
 import ChecklistTable from './components/ChecklistTable';
@@ -239,11 +241,50 @@ const ApplicationDetailsPage = () => {
     setNoteModal((prevNoteModal) => !prevNoteModal);
   };
 
+  const uploadNoteImage = async (file) => {
+    const result = await Storage.put(
+      `notes/${habitat?.urlName}/${application.id}/${file.name}`,
+      file,
+      {
+        level: 'public',
+      }
+    );
+
+    return result;
+  };
+
+  const editorStateWithImagesOnBucket = async (editorState) => {
+    const childrens = editorState.root.children;
+
+    const newChildrens = [];
+
+    for (const children of childrens) {
+      if (
+        children.type === ImageNode.getType() &&
+        children.src.startsWith('blob:')
+      ) {
+        const file = await fileFromObjectURL(children.src, children.name);
+        const result = await uploadNoteImage(file);
+        const { src, ...newChildren } = children;
+        newChildren.s3Key = result.key;
+        newChildrens.push(newChildren);
+      } else {
+        newChildrens.push(children);
+      }
+    }
+
+    const newEditorState = { ...editorState };
+    newEditorState.root.children = newChildrens;
+    return newEditorState;
+  };
+
   const handleOnSaveNote = async (editorState) => {
     try {
-      const serializedEditorState = JSON.stringify(editorState);
+      const editorStateWithS3Keys = await editorStateWithImagesOnBucket(
+        editorState
+      );
+      const serializedEditorState = JSON.stringify(editorStateWithS3Keys);
 
-      console.log(editorState);
       const newNote = new Note({
         ownerID: user.username,
         serializedEditorState,
