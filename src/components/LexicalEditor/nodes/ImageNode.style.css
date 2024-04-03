@@ -1,6 +1,6 @@
 .image-node {
     width: 100% !important;
-    border-radius: 0.5rem;
+    border-radius: 0.5rem !important;
 }
 
 .image-node.editable {
