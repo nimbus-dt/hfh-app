@@ -24,12 +24,16 @@ const NoteModal = ({ open, onClose, onSave, uploading }) => {
         editable
       />
       <Flex justifyContent="right" marginTop="1rem">
-        <Button onClick={handleOnSave} variation="primary">
+        <Button
+          onClick={handleOnSave}
+          variation="primary"
+          isDisabled={uploading}
+        >
           {uploading ? (
-            <>
+            <Flex alignItems="center">
               <Loader />
               Uploading
-            </>
+            </Flex>
           ) : (
             'Save'
           )}
