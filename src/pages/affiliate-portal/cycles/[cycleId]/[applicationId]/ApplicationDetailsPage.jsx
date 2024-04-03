@@ -47,7 +47,7 @@ import {
   Note,
 } from 'models';
 import { ImageNode } from 'components/LexicalEditor/nodes/ImageNode';
-import { fileFromObjectURL } from 'utils/files';
+import { fileFromObjectURL, removeFiles } from 'utils/files';
 import { FileNode } from 'components/LexicalEditor/nodes/FileNode';
 import { v4 } from 'uuid';
 import ApplicantInfoTable from './components/ApplicantInfoTable';
@@ -74,6 +74,7 @@ const ApplicationDetailsPage = () => {
   const [loading, setLoading] = useState(0);
   const [noteModal, setNoteModal] = useState(false);
   const [uploadingNote, setUploadingNote] = useState(false);
+  const [deletingNote, setDeletingNote] = useState(false);
   const [triggerNotes, setTriggerNotes] = useState(true);
   const { habitat } = useOutletContext();
   const { user } = useAuthenticator((context) => [context.user]);
@@ -331,6 +332,33 @@ const ApplicationDetailsPage = () => {
     }
   };
 
+  const deleteFilesOfNote = async (note) => {
+    const editorState = JSON.parse(note.serializedEditorState);
+    const s3Keys = [];
+    for (const children of editorState.root.children) {
+      if (
+        children.type === FileNode.getType() ||
+        (children.type === ImageNode.getType() && children.s3Key)
+      ) {
+        s3Keys.push(children.s3Key);
+      }
+    }
+    await removeFiles(s3Keys);
+  };
+
+  const handleDeleteNote = async (note) => {
+    try {
+      setDeletingNote(true);
+      await deleteFilesOfNote(note);
+      await DataStore.delete(Note, note.id);
+    } catch (error) {
+      console.log('Error deleting note');
+    } finally {
+      setDeletingNote(false);
+      setTriggerNotes((prevTrigger) => !prevTrigger);
+    }
+  };
+
   useEffect(() => {
     const getUser = async () => {
       if (application) {
@@ -580,6 +608,8 @@ const ApplicationDetailsPage = () => {
                   ownerID={note.ownerID}
                   createdAt={note.createdAt}
                   serializedEditorState={note.serializedEditorState}
+                  onDelete={() => handleDeleteNote(note)}
+                  deleting={deletingNote}
                 />
               ))
             ) : (

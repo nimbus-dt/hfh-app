@@ -1,18 +1,32 @@
-import { Button, Card, Flex, Text } from '@aws-amplify/ui-react';
+import { Button, Card, Flex, Loader, Text } from '@aws-amplify/ui-react';
 import { API } from 'aws-amplify';
 import LexicalEditor from 'components/LexicalEditor';
+import Modal from 'components/Modal';
 import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { MdArrowDownward, MdArrowUpward } from 'react-icons/md';
+import { MdArrowDownward, MdArrowUpward, MdDelete } from 'react-icons/md';
 import { checkOverflow } from 'utils/dom';
 
-const NotePreview = ({ ownerID, createdAt, serializedEditorState }) => {
+const NotePreview = ({
+  ownerID,
+  createdAt,
+  serializedEditorState,
+  onDelete,
+  deleting,
+}) => {
   const [email, setEmail] = useState('');
   const [expanded, setExpanded] = useState(false);
   const [height, setHeight] = useState(0);
+  const [confirmModal, setConfirmModal] = useState(false);
 
   const cardRef = useRef(null);
+
+  const handleOpenCloseConfirmModal = () => {
+    if (!deleting) {
+      setConfirmModal((prevConfirmModal) => !prevConfirmModal);
+    }
+  };
 
   const handleExpandedChange = () =>
     setExpanded((prevExpanded) => !prevExpanded);
@@ -85,11 +99,54 @@ const NotePreview = ({ ownerID, createdAt, serializedEditorState }) => {
           </Button>
         </Flex>
       )}
-      <Flex justifyContent="space-between">
+      <Flex justifyContent="space-between" alignItems="center">
         <Text>
           <b>Note by:</b> {email}
         </Text>
-        <Text>{dayjs(createdAt).format('YYYY-MM-DD')}</Text>
+        <Flex alignItems="center">
+          <Text>{dayjs(createdAt).format('YYYY-MM-DD')}</Text>
+          <Modal
+            title="Delete note"
+            onClickClose={handleOpenCloseConfirmModal}
+            width="25rem"
+            open={confirmModal}
+          >
+            <Flex direction="column">
+              <Text>Are you sure you want to delete this note?</Text>
+              <Flex justifyContent="end">
+                <Button
+                  variation="primary"
+                  onClick={onDelete}
+                  isDisabled={deleting}
+                >
+                  {deleting ? (
+                    <Flex alignItems="center">
+                      <Loader />
+                      Deleting
+                    </Flex>
+                  ) : (
+                    'Accept'
+                  )}
+                </Button>
+
+                <Button
+                  variation="warning"
+                  onClick={handleOpenCloseConfirmModal}
+                  isDisabled={deleting}
+                >
+                  Cancel
+                </Button>
+              </Flex>
+            </Flex>
+          </Modal>
+          <Button
+            variation="destructive"
+            padding="0.5rem"
+            onClick={handleOpenCloseConfirmModal}
+          >
+            <MdDelete />
+          </Button>
+        </Flex>
       </Flex>
       <LexicalEditor serializedEditorState={serializedEditorState} />
 
@@ -115,6 +172,8 @@ NotePreview.propTypes = {
   ownerID: PropTypes.string,
   createdAt: PropTypes.string,
   serializedEditorState: PropTypes.string,
+  onDelete: PropTypes.func,
+  deleting: PropTypes.bool,
 };
 
 export default NotePreview;
