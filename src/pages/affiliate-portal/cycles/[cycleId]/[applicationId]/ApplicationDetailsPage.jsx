@@ -570,14 +570,20 @@ const ApplicationDetailsPage = () => {
             </Button>
           </Flex>
           <Flex marginTop="1rem" direction="column">
-            {notes.map((note) => (
-              <NotePreview
-                key={note.id}
-                ownerID={note.ownerID}
-                createdAt={note.createdAt}
-                serializedEditorState={note.serializedEditorState}
-              />
-            ))}
+            {notes.length > 0 ? (
+              notes.map((note) => (
+                <NotePreview
+                  key={note.id}
+                  ownerID={note.ownerID}
+                  createdAt={note.createdAt}
+                  serializedEditorState={note.serializedEditorState}
+                />
+              ))
+            ) : (
+              <Text textAlign="center" fontWeight="bold">
+                There are no notes for this application
+              </Text>
+            )}
           </Flex>
         </TabItem>
       </Tabs>
