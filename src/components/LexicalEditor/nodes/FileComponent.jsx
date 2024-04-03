@@ -126,10 +126,23 @@ const FileComponent = ({ nodeKey, name, s3key, path }) => {
       }}
       ref={fileRef}
     >
-      <Button flex={1} variation="primary" onClick={handleOnDownload}>
-        <Flex alignItems="center">
+      <Button
+        flex={1}
+        variation="primary"
+        onClick={handleOnDownload}
+        maxWidth="100%"
+        title={name}
+      >
+        <Flex alignItems="center" maxWidth="100%">
           <MdDownload />
-          <Text color="white">{name}</Text>
+          <Text
+            color="white"
+            overflow="hidden"
+            style={{ textOverflow: 'ellipsis' }}
+            whiteSpace="nowrap"
+          >
+            {name}
+          </Text>
         </Flex>
       </Button>
     </Flex>
