@@ -19,7 +19,6 @@ const InsertFileButton = ({ buttonProps }) => {
 
   const handleAddFileOnClick = () => {
     if (files.length > 0) {
-      console.log(files[0]);
       editor.dispatchCommand(INSERT_FILE_COMMAND, {
         path: URL.createObjectURL(files[0]),
         name: files[0]?.name,
