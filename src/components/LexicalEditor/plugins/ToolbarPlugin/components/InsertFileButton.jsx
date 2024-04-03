@@ -54,7 +54,8 @@ const InsertFileButton = ({ buttonProps }) => {
       <Button
         onClick={handleOpenClose}
         {...buttonProps}
-        aria-label="Insert file"
+        aria-label="Insert File"
+        title="Insert File"
       >
         <MdInsertDriveFile />
       </Button>

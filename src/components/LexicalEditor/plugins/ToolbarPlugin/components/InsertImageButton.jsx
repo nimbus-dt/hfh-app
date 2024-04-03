@@ -111,7 +111,8 @@ const InsertImageButton = ({ buttonProps }) => {
       <Button
         onClick={handleOpenClose}
         {...buttonProps}
-        aria-label="Insert image"
+        aria-label="Insert Image"
+        title="Insert Image"
       >
         <MdInsertPhoto />
       </Button>

@@ -1,6 +1,16 @@
-import { Button, Divider, Flex, View } from '@aws-amplify/ui-react';
+import {
+  Button,
+  Divider,
+  Flex,
+  SelectField,
+  View,
+} from '@aws-amplify/ui-react';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { mergeRegister } from '@lexical/utils';
+import {
+  $findMatchingParent,
+  $getNearestNodeOfType,
+  mergeRegister,
+} from '@lexical/utils';
 import {
   $getSelection,
   $isRangeSelection,
@@ -11,6 +21,8 @@ import {
   REDO_COMMAND,
   SELECTION_CHANGE_COMMAND,
   UNDO_COMMAND,
+  $createParagraphNode,
+  $isRootOrShadowRoot,
 } from 'lexical';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as React from 'react';
@@ -26,6 +38,14 @@ import {
   MdRedo,
   MdUndo,
 } from 'react-icons/md';
+import { $setBlocksType } from '@lexical/selection';
+import { $createHeadingNode, $isHeadingNode } from '@lexical/rich-text';
+import {
+  $isListNode,
+  INSERT_ORDERED_LIST_COMMAND,
+  INSERT_UNORDERED_LIST_COMMAND,
+  ListNode,
+} from '@lexical/list';
 import InsertImageButton from './components/InsertImageButton';
 import InsertFileButton from './components/InsertFileButton';
 
@@ -36,7 +56,9 @@ const buttonProps = {
   borderStyle: 'none',
 };
 
-const VerticalDivider = () => <Divider orientation="vertical" opacity={1} />;
+const VerticalDivider = () => (
+  <Divider orientation="vertical" opacity={1} alignSelf="stretch" />
+);
 
 const ToolbarPlugin = () => {
   const [editor] = useLexicalComposerContext();
@@ -47,6 +69,7 @@ const ToolbarPlugin = () => {
   const [isItalic, setIsItalic] = useState(false);
   const [isUnderline, setIsUnderline] = useState(false);
   const [isStrikethrough, setIsStrikethrough] = useState(false);
+  const [blockType, setBlockType] = useState('paragraph');
 
   const updateToolbar = useCallback(() => {
     const selection = $getSelection();
@@ -56,8 +79,106 @@ const ToolbarPlugin = () => {
       setIsItalic(selection.hasFormat('italic'));
       setIsUnderline(selection.hasFormat('underline'));
       setIsStrikethrough(selection.hasFormat('strikethrough'));
+
+      const anchorNode = selection.anchor.getNode();
+
+      let element =
+        anchorNode.getKey() === 'root'
+          ? anchorNode
+          : $findMatchingParent(anchorNode, (e) => {
+              const parent = e.getParent();
+              return parent !== null && $isRootOrShadowRoot(parent);
+            });
+
+      if (element === null) {
+        element = anchorNode.getTopLevelElementOrThrow();
+      }
+
+      const elementKey = element.getKey();
+      const elementDOM = editor.getElementByKey(elementKey);
+      if (elementDOM !== null) {
+        if ($isListNode(element)) {
+          const parentList = $getNearestNodeOfType(anchorNode, ListNode);
+          const type = parentList
+            ? parentList.getListType()
+            : element.getListType();
+          setBlockType(type);
+        } else {
+          const type = $isHeadingNode(element)
+            ? element.getTag()
+            : element.getType();
+          setBlockType(type);
+        }
+      }
     }
-  }, []);
+  }, [editor]);
+
+  const formatParagraph = () => {
+    editor.update(() => {
+      const selection = $getSelection();
+      if ($isRangeSelection(selection)) {
+        $setBlocksType(selection, () => $createParagraphNode());
+      }
+    });
+  };
+
+  const handleTextTypeOnChange = (event) => {
+    const type = event.currentTarget.value;
+    switch (type) {
+      case 'h1': {
+        editor.update(() => {
+          const selection = $getSelection();
+          if ($isRangeSelection(selection)) {
+            $setBlocksType(selection, () => $createHeadingNode('h1'));
+          }
+        });
+        break;
+      }
+      case 'h2': {
+        editor.update(() => {
+          const selection = $getSelection();
+          if ($isRangeSelection(selection)) {
+            $setBlocksType(selection, () => $createHeadingNode('h2'));
+          }
+        });
+        break;
+      }
+      case 'h3': {
+        editor.update(() => {
+          const selection = $getSelection();
+          if ($isRangeSelection(selection)) {
+            $setBlocksType(selection, () => $createHeadingNode('h3'));
+          }
+        });
+        break;
+      }
+      case 'bullet': {
+        if (blockType !== 'bullet') {
+          editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined);
+        } else {
+          formatParagraph();
+        }
+        break;
+      }
+      case 'number': {
+        if (blockType !== 'check') {
+          editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined);
+        } else {
+          formatParagraph();
+        }
+        break;
+      }
+      case 'paragraph':
+      default: {
+        editor.update(() => {
+          const selection = $getSelection();
+          if ($isRangeSelection(selection)) {
+            $setBlocksType(selection, () => $createParagraphNode());
+          }
+        });
+      }
+    }
+  };
 
   useEffect(
     () =>
@@ -102,13 +223,19 @@ const ToolbarPlugin = () => {
       backgroundColor="Background"
       style={{ zIndex: 1 }}
     >
-      <Flex gap="0.25rem" ref={toolbarRef} padding="0.25rem">
+      <Flex
+        gap="0.25rem"
+        ref={toolbarRef}
+        padding="0.25rem"
+        alignItems="center"
+      >
         <Button
           isDisabled={!canUndo}
           onClick={() => {
             editor.dispatchCommand(UNDO_COMMAND, undefined);
           }}
           aria-label="Undo"
+          title="Undo"
           {...buttonProps}
         >
           <MdUndo />
@@ -119,16 +246,31 @@ const ToolbarPlugin = () => {
             editor.dispatchCommand(REDO_COMMAND, undefined);
           }}
           aria-label="Redo"
+          title="Redo"
           {...buttonProps}
         >
           <MdRedo />
         </Button>
+        <VerticalDivider />
+        <SelectField
+          labelHidden
+          value={blockType}
+          onChange={handleTextTypeOnChange}
+        >
+          <option value="paragraph">Normal</option>
+          <option value="h1">Heading 1</option>
+          <option value="h2">Heading 2</option>
+          <option value="h3">Heading 3</option>
+          <option value="bullet">Bullet List</option>
+          <option value="number">Numbered List</option>
+        </SelectField>
         <VerticalDivider />
         <Button
           onClick={() => {
             editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold');
           }}
           aria-label="Format Bold"
+          title="Format Bold"
           {...buttonProps}
           backgroundColor={isBold && 'brand.primary.10'}
         >
@@ -141,6 +283,7 @@ const ToolbarPlugin = () => {
           {...buttonProps}
           backgroundColor={isItalic && 'brand.primary.10'}
           aria-label="Format Italics"
+          title="Format Italics"
         >
           <MdFormatItalic />
         </Button>
@@ -151,6 +294,7 @@ const ToolbarPlugin = () => {
           {...buttonProps}
           backgroundColor={isUnderline && 'brand.primary.10'}
           aria-label="Format Underline"
+          title="Format Underline"
         >
           <MdFormatUnderlined />
         </Button>
@@ -161,6 +305,7 @@ const ToolbarPlugin = () => {
           {...buttonProps}
           backgroundColor={isStrikethrough && 'brand.primary.10'}
           aria-label="Format Strikethrough"
+          title="Format Strikethrough"
         >
           <MdFormatStrikethrough />
         </Button>
@@ -171,6 +316,7 @@ const ToolbarPlugin = () => {
           }}
           {...buttonProps}
           aria-label="Left Align"
+          title="Left Align"
         >
           <MdFormatAlignLeft />
         </Button>
@@ -180,6 +326,7 @@ const ToolbarPlugin = () => {
           }}
           {...buttonProps}
           aria-label="Center Align"
+          title="Center Align"
         >
           <MdFormatAlignCenter />
         </Button>
@@ -189,6 +336,7 @@ const ToolbarPlugin = () => {
           }}
           {...buttonProps}
           aria-label="Right Align"
+          title="Right Align"
         >
           <MdFormatAlignRight />
         </Button>
@@ -198,6 +346,7 @@ const ToolbarPlugin = () => {
           }}
           {...buttonProps}
           aria-label="Justify Align"
+          title="Justify Align"
         >
           <MdFormatAlignJustify />
         </Button>

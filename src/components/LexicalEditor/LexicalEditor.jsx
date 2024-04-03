@@ -5,9 +5,12 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
+import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import { Text, View } from '@aws-amplify/ui-react';
 import PropTypes from 'prop-types';
+import { HeadingNode } from '@lexical/rich-text';
+import { ListItemNode, ListNode } from '@lexical/list';
 import ToolbarPlugin from './plugins/ToolbarPlugin';
 import LexicalEditorTheme from './LexicalEditor.Theme';
 import './LexicalEditor.style.css';
@@ -46,7 +49,7 @@ const LexicalEditor = ({
       theme: LexicalEditorTheme,
       namespace: 'MyEditor',
       onError: (error) => console.log('Lexical error', error),
-      nodes: [ImageNode, FileNode],
+      nodes: [ImageNode, FileNode, HeadingNode, ListNode, ListItemNode],
     }}
   >
     <View
@@ -66,13 +69,10 @@ const LexicalEditor = ({
           ErrorBoundary={LexicalErrorBoundary}
           placeholder={editable && <Placeholder />}
         />
-        {!!editable && (
-          <>
-            <HistoryPlugin />
-            <AutoFocusPlugin />
-            <OnChangePlugin onChange={onChange} />
-          </>
-        )}
+        <HistoryPlugin />
+        <AutoFocusPlugin />
+        <OnChangePlugin onChange={onChange} />
+        <ListPlugin />
         <FilePlugin />
         <ImagePlugin />
         <EditablePlugin editable={!!editable} />
