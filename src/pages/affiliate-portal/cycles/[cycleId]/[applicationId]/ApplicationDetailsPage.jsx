@@ -241,7 +241,9 @@ const ApplicationDetailsPage = () => {
   };
 
   const handleNoteOpenClose = () => {
-    setNoteModal((prevNoteModal) => !prevNoteModal);
+    if (!uploadingNote) {
+      setNoteModal((prevNoteModal) => !prevNoteModal);
+    }
   };
 
   const uploadNoteFile = async (file) => {
