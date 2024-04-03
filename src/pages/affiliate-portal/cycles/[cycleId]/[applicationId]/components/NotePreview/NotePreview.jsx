@@ -104,7 +104,7 @@ const NotePreview = ({
           <b>Note by:</b> {email}
         </Text>
         <Flex alignItems="center">
-          <Text>{dayjs(createdAt).format('YYYY-MM-DD')}</Text>
+          <Text>{dayjs(createdAt || undefined).format('YYYY-MM-DD')}</Text>
           <Modal
             title="Delete note"
             onClickClose={handleOpenCloseConfirmModal}
