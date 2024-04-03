@@ -64,6 +64,7 @@ const NotePreview = ({ ownerID, createdAt, serializedEditorState }) => {
             zIndex: 1,
             background:
               'linear-gradient(0deg, rgba(255,255,255,0.95) 6%, rgba(255,255,255,0) 100%)',
+            pointerEvents: 'none',
           }}
           justifyContent="center"
           alignItems="end"
@@ -73,6 +74,9 @@ const NotePreview = ({ ownerID, createdAt, serializedEditorState }) => {
             borderStyle="none"
             backgroundColor="transparent"
             onClick={handleExpandedChange}
+            style={{
+              pointerEvents: 'auto',
+            }}
           >
             <Flex alignItems="center" gap="0.25rem">
               <MdArrowDownward />
