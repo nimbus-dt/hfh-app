@@ -49,6 +49,7 @@ import {
 import { ImageNode } from 'components/LexicalEditor/nodes/ImageNode';
 import { fileFromObjectURL } from 'utils/files';
 import { FileNode } from 'components/LexicalEditor/nodes/FileNode';
+import { v4 } from 'uuid';
 import ApplicantInfoTable from './components/ApplicantInfoTable';
 import GeneralInfoTable from './components/GeneralInfoTable';
 import ChecklistTable from './components/ChecklistTable';
@@ -248,7 +249,7 @@ const ApplicationDetailsPage = () => {
 
   const uploadNoteFile = async (file) => {
     const result = await Storage.put(
-      `notes/${habitat?.urlName}/${application.id}/${file.name}`,
+      `notes/${habitat?.urlName}/${application.id}/${v4()}_${file.name}`,
       file,
       {
         level: 'public',
