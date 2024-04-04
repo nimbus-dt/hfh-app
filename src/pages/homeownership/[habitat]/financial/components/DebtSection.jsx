@@ -213,7 +213,7 @@ const DebtSection = ({
     if (watchType !== 'Other') {
       unregister('otherType');
     }
-  }, [watchType]);
+  }, [unregister, watchType]);
 
   return (
     <>
