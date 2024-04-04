@@ -8,6 +8,7 @@ const ApplicantInfoTable = ({
   applicantInfo,
   email,
   shouldRenderCoApplicant,
+  shouldRenderTypeOfOwnership,
   coApplicantMember,
 }) => (
   <Flex direction="column">
@@ -162,6 +163,18 @@ const ApplicantInfoTable = ({
         ]}
       />
     )}
+    {!shouldRenderCoApplicant && shouldRenderTypeOfOwnership && (
+      <DataTable
+        subheading="Type of ownership"
+        subheadingTextAlign="left"
+        data={[
+          {
+            header: 'Ownership type',
+            value: applicantInfo?.props?.typeOfOwnership?.ownershipType ?? '',
+          },
+        ]}
+      />
+    )}
     {shouldRenderCoApplicant && (
       <>
         <DataTable
@@ -193,6 +206,19 @@ const ApplicantInfoTable = ({
               : []),
           ]}
         />
+        {shouldRenderTypeOfOwnership && (
+          <DataTable
+            subheading="Type of ownership"
+            subheadingTextAlign="left"
+            data={[
+              {
+                header: 'Ownership type',
+                value:
+                  applicantInfo?.props?.typeOfOwnership?.ownershipType ?? '',
+              },
+            ]}
+          />
+        )}
         <DataTable
           subheading="Co-applicant"
           subheadingTextAlign="left"
@@ -408,6 +434,7 @@ ApplicantInfoTable.propTypes = {
   applicantInfo: PropTypes.object,
   email: PropTypes.string,
   shouldRenderCoApplicant: PropTypes.bool,
+  shouldRenderTypeOfOwnership: PropTypes.bool,
   coApplicantMember: PropTypes.object,
 };
 

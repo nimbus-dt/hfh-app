@@ -1,7 +1,15 @@
+type Note @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  serializedEditorState: String!
+  ownerID: ID!
+  testapplicationID: ID! @index(name: "byTestApplication")
+}
+
 type OptionalSections {
   coApplicant: Boolean!
   propertyInfo: Boolean!
   businessOwnerOrSelfEmployed: Boolean!
+  typeOfOwnership: Boolean!
 }
 
 type Property @model @auth(rules: [{allow: public}]) {
@@ -97,6 +105,7 @@ type TestApplication @model @auth(rules: [{allow: public}]) {
   props: AWSJSON
   type: ApplicationTypes!
   testcycleID: ID! @index(name: "byTestCycle")
+  Notes: [Note] @hasMany(indexName: "byTestApplication", fields: ["id"])
 }
 
 type EmploymentInfo @model @auth(rules: [{allow: public}]) {

@@ -1,6 +1,111 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getNote = /* GraphQL */ `
+  query GetNote($id: ID!) {
+    getNote(id: $id) {
+      id
+      serializedEditorState
+      ownerID
+      testapplicationID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listNotes = /* GraphQL */ `
+  query ListNotes(
+    $filter: ModelNoteFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listNotes(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        serializedEditorState
+        ownerID
+        testapplicationID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncNotes = /* GraphQL */ `
+  query SyncNotes(
+    $filter: ModelNoteFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncNotes(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        serializedEditorState
+        ownerID
+        testapplicationID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const notesByTestapplicationID = /* GraphQL */ `
+  query NotesByTestapplicationID(
+    $testapplicationID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelNoteFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    notesByTestapplicationID(
+      testapplicationID: $testapplicationID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        serializedEditorState
+        ownerID
+        testapplicationID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
 export const getProperty = /* GraphQL */ `
   query GetProperty($id: ID!) {
     getProperty(id: $id) {
@@ -485,6 +590,11 @@ export const getTestApplication = /* GraphQL */ `
       props
       type
       testcycleID
+      Notes {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version

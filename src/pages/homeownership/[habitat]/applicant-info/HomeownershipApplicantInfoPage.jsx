@@ -5,15 +5,14 @@ import { DataStore } from 'aws-amplify';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { createAlert } from 'utils/factories';
 import CustomCard from 'components/CustomCard';
-import {
-  BasicInformation,
-  Address,
-  PrevAddress,
-  UnmarriedAddendum,
-  TypeOfCredit,
-  CoApplicant,
-} from './components/FormApplicantInfo';
 import { maritalStatusValues } from './HomeownershipApplicantInfoPage.schema';
+import BasicInformation from './components/BasicInformation';
+import UnmarriedAddendum from './components/UnmarriedAddendum';
+import Address from './components/Address';
+import PrevAddress from './components/PrevAddress';
+import TypeOfCredit from './components/TypeOfCredit';
+import CoApplicant from './components/CoApplicant';
+import TypeOfOwnership from './components/TypeOfOwnership';
 
 export default function HomeownershipApplicantInfoPage() {
   const { application, updateApplicationLastSection, habitat } =
@@ -21,7 +20,8 @@ export default function HomeownershipApplicantInfoPage() {
 
   const shouldRenderCoApplicant = habitat?.props.optionalSections.coApplicant;
 
-  console.log(shouldRenderCoApplicant);
+  const shouldRenderTypeOfOwnership =
+    habitat?.props.optionalSections.typeOfOwnership;
 
   const [applicantInfo, setApplicantInfo] = useState();
 
@@ -39,6 +39,9 @@ export default function HomeownershipApplicantInfoPage() {
 
   const [typeOfCreditOpen, setTypeOfCreditOpen] = useState(false);
   const [typeOfCreditEdit, setTypeOfCreditEdit] = useState(false);
+
+  const [typeOfOwnershipOpen, setTypeOfOwnershipOpen] = useState(false);
+  const [typeOfOwnershipEdit, setTypeOfOwnershipEdit] = useState(false);
 
   const [coApplicantOpen, setCoApplicantOpen] = useState(false);
   const [coApplicantEdit, setCoApplicantEdit] = useState(false);
@@ -240,8 +243,10 @@ export default function HomeownershipApplicantInfoPage() {
         habitat?.props.homeownershipMinCurrentAddressMonths
       ) {
         setPreviousAddressOpen(true);
-      } else {
+      } else if (shouldRenderCoApplicant) {
         setTypeOfCreditOpen(true);
+      } else {
+        setTypeOfOwnershipOpen(true);
       }
       setCurrentAddressOpen(false);
       updateApplicationLastSection();
@@ -283,7 +288,11 @@ export default function HomeownershipApplicantInfoPage() {
       );
 
       setPreviousAddressOpen(false);
-      setTypeOfCreditOpen(true);
+      if (shouldRenderCoApplicant) {
+        setTypeOfCreditOpen(true);
+      } else {
+        setTypeOfOwnershipOpen(true);
+      }
       updateApplicationLastSection();
     } catch {
       setAlert(
@@ -338,7 +347,11 @@ export default function HomeownershipApplicantInfoPage() {
         );
       }
       setTypeOfCreditOpen(false);
-      setCoApplicantOpen(true);
+      if (shouldRenderTypeOfOwnership) {
+        setTypeOfOwnershipOpen(true);
+      } else {
+        setCoApplicantOpen(true);
+      }
       updateApplicationLastSection();
     } catch {
       setAlert(
@@ -350,6 +363,65 @@ export default function HomeownershipApplicantInfoPage() {
   const handleOnClickTypeOfCreditEdit = () =>
     setTypeOfCreditEdit(
       (previousTypeOfCreditEdit) => !previousTypeOfCreditEdit
+    );
+
+  const onValidTypeOfOwnership = async (data) => {
+    try {
+      if (applicantInfo === undefined) {
+        const persistedApplicantInfo = await DataStore.save(
+          new ApplicantInfo({
+            ownerID: application.id,
+            props: {
+              typeOfOwnership: data,
+            },
+          })
+        );
+        setApplicantInfo(persistedApplicantInfo);
+        setAlert(
+          createAlert(
+            'success',
+            'Success',
+            'The type of ownership was saved successfully.'
+          )
+        );
+      } else {
+        const original = await DataStore.query(ApplicantInfo, applicantInfo.id);
+        const persistedApplicantInfo = await DataStore.save(
+          ApplicantInfo.copyOf(original, (originalApplicantInfo) => {
+            originalApplicantInfo.ownerID = application.id;
+            originalApplicantInfo.props = {
+              ...originalApplicantInfo.props,
+              typeOfOwnership: data,
+            };
+          })
+        );
+        setApplicantInfo(persistedApplicantInfo);
+        setTypeOfOwnershipEdit(false);
+        setAlert(
+          createAlert(
+            'success',
+            'Success',
+            'The type of ownership was updated successfully.'
+          )
+        );
+      }
+      setTypeOfOwnershipOpen(false);
+      setCoApplicantOpen(true);
+      updateApplicationLastSection();
+    } catch {
+      setAlert(
+        createAlert(
+          'error',
+          'Error',
+          "The type of ownership couldn't be saved."
+        )
+      );
+    }
+  };
+
+  const handleOnClickTypeOfOwnershipEdit = () =>
+    setTypeOfOwnershipEdit(
+      (previousTypeOfOwnershipEdit) => !previousTypeOfOwnershipEdit
     );
 
   const onValidCoApplicant = async (data) => {
@@ -682,6 +754,9 @@ export default function HomeownershipApplicantInfoPage() {
         ? applicantInfo?.props?.typeOfCredit !== undefined &&
           applicantInfo?.props?.hasCoApplicant !== undefined
         : true) &&
+      (shouldRenderTypeOfOwnership
+        ? applicantInfo?.props?.typeOfOwnership !== undefined
+        : true) &&
       (applicantInfo?.props?.hasCoApplicant === 'Yes' && shouldRenderCoApplicant
         ? applicantInfo?.props?.coApplicantBasicInfo !== undefined &&
           applicantInfo?.props?.coApplicantCurrentAddress !== undefined
@@ -804,6 +879,19 @@ export default function HomeownershipApplicantInfoPage() {
             <br />
           </>
         )}
+        {!shouldRenderCoApplicant && shouldRenderTypeOfOwnership && (
+          <>
+            <TypeOfOwnership
+              expanded={typeOfOwnershipOpen}
+              onExpandedChange={setTypeOfOwnershipOpen}
+              applicantInfo={applicantInfo}
+              onValid={onValidTypeOfOwnership}
+              edit={typeOfOwnershipEdit}
+              onClickEdit={handleOnClickTypeOfOwnershipEdit}
+            />
+            <br />
+          </>
+        )}
         {shouldRenderCoApplicant && (
           <>
             <TypeOfCredit
@@ -815,6 +903,19 @@ export default function HomeownershipApplicantInfoPage() {
               onClickEdit={handleOnClickTypeOfCreditEdit}
             />
             <br />
+            {shouldRenderTypeOfOwnership && (
+              <>
+                <TypeOfOwnership
+                  expanded={typeOfOwnershipOpen}
+                  onExpandedChange={setTypeOfOwnershipOpen}
+                  applicantInfo={applicantInfo}
+                  onValid={onValidTypeOfOwnership}
+                  edit={typeOfOwnershipEdit}
+                  onClickEdit={handleOnClickTypeOfOwnershipEdit}
+                />
+                <br />
+              </>
+            )}
             <CoApplicant
               expanded={coApplicantOpen}
               onExpandedChange={setCoApplicantOpen}
