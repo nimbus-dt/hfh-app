@@ -64,7 +64,7 @@ const DebtSection = ({ debts }) => {
     if (watchType !== 'Other') {
       unregister('otherType');
     }
-  }, [watchType]);
+  }, [unregister, watchType]);
 
   return (
     <>
