@@ -7,7 +7,7 @@ import { TestApplication, SubmissionStatus } from 'models';
 import dayjs from 'dayjs';
 import { createAlert } from 'utils/factories';
 import CustomCard from 'components/CustomCard';
-import ApplicantInfoSection from './components/ApplicantInfoSection';
+import ApplicantInfoSection from './components/ApplicantInfoSection/ApplicantInfoSection';
 import { ChecklistSection } from './components/CheckListSection';
 import WrittenSection from './components/WrittenSection';
 import RecordsSection from './components/RecordsSection';
@@ -27,6 +27,8 @@ export default function HomeownershipReviewPage() {
     habitat?.props.optionalSections.businessOwnerOrSelfEmployed;
 
   const shouldRenderCoApplicant = habitat?.props.optionalSections.coApplicant;
+  const shouldRenderTypeOfOwnership =
+    habitat?.props.optionalSections.typeOfOwnership;
 
   const [reviewedSections, setReviewedSections] = useState({});
   const [showSubmitModal, setShowSubmitModal] = useState(false);
@@ -36,6 +38,7 @@ export default function HomeownershipReviewPage() {
   const [currentAddressOpen, setCurrentAddressOpen] = useState(false);
   const [previousAddressOpen, setPreviousAddressOpen] = useState(false);
   const [typeOfCreditOpen, setTypeOfCreditOpen] = useState(false);
+  const [typeOfOwnershipOpen, setTypeOfOwnershipOpen] = useState(false);
   const [coApplicantOpen, setCoApplicantOpen] = useState(false);
   const [coApplicantBasicInfoOpen, setCoApplicantBasicInfoOpen] =
     useState(false);
@@ -122,6 +125,8 @@ export default function HomeownershipReviewPage() {
     setPreviousAddressOpen(false);
     if (shouldRenderCoApplicant) {
       setTypeOfCreditOpen(true);
+    } else if (shouldRenderTypeOfOwnership) {
+      setTypeOfOwnershipOpen(true);
     } else {
       setApplicantMilitaryServiceOpen(true);
     }
@@ -133,10 +138,27 @@ export default function HomeownershipReviewPage() {
 
   const handleTypeOfCreditOnReview = () => {
     setTypeOfCreditOpen(false);
-    setCoApplicantOpen(true);
+    if (shouldRenderTypeOfOwnership) {
+      setTypeOfOwnershipOpen(true);
+    } else {
+      setCoApplicantOpen(true);
+    }
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,
       typeOfCredit: true,
+    }));
+  };
+
+  const handleTypeOfOwnershipOnReview = () => {
+    setTypeOfOwnershipOpen(false);
+    if (shouldRenderCoApplicant) {
+      setCoApplicantOpen(true);
+    } else {
+      setApplicantMilitaryServiceOpen(true);
+    }
+    setReviewedSections((previousReviewedSections) => ({
+      ...previousReviewedSections,
+      typeOfOwnership: true,
     }));
   };
 
@@ -550,6 +572,9 @@ export default function HomeownershipReviewPage() {
         typeOfCreditOpen={typeOfCreditOpen}
         setTypeOfCreditOpen={setTypeOfCreditOpen}
         handleTypeOfCreditOnReview={handleTypeOfCreditOnReview}
+        typeOfOwnershipOpen={typeOfOwnershipOpen}
+        setTypeOfOwnershipOpen={setTypeOfOwnershipOpen}
+        handleTypeOfOwnershipOnReview={handleTypeOfOwnershipOnReview}
         coApplicantOpen={coApplicantOpen}
         setCoApplicantOpen={setCoApplicantOpen}
         handleCoApplicantOnReview={handleCoApplicantOnReview}
@@ -577,6 +602,7 @@ export default function HomeownershipReviewPage() {
         setReviewedSections={setReviewedSections}
         submitted={application?.submissionStatus === SubmissionStatus.SUBMITTED}
         shouldRenderCoApplicant={shouldRenderCoApplicant}
+        shouldRenderTypeOfOwnership={shouldRenderTypeOfOwnership}
       />
       <ApplicantOptionalSection
         applicantMilitaryServiceOpen={applicantMilitaryServiceOpen}

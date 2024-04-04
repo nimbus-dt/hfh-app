@@ -23,6 +23,11 @@ export const creditTypes = [
   'Each borrower intends to apply for joint credit.',
 ];
 
+export const ownershipTypes = [
+  'I am applying as an individual owner.',
+  'I am applying for dual ownership.',
+];
+
 const phoneSchema = z
   .string()
   .regex(
@@ -84,4 +89,8 @@ export const typeOfCreditSchema = z.object({
 
 export const coApplicantSchema = z.object({
   hasCoApplicant: z.enum(['Yes', 'No']),
+});
+
+export const typeOfOwnershipSchema = z.object({
+  ownershipType: z.enum(ownershipTypes),
 });

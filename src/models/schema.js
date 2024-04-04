@@ -1,5 +1,87 @@
 export const schema = {
     "models": {
+        "Note": {
+            "name": "Note",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "serializedEditorState": {
+                    "name": "serializedEditorState",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "ownerID": {
+                    "name": "ownerID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "testapplicationID": {
+                    "name": "testapplicationID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Notes",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byTestApplication",
+                        "fields": [
+                            "testapplicationID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "Property": {
             "name": "Property",
             "fields": {
@@ -527,6 +609,22 @@ export const schema = {
                     "type": "ID",
                     "isRequired": true,
                     "attributes": []
+                },
+                "Notes": {
+                    "name": "Notes",
+                    "isArray": true,
+                    "type": {
+                        "model": "Note"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "testapplicationID"
+                        ]
+                    }
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -1169,6 +1267,13 @@ export const schema = {
                     "type": "Boolean",
                     "isRequired": true,
                     "attributes": []
+                },
+                "typeOfOwnership": {
+                    "name": "typeOfOwnership",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": true,
+                    "attributes": []
                 }
             }
         },
@@ -1340,5 +1445,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "5f0a7df21af6ff7dc30bec225b3949dd"
+    "version": "f7a9c7439d1871154f52614d4dcd5491"
 };
