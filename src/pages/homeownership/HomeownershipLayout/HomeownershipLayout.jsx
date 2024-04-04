@@ -24,6 +24,8 @@ export default function HomeownershipLayout() {
 
   const [openCycle, setOpenCycle] = useState();
 
+  const [alreadyRedirected, setAlreadyRedirected] = useState(false);
+
   const scrollViewReference = useRef(null);
   useScrollToTopOnRouteChange(scrollViewReference);
 
@@ -93,7 +95,7 @@ export default function HomeownershipLayout() {
         console.log('Error creating new application.');
       }
     },
-    [location.pathname, openCycle.id]
+    [location.pathname, openCycle?.id]
   );
 
   const updateApplicationLastSection = useCallback(async () => {
@@ -151,24 +153,33 @@ export default function HomeownershipLayout() {
   useEffect(() => {
     const urlSections = location.pathname.split('/');
     if (
-      (authStatus === 'unauthenticated' && urlSections[3] !== 'home') ||
-      (application &&
-        application.submissionStatus === SubmissionStatus.SUBMITTED &&
-        authStatus === 'authenticated' &&
-        urlSections[3] !== 'review') ||
-      (openCycle === undefined &&
-        application?.submissionStatus !== SubmissionStatus.RETURNED)
+      !alreadyRedirected &&
+      ((authStatus === 'unauthenticated' && urlSections[3] !== 'home') ||
+        (application &&
+          application.submissionStatus === SubmissionStatus.SUBMITTED &&
+          authStatus === 'authenticated' &&
+          urlSections[3] !== 'review') ||
+        (openCycle === undefined &&
+          application?.submissionStatus !== SubmissionStatus.RETURNED))
     ) {
       urlSections[3] = 'home';
       navigate(urlSections.join('/'));
     }
-  }, [location.pathname, authStatus, application, openCycle, navigate]);
+  }, [
+    location.pathname,
+    authStatus,
+    application,
+    openCycle,
+    navigate,
+    alreadyRedirected,
+  ]);
 
   useEffect(() => {
-    if (application && authStatus === 'authenticated') {
+    if (application && authStatus === 'authenticated' && !alreadyRedirected) {
+      setAlreadyRedirected(true);
       navigate(application.lastSection);
     }
-  }, [authStatus, application, navigate]);
+  }, [authStatus, application, navigate, alreadyRedirected]);
 
   useEffect(() => {
     const getOpenCycle = async () => {
