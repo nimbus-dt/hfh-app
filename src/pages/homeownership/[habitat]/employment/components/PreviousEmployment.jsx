@@ -4,7 +4,7 @@ import { Button, Flex, SelectField, TextField } from '@aws-amplify/ui-react';
 import PropTypes from 'prop-types';
 import { formatPhoneNumber } from 'utils/formatters';
 import CustomExpandableCard from 'components/CustomExpandableCard';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { debounce } from 'lodash';
 import { API } from 'aws-amplify';
 import SearchableSelectInput from 'components/SearchableSelectInput';
@@ -78,30 +78,31 @@ const PreviousEmployment = ({
 
   const watchCityQuery = watch('employerCity');
 
-  const getApplicantCurrentAddressCities = useCallback(
-    debounce(async (cityNameQuery, state) => {
-      try {
-        const newCities = await API.get(
-          'public',
-          `/cities?cityNameQuery=${cityNameQuery}&state=${state}`
-        );
+  const getApplicantCurrentAddressCities = useMemo(
+    () =>
+      debounce(async (cityNameQuery, state) => {
+        try {
+          const newCities = await API.get(
+            'public',
+            `/cities?cityNameQuery=${cityNameQuery}&state=${state}`
+          );
 
-        setCities(
-          newCities.map((city) => ({
-            id: city.city,
-            label: city.city,
-          }))
-        );
-      } catch (error) {
-        console.log('Error fetching cities.');
-      }
-    }, 150),
+          setCities(
+            newCities.map((city) => ({
+              id: city.city,
+              label: city.city,
+            }))
+          );
+        } catch (error) {
+          console.log('Error fetching cities.');
+        }
+      }, 150),
     []
   );
 
   useEffect(() => {
     getApplicantCurrentAddressCities(watchCityQuery?.query, watchState);
-  }, [watchCityQuery, watchState]);
+  }, [getApplicantCurrentAddressCities, watchCityQuery, watchState]);
 
   useEffect(() => {
     resetField('employerCity', {
@@ -110,7 +111,7 @@ const PreviousEmployment = ({
       },
     });
     setCities([]);
-  }, [watchState]);
+  }, [resetField, watchState]);
 
   return (
     <CustomExpandableCard
