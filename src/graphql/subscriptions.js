@@ -1,6 +1,54 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateNote = /* GraphQL */ `
+  subscription OnCreateNote($filter: ModelSubscriptionNoteFilterInput) {
+    onCreateNote(filter: $filter) {
+      id
+      serializedEditorState
+      ownerID
+      testapplicationID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateNote = /* GraphQL */ `
+  subscription OnUpdateNote($filter: ModelSubscriptionNoteFilterInput) {
+    onUpdateNote(filter: $filter) {
+      id
+      serializedEditorState
+      ownerID
+      testapplicationID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteNote = /* GraphQL */ `
+  subscription OnDeleteNote($filter: ModelSubscriptionNoteFilterInput) {
+    onDeleteNote(filter: $filter) {
+      id
+      serializedEditorState
+      ownerID
+      testapplicationID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
 export const onCreateProperty = /* GraphQL */ `
   subscription OnCreateProperty($filter: ModelSubscriptionPropertyFilterInput) {
     onCreateProperty(filter: $filter) {
@@ -326,6 +374,11 @@ export const onCreateTestApplication = /* GraphQL */ `
       props
       type
       testcycleID
+      Notes {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -354,6 +407,11 @@ export const onUpdateTestApplication = /* GraphQL */ `
       props
       type
       testcycleID
+      Notes {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -382,6 +440,11 @@ export const onDeleteTestApplication = /* GraphQL */ `
       props
       type
       testcycleID
+      Notes {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
