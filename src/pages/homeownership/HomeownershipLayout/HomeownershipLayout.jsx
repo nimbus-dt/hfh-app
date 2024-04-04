@@ -47,48 +47,54 @@ export default function HomeownershipLayout() {
     context.user,
   ]);
 
-  const getApplication = async (username) => {
-    try {
-      const habitatCycles = await habitat?.TestCycles.toArray();
-      const existingApplication = await DataStore.query(
-        TestApplication,
-        (c1) =>
-          c1.and((c2) => [
-            c2.ownerID.eq(username),
-            c2.or((c3) =>
-              habitatCycles.map((cycle) => c3.testcycleID.eq(cycle.id))
-            ),
-          ]),
-        {
-          sort: (c) => c.createdAt(SortDirection.DESCENDING),
-        }
-      );
-      return existingApplication[0];
-    } catch (error) {
-      console.log(`Error fetching the application data. ${error}`);
-    }
-  };
+  const getApplication = useCallback(
+    async (username) => {
+      try {
+        const habitatCycles = await habitat?.TestCycles.toArray();
+        const existingApplication = await DataStore.query(
+          TestApplication,
+          (c1) =>
+            c1.and((c2) => [
+              c2.ownerID.eq(username),
+              c2.or((c3) =>
+                habitatCycles.map((cycle) => c3.testcycleID.eq(cycle.id))
+              ),
+            ]),
+          {
+            sort: (c) => c.createdAt(SortDirection.DESCENDING),
+          }
+        );
+        return existingApplication[0];
+      } catch (error) {
+        console.log(`Error fetching the application data. ${error}`);
+      }
+    },
+    [habitat?.TestCycles]
+  );
 
-  const createNewApplication = async (username) => {
-    try {
-      const newApplication = await DataStore.save(
-        new TestApplication({
-          ownerID: username,
-          lastSection: location.pathname,
-          members: [],
-          submissionStatus: SubmissionStatus.UNSUBMITTED,
-          reviewStatus: DEFAULT_REVIEW_STATUS,
-          submittedDate: '0001-01-01',
-          testcycleID: openCycle.id,
-          type: ApplicationTypes.ONLINE,
-        })
-      );
+  const createNewApplication = useCallback(
+    async (username) => {
+      try {
+        const newApplication = await DataStore.save(
+          new TestApplication({
+            ownerID: username,
+            lastSection: location.pathname,
+            members: [],
+            submissionStatus: SubmissionStatus.UNSUBMITTED,
+            reviewStatus: DEFAULT_REVIEW_STATUS,
+            submittedDate: '0001-01-01',
+            testcycleID: openCycle.id,
+            type: ApplicationTypes.ONLINE,
+          })
+        );
 
-      return newApplication;
-    } catch (error) {
-      console.log('Error creating new application.');
-    }
-  };
+        return newApplication;
+      } catch (error) {
+        console.log('Error creating new application.');
+      }
+    },
+    [location.pathname, openCycle.id]
+  );
 
   const updateApplicationLastSection = useCallback(async () => {
     try {
@@ -132,7 +138,15 @@ export default function HomeownershipLayout() {
     if (authStatus === 'unauthenticated') {
       setApplication();
     }
-  }, [authStatus, application, user, habitat, openCycle]);
+  }, [
+    authStatus,
+    application,
+    user,
+    habitat,
+    openCycle,
+    getApplication,
+    createNewApplication,
+  ]);
 
   useEffect(() => {
     const urlSections = location.pathname.split('/');
@@ -148,13 +162,13 @@ export default function HomeownershipLayout() {
       urlSections[3] = 'home';
       navigate(urlSections.join('/'));
     }
-  }, [location.pathname, authStatus, application]);
+  }, [location.pathname, authStatus, application, openCycle, navigate]);
 
   useEffect(() => {
     if (application && authStatus === 'authenticated') {
       navigate(application.lastSection);
     }
-  }, [authStatus, application]);
+  }, [authStatus, application, navigate]);
 
   useEffect(() => {
     const getOpenCycle = async () => {
