@@ -16,7 +16,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "baseUrl": "./src",
+    "baseUrl": "./src"
   },
   "include": ["src"]
 }
