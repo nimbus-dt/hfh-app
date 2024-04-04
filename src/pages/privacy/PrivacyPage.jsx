@@ -16,12 +16,14 @@ const PrivacyPage = () => (
     <CustomCard>
       <Flex direction="column" gap="5px">
         <p>
-          This Privacy Policy ("Policy") outlines how Nimbus S.A de C.V.
-          ("Provider," "we," or "us") collects, uses, and protects personal
-          information obtained through the use of the HabitatApp by Habitat
-          affiliates ("Clients," "you," or "your"). This Policy applies to the
-          collection, use, and disclosure of personal information by Provider in
-          connection with the HabitatApp.
+          <strong>Effective date:</strong> 02/15/2024
+        </p>
+        <p>
+          This Privacy Policy ("Policy") constitutes a binding agreement between
+          HabitatApp and its affiliated entities collectively referred to as
+          "Habitat Affiliates."This Policy applies to the collection, use, and
+          disclosure of personal information by Provider in connection with the
+          HabitatApp.
         </p>
 
         <p>
@@ -29,7 +31,7 @@ const PrivacyPage = () => (
         </p>
         <p>
           We may collect the following types of personal information from
-          Clients:
+          Habitat Affiliates:
         </p>
         <ul>
           <li>
@@ -37,8 +39,8 @@ const PrivacyPage = () => (
             number.
           </li>
           <li>
-            Other information voluntarily provided by Clients for the purpose of
-            using the HabitatApp.
+            Other information voluntarily provided by Habitat Affiliates for the
+            purpose of using the HabitatApp.
           </li>
         </ul>
 
@@ -46,14 +48,14 @@ const PrivacyPage = () => (
           <strong>2. Use of Personal Information</strong>
         </p>
         <p>
-          We may use the personal information collected from Clients for the
-          following purposes:
+          We may use the personal information collected from Habitat Affiliates
+          for the following purposes:
         </p>
         <ul>
           <li>To provide and maintain the functionality of the HabitatApp.</li>
           <li>
-            To communicate with Clients regarding updates, changes, or technical
-            issues related to the App.
+            To communicate with Habitat Affiliates regarding updates, changes,
+            or technical issues related to the App.
           </li>
           <li>To process payments and invoices.</li>
           <li>
@@ -76,8 +78,8 @@ const PrivacyPage = () => (
             requests or legal processes.
           </li>
           <li>
-            To protect the rights, property, or safety of Provider, Clients, or
-            others.
+            To protect the rights, property, or safety of Provider, Habitat
+            Affiliates, or others.
           </li>
         </ul>
 
@@ -107,9 +109,9 @@ const PrivacyPage = () => (
         <p>
           The HabitatApp may include links to third-party websites or services
           that are not operated by us. These third-party services have their own
-          privacy policies, and we encourage Clients to review them. We do not
-          assume any responsibility for the privacy practices of third-party
-          services.
+          privacy policies, and we encourage Habitat Affiliates to review them.
+          We do not assume any responsibility for the privacy practices of
+          third-party services.
         </p>
 
         <p>
@@ -117,9 +119,9 @@ const PrivacyPage = () => (
         </p>
         <p>
           We may update this Privacy Policy from time to time. Any changes will
-          be posted on our website or communicated to Clients through the
-          HabitatApp. Clients are advised to review this Policy periodically for
-          any updates.
+          be posted on our website or communicated to Habitat Affiliates through
+          the HabitatApp. Habitat Affiliates are advised to review this Policy
+          periodically for any updates.
         </p>
 
         <p>
