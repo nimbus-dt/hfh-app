@@ -16,6 +16,7 @@ import LandingPage from 'pages/index/LandingPage';
 import TermsPage from 'pages/terms/TermsPage';
 import PrivacyPage from 'pages/privacy';
 import ContactPage from 'pages/contact';
+import DataPage from 'pages/data';
 
 // eslint-disable-next-line import/no-unresolved
 import '@aws-amplify/ui-react/styles.css';
@@ -65,6 +66,14 @@ function App() {
           element={
             <NewLandingLayout>
               <PrivacyPage />
+            </NewLandingLayout>
+          }
+        />
+        <Route
+          path="data"
+          element={
+            <NewLandingLayout>
+              <DataPage />
             </NewLandingLayout>
           }
         />
