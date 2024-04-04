@@ -1,11 +1,4 @@
-import {
-  Heading,
-  Flex,
-  View,
-  Text,
-  Button,
-  CheckboxField,
-} from '@aws-amplify/ui-react';
+import { Flex, View, Button, CheckboxField } from '@aws-amplify/ui-react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useState } from 'react';
 import CustomCard from 'components/CustomCard';
