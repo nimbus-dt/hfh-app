@@ -1,0 +1,17 @@
+{
+  "extends": [
+    "wesbos",
+    "react-app/jest",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "plugins": ["@typescript-eslint"],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["src"]
+      }
+    }
+  },
+  "rules": {}
+}
