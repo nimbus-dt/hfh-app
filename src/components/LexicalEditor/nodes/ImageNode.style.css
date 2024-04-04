@@ -1,0 +1,15 @@
+.image-node {
+    width: 100% !important;
+    border-radius: 0.5rem !important;
+}
+
+.image-node.editable {
+    cursor: pointer;
+}
+
+.image-node.editable.selected {
+    outline: var(--amplify-colors-blue-40);
+    outline-width: 0.25rem;
+    outline-style: solid;
+    outline-offset: 0.1rem;
+}
