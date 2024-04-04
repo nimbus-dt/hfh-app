@@ -1,4 +1,4 @@
-const { z } = require('zod');
+import { z } from 'zod';
 
 export const searchableOptionSchema = z.object({
   id: z.union([z.string().min(1), z.number()]),

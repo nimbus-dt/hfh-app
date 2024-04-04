@@ -10,7 +10,7 @@ const SelectWithSearch = ({
   label,
   options,
   selectedOption,
-  onClickOption = () => {},
+  onClickOption = () => undefined,
   value,
   isDisabled,
   onUnselect,
