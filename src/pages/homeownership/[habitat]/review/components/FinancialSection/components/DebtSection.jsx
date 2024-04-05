@@ -52,7 +52,7 @@ const DebtSection = ({ ownerId, debts, submitted }) => {
     if (watchType !== 'Other') {
       unregister('otherType');
     }
-  }, [watchType]);
+  }, [unregister, watchType]);
 
   return (
     <CustomExpandableCard
