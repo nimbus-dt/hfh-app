@@ -46,6 +46,7 @@ import {
   INSERT_UNORDERED_LIST_COMMAND,
   ListNode,
 } from '@lexical/list';
+import PropTypes from 'prop-types';
 import InsertImageButton from './components/InsertImageButton';
 import InsertFileButton from './components/InsertFileButton';
 
@@ -60,7 +61,7 @@ const VerticalDivider = () => (
   <Divider orientation="vertical" opacity={1} alignSelf="stretch" />
 );
 
-const ToolbarPlugin = () => {
+const ToolbarPlugin = ({ disableFiles }) => {
   const [editor] = useLexicalComposerContext();
   const toolbarRef = useRef(null);
   const [canUndo, setCanUndo] = useState(false);
@@ -228,6 +229,7 @@ const ToolbarPlugin = () => {
         ref={toolbarRef}
         padding="0.25rem"
         alignItems="center"
+        wrap="wrap"
       >
         <Button
           isDisabled={!canUndo}
@@ -352,11 +354,15 @@ const ToolbarPlugin = () => {
         </Button>
         <VerticalDivider />
         <InsertImageButton buttonProps={buttonProps} />
-        <InsertFileButton buttonProps={buttonProps} />
+        {!disableFiles && <InsertFileButton buttonProps={buttonProps} />}
       </Flex>
       <Divider opacity={1} />
     </View>
   );
+};
+
+ToolbarPlugin.propTypes = {
+  disableFiles: PropTypes.bool,
 };
 
 export default ToolbarPlugin;

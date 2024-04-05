@@ -20,6 +20,7 @@ import { ImageNode } from './nodes/ImageNode';
 import ImagePlugin from './plugins/ImagePlugin';
 import FilePlugin from './plugins/FilePlugin';
 import { FileNode } from './nodes/FileNode';
+import ExportToHtmlPlugin from './plugins/ExportToHtmlPlugin';
 
 function Placeholder() {
   return (
@@ -41,15 +42,23 @@ function Placeholder() {
 
 const LexicalEditor = ({
   onChange = () => undefined,
+  onChangeHtml,
   editable,
   serializedEditorState,
+  disableFiles,
 }) => (
   <LexicalComposer
     initialConfig={{
       theme: LexicalEditorTheme,
       namespace: 'MyEditor',
       onError: (error) => console.log('Lexical error', error),
-      nodes: [ImageNode, FileNode, HeadingNode, ListNode, ListItemNode],
+      nodes: [
+        ImageNode,
+        ...(disableFiles ? [] : [FileNode]),
+        HeadingNode,
+        ListNode,
+        ListItemNode,
+      ],
     }}
   >
     <View
@@ -58,7 +67,7 @@ const LexicalEditor = ({
       borderRadius="small"
       borderWidth="medium"
     >
-      {editable && <ToolbarPlugin />}
+      {editable && <ToolbarPlugin disableFiles />}
       <View position="relative">
         <RichTextPlugin
           contentEditable={
@@ -73,10 +82,11 @@ const LexicalEditor = ({
         <AutoFocusPlugin />
         <OnChangePlugin onChange={onChange} />
         <ListPlugin />
-        <FilePlugin />
+        {!disableFiles && <FilePlugin />}
         <ImagePlugin />
         <EditablePlugin editable={!!editable} />
         <RestoreStatePlugin serializedEditorState={serializedEditorState} />
+        {onChangeHtml && <ExportToHtmlPlugin onChange={onChangeHtml} />}
       </View>
     </View>
   </LexicalComposer>
@@ -85,7 +95,9 @@ const LexicalEditor = ({
 LexicalEditor.propTypes = {
   serializedEditorState: PropTypes.string,
   onChange: PropTypes.func,
+  onChangeHtml: PropTypes.func,
   editable: PropTypes.bool,
+  disableFiles: PropTypes.bool,
 };
 
 export default LexicalEditor;
