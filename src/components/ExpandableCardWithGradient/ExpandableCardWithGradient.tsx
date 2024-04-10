@@ -51,7 +51,7 @@ const ExpandableCardWithGradient = ({ children }: IProperties) => {
           style={{
             zIndex: 1,
             background:
-              'linear-gradient(0deg, rgba(255,255,255,0.95) 6%, rgba(255,255,255,0) 100%)',
+              'linear-gradient(0deg, rgba(255,255,255,1) 15%, rgba(255,255,255,0) 65%)',
             pointerEvents: 'none',
           }}
           justifyContent="center"
