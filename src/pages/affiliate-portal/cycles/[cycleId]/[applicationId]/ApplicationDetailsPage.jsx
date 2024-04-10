@@ -197,7 +197,7 @@ const ApplicationDetailsPage = () => {
       await API.post('sendEmailToApplicantAPI', '/notify', {
         body: {
           subject: 'Status update on your Habitat for Humanity application',
-          body: '<p>Your application has received an update.</p>',
+          body: '<p>A decision has been made on your application. Please log in to your application portal to see this.</p>',
           sub: persistedApplication.ownerID,
           habitat: habitat.name,
         },
@@ -243,7 +243,7 @@ const ApplicationDetailsPage = () => {
       await API.post('sendEmailToApplicantAPI', '/notify', {
         body: {
           subject: 'Status update on your Habitat for Humanity application',
-          body: '<p>Your application has received an update.</p>',
+          body: '<p>A decision has been made on your application. Please log in to your application portal to see this.</p>',
           sub: persistedApplication.ownerID,
           habitat: habitat.name,
         },
