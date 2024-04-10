@@ -77,7 +77,7 @@ const FileComponent = ({ nodeKey, name, s3key, path }) => {
 
       return false;
     },
-    [isSelected, setSelected, clearSelection, nodeKey]
+    [isSelected, setSelected, clearSelection]
   );
 
   useEffect(() => {

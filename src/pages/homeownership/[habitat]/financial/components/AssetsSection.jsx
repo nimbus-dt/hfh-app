@@ -213,7 +213,7 @@ const AssetsSection = ({
     if (watchType !== 'Other') {
       unregister('otherType');
     }
-  }, [watchType]);
+  }, [unregister, watchType]);
 
   return (
     <>

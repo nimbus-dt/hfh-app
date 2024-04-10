@@ -1,11 +1,8 @@
 import {
   Flex,
   Card,
-  Image,
   Heading,
   Text,
-  ScrollView,
-  useBreakpointValue,
   Divider,
   Badge,
   Button,
@@ -13,14 +10,6 @@ import {
 
 export function LandingNewPricing() {
   const paddle = window.Paddle;
-  const responsiveBool = useBreakpointValue({
-    base: true,
-    small: true,
-    medium: true,
-    large: false,
-    xl: false,
-    xxl: false,
-  });
 
   const oneTimePayment = () => {
     paddle.Checkout.open({ product: 846233 });

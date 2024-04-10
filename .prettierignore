@@ -1,0 +1,14 @@
+src/models
+src/ui-components
+src/aws-exports.js
+src/graphql
+amplify-codegen-temp/models
+amplify/backend
+src\models
+amplify/#current-cloud-backend
+
+src\models\models
+
+src/models/models
+
+amplify-codegen-temp/models/models

@@ -12,7 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { getCheckOrExEmoji } from 'utils/misc';
 import CustomExpandableCard from 'components/CustomExpandableCard';
 import SearchableSelectInput from 'components/SearchableSelectInput';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { API } from 'aws-amplify';
 import { debounce } from 'lodash';
 import {
@@ -85,30 +85,31 @@ export default function PrevAddress({
 
   const watchCityQuery = watch('city');
 
-  const getApplicantCurrentAddressCities = useCallback(
-    debounce(async (cityNameQuery, state) => {
-      try {
-        const newCities = await API.get(
-          'public',
-          `/cities?cityNameQuery=${cityNameQuery}&state=${state}`
-        );
+  const getApplicantCurrentAddressCities = useMemo(
+    () =>
+      debounce(async (cityNameQuery, state) => {
+        try {
+          const newCities = await API.get(
+            'public',
+            `/cities?cityNameQuery=${cityNameQuery}&state=${state}`
+          );
 
-        setCities(
-          newCities.map((city) => ({
-            id: city.city,
-            label: city.city,
-          }))
-        );
-      } catch (error) {
-        console.log('Error fetching cities.');
-      }
-    }, 150),
+          setCities(
+            newCities.map((city) => ({
+              id: city.city,
+              label: city.city,
+            }))
+          );
+        } catch (error) {
+          console.log('Error fetching cities.');
+        }
+      }, 150),
     []
   );
 
   useEffect(() => {
     getApplicantCurrentAddressCities(watchCityQuery?.query, watchState);
-  }, [watchCityQuery, watchState]);
+  }, [getApplicantCurrentAddressCities, watchCityQuery, watchState]);
 
   useEffect(() => {
     resetField('city', {
@@ -117,7 +118,7 @@ export default function PrevAddress({
       },
     });
     setCities([]);
-  }, [watchState]);
+  }, [resetField, watchState]);
 
   return (
     <CustomExpandableCard

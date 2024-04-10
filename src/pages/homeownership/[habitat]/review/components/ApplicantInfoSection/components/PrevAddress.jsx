@@ -37,7 +37,7 @@ function PrevAddress({
         ? { coApplicantPrevAddress: false }
         : { prevAddress: false }),
     }));
-  }, [setReviewedSections]);
+  }, [coApplicant, setReviewedSections]);
 
   useEffect(() => {
     if (expanded) {

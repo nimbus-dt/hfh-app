@@ -269,6 +269,7 @@ const ApplicationDetailsPage = () => {
       if (children.type === FileNode.getType() && children.path !== undefined) {
         const file = await fileFromObjectURL(children.path, children.name);
         const result = await uploadNoteFile(file);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { path, ...newChildren } = children;
         newChildren.s3Key = result.key;
         newChildrens.push(newChildren);
@@ -294,6 +295,7 @@ const ApplicationDetailsPage = () => {
       ) {
         const file = await fileFromObjectURL(children.src, children.name);
         const result = await uploadNoteFile(file);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { src, ...newChildren } = children;
         newChildren.s3Key = result.key;
         newChildrens.push(newChildren);

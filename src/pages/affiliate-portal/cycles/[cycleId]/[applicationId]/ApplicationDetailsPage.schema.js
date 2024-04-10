@@ -1,4 +1,4 @@
-const { z } = require('zod');
+import { z } from 'zod';
 
 export const returnSchema = z.object({
   message: z.string().min(1),

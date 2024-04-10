@@ -58,25 +58,25 @@ const DemographicSection = ({
     if (!otherHispanicOrLatino) {
       unregister('ethnicity.otherHispanicOrLatinoValue');
     }
-  }, [otherHispanicOrLatino]);
+  }, [otherHispanicOrLatino, unregister]);
 
   useEffect(() => {
     if (!otherAsian) {
       unregister('race.otherAsianValue');
     }
-  }, [otherAsian]);
+  }, [otherAsian, unregister]);
 
   useEffect(() => {
     if (!americanIndianOrAlaskaNative) {
       unregister('race.nameOfEnrolledOrPrincipalTribe');
     }
-  }, [americanIndianOrAlaskaNative]);
+  }, [americanIndianOrAlaskaNative, unregister]);
 
   useEffect(() => {
     if (!otherPacificIslander) {
       unregister('race.otherPacificIslanderValue');
     }
-  }, [otherPacificIslander]);
+  }, [otherPacificIslander, unregister]);
 
   return (
     <CustomExpandableCard

@@ -48,13 +48,13 @@ const ApplicantMilitaryServiceSection = ({
       unregister('onlyPeriodWasNonActive');
       unregister('survivingSpouse|');
     }
-  }, [serveOrServedWatch]);
+  }, [serveOrServedWatch, unregister]);
 
   useEffect(() => {
     if (currentlyServingWatch !== 'Yes') {
       unregister('projectedExpirationDateOfServiceTour');
     }
-  }, [currentlyServingWatch]);
+  }, [currentlyServingWatch, unregister]);
 
   return (
     <CustomExpandableCard

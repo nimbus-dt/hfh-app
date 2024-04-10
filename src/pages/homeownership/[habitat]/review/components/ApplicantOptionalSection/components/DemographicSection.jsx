@@ -30,7 +30,7 @@ const DemographicSection = ({
       ...previousReviewedSections,
       ...(coApplicant ? { coApplicantBasicInfo: false } : { basicInfo: false }),
     }));
-  }, [setReviewedSections]);
+  }, [coApplicant, setReviewedSections]);
 
   const customCardReference = useRef(null);
 
