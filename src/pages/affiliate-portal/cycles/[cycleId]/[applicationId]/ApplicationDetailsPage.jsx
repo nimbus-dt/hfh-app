@@ -235,7 +235,7 @@ const ApplicationDetailsPage = () => {
       await DataStore.save(
         new Decision({
           testapplicationID: applicationId,
-          status: SubmissionStatus.RETURNED,
+          status: data.status,
           serializedEditorState: JSON.stringify(editorStateWithFilesInS3),
         })
       );
