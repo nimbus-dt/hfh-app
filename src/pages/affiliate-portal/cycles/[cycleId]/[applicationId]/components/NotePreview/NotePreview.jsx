@@ -1,12 +1,12 @@
-import { Button, Card, Flex, Loader, Text } from '@aws-amplify/ui-react';
+import { Button, Flex, Loader, Text } from '@aws-amplify/ui-react';
 import { API } from 'aws-amplify';
 import LexicalEditor from 'components/LexicalEditor';
 import Modal from 'components/Modal';
 import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { MdArrowDownward, MdArrowUpward, MdDelete } from 'react-icons/md';
-import { checkOverflow } from 'utils/dom';
+import React, { useEffect, useState } from 'react';
+import { MdDelete } from 'react-icons/md';
+import ExpandableCardWithGradient from 'components/ExpandableCardWithGradient';
 
 const NotePreview = ({
   ownerID,
@@ -16,27 +16,14 @@ const NotePreview = ({
   deleting,
 }) => {
   const [email, setEmail] = useState('');
-  const [expanded, setExpanded] = useState(false);
-  const [height, setHeight] = useState(0);
-  const [confirmModal, setConfirmModal] = useState(false);
 
-  const cardRef = useRef(null);
+  const [confirmModal, setConfirmModal] = useState(false);
 
   const handleOpenCloseConfirmModal = () => {
     if (!deleting) {
       setConfirmModal((prevConfirmModal) => !prevConfirmModal);
     }
   };
-
-  const handleExpandedChange = () =>
-    setExpanded((prevExpanded) => !prevExpanded);
-
-  const shouldRenderExpandedButton = useMemo(
-    () =>
-      cardRef.current != null && checkOverflow(cardRef.current) && !expanded,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [expanded, cardRef.current, height]
-  );
 
   useEffect(() => {
     const getEmail = async () => {
@@ -51,122 +38,61 @@ const NotePreview = ({
     getEmail();
   }, [ownerID]);
 
-  useEffect(() => {
-    if (cardRef.current) {
-      const resizeObserver = new ResizeObserver((entries) =>
-        setHeight(entries[0].target.clientHeight)
-      );
-      resizeObserver.observe(cardRef.current);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cardRef.current]);
-
   return (
-    <Card
-      variation="elevated"
-      maxHeight={expanded ? 'none' : '15rem'}
-      overflow="hidden"
-      position="relative"
-      ref={cardRef}
-    >
-      {shouldRenderExpandedButton && (
-        <Flex
-          position="absolute"
-          top={0}
-          left={0}
-          width="100%"
-          height="100%"
-          style={{
-            zIndex: 1,
-            background:
-              'linear-gradient(0deg, rgba(255,255,255,0.95) 6%, rgba(255,255,255,0) 100%)',
-            pointerEvents: 'none',
-          }}
-          justifyContent="center"
-          alignItems="end"
-          padding="1.5rem"
-        >
-          <Button
-            borderStyle="none"
-            backgroundColor="transparent"
-            onClick={handleExpandedChange}
-            style={{
-              pointerEvents: 'auto',
-            }}
-          >
-            <Flex alignItems="center" gap="0.25rem">
-              <MdArrowDownward />
-              Expand
-            </Flex>
-          </Button>
-        </Flex>
-      )}
-      <Flex justifyContent="space-between" alignItems="center">
-        <Text>
-          <b>Note by:</b> {email}
-        </Text>
-        <Flex alignItems="center">
-          <Text>{dayjs(createdAt || undefined).format('YYYY-MM-DD')}</Text>
-          <Modal
-            title="Delete note"
-            onClickClose={handleOpenCloseConfirmModal}
-            width="25rem"
-            open={confirmModal}
-          >
-            <Flex direction="column">
-              <Text>Are you sure you want to delete this note?</Text>
-              <Flex justifyContent="end">
-                <Button
-                  variation="primary"
-                  onClick={onDelete}
-                  isDisabled={deleting}
-                >
-                  {deleting ? (
-                    <Flex alignItems="center">
-                      <Loader />
-                      Deleting
-                    </Flex>
-                  ) : (
-                    'Accept'
-                  )}
-                </Button>
+    <ExpandableCardWithGradient>
+      <>
+        <Flex justifyContent="space-between" alignItems="center">
+          <Text>
+            <b>Note by:</b> {email}
+          </Text>
+          <Flex alignItems="center">
+            <Text>{dayjs(createdAt || undefined).format('YYYY-MM-DD')}</Text>
+            <Modal
+              title="Delete note"
+              onClickClose={handleOpenCloseConfirmModal}
+              width="25rem"
+              open={confirmModal}
+            >
+              <Flex direction="column">
+                <Text>Are you sure you want to delete this note?</Text>
+                <Flex justifyContent="end">
+                  <Button
+                    variation="primary"
+                    onClick={onDelete}
+                    isDisabled={deleting}
+                  >
+                    {deleting ? (
+                      <Flex alignItems="center">
+                        <Loader />
+                        Deleting
+                      </Flex>
+                    ) : (
+                      'Accept'
+                    )}
+                  </Button>
 
-                <Button
-                  variation="warning"
-                  onClick={handleOpenCloseConfirmModal}
-                  isDisabled={deleting}
-                >
-                  Cancel
-                </Button>
+                  <Button
+                    variation="warning"
+                    onClick={handleOpenCloseConfirmModal}
+                    isDisabled={deleting}
+                  >
+                    Cancel
+                  </Button>
+                </Flex>
               </Flex>
-            </Flex>
-          </Modal>
-          <Button
-            variation="destructive"
-            padding="0.5rem"
-            onClick={handleOpenCloseConfirmModal}
-          >
-            <MdDelete />
-          </Button>
+            </Modal>
+            <Button
+              variation="destructive"
+              padding="0.5rem"
+              onClick={handleOpenCloseConfirmModal}
+            >
+              <MdDelete />
+            </Button>
+          </Flex>
         </Flex>
-      </Flex>
-      <LexicalEditor serializedEditorState={serializedEditorState} />
-
-      {expanded && (
-        <Flex justifyContent="center">
-          <Button
-            borderStyle="none"
-            backgroundColor="transparent"
-            onClick={handleExpandedChange}
-          >
-            <Flex alignItems="center" gap="0.25rem">
-              <MdArrowUpward />
-              Collapse
-            </Flex>
-          </Button>
-        </Flex>
-      )}
-    </Card>
+        <LexicalEditor serializedEditorState={serializedEditorState} />
+      </>
+    </ExpandableCardWithGradient>
   );
 };
 
