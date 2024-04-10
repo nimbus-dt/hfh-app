@@ -1,20 +1,24 @@
 import {
-  View,
-  Flex,
-  Text,
-  Button,
   Authenticator,
   ThemeProvider,
   useBreakpointValue,
 } from '@aws-amplify/ui-react';
-import { Link, useNavigate, useOutletContext } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 import { SubmissionStatus } from 'models';
 import CustomCard from 'components/CustomCard';
-import DOMPurify from 'dompurify';
+import { useState } from 'react';
+import Home from './components/Home';
+import SuccesfullySubmitted from './components/SuccesfullySubmitted';
+import NoOpenCycle from './components/NoOpenCycle';
 
 export default function HomeownershipHomePage() {
   const { application, habitat, openCycle } = useOutletContext();
-  const navigate = useNavigate();
+
+  const [continueToApplication, setContinueToApplication] = useState(false);
+
+  const handleOnReviewReturnedApplication = () => {
+    setContinueToApplication(true);
+  };
 
   const isReallySmall = useBreakpointValue({
     base: true,
@@ -26,45 +30,19 @@ export default function HomeownershipHomePage() {
       application &&
       (openCycle || application.submissionStatus === SubmissionStatus.RETURNED)
     ) {
-      return application.submissionStatus === SubmissionStatus.SUBMITTED ? (
-        <>
-          <Text fontWeight="bold">
-            {`You have succesfully submitted your Homeownership Program application
-          for ${habitat?.name}. You will receive an email with updates on your
-          application.`}
-          </Text>
-          <Flex justifyContent="end">
-            <Link to="../review">
-              <Button variation="primary">Review</Button>
-            </Link>
-          </Flex>
-        </>
+      return application.submissionStatus === SubmissionStatus.SUBMITTED ||
+        (application.submissionStatus === SubmissionStatus.RETURNED &&
+          !continueToApplication) ? (
+        <SuccesfullySubmitted
+          habitat={habitat}
+          application={application}
+          onReviewReturnedApplication={handleOnReviewReturnedApplication}
+        />
       ) : (
-        <>
-          <View as="div">
-            <Flex marginBottom="30px" direction="column" gap="xl">
-              <View
-                as="div"
-                dangerouslySetInnerHTML={{
-                  __html: DOMPurify.sanitize(
-                    habitat?.props.homeownershipHomeText
-                  ),
-                }}
-              />
-            </Flex>
-          </View>
-          <Flex justifyContent="end" width="100%">
-            <Button variation="primary" onClick={() => navigate('../terms')}>
-              Next
-            </Button>
-          </Flex>
-        </>
+        <Home habitat={habitat} />
       );
     }
-
-    return (
-      <Text fontWeight="bold">{habitat?.props.homeownershipNoOpenCycle}</Text>
-    );
+    return <NoOpenCycle habitat={habitat} />;
   };
 
   return (
