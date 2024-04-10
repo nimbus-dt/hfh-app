@@ -67,7 +67,7 @@ const LexicalEditor = ({
       borderRadius="small"
       borderWidth="medium"
     >
-      {editable && <ToolbarPlugin disableFiles />}
+      {editable && <ToolbarPlugin disableFiles={disableFiles} />}
       <View position="relative">
         <RichTextPlugin
           contentEditable={
