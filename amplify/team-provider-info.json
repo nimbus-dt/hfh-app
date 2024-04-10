@@ -86,7 +86,8 @@
         },
         "sendEmailToApplicant": {
           "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
-          "s3Key": "amplify-builds/sendEmailToApplicant-494f4a4e754a7533616d-build.zip"
+          "s3Key": "amplify-builds/sendEmailToApplicant-61474d7770365136597a-build.zip",
+          "sesEmail": "support@habitat-app.org"
         },
         "sendConfirmSubmitEmail": {
           "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
