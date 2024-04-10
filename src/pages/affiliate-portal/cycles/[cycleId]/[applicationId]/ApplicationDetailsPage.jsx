@@ -394,7 +394,7 @@ const ApplicationDetailsPage = () => {
 
       <Tabs>
         <TabItem title="Application">
-          <View marginTop="1rem">
+          <View marginTop="2rem" marginBottom="2rem">
             <Heading level={1} fontWeight="medium">
               {application?.type === ApplicationTypes.ONLINE
                 ? applicantInfos[0]?.props.basicInfo.fullName
