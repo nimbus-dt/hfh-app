@@ -12,7 +12,7 @@ import SuccesfullySubmitted from './components/SuccesfullySubmitted';
 import NoOpenCycle from './components/NoOpenCycle';
 import DecisionsCard from './components/DecisionsCard';
 
-export default function HomeownershipHomePage() {
+const HomeownershipHomePage = () => {
   const { application, habitat, openCycle } = useOutletContext();
 
   const [continueToApplication, setContinueToApplication] = useState(false);
@@ -78,4 +78,6 @@ export default function HomeownershipHomePage() {
         !continueToApplication && <DecisionsCard application={application} />}
     </>
   );
-}
+};
+
+export default HomeownershipHomePage;
