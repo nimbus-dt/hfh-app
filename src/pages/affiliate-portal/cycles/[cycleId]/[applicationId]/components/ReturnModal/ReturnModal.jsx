@@ -22,6 +22,13 @@ const ReturnModal = ({ open, onClose, onValidReturn, loading }) => {
           edit their info.
         </Text>
         <br />
+        <Text>
+          Please complete a return message below. Make sure to include all the
+          information an applicant needs to go back and review their
+          application. You can include specific pictures of what they need to
+          change.
+        </Text>
+        <br />
         <Controller
           control={control}
           name="message"
