@@ -179,7 +179,7 @@ export default function HomeownershipLayout() {
       application &&
       authStatus === 'authenticated' &&
       !alreadyRedirected &&
-      application.submissionStatus !== SubmissionStatus.SUBMITTED
+      application.submissionStatus === SubmissionStatus.UNSUBMITTED
     ) {
       setAlreadyRedirected(true);
       navigate(application.lastSection);
