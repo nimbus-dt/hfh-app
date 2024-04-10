@@ -61,13 +61,12 @@ const SuccesfullySubmitted = ({
         )}
       </Flex>
       <Flex direction="column">
-        <Text>Decisions made to you application:</Text>
+        <Text fontWeight="bold">
+          Review below all the decisions made to your application.
+        </Text>
         {decisions.map((decision) => (
           <ExpandableCardWithGradient>
             <Flex direction="column" gap="0.5rem">
-              <Text>
-                <b>Status:</b> {decision.status}
-              </Text>
               <Text>
                 <b>Date:</b>{' '}
                 {dayjs(decision.createdAt).format('YYYY-MM-DD HH:mm a')}
