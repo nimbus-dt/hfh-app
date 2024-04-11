@@ -459,12 +459,15 @@ const ApplicationDetailsPage = () => {
                 customStatus={habitat?.props.customStatus}
               />
               {application?.submissionStatus === SubmissionStatus.SUBMITTED && (
-                <Flex justifyContent="end">
-                  <Button onClick={handleReturnOnClick}>Return</Button>
-                  <Button variation="primary" onClick={handleDecideOnClick}>
-                    Decide
-                  </Button>
-                </Flex>
+                <>
+                  <br />
+                  <Flex justifyContent="end">
+                    <Button onClick={handleReturnOnClick}>Return</Button>
+                    <Button variation="primary" onClick={handleDecideOnClick}>
+                      Decide
+                    </Button>
+                  </Flex>
+                </>
               )}
             </>
           )}
