@@ -2,7 +2,6 @@
 import { Components } from 'formiojs';
 import { DataStore } from 'aws-amplify';
 import { FormAnswer } from 'models';
-import { form } from '@formio/react';
 
 const saveSection = async ({ data, application, page, section }) => {
   try {
