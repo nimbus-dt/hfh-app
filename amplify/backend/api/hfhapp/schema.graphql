@@ -5,6 +5,14 @@ type Decision @model @auth(rules: [{allow: public}]) {
   testapplicationID: ID! @index(name: "byTestApplication")
 }
 
+type FormAnswer @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  values: AWSJSON
+  page: String
+  section: String
+  testapplicationID: ID! @index(name: "byTestApplication")
+}
+
 type Note @model @auth(rules: [{allow: public}]) {
   id: ID!
   serializedEditorState: String!
@@ -114,6 +122,7 @@ type TestApplication @model @auth(rules: [{allow: public}]) {
   testcycleID: ID! @index(name: "byTestCycle")
   Notes: [Note] @hasMany(indexName: "byTestApplication", fields: ["id"])
   Decisions: [Decision] @hasMany(indexName: "byTestApplication", fields: ["id"])
+  FormAnswers: [FormAnswer] @hasMany(indexName: "byTestApplication", fields: ["id"])
 }
 
 type EmploymentInfo @model @auth(rules: [{allow: public}]) {

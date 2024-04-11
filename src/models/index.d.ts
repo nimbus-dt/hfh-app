@@ -141,6 +141,40 @@ export declare const Decision: (new (init: ModelInit<Decision>) => Decision) & {
   copyOf(source: Decision, mutator: (draft: MutableModel<Decision>) => MutableModel<Decision> | void): Decision;
 }
 
+type EagerFormAnswer = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<FormAnswer, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly values?: string | null;
+  readonly page?: string | null;
+  readonly section?: string | null;
+  readonly testapplicationID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyFormAnswer = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<FormAnswer, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly values?: string | null;
+  readonly page?: string | null;
+  readonly section?: string | null;
+  readonly testapplicationID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type FormAnswer = LazyLoading extends LazyLoadingDisabled ? EagerFormAnswer : LazyFormAnswer
+
+export declare const FormAnswer: (new (init: ModelInit<FormAnswer>) => FormAnswer) & {
+  copyOf(source: FormAnswer, mutator: (draft: MutableModel<FormAnswer>) => MutableModel<FormAnswer> | void): FormAnswer;
+}
+
 type EagerNote = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Note, 'id'>;
@@ -378,6 +412,7 @@ type EagerTestApplication = {
   readonly testcycleID: string;
   readonly Notes?: (Note | null)[] | null;
   readonly Decisions?: (Decision | null)[] | null;
+  readonly FormAnswers?: (FormAnswer | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -399,6 +434,7 @@ type LazyTestApplication = {
   readonly testcycleID: string;
   readonly Notes: AsyncCollection<Note>;
   readonly Decisions: AsyncCollection<Decision>;
+  readonly FormAnswers: AsyncCollection<FormAnswer>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

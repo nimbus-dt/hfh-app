@@ -1,21 +1,20 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { Components } from 'formiojs';
+import { DataStore } from 'aws-amplify';
+import { FormAnswer } from 'models';
 
-const type = {
-  saveApplicantBasicInformation: (data) => {
-    const basicInfo = {
-      fullName: data.applicantBasicInformationFullName,
-      altOrFormerName: data.applicantBasicInformationAlternativeName,
-      socialSecurityNumber: data.applicantBasicInformationSocialSecurityNumber,
-      homePhone: data.applicantBasicInformationHomePhone,
-      cellPhone: data.applicantBasicInformationCellPhone,
-      workPhone: data.applicantBasicInformationWorkPhone,
-      birthDate: data.applicantBasicInformationDateOfBirth,
-      maritalStatus: data.applicantBasicInformationMaritalStatus,
-    };
+const saveSection = async ({ data, application, page, section }) => {
+  console.log(data, application, page, section);
+  const response = await DataStore.save(
+    new FormAnswer({
+      testapplicationID: application.id,
+      page,
+      section,
+      values: data,
+    })
+  );
 
-    console.log(basicInfo);
-  },
+  console.log(response);
 };
 
 class SaveButton extends Components.components.button {
@@ -23,13 +22,13 @@ class SaveButton extends Components.components.button {
     event.preventDefault();
     console.log('onClick!', this);
 
-    const onClickFunction = type[this.component.key];
+    const data = this._data;
+    const path = this.path.split('.');
+    const page = path[0];
+    const section = path[1];
+    const { application } = this.options.additional;
 
-    if (onClickFunction) {
-      onClickFunction(this._data);
-    } else {
-      console.warn('No onClick function defined for this button');
-    }
+    saveSection({ data, application, page, section });
   }
 }
 
