@@ -10,6 +10,7 @@ import { useState } from 'react';
 import Home from './components/Home';
 import SuccesfullySubmitted from './components/SuccesfullySubmitted';
 import NoOpenCycle from './components/NoOpenCycle';
+import DecisionsCard from './components/DecisionsCard';
 
 export default function HomeownershipHomePage() {
   const { application, habitat, openCycle } = useOutletContext();
@@ -46,30 +47,34 @@ export default function HomeownershipHomePage() {
   };
 
   return (
-    <CustomCard>
-      <ThemeProvider
-        theme={{
-          name: 'homeownership-authentication',
-          tokens: {
-            components: {
-              authenticator: {
-                container: {
-                  widthMax: '100%',
-                },
-                router: {
-                  borderStyle: 'none',
-                  boxShadow: 'none',
-                },
-                form: {
-                  padding: isReallySmall ? '0.25rem' : undefined,
+    <>
+      <CustomCard>
+        <ThemeProvider
+          theme={{
+            name: 'homeownership-authentication',
+            tokens: {
+              components: {
+                authenticator: {
+                  container: {
+                    widthMax: '100%',
+                  },
+                  router: {
+                    borderStyle: 'none',
+                    boxShadow: 'none',
+                  },
+                  form: {
+                    padding: isReallySmall ? '0.25rem' : undefined,
+                  },
                 },
               },
             },
-          },
-        }}
-      >
-        <Authenticator>{content}</Authenticator>
-      </ThemeProvider>
-    </CustomCard>
+          }}
+        >
+          <Authenticator>{content}</Authenticator>
+        </ThemeProvider>
+      </CustomCard>
+      {application?.submissionStatus !== SubmissionStatus.UNSUBMITTED &&
+        !continueToApplication && <DecisionsCard application={application} />}
+    </>
   );
 }
