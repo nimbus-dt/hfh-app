@@ -27,7 +27,7 @@ const DecideModal = ({ open, onClose, onValid, loading, customStatus }) => {
   });
 
   return (
-    <Modal title="Decide" open={open} onClickClose={onClose} width="30rem">
+    <Modal title="Decide" open={open} onClickClose={onClose} width="45rem">
       <form onSubmit={handleSubmitDecide(onValid)}>
         <Text>Here is where you can render a decision for an application.</Text>
         <br />
