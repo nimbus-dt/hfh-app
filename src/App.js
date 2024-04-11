@@ -33,10 +33,6 @@ import HomeownershipEmploymentPage from 'pages/homeownership/[habitat]/employmen
 import HomeownershipFinancialPage from 'pages/homeownership/[habitat]/financial';
 import HomeownershipReviewPage from 'pages/homeownership/[habitat]/review';
 import HomeownershipPropertyPage from 'pages/homeownership/[habitat]/property';
-import { LandingLayout } from './components/Landing/LandingLayout';
-import { LandingAbout } from './components/Landing/LandingAbout';
-import { LandingReturn } from './components/Landing/LandingReturn';
-import { LandingNewPricing } from './components/Landing/LandingNewPricing';
 
 function App() {
   return (
@@ -56,10 +52,6 @@ function App() {
               <LandingPage />
             </NewLandingLayout>
           }
-        />
-        <Route
-          path="about"
-          element={<LandingLayout comp={<LandingAbout />} />}
         />
         <Route
           path="privacy"
@@ -86,20 +78,12 @@ function App() {
           }
         />
         <Route
-          path="return"
-          element={<LandingLayout comp={<LandingReturn />} />}
-        />
-        <Route
           path="contact"
           element={
             <NewLandingLayout>
               <ContactPage />
             </NewLandingLayout>
           }
-        />
-        <Route
-          path="pricing"
-          element={<LandingLayout comp={<LandingNewPricing />} />}
         />
       </Route>
 
