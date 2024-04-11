@@ -20,7 +20,7 @@ class SaveButton extends Components.components.button {
   onClick(event) {
     event.preventDefault();
 
-    const data = this._data;
+    const { data } = this;
     const path = this.path.split('.');
     const page = path[0];
     const section = path[1];
