@@ -31,7 +31,7 @@ function UnmarriedAddendum({
         ? { coApplicantUnmarriedAddendum: false }
         : { unmarriedAddendum: false }),
     }));
-  }, [setReviewedSections]);
+  }, [coApplicant, setReviewedSections]);
 
   const customCardReference = useRef(null);
 

@@ -52,7 +52,7 @@ function HouseholdTable({ members }) {
     if (watchRelationship !== 'Other') {
       unregister('otherRelationship');
     }
-  }, [watchRelationship]);
+  }, [unregister, watchRelationship]);
 
   return (
     <Flex direction="column">

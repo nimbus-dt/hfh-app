@@ -58,13 +58,13 @@ export default function UnmarriedAddendum({
       unregister('otherRelationshipType');
       unregister('state');
     }
-  }, [notSpouseButSimilarPropertyRightsWatch]);
+  }, [notSpouseButSimilarPropertyRightsWatch, unregister]);
 
   useEffect(() => {
     if (relationshipTypeWatch !== 'Other') {
       unregister('otherRelationshipType');
     }
-  }, [relationshipTypeWatch]);
+  }, [relationshipTypeWatch, unregister]);
 
   return (
     <CustomExpandableCard

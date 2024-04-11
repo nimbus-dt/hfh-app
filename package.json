@@ -25,6 +25,10 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.12.4",
+    "@types/react": "^18.2.74",
+    "@types/react-dom": "^18.2.24",
     "aws-amplify": "^5.3.11",
     "aws-sdk": "^2.1478.0",
     "dayjs": "^1.11.10",
@@ -52,25 +56,8 @@
     "eject": "react-scripts eject",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "format": "prettier --write src/**/*.{js,jsx,ts,tsx,json}",
     "prepare": "husky install"
-  },
-  "eslintConfig": {
-    "extends": [
-      "wesbos",
-      "react-app/jest"
-    ],
-    "settings": {
-      "import/resolver": {
-        "node": {
-          "paths": [
-            "src"
-          ]
-        }
-      }
-    },
-    "rules": {
-      "react-hooks/exhaustive-deps": "off"
-    }
   },
   "browserslist": {
     "production": [
@@ -86,13 +73,15 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "eslint": "^8.52.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-config-wesbos": "^3.2.3",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-import": "^2.28.1",
     "husky": "^8.0.3",
     "jsdoc": "^4.0.2",
     "prettier": "^2.8.8",
-    "typescript": "^4.9.5"
+    "typescript": "^4.9.5",
+    "typescript-eslint": "^7.5.0"
   }
 }

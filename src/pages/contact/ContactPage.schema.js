@@ -1,4 +1,4 @@
-const { z } = require('zod');
+import { z } from 'zod';
 
 const contactSchema = z.object({
   howYouHearAboutHabitatApp: z.string().min(1),

@@ -49,7 +49,7 @@ export default function TypeOfCredit({
     if (creditTypeWatch !== creditTypes[2]) {
       unregister('yourInitials');
     }
-  }, [creditTypeWatch]);
+  }, [creditTypeWatch, unregister]);
 
   return (
     <CustomExpandableCard

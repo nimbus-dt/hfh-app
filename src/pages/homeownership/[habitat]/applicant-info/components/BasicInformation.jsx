@@ -77,7 +77,7 @@ export default function BasicInformation({
     if (watchRelationship !== 'Other') {
       unregister('otherRelationship');
     }
-  }, [watchRelationship]);
+  }, [unregister, watchRelationship]);
 
   return (
     <CustomExpandableCard
