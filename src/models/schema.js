@@ -1,5 +1,94 @@
 export const schema = {
     "models": {
+        "FormAnswer": {
+            "name": "FormAnswer",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "values": {
+                    "name": "values",
+                    "isArray": false,
+                    "type": "AWSJSON",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "page": {
+                    "name": "page",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "section": {
+                    "name": "section",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "testapplicationID": {
+                    "name": "testapplicationID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "FormAnswers",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byTestApplication",
+                        "fields": [
+                            "testapplicationID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "Note": {
             "name": "Note",
             "fields": {
@@ -615,6 +704,22 @@ export const schema = {
                     "isArray": true,
                     "type": {
                         "model": "Note"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "testapplicationID"
+                        ]
+                    }
+                },
+                "FormAnswers": {
+                    "name": "FormAnswers",
+                    "isArray": true,
+                    "type": {
+                        "model": "FormAnswer"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -1445,5 +1550,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "f7a9c7439d1871154f52614d4dcd5491"
+    "version": "4ba3768b9b24f369be61b571fe479bab"
 };

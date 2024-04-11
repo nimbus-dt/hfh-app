@@ -109,6 +109,40 @@ export declare type HabitatProps = LazyLoading extends LazyLoadingDisabled ? Eag
 
 export declare const HabitatProps: (new (init: ModelInit<HabitatProps>) => HabitatProps)
 
+type EagerFormAnswer = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<FormAnswer, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly values?: string | null;
+  readonly page?: string | null;
+  readonly section?: string | null;
+  readonly testapplicationID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyFormAnswer = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<FormAnswer, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly values?: string | null;
+  readonly page?: string | null;
+  readonly section?: string | null;
+  readonly testapplicationID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type FormAnswer = LazyLoading extends LazyLoadingDisabled ? EagerFormAnswer : LazyFormAnswer
+
+export declare const FormAnswer: (new (init: ModelInit<FormAnswer>) => FormAnswer) & {
+  copyOf(source: FormAnswer, mutator: (draft: MutableModel<FormAnswer>) => MutableModel<FormAnswer> | void): FormAnswer;
+}
+
 type EagerNote = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Note, 'id'>;
@@ -345,6 +379,7 @@ type EagerTestApplication = {
   readonly type: ApplicationTypes | keyof typeof ApplicationTypes;
   readonly testcycleID: string;
   readonly Notes?: (Note | null)[] | null;
+  readonly FormAnswers?: (FormAnswer | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -365,6 +400,7 @@ type LazyTestApplication = {
   readonly type: ApplicationTypes | keyof typeof ApplicationTypes;
   readonly testcycleID: string;
   readonly Notes: AsyncCollection<Note>;
+  readonly FormAnswers: AsyncCollection<FormAnswer>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
