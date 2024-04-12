@@ -34,6 +34,7 @@
     "aws-sdk": "^2.1478.0",
     "dayjs": "^1.11.10",
     "dompurify": "^3.0.9",
+    "formiojs": "^4.19.1",
     "html5-device-mockups": "^3.2.1",
     "lexical": "^0.14.3",
     "lodash": "^4.17.21",
