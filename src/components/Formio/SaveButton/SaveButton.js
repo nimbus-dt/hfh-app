@@ -34,8 +34,8 @@ const saveSection = async ({ data, application, page, section }) => {
         })
       );
       console.log('save response', response);
-      return true;
     }
+    return true;
   } catch (error) {
     return false;
   }
