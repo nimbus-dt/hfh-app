@@ -5,6 +5,9 @@ import CustomCard from 'components/CustomCard';
 import 'components/Formio';
 import { useEffect, useState } from 'react';
 import { generateSubmission } from 'utils/formio';
+import { DataStore } from 'aws-amplify';
+import { TestApplication, SubmissionStatus } from 'models';
+import dayjs from 'dayjs';
 
 const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
@@ -25,6 +28,28 @@ const HomeownershipHomePage = () => {
   if (!habitat || !openCycle) {
     return <p>loading...</p>;
   }
+
+  const handleOnSubmit = async (newSubmission) => {
+    try {
+      const original = await DataStore.query(TestApplication, application.id);
+
+      const persistedApplication = await DataStore.save(
+        TestApplication.copyOf(original, (originalApplication) => {
+          if (
+            originalApplication.submissionStatus !== SubmissionStatus.RETURNED
+          ) {
+            originalApplication.testcycleID = openCycle.id;
+          }
+          originalApplication.submissionStatus = SubmissionStatus.SUBMITTED;
+          originalApplication.submittedDate = dayjs().format('YYYY-MM-DD');
+        })
+      );
+
+      console.log('persistedApplication', persistedApplication);
+    } catch (error) {
+      console.log('Error updating application');
+    }
+  };
 
   if (!application) {
     return (
@@ -75,7 +100,7 @@ const HomeownershipHomePage = () => {
       >
         <Form
           src={`${FORMIO_URL}/loudoun`}
-          onSubmit={console.log}
+          onSubmit={handleOnSubmit}
           options={{
             additional: {
               application,
