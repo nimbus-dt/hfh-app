@@ -61,7 +61,6 @@ class CustomContainer extends Components.components.container {
       });
       if ('__button' in this.refs && isElement(this.refs.__button)) {
         this.refs.__button.addEventListener('click', (event) => {
-          console.log('CLICK EXPAND/CONTRACT!', this);
           if (
             '__childrenContainer' in this.refs &&
             isElement(this.refs.__childrenContainer)
