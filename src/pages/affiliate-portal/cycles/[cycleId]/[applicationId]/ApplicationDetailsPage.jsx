@@ -4,9 +4,6 @@ import {
   Button,
   useBreakpointValue,
   Text,
-  TextAreaField,
-  SelectField,
-  Loader,
   View,
   Heading,
   Tabs,
@@ -36,20 +33,19 @@ import {
   getTotalAssetsValue,
 } from 'utils/applicationMetrics';
 import { useEffect, useState } from 'react';
-import Modal from 'components/Modal';
 import { API, DataStore, Storage } from 'aws-amplify';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import {
   TestApplication,
   SubmissionStatus,
   ApplicationTypes,
   Note,
+  Decision,
 } from 'models';
 import { ImageNode } from 'components/LexicalEditor/nodes/ImageNode';
-import { fileFromObjectURL, removeFiles } from 'utils/files';
+import { removeFiles } from 'utils/files';
 import { FileNode } from 'components/LexicalEditor/nodes/FileNode';
 import { v4 } from 'uuid';
+import { getEditorStateWithFilesInBucket } from 'utils/lexicalEditor';
 import ApplicantInfoTable from './components/ApplicantInfoTable';
 import GeneralInfoTable from './components/GeneralInfoTable';
 import ChecklistTable from './components/ChecklistTable';
@@ -59,12 +55,13 @@ import EmploymentTable from './components/EmploymentTable';
 import ApplicationMetricsTable from './components/ApplicationMetricsTable';
 import HouseholdTable from './components/HouseholdTable';
 import FinancialSection from './components/FinancialSection';
-import { decideSchema, returnSchema } from './ApplicationDetailsPage.schema';
 import ApplicantOptionalTable from './components/ApplicantOptionalTable';
 import PaperApplicationTable from './components/PaperApplicationTable';
 import PropertyTable from './components/PropertyTable';
 import NoteModal from './components/NoteModal';
 import NotePreview from './components/NotePreview';
+import ReturnModal from './components/ReturnModal';
+import DecideModal from './components/DecideModal';
 
 const ApplicationDetailsPage = () => {
   const [userEmail, setUserEmail] = useState();
@@ -151,24 +148,6 @@ const ApplicationDetailsPage = () => {
   );
   const navigate = useNavigate();
 
-  const {
-    register: registerReturn,
-    handleSubmit: handleSubmitReturn,
-    reset: resetReturn,
-    formState: { errors: errorsReturn },
-  } = useForm({
-    resolver: zodResolver(returnSchema),
-  });
-
-  const {
-    register: registerDecide,
-    handleSubmit: handleSubmitDecide,
-    reset: resetDecide,
-    formState: { errors: errorsDecide },
-  } = useForm({
-    resolver: zodResolver(decideSchema),
-  });
-
   const sizeRenderer = useBreakpointValue({
     base: true,
     large: false,
@@ -179,20 +158,46 @@ const ApplicationDetailsPage = () => {
   const handleReturnModalOnClose = () =>
     loading === 0 && setReturnModalOpen(false);
 
+  const uploadDecisionFile = async (file) => {
+    const result = await Storage.put(
+      `decision/${habitat?.urlName}/${application.id}/${v4()}_${file.name}`,
+      file,
+      {
+        level: 'public',
+      }
+    );
+
+    return result;
+  };
+
   const handleOnValidReturn = async (data) => {
     setLoading((previousLoading) => previousLoading + 1);
     try {
-      const original = await DataStore.query(TestApplication, application.id);
+      const original = await DataStore.query(TestApplication, applicationId);
+
       const persistedApplication = await DataStore.save(
         TestApplication.copyOf(original, (originalApplication) => {
           originalApplication.submissionStatus = SubmissionStatus.RETURNED;
         })
       );
 
+      const editorStateWithFilesInS3 = await getEditorStateWithFilesInBucket(
+        data.message,
+        uploadDecisionFile
+      );
+
+      await DataStore.save(
+        new Decision({
+          testapplicationID: applicationId,
+          status: SubmissionStatus.RETURNED,
+          serializedEditorState: JSON.stringify(editorStateWithFilesInS3),
+        })
+      );
+
       await API.post('sendEmailToApplicantAPI', '/notify', {
         body: {
           subject: 'Status update on your Habitat for Humanity application',
-          body: data.message,
+          body: '<p>A decision has been made on your application. Please log in to your application portal to see this.</p>',
           sub: persistedApplication.ownerID,
           habitat: habitat.name,
         },
@@ -200,10 +205,9 @@ const ApplicationDetailsPage = () => {
 
       setReturnModalOpen(false);
       setTrigger((previousTrigger) => !previousTrigger);
-      resetReturn();
       navigate('..');
     } catch (error) {
-      console.log('An error ocurred while returning the application');
+      console.log('An error ocurred while returning the application', error);
     }
     setLoading((previousLoading) => previousLoading - 1);
   };
@@ -223,10 +227,23 @@ const ApplicationDetailsPage = () => {
         })
       );
 
+      const editorStateWithFilesInS3 = await getEditorStateWithFilesInBucket(
+        data.message,
+        uploadDecisionFile
+      );
+
+      await DataStore.save(
+        new Decision({
+          testapplicationID: applicationId,
+          status: data.status,
+          serializedEditorState: JSON.stringify(editorStateWithFilesInS3),
+        })
+      );
+
       await API.post('sendEmailToApplicantAPI', '/notify', {
         body: {
           subject: 'Status update on your Habitat for Humanity application',
-          body: data.message,
+          body: '<p>A decision has been made on your application. Please log in to your application portal to see this.</p>',
           sub: persistedApplication.ownerID,
           habitat: habitat.name,
         },
@@ -234,7 +251,6 @@ const ApplicationDetailsPage = () => {
 
       setDecideModalOpen(false);
       setTrigger((previousTrigger) => !previousTrigger);
-      resetDecide();
       navigate('..');
     } catch (error) {
       console.log('An error ocurred while returning the application');
@@ -260,60 +276,12 @@ const ApplicationDetailsPage = () => {
     return result;
   };
 
-  const editorStateWithFilesOnBucket = async (editorState) => {
-    const childrens = editorState.root.children;
-
-    const newChildrens = [];
-
-    for (const children of childrens) {
-      if (children.type === FileNode.getType() && children.path !== undefined) {
-        const file = await fileFromObjectURL(children.path, children.name);
-        const result = await uploadNoteFile(file);
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { path, ...newChildren } = children;
-        newChildren.s3Key = result.key;
-        newChildrens.push(newChildren);
-      } else {
-        newChildrens.push(children);
-      }
-    }
-
-    const newEditorState = { ...editorState };
-    newEditorState.root.children = newChildrens;
-    return newEditorState;
-  };
-
-  const editorStateWithImagesOnBucket = async (editorState) => {
-    const childrens = editorState.root.children;
-
-    const newChildrens = [];
-
-    for (const children of childrens) {
-      if (
-        children.type === ImageNode.getType() &&
-        children.src.startsWith('blob:')
-      ) {
-        const file = await fileFromObjectURL(children.src, children.name);
-        const result = await uploadNoteFile(file);
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { src, ...newChildren } = children;
-        newChildren.s3Key = result.key;
-        newChildrens.push(newChildren);
-      } else {
-        newChildrens.push(children);
-      }
-    }
-
-    const newEditorState = { ...editorState };
-    newEditorState.root.children = newChildrens;
-    return newEditorState;
-  };
-
   const handleOnSaveNote = async (editorState) => {
     try {
       setUploadingNote(true);
-      const editorStateWithS3Keys = await editorStateWithFilesOnBucket(
-        await editorStateWithImagesOnBucket(editorState)
+      const editorStateWithS3Keys = await getEditorStateWithFilesInBucket(
+        editorState,
+        uploadNoteFile
       );
       const serializedEditorState = JSON.stringify(editorStateWithS3Keys);
 
@@ -477,115 +445,29 @@ const ApplicationDetailsPage = () => {
                 totalDebts={totalDebts}
                 debtToIncomeRatio={debtToIncomeRatio}
               />
-              <Modal
-                title="Return"
+              <ReturnModal
                 open={returnModalOpen}
-                onClickClose={handleReturnModalOnClose}
-                width="30rem"
-              >
-                <form onSubmit={handleSubmitReturn(handleOnValidReturn)}>
-                  <Text>
-                    By returning an application you are giving an applicant the
-                    chance to edit their info.
-                  </Text>
-                  <br />
-                  <TextAreaField
-                    {...registerReturn('message')}
-                    label="Return message"
-                    descriptiveText="We will email this to the user"
-                    placeholder="We are returning your application because you lack correct financial records. For inquiries, email support@test-habitat.com"
-                    rows={3}
-                    hasError={errorsReturn?.message}
-                    errorMessage="Invalid message"
-                  />
-                  {loading > 0 && (
-                    <View>
-                      <Text>
-                        Updating application and sending email to applicant.
-                      </Text>
-                      <Loader variation="linear" />
-                    </View>
-                  )}
-                  <Flex justifyContent="end" marginTop="1rem">
-                    <Button
-                      variation="destructive"
-                      onClick={handleReturnModalOnClose}
-                      isDisabled={loading > 0}
-                    >
-                      Cancel
-                    </Button>
-                    <Button type="submit" isDisabled={loading > 0}>
-                      Return
-                    </Button>
-                  </Flex>
-                </form>
-              </Modal>
-              <Modal
-                title="Decide"
+                onClose={handleReturnModalOnClose}
+                onValidReturn={handleOnValidReturn}
+                loading={loading}
+              />
+              <DecideModal
                 open={decideModalOpen}
-                onClickClose={handleDecideModalOnClose}
-                width="30rem"
-              >
-                <form onSubmit={handleSubmitDecide(handleOnValidDecide)}>
-                  <Text>
-                    Here is where you can render a decision for an application.
-                  </Text>
+                onClose={handleDecideModalOnClose}
+                onValid={handleOnValidDecide}
+                loading={loading}
+                customStatus={habitat?.props.customStatus}
+              />
+              {application?.submissionStatus === SubmissionStatus.SUBMITTED && (
+                <>
                   <br />
-                  <SelectField
-                    {...registerDecide('status')}
-                    label="Status"
-                    hasError={errorsDecide?.status}
-                    errorMessage="Invalid status"
-                  >
-                    <option value="Pending">Pending</option>
-                    {(habitat?.props.customStatus
-                      ? habitat.props.customStatus
-                      : []
-                    ).map((customStatusItem) => (
-                      <option key={customStatusItem} value={customStatusItem}>
-                        {customStatusItem}
-                      </option>
-                    ))}
-                  </SelectField>
-                  <br />
-                  <TextAreaField
-                    {...registerDecide('message')}
-                    label="Decision message"
-                    descriptiveText="We will email this to the user"
-                    placeholder="Congratulations! We have decided to accept your application for our Homeownership Program. We will send further information via email."
-                    rows={3}
-                    hasError={errorsDecide?.message}
-                    errorMessage="Invalid message"
-                  />
-                  {loading > 0 && (
-                    <View>
-                      <Text>
-                        Updating application and sending email to applicant.
-                      </Text>
-                      <Loader variation="linear" />
-                    </View>
-                  )}
-                  <Flex justifyContent="end" marginTop="1rem">
-                    <Button
-                      variation="destructive"
-                      onClick={handleDecideModalOnClose}
-                      isDisabled={loading > 0}
-                    >
-                      Cancel
-                    </Button>
-                    <Button type="submit" isDisabled={loading > 0}>
-                      Send
+                  <Flex justifyContent="end">
+                    <Button onClick={handleReturnOnClick}>Return</Button>
+                    <Button variation="primary" onClick={handleDecideOnClick}>
+                      Decide
                     </Button>
                   </Flex>
-                </form>
-              </Modal>
-              {application?.submissionStatus === SubmissionStatus.SUBMITTED && (
-                <Flex justifyContent="end">
-                  <Button onClick={handleReturnOnClick}>Return</Button>
-                  <Button variation="primary" onClick={handleDecideOnClick}>
-                    Decide
-                  </Button>
-                </Flex>
+                </>
               )}
             </>
           )}

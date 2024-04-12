@@ -187,6 +187,13 @@
           ],
           "category": "auth",
           "resourceName": "hfhapp"
+        },
+        {
+          "attributes": [
+            "BucketName"
+          ],
+          "category": "storage",
+          "resourceName": "s3hfhappstoragebucket"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -300,6 +307,14 @@
       ]
     },
     "AMPLIFY_function_sendEmailToApplicant_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendEmailToApplicant"
+        }
+      ]
+    },
+    "AMPLIFY_function_sendEmailToApplicant_sesEmail": {
       "usedBy": [
         {
           "category": "function",
