@@ -1,0 +1,16 @@
+.customContainer-container {
+  border-style: dotted;
+  border-width: thin;
+  border-color: gainsboro;
+  padding: 1rem;
+}
+
+.customContainer-childrenContainer.contracted {
+  display: none;
+}
+
+.customContainer-titleContainer {
+  display: flex;
+  justify-content: space-between;
+  justify-items: center;
+}
