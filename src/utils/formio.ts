@@ -1,4 +1,5 @@
 import { FormAnswer } from 'models';
+import { cloneDeep } from 'lodash';
 
 interface ISubmission {
   data: {
@@ -14,7 +15,7 @@ export const generateSubmission = (formAnswers: FormAnswer[]): ISubmission => {
     if (formAnswer.page && formAnswer.section) {
       submissionData[formAnswer.page] = {
         ...submissionData[formAnswer.page],
-        [formAnswer.section]: formAnswer.values,
+        [formAnswer.section]: cloneDeep(formAnswer.values),
       };
     }
   }
