@@ -137,10 +137,6 @@ function App() {
               />
             </Route>
           </Route>
-          <Route path="applications">
-            <Route index element={<ApplicationsPage />} />
-            <Route path=":applicationId" element={<ApplicationDetailsPage />} />
-          </Route>
           <Route path="repairs" element={<AffiliatePortalRepairsPage />} />
           <Route
             path="volunteers"
