@@ -1,30 +1,6 @@
-import { Components, Templates } from 'formiojs';
+import { Components } from 'formiojs';
 import './CustomContainer.style.css';
 import { isElement } from 'utils/type';
-
-Templates.defaultTemplates.customContainerTemplate = {
-  form: ({
-    title,
-    children,
-    expanded,
-  }: {
-    title: string;
-    children: unknown;
-    expanded: boolean;
-  }) => `
-  <div ref="__container" class="customContainer-container">
-    <div ref="__titleContainer" class="customContainer-titleContainer">
-      <span>${title}</span>
-      <button ref="__button">${expanded ? '🔼' : '🔽'}</button>
-    </div>
-    <div ref="__childrenContainer" class="customContainer-childrenContainer ${
-      !expanded ? 'contracted' : ''
-    }">
-      ${children}
-    </div>
-  </div>
-`,
-};
 
 class CustomContainer extends Components.components.container {
   __expanded?: boolean;
@@ -40,11 +16,19 @@ class CustomContainer extends Components.components.container {
   render(children: unknown) {
     const { expandable, title, expanded } = this.component.properties;
     if (expandable) {
-      return this.renderTemplate('customContainerTemplate', {
-        title,
-        children: super.render(children),
-        expanded: expanded === 'true',
-      });
+      return `
+      <div ref="__container" class="customContainer-container">
+        <div ref="__titleContainer" class="customContainer-titleContainer">
+          <span>${title}</span>
+          <button ref="__button">${expanded === 'true' ? '🔼' : '🔽'}</button>
+        </div>
+        <div ref="__childrenContainer" class="customContainer-childrenContainer ${
+          expanded !== 'true' ? 'contracted' : ''
+        }">
+          ${super.render(children)}
+        </div>
+      </div>
+    `;
     }
     return super.render(children);
   }
