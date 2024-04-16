@@ -1,5 +1,4 @@
-@import "~bootstrap/dist/css/bootstrap.css";
-@import "~formiojs/dist/formio.full.min.css";
+@import '~formiojs/dist/formio.full.min.css';
 
 /* This variables must be in sync with utils/constants.js > COLORS constan */
 :root {
