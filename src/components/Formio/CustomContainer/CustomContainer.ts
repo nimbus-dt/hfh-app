@@ -1,9 +1,9 @@
 import { Components } from 'formiojs';
-import './CustomContainer.style.css';
 import { isElement } from 'utils/type';
 import { getCheckOrExEmoji } from 'utils/misc';
 import { FormAnswer, TestApplication } from 'models';
 import { DataStore } from 'aws-amplify';
+import style from './CustomContainer.module.css';
 
 const saveSection = async ({
   data,
@@ -112,9 +112,9 @@ class CustomContainer extends Components.components.container {
     const { expandable, title } = this.component.properties;
     if (expandable && this.visible) {
       return `
-      <div ref="__container" class="customContainer-container">
-        <div ref="__titleContainer" class="customContainer-titleContainer">
-          <div class="customContainer-title">
+      <div ref="__container" class="${style.container}">
+        <div ref="__titleContainer" class="${style.title_container}">
+          <div>
             <span>${getCheckOrExEmoji(this.__completed)}</span>
             <span>${title}</span>
           </div>
@@ -122,21 +122,19 @@ class CustomContainer extends Components.components.container {
             this.__expanded ? '🔼' : '🔽'
           }</button>
         </div>
-        <div ref="__childrenContainer" class="customContainer-childrenContainer ${
-          !this.__expanded ? 'contracted' : ''
-        }">
+        <div ref="__childrenContainer" class="${style.children_container} ${
+        !this.__expanded ? style.contracted : ''
+      }">
           ${super.render(children)}
-          <div class="customContainer-buttonsContainer ${
-            this.__expanded ? '' : 'contracted'
-          }">
+          <div>
           ${
             !this.__completed || this.__editing
-              ? '<button ref="__save_button" classname="customContainer-saveButton">Save</button>'
-              : '<button ref="__edit_button" classname="customContainer-saveButton">Edit</button>'
+              ? '<button ref="__save_button">Save</button>'
+              : '<button ref="__edit_button">Edit</button>'
           }
             ${
               this.__editing
-                ? '<button ref="__cancel_button" class="customContainer-cancelButton">Cancel</button>'
+                ? '<button ref="__cancel_button">Cancel</button>'
                 : ''
             }
           </div>
