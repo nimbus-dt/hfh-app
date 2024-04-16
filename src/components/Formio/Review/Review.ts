@@ -1,16 +1,16 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { Components, ExtendedComponentSchema } from 'formiojs';
-import { DataStore } from 'aws-amplify';
-import { FormAnswer } from 'models';
+import { Components } from 'formiojs';
 
-import './Review.style.css';
+import styles from './Review.module.css';
 
 class Review extends Components.components.fieldset {
   render(): HTMLElement {
     const { label, reviewFields, key } = this.component;
     return super.render(`
         <div class="review">
-            <h2 class="accordion-header review__heading" id="heading${key}">
+            <h2 class="accordion-header ${
+              styles.review__heading
+            }" id="heading${key}">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${key}" aria-expanded="true" aria-controls="collapse${key}">
                 ${label}
                 </button>
@@ -24,18 +24,22 @@ class Review extends Components.components.fieldset {
                         const page = location[0];
                         const section = location[1];
                         const keyField = location[2];
-                        const value = this.data[page][section][keyField];
+                        const value = this.root.data[page][section][keyField];
                         return `
-                            <div class="review__item">
-                                <label class="review__label">${fieldLabel}</label>
-                                <span class="review__value">${value}</span>
+                            <div class="${styles.review__item}">
+                                <label class="${styles.review__label}">${fieldLabel}</label>
+                                <span class="${styles.review__value}">${value}</span>
                             </div>
                         `;
                       })
                       .join('')}
-                    <div class="review__buttons">
-                        <button class="review__button--edit" ref="button-edit-${key}">Edit</button>
-                        <button class="review__button--confirm" ref="button-confirm-${key}">Confirm</button>
+                    <div class="${styles.review__buttons}">
+                        <button class="${
+                          styles.review__button__edit
+                        }" ref="button-edit-${key}">Edit</button>
+                        <button class="${
+                          styles.review__button__confirm
+                        }" ref="button-confirm-${key}">Confirm</button>
                     </div>
                 </div>
             </div>
@@ -54,8 +58,6 @@ class Review extends Components.components.fieldset {
     this.refs[`button-edit-${this.component.key}`].addEventListener(
       'click',
       () => {
-        console.log(this);
-        console.log('edit');
         this.root.setPage(this.component.page - 1);
       }
     );
@@ -63,8 +65,7 @@ class Review extends Components.components.fieldset {
     this.refs[`button-confirm-${this.component.key}`].addEventListener(
       'click',
       () => {
-        console.log(this);
-        console.log('confirm');
+        this.updateValue(true, {}, 'review');
       }
     );
 
