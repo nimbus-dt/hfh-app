@@ -197,7 +197,6 @@ class CustomContainer extends Components.components.container {
 
                 for (let i = 0; i < this.parent.components.length; i += 1) {
                   if (i > currentIndex) {
-                    console.log('next component', this.parent.components[i]);
                     if (
                       this.parent.components[i]._visible &&
                       this.parent.components[i].type === 'container'
@@ -210,6 +209,7 @@ class CustomContainer extends Components.components.container {
               }
             } else {
               // TODO show errors
+              console.log('this', this);
             }
           }
           this.triggerRedraw();
