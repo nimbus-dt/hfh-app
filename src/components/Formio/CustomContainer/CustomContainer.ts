@@ -56,6 +56,8 @@ const saveSection = async ({
 class CustomContainer extends Components.components.container {
   __expanded?: boolean;
 
+  __optional? = false;
+
   __editing = false;
 
   __completed = false;
@@ -95,8 +97,10 @@ class CustomContainer extends Components.components.container {
 
   init(): void {
     super.init();
-    const { expandable, expanded } = this.component.properties;
+    const { expandable, expanded, optional } = this.component.properties;
     if (expandable) {
+      this.__optional = optional === 'true';
+
       this.__expanded = expanded === 'true';
       if ('path' in this && typeof this.path === 'string') {
         const path = this.path.split('.');
@@ -245,7 +249,9 @@ class CustomContainer extends Components.components.container {
   checkValidity(data: unknown, dirty: unknown) {
     const { expandable } = this.component.properties;
     if (expandable && this.visible) {
-      const bool = this.__completed && super.checkValidity(data, dirty);
+      const bool =
+        (this.__optional || this.__completed) &&
+        super.checkValidity(data, dirty);
       console.log('checkValidity expandable', bool);
       return bool;
     }
