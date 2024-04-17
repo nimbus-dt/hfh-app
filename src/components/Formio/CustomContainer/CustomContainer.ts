@@ -244,8 +244,10 @@ class CustomContainer extends Components.components.container {
 
   checkValidity(data: unknown, dirty: unknown) {
     const { expandable } = this.component.properties;
-    if (expandable) {
-      return this.__completed && super.checkValidity(data, dirty);
+    if (expandable && this.visible) {
+      const bool = this.__completed && super.checkValidity(data, dirty);
+      console.log('checkValidity expandable', bool);
+      return bool;
     }
     return super.checkValidity(data, dirty);
   }
