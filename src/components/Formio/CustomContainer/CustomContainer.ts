@@ -213,7 +213,6 @@ class CustomContainer extends Components.components.container {
               }
             } else {
               // TODO show errors
-              console.log('this', this);
             }
           }
           this.triggerRedraw();
@@ -249,11 +248,10 @@ class CustomContainer extends Components.components.container {
   checkValidity(data: unknown, dirty: unknown) {
     const { expandable } = this.component.properties;
     if (expandable && this.visible) {
-      const bool =
+      return (
         (this.__optional || this.__completed) &&
-        super.checkValidity(data, dirty);
-      console.log('checkValidity expandable', bool);
-      return bool;
+        super.checkValidity(data, dirty)
+      );
     }
     return super.checkValidity(data, dirty);
   }
