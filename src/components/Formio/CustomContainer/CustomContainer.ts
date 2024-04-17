@@ -98,7 +98,7 @@ class CustomContainer extends Components.components.container {
   init(): void {
     super.init();
     const { expandable, expanded, optional } = this.component.properties;
-    if (expandable) {
+    if (expandable === 'true') {
       this.__optional = optional === 'true';
 
       this.__expanded = expanded === 'true';
@@ -114,7 +114,7 @@ class CustomContainer extends Components.components.container {
 
   render(children: unknown) {
     const { expandable, title } = this.component.properties;
-    if (expandable && this.visible) {
+    if (expandable === 'true' && this.visible) {
       return `
       <div ref="__container" class="${style.container}">
         <div ref="__titleContainer" class="${style.title_container}">
@@ -151,7 +151,7 @@ class CustomContainer extends Components.components.container {
 
   attach(element: unknown) {
     const { expandable } = this.component.properties;
-    if (expandable) {
+    if (expandable === 'true') {
       this.loadRefs(element, {
         __container: 'single',
         __titleContainer: 'single',
@@ -247,7 +247,7 @@ class CustomContainer extends Components.components.container {
 
   checkValidity(data: unknown, dirty: unknown) {
     const { expandable } = this.component.properties;
-    if (expandable && this.visible) {
+    if (expandable === 'true' && this.visible) {
       return (
         (this.__optional || this.__completed) &&
         super.checkValidity(data, dirty)
