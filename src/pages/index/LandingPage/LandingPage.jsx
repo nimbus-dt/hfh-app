@@ -146,6 +146,15 @@ const LandingPage = () => (
         >
           Terms of Service
         </Link>
+        <Link
+          style={{
+            textDecoration: 'none',
+            color: 'gray',
+          }}
+          to="/data"
+        >
+          Data Sharing Policy
+        </Link>
       </Flex>
     </View>
   </View>

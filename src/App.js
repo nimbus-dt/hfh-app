@@ -16,6 +16,7 @@ import LandingPage from 'pages/index/LandingPage';
 import TermsPage from 'pages/terms/TermsPage';
 import PrivacyPage from 'pages/privacy';
 import ContactPage from 'pages/contact';
+import DataPage from 'pages/data';
 
 // eslint-disable-next-line import/no-unresolved
 import '@aws-amplify/ui-react/styles.css';
@@ -32,10 +33,6 @@ import HomeownershipEmploymentPage from 'pages/homeownership/[habitat]/employmen
 import HomeownershipFinancialPage from 'pages/homeownership/[habitat]/financial';
 import HomeownershipReviewPage from 'pages/homeownership/[habitat]/review';
 import HomeownershipPropertyPage from 'pages/homeownership/[habitat]/property';
-import { LandingLayout } from './components/Landing/LandingLayout';
-import { LandingAbout } from './components/Landing/LandingAbout';
-import { LandingReturn } from './components/Landing/LandingReturn';
-import { LandingNewPricing } from './components/Landing/LandingNewPricing';
 
 function App() {
   return (
@@ -57,14 +54,18 @@ function App() {
           }
         />
         <Route
-          path="about"
-          element={<LandingLayout comp={<LandingAbout />} />}
-        />
-        <Route
           path="privacy"
           element={
             <NewLandingLayout>
               <PrivacyPage />
+            </NewLandingLayout>
+          }
+        />
+        <Route
+          path="data"
+          element={
+            <NewLandingLayout>
+              <DataPage />
             </NewLandingLayout>
           }
         />
@@ -77,20 +78,12 @@ function App() {
           }
         />
         <Route
-          path="return"
-          element={<LandingLayout comp={<LandingReturn />} />}
-        />
-        <Route
           path="contact"
           element={
             <NewLandingLayout>
               <ContactPage />
             </NewLandingLayout>
           }
-        />
-        <Route
-          path="pricing"
-          element={<LandingLayout comp={<LandingNewPricing />} />}
         />
       </Route>
 
@@ -143,10 +136,6 @@ function App() {
                 element={<ApplicationDetailsPage />}
               />
             </Route>
-          </Route>
-          <Route path="applications">
-            <Route index element={<ApplicationsPage />} />
-            <Route path=":applicationId" element={<ApplicationDetailsPage />} />
           </Route>
           <Route path="repairs" element={<AffiliatePortalRepairsPage />} />
           <Route
