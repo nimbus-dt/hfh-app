@@ -73,7 +73,8 @@ export default function HomeownershipHomePage() {
           <Authenticator>{content}</Authenticator>
         </ThemeProvider>
       </CustomCard>
-      {application?.submissionStatus !== SubmissionStatus.UNSUBMITTED &&
+      {application &&
+        application.submissionStatus !== SubmissionStatus.UNSUBMITTED &&
         !continueToApplication && <DecisionsCard application={application} />}
     </>
   );
