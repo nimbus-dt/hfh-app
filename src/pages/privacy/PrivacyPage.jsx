@@ -1,4 +1,4 @@
-import { Heading, Flex, Text } from '@aws-amplify/ui-react';
+import { Heading, Flex } from '@aws-amplify/ui-react';
 import CustomCard from 'components/CustomCard';
 
 const PrivacyPage = () => (
