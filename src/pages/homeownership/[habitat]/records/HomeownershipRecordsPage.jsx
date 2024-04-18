@@ -142,7 +142,7 @@ export default function HomeownershipRecordsPage() {
     if (application) {
       getRecords(application.id);
     }
-  }, [application]);
+  }, [application, reset]);
   return (
     <Flex direction="column" alignItems="center" width="100%">
       {alert && (

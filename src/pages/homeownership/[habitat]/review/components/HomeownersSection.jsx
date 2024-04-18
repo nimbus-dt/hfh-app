@@ -82,7 +82,7 @@ function HomeownersSection({
     if (watchRelationship !== 'Other') {
       unregister('otherRelationship');
     }
-  }, [watchRelationship]);
+  }, [unregister, watchRelationship]);
 
   useEffect(() => {
     setReviewedSections((previousReviewedSections) => ({

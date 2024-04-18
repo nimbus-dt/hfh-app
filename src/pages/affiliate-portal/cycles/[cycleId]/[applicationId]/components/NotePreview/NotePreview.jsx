@@ -34,6 +34,7 @@ const NotePreview = ({
   const shouldRenderExpandedButton = useMemo(
     () =>
       cardRef.current != null && checkOverflow(cardRef.current) && !expanded,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [expanded, cardRef.current, height]
   );
 
@@ -57,6 +58,7 @@ const NotePreview = ({
       );
       resizeObserver.observe(cardRef.current);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cardRef.current]);
 
   return (

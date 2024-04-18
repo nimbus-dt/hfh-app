@@ -2,7 +2,6 @@ import {
   View,
   Flex,
   Text,
-  Heading,
   Button,
   Authenticator,
   ThemeProvider,

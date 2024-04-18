@@ -49,7 +49,8 @@ export function useDataStoreObserveQuery({
     return () => {
       subscription.unsubscribe();
     };
-  }, [...dependencyArray]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [criteria, model, paginationProducer, ...dependencyArray]);
 
   return {
     data,

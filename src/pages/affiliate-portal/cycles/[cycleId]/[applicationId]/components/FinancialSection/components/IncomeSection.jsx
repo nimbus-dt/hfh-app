@@ -42,7 +42,7 @@ const IncomeSection = ({ incomes }) => {
     if (watchType !== 'Other') {
       unregister('otherType');
     }
-  }, [watchType]);
+  }, [unregister, watchType]);
 
   const getDownloadLinks = async (proofs) => {
     let newLinks = [];

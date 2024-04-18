@@ -210,7 +210,7 @@ export default function HomeownershipHomeownersPage() {
     if (watchRelationship !== 'Other') {
       unregister('otherRelationship');
     }
-  }, [watchRelationship]);
+  }, [unregister, watchRelationship]);
 
   return (
     <Flex direction="column" alignItems="center" width="100%">

@@ -40,7 +40,7 @@ function Placeholder() {
 }
 
 const LexicalEditor = ({
-  onChange = () => {},
+  onChange = () => undefined,
   editable,
   serializedEditorState,
 }) => (

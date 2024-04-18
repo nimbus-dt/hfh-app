@@ -192,6 +192,7 @@ export default function HomeownershipApplicantInfoPage() {
 
   const onValidCurrentAddress = async (data) => {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { city, ...newData } = data;
 
       newData.city = data.city.selectedCity.label;
@@ -264,6 +265,7 @@ export default function HomeownershipApplicantInfoPage() {
 
   const onValidPreviousAddress = async (data) => {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { city, ...newData } = data;
 
       newData.city = data.city.selectedCity.label;
@@ -644,6 +646,7 @@ export default function HomeownershipApplicantInfoPage() {
 
   const onValidCoApplicantCurrentAddress = async (data) => {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { city, ...newData } = data;
 
       newData.city = data.city.selectedCity.label;
@@ -699,6 +702,7 @@ export default function HomeownershipApplicantInfoPage() {
 
   const onValidCoApplicantPreviousAddress = async (data) => {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { city, ...newData } = data;
 
       newData.city = data.city.selectedCity.label;

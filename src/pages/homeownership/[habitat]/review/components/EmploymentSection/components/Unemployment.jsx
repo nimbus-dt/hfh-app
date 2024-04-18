@@ -25,7 +25,7 @@ const Unemployment = ({
         ? { coApplicantUnemployment: false }
         : { unemployment: false }),
     }));
-  }, [setReviewedSections]);
+  }, [coApplicant, setReviewedSections]);
 
   useEffect(() => {
     if (expanded) {

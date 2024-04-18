@@ -35,7 +35,7 @@ const Address = ({
       ...previousReviewedSections,
       ...(coApplicant ? { coApplicantAddress: false } : { address: false }),
     }));
-  }, [setReviewedSections]);
+  }, [coApplicant, setReviewedSections]);
 
   useEffect(() => {
     if (expanded) {
