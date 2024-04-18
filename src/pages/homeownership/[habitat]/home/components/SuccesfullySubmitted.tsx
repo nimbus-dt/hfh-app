@@ -1,23 +1,7 @@
 import React from 'react';
-import {
-  DataStore,
-  RecursiveModelPredicate,
-  SortDirection,
-  SortPredicate,
-} from '@aws-amplify/datastore';
 import { Flex, Button, Text } from '@aws-amplify/ui-react';
-import ExpandableCardWithGradient from 'components/ExpandableCardWithGradient';
-import LexicalEditor from 'components/LexicalEditor';
-import { useDecisionsQuery } from 'hooks/services';
-import {
-  Decision,
-  Habitat,
-  LazyDecision,
-  TestApplication,
-  SubmissionStatus,
-} from 'models';
+import { Habitat, TestApplication, SubmissionStatus } from 'models';
 import { Link } from 'react-router-dom';
-import dayjs from 'dayjs';
 
 interface IProperties {
   habitat?: Habitat;
