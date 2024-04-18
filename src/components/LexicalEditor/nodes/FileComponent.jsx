@@ -13,7 +13,7 @@ import {
   KEY_BACKSPACE_COMMAND,
   KEY_DELETE_COMMAND,
 } from 'lexical';
-import { Button, Flex, Text } from '@aws-amplify/ui-react';
+import { Button, Flex, Text, View } from '@aws-amplify/ui-react';
 import { MdDownload } from 'react-icons/md';
 import { downloadWithUrl } from 'utils/files';
 import { Storage } from 'aws-amplify';
@@ -134,7 +134,9 @@ const FileComponent = ({ nodeKey, name, s3key, path }) => {
         title={name}
       >
         <Flex alignItems="center" maxWidth="100%">
-          <MdDownload />
+          <Flex>
+            <MdDownload />
+          </Flex>
           <Text
             color="white"
             overflow="hidden"

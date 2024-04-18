@@ -4,6 +4,7 @@ import {
   Asset,
   Checklist,
   Debt,
+  Decision,
   EmploymentInfo,
   Income,
   Member,
@@ -108,5 +109,11 @@ export const usePropertiesQuery = dataStoreQueryHookBuilder({
 /* NOTE MODEL SERVICES */
 export const useNotesQuery = dataStoreQueryHookBuilder({
   model: Note,
+  defaultDataValue: [],
+});
+
+/* DECISION MODEL SERVICES */
+export const useDecisionsQuery = dataStoreQueryHookBuilder({
+  model: Decision,
   defaultDataValue: [],
 });

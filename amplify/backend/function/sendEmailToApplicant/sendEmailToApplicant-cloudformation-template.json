@@ -19,6 +19,13 @@
     "authhfhappUserPoolId": {
       "Type": "String",
       "Default": "authhfhappUserPoolId"
+    },
+    "storages3hfhappstoragebucketBucketName": {
+      "Type": "String",
+      "Default": "storages3hfhappstoragebucketBucketName"
+    },
+    "sesEmail": {
+      "Type": "String"
     }
   },
   "Conditions": {
@@ -76,6 +83,12 @@
             },
             "AUTH_HFHAPP_USERPOOLID": {
               "Ref": "authhfhappUserPoolId"
+            },
+            "STORAGE_S3HFHAPPSTORAGEBUCKET_BUCKETNAME": {
+              "Ref": "storages3hfhappstoragebucketBucketName"
+            },
+            "SES_EMAIL": {
+              "Ref": "sesEmail"
             }
           }
         },
@@ -222,6 +235,44 @@
                       {
                         "Ref": "authhfhappUserPoolId"
                       }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": "s3:ListBucket",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Ref": "storages3hfhappstoragebucketBucketName"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:GetObject",
+                "s3:DeleteObject"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Ref": "storages3hfhappstoragebucketBucketName"
+                      },
+                      "/*"
                     ]
                   ]
                 }

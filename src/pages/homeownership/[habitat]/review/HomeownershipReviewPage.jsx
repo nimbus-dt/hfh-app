@@ -112,8 +112,12 @@ export default function HomeownershipReviewPage() {
     setCurrentAddressOpen(false);
     if (needPreviousAddress) {
       setPreviousAddressOpen(true);
-    } else {
+    } else if (shouldRenderCoApplicant) {
       setTypeOfCreditOpen(true);
+    } else if (shouldRenderTypeOfOwnership) {
+      setTypeOfOwnershipOpen(true);
+    } else {
+      setApplicantMilitaryServiceOpen(true);
     }
     setReviewedSections((previousReviewedSections) => ({
       ...previousReviewedSections,

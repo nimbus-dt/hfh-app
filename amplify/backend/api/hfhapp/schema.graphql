@@ -1,3 +1,10 @@
+type Decision @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  status: String!
+  serializedEditorState: String!
+  testapplicationID: ID! @index(name: "byTestApplication")
+}
+
 type Note @model @auth(rules: [{allow: public}]) {
   id: ID!
   serializedEditorState: String!
@@ -106,6 +113,7 @@ type TestApplication @model @auth(rules: [{allow: public}]) {
   type: ApplicationTypes!
   testcycleID: ID! @index(name: "byTestCycle")
   Notes: [Note] @hasMany(indexName: "byTestApplication", fields: ["id"])
+  Decisions: [Decision] @hasMany(indexName: "byTestApplication", fields: ["id"])
 }
 
 type EmploymentInfo @model @auth(rules: [{allow: public}]) {

@@ -175,7 +175,12 @@ export default function HomeownershipLayout() {
   ]);
 
   useEffect(() => {
-    if (application && authStatus === 'authenticated' && !alreadyRedirected) {
+    if (
+      application &&
+      authStatus === 'authenticated' &&
+      !alreadyRedirected &&
+      application.submissionStatus === SubmissionStatus.UNSUBMITTED
+    ) {
       setAlreadyRedirected(true);
       navigate(application.lastSection);
     }

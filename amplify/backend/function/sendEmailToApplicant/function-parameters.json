@@ -5,6 +5,18 @@
       "hfhapp": [
         "read"
       ]
+    },
+    "storage": {
+      "s3hfhappstoragebucket": [
+        "read",
+        "delete"
+      ]
     }
-  }
+  },
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "sesEmail",
+      "environmentVariableName": "SES_EMAIL"
+    }
+  ]
 }
