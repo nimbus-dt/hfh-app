@@ -3,17 +3,60 @@ import { useOutletContext } from 'react-router-dom';
 import { Form } from '@formio/react';
 import CustomCard from 'components/CustomCard';
 import 'components/Formio';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { generateSubmission } from 'utils/formio';
 import { DataStore } from 'aws-amplify';
-import { TestApplication, SubmissionStatus } from 'models';
+import { TestApplication, SubmissionStatus, FormAnswer } from 'models';
 import dayjs from 'dayjs';
+import { debounce } from 'lodash';
 
 const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
 const HomeownershipHomePage = () => {
   const { application, habitat, openCycle } = useOutletContext();
   const [formAnswers, setFormAnswers] = useState([]);
+
+  const persistSubmission = useMemo(
+    () =>
+      debounce(async (submission) => {
+        try {
+          for (const [page, values] of Object.entries(submission.data)) {
+            const persistedFormAnswer = await DataStore.query(
+              FormAnswer,
+              (c1) =>
+                c1.and((c2) => {
+                  const criteriaArray = [
+                    c2.testapplicationID.eq(application.id),
+                    c2.page.eq(page),
+                  ];
+
+                  return criteriaArray;
+                })
+            );
+
+            if (persistedFormAnswer.length > 0) {
+              await DataStore.save(
+                FormAnswer.copyOf(persistedFormAnswer[0], (original) => {
+                  original.values = JSON.stringify(values);
+                })
+              );
+            } else {
+              await DataStore.save(
+                new FormAnswer({
+                  testapplicationID: application.id,
+                  page,
+                  values: JSON.stringify(values),
+                })
+              );
+            }
+          }
+          console.log('submission persisted');
+        } catch (error) {
+          console.log('Error persisting submission', error);
+        }
+      }, 50),
+    [application]
+  );
 
   useEffect(() => {
     const getFormAnswers = async () => {
@@ -29,11 +72,13 @@ const HomeownershipHomePage = () => {
     return <p>loading...</p>;
   }
 
-  const handleOnSubmit = async (newSubmission) => {
+  const handleOnSubmit = async (submission) => {
     try {
+      await persistSubmission(submission);
+
       const original = await DataStore.query(TestApplication, application.id);
 
-      const persistedApplication = await DataStore.save(
+      await DataStore.save(
         TestApplication.copyOf(original, (originalApplication) => {
           if (
             originalApplication.submissionStatus !== SubmissionStatus.RETURNED
@@ -45,7 +90,7 @@ const HomeownershipHomePage = () => {
         })
       );
 
-      console.log('persistedApplication', persistedApplication);
+      console.log('testApplication updated');
     } catch (error) {
       console.log('Error updating application');
     }
@@ -109,6 +154,9 @@ const HomeownershipHomePage = () => {
             },
           }}
           submission={generateSubmission(formAnswers)}
+          onNextPage={({ submission }) => {
+            persistSubmission(submission);
+          }}
         />
       </ThemeProvider>
     </CustomCard>
