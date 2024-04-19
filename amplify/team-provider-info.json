@@ -155,9 +155,14 @@
         },
         "sendEmailToApplicant": {
           "deploymentBucketName": "amplify-hfhapp-formio-134315-deployment",
-          "s3Key": "amplify-builds/sendEmailToApplicant-494f4a4e754a7533616d-build.zip"
+          "s3Key": "amplify-builds/sendEmailToApplicant-61474d7770365136597a-build.zip",
+          "sesEmail": "support@habitat-app.org"
         },
-        "hfhapp": {}
+        "hfhapp": {},
+        "exportOldApplicationsToFormio": {
+          "deploymentBucketName": "amplify-hfhapp-formio-134315-deployment",
+          "s3Key": "amplify-builds/exportOldApplicationsToFormio-56386964596b754f367a-build.zip"
+        }
       },
       "api": {
         "hfhapp": {},

@@ -411,8 +411,8 @@ type EagerTestApplication = {
   readonly type: ApplicationTypes | keyof typeof ApplicationTypes;
   readonly testcycleID: string;
   readonly Notes?: (Note | null)[] | null;
-  readonly Decisions?: (Decision | null)[] | null;
   readonly FormAnswers?: (FormAnswer | null)[] | null;
+  readonly Decisions?: (Decision | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -433,8 +433,8 @@ type LazyTestApplication = {
   readonly type: ApplicationTypes | keyof typeof ApplicationTypes;
   readonly testcycleID: string;
   readonly Notes: AsyncCollection<Note>;
-  readonly Decisions: AsyncCollection<Decision>;
   readonly FormAnswers: AsyncCollection<FormAnswer>;
+  readonly Decisions: AsyncCollection<Decision>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

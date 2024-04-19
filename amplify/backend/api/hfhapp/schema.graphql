@@ -121,8 +121,8 @@ type TestApplication @model @auth(rules: [{allow: public}]) {
   type: ApplicationTypes!
   testcycleID: ID! @index(name: "byTestCycle")
   Notes: [Note] @hasMany(indexName: "byTestApplication", fields: ["id"])
-  Decisions: [Decision] @hasMany(indexName: "byTestApplication", fields: ["id"])
   FormAnswers: [FormAnswer] @hasMany(indexName: "byTestApplication", fields: ["id"])
+  Decisions: [Decision] @hasMany(indexName: "byTestApplication", fields: ["id"])
 }
 
 type EmploymentInfo @model @auth(rules: [{allow: public}]) {

@@ -107,6 +107,22 @@
     }
   },
   "function": {
+    "exportOldApplicationsToFormio": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "hfhapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "getCitiesByNameAndState": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -202,6 +218,22 @@
   },
   "hosting": {},
   "parameters": {
+    "AMPLIFY_function_exportOldApplicationsToFormio_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "exportOldApplicationsToFormio"
+        }
+      ]
+    },
+    "AMPLIFY_function_exportOldApplicationsToFormio_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "exportOldApplicationsToFormio"
+        }
+      ]
+    },
     "AMPLIFY_function_getCitiesByNameAndState_deploymentBucketName": {
       "usedBy": [
         {

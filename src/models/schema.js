@@ -797,11 +797,11 @@ export const schema = {
                         ]
                     }
                 },
-                "Decisions": {
-                    "name": "Decisions",
+                "FormAnswers": {
+                    "name": "FormAnswers",
                     "isArray": true,
                     "type": {
-                        "model": "Decision"
+                        "model": "FormAnswer"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -813,11 +813,11 @@ export const schema = {
                         ]
                     }
                 },
-                "FormAnswers": {
-                    "name": "FormAnswers",
+                "Decisions": {
+                    "name": "Decisions",
                     "isArray": true,
                     "type": {
-                        "model": "FormAnswer"
+                        "model": "Decision"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -1648,5 +1648,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "4ba3768b9b24f369be61b571fe479bab"
+    "version": "9ae4ac6d8a6b1be857c1b9150918849b"
 };

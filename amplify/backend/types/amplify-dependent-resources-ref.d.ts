@@ -33,6 +33,13 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
+    "exportOldApplicationsToFormio": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "getCitiesByNameAndState": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
