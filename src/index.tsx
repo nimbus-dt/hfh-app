@@ -8,9 +8,9 @@ import { Provider } from 'react-redux';
 import App from './App';
 import awsExports from './aws-exports';
 import { store } from './redux/configureStore';
-
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'components/Formio';
 
 Amplify.configure(awsExports);
 
