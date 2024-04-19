@@ -16,7 +16,6 @@ class Review extends Components.components.container {
       customClass: styles.page,
       disabled: true,
     };
-    console.log(disableComponent);
     super(disableComponent, options, data);
   }
 }
