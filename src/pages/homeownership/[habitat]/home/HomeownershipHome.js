@@ -40,7 +40,11 @@ const HomeownershipHomePage = () => {
           onReviewReturnedApplication={handleOnReviewReturnedApplication}
         />
       ) : (
-        <Home habitat={habitat} />
+        <Home
+          habitat={habitat}
+          application={application}
+          openCycle={openCycle}
+        />
       );
     }
     return <NoOpenCycle habitat={habitat} />;

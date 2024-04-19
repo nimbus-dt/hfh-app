@@ -1,16 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Form } from '@formio/react';
 import { useNavigate } from 'react-router-dom';
-import {
-  FormAnswer,
-  Habitat,
-  TestApplication,
-  TestCycle,
-  SubmissionStatus,
-} from 'models';
+import { FormAnswer, Habitat, TestApplication, TestCycle } from 'models';
 import { debounce } from 'lodash';
 import { DataStore } from 'aws-amplify';
-import dayjs from 'dayjs';
 import { generateSubmission } from 'utils/formio';
 import { Options } from '@formio/react/lib/components/Form';
 
@@ -24,6 +17,8 @@ const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
 const Home = ({ habitat, application, openCycle }: IProperties) => {
   const [formAnswers, setFormAnswers] = useState<FormAnswer[]>([]);
+
+  const navigate = useNavigate();
 
   const persistSubmission = useMemo(
     () =>
@@ -73,25 +68,25 @@ const Home = ({ habitat, application, openCycle }: IProperties) => {
     try {
       if (application && openCycle) {
         await persistSubmission(submission);
+        navigate('../review');
+        // const original = await DataStore.query(TestApplication, application.id);
 
-        const original = await DataStore.query(TestApplication, application.id);
+        // if (original) {
+        //   await DataStore.save(
+        //     TestApplication.copyOf(original, (originalApplication) => {
+        //       if (
+        //         originalApplication.submissionStatus !==
+        //         SubmissionStatus.RETURNED
+        //       ) {
+        //         originalApplication.testcycleID = openCycle.id;
+        //       }
+        //       originalApplication.submissionStatus = SubmissionStatus.SUBMITTED;
+        //       originalApplication.submittedDate = dayjs().format('YYYY-MM-DD');
+        //     })
+        //   );
 
-        if (original) {
-          await DataStore.save(
-            TestApplication.copyOf(original, (originalApplication) => {
-              if (
-                originalApplication.submissionStatus !==
-                SubmissionStatus.RETURNED
-              ) {
-                originalApplication.testcycleID = openCycle.id;
-              }
-              originalApplication.submissionStatus = SubmissionStatus.SUBMITTED;
-              originalApplication.submittedDate = dayjs().format('YYYY-MM-DD');
-            })
-          );
-
-          console.log('testApplication updated');
-        }
+        //   console.log('testApplication updated');
+        // }
       }
     } catch (error) {
       console.log('Error updating application');
@@ -123,6 +118,7 @@ const Home = ({ habitat, application, openCycle }: IProperties) => {
       }
       submission={generateSubmission(formAnswers)}
       onNextPage={({ submission }: { submission: unknown }) => {
+        console.log('next');
         persistSubmission(submission);
       }}
     />
