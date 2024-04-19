@@ -33,6 +33,7 @@ import HomeownershipEmploymentPage from 'pages/homeownership/[habitat]/employmen
 import HomeownershipFinancialPage from 'pages/homeownership/[habitat]/financial';
 import HomeownershipReviewPage from 'pages/homeownership/[habitat]/review';
 import HomeownershipPropertyPage from 'pages/homeownership/[habitat]/property';
+import Authentication from './pages/authentication';
 
 function App() {
   return (
@@ -145,6 +146,8 @@ function App() {
           <Route path="settings" element={<AffiliatePortalSettingsPage />} />
         </Route>
       </Route>
+
+      <Route path="authenticator" element={<Authentication />} />
 
       <Route path="/*" element={<h1>404</h1>} />
     </Routes>
