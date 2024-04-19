@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Form } from '@formio/react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import {
@@ -15,6 +15,10 @@ import { Options } from '@formio/react/lib/components/Form';
 import { Button, Flex, Text } from '@aws-amplify/ui-react';
 import CustomCard from 'components/CustomCard';
 import Modal from 'components/Modal';
+import useAsync from 'hooks/utils/useAsync/useAsync';
+import { Status } from 'utils/enums';
+import Loading from 'components/Loading';
+import Error from 'components/Error';
 
 interface IProperties {
   habitat: Habitat;
@@ -27,10 +31,9 @@ const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
 const HomeownershipReviewPage = () => {
   const [showSubmitModal, setShowSubmitModal] = useState(false);
+  const [loadingForm, setLoadingForm] = useState(true);
   const { application, habitat, openCycle, setApplication } =
     useOutletContext<IProperties>();
-
-  const [formAnswers, setFormAnswers] = useState<FormAnswer[]>([]);
 
   const navigate = useNavigate();
 
@@ -67,15 +70,15 @@ const HomeownershipReviewPage = () => {
     }
   };
 
-  useEffect(() => {
-    const getFormAnswers = async () => {
-      if (application) {
-        const persistedFormAnswers = await application.FormAnswers.toArray();
-        setFormAnswers(persistedFormAnswers);
-      }
-    };
-    getFormAnswers();
+  const asyncFunction = useCallback(async () => {
+    if (application) {
+      return application.FormAnswers.toArray();
+    }
   }, [application]);
+
+  const { status, value } = useAsync({
+    asyncFunction,
+  });
 
   const handleOnClickSubmit = () => {
     setShowSubmitModal(true);
@@ -85,11 +88,23 @@ const HomeownershipReviewPage = () => {
     setShowSubmitModal(false);
   };
 
+  if (status === Status.REJECTED) {
+    return <Error />;
+  }
+
+  if (status === Status.PENDING || !value || !habitat || !openCycle) {
+    return <Loading />;
+  }
+
   return (
     <CustomCard>
+      {loadingForm && <Loading />}
       <Form
         src={`${FORMIO_URL}/loudoun`}
         onSubmit={handleOnSubmit}
+        onRender={() => {
+          setLoadingForm(false);
+        }}
         options={
           {
             readOnly: true,
@@ -101,7 +116,7 @@ const HomeownershipReviewPage = () => {
             },
           } as Options
         }
-        submission={generateSubmission(formAnswers)}
+        submission={generateSubmission(value)}
       />
       <Modal
         title="Alert"
