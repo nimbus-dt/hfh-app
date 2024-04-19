@@ -15,8 +15,12 @@ const Authentication = () => {
         height="100vh"
         justifyContent="center"
         alignItems="center"
+        gap="16px"
       >
-        hey
+        <BsHouseDoorFill size="40px" />
+        <Heading level="3" fontWeight="bold" textAlign="center">
+          Welcome!
+        </Heading>
       </Flex>
       {!boolMobile && (
         <Flex
