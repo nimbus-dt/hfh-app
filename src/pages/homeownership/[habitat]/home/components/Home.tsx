@@ -69,24 +69,6 @@ const Home = ({ habitat, application, openCycle }: IProperties) => {
       if (application && openCycle) {
         await persistSubmission(submission);
         navigate('../review');
-        // const original = await DataStore.query(TestApplication, application.id);
-
-        // if (original) {
-        //   await DataStore.save(
-        //     TestApplication.copyOf(original, (originalApplication) => {
-        //       if (
-        //         originalApplication.submissionStatus !==
-        //         SubmissionStatus.RETURNED
-        //       ) {
-        //         originalApplication.testcycleID = openCycle.id;
-        //       }
-        //       originalApplication.submissionStatus = SubmissionStatus.SUBMITTED;
-        //       originalApplication.submittedDate = dayjs().format('YYYY-MM-DD');
-        //     })
-        //   );
-
-        //   console.log('testApplication updated');
-        // }
       }
     } catch (error) {
       console.log('Error updating application');
