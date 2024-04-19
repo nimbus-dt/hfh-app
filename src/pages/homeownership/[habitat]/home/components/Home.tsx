@@ -22,41 +22,44 @@ const Home = ({ habitat, application, openCycle }: IProperties) => {
 
   const persistSubmission = useMemo(
     () =>
-      debounce(async (submission) => {
+      debounce(async (submission, nextPage?: number) => {
         try {
-          for (const [page, values] of Object.entries(submission.data)) {
-            if (application) {
-              const persistedFormAnswer = await DataStore.query(
-                FormAnswer,
-                (c1) =>
-                  c1.and((c2) => {
-                    const criteriaArray = [
-                      c2.testapplicationID.eq(application.id),
-                      c2.page.eq(page),
-                    ];
+          if (application) {
+            const submissionEntries = Object.entries(submission.data);
+            const [page, values] =
+              submissionEntries[
+                nextPage ? nextPage - 1 : submissionEntries.length - 1
+              ];
+            const persistedFormAnswer = await DataStore.query(
+              FormAnswer,
+              (c1) =>
+                c1.and((c2) => {
+                  const criteriaArray = [
+                    c2.testapplicationID.eq(application.id),
+                    c2.page.eq(page),
+                  ];
 
-                    return criteriaArray;
-                  })
+                  return criteriaArray;
+                })
+            );
+
+            if (persistedFormAnswer.length > 0) {
+              await DataStore.save(
+                FormAnswer.copyOf(persistedFormAnswer[0], (original) => {
+                  original.values = JSON.stringify(values);
+                })
               );
-
-              if (persistedFormAnswer.length > 0) {
-                await DataStore.save(
-                  FormAnswer.copyOf(persistedFormAnswer[0], (original) => {
-                    original.values = JSON.stringify(values);
-                  })
-                );
-              } else {
-                await DataStore.save(
-                  new FormAnswer({
-                    testapplicationID: application.id,
-                    page,
-                    values: JSON.stringify(values),
-                  })
-                );
-              }
+            } else {
+              await DataStore.save(
+                new FormAnswer({
+                  testapplicationID: application.id,
+                  page,
+                  values: JSON.stringify(values),
+                })
+              );
             }
-            console.log('submission persisted');
           }
+          console.log('submission persisted');
         } catch (error) {
           console.log('Error persisting submission', error);
         }
@@ -69,24 +72,6 @@ const Home = ({ habitat, application, openCycle }: IProperties) => {
       if (application && openCycle) {
         await persistSubmission(submission);
         navigate('../review');
-        // const original = await DataStore.query(TestApplication, application.id);
-
-        // if (original) {
-        //   await DataStore.save(
-        //     TestApplication.copyOf(original, (originalApplication) => {
-        //       if (
-        //         originalApplication.submissionStatus !==
-        //         SubmissionStatus.RETURNED
-        //       ) {
-        //         originalApplication.testcycleID = openCycle.id;
-        //       }
-        //       originalApplication.submissionStatus = SubmissionStatus.SUBMITTED;
-        //       originalApplication.submittedDate = dayjs().format('YYYY-MM-DD');
-        //     })
-        //   );
-
-        //   console.log('testApplication updated');
-        // }
       }
     } catch (error) {
       console.log('Error updating application');
@@ -117,9 +102,14 @@ const Home = ({ habitat, application, openCycle }: IProperties) => {
         } as Options
       }
       submission={generateSubmission(formAnswers)}
-      onNextPage={({ submission }: { submission: unknown }) => {
-        console.log('next');
-        persistSubmission(submission);
+      onNextPage={({
+        submission,
+        page,
+      }: {
+        submission: unknown;
+        page: number;
+      }) => {
+        persistSubmission(submission, page);
       }}
     />
   );
