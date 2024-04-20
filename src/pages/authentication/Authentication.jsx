@@ -1,4 +1,10 @@
-import { Flex, Heading, useBreakpointValue, Text } from '@aws-amplify/ui-react';
+import {
+  Flex,
+  Heading,
+  useBreakpointValue,
+  Text,
+  Authenticator,
+} from '@aws-amplify/ui-react';
 import { BsHouseDoorFill } from 'react-icons/bs';
 
 const Authentication = () => {
@@ -16,11 +22,13 @@ const Authentication = () => {
         justifyContent="center"
         alignItems="center"
         gap="16px"
+        padding="20px"
       >
         <BsHouseDoorFill size="40px" />
-        <Heading level="3" fontWeight="bold" textAlign="center">
-          Welcome!
+        <Heading level="5" fontWeight="bold" textAlign="center">
+          Habitat for Humanity of Kenosha
         </Heading>
+        <Authenticator />
       </Flex>
       {!boolMobile && (
         <Flex
