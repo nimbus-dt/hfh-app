@@ -148,7 +148,7 @@ export const handler = async (event) => {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': '*',
       },
-      body: `Email sended.`,
+      body: 'Email sended.',
     };
   } catch (error) {
     console.log('=== Error ===', error);
