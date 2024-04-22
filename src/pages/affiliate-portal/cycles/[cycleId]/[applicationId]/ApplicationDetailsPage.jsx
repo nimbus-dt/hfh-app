@@ -2,66 +2,21 @@ import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import {
   Flex,
   Button,
-  useBreakpointValue,
-  Text,
-  View,
-  Heading,
   Tabs,
   TabItem,
   useAuthenticator,
 } from '@aws-amplify/ui-react';
-import {
-  useApplicantInfosQuery,
-  useRecordsQuery,
-  useTestApplicationById,
-  useWrittensQuery,
-  useMembersQuery,
-  useEmploymentInfosQuery,
-  useIncomesQuery,
-  useDebtsQuery,
-  useAssetsQuery,
-  useChecklistsQuery,
-  useApplicantOptionalsQuery,
-  usePropertiesQuery,
-  useNotesQuery,
-} from 'hooks/services';
-import {
-  getDebtToIncomeRatio,
-  getTestTotalDebts,
-  getTestTotalMonthlyDebts,
-  getTestTotalMonthlyIncomes,
-  getTotalAssetsValue,
-} from 'utils/applicationMetrics';
+import { useTestApplicationById, useNotesQuery } from 'hooks/services';
 import { useEffect, useState } from 'react';
 import { API, DataStore, Storage } from 'aws-amplify';
-import {
-  TestApplication,
-  SubmissionStatus,
-  ApplicationTypes,
-  Note,
-  Decision,
-} from 'models';
+import { TestApplication, SubmissionStatus, Note, Decision } from 'models';
 import { ImageNode } from 'components/LexicalEditor/nodes/ImageNode';
 import { removeFiles } from 'utils/files';
 import { FileNode } from 'components/LexicalEditor/nodes/FileNode';
 import { v4 } from 'uuid';
 import { getEditorStateWithFilesInBucket } from 'utils/lexicalEditor';
-import ApplicantInfoTable from './components/ApplicantInfoTable';
-import GeneralInfoTable from './components/GeneralInfoTable';
-import ChecklistTable from './components/ChecklistTable';
-import WrittenTable from './components/WrittenTable';
-import RecordsTable from './components/RecordsTable';
-import EmploymentTable from './components/EmploymentTable';
-import ApplicationMetricsTable from './components/ApplicationMetricsTable';
-import HouseholdTable from './components/HouseholdTable';
-import FinancialSection from './components/FinancialSection';
-import ApplicantOptionalTable from './components/ApplicantOptionalTable';
-import PaperApplicationTable from './components/PaperApplicationTable';
-import PropertyTable from './components/PropertyTable';
-import NoteModal from './components/NoteModal';
-import NotePreview from './components/NotePreview';
-import ReturnModal from './components/ReturnModal';
-import DecideModal from './components/DecideModal';
+import ApplicationTab from './components/ApplicationTab';
+import NotesTab from './components/NotesTab';
 
 const ApplicationDetailsPage = () => {
   const [userEmail, setUserEmail] = useState();
@@ -76,82 +31,19 @@ const ApplicationDetailsPage = () => {
   const { habitat } = useOutletContext();
   const { user } = useAuthenticator((context) => [context.user]);
 
-  const shouldRenderProperty = habitat?.props.optionalSections.propertyInfo;
-
-  const shouldRenderBusinessOwnerOrSelfEmployed =
-    habitat?.props.optionalSections.businessOwnerOrSelfEmployed;
-
-  const shouldRenderCoApplicant = habitat?.props.optionalSections.coApplicant;
-
-  const shouldRenderTypeOfOwnership =
-    habitat?.props.optionalSections.typeOfOwnership;
-
   const { applicationId } = useParams();
+
   const { data: application } = useTestApplicationById({
     id: applicationId,
     dependencyArray: [trigger],
   });
-  const queriesProps2 = {
-    criteria: (c1) => c1.ownerID.eq(application?.id),
-    dependencyArray: [application?.id],
-  };
 
-  const { data: applicantInfos } = useApplicantInfosQuery(queriesProps2);
-  const { data: applicantOptionals } =
-    useApplicantOptionalsQuery(queriesProps2);
-  const { data: checklists } = useChecklistsQuery(queriesProps2);
-  const { data: writtens } = useWrittensQuery(queriesProps2);
-  const { data: records } = useRecordsQuery(queriesProps2);
-  const { data: members } = useMembersQuery({
-    criteria: (c1) => c1.testapplicationID.eq(application?.id),
-    dependencyArray: [application?.id],
-  });
-  const { data: coApplicantMember } = useMembersQuery({
-    criteria: (c1) => c1.testapplicationID.eq(application?.id),
-    dependencyArray: [application?.id],
-  });
-  const { data: employmentInfos } = useEmploymentInfosQuery(queriesProps2);
-  const { data: properties } = usePropertiesQuery(queriesProps2);
-  const queriesProps1 = {
-    criteria: (c1) => {
-      const membersIdArray = members.map((member) => member.id);
-
-      const applicantAndMembersIdArray = [
-        applicantInfos[0].id,
-        ...membersIdArray,
-      ];
-
-      return c1.or((c2) => {
-        const arrayOfFilters = applicantAndMembersIdArray.map((id) =>
-          c2.ownerId.eq(id)
-        );
-
-        return arrayOfFilters;
-      });
-    },
-    dependencyArray: [application?.id, applicantInfos, members],
-  };
-  const { data: incomes } = useIncomesQuery(queriesProps1);
-  const { data: debts } = useDebtsQuery(queriesProps1);
-  const { data: assets } = useAssetsQuery(queriesProps1);
   const { data: notes } = useNotesQuery({
     criteria: (c) => c.testapplicationID.eq(applicationId),
     dependencyArray: [applicationId, triggerNotes],
   });
-  const totalAssetsValue = getTotalAssetsValue(assets);
-  const totalMonthlyIncomes = getTestTotalMonthlyIncomes(incomes);
-  const totalMonthlyDebts = getTestTotalMonthlyDebts(debts);
-  const totalDebts = getTestTotalDebts(debts);
-  const debtToIncomeRatio = getDebtToIncomeRatio(
-    totalMonthlyDebts,
-    totalMonthlyIncomes
-  );
-  const navigate = useNavigate();
 
-  const sizeRenderer = useBreakpointValue({
-    base: true,
-    large: false,
-  });
+  const navigate = useNavigate();
 
   const handleReturnOnClick = () => setReturnModalOpen(true);
 
@@ -364,144 +256,30 @@ const ApplicationDetailsPage = () => {
 
       <Tabs>
         <TabItem title="Application">
-          <View marginTop="2rem" marginBottom="2rem">
-            <Heading level={1} fontWeight="medium">
-              {application?.type === ApplicationTypes.ONLINE
-                ? applicantInfos[0]?.props.basicInfo.fullName
-                : application?.props.name}
-            </Heading>
-            <Heading level={1} fontWeight="medium">
-              Application
-            </Heading>
-          </View>
-
-          <GeneralInfoTable
-            reviewStatus={application?.reviewStatus}
-            submissionStatus={application?.submissionStatus}
-            submittedDate={application?.submittedDate}
+          <ApplicationTab
+            application={application}
+            returnModalOpen={returnModalOpen}
+            handleReturnModalOnClose={handleReturnModalOnClose}
+            handleOnValidReturn={handleOnValidReturn}
+            decideModalOpen={decideModalOpen}
+            handleDecideModalOnClose={handleDecideModalOnClose}
+            handleOnValidDecide={handleOnValidDecide}
+            handleReturnOnClick={handleReturnOnClick}
+            handleDecideOnClick={handleDecideOnClick}
+            loading={loading}
+            habitat={habitat}
           />
-
-          {application?.type === ApplicationTypes.PAPER ? (
-            <PaperApplicationTable application={application} />
-          ) : (
-            <>
-              <ApplicantInfoTable
-                applicantInfo={applicantInfos[0]}
-                email={userEmail}
-                shouldRenderCoApplicant={shouldRenderCoApplicant}
-                shouldRenderTypeOfOwnership={shouldRenderTypeOfOwnership}
-                coApplicantMember={coApplicantMember[0]}
-              />
-
-              <ApplicantOptionalTable
-                applicantOptional={applicantOptionals[0]}
-                applicantInfo={applicantInfos[0]}
-                shouldRenderCoApplicant={shouldRenderCoApplicant}
-              />
-
-              <ChecklistTable
-                questions={habitat?.props.homeownershipCheckQuestions}
-                answers={checklists[0]?.props || {}}
-              />
-
-              <WrittenTable
-                questions={habitat?.props.homeownershipWrittenQuestions}
-                answers={writtens[0]?.props || {}}
-              />
-
-              <RecordsTable
-                questions={habitat?.props.homeownershipRecordQuestions}
-                answers={records[0]?.props || {}}
-              />
-
-              <HouseholdTable members={members} />
-
-              <EmploymentTable
-                employmentInfo={employmentInfos[0]}
-                applicantInfo={applicantInfos[0]}
-                shouldRenderBusinessOwnerOrSelfEmployed={
-                  shouldRenderBusinessOwnerOrSelfEmployed
-                }
-                shouldRenderCoApplicant={shouldRenderCoApplicant}
-              />
-
-              {shouldRenderProperty && (
-                <PropertyTable property={properties[0]} />
-              )}
-
-              <FinancialSection
-                applicantInfo={applicantInfos[0]}
-                members={members}
-                incomes={incomes}
-                debts={debts}
-                assets={assets}
-                sizeRenderer={sizeRenderer}
-              />
-
-              <ApplicationMetricsTable
-                totalMonthlyIncomes={totalMonthlyIncomes}
-                totalAssets={totalAssetsValue}
-                totalMonthlyDebts={totalMonthlyDebts}
-                totalDebts={totalDebts}
-                debtToIncomeRatio={debtToIncomeRatio}
-              />
-              <ReturnModal
-                open={returnModalOpen}
-                onClose={handleReturnModalOnClose}
-                onValidReturn={handleOnValidReturn}
-                loading={loading}
-              />
-              <DecideModal
-                open={decideModalOpen}
-                onClose={handleDecideModalOnClose}
-                onValid={handleOnValidDecide}
-                loading={loading}
-                customStatus={habitat?.props.customStatus}
-              />
-              {application?.submissionStatus === SubmissionStatus.SUBMITTED && (
-                <>
-                  <br />
-                  <Flex justifyContent="end">
-                    <Button onClick={handleReturnOnClick}>Return</Button>
-                    <Button variation="primary" onClick={handleDecideOnClick}>
-                      Decide
-                    </Button>
-                  </Flex>
-                </>
-              )}
-            </>
-          )}
         </TabItem>
         <TabItem title="Notes">
-          <Flex justifyContent="end" marginTop="1rem">
-            <NoteModal
-              open={noteModal}
-              onClose={handleNoteOpenClose}
-              onSave={handleOnSaveNote}
-              uploading={uploadingNote}
-            />
-            <Button variation="primary" onClick={handleNoteOpenClose}>
-              Create Note
-            </Button>
-          </Flex>
-          <Flex marginTop="1rem" direction="column">
-            {notes.length > 0 ? (
-              notes.map((note) => (
-                <NotePreview
-                  key={note.id}
-                  ownerID={note.ownerID}
-                  createdAt={note.createdAt}
-                  serializedEditorState={note.serializedEditorState}
-                  onDelete={() => handleDeleteNote(note)}
-                  deleting={deletingNote}
-                />
-              ))
-            ) : (
-              <Text textAlign="center" fontWeight="bold">
-                There are no notes for this application
-              </Text>
-            )}
-          </Flex>
+          <NotesTab
+            notes={notes}
+            noteModal={noteModal}
+            uploadingNote={uploadingNote}
+            deletingNote={deletingNote}
+            handleDeleteNote={handleDeleteNote}
+            handleNoteOpenClose={handleNoteOpenClose}
+            handleOnSaveNote={handleOnSaveNote}
+          />
         </TabItem>
       </Tabs>
     </Flex>
