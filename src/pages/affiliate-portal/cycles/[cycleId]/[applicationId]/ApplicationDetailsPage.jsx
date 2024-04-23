@@ -1,3 +1,4 @@
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import {
   Flex,
@@ -10,6 +11,7 @@ import {
   TabItem,
   useAuthenticator,
 } from '@aws-amplify/ui-react';
+import useAsync from 'hooks/utils/useAsync/useAsync';
 import {
   useApplicantInfosQuery,
   useRecordsQuery,
@@ -32,7 +34,6 @@ import {
   getTestTotalMonthlyIncomes,
   getTotalAssetsValue,
 } from 'utils/applicationMetrics';
-import { useEffect, useState } from 'react';
 import { API, DataStore, Storage } from 'aws-amplify';
 import {
   TestApplication,
@@ -62,6 +63,7 @@ import NoteModal from './components/NoteModal';
 import NotePreview from './components/NotePreview';
 import ReturnModal from './components/ReturnModal';
 import DecideModal from './components/DecideModal';
+import Metrics from './components/Metrics/Metrics';
 
 const ApplicationDetailsPage = () => {
   const [userEmail, setUserEmail] = useState();
@@ -73,8 +75,24 @@ const ApplicationDetailsPage = () => {
   const [uploadingNote, setUploadingNote] = useState(false);
   const [deletingNote, setDeletingNote] = useState(false);
   const [triggerNotes, setTriggerNotes] = useState(true);
+  const { applicationId } = useParams();
   const { habitat } = useOutletContext();
   const { user } = useAuthenticator((context) => [context.user]);
+
+  const { data: application } = useTestApplicationById({
+    id: applicationId,
+    dependencyArray: [trigger],
+  });
+
+  const asyncFunction = useCallback(async () => {
+    if (application) {
+      return application.FormAnswers.toArray();
+    }
+  }, [application]);
+
+  const { status, value: answers } = useAsync({
+    asyncFunction,
+  });
 
   const shouldRenderProperty = habitat?.props.optionalSections.propertyInfo;
 
@@ -86,11 +104,6 @@ const ApplicationDetailsPage = () => {
   const shouldRenderTypeOfOwnership =
     habitat?.props.optionalSections.typeOfOwnership;
 
-  const { applicationId } = useParams();
-  const { data: application } = useTestApplicationById({
-    id: applicationId,
-    dependencyArray: [trigger],
-  });
   const queriesProps2 = {
     criteria: (c1) => c1.ownerID.eq(application?.id),
     dependencyArray: [application?.id],
@@ -351,6 +364,17 @@ const ApplicationDetailsPage = () => {
     }
   }, [application]);
 
+  if (!answers) return null;
+
+  const fields = {};
+  answers
+    ?.map((answer) => answer.values)
+    .forEach((obj) => {
+      for (const key in obj) {
+        fields[key] = obj[key];
+      }
+    });
+
   return (
     <Flex width="auto" direction="column" gap="2.5rem">
       <Button
@@ -445,6 +469,7 @@ const ApplicationDetailsPage = () => {
                 totalDebts={totalDebts}
                 debtToIncomeRatio={debtToIncomeRatio}
               />
+              <Metrics data={fields.metrics} />
               <ReturnModal
                 open={returnModalOpen}
                 onClose={handleReturnModalOnClose}
