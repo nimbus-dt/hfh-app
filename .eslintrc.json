@@ -22,7 +22,8 @@
     "prettier/prettier": 0,
     "@typescript-eslint/no-explicit-any": "error",
     "no-restricted-syntax": "off",
-    "guard-for-in": "off"
+    "guard-for-in": "off",
+    "no-restricted-exports": "off"
   },
   "root": true
 }
