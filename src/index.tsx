@@ -5,6 +5,7 @@ import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 import { Amplify } from 'aws-amplify';
 import { Provider } from 'react-redux';
+import { ThemeProvider } from '@aws-amplify/ui-react';
 import App from './App';
 import awsExports from './aws-exports';
 import { store } from './redux/configureStore';
@@ -22,7 +23,9 @@ if (rootElement) {
     <React.StrictMode>
       <BrowserRouter>
         <Provider store={store}>
-          <App />
+          <ThemeProvider>
+            <App />
+          </ThemeProvider>
         </Provider>
       </BrowserRouter>
     </React.StrictMode>
