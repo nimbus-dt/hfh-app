@@ -20,7 +20,9 @@
   "parser": "@typescript-eslint/parser",
   "rules": {
     "prettier/prettier": 0,
-    "@typescript-eslint/no-explicit-any": "error"
+    "@typescript-eslint/no-explicit-any": "error",
+    "no-restricted-syntax": "off",
+    "guard-for-in": "off"
   },
   "root": true
 }
