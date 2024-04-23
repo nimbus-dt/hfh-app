@@ -37,11 +37,6 @@ const Home = ({ habitat, application, openCycle }: IProperties) => {
                 nextPage ? nextPage - 1 : submissionEntries.length - 1
               ];
 
-            console.log('submission', submission);
-            console.log('nextPage', nextPage);
-            console.log('page', page);
-            console.log('values', values);
-
             const persistedFormAnswer = await DataStore.query(
               FormAnswer,
               (c1) =>
