@@ -6,9 +6,10 @@ import { debounce } from 'lodash';
 import { DataStore } from 'aws-amplify';
 import { generateSubmission } from 'utils/formio';
 import { Options } from '@formio/react/lib/components/Form';
+import { useFormById } from 'hooks/services';
 
 interface IProperties {
-  habitat: Habitat;
+  habitat?: Habitat;
   application?: TestApplication;
   openCycle?: TestCycle;
 }
@@ -20,6 +21,11 @@ const Home = ({ habitat, application, openCycle }: IProperties) => {
 
   const navigate = useNavigate();
 
+  const { data: form } = useFormById({
+    id: openCycle?.form || '',
+    dependencyArray: [openCycle],
+  });
+
   const persistSubmission = useMemo(
     () =>
       debounce(async (submission, nextPage?: number) => {
@@ -30,6 +36,12 @@ const Home = ({ habitat, application, openCycle }: IProperties) => {
               submissionEntries[
                 nextPage ? nextPage - 1 : submissionEntries.length - 1
               ];
+
+            console.log('submission', submission);
+            console.log('nextPage', nextPage);
+            console.log('page', page);
+            console.log('values', values);
+
             const persistedFormAnswer = await DataStore.query(
               FormAnswer,
               (c1) =>
@@ -89,29 +101,31 @@ const Home = ({ habitat, application, openCycle }: IProperties) => {
   }, [application]);
 
   return (
-    <Form
-      src={`${FORMIO_URL}/loudoun`}
-      onSubmit={handleOnSubmit}
-      options={
-        {
-          additional: {
-            application,
-            habitat,
-            openCycle,
-          },
-        } as Options
-      }
-      submission={generateSubmission(formAnswers)}
-      onNextPage={({
-        submission,
-        page,
-      }: {
-        submission: unknown;
-        page: number;
-      }) => {
-        persistSubmission(submission, page);
-      }}
-    />
+    form && (
+      <Form
+        src={`${FORMIO_URL}/${form.url}`}
+        onSubmit={handleOnSubmit}
+        options={
+          {
+            additional: {
+              application,
+              habitat,
+              openCycle,
+            },
+          } as Options
+        }
+        submission={generateSubmission(formAnswers)}
+        onNextPage={({
+          submission,
+          page,
+        }: {
+          submission: unknown;
+          page: number;
+        }) => {
+          persistSubmission(submission, page);
+        }}
+      />
+    )
   );
 };
 
