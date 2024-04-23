@@ -8,7 +8,6 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  ThemeProvider,
 } from '@aws-amplify/ui-react';
 import { Link, useOutletContext } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
@@ -110,99 +109,82 @@ function HomeownersSection({
         onExpandedChange={setExpanded}
         ref={customCardReference}
       >
-        <ThemeProvider
-          theme={{
-            tokens: {
-              components: {
-                table: {
-                  header: {
-                    borderColor: 'black',
-                  },
-                  data: {
-                    borderColor: 'black',
-                  },
-                },
-              },
-            },
-          }}
-        >
-          <Table variation="small" style={{ wordBreak: 'break-word' }}>
-            <TableHead>
+        <Table variation="small" style={{ wordBreak: 'break-word' }}>
+          <TableHead>
+            <TableRow>
+              <TableCell as="th" width="40%">
+                Name
+              </TableCell>
+              <TableCell as="th" width="40%">
+                Relationship
+              </TableCell>
+              <TableCell as="th" width="20%">
+                Actions
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {members.length > 0 ? (
+              members.map((member) => {
+                const handleOnClickMore = () => {
+                  const hasOtherRelationship = !relationshipOptions.includes(
+                    member.props.relationship
+                  );
+                  reset({
+                    ...member.props,
+                    relationship: hasOtherRelationship
+                      ? 'Other'
+                      : member.props.relationship,
+                    otherRelationship: hasOtherRelationship
+                      ? member.props.relationship
+                      : undefined,
+                  });
+                  setMemberModal(true);
+                };
+                return (
+                  <TableRow key={member.id}>
+                    <TableCell>{member.props.fullName}</TableCell>
+                    <TableCell>{member.props.relationship}</TableCell>
+                    <TableCell>
+                      <Flex
+                        direction={{ base: 'column', small: 'row' }}
+                        width="100%"
+                        justifyContent="center"
+                      >
+                        <Button
+                          height="2rem"
+                          width="2rem"
+                          padding="0"
+                          title="Open"
+                          onClick={handleOnClickMore}
+                        >
+                          <MdMoreHoriz size="1.25rem" />
+                        </Button>
+                      </Flex>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            ) : (
               <TableRow>
-                <TableCell as="th" width="40%">
-                  Name
-                </TableCell>
-                <TableCell as="th" width="40%">
-                  Relationship
-                </TableCell>
-                <TableCell as="th" width="20%">
-                  Actions
+                <TableCell colSpan={3} textAlign="center">
+                  No members added yet
                 </TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {members.length > 0 ? (
-                members.map((member) => {
-                  const handleOnClickMore = () => {
-                    const hasOtherRelationship = !relationshipOptions.includes(
-                      member.props.relationship
-                    );
-                    reset({
-                      ...member.props,
-                      relationship: hasOtherRelationship
-                        ? 'Other'
-                        : member.props.relationship,
-                      otherRelationship: hasOtherRelationship
-                        ? member.props.relationship
-                        : undefined,
-                    });
-                    setMemberModal(true);
-                  };
-                  return (
-                    <TableRow key={member.id}>
-                      <TableCell>{member.props.fullName}</TableCell>
-                      <TableCell>{member.props.relationship}</TableCell>
-                      <TableCell>
-                        <Flex
-                          direction={{ base: 'column', small: 'row' }}
-                          width="100%"
-                          justifyContent="center"
-                        >
-                          <Button
-                            height="2rem"
-                            width="2rem"
-                            padding="0"
-                            title="Open"
-                            onClick={handleOnClickMore}
-                          >
-                            <MdMoreHoriz size="1.25rem" />
-                          </Button>
-                        </Flex>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={3} textAlign="center">
-                    No members added yet
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-          <br />
-          {!submitted && (
-            <Flex width="100%" justifyContent="end">
-              <Link to="../homeowners">
-                <Button>Edit</Button>
-              </Link>
-              <Button onClick={onReview} variation="primary">
-                Confirm
-              </Button>
-            </Flex>
-          )}
-        </ThemeProvider>
+            )}
+          </TableBody>
+        </Table>
+        <br />
+        {!submitted && (
+          <Flex width="100%" justifyContent="end">
+            <Link to="../homeowners">
+              <Button>Edit</Button>
+            </Link>
+            <Button onClick={onReview} variation="primary">
+              Confirm
+            </Button>
+          </Flex>
+        )}
         <Modal
           title="Member"
           open={memberModal}

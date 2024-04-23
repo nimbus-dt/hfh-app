@@ -16,7 +16,6 @@ import {
   TableRow,
   Text,
   TextField,
-  ThemeProvider,
 } from '@aws-amplify/ui-react';
 import { MdAdd, MdClose, MdMoreHoriz } from 'react-icons/md';
 import FileInput from 'components/FileInput';
@@ -255,104 +254,85 @@ const IncomeSection = ({
             <MdAdd size="1.25rem" />
           </Button>
         </Flex>
-        <ThemeProvider
-          theme={{
-            tokens: {
-              components: {
-                table: {
-                  header: {
-                    borderColor: 'black',
-                  },
-                  data: {
-                    borderColor: 'black',
-                  },
-                },
-              },
-            },
-          }}
-        >
-          <Table variation="small" style={{ wordBreak: 'break-word' }}>
-            <TableHead>
+        <Table variation="small" style={{ wordBreak: 'break-word' }}>
+          <TableHead>
+            <TableRow>
+              <TableCell as="th" width="40%">
+                Name
+              </TableCell>
+              <TableCell as="th" width="40%">
+                Total
+              </TableCell>
+              <TableCell as="th" width="20%">
+                Actions
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {incomes.length > 0 ? (
+              incomes.map((income) => {
+                const handleOnClickDelete = () => {
+                  setIncomeToDelete(income);
+                };
+
+                const handleOnClickMore = () => {
+                  setEditingIncome(income);
+                  const hasOtherType = !incomeTypes.includes(income.props.type);
+                  const filesArray = income.props.proofs.map((fileKey) => {
+                    const pathArray = fileKey.split('/');
+                    return new File([''], pathArray[pathArray.length - 1]);
+                  });
+
+                  reset({
+                    ...income.props,
+                    type: hasOtherType ? 'Other' : income.props.type,
+                    otherType: hasOtherType ? income.props.type : undefined,
+                    proofs: filesArray,
+                  });
+                };
+                return (
+                  <TableRow key={income.id}>
+                    <TableCell>{income.props.source}</TableCell>
+                    <TableCell>{`$${income.props.monthlyIncome}`}</TableCell>
+                    <TableCell>
+                      <Flex
+                        direction={{ base: 'column', small: 'row' }}
+                        width="100%"
+                        justifyContent="center"
+                        gap="0.5rem"
+                      >
+                        <Button
+                          height="2rem"
+                          width="2rem"
+                          padding="0"
+                          title="Delete"
+                          onClick={handleOnClickDelete}
+                        >
+                          <MdClose size="1.25rem" />
+                        </Button>
+                        <Button
+                          height="2rem"
+                          width="2rem"
+                          padding="0"
+                          title="Open"
+                          onClick={handleOnClickMore}
+                        >
+                          <MdMoreHoriz size="1.25rem" />
+                        </Button>
+                      </Flex>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            ) : (
               <TableRow>
-                <TableCell as="th" width="40%">
-                  Name
-                </TableCell>
-                <TableCell as="th" width="40%">
-                  Total
-                </TableCell>
-                <TableCell as="th" width="20%">
-                  Actions
+                <TableCell colSpan={3} textAlign="center">
+                  No income record added yet
                 </TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {incomes.length > 0 ? (
-                incomes.map((income) => {
-                  const handleOnClickDelete = () => {
-                    setIncomeToDelete(income);
-                  };
-
-                  const handleOnClickMore = () => {
-                    setEditingIncome(income);
-                    const hasOtherType = !incomeTypes.includes(
-                      income.props.type
-                    );
-                    const filesArray = income.props.proofs.map((fileKey) => {
-                      const pathArray = fileKey.split('/');
-                      return new File([''], pathArray[pathArray.length - 1]);
-                    });
-
-                    reset({
-                      ...income.props,
-                      type: hasOtherType ? 'Other' : income.props.type,
-                      otherType: hasOtherType ? income.props.type : undefined,
-                      proofs: filesArray,
-                    });
-                  };
-                  return (
-                    <TableRow key={income.id}>
-                      <TableCell>{income.props.source}</TableCell>
-                      <TableCell>{`$${income.props.monthlyIncome}`}</TableCell>
-                      <TableCell>
-                        <Flex
-                          direction={{ base: 'column', small: 'row' }}
-                          width="100%"
-                          justifyContent="center"
-                          gap="0.5rem"
-                        >
-                          <Button
-                            height="2rem"
-                            width="2rem"
-                            padding="0"
-                            title="Delete"
-                            onClick={handleOnClickDelete}
-                          >
-                            <MdClose size="1.25rem" />
-                          </Button>
-                          <Button
-                            height="2rem"
-                            width="2rem"
-                            padding="0"
-                            title="Open"
-                            onClick={handleOnClickMore}
-                          >
-                            <MdMoreHoriz size="1.25rem" />
-                          </Button>
-                        </Flex>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={3} textAlign="center">
-                    No income record added yet
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </ThemeProvider>
+            )}
+          </TableBody>
+        </Table>
         <Modal
           title="Income"
           open={modal || editingIncome !== undefined}

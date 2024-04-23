@@ -12,7 +12,6 @@ import {
   TableHead,
   TableRow,
   TextField,
-  ThemeProvider,
 } from '@aws-amplify/ui-react';
 import { MdMoreHoriz } from 'react-icons/md';
 import FileInput from 'components/FileInput';
@@ -61,98 +60,81 @@ const DebtSection = ({ ownerId, debts, submitted }) => {
       onExpandedChange={handleOnExpandedChange}
       width="100%"
     >
-      <ThemeProvider
-        theme={{
-          tokens: {
-            components: {
-              table: {
-                header: {
-                  borderColor: 'black',
-                },
-                data: {
-                  borderColor: 'black',
-                },
-              },
-            },
-          },
-        }}
-      >
-        <Table variation="small" style={{ wordBreak: 'break-word' }}>
-          <TableHead>
+      <Table variation="small" style={{ wordBreak: 'break-word' }}>
+        <TableHead>
+          <TableRow>
+            <TableCell as="th" width="40%">
+              Name
+            </TableCell>
+            <TableCell as="th" width="40%">
+              Total
+            </TableCell>
+            <TableCell as="th" width="20%">
+              Actions
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {debts.length > 0 ? (
+            debts.map((debt) => {
+              const handleOnClickMore = () => {
+                const hasOtherType = !debtTypes.includes(debt.props.type);
+                const filesArray = debt.props.proofs.map((fileKey) => {
+                  const pathArray = fileKey.split('/');
+                  return new File([''], pathArray[pathArray.length - 1]);
+                });
+
+                reset({
+                  ...debt.props,
+                  type: hasOtherType ? 'Other' : debt.props.type,
+                  otherType: hasOtherType ? debt.props.type : undefined,
+                  proofs: filesArray,
+                });
+
+                setModal(true);
+              };
+              return (
+                <TableRow key={debt.id}>
+                  <TableCell>{debt.props.type}</TableCell>
+                  <TableCell>{`$${debt.props.monthlyPayment}`}</TableCell>
+                  <TableCell>
+                    <Flex
+                      direction={{ base: 'column', small: 'row' }}
+                      width="100%"
+                      justifyContent="center"
+                      gap="0.5rem"
+                    >
+                      <Button
+                        height="2rem"
+                        width="2rem"
+                        padding="0"
+                        title="Open"
+                        onClick={handleOnClickMore}
+                      >
+                        <MdMoreHoriz size="1.25rem" />
+                      </Button>
+                    </Flex>
+                  </TableCell>
+                </TableRow>
+              );
+            })
+          ) : (
             <TableRow>
-              <TableCell as="th" width="40%">
-                Name
-              </TableCell>
-              <TableCell as="th" width="40%">
-                Total
-              </TableCell>
-              <TableCell as="th" width="20%">
-                Actions
+              <TableCell colSpan={3} textAlign="center">
+                No debt record added yet
               </TableCell>
             </TableRow>
-          </TableHead>
-          <TableBody>
-            {debts.length > 0 ? (
-              debts.map((debt) => {
-                const handleOnClickMore = () => {
-                  const hasOtherType = !debtTypes.includes(debt.props.type);
-                  const filesArray = debt.props.proofs.map((fileKey) => {
-                    const pathArray = fileKey.split('/');
-                    return new File([''], pathArray[pathArray.length - 1]);
-                  });
-
-                  reset({
-                    ...debt.props,
-                    type: hasOtherType ? 'Other' : debt.props.type,
-                    otherType: hasOtherType ? debt.props.type : undefined,
-                    proofs: filesArray,
-                  });
-
-                  setModal(true);
-                };
-                return (
-                  <TableRow key={debt.id}>
-                    <TableCell>{debt.props.type}</TableCell>
-                    <TableCell>{`$${debt.props.monthlyPayment}`}</TableCell>
-                    <TableCell>
-                      <Flex
-                        direction={{ base: 'column', small: 'row' }}
-                        width="100%"
-                        justifyContent="center"
-                        gap="0.5rem"
-                      >
-                        <Button
-                          height="2rem"
-                          width="2rem"
-                          padding="0"
-                          title="Open"
-                          onClick={handleOnClickMore}
-                        >
-                          <MdMoreHoriz size="1.25rem" />
-                        </Button>
-                      </Flex>
-                    </TableCell>
-                  </TableRow>
-                );
-              })
-            ) : (
-              <TableRow>
-                <TableCell colSpan={3} textAlign="center">
-                  No debt record added yet
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-        <br />
-        {!submitted && (
-          <Flex width="100%" justifyContent="end">
-            <Link to="../financial">
-              <Button variation="primary">Edit</Button>
-            </Link>
-          </Flex>
-        )}
-      </ThemeProvider>
+          )}
+        </TableBody>
+      </Table>
+      <br />
+      {!submitted && (
+        <Flex width="100%" justifyContent="end">
+          <Link to="../financial">
+            <Button variation="primary">Edit</Button>
+          </Link>
+        </Flex>
+      )}
       <Modal
         title="Debt"
         open={modal}
