@@ -109,6 +109,36 @@ export declare type HabitatProps = LazyLoading extends LazyLoadingDisabled ? Eag
 
 export declare const HabitatProps: (new (init: ModelInit<HabitatProps>) => HabitatProps)
 
+type EagerForm = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Form, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly url: string;
+  readonly habitatID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyForm = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Form, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly url: string;
+  readonly habitatID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Form = LazyLoading extends LazyLoadingDisabled ? EagerForm : LazyForm
+
+export declare const Form: (new (init: ModelInit<Form>) => Form) & {
+  copyOf(source: Form, mutator: (draft: MutableModel<Form>) => MutableModel<Form> | void): Form;
+}
+
 type EagerDecision = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Decision, 'id'>;
@@ -249,6 +279,7 @@ type EagerTestCycle = {
   readonly props?: string | null;
   readonly habitatID: string;
   readonly TestApplications?: (TestApplication | null)[] | null;
+  readonly form: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -265,6 +296,7 @@ type LazyTestCycle = {
   readonly props?: string | null;
   readonly habitatID: string;
   readonly TestApplications: AsyncCollection<TestApplication>;
+  readonly form: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -643,6 +675,7 @@ type EagerHabitat = {
   readonly users?: (string | null)[] | null;
   readonly AMI?: (string | null)[] | null;
   readonly TestCycles?: (TestCycle | null)[] | null;
+  readonly Forms?: (Form | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -663,6 +696,7 @@ type LazyHabitat = {
   readonly users?: (string | null)[] | null;
   readonly AMI?: (string | null)[] | null;
   readonly TestCycles: AsyncCollection<TestCycle>;
+  readonly Forms: AsyncCollection<Form>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

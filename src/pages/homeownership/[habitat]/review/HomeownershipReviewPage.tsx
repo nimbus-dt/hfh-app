@@ -13,6 +13,7 @@ import useAsync from 'hooks/utils/useAsync/useAsync';
 import { Status } from 'utils/enums';
 import Loading from 'components/Loading';
 import Error from 'components/Error';
+import { useFormById } from 'hooks/services';
 
 interface IProperties {
   habitat: Habitat;
@@ -28,6 +29,11 @@ const HomeownershipReviewPage = () => {
   const [loadingForm, setLoadingForm] = useState(true);
   const { application, habitat, openCycle, setApplication } =
     useOutletContext<IProperties>();
+
+  const { data: form } = useFormById({
+    id: openCycle?.form || '',
+    dependencyArray: [openCycle],
+  });
 
   const navigate = useNavigate();
 
@@ -86,7 +92,7 @@ const HomeownershipReviewPage = () => {
     return <Error />;
   }
 
-  if (status === Status.PENDING || !value || !habitat || !openCycle) {
+  if (status === Status.PENDING || !value || !habitat || !openCycle || !form) {
     return <Loading />;
   }
 
@@ -94,7 +100,7 @@ const HomeownershipReviewPage = () => {
     <CustomCard>
       {loadingForm && <Loading />}
       <Form
-        src={`${FORMIO_URL}/loudoun`}
+        src={`${FORMIO_URL}/${form.url}`}
         onRender={() => {
           setLoadingForm(false);
         }}

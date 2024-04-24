@@ -2,11 +2,12 @@ import React, { useCallback } from 'react';
 import { View, Heading, Flex, Button } from '@aws-amplify/ui-react';
 import {
   ApplicationTypes,
+  Form,
   Habitat,
   SubmissionStatus,
   TestApplication,
 } from 'models';
-import { Form } from '@formio/react';
+import { Form as FormIOForm } from '@formio/react';
 import { generateSubmission } from 'utils/formio';
 import useAsync from 'hooks/utils/useAsync/useAsync';
 import GeneralInfoTable from './components/GeneralInfoTable';
@@ -27,6 +28,7 @@ interface IProperties {
   handleOnValidDecide: () => void;
   loading: number;
   habitat?: Habitat;
+  form?: Form;
 }
 
 const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
@@ -43,6 +45,7 @@ const ApplicationTab = ({
   handleDecideOnClick,
   loading,
   habitat,
+  form,
 }: IProperties) => {
   const asyncFunction = useCallback(async () => {
     if (application) {
@@ -92,9 +95,9 @@ const ApplicationTab = ({
         submittedDate={application?.submittedDate}
       />
       <br />
-      {formAnswers && (
-        <Form
-          src={`${FORMIO_URL}/loudoun`}
+      {formAnswers && form && (
+        <FormIOForm
+          src={`${FORMIO_URL}/${form?.url}`}
           options={{
             readOnly: true,
             renderMode: 'flat',

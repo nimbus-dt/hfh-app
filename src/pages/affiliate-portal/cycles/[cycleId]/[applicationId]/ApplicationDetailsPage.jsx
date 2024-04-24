@@ -7,7 +7,13 @@ import {
   TabItem,
   useAuthenticator,
 } from '@aws-amplify/ui-react';
-import { useTestApplicationById, useNotesQuery } from 'hooks/services';
+import {
+  useTestApplicationById,
+  useNotesQuery,
+  useTestCycleById,
+  useFormById,
+} from 'hooks/services';
+import { useEffect, useState } from 'react';
 import { API, DataStore, Storage } from 'aws-amplify';
 import { TestApplication, SubmissionStatus, Note, Decision } from 'models';
 import { ImageNode } from 'components/LexicalEditor/nodes/ImageNode';
@@ -35,6 +41,16 @@ const ApplicationDetailsPage = () => {
   const { data: application } = useTestApplicationById({
     id: applicationId,
     dependencyArray: [trigger],
+  });
+
+  const { data: openCycle } = useTestCycleById({
+    id: application?.testcycleID || '',
+    dependencyArray: [application],
+  });
+
+  const { data: form } = useFormById({
+    id: openCycle?.form || '',
+    dependencyArray: [openCycle],
   });
 
   const { data: notes } = useNotesQuery({
@@ -267,6 +283,7 @@ const ApplicationDetailsPage = () => {
             handleDecideOnClick={handleDecideOnClick}
             loading={loading}
             habitat={habitat}
+            form={form}
           />
         </TabItem>
         <TabItem title="Notes">

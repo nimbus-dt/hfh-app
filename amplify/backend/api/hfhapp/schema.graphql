@@ -1,3 +1,9 @@
+type Form @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  url: String!
+  habitatID: ID! @index(name: "byHabitat")
+}
+
 type Decision @model @auth(rules: [{allow: public}]) {
   id: ID!
   status: String!
@@ -72,6 +78,7 @@ type TestCycle @model @auth(rules: [{allow: public}]) {
   props: AWSJSON
   habitatID: ID! @index(name: "byHabitat")
   TestApplications: [TestApplication] @hasMany(indexName: "byTestCycle", fields: ["id"])
+  form: ID!
 }
 
 enum ApplicationTypes {
@@ -174,5 +181,6 @@ type Habitat @model @auth(rules: [{allow: public}]) {
   users: [ID]
   AMI: [String]
   TestCycles: [TestCycle] @hasMany(indexName: "byHabitat", fields: ["id"])
+  Forms: [Form] @hasMany(indexName: "byHabitat", fields: ["id"])
 }
  
