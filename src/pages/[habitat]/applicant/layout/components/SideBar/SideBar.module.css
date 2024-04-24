@@ -1,7 +1,7 @@
 .sideBar {
-  background-color: black;
+  background-color: var(--amplify-colors-neutral-100);
   width: fit-content !important;
-  color: white;
+  color: var(--amplify-colors-neutral-10);
   height: 100vh;
   padding: 24px;
 }

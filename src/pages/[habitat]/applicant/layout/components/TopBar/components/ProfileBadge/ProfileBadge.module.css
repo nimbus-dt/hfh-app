@@ -1,16 +1,16 @@
 .profileBadge {
   border-radius: 50% !important;
   padding: 12px;
-  font-size: 18px;
-  line-height: 24px;
-  color: #256a47;
-  background-color: #b6ddc7;
+  font-size: var(--amplify-font-sizes-medium);
+  line-height: var(--amplify-line-heights-small);
+  color: var(--amplify-colors-secondary-110);
+  background-color: var(--amplify-colors-secondary-50);
   border: none;
-  font-weight: 500;
+  font-weight: var(--amplify-font-weights-medium);
   height: 48px;
   aspect-ratio: 1/1 !important;
 }
 
 .profileBadge:active {
-  border-color: #256a47;
+  border-color: var(--amplify-colors-secondary-110);
 }

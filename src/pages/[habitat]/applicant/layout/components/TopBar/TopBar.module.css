@@ -5,13 +5,13 @@
   padding: 12px 32px;
   border-bottom-style: solid;
   border-bottom-width: 1px;
-  border-bottom-color: #bdbdbd;
-  background-color: #fffdfd;
+  border-bottom-color: var(--amplify-colors-neutral-80);
+  background-color: var(--amplify-colors-neutral-10);
 }
 
 .title {
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
+  font-weight: var(--amplify-font-weights-normal);
+  font-size: var(--amplify-font-sizes-small);
+  line-height: var(--amplify-line-heights-small);
   text-align: center;
 }
