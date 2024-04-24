@@ -1,8 +1,4 @@
-import {
-  Authenticator,
-  ThemeProvider,
-  useBreakpointValue,
-} from '@aws-amplify/ui-react';
+import { Authenticator, useBreakpointValue } from '@aws-amplify/ui-react';
 import { useOutletContext } from 'react-router-dom';
 import { SubmissionStatus } from 'models';
 import CustomCard from 'components/CustomCard';
@@ -53,29 +49,7 @@ const HomeownershipHomePage = () => {
   return (
     <>
       <CustomCard>
-        <ThemeProvider
-          theme={{
-            name: 'homeownership-authentication',
-            tokens: {
-              components: {
-                authenticator: {
-                  container: {
-                    widthMax: '100%',
-                  },
-                  router: {
-                    borderStyle: 'none',
-                    boxShadow: 'none',
-                  },
-                  form: {
-                    padding: isReallySmall ? '0.25rem' : undefined,
-                  },
-                },
-              },
-            },
-          }}
-        >
-          <Authenticator>{content}</Authenticator>
-        </ThemeProvider>
+        <Authenticator>{content}</Authenticator>
       </CustomCard>
       {application &&
         application.submissionStatus !== SubmissionStatus.UNSUBMITTED &&

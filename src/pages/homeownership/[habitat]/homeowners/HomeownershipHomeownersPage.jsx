@@ -10,7 +10,6 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  ThemeProvider,
 } from '@aws-amplify/ui-react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -276,104 +275,87 @@ export default function HomeownershipHomeownersPage() {
             <MdAdd size="1.25rem" />
           </Button>
         </Flex>
-        <ThemeProvider
-          theme={{
-            tokens: {
-              components: {
-                table: {
-                  header: {
-                    borderColor: 'black',
-                  },
-                  data: {
-                    borderColor: 'black',
-                  },
-                },
-              },
-            },
-          }}
-        >
-          <Table variation="small" style={{ wordBreak: 'break-word' }}>
-            <TableHead>
-              <TableRow>
-                <TableCell as="th" width="40%">
-                  Name
-                </TableCell>
-                <TableCell as="th" width="40%">
-                  Relationship
-                </TableCell>
-                <TableCell as="th" width="20%">
-                  Actions
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {members.length > 0 ? (
-                members.map((member) => {
-                  const handleOnClickDelete = () => {
-                    setMemberToDelete(member);
-                  };
+        <Table variation="small" style={{ wordBreak: 'break-word' }}>
+          <TableHead>
+            <TableRow>
+              <TableCell as="th" width="40%">
+                Name
+              </TableCell>
+              <TableCell as="th" width="40%">
+                Relationship
+              </TableCell>
+              <TableCell as="th" width="20%">
+                Actions
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {members.length > 0 ? (
+              members.map((member) => {
+                const handleOnClickDelete = () => {
+                  setMemberToDelete(member);
+                };
 
-                  const handleOnClickMore = () => {
-                    setEditingMember(member);
-                    const hasOtherRelationship = !RELATIONSHIP_OPTIONS.includes(
-                      member.props.relationship
-                    );
-                    reset({
-                      ...member.props,
-                      relationship: hasOtherRelationship
-                        ? 'Other'
-                        : member.props.relationship,
-                      otherRelationship: hasOtherRelationship
-                        ? member.props.relationship
-                        : undefined,
-                    });
-                  };
-                  return (
-                    <TableRow key={member.id}>
-                      <TableCell>{member.props.fullName}</TableCell>
-                      <TableCell>{member.props.relationship}</TableCell>
-                      <TableCell>
-                        <Flex
-                          direction={{ base: 'column', small: 'row' }}
-                          width="100%"
-                          justifyContent="center"
-                          gap="0.5rem"
-                        >
-                          {!member.isCoApplicant && (
-                            <Button
-                              height="2rem"
-                              width="2rem"
-                              padding="0"
-                              title="Delete"
-                              onClick={handleOnClickDelete}
-                            >
-                              <MdClose size="1.25rem" />
-                            </Button>
-                          )}
+                const handleOnClickMore = () => {
+                  setEditingMember(member);
+                  const hasOtherRelationship = !RELATIONSHIP_OPTIONS.includes(
+                    member.props.relationship
+                  );
+                  reset({
+                    ...member.props,
+                    relationship: hasOtherRelationship
+                      ? 'Other'
+                      : member.props.relationship,
+                    otherRelationship: hasOtherRelationship
+                      ? member.props.relationship
+                      : undefined,
+                  });
+                };
+                return (
+                  <TableRow key={member.id}>
+                    <TableCell>{member.props.fullName}</TableCell>
+                    <TableCell>{member.props.relationship}</TableCell>
+                    <TableCell>
+                      <Flex
+                        direction={{ base: 'column', small: 'row' }}
+                        width="100%"
+                        justifyContent="center"
+                        gap="0.5rem"
+                      >
+                        {!member.isCoApplicant && (
                           <Button
                             height="2rem"
                             width="2rem"
                             padding="0"
-                            title="Open"
-                            onClick={handleOnClickMore}
+                            title="Delete"
+                            onClick={handleOnClickDelete}
                           >
-                            <MdMoreHoriz size="1.25rem" />
+                            <MdClose size="1.25rem" />
                           </Button>
-                        </Flex>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={3} textAlign="center">
-                    No members added yet
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </ThemeProvider>
+                        )}
+                        <Button
+                          height="2rem"
+                          width="2rem"
+                          padding="0"
+                          title="Open"
+                          onClick={handleOnClickMore}
+                        >
+                          <MdMoreHoriz size="1.25rem" />
+                        </Button>
+                      </Flex>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            ) : (
+              <TableRow>
+                <TableCell colSpan={3} textAlign="center">
+                  No members added yet
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
         <Modal
           title="Member"
           open={memberModal || editingMember !== undefined}

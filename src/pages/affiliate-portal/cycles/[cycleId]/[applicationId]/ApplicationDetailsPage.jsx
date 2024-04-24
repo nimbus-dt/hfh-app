@@ -1,3 +1,4 @@
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import {
   Flex,
@@ -7,7 +8,6 @@ import {
   useAuthenticator,
 } from '@aws-amplify/ui-react';
 import { useTestApplicationById, useNotesQuery } from 'hooks/services';
-import { useEffect, useState } from 'react';
 import { API, DataStore, Storage } from 'aws-amplify';
 import { TestApplication, SubmissionStatus, Note, Decision } from 'models';
 import { ImageNode } from 'components/LexicalEditor/nodes/ImageNode';
@@ -28,10 +28,9 @@ const ApplicationDetailsPage = () => {
   const [uploadingNote, setUploadingNote] = useState(false);
   const [deletingNote, setDeletingNote] = useState(false);
   const [triggerNotes, setTriggerNotes] = useState(true);
+  const { applicationId } = useParams();
   const { habitat } = useOutletContext();
   const { user } = useAuthenticator((context) => [context.user]);
-
-  const { applicationId } = useParams();
 
   const { data: application } = useTestApplicationById({
     id: applicationId,

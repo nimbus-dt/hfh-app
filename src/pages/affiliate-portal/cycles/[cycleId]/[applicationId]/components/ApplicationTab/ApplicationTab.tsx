@@ -13,6 +13,7 @@ import GeneralInfoTable from './components/GeneralInfoTable';
 import PaperApplicationTable from './components/PaperApplicationTable';
 import DecideModal from './components/DecideModal';
 import ReturnModal from './components/ReturnModal';
+import Metrics, { MetricsProps } from '../Metrics/Metrics';
 
 interface IProperties {
   application?: TestApplication;
@@ -52,6 +53,17 @@ const ApplicationTab = ({
   const { value: formAnswers } = useAsync({
     asyncFunction,
   });
+
+  const fields: { [key: string]: MetricsProps['data'] } = {};
+  formAnswers
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    ?.map((answer) => JSON.parse(answer.values!))
+    .forEach((obj) => {
+      for (const key in obj) {
+        fields[key] = obj[key];
+      }
+    });
+
   return (
     <>
       <View marginTop="2rem" marginBottom="2rem">
@@ -81,6 +93,7 @@ const ApplicationTab = ({
           submission={generateSubmission(formAnswers)}
         />
       )}
+      <Metrics data={fields.metrics} />
 
       {application?.type === ApplicationTypes.PAPER ? (
         <PaperApplicationTable application={application} />
