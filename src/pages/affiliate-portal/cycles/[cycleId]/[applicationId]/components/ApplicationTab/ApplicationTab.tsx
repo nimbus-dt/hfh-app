@@ -56,13 +56,22 @@ const ApplicationTab = ({
 
   const fields: { [key: string]: MetricsProps['data'] } = {};
   formAnswers
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    ?.map((answer) => JSON.parse(answer.values!))
+    ?.map((answer) => {
+      if (typeof answer.values === 'object') {
+        return answer.values;
+      }
+      if (answer.values) {
+        return JSON.parse(answer.values);
+      }
+      return {};
+    })
     .forEach((obj) => {
       for (const key in obj) {
         fields[key] = obj[key];
       }
     });
+
+  console.log(fields);
 
   return (
     <>
