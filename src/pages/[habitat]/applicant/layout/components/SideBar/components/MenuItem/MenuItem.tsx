@@ -17,9 +17,7 @@ const MenuItem = ({ to, icon, label, active, expanded }: IProperties) => (
       justifyContent="left"
       alignItems="center"
       gap={expanded ? '0.5rem' : '0'}
-      className={`${style.menuItem} ${active ? style.active : ''} ${
-        expanded ? '' : style.square
-      }`}
+      className={`${style.menuItem} ${active ? style.active : ''}`}
     >
       <Text as="span" className={style.icon}>
         {icon}
