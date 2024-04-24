@@ -12,7 +12,6 @@ import {
   TableHead,
   TableRow,
   TextField,
-  ThemeProvider,
 } from '@aws-amplify/ui-react';
 import { MdMoreHoriz } from 'react-icons/md';
 import FileInput from 'components/FileInput';
@@ -60,98 +59,81 @@ const AssetsSection = ({ ownerId, assets, submitted }) => {
       onExpandedChange={handleOnExpandedChange}
       width="100%"
     >
-      <ThemeProvider
-        theme={{
-          tokens: {
-            components: {
-              table: {
-                header: {
-                  borderColor: 'black',
-                },
-                data: {
-                  borderColor: 'black',
-                },
-              },
-            },
-          },
-        }}
-      >
-        <Table variation="small" style={{ wordBreak: 'break-word' }}>
-          <TableHead>
+      <Table variation="small" style={{ wordBreak: 'break-word' }}>
+        <TableHead>
+          <TableRow>
+            <TableCell as="th" width="40%">
+              Name
+            </TableCell>
+            <TableCell as="th" width="40%">
+              Total
+            </TableCell>
+            <TableCell as="th" width="20%">
+              Actions
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {assets.length > 0 ? (
+            assets.map((asset) => {
+              const handleOnClickMore = () => {
+                const hasOtherType = !assetsTypes.includes(asset.props.type);
+                const filesArray = asset.props.proofs.map((fileKey) => {
+                  const pathArray = fileKey.split('/');
+                  return new File([''], pathArray[pathArray.length - 1]);
+                });
+
+                reset({
+                  ...asset.props,
+                  type: hasOtherType ? 'Other' : asset.props.type,
+                  otherType: hasOtherType ? asset.props.type : undefined,
+                  proofs: filesArray,
+                });
+
+                setModal(true);
+              };
+              return (
+                <TableRow key={asset.id}>
+                  <TableCell>{asset.props.type}</TableCell>
+                  <TableCell>{`$${asset.props.currentValue}`}</TableCell>
+                  <TableCell>
+                    <Flex
+                      direction={{ base: 'column', small: 'row' }}
+                      width="100%"
+                      justifyContent="center"
+                      gap="0.5rem"
+                    >
+                      <Button
+                        height="2rem"
+                        width="2rem"
+                        padding="0"
+                        title="Open"
+                        onClick={handleOnClickMore}
+                      >
+                        <MdMoreHoriz size="1.25rem" />
+                      </Button>
+                    </Flex>
+                  </TableCell>
+                </TableRow>
+              );
+            })
+          ) : (
             <TableRow>
-              <TableCell as="th" width="40%">
-                Name
-              </TableCell>
-              <TableCell as="th" width="40%">
-                Total
-              </TableCell>
-              <TableCell as="th" width="20%">
-                Actions
+              <TableCell colSpan={3} textAlign="center">
+                No asset record added yet
               </TableCell>
             </TableRow>
-          </TableHead>
-          <TableBody>
-            {assets.length > 0 ? (
-              assets.map((asset) => {
-                const handleOnClickMore = () => {
-                  const hasOtherType = !assetsTypes.includes(asset.props.type);
-                  const filesArray = asset.props.proofs.map((fileKey) => {
-                    const pathArray = fileKey.split('/');
-                    return new File([''], pathArray[pathArray.length - 1]);
-                  });
-
-                  reset({
-                    ...asset.props,
-                    type: hasOtherType ? 'Other' : asset.props.type,
-                    otherType: hasOtherType ? asset.props.type : undefined,
-                    proofs: filesArray,
-                  });
-
-                  setModal(true);
-                };
-                return (
-                  <TableRow key={asset.id}>
-                    <TableCell>{asset.props.type}</TableCell>
-                    <TableCell>{`$${asset.props.currentValue}`}</TableCell>
-                    <TableCell>
-                      <Flex
-                        direction={{ base: 'column', small: 'row' }}
-                        width="100%"
-                        justifyContent="center"
-                        gap="0.5rem"
-                      >
-                        <Button
-                          height="2rem"
-                          width="2rem"
-                          padding="0"
-                          title="Open"
-                          onClick={handleOnClickMore}
-                        >
-                          <MdMoreHoriz size="1.25rem" />
-                        </Button>
-                      </Flex>
-                    </TableCell>
-                  </TableRow>
-                );
-              })
-            ) : (
-              <TableRow>
-                <TableCell colSpan={3} textAlign="center">
-                  No asset record added yet
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-        <br />
-        {!submitted && (
-          <Flex width="100%" justifyContent="end">
-            <Link to="../financial">
-              <Button variation="primary">Edit</Button>
-            </Link>
-          </Flex>
-        )}
-      </ThemeProvider>
+          )}
+        </TableBody>
+      </Table>
+      <br />
+      {!submitted && (
+        <Flex width="100%" justifyContent="end">
+          <Link to="../financial">
+            <Button variation="primary">Edit</Button>
+          </Link>
+        </Flex>
+      )}
       <Modal
         title="Asset"
         open={modal}

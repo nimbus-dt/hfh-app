@@ -1,3 +1,4 @@
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import {
   Flex,
@@ -33,10 +34,9 @@ const ApplicationDetailsPage = () => {
   const [uploadingNote, setUploadingNote] = useState(false);
   const [deletingNote, setDeletingNote] = useState(false);
   const [triggerNotes, setTriggerNotes] = useState(true);
+  const { applicationId } = useParams();
   const { habitat } = useOutletContext();
   const { user } = useAuthenticator((context) => [context.user]);
-
-  const { applicationId } = useParams();
 
   const { data: application } = useTestApplicationById({
     id: applicationId,

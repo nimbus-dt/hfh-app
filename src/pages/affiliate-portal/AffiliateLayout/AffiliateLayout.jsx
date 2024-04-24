@@ -12,7 +12,6 @@ import {
   Authenticator,
   useAuthenticator,
   Heading,
-  ThemeProvider,
 } from '@aws-amplify/ui-react';
 import CustomCard from 'components/CustomCard';
 import NavBar from 'components/NavBar';
@@ -200,31 +199,7 @@ const AffiliateLayout = () => {
                   )}
                   {authStatus === 'unauthenticated' && (
                     <CustomCard>
-                      <ThemeProvider
-                        theme={{
-                          name: 'homeownership-authentication',
-                          tokens: {
-                            components: {
-                              authenticator: {
-                                container: {
-                                  widthMax: '100%',
-                                },
-                                router: {
-                                  borderStyle: 'none',
-                                  boxShadow: 'none',
-                                },
-                                form: {
-                                  padding: isReallySmall
-                                    ? '0.25rem'
-                                    : undefined,
-                                },
-                              },
-                            },
-                          },
-                        }}
-                      >
-                        <Authenticator hideDefault />
-                      </ThemeProvider>
+                      <Authenticator hideDefault />
                     </CustomCard>
                   )}
                 </Flex>
