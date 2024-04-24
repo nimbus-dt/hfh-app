@@ -8,6 +8,7 @@ import {
 import useIsHovered from 'hooks/utils/useIsHovered';
 import MenuItem from './components/MenuItem/MenuItem';
 import Ellipse from './components/Ellipse';
+import style from './SideBar.module.css';
 
 const SideBar = () => {
   const sideBarRef = React.useRef<HTMLDivElement>(null);
@@ -18,14 +19,7 @@ const SideBar = () => {
   }, [isHovered]);
 
   return (
-    <ScrollView
-      backgroundColor="black"
-      color="white"
-      height="100vh"
-      padding="24px"
-      width={isHovered ? '248px' : 'fit-content'}
-      ref={sideBarRef}
-    >
+    <ScrollView ref={sideBarRef} className={`${style.sideBar}`}>
       <Flex justifyContent="space-between" direction="column" minHeight="100%">
         <Flex direction="column" gap="16px" justifyContent="space-between">
           <Ellipse />

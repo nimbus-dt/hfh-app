@@ -1,0 +1,11 @@
+.sideBar {
+  background-color: black;
+  width: fit-content !important;
+  color: white;
+  height: 100vh;
+  padding: 24px;
+}
+
+.sideBar:hover {
+  width: 248px !important;
+}
