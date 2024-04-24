@@ -12,7 +12,7 @@
 }
 
 .menuItem:hover {
-  color: var(--amplify-colors-secundary-60);
+  color: var(--amplify-colors-secondary-60) !important;
 }
 
 .menuItem:active,
