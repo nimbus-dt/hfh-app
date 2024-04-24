@@ -24,7 +24,7 @@ const SideBar = () => {
         <Flex direction="column" gap="16px" justifyContent="space-between">
           <Ellipse />
           <MenuItem
-            to=""
+            to="applications"
             icon={<MdOutlineFolderCopy />}
             label="Applications"
             active
