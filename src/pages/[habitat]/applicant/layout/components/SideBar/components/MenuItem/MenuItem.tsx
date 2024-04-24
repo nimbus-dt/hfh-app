@@ -21,7 +21,9 @@ const MenuItem = ({ to, icon, label, active, expanded }: IProperties) => (
         expanded ? '' : style.square
       }`}
     >
-      {icon}
+      <Text as="span" className={style.icon}>
+        {icon}
+      </Text>
       {expanded && <Text color="inherit">{label}</Text>}
     </Flex>
   </Link>

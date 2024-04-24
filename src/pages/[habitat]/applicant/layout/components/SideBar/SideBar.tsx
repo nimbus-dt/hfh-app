@@ -31,14 +31,14 @@ const SideBar = () => {
           <Ellipse />
           <MenuItem
             to=""
-            icon={<MdOutlineFolderCopy size="24px" />}
+            icon={<MdOutlineFolderCopy />}
             label="Applications"
             active
             expanded={isHovered}
           />
           <MenuItem
             to=""
-            icon={<MdOutlineAssignmentTurnedIn size="24px" />}
+            icon={<MdOutlineAssignmentTurnedIn />}
             label="Decisions"
             expanded={isHovered}
           />
@@ -46,7 +46,7 @@ const SideBar = () => {
         <Flex direction="column" gap="16px">
           <MenuItem
             to=""
-            icon={<MdOutlineSettings size="24px" />}
+            icon={<MdOutlineSettings />}
             label="Settings"
             expanded={isHovered}
           />
