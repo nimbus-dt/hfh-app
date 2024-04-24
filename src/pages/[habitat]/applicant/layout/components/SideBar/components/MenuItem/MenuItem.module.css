@@ -1,0 +1,26 @@
+.link {
+  text-decoration: none;
+}
+
+.menuItem {
+  color: white;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 18px;
+  line-height: 24px;
+  overflow: hidden;
+}
+
+.menuItem:hover {
+  color: #9fd1b4;
+}
+
+.menuItem:active,
+.active {
+  background-color: #3e3d3d;
+}
+
+.hideText {
+  visibility: hidden;
+  width: 0;
+}
