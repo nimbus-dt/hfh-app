@@ -9,35 +9,34 @@ import {
 } from 'react-icons/hi2';
 import { HiHome } from 'react-icons/hi';
 import { IoHammer } from 'react-icons/io5';
-import { ROUTES } from 'utils/constants';
-import { concatClassNames } from '../../../../utils/formatters';
+import { concatClassNames } from 'utils/formatters';
 import styles from './SidebarActions.module.css';
 
 const buildRoutes = (habitat) => [
   {
     title: 'Home',
     Icon: HiHome,
-    href: `/${habitat}/${ROUTES.HABITAT_AFFILIATE}/${ROUTES.HABITAT_AFFILIATE_HOME}`,
+    href: `/affiliate-portal/${habitat}/home`,
   },
   {
     title: 'Applications',
     Icon: HiEnvelope,
-    href: `/${habitat}/${ROUTES.HABITAT_AFFILIATE}/${ROUTES.HABITAT_AFFILIATE_CYCLES}`,
+    href: `/affiliate-portal/${habitat}/cycles`,
   },
   {
     title: 'Repairs',
     Icon: IoHammer,
-    href: `/${habitat}/${ROUTES.HABITAT_AFFILIATE}/${ROUTES.HABITAT_AFFILIATE_REPAIRS}`,
+    href: `/affiliate-portal/${habitat}/repairs`,
   },
   {
     title: 'Volunteers',
     Icon: HiUserGroup,
-    href: `/${habitat}/${ROUTES.HABITAT_AFFILIATE}/${ROUTES.HABITAT_AFFILIATE_VOLUNTEERS}`,
+    href: `/affiliate-portal/${habitat}/volunteers`,
   },
   {
     title: 'Settings',
     Icon: HiCog6Tooth,
-    href: `/${habitat}/${ROUTES.HABITAT_AFFILIATE}/${ROUTES.HABITAT_AFFILIATE_SETTINGS}`,
+    href: `/affiliate-portal/${habitat}/settings`,
   },
 ];
 
