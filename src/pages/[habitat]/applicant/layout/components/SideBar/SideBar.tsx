@@ -14,10 +14,6 @@ const SideBar = () => {
   const sideBarRef = React.useRef<HTMLDivElement>(null);
   const isHovered = useIsHovered(sideBarRef);
 
-  useEffect(() => {
-    console.log('hovered', isHovered);
-  }, [isHovered]);
-
   return (
     <ScrollView ref={sideBarRef} className={`${style.sideBar}`}>
       <Flex justifyContent="space-between" direction="column" minHeight="100%">
