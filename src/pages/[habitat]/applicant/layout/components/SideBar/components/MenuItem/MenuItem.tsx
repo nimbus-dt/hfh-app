@@ -12,7 +12,7 @@ interface IProperties {
 }
 
 const MenuItem = ({ to, icon, label, active, expanded }: IProperties) => (
-  <Link to={to} className={style.link}>
+  <Link to={to || '#'} className={style.link}>
     <Flex
       justifyContent="left"
       alignItems="center"
