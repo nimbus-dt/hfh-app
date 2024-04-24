@@ -6,7 +6,7 @@ import SideBar from './components/SideBar';
 const ApplicantLayout = () => (
   <Flex gap="0">
     <SideBar />
-    <ScrollView backgroundColor="red" height="100vh" flex={1}>
+    <ScrollView height="100vh" flex={1}>
       <Outlet />
     </ScrollView>
   </Flex>
