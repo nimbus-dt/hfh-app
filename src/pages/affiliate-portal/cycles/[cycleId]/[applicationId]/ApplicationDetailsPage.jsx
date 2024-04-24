@@ -13,7 +13,6 @@ import {
   useTestCycleById,
   useFormById,
 } from 'hooks/services';
-import { useEffect, useState } from 'react';
 import { API, DataStore, Storage } from 'aws-amplify';
 import { TestApplication, SubmissionStatus, Note, Decision } from 'models';
 import { ImageNode } from 'components/LexicalEditor/nodes/ImageNode';
