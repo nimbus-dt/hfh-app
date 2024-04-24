@@ -1,5 +1,7 @@
 import { type Theme } from '@aws-amplify/ui-react';
 
+import './styles.css';
+
 const theme: Theme = {
   name: 'habitat-theme',
   tokens: {
@@ -36,6 +38,40 @@ const theme: Theme = {
       },
       black: { value: '#1F1F1F' },
       white: { value: '#FFFDFD' },
+    },
+    fonts: {
+      default: {
+        variable: { value: 'inter, sans-serif' },
+        static: { value: 'inter, sans-serif' },
+      },
+    },
+    fontSizes: {
+      xxxs: { value: '12px' },
+      xxs: { value: '12px' },
+      xs: { value: '14px' },
+      small: { value: '16px' },
+      medium: { value: '18px' },
+      large: { value: '20px' },
+      xl: { value: '24px' },
+      xxl: { value: '36px' },
+      xxxl: { value: '48px' },
+      xxxxl: { value: '64px' },
+    },
+    fontWeights: {
+      hairline: { value: 100 },
+      thin: { value: 200 },
+      light: { value: 300 },
+      normal: { value: 400 },
+      medium: { value: 500 },
+      semibold: { value: 600 },
+      bold: { value: 700 },
+      extrabold: { value: 800 },
+      black: { value: 900 },
+    },
+    lineHeights: {
+      small: { value: '24px' },
+      medium: { value: '56px' },
+      large: { value: '56px' },
     },
   },
 };
