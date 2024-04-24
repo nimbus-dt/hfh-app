@@ -1,0 +1,17 @@
+.topBar {
+  position: sticky;
+  top: 0;
+  height: 72px;
+  padding: 12px 32px;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: #bdbdbd;
+  background-color: #fffdfd;
+}
+
+.title {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+}

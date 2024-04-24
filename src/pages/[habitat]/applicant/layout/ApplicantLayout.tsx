@@ -1,15 +1,30 @@
 import { Flex, ScrollView } from '@aws-amplify/ui-react';
-import React from 'react';
-import { Outlet } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
+import { getRouteTitle } from 'utils/routes';
 import SideBar from './components/SideBar';
+import TopBar from './components/TopBar';
 
-const ApplicantLayout = () => (
-  <Flex gap="0">
-    <SideBar />
-    <ScrollView height="100vh" flex={1}>
-      <Outlet />
-    </ScrollView>
-  </Flex>
-);
+const ApplicantLayout = () => {
+  const [title, setTitle] = useState('');
+  const location = useLocation();
+
+  useEffect(() => {
+    const newTitle = getRouteTitle(location.pathname);
+    if (newTitle) {
+      setTitle(newTitle);
+    }
+  }, [location.pathname]);
+
+  return (
+    <Flex gap="0">
+      <SideBar />
+      <ScrollView height="100vh" flex={1}>
+        <TopBar title={title} initials="GA" />
+        <Outlet />
+      </ScrollView>
+    </Flex>
+  );
+};
 
 export default ApplicantLayout;

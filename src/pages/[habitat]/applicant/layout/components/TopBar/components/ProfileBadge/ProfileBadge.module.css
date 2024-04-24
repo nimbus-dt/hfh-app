@@ -1,0 +1,16 @@
+.profileBadge {
+  border-radius: 50% !important;
+  padding: 12px;
+  font-size: 18px;
+  line-height: 24px;
+  color: #256a47;
+  background-color: #b6ddc7;
+  border: none;
+  font-weight: 500;
+  height: 48px;
+  aspect-ratio: 1/1 !important;
+}
+
+.profileBadge:active {
+  border-color: #256a47;
+}
