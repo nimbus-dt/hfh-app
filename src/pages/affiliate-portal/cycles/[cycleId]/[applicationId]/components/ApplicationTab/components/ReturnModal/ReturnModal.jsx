@@ -5,7 +5,7 @@ import { Controller, useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import { Button, Flex, Loader, Text, View } from '@aws-amplify/ui-react';
 import LexicalEditor from 'components/LexicalEditor';
-import { returnSchema } from '../../ApplicationDetailsPage.schema';
+import { returnSchema } from '../../../../ApplicationDetailsPage.schema';
 
 const ReturnModal = ({ open, onClose, onValidReturn, loading }) => {
   const { control, handleSubmit: handleSubmitReturn } = useForm({
