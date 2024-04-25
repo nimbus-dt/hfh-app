@@ -50,7 +50,14 @@ const ApplicantApplicationsPage = () => {
   const [view, setView] = useState<'current' | 'past'>('current');
   return (
     <Flex padding="32px" direction="column">
-      <Flex justifyContent="space-between" alignItems="center">
+      <Flex
+        direction={{
+          base: 'column',
+          medium: 'row',
+        }}
+        justifyContent="space-between"
+        alignItems="center"
+      >
         <Flex direction="column">
           <Heading level={3}>Application Dashboard</Heading>
           <Text className={`theme-subtitle-s1 ${style.subtitle}`}>
