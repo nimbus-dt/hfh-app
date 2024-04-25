@@ -24,7 +24,8 @@ const useIsHovered = (elementRef: RefObject<HTMLElement>) => {
         element.removeEventListener('mouseover', handleOnHover, false);
       }
     };
-  }, [elementRef]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [elementRef, elementRef.current]);
 
   return hovered;
 };
