@@ -1,0 +1,23 @@
+.table {
+  border-radius: 8px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: var(--amplify-colors-neutral-80);
+  border-collapse: separate;
+  overflow: hidden;
+}
+
+.table td {
+  border-top: solid var(--amplify-colors-neutral-40) 1px;
+  padding: 4px 12px;
+}
+
+.table th {
+  border-bottom: solid var(--amplify-colors-neutral-80) 1px;
+  font-weight: var(--amplify-font-weights-normal);
+  padding: 16px 12px;
+}
+
+.table tfoot tr td {
+  border-top: solid var(--amplify-colors-neutral-80) 1px;
+}
