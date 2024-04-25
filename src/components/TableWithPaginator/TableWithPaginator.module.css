@@ -9,13 +9,20 @@
 
 .table td {
   border-top: solid var(--amplify-colors-neutral-40) 1px;
-  padding: 4px 12px;
 }
 
 .table th {
   border-bottom: solid var(--amplify-colors-neutral-80) 1px;
   font-weight: var(--amplify-font-weights-normal);
+}
+
+.table td,
+.table th {
   padding: 16px 12px;
+  min-width: fit-content;
+  word-wrap: normal;
+  word-break: keep-all;
+  text-wrap: nowrap;
 }
 
 .table tfoot tr td {
