@@ -1,18 +1,13 @@
-import {
-  Button,
-  Flex,
-  Heading,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Text,
-  View,
-} from '@aws-amplify/ui-react';
+import { Button, Flex, Heading, Text, View } from '@aws-amplify/ui-react';
 import { SubmissionStatus } from 'models';
-import React from 'react';
+import React, { useState } from 'react';
 import { MdOutlineOpenInNew } from 'react-icons/md';
+import TableWithPaginator from 'components/TableWithPaginator';
+import Chip from 'components/Chip';
+import { stringToHumanReadable } from 'utils/strings';
+import { submission } from '@formio/react';
+import style from './ApplicantApplicationsPage.module.css';
+import Toggle from './components/Toggle';
 
 const dummyData = [
   {
@@ -38,47 +33,96 @@ const dummyData = [
   },
 ];
 
-const ApplicantApplicationsPage = () => (
-  <Flex padding="24px" direction="column">
-    <Flex justifyContent="space-between">
-      <Flex direction="column">
-        <Heading level={3}>Application Dashboard</Heading>
-        <Text>Select the type of application</Text>
+const StatusChip = ({ status }: { status: keyof typeof SubmissionStatus }) => {
+  switch (status) {
+    case SubmissionStatus.SUBMITTED:
+      return <Chip variation="success" text={stringToHumanReadable(status)} />;
+    case SubmissionStatus.UNSUBMITTED:
+      return <Chip variation="warning" text={stringToHumanReadable(status)} />;
+    case SubmissionStatus.RETURNED:
+      return <Chip variation="danger" text={stringToHumanReadable(status)} />;
+    default:
+      return <Chip variation="disabled" text={stringToHumanReadable(status)} />;
+  }
+};
+
+const ApplicantApplicationsPage = () => {
+  const [view, setView] = useState<'current' | 'past'>('current');
+  return (
+    <Flex padding="32px" direction="column">
+      <Flex justifyContent="space-between" alignItems="center">
+        <Flex direction="column">
+          <Heading level={3}>Application Dashboard</Heading>
+          <Text className={`theme-subtitle-s1 ${style.subtitle}`}>
+            Select the type of application
+          </Text>
+        </Flex>
+        <Flex className={`${style.toggleContainer}`}>
+          <Toggle value={view} onChange={(newValue) => setView(newValue)} />
+        </Flex>
       </Flex>
-      <Flex>
-        <Button>Current</Button>
-      </Flex>
+      <View className="theme-subtitle-s2">
+        <Text as="span">Current Applications</Text>
+      </View>
+      <TableWithPaginator
+        headers={[
+          {
+            id: 'name',
+            value: 'Name',
+          },
+          {
+            id: 'affiliate',
+            value: 'Affiliate',
+          },
+          {
+            id: 'type',
+            value: 'Type',
+          },
+          {
+            id: 'dateSubmitted',
+            value: 'Date submitted',
+          },
+          {
+            id: 'status',
+            value: 'Status',
+            textAlign: 'center',
+          },
+          {
+            id: 'view',
+            value: 'View',
+          },
+        ]}
+        data={dummyData.map((data, index) => ({
+          id: index,
+          cells: [
+            { value: data.name, id: 'name' },
+            { value: data.affiliate, id: 'affiliate' },
+            { value: data.type, id: 'type' },
+            { value: data.dateSubmitted, id: 'dateSubmitted' },
+            {
+              value: (
+                <Flex width="100%" justifyContent="center">
+                  <StatusChip status={data.status} />
+                </Flex>
+              ),
+              id: 'status',
+            },
+            {
+              value: (
+                <Button variation="link" padding="12px">
+                  <MdOutlineOpenInNew
+                    size="24px"
+                    color="var(--amplify-colors-neutral-90)"
+                  />
+                </Button>
+              ),
+              id: 'view',
+            },
+          ],
+        }))}
+      />
     </Flex>
-    <Text>Current Applications</Text>
-    <Table>
-      <TableHead>
-        <TableRow>
-          <TableCell as="th">Name</TableCell>
-          <TableCell as="th">Affiliate</TableCell>
-          <TableCell as="th">Type</TableCell>
-          <TableCell as="th">Date Submitted</TableCell>
-          <TableCell as="th">Status</TableCell>
-          <TableCell as="th">View</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {dummyData.map((data) => (
-          <TableRow>
-            <TableCell>{data.name}</TableCell>
-            <TableCell>{data.affiliate}</TableCell>
-            <TableCell>{data.type}</TableCell>
-            <TableCell>{data.dateSubmitted}</TableCell>
-            <TableCell>{data.status}</TableCell>
-            <TableCell>
-              <Button>
-                <MdOutlineOpenInNew />
-              </Button>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  </Flex>
-);
+  );
+};
 
 export default ApplicantApplicationsPage;
