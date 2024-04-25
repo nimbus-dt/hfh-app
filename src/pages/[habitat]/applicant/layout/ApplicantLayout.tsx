@@ -19,7 +19,11 @@ const ApplicantLayout = () => {
   return (
     <Flex gap="0">
       <SideBar />
-      <ScrollView height="100vh" flex={1}>
+      <ScrollView
+        height="100vh"
+        flex={1}
+        backgroundColor="var(--amplify-colors-neutral-20)"
+      >
         <TopBar title={title} initials="GA" />
         <Outlet />
       </ScrollView>
