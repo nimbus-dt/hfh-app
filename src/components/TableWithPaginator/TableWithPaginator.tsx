@@ -39,7 +39,7 @@ const TableWithPaginator = ({ headers, data }: IProperties) => (
             as="th"
             key={header.id}
             textAlign={header.textAlign}
-            colSpan={header.colSpan}
+            colSpan={header.colSpan as unknown as number}
           >
             {header.value}
           </TableCell>
