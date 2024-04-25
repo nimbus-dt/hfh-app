@@ -109,7 +109,7 @@ const ApplicantApplicationsPage = () => {
             },
             {
               value: (
-                <Button variation="link" padding="12px">
+                <Button variation="link" padding="0">
                   <MdOutlineOpenInNew
                     size="24px"
                     color="var(--amplify-colors-neutral-90)"
