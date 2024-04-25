@@ -1,0 +1,34 @@
+.chip {
+  padding: 4px 8px;
+  width: fit-content;
+  border-radius: 8px;
+}
+.warning {
+  background-color: #eef9d0;
+  color: #6f6a08;
+}
+
+.review {
+  background-color: #dbe3f7;
+  color: #173a86;
+}
+
+.danger {
+  background-color: #ffd4d4;
+  color: #4b2f2f;
+}
+
+.success {
+  background-color: #cfe8da;
+  color: #6f6a08;
+}
+
+.disable {
+  background-color: #eeeeee;
+  color: #757575;
+}
+
+.active {
+  background-color: #dbe3f7;
+  color: #092c76;
+}
