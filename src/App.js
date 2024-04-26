@@ -35,6 +35,7 @@ import HomeownershipReviewPage from 'pages/homeownership/[habitat]/review';
 import HomeownershipPropertyPage from 'pages/homeownership/[habitat]/property';
 import ApplicantLayout from 'pages/[habitat]/applicant/layout';
 import ApplicantApplicationsPage from 'pages/[habitat]/applicant/applications';
+import ApplicantDecisionsPage from 'pages/[habitat]/applicant/decisions/ApplicantDecisionsPage';
 
 function App() {
   return (
@@ -151,6 +152,7 @@ function App() {
       <Route path=":habitat">
         <Route path="applicant" element={<ApplicantLayout />}>
           <Route path="applications" element={<ApplicantApplicationsPage />} />
+          <Route path="decisions" element={<ApplicantDecisionsPage />} />
         </Route>
       </Route>
 
