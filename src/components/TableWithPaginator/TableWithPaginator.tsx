@@ -66,7 +66,7 @@ const TableWithPaginator = ({ headers, data }: IProperties) => (
       <TableFoot>
         <TableRow>
           <TableCell colSpan={'100%' as unknown as number}>
-            <Flex justifyContent="end" alignItems="center" padding="12px 16px">
+            <Flex justifyContent="end" alignItems="center" padding="0">
               <Text color="var(--amplify-colors-neutral-90)">
                 Rows per page
               </Text>
