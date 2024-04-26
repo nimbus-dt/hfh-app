@@ -92,6 +92,14 @@ function App() {
             path={ROUTES.HABITAT_APPLICANT_REVIEW}
             element={<HomeownershipReviewPage />}
           />
+          <Route
+            path={ROUTES.HABITAT_AFFILIATE_APPLICATIONS}
+            element={<ApplicantApplicationsPage />}
+          />
+          <Route
+            path={ROUTES.HABITAT_AFFILIATE_DECISIONS}
+            element={<ApplicantDecisionsPage />}
+          />
         </Route>
         <Route path={ROUTES.HABITAT_AFFILIATE} element={<AffiliateLayout />}>
           <Route
@@ -120,13 +128,6 @@ function App() {
             path={ROUTES.HABITAT_AFFILIATE_SETTINGS}
             element={<AffiliatePortalSettingsPage />}
           />
-        </Route>
-      </Route>
-
-      <Route path=":habitat">
-        <Route path="applicant" element={<ApplicantLayout />}>
-          <Route path="applications" element={<ApplicantApplicationsPage />} />
-          <Route path="decisions" element={<ApplicantDecisionsPage />} />
         </Route>
       </Route>
 

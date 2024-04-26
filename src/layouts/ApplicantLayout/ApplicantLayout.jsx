@@ -6,7 +6,9 @@ import {
   Heading,
   ScrollView,
   useAuthenticator,
+  useBreakpointValue,
 } from '@aws-amplify/ui-react';
+import { getRouteTitle } from 'utils/routes';
 
 import Authentication from 'components/Authentication';
 import CustomCard from 'components/CustomCard';
@@ -16,6 +18,8 @@ import useScrollToTopOnRouteChange from 'hooks/utils/useScrollToTopOnRouteChange
 import { TestApplication, SubmissionStatus, ApplicationTypes } from 'models';
 import { DEFAULT_REVIEW_STATUS, ROUTES } from 'utils/constants';
 import { getHabitatOpenCycle } from 'utils/misc';
+import TopBar from './components/TopBar';
+import SideBar from './components/SideBar';
 
 import { AUTHENTICATION_STATUS } from './utils';
 
@@ -37,6 +41,12 @@ const HabitatLayout = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
+  const [expandSideBar, setExpandSideBar] = useState(false);
+  const isMobile = useBreakpointValue({
+    base: true,
+    medium: false,
+  });
+  const [title, setTitle] = useState('');
 
   const { authStatus, user } = useAuthenticator((context) => [
     context.authStatus,
@@ -190,6 +200,19 @@ const HabitatLayout = () => {
     getOpenCycle();
   }, [habitat?.id]);
 
+  useEffect(() => {
+    const newTitle = getRouteTitle(location.pathname);
+    if (newTitle) {
+      setTitle(newTitle);
+    }
+  }, [location.pathname]);
+
+  const handleOnExpand = () => {
+    if (isMobile) {
+      setExpandSideBar((prevExpandSideBar) => !prevExpandSideBar);
+    }
+  };
+
   if (AUTHENTICATION_STATUS.AUTHENTICATED !== authStatus) {
     return (
       <Authentication
@@ -200,20 +223,24 @@ const HabitatLayout = () => {
   }
 
   return (
-    <ScrollView height="100vh" ref={scrollViewReference}>
-      <Flex
-        direction="column"
-        alignItems="center"
-        backgroundColor="lightgray"
-        minHeight="100vh"
-        paddingBottom="1rem"
+    <Flex gap="0">
+      <SideBar
+        pathname={location.pathname}
+        mobile={typeof isMobile === 'boolean' && isMobile}
+        expanded={expandSideBar}
+        onExpand={handleOnExpand}
+      />
+      <ScrollView
+        height="100vh"
+        flex={1}
+        backgroundColor="var(--amplify-colors-neutral-20)"
       >
-        <NavBar isAuthenticated={authStatus === 'authenticated'} />
-        <CustomCard>
-          <Heading level={4} fontWeight="bold" textAlign="center">
-            Homeownership Program Application
-          </Heading>
-        </CustomCard>
+        <TopBar
+          title={title}
+          initials="GA"
+          mobile={typeof isMobile === 'boolean' && isMobile}
+          onExpand={handleOnExpand}
+        />
         <Outlet
           context={{
             openCycle,
@@ -223,8 +250,8 @@ const HabitatLayout = () => {
             updateApplicationLastSection,
           }}
         />
-      </Flex>
-    </ScrollView>
+      </ScrollView>
+    </Flex>
   );
 };
 
