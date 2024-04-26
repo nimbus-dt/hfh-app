@@ -1,0 +1,32 @@
+.cta {
+  text-align: center;
+}
+
+.subtitle {
+  color: var(--amplify-colors-neutral-90);
+}
+
+.decisionsContainer {
+  flex-direction: column;
+  align-items: stretch;
+  margin: auto;
+  margin-top: 32px;
+  max-width: 816px;
+  border-radius: 8px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: var(--amplify-colors-neutral-40);
+  gap: 16px;
+  padding: 24px;
+  background-color: var(--amplify-colors-neutral-10);
+  box-shadow: 0px 2px 6px 0px #8f9caf0f;
+  box-shadow: 0px 9px 16px 0px #8f9caf1a;
+}
+
+.time {
+  color: var(--amplify-colors-neutral-90);
+}
+
+.habitat {
+  font-weight: var(--amplify-font-weights-semibold);
+}
