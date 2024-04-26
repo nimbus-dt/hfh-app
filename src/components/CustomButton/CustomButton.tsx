@@ -1,6 +1,5 @@
 /* eslint-disable react/button-has-type */
 import React, { ReactNode } from 'react';
-import { Flex } from '@aws-amplify/ui-react';
 import style from './CustomButton.module.css';
 
 interface IProperties extends React.HTMLAttributes<HTMLButtonElement> {
