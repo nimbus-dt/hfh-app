@@ -26,7 +26,7 @@ function Payment() {
     <Link
       style={{
         textDecoration: 'none',
-        color: 'gray',
+        color: 'white',
       }}
       to="#"
       onClick={() => {
