@@ -24,6 +24,7 @@ import {
   AUTHENTICATION_STATUS,
 } from 'utils/constants';
 
+import Loading from 'components/Loading';
 import Sidebar from './Sidebar';
 
 const AffiliateLayout = () => {
@@ -130,6 +131,7 @@ const AffiliateLayout = () => {
         const habitatsResponse = await DataStore.query(Habitat, (c) =>
           c.urlName.eq(habitatUrlName)
         );
+        console.log(habitatsResponse);
         const habitatObject = habitatsResponse[0];
         setHabitat(habitatObject);
 
@@ -146,9 +148,7 @@ const AffiliateLayout = () => {
       setIsLoading((previousIsLoading) => previousIsLoading - 1);
     };
 
-    if (authStatus === 'authenticated') {
-      fetchData();
-    }
+    fetchData();
   }, [habitatUrlName, user, authStatus]);
 
   if (isLoading) {
@@ -160,7 +160,12 @@ const AffiliateLayout = () => {
   }
 
   if (AUTHENTICATION_STATUS.AUTHENTICATED !== authStatus) {
-    return <Authentication />;
+    return (
+      <Authentication
+        authenticationHeader={habitat?.authenticationHeader}
+        affiliate
+      />
+    );
   }
 
   return (
