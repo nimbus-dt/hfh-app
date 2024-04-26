@@ -32,7 +32,7 @@ interface IProperties {
 }
 
 const TableWithPaginator = ({ headers, data }: IProperties) => (
-  <ScrollView width="100%">
+  <ScrollView width="100%" className={`${style.container}`}>
     <Table className={`${style.table} theme-body-medium`}>
       <TableHead>
         <TableRow>
