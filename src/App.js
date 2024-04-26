@@ -154,7 +154,16 @@ function App() {
           <Route path="applications" element={<ApplicantApplicationsPage />} />
         </Route>
         <Route path="affiliate" element={<NewAffiliateLayout />}>
+          <Route path="home" element={<h1>Home</h1>} />
           <Route path="forms" element={<h1>Forms Dashboard Page</h1>} />
+          <Route
+            path="analytics"
+            element={<p>This page is under construction</p>}
+          />
+          <Route
+            path="users"
+            element={<p>This page is under construction</p>}
+          />
           <Route path=":formId">
             <Route index element={<h1>Cycles Dashboard Page</h1>} />
             <Route path=":cycleId">
