@@ -89,3 +89,26 @@
   letter-spacing: 0.5px;
   text-transform: capitalize;
 }
+
+[data-amplify-authenticator] .amplify-tabs[data-indicator-position='top'] {
+  display: none;
+}
+
+[data-amplify-authenticator] .amplify-input {
+  background-color: var(--amplify-colors-neutral-10);
+}
+
+[data-amplify-authenticator] .amplify-label {
+  padding: 4px 16px;
+  background-color: var(--amplify-colors-neutral-10);
+}
+
+[data-amplify-authenticator]
+  .amplify-button.amplify-field-group__control.amplify-field__show-password {
+  border: 1px solid var(--amplify-colors-neutral-80);
+}
+
+[data-amplify-authenticator]
+  .amplify-button.amplify-field-group__control.amplify-field__show-password:focus {
+  border: 1px solid var(--amplify-colors-neutral-100);
+}
