@@ -35,6 +35,7 @@ import HomeownershipReviewPage from 'pages/homeownership/[habitat]/review';
 import HomeownershipPropertyPage from 'pages/homeownership/[habitat]/property';
 import ApplicantLayout from 'pages/[habitat]/applicant/layout';
 import ApplicantApplicationsPage from 'pages/[habitat]/applicant/applications';
+import NewAffiliateLayout from 'pages/[habitat]/affiliate/layout';
 
 function App() {
   return (
@@ -152,7 +153,7 @@ function App() {
         <Route path="applicant" element={<ApplicantLayout />}>
           <Route path="applications" element={<ApplicantApplicationsPage />} />
         </Route>
-        <Route path="affiliate" element={<ApplicantLayout />}>
+        <Route path="affiliate" element={<NewAffiliateLayout />}>
           <Route path="forms" element={<h1>Forms Dashboard Page</h1>} />
           <Route path=":formId">
             <Route index element={<h1>Cycles Dashboard Page</h1>} />
