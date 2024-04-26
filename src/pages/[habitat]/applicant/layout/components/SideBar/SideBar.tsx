@@ -31,9 +31,6 @@ const SideBar = ({ mobile, expanded, onExpand }: IProperties) => {
         ref={sideBarRef}
         className={`${style.sideBar}`}
         position={mobile ? 'absolute' : ''}
-        style={{
-          zIndex: 1,
-        }}
       >
         <Flex
           justifyContent="space-between"
