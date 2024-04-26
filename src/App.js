@@ -33,6 +33,8 @@ import HomeownershipEmploymentPage from 'pages/homeownership/[habitat]/employmen
 import HomeownershipFinancialPage from 'pages/homeownership/[habitat]/financial';
 import HomeownershipReviewPage from 'pages/homeownership/[habitat]/review';
 import HomeownershipPropertyPage from 'pages/homeownership/[habitat]/property';
+import ApplicantLayout from 'pages/[habitat]/applicant/layout';
+import ApplicantApplicationsPage from 'pages/[habitat]/applicant/applications';
 
 function App() {
   return (
@@ -143,6 +145,12 @@ function App() {
             element={<AffiliatePortalVolunteersPage />}
           />
           <Route path="settings" element={<AffiliatePortalSettingsPage />} />
+        </Route>
+      </Route>
+
+      <Route path=":habitat">
+        <Route path="applicant" element={<ApplicantLayout />}>
+          <Route path="applications" element={<ApplicantApplicationsPage />} />
         </Route>
       </Route>
 
