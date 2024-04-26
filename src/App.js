@@ -36,6 +36,7 @@ import HomeownershipPropertyPage from 'pages/homeownership/[habitat]/property';
 import ApplicantLayout from 'pages/[habitat]/applicant/layout';
 import ApplicantApplicationsPage from 'pages/[habitat]/applicant/applications';
 import NewAffiliateLayout from 'pages/[habitat]/affiliate/layout';
+import AffiliateFormsPage from 'pages/[habitat]/affiliate/forms';
 
 function App() {
   return (
@@ -155,7 +156,7 @@ function App() {
         </Route>
         <Route path="affiliate" element={<NewAffiliateLayout />}>
           <Route path="home" element={<h1>Home</h1>} />
-          <Route path="forms" element={<h1>Forms Dashboard Page</h1>} />
+          <Route path="forms" element={<AffiliateFormsPage />} />
           <Route
             path="analytics"
             element={<p>This page is under construction</p>}
