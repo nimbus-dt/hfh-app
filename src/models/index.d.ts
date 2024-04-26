@@ -13,6 +13,24 @@ export enum SubmissionStatus {
   RETURNED = "RETURNED"
 }
 
+type EagerGalleryItem = {
+  readonly id?: string | null;
+  readonly image?: string | null;
+  readonly title?: string | null;
+  readonly message?: string | null;
+}
+
+type LazyGalleryItem = {
+  readonly id?: string | null;
+  readonly image?: string | null;
+  readonly title?: string | null;
+  readonly message?: string | null;
+}
+
+export declare type GalleryItem = LazyLoading extends LazyLoadingDisabled ? EagerGalleryItem : LazyGalleryItem
+
+export declare const GalleryItem: (new (init: ModelInit<GalleryItem>) => GalleryItem)
+
 type EagerOptionalSections = {
   readonly coApplicant: boolean;
   readonly propertyInfo: boolean;
@@ -90,6 +108,7 @@ type EagerHabitatProps = {
   readonly homeownershipRecordQuestions?: RecordQuestion[] | null;
   readonly homeownershipWrittenQuestions?: WrittenQuestion[] | null;
   readonly optionalSections: OptionalSections;
+  readonly gallery?: GalleryItem[] | null;
 }
 
 type LazyHabitatProps = {
@@ -103,11 +122,42 @@ type LazyHabitatProps = {
   readonly homeownershipRecordQuestions?: RecordQuestion[] | null;
   readonly homeownershipWrittenQuestions?: WrittenQuestion[] | null;
   readonly optionalSections: OptionalSections;
+  readonly gallery?: GalleryItem[] | null;
 }
 
 export declare type HabitatProps = LazyLoading extends LazyLoadingDisabled ? EagerHabitatProps : LazyHabitatProps
 
 export declare const HabitatProps: (new (init: ModelInit<HabitatProps>) => HabitatProps)
+
+type EagerForm = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Form, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly url: string;
+  readonly habitatID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyForm = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Form, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly url: string;
+  readonly habitatID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Form = LazyLoading extends LazyLoadingDisabled ? EagerForm : LazyForm
+
+export declare const Form: (new (init: ModelInit<Form>) => Form) & {
+  copyOf(source: Form, mutator: (draft: MutableModel<Form>) => MutableModel<Form> | void): Form;
+}
 
 type EagerDecision = {
   readonly [__modelMeta__]: {
@@ -249,6 +299,7 @@ type EagerTestCycle = {
   readonly props?: string | null;
   readonly habitatID: string;
   readonly TestApplications?: (TestApplication | null)[] | null;
+  readonly form: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -265,6 +316,7 @@ type LazyTestCycle = {
   readonly props?: string | null;
   readonly habitatID: string;
   readonly TestApplications: AsyncCollection<TestApplication>;
+  readonly form: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -643,6 +695,8 @@ type EagerHabitat = {
   readonly users?: (string | null)[] | null;
   readonly AMI?: (string | null)[] | null;
   readonly TestCycles?: (TestCycle | null)[] | null;
+  readonly Forms?: (Form | null)[] | null;
+  readonly authenticationHeader?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -663,6 +717,8 @@ type LazyHabitat = {
   readonly users?: (string | null)[] | null;
   readonly AMI?: (string | null)[] | null;
   readonly TestCycles: AsyncCollection<TestCycle>;
+  readonly Forms: AsyncCollection<Form>;
+  readonly authenticationHeader?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

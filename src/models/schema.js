@@ -1,5 +1,80 @@
 export const schema = {
     "models": {
+        "Form": {
+            "name": "Form",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "url": {
+                    "name": "url",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "habitatID": {
+                    "name": "habitatID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Forms",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byHabitat",
+                        "fields": [
+                            "habitatID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "Decision": {
             "name": "Decision",
             "fields": {
@@ -379,6 +454,13 @@ export const schema = {
                             "testcycleID"
                         ]
                     }
+                },
+                "form": {
+                    "name": "form",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -1386,6 +1468,29 @@ export const schema = {
                         ]
                     }
                 },
+                "Forms": {
+                    "name": "Forms",
+                    "isArray": true,
+                    "type": {
+                        "model": "Form"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "habitatID"
+                        ]
+                    }
+                },
+                "authenticationHeader": {
+                    "name": "authenticationHeader",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -1447,6 +1552,39 @@ export const schema = {
         }
     },
     "nonModels": {
+        "GalleryItem": {
+            "name": "GalleryItem",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "image": {
+                    "name": "image",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "title": {
+                    "name": "title",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "message": {
+                    "name": "message",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
         "OptionalSections": {
             "name": "OptionalSections",
             "fields": {
@@ -1643,10 +1781,20 @@ export const schema = {
                     },
                     "isRequired": true,
                     "attributes": []
+                },
+                "gallery": {
+                    "name": "gallery",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "GalleryItem"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": true
                 }
             }
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "9ae4ac6d8a6b1be857c1b9150918849b"
+    "version": "e8b7fa7fcf347c31bdc5ac466b53425e"
 };
