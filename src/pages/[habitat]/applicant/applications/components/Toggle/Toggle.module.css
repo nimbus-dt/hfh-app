@@ -31,4 +31,5 @@
 .selected {
   color: var(--amplify-colors-neutral-100);
   background-color: var(--amplify-colors-primary-40);
+  z-index: 1;
 }
