@@ -1,1 +1,5 @@
 @import '~formiojs/dist/formio.full.min.css';
+
+body {
+  overflow: hidden;
+}

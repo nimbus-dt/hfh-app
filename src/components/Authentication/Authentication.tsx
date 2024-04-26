@@ -1,3 +1,4 @@
+import { ScrollView } from '@aws-amplify/ui-react';
 import Auth from './Auth';
 import Gallery from './Gallery';
 import GalleryProps from './Gallery/types';
@@ -14,12 +15,12 @@ const Authentication = ({
   gallery,
   affiliate,
 }: AuthenticationProps) => (
-  <div className={styles.container}>
+  <ScrollView height="100vh" className={styles.container}>
     <div className={styles.authentification}>
       <Auth header={authenticationHeader} />
     </div>
     {!affiliate && gallery && <Gallery data={gallery} />}
-  </div>
+  </ScrollView>
 );
 
 export default Authentication;
