@@ -1,0 +1,16 @@
+.expandableCard {
+  background-color: var(--amplify-colors-neutral-10);
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--amplify-colors-neutral-40);
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.expanded {
+  border-color: var(--amplify-colors-secondary-90);
+}
+
+.button {
+  font-weight: var(--amplify-font-weights-medium);
+}
