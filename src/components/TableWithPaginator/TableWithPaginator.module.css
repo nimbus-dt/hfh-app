@@ -7,6 +7,15 @@
   overflow: hidden;
 }
 
+.table thead,
+.table tfoot {
+  background-color: var(--amplify-colors-neutral-20);
+}
+
+.table tbody {
+  background-color: var(--amplify-colors-white);
+}
+
 .table td {
   border-top: solid var(--amplify-colors-neutral-40) 1px;
 }
