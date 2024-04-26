@@ -16,6 +16,7 @@ import { FiUserCheck } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import FeaturePreview from './components/FeaturePreview';
 import ExpandableQuestion from './components/ExpandableQuestion';
+import Payment from './components/Payment';
 
 const LandingPage = () => (
   <View width="100%" position="relative" height="fit-content">
@@ -128,6 +129,7 @@ const LandingPage = () => (
         </Flex>
       </View>
       <Flex justifyContent="end" gap="2rem" padding="1rem">
+        <Payment />
         <Link
           style={{
             textDecoration: 'none',
