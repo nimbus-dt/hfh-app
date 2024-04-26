@@ -160,6 +160,7 @@ const ApplicantApplicationsPage = () => {
           {
             id: 'view',
             value: 'View',
+            textAlign: 'center',
           },
         ]}
         data={applications.map((data, index) => ({
