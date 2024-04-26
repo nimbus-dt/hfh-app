@@ -1,9 +1,11 @@
-import { Button, Flex, Text, View } from '@aws-amplify/ui-react';
+import { Button, Flex, Text } from '@aws-amplify/ui-react';
 import React from 'react';
 import {
   MdOutlineArrowBackIos,
   MdOutlineArrowForwardIos,
 } from 'react-icons/md';
+
+export type TPerPage = 5 | 10 | 15;
 
 interface IProperties {
   current: number;
