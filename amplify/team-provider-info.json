@@ -155,7 +155,7 @@
         },
         "sendEmailToApplicant": {
           "deploymentBucketName": "amplify-hfhapp-formio-134315-deployment",
-          "s3Key": "amplify-builds/sendEmailToApplicant-61474d7770365136597a-build.zip",
+          "s3Key": "amplify-builds/sendEmailToApplicant-385550787767576b3649-build.zip",
           "sesEmail": "support@habitat-app.org"
         },
         "hfhapp": {},

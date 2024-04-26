@@ -1,3 +1,16 @@
+type GalleryItem {
+  id: String
+  image: String
+  title: String
+  message: String
+}
+
+type Form @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  url: String!
+  habitatID: ID! @index(name: "byHabitat")
+}
+
 type Decision @model @auth(rules: [{allow: public}]) {
   id: ID!
   status: String!
@@ -62,6 +75,7 @@ type HabitatProps {
   homeownershipRecordQuestions: [RecordQuestion!]
   homeownershipWrittenQuestions: [WrittenQuestion!]
   optionalSections: OptionalSections!
+  gallery: [GalleryItem!]
 }
 
 type TestCycle @model @auth(rules: [{allow: public}]) {
@@ -72,6 +86,7 @@ type TestCycle @model @auth(rules: [{allow: public}]) {
   props: AWSJSON
   habitatID: ID! @index(name: "byHabitat")
   TestApplications: [TestApplication] @hasMany(indexName: "byTestCycle", fields: ["id"])
+  form: ID!
 }
 
 enum ApplicationTypes {
@@ -174,5 +189,7 @@ type Habitat @model @auth(rules: [{allow: public}]) {
   users: [ID]
   AMI: [String]
   TestCycles: [TestCycle] @hasMany(indexName: "byHabitat", fields: ["id"])
+  Forms: [Form] @hasMany(indexName: "byHabitat", fields: ["id"])
+  authenticationHeader: String
 }
  
