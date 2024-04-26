@@ -109,7 +109,7 @@ const StatusChip = ({ status }: { status: keyof typeof SubmissionStatus }) => {
 };
 
 const AffiliateFormsPage = () => {
-  const [view, setView] = useState<'current' | 'past'>('current');
+  const [view, setView] = useState<'active' | 'pending'>('active');
   const [applications, setApplications] = useState(dummyData);
   return (
     <Flex padding="32px" direction="column">
@@ -122,18 +122,20 @@ const AffiliateFormsPage = () => {
         alignItems="center"
       >
         <Flex direction="column">
-          <Heading level={3}>Application Dashboard</Heading>
-          <Text className={`theme-subtitle-s1 ${style.subtitle}`}>
-            Select the type of application
-          </Text>
+          <Heading level={3}>Forms Dashboard</Heading>
         </Flex>
         <Flex className={`${style.toggleContainer}`}>
           <Toggle value={view} onChange={(newValue) => setView(newValue)} />
         </Flex>
       </Flex>
-      <View className="theme-subtitle-s2">
-        <Text as="span">Current Applications</Text>
-      </View>
+      <Flex direction="row" alignItems="center">
+        <View className="theme-subtitle-s2">
+          <Text as="span" alignSelf="center">
+            Active Forms
+          </Text>
+        </View>
+        <Text className={`theme-subtitle-s2 ${style.subtitle}`}>4 results</Text>
+      </Flex>
       <TableWithPaginator
         headers={[
           {

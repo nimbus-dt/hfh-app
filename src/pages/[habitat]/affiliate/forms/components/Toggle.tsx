@@ -2,7 +2,7 @@ import { Button, Flex } from '@aws-amplify/ui-react';
 import React from 'react';
 import style from './Toggle.module.css';
 
-type TValue = 'current' | 'past';
+type TValue = 'active' | 'pending';
 
 interface IProperties {
   value: TValue;
@@ -12,16 +12,16 @@ interface IProperties {
 const Toggle = ({ value, onChange }: IProperties) => (
   <Flex gap="0" className={`${style.toggle}`}>
     <Button
-      className={`${style.button} ${value === 'current' ? style.selected : ''}`}
-      onClick={() => onChange('current')}
+      className={`${style.button} ${value === 'active' ? style.selected : ''}`}
+      onClick={() => onChange('active')}
     >
-      Current
+      Active
     </Button>
     <Button
-      className={`${style.button} ${value === 'past' ? style.selected : ''}`}
-      onClick={() => onChange('past')}
+      className={`${style.button} ${value === 'pending' ? style.selected : ''}`}
+      onClick={() => onChange('pending')}
     >
-      Past
+      Pending
     </Button>
   </Flex>
 );
