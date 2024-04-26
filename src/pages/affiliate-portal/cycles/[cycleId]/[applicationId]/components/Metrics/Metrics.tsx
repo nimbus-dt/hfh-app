@@ -4,7 +4,7 @@ import {
   formatNumberAsPercentage,
 } from 'utils/formatters';
 
-interface MetricsProps {
+export interface MetricsProps {
   data: {
     [key: string]: {
       type?: 'percentage' | 'currency' | 'number';

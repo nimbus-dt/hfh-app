@@ -1,13 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Form } from '@formio/react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import {
-  FormAnswer,
-  Habitat,
-  TestApplication,
-  TestCycle,
-  SubmissionStatus,
-} from 'models';
+import { Habitat, TestApplication, TestCycle, SubmissionStatus } from 'models';
 import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import { generateSubmission } from 'utils/formio';
@@ -19,6 +13,7 @@ import useAsync from 'hooks/utils/useAsync/useAsync';
 import { Status } from 'utils/enums';
 import Loading from 'components/Loading';
 import Error from 'components/Error';
+import { useFormById } from 'hooks/services';
 
 interface IProperties {
   habitat: Habitat;
@@ -34,6 +29,11 @@ const HomeownershipReviewPage = () => {
   const [loadingForm, setLoadingForm] = useState(true);
   const { application, habitat, openCycle, setApplication } =
     useOutletContext<IProperties>();
+
+  const { data: form } = useFormById({
+    id: openCycle?.form || '',
+    dependencyArray: [openCycle],
+  });
 
   const navigate = useNavigate();
 
@@ -92,7 +92,7 @@ const HomeownershipReviewPage = () => {
     return <Error />;
   }
 
-  if (status === Status.PENDING || !value || !habitat || !openCycle) {
+  if (status === Status.PENDING || !value || !habitat || !openCycle || !form) {
     return <Loading />;
   }
 
@@ -100,8 +100,7 @@ const HomeownershipReviewPage = () => {
     <CustomCard>
       {loadingForm && <Loading />}
       <Form
-        src={`${FORMIO_URL}/loudoun`}
-        onSubmit={handleOnSubmit}
+        src={`${FORMIO_URL}/${form.url}`}
         onRender={() => {
           setLoadingForm(false);
         }}

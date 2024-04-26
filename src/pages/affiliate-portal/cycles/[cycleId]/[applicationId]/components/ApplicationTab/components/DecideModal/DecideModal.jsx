@@ -12,7 +12,7 @@ import {
   View,
 } from '@aws-amplify/ui-react';
 import LexicalEditor from 'components/LexicalEditor';
-import { decideSchema } from '../../ApplicationDetailsPage.schema';
+import { decideSchema } from '../../../../ApplicationDetailsPage.schema';
 
 const DecideModal = ({ open, onClose, onValid, loading, customStatus }) => {
   const {
