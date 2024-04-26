@@ -28,6 +28,7 @@ import { ROUTES } from 'utils/constants';
 // import ApplicantLayout from 'pages/[habitat]/applicant/layout';
 import ApplicantApplicationsPage from 'pages/[habitat]/applicant/applications';
 import ApplicantDecisionsPage from 'pages/[habitat]/applicant/decisions/ApplicantDecisionsPage';
+import NewAffiliateLayout from 'pages/[habitat]/affiliate/layout';
 
 function App() {
   return (
@@ -128,6 +129,19 @@ function App() {
             path={ROUTES.HABITAT_AFFILIATE_SETTINGS}
             element={<AffiliatePortalSettingsPage />}
           />
+        </Route>
+        <Route path="affiliate" element={<NewAffiliateLayout />}>
+          <Route path="forms" element={<h1>Forms Dashboard Page</h1>} />
+          <Route path=":formId">
+            <Route index element={<h1>Cycles Dashboard Page</h1>} />
+            <Route path=":cycleId">
+              <Route index element={<h1>Applications Dashboard Page</h1>} />
+              <Route
+                path=":applicationId"
+                element={<h1>Application Detail</h1>}
+              />
+            </Route>
+          </Route>
         </Route>
       </Route>
 
