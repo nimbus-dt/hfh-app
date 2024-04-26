@@ -152,6 +152,19 @@ function App() {
         <Route path="applicant" element={<ApplicantLayout />}>
           <Route path="applications" element={<ApplicantApplicationsPage />} />
         </Route>
+        <Route path="affiliate" element={<ApplicantLayout />}>
+          <Route path="forms" element={<h1>Forms Dashboard Page</h1>} />
+          <Route path=":formId">
+            <Route index element={<h1>Cycles Dashboard Page</h1>} />
+            <Route path=":cycleId">
+              <Route index element={<h1>Applications Dashboard Page</h1>} />
+              <Route
+                path=":applicationId"
+                element={<h1>Application Detail</h1>}
+              />
+            </Route>
+          </Route>
+        </Route>
       </Route>
 
       <Route path="/*" element={<h1>404</h1>} />
