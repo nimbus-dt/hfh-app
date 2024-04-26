@@ -5,11 +5,73 @@ import { MdOutlineOpenInNew } from 'react-icons/md';
 import TableWithPaginator from 'components/TableWithPaginator';
 import Chip from 'components/Chip';
 import { stringToHumanReadable } from 'utils/strings';
-import { submission } from '@formio/react';
 import style from './ApplicantApplicationsPage.module.css';
 import Toggle from './components/Toggle';
 
 const dummyData = [
+  {
+    name: 'Homeownership',
+    affiliate: 'Habitat for Humanity of Kenosha',
+    type: 'Online',
+    dateSubmitted: '04/20/2024',
+    status: SubmissionStatus.SUBMITTED,
+  },
+  {
+    name: 'Repairs',
+    affiliate: 'Habitat for Humanity',
+    type: 'Online',
+    dateSubmitted: '04/20/2024',
+    status: SubmissionStatus.UNSUBMITTED,
+  },
+  {
+    name: 'Pre-Screen',
+    affiliate: 'Habitat for Humanity of Loudon County',
+    type: 'Online',
+    dateSubmitted: '04/20/2024',
+    status: SubmissionStatus.RETURNED,
+  },
+  {
+    name: 'Homeownership',
+    affiliate: 'Habitat for Humanity of Kenosha',
+    type: 'Online',
+    dateSubmitted: '04/20/2024',
+    status: SubmissionStatus.SUBMITTED,
+  },
+  {
+    name: 'Repairs',
+    affiliate: 'Habitat for Humanity',
+    type: 'Online',
+    dateSubmitted: '04/20/2024',
+    status: SubmissionStatus.UNSUBMITTED,
+  },
+  {
+    name: 'Pre-Screen',
+    affiliate: 'Habitat for Humanity of Loudon County',
+    type: 'Online',
+    dateSubmitted: '04/20/2024',
+    status: SubmissionStatus.RETURNED,
+  },
+  {
+    name: 'Homeownership',
+    affiliate: 'Habitat for Humanity of Kenosha',
+    type: 'Online',
+    dateSubmitted: '04/20/2024',
+    status: SubmissionStatus.SUBMITTED,
+  },
+  {
+    name: 'Repairs',
+    affiliate: 'Habitat for Humanity',
+    type: 'Online',
+    dateSubmitted: '04/20/2024',
+    status: SubmissionStatus.UNSUBMITTED,
+  },
+  {
+    name: 'Pre-Screen',
+    affiliate: 'Habitat for Humanity of Loudon County',
+    type: 'Online',
+    dateSubmitted: '04/20/2024',
+    status: SubmissionStatus.RETURNED,
+  },
   {
     name: 'Homeownership',
     affiliate: 'Habitat for Humanity of Kenosha',
@@ -48,6 +110,7 @@ const StatusChip = ({ status }: { status: keyof typeof SubmissionStatus }) => {
 
 const ApplicantApplicationsPage = () => {
   const [view, setView] = useState<'current' | 'past'>('current');
+  const [applications, setApplications] = useState(dummyData);
   return (
     <Flex padding="32px" direction="column">
       <Flex
@@ -99,7 +162,7 @@ const ApplicantApplicationsPage = () => {
             value: 'View',
           },
         ]}
-        data={dummyData.map((data, index) => ({
+        data={applications.map((data, index) => ({
           id: index,
           cells: [
             { value: data.name, id: 'name' },
@@ -116,17 +179,26 @@ const ApplicantApplicationsPage = () => {
             },
             {
               value: (
-                <Button variation="link" padding="0">
-                  <MdOutlineOpenInNew
-                    size="24px"
-                    color="var(--amplify-colors-neutral-90)"
-                  />
-                </Button>
+                <Flex width="100%" justifyContent="center">
+                  <Button variation="link" padding="0">
+                    <MdOutlineOpenInNew
+                      size="24px"
+                      color="var(--amplify-colors-neutral-90)"
+                    />
+                  </Button>
+                </Flex>
               ),
               id: 'view',
             },
           ],
         }))}
+        hasMoreData
+        loadMoreData={() =>
+          setApplications((prevApplications) => [
+            ...prevApplications,
+            ...dummyData,
+          ])
+        }
       />
     </Flex>
   );
