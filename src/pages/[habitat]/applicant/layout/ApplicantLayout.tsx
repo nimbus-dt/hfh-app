@@ -30,6 +30,7 @@ const ApplicantLayout = () => {
   return (
     <Flex gap="0">
       <SideBar
+        pathname={location.pathname}
         mobile={typeof isMobile === 'boolean' && isMobile}
         expanded={expandSideBar}
         onExpand={handleOnExpand}
