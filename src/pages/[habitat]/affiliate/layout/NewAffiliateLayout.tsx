@@ -33,6 +33,7 @@ const NewAffiliateLayout = () => {
         mobile={typeof isMobile === 'boolean' && isMobile}
         expanded={expandSideBar}
         onExpand={handleOnExpand}
+        pathname={location.pathname}
       />
       <ScrollView
         height="100vh"

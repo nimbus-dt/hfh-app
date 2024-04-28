@@ -1,108 +1,32 @@
 import { Button, Flex, Heading, Text, View } from '@aws-amplify/ui-react';
-import { SubmissionStatus } from 'models';
 import React, { useState } from 'react';
-import { MdOutlineOpenInNew } from 'react-icons/md';
+import { MdAdd, MdOutlineOpenInNew } from 'react-icons/md';
 import TableWithPaginator from 'components/TableWithPaginator';
 import Chip from 'components/Chip';
 import { stringToHumanReadable } from 'utils/strings';
+import CustomButton from 'components/CustomButton/CustomButton';
 import style from './AffiliateFormsPage.module.css';
 import Toggle from './components/Toggle';
 
 const dummyData = [
   {
-    name: 'Homeownership',
-    affiliate: 'Habitat for Humanity of Kenosha',
-    type: 'Online',
+    name: 'Homeownership Application',
     dateSubmitted: '04/20/2024',
-    status: SubmissionStatus.SUBMITTED,
+    status: 'Accepted',
   },
   {
-    name: 'Repairs',
-    affiliate: 'Habitat for Humanity',
-    type: 'Online',
-    dateSubmitted: '04/20/2024',
-    status: SubmissionStatus.UNSUBMITTED,
-  },
-  {
-    name: 'Pre-Screen',
-    affiliate: 'Habitat for Humanity of Loudon County',
-    type: 'Online',
-    dateSubmitted: '04/20/2024',
-    status: SubmissionStatus.RETURNED,
-  },
-  {
-    name: 'Homeownership',
-    affiliate: 'Habitat for Humanity of Kenosha',
-    type: 'Online',
-    dateSubmitted: '04/20/2024',
-    status: SubmissionStatus.SUBMITTED,
-  },
-  {
-    name: 'Repairs',
-    affiliate: 'Habitat for Humanity',
-    type: 'Online',
-    dateSubmitted: '04/20/2024',
-    status: SubmissionStatus.UNSUBMITTED,
-  },
-  {
-    name: 'Pre-Screen',
-    affiliate: 'Habitat for Humanity of Loudon County',
-    type: 'Online',
-    dateSubmitted: '04/20/2024',
-    status: SubmissionStatus.RETURNED,
-  },
-  {
-    name: 'Homeownership',
-    affiliate: 'Habitat for Humanity of Kenosha',
-    type: 'Online',
-    dateSubmitted: '04/20/2024',
-    status: SubmissionStatus.SUBMITTED,
-  },
-  {
-    name: 'Repairs',
-    affiliate: 'Habitat for Humanity',
-    type: 'Online',
-    dateSubmitted: '04/20/2024',
-    status: SubmissionStatus.UNSUBMITTED,
-  },
-  {
-    name: 'Pre-Screen',
-    affiliate: 'Habitat for Humanity of Loudon County',
-    type: 'Online',
-    dateSubmitted: '04/20/2024',
-    status: SubmissionStatus.RETURNED,
-  },
-  {
-    name: 'Homeownership',
-    affiliate: 'Habitat for Humanity of Kenosha',
-    type: 'Online',
-    dateSubmitted: '04/20/2024',
-    status: SubmissionStatus.SUBMITTED,
-  },
-  {
-    name: 'Repairs',
-    affiliate: 'Habitat for Humanity',
-    type: 'Online',
-    dateSubmitted: '04/20/2024',
-    status: SubmissionStatus.UNSUBMITTED,
-  },
-  {
-    name: 'Pre-Screen',
-    affiliate: 'Habitat for Humanity of Loudon County',
-    type: 'Online',
-    dateSubmitted: '04/20/2024',
-    status: SubmissionStatus.RETURNED,
+    name: 'Repairs Application',
+    dateSubmitted: '04/25/2024',
+    status: 'Pending',
   },
 ];
 
-const StatusChip = ({ status }: { status: keyof typeof SubmissionStatus }) => {
+const StatusChip = ({ status }: { status: string }) => {
   switch (status) {
-    case SubmissionStatus.SUBMITTED:
+    case 'Accepted':
       return <Chip variation="success" text={stringToHumanReadable(status)} />;
-    case SubmissionStatus.UNSUBMITTED:
+    case 'Pending':
       return <Chip variation="warning" text={stringToHumanReadable(status)} />;
-    case SubmissionStatus.RETURNED:
-      return <Chip variation="danger" text={stringToHumanReadable(status)} />;
     default:
       return <Chip variation="disabled" text={stringToHumanReadable(status)} />;
   }
@@ -128,27 +52,24 @@ const AffiliateFormsPage = () => {
           <Toggle value={view} onChange={(newValue) => setView(newValue)} />
         </Flex>
       </Flex>
-      <Flex direction="row" alignItems="center">
-        <View className="theme-subtitle-s2">
-          <Text as="span" alignSelf="center">
-            Active Forms
+      <Flex direction="row" alignItems="center" justifyContent="space-between">
+        <Flex direction="row" alignItems="center">
+          <View className="theme-subtitle-s2">
+            <Text as="span" alignSelf="center">
+              Active Forms
+            </Text>
+          </View>
+          <Text className={`theme-subtitle-s2 ${style.subtitle}`}>
+            4 results
           </Text>
-        </View>
-        <Text className={`theme-subtitle-s2 ${style.subtitle}`}>4 results</Text>
+        </Flex>
+        <CustomButton icon={<MdAdd />}>New Form</CustomButton>
       </Flex>
       <TableWithPaginator
         headers={[
           {
             id: 'name',
             value: 'Name',
-          },
-          {
-            id: 'affiliate',
-            value: 'Affiliate',
-          },
-          {
-            id: 'type',
-            value: 'Type',
           },
           {
             id: 'dateSubmitted',
@@ -169,8 +90,6 @@ const AffiliateFormsPage = () => {
           id: index,
           cells: [
             { value: data.name, id: 'name' },
-            { value: data.affiliate, id: 'affiliate' },
-            { value: data.type, id: 'type' },
             { value: data.dateSubmitted, id: 'dateSubmitted' },
             {
               value: (
