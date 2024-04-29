@@ -1,4 +1,4 @@
-import { Authenticator, useBreakpointValue } from '@aws-amplify/ui-react';
+import { Authenticator } from '@aws-amplify/ui-react';
 import { useOutletContext } from 'react-router-dom';
 import { SubmissionStatus } from 'models';
 import CustomCard from 'components/CustomCard';
@@ -16,11 +16,6 @@ const HomeownershipHomePage = () => {
   const handleOnReviewReturnedApplication = () => {
     setContinueToApplication(true);
   };
-
-  const isReallySmall = useBreakpointValue({
-    base: true,
-    small: false,
-  });
 
   const content = () => {
     if (
