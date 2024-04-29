@@ -1,31 +1,25 @@
 import './assets/styles/App.css';
 import { Routes, Route, Outlet } from 'react-router-dom';
-import { Authenticator, ScrollView } from '@aws-amplify/ui-react';
-
+import { ScrollView } from '@aws-amplify/ui-react';
 import CyclesPage from 'pages/affiliate-portal/cycles';
 import ApplicationsPage from 'pages/affiliate-portal/cycles/[cycleId]';
 import ApplicationDetailsPage from 'pages/affiliate-portal/cycles/[cycleId]/[applicationId]';
-import AffiliatePortalHomePage from 'pages/affiliate-portal/home';
 import AffiliatePortalRepairsPage from 'pages/affiliate-portal/repairs';
 import AffiliatePortalVolunteersPage from 'pages/affiliate-portal/volunteers';
 import AffiliatePortalSettingsPage from 'pages/affiliate-portal/settings';
-
 import { NewLandingLayout } from 'pages/index/Layout/NewLandingLayout';
 import LandingPage from 'pages/index/LandingPage';
 import TermsPage from 'pages/terms/TermsPage';
 import PrivacyPage from 'pages/privacy';
 import ContactPage from 'pages/contact';
 import DataPage from 'pages/data';
-
 // eslint-disable-next-line import/no-unresolved
 import '@aws-amplify/ui-react/styles.css';
 import HomeownershipHomePage from 'pages/homeownership/[habitat]/home';
 import HomeownershipReviewPage from 'pages/homeownership/[habitat]/review';
 import HabitatLayout from 'layouts/HabitatLayout';
-import AffiliateLayout from 'layouts/AffiliateLayout';
 import ApplicantLayout from 'layouts/ApplicantLayout';
 import { ROUTES } from 'utils/constants';
-// import ApplicantLayout from 'pages/[habitat]/applicant/layout';
 import ApplicantApplicationsPage from 'pages/[habitat]/applicant/applications';
 import ApplicantDecisionsPage from 'pages/[habitat]/applicant/decisions/ApplicantDecisionsPage';
 import AffiliateFormsPage from 'pages/[habitat]/affiliate/forms';

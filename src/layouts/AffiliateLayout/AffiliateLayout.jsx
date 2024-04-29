@@ -13,7 +13,6 @@ import {
   useAuthenticator,
   Heading,
 } from '@aws-amplify/ui-react';
-
 import Authentication from 'components/Authentication';
 import CustomCard from 'components/CustomCard';
 import NavBar from 'components/NavBar';
@@ -23,8 +22,6 @@ import {
   DEFAULT_REVIEW_STATUS,
   AUTHENTICATION_STATUS,
 } from 'utils/constants';
-
-import Loading from 'components/Loading';
 import Sidebar from './Sidebar';
 
 const AffiliateLayout = () => {

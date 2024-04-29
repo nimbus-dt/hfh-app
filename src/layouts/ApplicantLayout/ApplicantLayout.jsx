@@ -2,12 +2,11 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { DataStore, SortDirection } from 'aws-amplify';
 import { useAuthenticator } from '@aws-amplify/ui-react';
-import { getRouteTitle } from 'utils/routes';
 import Authentication from 'components/Authentication';
 import useHabitatByUrlName from 'hooks/services/useHabitatByUrlName';
 import useScrollToTopOnRouteChange from 'hooks/utils/useScrollToTopOnRouteChange';
 import { TestApplication, SubmissionStatus, ApplicationTypes } from 'models';
-import { DEFAULT_REVIEW_STATUS, ROUTES } from 'utils/constants';
+import { DEFAULT_REVIEW_STATUS } from 'utils/constants';
 import { getHabitatOpenCycle } from 'utils/misc';
 import BaseLayout from 'layouts/BaseLayout';
 
@@ -22,15 +21,12 @@ const HabitatLayout = () => {
 
   const [openCycle, setOpenCycle] = useState();
 
-  const [alreadyRedirected, setAlreadyRedirected] = useState(false);
-
   const [application, setApplication] = useState();
 
   const scrollViewReference = useRef(null);
   useScrollToTopOnRouteChange(scrollViewReference);
 
   const location = useLocation();
-  const navigate = useNavigate();
 
   const { authStatus, user } = useAuthenticator((context) => [
     context.authStatus,

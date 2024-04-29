@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { StorageImage } from '@aws-amplify/ui-react-storage';
 import GalleryProps from './types';
 import styles from './styles.module.css';
 
