@@ -5,7 +5,6 @@ import TableWithPaginator from 'components/TableWithPaginator';
 import Chip from 'components/Chip';
 import { stringToHumanReadable } from 'utils/strings';
 import CustomButton from 'components/CustomButton/CustomButton';
-import { StorageImage } from '@aws-amplify/ui-react-storage';
 import style from './AffiliateFormsPage.module.css';
 import Toggle from './components/Toggle';
 
