@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-
+import { StorageImage } from '@aws-amplify/ui-react-storage';
 import GalleryProps from './types';
 import styles from './styles.module.css';
 
@@ -20,11 +20,11 @@ const Gallery = ({ data }: GalleryProps) => {
 
   return (
     <div className={styles.background}>
-      <img
+      <StorageImage
         className={styles.image}
-        src={data[current].image}
         alt={data[current].title}
-        loading="lazy"
+        imgKey="test/gallery/habitat.jpeg"
+        accessLevel="public"
       />
       <h2 className={`${styles.title} theme-subtitle-s1`}>
         {data[current].title}
