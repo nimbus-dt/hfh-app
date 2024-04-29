@@ -2,7 +2,6 @@ import './assets/styles/App.css';
 import { Routes, Route, Outlet } from 'react-router-dom';
 import { Authenticator, ScrollView } from '@aws-amplify/ui-react';
 
-import AffiliateLayout from 'pages/affiliate-portal/AffiliateLayout';
 import CyclesPage from 'pages/affiliate-portal/cycles';
 import ApplicationsPage from 'pages/affiliate-portal/cycles/[cycleId]';
 import ApplicationDetailsPage from 'pages/affiliate-portal/cycles/[cycleId]/[applicationId]';
@@ -20,20 +19,13 @@ import DataPage from 'pages/data';
 
 // eslint-disable-next-line import/no-unresolved
 import '@aws-amplify/ui-react/styles.css';
-import HomeownershipLayout from 'pages/homeownership/HomeownershipLayout';
 import HomeownershipHomePage from 'pages/homeownership/[habitat]/home';
-import HomeownershipTermsPage from 'pages/homeownership/[habitat]/terms';
-import HomeownershipApplicantInfoPage from 'pages/homeownership/[habitat]/applicant-info';
-import HomeownershipApplicantOptionalPage from 'pages/homeownership/[habitat]/applicant-optional';
-import HomeownershipChecklistPage from 'pages/homeownership/[habitat]/checklist';
-import HomeownershipWrittenPage from 'pages/homeownership/[habitat]/written';
-import HomeownershipRecordsPage from 'pages/homeownership/[habitat]/records';
-import HomeownershipHomeownersPage from 'pages/homeownership/[habitat]/homeowners';
-import HomeownershipEmploymentPage from 'pages/homeownership/[habitat]/employment';
-import HomeownershipFinancialPage from 'pages/homeownership/[habitat]/financial';
 import HomeownershipReviewPage from 'pages/homeownership/[habitat]/review';
-import HomeownershipPropertyPage from 'pages/homeownership/[habitat]/property';
-import ApplicantLayout from 'pages/[habitat]/applicant/layout';
+import HabitatLayout from 'layouts/HabitatLayout';
+import AffiliateLayout from 'layouts/AffiliateLayout';
+import ApplicantLayout from 'layouts/ApplicantLayout';
+import { ROUTES } from 'utils/constants';
+// import ApplicantLayout from 'pages/[habitat]/applicant/layout';
 import ApplicantApplicationsPage from 'pages/[habitat]/applicant/applications';
 import ApplicantDecisionsPage from 'pages/[habitat]/applicant/decisions/ApplicantDecisionsPage';
 import NewAffiliateLayout from 'pages/[habitat]/affiliate/layout';
@@ -92,69 +84,52 @@ function App() {
         />
       </Route>
 
-      <Route
-        path="homeownership"
-        element={
-          <Authenticator.Provider>
-            <HomeownershipLayout />
-          </Authenticator.Provider>
-        }
-      >
-        <Route path=":habitat">
-          <Route path="home" element={<HomeownershipHomePage />} />
-          <Route path="terms" element={<HomeownershipTermsPage />} />
+      <Route path={ROUTES.HABITAT} element={<HabitatLayout />}>
+        <Route path={ROUTES.HABITAT_APPLICANT} element={<ApplicantLayout />}>
           <Route
-            path="applicant-info"
-            element={<HomeownershipApplicantInfoPage />}
+            path={ROUTES.HABITAT_APPLICANT_FORM}
+            element={<HomeownershipHomePage />}
           />
           <Route
-            path="applicant-optional"
-            element={<HomeownershipApplicantOptionalPage />}
+            path={ROUTES.HABITAT_APPLICANT_REVIEW}
+            element={<HomeownershipReviewPage />}
           />
-          <Route path="checklist" element={<HomeownershipChecklistPage />} />
-          <Route path="written" element={<HomeownershipWrittenPage />} />
-          <Route path="records" element={<HomeownershipRecordsPage />} />
-          <Route path="homeowners" element={<HomeownershipHomeownersPage />} />
-          <Route path="employment" element={<HomeownershipEmploymentPage />} />
-          <Route path="property" element={<HomeownershipPropertyPage />} />
-          <Route path="financial" element={<HomeownershipFinancialPage />} />
-          <Route path="review" element={<HomeownershipReviewPage />} />
+          <Route
+            path={ROUTES.HABITAT_AFFILIATE_APPLICATIONS}
+            element={<ApplicantApplicationsPage />}
+          />
+          <Route
+            path={ROUTES.HABITAT_AFFILIATE_DECISIONS}
+            element={<ApplicantDecisionsPage />}
+          />
         </Route>
-      </Route>
-
-      <Route path="affiliate-portal">
-        <Route
-          path=":habitat"
-          element={
-            <Authenticator.Provider>
-              <AffiliateLayout />
-            </Authenticator.Provider>
-          }
-        >
-          <Route path="home" element={<AffiliatePortalHomePage />} />
-          <Route path="cycles">
+        <Route path={ROUTES.HABITAT_AFFILIATE} element={<AffiliateLayout />}>
+          <Route
+            path={ROUTES.HABITAT_AFFILIATE_HOME}
+            element={<AffiliatePortalHomePage />}
+          />
+          <Route path={ROUTES.HABITAT_AFFILIATE_CYCLES}>
             <Route index element={<CyclesPage />} />
-            <Route path=":cycleId">
+            <Route path={ROUTES.HABITAT_AFFILIATE_CYCLES_CYCLE}>
               <Route index element={<ApplicationsPage />} />
               <Route
-                path=":applicationId"
+                path={ROUTES.HABITAT_AFFILIATE_CYCLES_CYCLE_APPLICATION}
                 element={<ApplicationDetailsPage />}
               />
             </Route>
           </Route>
-          <Route path="repairs" element={<AffiliatePortalRepairsPage />} />
           <Route
-            path="volunteers"
+            path={ROUTES.HABITAT_AFFILIATE_REPAIRS}
+            element={<AffiliatePortalRepairsPage />}
+          />
+          <Route
+            path={ROUTES.HABITAT_AFFILIATE_VOLUNTEERS}
             element={<AffiliatePortalVolunteersPage />}
           />
-          <Route path="settings" element={<AffiliatePortalSettingsPage />} />
-        </Route>
-      </Route>
-
-      <Route path=":habitat">
-        <Route path="applicant" element={<ApplicantLayout />}>
-          <Route path="applications" element={<ApplicantApplicationsPage />} />
-          <Route path="decisions" element={<ApplicantDecisionsPage />} />
+          <Route
+            path={ROUTES.HABITAT_AFFILIATE_SETTINGS}
+            element={<AffiliatePortalSettingsPage />}
+          />
         </Route>
         <Route path="affiliate" element={<NewAffiliateLayout />}>
           <Route path="home" element={<h1>Home</h1>} />

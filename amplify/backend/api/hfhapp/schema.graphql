@@ -1,3 +1,10 @@
+type GalleryItem {
+  id: String
+  image: String
+  title: String
+  message: String
+}
+
 type Form @model @auth(rules: [{allow: public}]) {
   id: ID!
   url: String!
@@ -68,6 +75,7 @@ type HabitatProps {
   homeownershipRecordQuestions: [RecordQuestion!]
   homeownershipWrittenQuestions: [WrittenQuestion!]
   optionalSections: OptionalSections!
+  gallery: [GalleryItem!]
 }
 
 type TestCycle @model @auth(rules: [{allow: public}]) {
@@ -182,5 +190,6 @@ type Habitat @model @auth(rules: [{allow: public}]) {
   AMI: [String]
   TestCycles: [TestCycle] @hasMany(indexName: "byHabitat", fields: ["id"])
   Forms: [Form] @hasMany(indexName: "byHabitat", fields: ["id"])
+  authenticationHeader: String
 }
  

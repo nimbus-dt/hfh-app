@@ -6,7 +6,6 @@
   font-size: var(--amplify-font-sizes-xxxxl);
   line-height: var(--amplify-line-heights-large);
   letter-spacing: -0.5px;
-  text-transform: capitalize;
 }
 
 .theme-headline-large {
@@ -15,7 +14,6 @@
   font-size: var(--amplify-font-sizes-xxxl);
   line-height: var(--amplify-line-heights-medium);
   letter-spacing: 0px;
-  text-transform: capitalize;
 }
 
 .theme-headline-medium {
@@ -24,7 +22,6 @@
   font-size: var(--amplify-font-sizes-xxl);
   line-height: var(--amplify-line-heights-medium);
   letter-spacing: 0.25px;
-  text-transform: capitalize;
 }
 
 .theme-subtitle-s1 {
@@ -33,7 +30,6 @@
   font-size: var(--amplify-font-sizes-xl);
   line-height: var(--amplify-line-heights-medium);
   letter-spacing: 0px;
-  text-transform: capitalize;
 }
 
 .theme-subtitle-s2 {
@@ -42,7 +38,6 @@
   font-size: var(--amplify-font-sizes-large);
   line-height: var(--amplify-line-heights-small);
   letter-spacing: 0.15px;
-  text-transform: capitalize;
 }
 
 .theme-body-medium {
@@ -51,7 +46,6 @@
   font-size: var(--amplify-font-sizes-small);
   line-height: var(--amplify-line-heights-small);
   letter-spacing: 0.5px;
-  text-transform: capitalize;
 }
 
 .theme-body-small {
@@ -60,7 +54,6 @@
   font-size: var(--amplify-font-sizes-xs);
   line-height: var(--amplify-line-heights-small);
   letter-spacing: 0.5px;
-  text-transform: capitalize;
 }
 
 .theme-button {
@@ -69,7 +62,6 @@
   font-size: var(--amplify-font-sizes-medium);
   line-height: var(--amplify-line-heights-small);
   letter-spacing: 1.25px;
-  text-transform: capitalize;
 }
 
 .theme-button-link {
@@ -78,7 +70,6 @@
   font-size: var(--amplify-font-sizes-small);
   line-height: var(--amplify-line-heights-small);
   letter-spacing: 1.25px;
-  text-transform: capitalize;
 }
 
 .theme-caption {
@@ -87,5 +78,27 @@
   font-size: var(--amplify-font-sizes-xxs);
   line-height: var(--amplify-line-heights-small);
   letter-spacing: 0.5px;
-  text-transform: capitalize;
+}
+
+[data-amplify-authenticator] .amplify-tabs[data-indicator-position='top'] {
+  display: none;
+}
+
+[data-amplify-authenticator] .amplify-input {
+  background-color: var(--amplify-colors-neutral-10);
+}
+
+[data-amplify-authenticator] .amplify-label {
+  padding: 4px 16px;
+  background-color: var(--amplify-colors-neutral-10);
+}
+
+[data-amplify-authenticator]
+  .amplify-button.amplify-field-group__control.amplify-field__show-password {
+  border: 1px solid var(--amplify-colors-neutral-80);
+}
+
+[data-amplify-authenticator]
+  .amplify-button.amplify-field-group__control.amplify-field__show-password:focus {
+  border: 1px solid var(--amplify-colors-neutral-100);
 }

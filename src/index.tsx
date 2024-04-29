@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -10,8 +9,6 @@ import theme from 'styles/theme';
 import App from './App';
 import awsExports from './aws-exports';
 import { store } from './redux/configureStore';
-import 'bootstrap/dist/js/bootstrap.bundle.min';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import 'components/Formio';
 
 Amplify.configure(awsExports);

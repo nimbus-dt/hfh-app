@@ -9,8 +9,8 @@ import {
 } from 'react-icons/hi2';
 import { HiHome } from 'react-icons/hi';
 import { IoHammer } from 'react-icons/io5';
+import { concatClassNames } from 'utils/formatters';
 import { ROUTES } from 'utils/constants';
-import { concatClassNames } from '../../../../utils/formatters';
 import styles from './SidebarActions.module.css';
 
 const buildRoutes = (habitat) => [
