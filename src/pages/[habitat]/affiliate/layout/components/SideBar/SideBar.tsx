@@ -10,6 +10,7 @@ import {
 } from 'react-icons/md';
 import useIsHovered from 'hooks/utils/useIsHovered';
 import useCloseContextMenu from 'hooks/utils/useCloseContextMenu';
+import { ROUTES, isCurrentRouteActive } from 'utils/routes';
 import MenuItem from './components/MenuItem/MenuItem';
 import Ellipse from './components/Ellipse';
 import style from './SideBar.module.css';
@@ -18,9 +19,10 @@ interface IProperties {
   mobile: boolean;
   expanded: boolean;
   onExpand: () => void;
+  pathname: string;
 }
 
-const SideBar = ({ mobile, expanded, onExpand }: IProperties) => {
+const SideBar = ({ mobile, expanded, onExpand, pathname }: IProperties) => {
   const sideBarRef = React.useRef<HTMLDivElement>(null);
   const isHovered = useIsHovered(sideBarRef);
   useCloseContextMenu(sideBarRef, onExpand);
@@ -59,7 +61,10 @@ const SideBar = ({ mobile, expanded, onExpand }: IProperties) => {
               to="home"
               icon={<MdOutlineHome />}
               label="Home"
-              active
+              active={isCurrentRouteActive(
+                pathname,
+                ROUTES.affiliateHome.route
+              )}
               expanded={isHoveredOrExpanded}
             />
             <MenuItem
@@ -67,18 +72,30 @@ const SideBar = ({ mobile, expanded, onExpand }: IProperties) => {
               icon={<MdOutlineFeed />}
               label="Forms"
               expanded={isHoveredOrExpanded}
+              active={isCurrentRouteActive(
+                pathname,
+                ROUTES.affiliateForms.route
+              )}
             />
             <MenuItem
               to="analytics"
               icon={<MdAutoGraph />}
               label="Analytics"
               expanded={isHoveredOrExpanded}
+              active={isCurrentRouteActive(
+                pathname,
+                ROUTES.affiliateAnalytics.route
+              )}
             />
             <MenuItem
               to="users"
               icon={<MdOutlinePeopleOutline />}
               label="Users"
               expanded={isHoveredOrExpanded}
+              active={isCurrentRouteActive(
+                pathname,
+                ROUTES.affiliateUsers.route
+              )}
             />
           </Flex>
           <Flex direction="column" gap="16px">
