@@ -10,14 +10,28 @@ import Toggle from './components/Toggle';
 
 const dummyData = [
   {
-    name: 'Homeownership Application',
+    name: 'Homeownership',
     dateSubmitted: '04/20/2024',
     status: 'Accepted',
+    unreviewed: 326,
   },
   {
-    name: 'Repairs Application',
+    name: 'Repairs',
     dateSubmitted: '04/25/2024',
     status: 'Pending',
+    unreviewed: 34,
+  },
+  {
+    name: 'Pre Screens',
+    dateSubmitted: '04/25/2024',
+    status: 'Pending',
+    unreviewed: 34,
+  },
+  {
+    name: 'Uber',
+    dateSubmitted: '04/25/2024',
+    status: 'Pending',
+    unreviewed: 124,
   },
 ];
 
@@ -82,6 +96,10 @@ const AffiliateFormsPage = () => {
             textAlign: 'center',
           },
           {
+            id: 'unreviewed',
+            value: 'Unreviewed',
+          },
+          {
             id: 'view',
             value: 'View',
             textAlign: 'center',
@@ -100,6 +118,7 @@ const AffiliateFormsPage = () => {
               ),
               id: 'status',
             },
+            { value: data.unreviewed, id: 'unreviewed' },
             {
               value: (
                 <Flex width="100%" justifyContent="center">
