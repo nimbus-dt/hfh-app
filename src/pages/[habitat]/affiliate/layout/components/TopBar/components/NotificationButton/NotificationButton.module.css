@@ -1,6 +1,0 @@
-.notificationButton {
-  border-radius: 50% !important;
-  padding: 12px;
-  font-size: var(--amplify-font-sizes-xl);
-  color: var(--amplify-colors-neutral-90) !important;
-}
