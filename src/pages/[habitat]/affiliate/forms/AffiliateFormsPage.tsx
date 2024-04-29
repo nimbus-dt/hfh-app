@@ -5,6 +5,7 @@ import TableWithPaginator from 'components/TableWithPaginator';
 import Chip from 'components/Chip';
 import { stringToHumanReadable } from 'utils/strings';
 import CustomButton from 'components/CustomButton/CustomButton';
+import { StorageImage } from '@aws-amplify/ui-react-storage';
 import style from './AffiliateFormsPage.module.css';
 import Toggle from './components/Toggle';
 
@@ -37,6 +38,12 @@ const AffiliateFormsPage = () => {
   const [applications, setApplications] = useState(dummyData);
   return (
     <Flex padding="32px" direction="column">
+      <StorageImage
+        alt="data[current].title"
+        imgKey="test/gallery/picture-1.jpg"
+        accessLevel="public"
+      />
+
       <Flex
         direction={{
           base: 'column',
