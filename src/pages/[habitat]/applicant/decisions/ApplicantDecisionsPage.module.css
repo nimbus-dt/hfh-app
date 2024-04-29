@@ -22,4 +22,6 @@
 
 .habitat {
   font-weight: var(--amplify-font-weights-semibold);
+  line-height: var(--amplify-line-heights-small);
+  margin-bottom: 12px;
 }
