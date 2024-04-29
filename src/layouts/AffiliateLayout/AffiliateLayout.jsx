@@ -164,7 +164,6 @@ const AffiliateLayout = () => {
       <Authentication
         authenticationHeader={habitat?.authenticationHeader}
         affiliate
-        habitat={habitat.urlName}
       />
     );
   }

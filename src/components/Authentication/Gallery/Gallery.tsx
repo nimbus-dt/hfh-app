@@ -20,10 +20,10 @@ const Gallery = ({ data }: GalleryProps) => {
 
   return (
     <div className={styles.background}>
-      <StorageImage
+      <img
+        className={styles.image}
         alt={data[current].title}
-        imgKey="test/gallery/picture-1.jpg"
-        accessLevel="public"
+        src={data[current].image}
       />
       <h2 className={`${styles.title} theme-subtitle-s1`}>
         {data[current].title}

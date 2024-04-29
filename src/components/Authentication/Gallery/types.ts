@@ -5,7 +5,6 @@ interface GalleryProps {
     title: string;
     message: string;
   }[];
-  habitat?: string;
 }
 
 export default GalleryProps;
