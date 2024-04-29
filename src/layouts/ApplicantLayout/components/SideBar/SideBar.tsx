@@ -1,16 +1,14 @@
 import React from 'react';
 import { Button, Flex, ScrollView } from '@aws-amplify/ui-react';
 import {
+  MdOutlineAssignmentTurnedIn,
   MdOutlineClose,
+  MdOutlineFolderCopy,
   MdOutlineSettings,
-  MdOutlineHome,
-  MdOutlineFeed,
-  MdAutoGraph,
-  MdOutlinePeopleOutline,
 } from 'react-icons/md';
 import useIsHovered from 'hooks/utils/useIsHovered';
 import useCloseContextMenu from 'hooks/utils/useCloseContextMenu';
-import { ROUTES, isCurrentRouteActive } from 'utils/routes';
+import { isCurrentRouteActive, ROUTES } from 'utils/routes';
 import MenuItem from './components/MenuItem/MenuItem';
 import Ellipse from './components/Ellipse';
 import style from './SideBar.module.css';
@@ -58,43 +56,23 @@ const SideBar = ({ mobile, expanded, onExpand, pathname }: IProperties) => {
           <Flex direction="column" gap="16px" justifyContent="space-between">
             <Ellipse />
             <MenuItem
-              to="home"
-              icon={<MdOutlineHome />}
-              label="Home"
+              to="applications"
+              icon={<MdOutlineFolderCopy />}
+              label="Applications"
               active={isCurrentRouteActive(
                 pathname,
-                ROUTES.affiliateHome.route
+                ROUTES.applicantApplications.route
               )}
               expanded={isHoveredOrExpanded}
             />
             <MenuItem
-              to="forms"
-              icon={<MdOutlineFeed />}
-              label="Forms"
+              to="decisions"
+              icon={<MdOutlineAssignmentTurnedIn />}
+              label="Decisions"
               expanded={isHoveredOrExpanded}
               active={isCurrentRouteActive(
                 pathname,
-                ROUTES.affiliateForms.route
-              )}
-            />
-            <MenuItem
-              to="analytics"
-              icon={<MdAutoGraph />}
-              label="Analytics"
-              expanded={isHoveredOrExpanded}
-              active={isCurrentRouteActive(
-                pathname,
-                ROUTES.affiliateAnalytics.route
-              )}
-            />
-            <MenuItem
-              to="users"
-              icon={<MdOutlinePeopleOutline />}
-              label="Users"
-              expanded={isHoveredOrExpanded}
-              active={isCurrentRouteActive(
-                pathname,
-                ROUTES.affiliateUsers.route
+                ROUTES.applicantDecisions.route
               )}
             />
           </Flex>

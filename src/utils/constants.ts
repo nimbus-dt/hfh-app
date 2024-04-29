@@ -87,3 +87,26 @@ export const RELATIONSHIP_OPTIONS = [
   'Cousin',
   'Other',
 ];
+
+export const AUTHENTICATION_STATUS = {
+  UNAUTHENTICATED: 'unauthenticated',
+  CONFIGURING: 'configuring',
+  AUTHENTICATED: 'authenticated',
+};
+
+export const ROUTES = {
+  HABITAT: ':habitat',
+  HABITAT_APPLICANT: 'applicant',
+  HABITAT_APPLICANT_FORM: 'form',
+  HABITAT_APPLICANT_REVIEW: 'review',
+  HABITAT_AFFILIATE: 'affiliate',
+  HABITAT_AFFILIATE_HOME: 'home',
+  HABITAT_AFFILIATE_CYCLES: 'cycles',
+  HABITAT_AFFILIATE_CYCLES_CYCLE: ':cycleId',
+  HABITAT_AFFILIATE_CYCLES_CYCLE_APPLICATION: ':applicationId',
+  HABITAT_AFFILIATE_REPAIRS: 'repairs',
+  HABITAT_AFFILIATE_VOLUNTEERS: 'volunteers',
+  HABITAT_AFFILIATE_SETTINGS: 'settings',
+  HABITAT_AFFILIATE_APPLICATIONS: 'applications',
+  HABITAT_AFFILIATE_DECISIONS: 'decisions',
+};

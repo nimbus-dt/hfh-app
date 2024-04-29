@@ -1,20 +1,27 @@
-import { Authenticator } from '@aws-amplify/ui-react';
-import CustomCard from 'components/CustomCard';
+import { ScrollView } from '@aws-amplify/ui-react';
 
-const Authentication = () => (
-  <CustomCard>
-    <div className="theme-display">display</div>
-    <div className="theme-headline-large">headline-large</div>
-    <div className="theme-headline-medium">headline-medium</div>
-    <div className="theme-subtitle-s1">subtitle-s1</div>
-    <div className="theme-subtitle-s2">subtitle-s2</div>
-    <div className="theme-body-medium">body-medium</div>
-    <div className="theme-body-small">body-small</div>
-    <div className="theme-button">button</div>
-    <div className="theme-button-link">button-link</div>
-    <div className="theme-caption">caption</div>
-    <Authenticator />
-  </CustomCard>
+import Auth from './Auth';
+import Gallery from './Gallery';
+import GalleryProps from './Gallery/types';
+import styles from './styles.module.css';
+
+interface AuthenticationProps {
+  authenticationHeader: string;
+  gallery: GalleryProps['data'];
+  affiliate?: boolean;
+}
+
+const Authentication = ({
+  authenticationHeader,
+  gallery,
+  affiliate,
+}: AuthenticationProps) => (
+  <ScrollView height="100vh" className={styles.container}>
+    <div className={styles.authentification}>
+      <Auth header={authenticationHeader} />
+    </div>
+    {!affiliate && gallery && <Gallery data={gallery} />}
+  </ScrollView>
 );
 
 export default Authentication;

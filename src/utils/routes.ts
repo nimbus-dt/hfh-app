@@ -9,6 +9,34 @@ export const ROUTES = {
     title: 'Applications',
     route: '/:habitat/applicant/applications',
   },
+  affiliateHome: {
+    title: 'Home',
+    route: '/:habitat/affiliate/home',
+  },
+  affiliateForms: {
+    title: 'Forms',
+    route: '/:habitat/affiliate/forms',
+  },
+  affiliateCycles: {
+    title: 'Cycles',
+    route: '/:habitat/affiliate/:formid',
+  },
+  affiliateApplications: {
+    title: 'Applications',
+    route: '/:habitat/affiliate/:formid/:cycleid',
+  },
+  affiliateApplicationDetail: {
+    title: 'Application',
+    route: '/:habitat/affiliate/:formid/:cycleid/:applicationid',
+  },
+  affiliateAnalytics: {
+    title: 'Analytics',
+    route: '/:habitat/affiliate/analytics',
+  },
+  affiliateUsers: {
+    title: 'Users',
+    route: '/:habitat/affiliate/users',
+  },
   applicantDecisions: {
     title: 'Decisions',
     route: '/:habitat/applicant/decisions',

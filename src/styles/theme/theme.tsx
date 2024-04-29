@@ -1,5 +1,7 @@
 import { type Theme } from '@aws-amplify/ui-react';
 
+import components from './components';
+
 import './styles.css';
 
 const theme: Theme = {
@@ -70,9 +72,10 @@ const theme: Theme = {
     },
     lineHeights: {
       small: { value: '24px' },
-      medium: { value: '56px' },
+      medium: { value: '30px' },
       large: { value: '56px' },
     },
+    components,
   },
 };
 

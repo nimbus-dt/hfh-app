@@ -1484,6 +1484,13 @@ export const schema = {
                         ]
                     }
                 },
+                "authenticationHeader": {
+                    "name": "authenticationHeader",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -1545,6 +1552,39 @@ export const schema = {
         }
     },
     "nonModels": {
+        "GalleryItem": {
+            "name": "GalleryItem",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "image": {
+                    "name": "image",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "title": {
+                    "name": "title",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "message": {
+                    "name": "message",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
         "OptionalSections": {
             "name": "OptionalSections",
             "fields": {
@@ -1741,10 +1781,20 @@ export const schema = {
                     },
                     "isRequired": true,
                     "attributes": []
+                },
+                "gallery": {
+                    "name": "gallery",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "GalleryItem"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": true
                 }
             }
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "5a7343d500855b0c42bc3e1f66487451"
+    "version": "e8b7fa7fcf347c31bdc5ac466b53425e"
 };
