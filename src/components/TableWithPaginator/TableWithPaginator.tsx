@@ -52,10 +52,10 @@ const TableWithPaginator = ({
     [currentPage, data, perPage]
   );
 
-  const totalPages = useMemo(
-    () => Math.ceil(data.length / perPage),
-    [data.length, perPage]
-  );
+  const totalPages = useMemo(() => {
+    const newTotalPages = Math.ceil(data.length / perPage);
+    return newTotalPages > 0 ? newTotalPages : 1;
+  }, [data.length, perPage]);
 
   useEffect(() => {
     if (currentPage === totalPages && loadMoreData) {
