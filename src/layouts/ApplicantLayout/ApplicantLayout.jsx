@@ -1,25 +1,15 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { DataStore, SortDirection } from 'aws-amplify';
-import {
-  Flex,
-  Heading,
-  ScrollView,
-  useAuthenticator,
-  useBreakpointValue,
-} from '@aws-amplify/ui-react';
+import { useAuthenticator } from '@aws-amplify/ui-react';
 import { getRouteTitle } from 'utils/routes';
-
 import Authentication from 'components/Authentication';
-import CustomCard from 'components/CustomCard';
-import NavBar from 'components/NavBar';
 import useHabitatByUrlName from 'hooks/services/useHabitatByUrlName';
 import useScrollToTopOnRouteChange from 'hooks/utils/useScrollToTopOnRouteChange';
 import { TestApplication, SubmissionStatus, ApplicationTypes } from 'models';
 import { DEFAULT_REVIEW_STATUS, ROUTES } from 'utils/constants';
 import { getHabitatOpenCycle } from 'utils/misc';
-import TopBar from './components/TopBar';
-import SideBar from './components/SideBar';
+import BaseLayout from 'layouts/BaseLayout';
 
 import { AUTHENTICATION_STATUS } from './utils';
 
@@ -41,12 +31,6 @@ const HabitatLayout = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const [expandSideBar, setExpandSideBar] = useState(false);
-  const isMobile = useBreakpointValue({
-    base: true,
-    medium: false,
-  });
-  const [title, setTitle] = useState('');
 
   const { authStatus, user } = useAuthenticator((context) => [
     context.authStatus,
@@ -155,43 +139,6 @@ const HabitatLayout = () => {
   ]);
 
   useEffect(() => {
-    const urlSections = location.pathname.split('/');
-    if (
-      !alreadyRedirected &&
-      ((authStatus === 'unauthenticated' &&
-        urlSections[3] !== ROUTES.HABITAT_APPLICANT_FORM) ||
-        (application &&
-          application.submissionStatus === SubmissionStatus.SUBMITTED &&
-          authStatus === 'authenticated' &&
-          urlSections[3] !== 'review') ||
-        (openCycle === undefined &&
-          application?.submissionStatus !== SubmissionStatus.RETURNED))
-    ) {
-      urlSections[3] = ROUTES.HABITAT_APPLICANT_FORM;
-      navigate(urlSections.join('/'));
-    }
-  }, [
-    location.pathname,
-    authStatus,
-    application,
-    openCycle,
-    navigate,
-    alreadyRedirected,
-  ]);
-
-  useEffect(() => {
-    if (
-      application &&
-      authStatus === 'authenticated' &&
-      !alreadyRedirected &&
-      application.submissionStatus === SubmissionStatus.UNSUBMITTED
-    ) {
-      setAlreadyRedirected(true);
-      navigate(application.lastSection);
-    }
-  }, [authStatus, application, navigate, alreadyRedirected]);
-
-  useEffect(() => {
     const getOpenCycle = async () => {
       const currentOpenCycle = await getHabitatOpenCycle(habitat?.id);
       setOpenCycle(currentOpenCycle);
@@ -199,19 +146,6 @@ const HabitatLayout = () => {
 
     getOpenCycle();
   }, [habitat?.id]);
-
-  useEffect(() => {
-    const newTitle = getRouteTitle(location.pathname);
-    if (newTitle) {
-      setTitle(newTitle);
-    }
-  }, [location.pathname]);
-
-  const handleOnExpand = () => {
-    if (isMobile) {
-      setExpandSideBar((prevExpandSideBar) => !prevExpandSideBar);
-    }
-  };
 
   if (AUTHENTICATION_STATUS.AUTHENTICATED !== authStatus) {
     return (
@@ -223,35 +157,17 @@ const HabitatLayout = () => {
   }
 
   return (
-    <Flex gap="0">
-      <SideBar
-        pathname={location.pathname}
-        mobile={typeof isMobile === 'boolean' && isMobile}
-        expanded={expandSideBar}
-        onExpand={handleOnExpand}
+    <BaseLayout variation="applicant">
+      <Outlet
+        context={{
+          openCycle,
+          habitat,
+          application,
+          setApplication,
+          updateApplicationLastSection,
+        }}
       />
-      <ScrollView
-        height="100vh"
-        flex={1}
-        backgroundColor="var(--amplify-colors-neutral-20)"
-      >
-        <TopBar
-          title={title}
-          initials="GA"
-          mobile={typeof isMobile === 'boolean' && isMobile}
-          onExpand={handleOnExpand}
-        />
-        <Outlet
-          context={{
-            openCycle,
-            habitat,
-            application,
-            setApplication,
-            updateApplicationLastSection,
-          }}
-        />
-      </ScrollView>
-    </Flex>
+    </BaseLayout>
   );
 };
 
