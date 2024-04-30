@@ -13,6 +13,7 @@ import { useParams } from 'react-router-dom';
 import useDataStoreQuery from 'hooks/services/useDataStoreQuery';
 import { dateOnly } from 'utils/dates';
 import style from './AffiliateFormsPage.module.css';
+import NewFormButton from './components/NewFormButton';
 
 const StatusChip = ({ status }: { status: string }) => {
   switch (status) {
@@ -95,14 +96,14 @@ const AffiliateFormsPage = () => {
           <Flex direction="row" alignItems="center">
             <View className="theme-subtitle-s2">
               <Text as="span" alignSelf="center">
-                Active Forms
+                {view === 'ACTIVE' ? 'Active Forms' : 'Pending Forms'}
               </Text>
             </View>
             <Text className={`theme-subtitle-s2 ${style.subtitle}`}>
-              {forms.length} results
+              {latestForms.length} results
             </Text>
           </Flex>
-          <CustomButton icon={<MdAdd />}>New Form</CustomButton>
+          <NewFormButton />
         </Flex>
         <TableWithPaginator
           headers={[
