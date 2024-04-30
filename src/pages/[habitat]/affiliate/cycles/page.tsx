@@ -5,6 +5,7 @@ import { MdArrowBack, MdOutlineOpenInNew, MdFilterList } from 'react-icons/md';
 import Chip from 'components/Chip';
 import TableWithPaginator from 'components/TableWithPaginator';
 
+import BreadCrumbs from 'components/BreadCrumbs/BreadCrumbs';
 import Filters from './components/filters';
 import styles from './styles.module.css';
 import headers from './utils/headers';
@@ -51,13 +52,14 @@ const CyclesPage = () => {
   return (
     <ScrollView height="100vh" className={styles.page}>
       <div className={styles.cta}>
-        <div
-          className={`theme-body-medium ${styles.hide_on_small} ${styles.breadcrumb}`}
-        >
-          <p className={styles.neutral_80}>Homeownership Form</p>
-          <p className={styles.hide_on_small}>&gt;</p>
-          <p>Cycles</p>
-        </div>
+        <BreadCrumbs
+          items={[
+            { label: 'Homeownership Form' },
+            {
+              label: 'Cycles',
+            },
+          ]}
+        />
         <div className={styles.title}>
           <MdArrowBack className={styles.hide_on_small} size="24px" />
           <p className="theme-headline-medium">Cycles Dashboard</p>
