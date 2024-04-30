@@ -11,6 +11,7 @@ import {
   TextField,
   TextAreaField,
   Loader,
+  useBreakpointValue,
 } from '@aws-amplify/ui-react';
 import { useState } from 'react';
 import FileInput from 'components/FileInput';
@@ -23,6 +24,10 @@ function NewFormButton() {
   const [modalOpen, setModalOpen] = useState(false);
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
+  const isMobile = useBreakpointValue({
+    base: true,
+    medium: false,
+  });
 
   // Get context
   interface OutletContextType {
@@ -100,7 +105,7 @@ function NewFormButton() {
       onClickClose={() => {
         setModalOpen(!modalOpen);
       }}
-      width="50%"
+      width={isMobile ? '90%' : '60%'}
     >
       <Flex direction="column" gap="30px">
         <View className="theme-subtitle-s2">
