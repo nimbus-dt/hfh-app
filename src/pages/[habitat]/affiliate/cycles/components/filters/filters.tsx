@@ -7,7 +7,7 @@ import { Button } from '@aws-amplify/ui-react';
 import styles from './filters.module.css';
 import { Inputs, FilterProps } from '../../types';
 
-const Filters = ({ close, setFilters }: FilterProps) => {
+const Filters = ({ close, filters, setFilters }: FilterProps) => {
   const { register, handleSubmit, reset } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
@@ -34,6 +34,7 @@ const Filters = ({ close, setFilters }: FilterProps) => {
             Start Date
           </label>
           <input
+            defaultValue={filters.startDate}
             className={`theme-body-medium ${styles.input_date}`}
             type="date"
             id="startDate"
@@ -48,6 +49,7 @@ const Filters = ({ close, setFilters }: FilterProps) => {
             End Date
           </label>
           <input
+            defaultValue={filters.endDate}
             className={`theme-body-medium ${styles.input_date}`}
             type="date"
             id="endDate"
@@ -59,6 +61,7 @@ const Filters = ({ close, setFilters }: FilterProps) => {
         <p className={`${styles.dates_title} theme-body-small`}>Status</p>
         <label htmlFor="status-open" className={styles.radio_label}>
           <input
+            defaultChecked={filters.status === 'open'}
             className={styles.radio_input}
             type="radio"
             id="status-open"
@@ -72,6 +75,7 @@ const Filters = ({ close, setFilters }: FilterProps) => {
         </label>
         <label htmlFor="status-close" className={styles.radio_label}>
           <input
+            defaultChecked={filters.status === 'close'}
             className={styles.radio_input}
             type="radio"
             id="status-close"
@@ -85,7 +89,17 @@ const Filters = ({ close, setFilters }: FilterProps) => {
         </label>
       </div>
       <div className={styles.buttons}>
-        <Button variation="link" onClick={() => reset()}>
+        <Button
+          variation="link"
+          onClick={() => {
+            setFilters({
+              startDate: '',
+              endDate: '',
+              status: null,
+            });
+            reset();
+          }}
+        >
           Clear Filters
         </Button>
         <Button variation="primary" type="submit">

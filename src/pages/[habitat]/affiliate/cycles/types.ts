@@ -1,6 +1,6 @@
 export interface Inputs {
-  startDate: Date | '';
-  endDate: Date | '';
+  startDate: string;
+  endDate: string;
   status: null | 'open' | 'close';
 }
 
