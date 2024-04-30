@@ -63,7 +63,7 @@ const CyclesPage = () => {
   console.log(value);
 
   return (
-    <ScrollView height="100vh" className={styles.page}>
+    <ScrollView className={styles.page}>
       <div className={styles.cta}>
         <div
           className={`theme-body-medium ${styles.hide_on_small} ${styles.breadcrumb}`}
