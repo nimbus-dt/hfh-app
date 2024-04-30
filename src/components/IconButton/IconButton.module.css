@@ -5,8 +5,8 @@
   color: var(--amplify-colors-neutral-90);
   font-size: 24px;
   line-height: 24px;
-  width: fit-content;
-  height: fit-content;
+  width: 48px;
+  height: 48px;
   border: none;
 }
 
