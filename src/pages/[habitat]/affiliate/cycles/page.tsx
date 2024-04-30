@@ -63,7 +63,7 @@ const CyclesPage = () => {
   console.log(value);
 
   return (
-    <ScrollView className={styles.page}>
+    <div className={styles.page}>
       <div className={styles.cta}>
         <div
           className={`theme-body-medium ${styles.hide_on_small} ${styles.breadcrumb}`}
@@ -137,7 +137,7 @@ const CyclesPage = () => {
           close={() => setShowFilters(false)}
         />
       )}
-    </ScrollView>
+    </div>
   );
 };
 

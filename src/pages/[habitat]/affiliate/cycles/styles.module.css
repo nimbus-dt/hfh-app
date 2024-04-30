@@ -1,9 +1,12 @@
 .page {
   position: relative;
   padding: 2rem;
+  display: flex;
+  flex-direction: column;
+
   width: 100%;
+  min-height: 100vh;
   background-color: var(--amplify-colors-neutral-20);
-  display: grid;
   gap: 1rem;
 }
 
