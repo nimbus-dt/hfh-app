@@ -5,20 +5,33 @@ import TableWithPaginator from 'components/TableWithPaginator';
 import Chip from 'components/Chip';
 import { stringToHumanReadable } from 'utils/strings';
 import CustomButton from 'components/CustomButton/CustomButton';
-import { StorageImage } from '@aws-amplify/ui-react-storage';
+import Toggle from 'components/Toggle';
 import style from './AffiliateFormsPage.module.css';
-import Toggle from './components/Toggle';
 
 const dummyData = [
   {
-    name: 'Homeownership Application',
+    name: 'Homeownership',
     dateSubmitted: '04/20/2024',
     status: 'Accepted',
+    unreviewed: 326,
   },
   {
-    name: 'Repairs Application',
+    name: 'Repairs',
     dateSubmitted: '04/25/2024',
     status: 'Pending',
+    unreviewed: 34,
+  },
+  {
+    name: 'Pre Screens',
+    dateSubmitted: '04/25/2024',
+    status: 'Pending',
+    unreviewed: 34,
+  },
+  {
+    name: 'Uber',
+    dateSubmitted: '04/25/2024',
+    status: 'Pending',
+    unreviewed: 124,
   },
 ];
 
@@ -38,12 +51,6 @@ const AffiliateFormsPage = () => {
   const [applications, setApplications] = useState(dummyData);
   return (
     <Flex padding="32px" direction="column">
-      <StorageImage
-        alt="data[current].title"
-        imgKey="test/gallery/picture-1.jpg"
-        accessLevel="public"
-      />
-
       <Flex
         direction={{
           base: 'column',
@@ -56,7 +63,16 @@ const AffiliateFormsPage = () => {
           <Heading level={3}>Forms Dashboard</Heading>
         </Flex>
         <Flex className={`${style.toggleContainer}`}>
-          <Toggle value={view} onChange={(newValue) => setView(newValue)} />
+          <Toggle
+            option1={{ value: 'active', label: 'Active' }}
+            option2={{ value: 'pending', label: 'Pending' }}
+            active={view}
+            onChange={(newValue) => {
+              if (newValue === 'active' || newValue === 'pending') {
+                setView(newValue);
+              }
+            }}
+          />
         </Flex>
       </Flex>
       <Flex direction="row" alignItems="center" justifyContent="space-between">
@@ -77,6 +93,7 @@ const AffiliateFormsPage = () => {
           {
             id: 'name',
             value: 'Name',
+            width: '100%',
           },
           {
             id: 'dateSubmitted',
@@ -86,6 +103,10 @@ const AffiliateFormsPage = () => {
             id: 'status',
             value: 'Status',
             textAlign: 'center',
+          },
+          {
+            id: 'unreviewed',
+            value: 'Unreviewed',
           },
           {
             id: 'view',
@@ -106,6 +127,7 @@ const AffiliateFormsPage = () => {
               ),
               id: 'status',
             },
+            { value: data.unreviewed, id: 'unreviewed' },
             {
               value: (
                 <Flex width="100%" justifyContent="center">

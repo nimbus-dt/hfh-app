@@ -5,8 +5,8 @@ import { MdOutlineOpenInNew } from 'react-icons/md';
 import TableWithPaginator from 'components/TableWithPaginator';
 import Chip from 'components/Chip';
 import { stringToHumanReadable } from 'utils/strings';
+import Toggle from 'components/Toggle';
 import style from './ApplicantApplicationsPage.module.css';
-import Toggle from './components/Toggle';
 
 const dummyData = [
   {
@@ -128,7 +128,16 @@ const ApplicantApplicationsPage = () => {
           </Text>
         </Flex>
         <Flex className={`${style.toggleContainer}`}>
-          <Toggle value={view} onChange={(newValue) => setView(newValue)} />
+          <Toggle
+            option1={{ value: 'current', label: 'Current' }}
+            option2={{ value: 'past', label: 'Past' }}
+            active={view}
+            onChange={(newValue) => {
+              if (newValue === 'current' || newValue === 'past') {
+                setView(newValue);
+              }
+            }}
+          />
         </Flex>
       </Flex>
       <View className="theme-subtitle-s2">

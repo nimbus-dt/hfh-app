@@ -1,35 +1,29 @@
 import './assets/styles/App.css';
 import { Routes, Route, Outlet } from 'react-router-dom';
-import { Authenticator, ScrollView } from '@aws-amplify/ui-react';
-
+import { ScrollView } from '@aws-amplify/ui-react';
 import ApplicationsPage from 'pages/affiliate-portal/cycles/[cycleId]';
 import ApplicationDetailsPage from 'pages/affiliate-portal/cycles/[cycleId]/[applicationId]';
-import AffiliatePortalHomePage from 'pages/affiliate-portal/home';
 import AffiliatePortalRepairsPage from 'pages/affiliate-portal/repairs';
 import AffiliatePortalVolunteersPage from 'pages/affiliate-portal/volunteers';
 import AffiliatePortalSettingsPage from 'pages/affiliate-portal/settings';
-
 import { NewLandingLayout } from 'pages/index/Layout/NewLandingLayout';
 import LandingPage from 'pages/index/LandingPage';
 import TermsPage from 'pages/terms/TermsPage';
 import PrivacyPage from 'pages/privacy';
 import ContactPage from 'pages/contact';
 import DataPage from 'pages/data';
-
 // eslint-disable-next-line import/no-unresolved
 import '@aws-amplify/ui-react/styles.css';
 import HomeownershipHomePage from 'pages/homeownership/[habitat]/home';
 import HomeownershipReviewPage from 'pages/homeownership/[habitat]/review';
 import HabitatLayout from 'layouts/HabitatLayout';
-import AffiliateLayout from 'layouts/AffiliateLayout';
 import ApplicantLayout from 'layouts/ApplicantLayout';
 import { ROUTES } from 'utils/constants';
-// import ApplicantLayout from 'pages/[habitat]/applicant/layout';
 import ApplicantApplicationsPage from 'pages/[habitat]/applicant/applications';
 import ApplicantDecisionsPage from 'pages/[habitat]/applicant/decisions/ApplicantDecisionsPage';
-import NewAffiliateLayout from 'pages/[habitat]/affiliate/layout';
 import AffiliateFormsPage from 'pages/[habitat]/affiliate/forms';
 import CyclesPage from 'pages/[habitat]/affiliate/cycles';
+import NewAffiliateLayout from 'layouts/NewAffiliateLayout';
 
 function App() {
   return (
@@ -95,19 +89,16 @@ function App() {
             element={<HomeownershipReviewPage />}
           />
           <Route
-            path={ROUTES.HABITAT_AFFILIATE_APPLICATIONS}
+            path={ROUTES.HABITAT_APPLICANT_APPLICATIONS}
             element={<ApplicantApplicationsPage />}
           />
           <Route
-            path={ROUTES.HABITAT_AFFILIATE_DECISIONS}
+            path={ROUTES.HABITAT_APPLICANT_DECISIONS}
             element={<ApplicantDecisionsPage />}
           />
         </Route>
-        <Route path={ROUTES.HABITAT_AFFILIATE} element={<AffiliateLayout />}>
-          <Route
-            path={ROUTES.HABITAT_AFFILIATE_HOME}
-            element={<AffiliatePortalHomePage />}
-          />
+        <Route path={ROUTES.HABITAT_AFFILIATE} element={<NewAffiliateLayout />}>
+          <Route path={ROUTES.HABITAT_AFFILIATE_HOME} element={<h1>Home</h1>} />
           <Route path={ROUTES.HABITAT_AFFILIATE_CYCLES}>
             <Route index element={<CyclesPage />} />
             <Route path={ROUTES.HABITAT_AFFILIATE_CYCLES_CYCLE}>
@@ -130,16 +121,16 @@ function App() {
             path={ROUTES.HABITAT_AFFILIATE_SETTINGS}
             element={<AffiliatePortalSettingsPage />}
           />
-        </Route>
-        <Route path="affiliate" element={<NewAffiliateLayout />}>
-          <Route path="home" element={<h1>Home</h1>} />
-          <Route path="forms" element={<AffiliateFormsPage />} />
           <Route
-            path="analytics"
+            path={ROUTES.HABITAT_AFFILIATE_FORMS}
+            element={<AffiliateFormsPage />}
+          />
+          <Route
+            path={ROUTES.HABITAT_AFFILIATE_ANALYTICS}
             element={<p>This page is under construction</p>}
           />
           <Route
-            path="users"
+            path={ROUTES.HABITAT_AFFILIATE_USERS}
             element={<p>This page is under construction</p>}
           />
           <Route path=":formId">

@@ -1,30 +1,14 @@
-import PropTypes from 'prop-types';
 import { useCallback, useEffect, useState } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 import { DataStore } from 'aws-amplify';
-import {
-  Card,
-  Flex,
-  Text,
-  View,
-  useBreakpointValue,
-  ScrollView,
-  Authenticator,
-  useAuthenticator,
-  Heading,
-} from '@aws-amplify/ui-react';
+import { Flex, Text, useAuthenticator } from '@aws-amplify/ui-react';
 import Authentication from 'components/Authentication';
-import CustomCard from 'components/CustomCard';
-import NavBar from 'components/NavBar';
 import { Habitat } from 'models';
-import {
-  COLORS,
-  DEFAULT_REVIEW_STATUS,
-  AUTHENTICATION_STATUS,
-} from 'utils/constants';
-import Sidebar from './Sidebar';
+import { DEFAULT_REVIEW_STATUS, AUTHENTICATION_STATUS } from 'utils/constants';
+import BaseLayout from 'layouts/BaseLayout';
+import style from './NewAffiliateLayout.module.css';
 
-const AffiliateLayout = () => {
+const NewAffiliateLayout = () => {
   const [habitat, setHabitat] = useState(null);
   const [isUserAllowed, setIsUserAllowed] = useState(false); // New state to track user access
   const [isLoading, setIsLoading] = useState(0); // New state to track loading status
@@ -32,20 +16,6 @@ const AffiliateLayout = () => {
     context.authStatus,
     context.user,
   ]);
-
-  const isLargeLayout = useBreakpointValue({
-    base: false,
-    large: true,
-  });
-
-  const responsiveBool = useBreakpointValue({
-    base: true,
-    small: true,
-    medium: true,
-    large: false,
-    xl: false,
-    xxl: false,
-  });
 
   const habitatUrlName = useParams('habitat').habitat;
 
@@ -166,97 +136,27 @@ const AffiliateLayout = () => {
   }
 
   return (
-    <LayoutParent isLargeLayout={isLargeLayout}>
-      {authStatus === 'authenticated' && isUserAllowed && (
-        <Sidebar authStatus={authStatus} />
+    <BaseLayout variation="affiliate" hideSideBar={!isUserAllowed}>
+      {isUserAllowed ? (
+        <Outlet
+          context={{
+            habitat,
+            setHabitat,
+            addCustomStatusToHabitat,
+            removeCustomStatusToHabitat,
+            updateCustomStatusToHabitat,
+          }}
+        />
+      ) : (
+        <div className={style.notAllowedContainer}>
+          <Text>
+            Sorry, you are not allowed to access this page. Please contact the
+            administrator for assistance.
+          </Text>
+        </div>
       )}
-
-      <View
-        flex="1"
-        grow={isLargeLayout ? 1 : 0}
-        height={isLargeLayout ? '100%' : 'calc(100% - 6rem)'}
-        overflow="hidden"
-      >
-        <ScrollView grow={1} height="100%">
-          <Flex
-            width="100%"
-            minHeight="100%"
-            direction="column"
-            margin="auto"
-            alignItems="center"
-          >
-            {authStatus === 'unauthenticated' || !isUserAllowed ? (
-              <>
-                <NavBar isAuthenticated={authStatus === 'authenticated'} />
-                <Flex
-                  width={responsiveBool ? '100%' : '80%'}
-                  direction="column"
-                  alignItems="center"
-                >
-                  <CustomCard>
-                    <Heading level={4} fontWeight="bold" textAlign="center">
-                      Affiliate Portal
-                    </Heading>
-                  </CustomCard>
-                  {authStatus === 'authenticated' && !isUserAllowed && (
-                    <CustomCard>
-                      <Text>
-                        Sorry, you are not allowed to access this page. Please
-                        contact the administrator for assistance.
-                      </Text>
-                    </CustomCard>
-                  )}
-                  {authStatus === 'unauthenticated' && (
-                    <CustomCard>
-                      <Authenticator hideDefault />
-                    </CustomCard>
-                  )}
-                </Flex>
-              </>
-            ) : (
-              <Outlet
-                context={{
-                  habitat,
-                  setHabitat,
-                  addCustomStatusToHabitat,
-                  removeCustomStatusToHabitat,
-                  updateCustomStatusToHabitat,
-                }}
-              />
-            )}
-          </Flex>
-        </ScrollView>
-      </View>
-    </LayoutParent>
+    </BaseLayout>
   );
 };
 
-const LayoutParent = ({ isLargeLayout, children }) => {
-  if (!isLargeLayout) {
-    return (
-      <View height="100vh" width="100vw">
-        {children}
-      </View>
-    );
-  }
-
-  return (
-    <Flex
-      height="100vh"
-      weight="100%"
-      gap="0rem"
-      backgroundColor={COLORS.CANVAS}
-      grow={1}
-      overflow="hidden"
-    >
-      {children}
-    </Flex>
-  );
-};
-
-LayoutParent.propTypes = {
-  isLargeLayout: PropTypes.bool.isRequired,
-  children: PropTypes.node.isRequired,
-};
-
-export default AffiliateLayout;
+export default NewAffiliateLayout;

@@ -5,6 +5,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableCellProps,
   TableFoot,
   TableHead,
   TableRow,
@@ -19,7 +20,10 @@ interface ICell {
   value: ReactNode;
   id: string | number;
   colSpan?: string | number;
-  textAlign?: 'center' | 'left' | 'right' | 'justify';
+  textAlign?: TableCellProps['textAlign'];
+  minWidth?: TableCellProps['minWidth'];
+  width?: TableCellProps['width'];
+  maxWidth?: TableCellProps['maxWidth'];
 }
 
 interface IData {
@@ -76,6 +80,9 @@ const TableWithPaginator = ({
                 key={header.id}
                 textAlign={header.textAlign}
                 colSpan={header.colSpan as unknown as number}
+                minWidth={header.minWidth}
+                width={header.width}
+                maxWidth={header.maxWidth}
               >
                 {header.value}
               </TableCell>
@@ -90,6 +97,9 @@ const TableWithPaginator = ({
                   colSpan={cell.colSpan as unknown as number}
                   key={cell.id}
                   textAlign={cell.textAlign}
+                  minWidth={cell.minWidth}
+                  width={cell.width}
+                  maxWidth={cell.maxWidth}
                 >
                   {cell.value}
                 </TableCell>
