@@ -13,8 +13,9 @@ const ApplicationTypes = {
 };
 
 const SubmissionStatus = {
-  "SUBMITTED": "SUBMITTED",
-  "UNSUBMITTED": "UNSUBMITTED",
+  "PENDING": "PENDING",
+  "ACCEPTED": "ACCEPTED",
+  "REJECTED": "REJECTED",
   "RETURNED": "RETURNED"
 };
 

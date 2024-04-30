@@ -13,8 +13,9 @@ export enum ApplicationTypes {
 }
 
 export enum SubmissionStatus {
-  SUBMITTED = "SUBMITTED",
-  UNSUBMITTED = "UNSUBMITTED",
+  PENDING = "PENDING",
+  ACCEPTED = "ACCEPTED",
+  REJECTED = "REJECTED",
   RETURNED = "RETURNED"
 }
 
@@ -503,7 +504,7 @@ type EagerTestApplication = {
   readonly members?: (Member | null)[] | null;
   readonly submittedDate: string;
   readonly reviewStatus?: string | null;
-  readonly submissionStatus: SubmissionStatus | keyof typeof SubmissionStatus;
+  readonly submissionStatus?: SubmissionStatus | keyof typeof SubmissionStatus | null;
   readonly props?: string | null;
   readonly type: ApplicationTypes | keyof typeof ApplicationTypes;
   readonly testcycleID: string;
@@ -525,7 +526,7 @@ type LazyTestApplication = {
   readonly members: AsyncCollection<Member>;
   readonly submittedDate: string;
   readonly reviewStatus?: string | null;
-  readonly submissionStatus: SubmissionStatus | keyof typeof SubmissionStatus;
+  readonly submissionStatus?: SubmissionStatus | keyof typeof SubmissionStatus | null;
   readonly props?: string | null;
   readonly type: ApplicationTypes | keyof typeof ApplicationTypes;
   readonly testcycleID: string;

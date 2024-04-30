@@ -117,8 +117,9 @@ type ApplicantOptional @model @auth(rules: [{allow: public}]) {
 }
 
 enum SubmissionStatus {
-  SUBMITTED
-  UNSUBMITTED
+  PENDING
+  ACCEPTED
+  REJECTED
   RETURNED
 }
 
@@ -147,7 +148,7 @@ type TestApplication @model @auth(rules: [{allow: public}]) {
   members: [Member] @hasMany(indexName: "byTestApplication", fields: ["id"])
   submittedDate: AWSDate!
   reviewStatus: String
-  submissionStatus: SubmissionStatus!
+  submissionStatus: SubmissionStatus
   props: AWSJSON
   type: ApplicationTypes!
   testcycleID: ID! @index(name: "byTestCycle")

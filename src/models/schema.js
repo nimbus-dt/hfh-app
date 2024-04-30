@@ -968,7 +968,7 @@ export const schema = {
                     "type": {
                         "enum": "SubmissionStatus"
                     },
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
                 "props": {
@@ -1699,8 +1699,9 @@ export const schema = {
         "SubmissionStatus": {
             "name": "SubmissionStatus",
             "values": [
-                "SUBMITTED",
-                "UNSUBMITTED",
+                "PENDING",
+                "ACCEPTED",
+                "REJECTED",
                 "RETURNED"
             ]
         }
@@ -1950,5 +1951,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "d142f752b60653d049a3301c0d8a8baa"
+    "version": "07494075b642e94cd17768d8fd0e2ce4"
 };
