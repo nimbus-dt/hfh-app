@@ -5,7 +5,7 @@
   flex-direction: column;
 
   width: 100%;
-  min-height: 100vh;
+  min-height: var(100vh - 72px);
   background-color: var(--amplify-colors-neutral-20);
   gap: 1rem;
 }
