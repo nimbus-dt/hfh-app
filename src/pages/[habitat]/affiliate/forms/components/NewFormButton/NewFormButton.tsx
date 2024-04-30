@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import CustomButton from 'components/CustomButton/CustomButton';
@@ -10,15 +11,20 @@ import {
   Button,
   TextField,
   TextAreaField,
+  Loader,
 } from '@aws-amplify/ui-react';
 import { useState } from 'react';
 import FileInput from 'components/FileInput';
 import { DataStore } from '@aws-amplify/datastore';
 import { Habitat, RootForm, RootFormStatusTypes } from 'models';
 import { useOutletContext } from 'react-router-dom';
+import { Storage } from 'aws-amplify';
+import { values } from 'lodash';
 
 function NewFormButton() {
   const [modalOpen, setModalOpen] = useState(false);
+  const [files, setFiles] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   // Get context
   interface OutletContextType {
@@ -28,14 +34,37 @@ function NewFormButton() {
   const context = useOutletContext<OutletContextType>();
   const { habitat } = context;
 
+  // onChange
+  const handleOnChange = (newFiles: any) => {
+    setFiles(newFiles);
+  };
+
+  // file uploader
+  const uploadFiles = async (upFiles: [File], rootForm: RootForm) => {
+    const promisesArr = upFiles.map((file) =>
+      Storage.put(
+        `rootForms/${habitat?.urlName}/${rootForm?.id}/${file.name}`,
+        file,
+        {
+          level: 'public',
+        }
+      )
+    );
+
+    const results = await Promise.all(promisesArr);
+
+    return results;
+  };
+
   // Submit handler
   async function handleSubmit(event: any) {
     event.preventDefault();
+    setLoading(true);
     const formData = new FormData(event.target);
     const formDataObject = Object.fromEntries(formData.entries());
-
     try {
-      await DataStore.save(
+      // Create new RootForm record
+      const newForm = await DataStore.save(
         new RootForm({
           name: formDataObject.name as string,
           status: RootFormStatusTypes.PENDING,
@@ -43,9 +72,25 @@ function NewFormButton() {
           habitatID: habitat.id,
         })
       );
+
+      // File upload
+      const newFiles = files as unknown as [File];
+      const fileArray = await uploadFiles(newFiles, newForm);
+      const valuesArray = fileArray.map((obj) => Object.values(obj)[0]);
+
+      setFiles([]);
+
+      // Update RootForm record
+      await DataStore.save(
+        RootForm.copyOf(newForm, (item) => {
+          item.files = valuesArray;
+        })
+      );
     } catch (error) {
       console.log(`Error creating new form: ${error}`);
     }
+
+    setLoading(false);
 
     event.target.reset();
   }
@@ -80,11 +125,26 @@ function NewFormButton() {
               placeholder="The form is an application that determines if a family is fit to participate in Habitat for Humanity's Homeownership Program. These are received twice a year and reviewed by Habitat workers."
               required
             />
+            <FileInput
+              label="Please upload your paper application"
+              onChange={handleOnChange}
+              isRequired
+              multiple
+              accept="image/*, .pdf"
+              maxFileCount={20}
+              files={files}
+            />
             <Flex direction="row" justifyContent="end">
               <Button type="submit">Submit</Button>
             </Flex>
           </Flex>
         </form>
+        {loading && (
+          <View>
+            <Text>Uploading files</Text>
+            <Loader variation="linear" />
+          </View>
+        )}
       </Flex>
     </Modal>
   );
