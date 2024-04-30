@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import CustomButton from 'components/CustomButton/CustomButton';
 import { MdAdd } from 'react-icons/md';
@@ -13,9 +14,21 @@ import {
 import { useState } from 'react';
 import FileInput from 'components/FileInput';
 import { DataStore } from '@aws-amplify/datastore';
-import { RootForm, RootFormStatusTypes } from 'models';
+import { Habitat, RootForm, RootFormStatusTypes } from 'models';
+import { useOutletContext } from 'react-router-dom';
 
 function NewFormButton() {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  // Get context
+  interface OutletContextType {
+    habitat: Habitat;
+  }
+
+  const context = useOutletContext<OutletContextType>();
+  const { habitat } = context;
+
+  // Submit handler
   async function handleSubmit(event: any) {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -27,6 +40,7 @@ function NewFormButton() {
           name: formDataObject.name as string,
           status: RootFormStatusTypes.PENDING,
           description: formDataObject.description as string,
+          habitatID: habitat.id,
         })
       );
     } catch (error) {
@@ -35,8 +49,6 @@ function NewFormButton() {
 
     event.target.reset();
   }
-
-  const [modalOpen, setModalOpen] = useState(false);
 
   const newFormModal = (
     <Modal

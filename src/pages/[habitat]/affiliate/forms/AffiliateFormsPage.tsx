@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Flex, Heading, Text, View } from '@aws-amplify/ui-react';
 import React, { useEffect, useState } from 'react';
@@ -8,8 +9,7 @@ import { stringToHumanReadable } from 'utils/strings';
 import Toggle from 'components/Toggle';
 import { Habitat } from 'models';
 import { useRootFormsQuery } from 'hooks/services';
-import { useParams } from 'react-router-dom';
-import useDataStoreQuery from 'hooks/services/useDataStoreQuery';
+import { useOutletContext } from 'react-router-dom';
 import { dateOnly } from 'utils/dates';
 import style from './AffiliateFormsPage.module.css';
 import NewFormButton from './components/NewFormButton';
@@ -26,23 +26,21 @@ const StatusChip = ({ status }: { status: string }) => {
 };
 
 const AffiliateFormsPage = () => {
-  const { habitat: habitatUrlName } = useParams();
   const [latestForms, setLatestForms] = useState([]);
 
-  // Get Habitat
-  const { data: habitat } = useDataStoreQuery({
-    model: Habitat,
-    criteria: (c: any) => c.urlName.eq(habitatUrlName),
-  });
+  // Get context
+  interface OutletContextType {
+    habitat: Habitat;
+  }
+
+  const context = useOutletContext<OutletContextType>();
+  const { habitat } = context;
 
   // Get Forms
   const { data: forms } = useRootFormsQuery({
     criteria: (c1: any) =>
       c1.and((c2: any) => {
-        const habitatModel = habitat ? (habitat[0] as Habitat) : null;
-        const criteriaArr = habitatModel
-          ? [c2.habitatID.eq(habitatModel.id)]
-          : [];
+        const criteriaArr = habitat ? [c2.habitatID.eq(habitat.id)] : [];
         return criteriaArr;
       }),
     paginationProducer: {},
