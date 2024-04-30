@@ -8,7 +8,6 @@ import {
   Text,
   View,
   Flex,
-  Button,
   TextField,
   TextAreaField,
   Loader,
@@ -19,7 +18,6 @@ import { DataStore } from '@aws-amplify/datastore';
 import { Habitat, RootForm, RootFormStatusTypes } from 'models';
 import { useOutletContext } from 'react-router-dom';
 import { Storage } from 'aws-amplify';
-import { values } from 'lodash';
 
 function NewFormButton() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -135,7 +133,7 @@ function NewFormButton() {
               files={files}
             />
             <Flex direction="row" justifyContent="end">
-              <Button type="submit">Submit</Button>
+              <CustomButton type="submit">Submit</CustomButton>
             </Flex>
           </Flex>
         </form>

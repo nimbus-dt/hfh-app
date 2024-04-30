@@ -5,6 +5,7 @@ import style from './CustomButton.module.css';
 interface IProperties extends React.HTMLAttributes<HTMLButtonElement> {
   icon?: ReactNode;
   variation?: 'primary' | 'secondary' | 'text-only';
+  type?: 'submit';
 }
 
 const CustomButton = ({
