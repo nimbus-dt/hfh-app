@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Flex, Heading, Text, View } from '@aws-amplify/ui-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MdAdd, MdOutlineOpenInNew } from 'react-icons/md';
 import TableWithPaginator from 'components/TableWithPaginator';
 import Chip from 'components/Chip';
@@ -27,6 +27,7 @@ const StatusChip = ({ status }: { status: string }) => {
 
 const AffiliateFormsPage = () => {
   const { habitat: habitatUrlName } = useParams();
+  const [latestForms, setLatestForms] = useState([]);
 
   // Get Habitat
   const { data: habitat } = useDataStoreQuery({
@@ -48,7 +49,17 @@ const AffiliateFormsPage = () => {
     dependencyArray: [habitat],
   });
 
-  const [view, setView] = useState<'active' | 'pending'>('active');
+  const [view, setView] = useState<'ACTIVE' | 'PENDING'>('ACTIVE');
+
+  // Change forms according on view
+  useEffect(() => {
+    function filterForms() {
+      const filteredForms = forms.filter((form: any) => form.status === view);
+      setLatestForms(filteredForms);
+    }
+    filterForms();
+  }, [view, forms]);
+
   return (
     <Flex padding="32px" direction="column" gap="60px">
       <Flex
@@ -64,11 +75,11 @@ const AffiliateFormsPage = () => {
         </Flex>
         <Flex className={`${style.toggleContainer}`}>
           <Toggle
-            option1={{ value: 'active', label: 'Active' }}
-            option2={{ value: 'pending', label: 'Pending' }}
+            option1={{ value: 'ACTIVE', label: 'Active' }}
+            option2={{ value: 'PENDING', label: 'Pending' }}
             active={view}
             onChange={(newValue) => {
-              if (newValue === 'active' || newValue === 'pending') {
+              if (newValue === 'ACTIVE' || newValue === 'PENDING') {
                 setView(newValue);
               }
             }}
@@ -118,7 +129,7 @@ const AffiliateFormsPage = () => {
               width: '15%',
             },
           ]}
-          data={forms.map((data: any, index: any) => ({
+          data={latestForms.map((data: any, index: any) => ({
             id: index,
             cells: [
               { value: data.name, id: 'name' },
