@@ -1,31 +1,18 @@
 'use client';
 
-import { MdClose } from 'react-icons/md';
+import { MdCheck, MdClose } from 'react-icons/md';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Button } from '@aws-amplify/ui-react';
 
 import styles from './filters.module.css';
+import { Inputs, FilterProps } from '../../types';
 
-type Inputs = {
-  startDate: Date;
-  endDate: Date;
-  status: 'open' | 'close';
-};
+const Filters = ({ close, setFilters }: FilterProps) => {
+  const { register, handleSubmit, reset } = useForm<Inputs>();
 
-interface FilterProps {
-  close: () => void;
-}
-
-const Filters = ({ close }: FilterProps) => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    reset,
-    formState: { errors },
-  } = useForm<Inputs>();
-
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    setFilters(data);
+  };
 
   return (
     <form className={styles.background} onSubmit={handleSubmit(onSubmit)}>
@@ -78,7 +65,9 @@ const Filters = ({ close }: FilterProps) => {
             {...register('status')}
             value="open"
           />
+          <span className={styles.radio_circle} />
           <span className={styles.radio_checkmark} />
+          <MdCheck className={styles.radio_icon} />
           Open
         </label>
         <label htmlFor="status-close" className={styles.radio_label}>
@@ -89,7 +78,9 @@ const Filters = ({ close }: FilterProps) => {
             {...register('status')}
             value="close"
           />
+          <span className={styles.radio_circle} />
           <span className={styles.radio_checkmark} />
+          <MdCheck className={styles.radio_icon} />
           Close
         </label>
       </div>

@@ -8,13 +8,14 @@ import TableWithPaginator from 'components/TableWithPaginator';
 import Filters from './components/filters';
 import styles from './styles.module.css';
 import headers from './utils/headers';
+import { Inputs } from './types';
 
 const CyclesPage = () => {
   const [showFilters, setShowFilters] = useState(false);
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<Inputs>({
     startDate: '',
     endDate: '',
-    status: '',
+    status: null,
   });
 
   const cycles = [
@@ -47,6 +48,8 @@ const CyclesPage = () => {
       status: 'Open',
     },
   ];
+
+  console.log(filters);
 
   return (
     <ScrollView height="100vh" className={styles.page}>
@@ -116,7 +119,13 @@ const CyclesPage = () => {
           }))}
         />
       </div>
-      {showFilters && <Filters close={() => setShowFilters(false)} />}
+      {showFilters && (
+        <Filters
+          filters={filters}
+          setFilters={(data) => setFilters(data)}
+          close={() => setShowFilters(false)}
+        />
+      )}
     </ScrollView>
   );
 };

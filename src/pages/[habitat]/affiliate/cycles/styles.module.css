@@ -97,6 +97,9 @@
   .page > * + * {
     margin-top: 1.5rem;
   }
+  .page form {
+    margin-top: 0;
+  }
   .breadcrumb {
     display: flex;
     flex-direction: row;
