@@ -1,16 +1,29 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import { Button, ScrollView } from '@aws-amplify/ui-react';
 import { MdArrowBack, MdOutlineOpenInNew, MdFilterList } from 'react-icons/md';
 
 import Chip from 'components/Chip';
 import TableWithPaginator from 'components/TableWithPaginator';
 
+import Loading from 'components/Loading';
+import Error from 'components/Error';
+import useAsync from 'hooks/utils/useAsync/useAsync';
+import { Habitat, TestCycle } from 'models';
+import { Status } from 'utils/enums';
+
 import Filters from './components/filters';
 import styles from './styles.module.css';
 import headers from './utils/headers';
 import { Inputs } from './types';
 
+interface OutletContextProps {
+  habitat?: Habitat;
+}
+
 const CyclesPage = () => {
+  const context = useOutletContext<OutletContextProps>();
+  const habitat = context?.habitat;
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState<Inputs>({
     startDate: '',
@@ -18,38 +31,36 @@ const CyclesPage = () => {
     status: null,
   });
 
-  const cycles = [
-    {
-      id: '1',
+  const getCycles = useCallback(async () => {
+    if (habitat) {
+      return habitat.TestCycles.toArray();
+    }
+  }, [habitat]);
+
+  const { value, status } = useAsync({
+    asyncFunction: getCycles,
+  });
+
+  if (status === Status.REJECTED) {
+    return <Error />;
+  }
+
+  if (status === Status.PENDING || !value) {
+    return <Loading />;
+  }
+
+  const cycles = value?.map(
+    ({ id, startDate, endDate, isOpen }: TestCycle) => ({
+      id,
       name: 'Spring Application Cycle 01',
-      startDate: '04/20/2024',
-      endDate: '04/20/2024',
-      status: 'Closed',
-    },
-    {
-      id: '2',
-      name: 'Spring Application Cycle 02',
-      startDate: '04/20/2024',
-      endDate: '04/20/2024',
-      status: 'Open',
-    },
-    {
-      id: '3',
-      name: 'Spring Application Cycle 03',
-      startDate: '04/24/2023',
-      endDate: '04/20/2124',
-      status: 'Closed',
-    },
-    {
-      id: '4',
-      name: 'Spring Application Cycle 04',
-      startDate: '04/22/2022',
-      endDate: '04/23/2023',
-      status: 'Open',
-    },
-  ];
+      startDate,
+      endDate,
+      status: isOpen ? 'Open' : 'Closed',
+    })
+  );
 
   console.log(filters);
+  console.log(value);
 
   return (
     <ScrollView height="100vh" className={styles.page}>
