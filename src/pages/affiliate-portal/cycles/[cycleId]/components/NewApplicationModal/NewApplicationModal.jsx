@@ -16,6 +16,7 @@ import FileInput from 'components/FileInput';
 import { DataStore, Storage } from 'aws-amplify';
 import { TestApplication, SubmissionStatus, ApplicationTypes } from 'models';
 import { DEFAULT_REVIEW_STATUS } from 'utils/constants';
+import CustomButton from 'components/CustomButton/CustomButton';
 import { newPaperApplicationSchema } from './NewApplicationModal.schema';
 
 const NewApplicationModal = ({ open, onClose, setTrigger, habitat, cycle }) => {
@@ -185,12 +186,16 @@ const NewApplicationModal = ({ open, onClose, setTrigger, habitat, cycle }) => {
             </Flex>
           )}
           <Flex justifyContent="end">
-            <Button onClick={onClose} disabled={loading > 0}>
+            <CustomButton
+              variation="secondary"
+              onClick={onClose}
+              disabled={loading > 0}
+            >
               Cancel
-            </Button>
-            <Button type="submit" variation="primary" disabled={loading > 0}>
+            </CustomButton>
+            <CustomButton variation="primary" disabled={loading > 0}>
               Submit
-            </Button>
+            </CustomButton>
           </Flex>
         </Flex>
       </form>
