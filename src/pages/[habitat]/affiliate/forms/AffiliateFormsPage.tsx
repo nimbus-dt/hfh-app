@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Flex, Heading, Text, View } from '@aws-amplify/ui-react';
 import React, { useState } from 'react';
 import { MdAdd, MdOutlineOpenInNew } from 'react-icons/md';
@@ -6,40 +7,18 @@ import Chip from 'components/Chip';
 import { stringToHumanReadable } from 'utils/strings';
 import CustomButton from 'components/CustomButton/CustomButton';
 import Toggle from 'components/Toggle';
+import { Habitat } from 'models';
+import { useRootFormsQuery } from 'hooks/services';
+import { useParams } from 'react-router-dom';
+import useDataStoreQuery from 'hooks/services/useDataStoreQuery';
+import { dateOnly } from 'utils/dates';
 import style from './AffiliateFormsPage.module.css';
-
-const dummyData = [
-  {
-    name: 'Homeownership',
-    dateSubmitted: '04/20/2024',
-    status: 'Accepted',
-    unreviewed: 326,
-  },
-  {
-    name: 'Repairs',
-    dateSubmitted: '04/25/2024',
-    status: 'Pending',
-    unreviewed: 34,
-  },
-  {
-    name: 'Pre Screens',
-    dateSubmitted: '04/25/2024',
-    status: 'Pending',
-    unreviewed: 34,
-  },
-  {
-    name: 'Uber',
-    dateSubmitted: '04/25/2024',
-    status: 'Pending',
-    unreviewed: 124,
-  },
-];
 
 const StatusChip = ({ status }: { status: string }) => {
   switch (status) {
-    case 'Accepted':
+    case 'ACTIVE':
       return <Chip variation="success" text={stringToHumanReadable(status)} />;
-    case 'Pending':
+    case 'PENDING':
       return <Chip variation="warning" text={stringToHumanReadable(status)} />;
     default:
       return <Chip variation="disabled" text={stringToHumanReadable(status)} />;
@@ -47,10 +26,31 @@ const StatusChip = ({ status }: { status: string }) => {
 };
 
 const AffiliateFormsPage = () => {
+  const { habitat: habitatUrlName } = useParams();
+
+  // Get Habitat
+  const { data: habitat } = useDataStoreQuery({
+    model: Habitat,
+    criteria: (c: any) => c.urlName.eq(habitatUrlName),
+  });
+
+  // Get Forms
+  const { data: forms } = useRootFormsQuery({
+    criteria: (c1: any) =>
+      c1.and((c2: any) => {
+        const habitatModel = habitat ? (habitat[0] as Habitat) : null;
+        const criteriaArr = habitatModel
+          ? [c2.habitatID.eq(habitatModel.id)]
+          : [];
+        return criteriaArr;
+      }),
+    paginationProducer: {},
+    dependencyArray: [habitat],
+  });
+
   const [view, setView] = useState<'active' | 'pending'>('active');
-  const [applications, setApplications] = useState(dummyData);
   return (
-    <Flex padding="32px" direction="column">
+    <Flex padding="32px" direction="column" gap="60px">
       <Flex
         direction={{
           base: 'column',
@@ -75,82 +75,81 @@ const AffiliateFormsPage = () => {
           />
         </Flex>
       </Flex>
-      <Flex direction="row" alignItems="center" justifyContent="space-between">
-        <Flex direction="row" alignItems="center">
-          <View className="theme-subtitle-s2">
-            <Text as="span" alignSelf="center">
-              Active Forms
+      <Flex direction="column" gap="20px">
+        <Flex
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Flex direction="row" alignItems="center">
+            <View className="theme-subtitle-s2">
+              <Text as="span" alignSelf="center">
+                Active Forms
+              </Text>
+            </View>
+            <Text className={`theme-subtitle-s2 ${style.subtitle}`}>
+              {forms.length} results
             </Text>
-          </View>
-          <Text className={`theme-subtitle-s2 ${style.subtitle}`}>
-            4 results
-          </Text>
+          </Flex>
+          <CustomButton icon={<MdAdd />}>New Form</CustomButton>
         </Flex>
-        <CustomButton icon={<MdAdd />}>New Form</CustomButton>
-      </Flex>
-      <TableWithPaginator
-        headers={[
-          {
-            id: 'name',
-            value: 'Name',
-            width: '100%',
-          },
-          {
-            id: 'dateSubmitted',
-            value: 'Date submitted',
-          },
-          {
-            id: 'status',
-            value: 'Status',
-            textAlign: 'center',
-          },
-          {
-            id: 'unreviewed',
-            value: 'Unreviewed',
-          },
-          {
-            id: 'view',
-            value: 'View',
-            textAlign: 'center',
-          },
-        ]}
-        data={applications.map((data, index) => ({
-          id: index,
-          cells: [
-            { value: data.name, id: 'name' },
-            { value: data.dateSubmitted, id: 'dateSubmitted' },
+        <TableWithPaginator
+          headers={[
             {
-              value: (
-                <Flex width="100%" justifyContent="center">
-                  <StatusChip status={data.status} />
-                </Flex>
-              ),
+              id: 'name',
+              value: 'Name',
+              width: '100%',
+            },
+            {
+              id: 'dateSubmitted',
+              value: 'Date submitted',
+            },
+            {
               id: 'status',
+              value: 'Status',
+              textAlign: 'center',
             },
-            { value: data.unreviewed, id: 'unreviewed' },
             {
-              value: (
-                <Flex width="100%" justifyContent="center">
-                  <Button variation="link" padding="0">
-                    <MdOutlineOpenInNew
-                      size="24px"
-                      color="var(--amplify-colors-neutral-90)"
-                    />
-                  </Button>
-                </Flex>
-              ),
-              id: 'view',
+              id: 'cycles',
+              value: 'Cycles',
             },
-          ],
-        }))}
-        hasMoreData
-        loadMoreData={() =>
-          setApplications((prevApplications) => [
-            ...prevApplications,
-            ...dummyData,
-          ])
-        }
-      />
+            {
+              id: 'view',
+              value: 'View',
+              textAlign: 'center',
+            },
+          ]}
+          data={forms.map((data: any, index: any) => ({
+            id: index,
+            cells: [
+              { value: data.name, id: 'name' },
+              { value: dateOnly(data.createdAt), id: 'dateSubmitted' },
+              {
+                value: (
+                  <Flex width="100%" justifyContent="center">
+                    <StatusChip status={data.status} />
+                  </Flex>
+                ),
+                id: 'status',
+              },
+              { value: 67, id: 'cycles' },
+              {
+                value: (
+                  <Flex width="100%" justifyContent="center">
+                    <Button variation="link" padding="0">
+                      <MdOutlineOpenInNew
+                        size="24px"
+                        color="var(--amplify-colors-neutral-90)"
+                      />
+                    </Button>
+                  </Flex>
+                ),
+                id: 'view',
+              },
+            ],
+          }))}
+        />{' '}
+      </Flex>
     </Flex>
   );
 };

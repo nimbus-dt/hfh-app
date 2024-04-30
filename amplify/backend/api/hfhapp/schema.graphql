@@ -1,3 +1,18 @@
+enum RootFormStatusTypes {
+  ACTIVE
+  PENDING
+}
+
+type RootForm @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  status: RootFormStatusTypes
+  description: String
+  files: [String]
+  Cycles: [TestCycle] @hasMany(indexName: "byRootForm", fields: ["id"])
+  habitatID: ID @index(name: "byHabitat")
+}
+
 type GalleryItem {
   id: String
   image: String
@@ -87,6 +102,7 @@ type TestCycle @model @auth(rules: [{allow: public}]) {
   habitatID: ID! @index(name: "byHabitat")
   TestApplications: [TestApplication] @hasMany(indexName: "byTestCycle", fields: ["id"])
   form: ID!
+  rootformID: ID @index(name: "byRootForm")
 }
 
 enum ApplicationTypes {
@@ -191,5 +207,6 @@ type Habitat @model @auth(rules: [{allow: public}]) {
   TestCycles: [TestCycle] @hasMany(indexName: "byHabitat", fields: ["id"])
   Forms: [Form] @hasMany(indexName: "byHabitat", fields: ["id"])
   authenticationHeader: String
+  RootForms: [RootForm] @hasMany(indexName: "byHabitat", fields: ["id"])
 }
  

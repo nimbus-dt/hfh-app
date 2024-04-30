@@ -1,5 +1,120 @@
 export const schema = {
     "models": {
+        "RootForm": {
+            "name": "RootForm",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "status": {
+                    "name": "status",
+                    "isArray": false,
+                    "type": {
+                        "enum": "RootFormStatusTypes"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "description": {
+                    "name": "description",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "files": {
+                    "name": "files",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "Cycles": {
+                    "name": "Cycles",
+                    "isArray": true,
+                    "type": {
+                        "model": "TestCycle"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "rootformID"
+                        ]
+                    }
+                },
+                "habitatID": {
+                    "name": "habitatID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "RootForms",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byHabitat",
+                        "fields": [
+                            "habitatID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "Form": {
             "name": "Form",
             "fields": {
@@ -462,6 +577,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "rootformID": {
+                    "name": "rootformID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -492,6 +614,15 @@ export const schema = {
                         "name": "byHabitat",
                         "fields": [
                             "habitatID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byRootForm",
+                        "fields": [
+                            "rootformID"
                         ]
                     }
                 },
@@ -1491,6 +1622,22 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "RootForms": {
+                    "name": "RootForms",
+                    "isArray": true,
+                    "type": {
+                        "model": "RootForm"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "habitatID"
+                        ]
+                    }
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -1535,6 +1682,13 @@ export const schema = {
         }
     },
     "enums": {
+        "RootFormStatusTypes": {
+            "name": "RootFormStatusTypes",
+            "values": [
+                "ACTIVE",
+                "PENDING"
+            ]
+        },
         "ApplicationTypes": {
             "name": "ApplicationTypes",
             "values": [
@@ -1796,5 +1950,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "e8b7fa7fcf347c31bdc5ac466b53425e"
+    "version": "d142f752b60653d049a3301c0d8a8baa"
 };

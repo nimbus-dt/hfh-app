@@ -2,6 +2,11 @@ import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-
 // @ts-ignore
 import { LazyLoading, LazyLoadingDisabled, AsyncCollection } from "@aws-amplify/datastore";
 
+export enum RootFormStatusTypes {
+  ACTIVE = "ACTIVE",
+  PENDING = "PENDING"
+}
+
 export enum ApplicationTypes {
   ONLINE = "ONLINE",
   PAPER = "PAPER"
@@ -128,6 +133,44 @@ type LazyHabitatProps = {
 export declare type HabitatProps = LazyLoading extends LazyLoadingDisabled ? EagerHabitatProps : LazyHabitatProps
 
 export declare const HabitatProps: (new (init: ModelInit<HabitatProps>) => HabitatProps)
+
+type EagerRootForm = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<RootForm, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name?: string | null;
+  readonly status?: RootFormStatusTypes | keyof typeof RootFormStatusTypes | null;
+  readonly description?: string | null;
+  readonly files?: (string | null)[] | null;
+  readonly Cycles?: (TestCycle | null)[] | null;
+  readonly habitatID?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyRootForm = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<RootForm, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name?: string | null;
+  readonly status?: RootFormStatusTypes | keyof typeof RootFormStatusTypes | null;
+  readonly description?: string | null;
+  readonly files?: (string | null)[] | null;
+  readonly Cycles: AsyncCollection<TestCycle>;
+  readonly habitatID?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type RootForm = LazyLoading extends LazyLoadingDisabled ? EagerRootForm : LazyRootForm
+
+export declare const RootForm: (new (init: ModelInit<RootForm>) => RootForm) & {
+  copyOf(source: RootForm, mutator: (draft: MutableModel<RootForm>) => MutableModel<RootForm> | void): RootForm;
+}
 
 type EagerForm = {
   readonly [__modelMeta__]: {
@@ -300,6 +343,7 @@ type EagerTestCycle = {
   readonly habitatID: string;
   readonly TestApplications?: (TestApplication | null)[] | null;
   readonly form: string;
+  readonly rootformID?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -317,6 +361,7 @@ type LazyTestCycle = {
   readonly habitatID: string;
   readonly TestApplications: AsyncCollection<TestApplication>;
   readonly form: string;
+  readonly rootformID?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -697,6 +742,7 @@ type EagerHabitat = {
   readonly TestCycles?: (TestCycle | null)[] | null;
   readonly Forms?: (Form | null)[] | null;
   readonly authenticationHeader?: string | null;
+  readonly RootForms?: (RootForm | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -719,6 +765,7 @@ type LazyHabitat = {
   readonly TestCycles: AsyncCollection<TestCycle>;
   readonly Forms: AsyncCollection<Form>;
   readonly authenticationHeader?: string | null;
+  readonly RootForms: AsyncCollection<RootForm>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
