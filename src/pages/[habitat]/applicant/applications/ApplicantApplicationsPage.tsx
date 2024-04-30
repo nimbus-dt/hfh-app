@@ -14,14 +14,14 @@ const dummyData = [
     affiliate: 'Habitat for Humanity of Kenosha',
     type: 'Online',
     dateSubmitted: '04/20/2024',
-    status: SubmissionStatus.SUBMITTED,
+    status: SubmissionStatus.PENDING,
   },
   {
     name: 'Repairs',
     affiliate: 'Habitat for Humanity',
     type: 'Online',
     dateSubmitted: '04/20/2024',
-    status: SubmissionStatus.UNSUBMITTED,
+    status: SubmissionStatus.REJECTED,
   },
   {
     name: 'Pre-Screen',
@@ -35,14 +35,14 @@ const dummyData = [
     affiliate: 'Habitat for Humanity of Kenosha',
     type: 'Online',
     dateSubmitted: '04/20/2024',
-    status: SubmissionStatus.SUBMITTED,
+    status: SubmissionStatus.PENDING,
   },
   {
     name: 'Repairs',
     affiliate: 'Habitat for Humanity',
     type: 'Online',
     dateSubmitted: '04/20/2024',
-    status: SubmissionStatus.UNSUBMITTED,
+    status: SubmissionStatus.REJECTED,
   },
   {
     name: 'Pre-Screen',
@@ -56,14 +56,14 @@ const dummyData = [
     affiliate: 'Habitat for Humanity of Kenosha',
     type: 'Online',
     dateSubmitted: '04/20/2024',
-    status: SubmissionStatus.SUBMITTED,
+    status: SubmissionStatus.PENDING,
   },
   {
     name: 'Repairs',
     affiliate: 'Habitat for Humanity',
     type: 'Online',
     dateSubmitted: '04/20/2024',
-    status: SubmissionStatus.UNSUBMITTED,
+    status: SubmissionStatus.REJECTED,
   },
   {
     name: 'Pre-Screen',
@@ -77,14 +77,14 @@ const dummyData = [
     affiliate: 'Habitat for Humanity of Kenosha',
     type: 'Online',
     dateSubmitted: '04/20/2024',
-    status: SubmissionStatus.SUBMITTED,
+    status: SubmissionStatus.PENDING,
   },
   {
     name: 'Repairs',
     affiliate: 'Habitat for Humanity',
     type: 'Online',
     dateSubmitted: '04/20/2024',
-    status: SubmissionStatus.UNSUBMITTED,
+    status: SubmissionStatus.REJECTED,
   },
   {
     name: 'Pre-Screen',
@@ -97,9 +97,9 @@ const dummyData = [
 
 const StatusChip = ({ status }: { status: keyof typeof SubmissionStatus }) => {
   switch (status) {
-    case SubmissionStatus.SUBMITTED:
+    case SubmissionStatus.PENDING:
       return <Chip variation="success" text={stringToHumanReadable(status)} />;
-    case SubmissionStatus.UNSUBMITTED:
+    case SubmissionStatus.REJECTED:
       return <Chip variation="warning" text={stringToHumanReadable(status)} />;
     case SubmissionStatus.RETURNED:
       return <Chip variation="danger" text={stringToHumanReadable(status)} />;
