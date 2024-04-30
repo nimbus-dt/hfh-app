@@ -98,21 +98,24 @@ const AffiliateFormsPage = () => {
             {
               id: 'name',
               value: 'Name',
-              width: '100%',
+              width: '55%',
             },
             {
               id: 'dateCreated',
               value: 'Date Created',
+              width: '15%',
             },
             {
               id: 'status',
               value: 'Status',
               textAlign: 'center',
+              width: '15%',
             },
             {
               id: 'view',
               value: 'View',
               textAlign: 'center',
+              width: '15%',
             },
           ]}
           data={forms.map((data: any, index: any) => ({
