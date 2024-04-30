@@ -12,6 +12,7 @@ const Filters = ({ close, filters, setFilters }: FilterProps) => {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     setFilters(data);
+    close();
   };
 
   return (

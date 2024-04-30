@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import { Button, ScrollView } from '@aws-amplify/ui-react';
+import { DataStore } from 'aws-amplify';
+import { Button } from '@aws-amplify/ui-react';
 import { MdArrowBack, MdOutlineOpenInNew, MdFilterList } from 'react-icons/md';
 
 import Chip from 'components/Chip';
@@ -34,9 +35,27 @@ const CyclesPage = () => {
 
   const getCycles = useCallback(async () => {
     if (habitat) {
-      return habitat.TestCycles.toArray();
+      return DataStore.query(TestCycle, (c1) =>
+        c1.and((c2) => {
+          const criteriaArray = [c2.habitatID.eq(habitat.id)];
+
+          if (filters?.status === 'open' || filters.status === 'close') {
+            criteriaArray.push(c2.isOpen.eq(filters.status === 'open'));
+          }
+
+          if (filters?.startDate) {
+            criteriaArray.push(c2.startDate.ge(filters.startDate));
+          }
+
+          if (filters?.endDate) {
+            criteriaArray.push(c2.startDate.le(filters.endDate));
+          }
+
+          return criteriaArray;
+        })
+      );
     }
-  }, [habitat]);
+  }, [filters, habitat]);
 
   const { value, status } = useAsync({
     asyncFunction: getCycles,
@@ -59,9 +78,6 @@ const CyclesPage = () => {
       status: isOpen ? 'Open' : 'Closed',
     })
   );
-
-  console.log(filters);
-  console.log(value);
 
   return (
     <div className={styles.page}>
