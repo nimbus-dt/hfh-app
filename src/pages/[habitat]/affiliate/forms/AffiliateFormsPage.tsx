@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Flex, Heading, Text, View } from '@aws-amplify/ui-react';
 import React, { useEffect, useState } from 'react';
-import { MdAdd, MdOutlineOpenInNew } from 'react-icons/md';
+import { MdOutlineOpenInNew } from 'react-icons/md';
 import TableWithPaginator from 'components/TableWithPaginator';
 import Chip from 'components/Chip';
 import { stringToHumanReadable } from 'utils/strings';
-import CustomButton from 'components/CustomButton/CustomButton';
 import Toggle from 'components/Toggle';
 import { Habitat } from 'models';
 import { useRootFormsQuery } from 'hooks/services';
