@@ -101,17 +101,13 @@ const AffiliateFormsPage = () => {
               width: '100%',
             },
             {
-              id: 'dateSubmitted',
-              value: 'Date submitted',
+              id: 'dateCreated',
+              value: 'Date Created',
             },
             {
               id: 'status',
               value: 'Status',
               textAlign: 'center',
-            },
-            {
-              id: 'cycles',
-              value: 'Cycles',
             },
             {
               id: 'view',
@@ -123,7 +119,7 @@ const AffiliateFormsPage = () => {
             id: index,
             cells: [
               { value: data.name, id: 'name' },
-              { value: dateOnly(data.createdAt), id: 'dateSubmitted' },
+              { value: dateOnly(data.createdAt), id: 'dateCreated' },
               {
                 value: (
                   <Flex width="100%" justifyContent="center">
@@ -132,7 +128,6 @@ const AffiliateFormsPage = () => {
                 ),
                 id: 'status',
               },
-              { value: 67, id: 'cycles' },
               {
                 value: (
                   <Flex width="100%" justifyContent="center">
@@ -148,7 +143,7 @@ const AffiliateFormsPage = () => {
               },
             ],
           }))}
-        />{' '}
+        />
       </Flex>
     </Flex>
   );
