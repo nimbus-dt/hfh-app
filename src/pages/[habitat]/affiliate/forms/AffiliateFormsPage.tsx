@@ -102,60 +102,98 @@ const AffiliateFormsPage = () => {
           </Flex>
           <NewFormButton />
         </Flex>
-        <TableWithPaginator
-          headers={[
-            {
-              id: 'name',
-              value: 'Name',
-              width: '55%',
-            },
-            {
-              id: 'dateCreated',
-              value: 'Date Created',
-              width: '15%',
-            },
-            {
-              id: 'status',
-              value: 'Status',
-              textAlign: 'center',
-              width: '15%',
-            },
-            {
-              id: 'view',
-              value: 'View',
-              textAlign: 'center',
-              width: '15%',
-            },
-          ]}
-          data={latestForms.map((data: any, index: any) => ({
-            id: index,
-            cells: [
-              { value: data.name, id: 'name' },
-              { value: dateOnly(data.createdAt), id: 'dateCreated' },
+        {view === 'PENDING' ? (
+          <TableWithPaginator
+            headers={[
               {
-                value: (
-                  <Flex width="100%" justifyContent="center">
-                    <StatusChip status={data.status} />
-                  </Flex>
-                ),
+                id: 'name',
+                value: 'Name',
+                width: '70%',
+              },
+              {
+                id: 'dateCreated',
+                value: 'Date Created',
+                width: '15%',
+              },
+              {
                 id: 'status',
+                value: 'Status',
+                textAlign: 'center',
+                width: '15%',
+              },
+            ]}
+            data={latestForms.map((data: any, index: any) => ({
+              id: index,
+              cells: [
+                { value: data.name, id: 'name' },
+                { value: dateOnly(data.createdAt), id: 'dateCreated' },
+                {
+                  value: (
+                    <Flex width="100%" justifyContent="center">
+                      <StatusChip status={data.status} />
+                    </Flex>
+                  ),
+                  id: 'status',
+                },
+              ],
+            }))}
+          />
+        ) : (
+          <TableWithPaginator
+            headers={[
+              {
+                id: 'name',
+                value: 'Name',
+                width: '55%',
               },
               {
-                value: (
-                  <Flex width="100%" justifyContent="center">
-                    <Button variation="link" padding="0">
-                      <MdOutlineOpenInNew
-                        size="24px"
-                        color="var(--amplify-colors-neutral-90)"
-                      />
-                    </Button>
-                  </Flex>
-                ),
-                id: 'view',
+                id: 'dateCreated',
+                value: 'Date Created',
+                width: '15%',
               },
-            ],
-          }))}
-        />
+              {
+                id: 'status',
+                value: 'Status',
+                textAlign: 'center',
+                width: '15%',
+              },
+              {
+                id: 'view',
+                value: 'View',
+                textAlign: 'center',
+                width: '15%',
+              },
+            ]}
+            data={latestForms.map((data: any, index: any) => ({
+              id: index,
+              cells: [
+                { value: data.name, id: 'name' },
+                { value: dateOnly(data.createdAt), id: 'dateCreated' },
+                {
+                  value: (
+                    <Flex width="100%" justifyContent="center">
+                      <StatusChip status={data.status} />
+                    </Flex>
+                  ),
+                  id: 'status',
+                },
+                {
+                  value: (
+                    <Flex width="100%" justifyContent="center">
+                      <Button variation="link" padding="0">
+                        <MdOutlineOpenInNew
+                          size="24px"
+                          color="var(--amplify-colors-neutral-90)"
+                        />
+                      </Button>
+                    </Flex>
+                  ),
+                  id: 'view',
+                },
+              ],
+            }))}
+          />
+        )}
       </Flex>
     </Flex>
   );

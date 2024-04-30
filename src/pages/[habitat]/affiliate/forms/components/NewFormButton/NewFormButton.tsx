@@ -94,7 +94,7 @@ function NewFormButton() {
     }
 
     setLoading(false);
-
+    setModalOpen(!modalOpen);
     event.target.reset();
   }
 
