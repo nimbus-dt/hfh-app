@@ -1,0 +1,19 @@
+.breadcrumb {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: var(--amplify-colors-neutral-90);
+}
+
+.breadcrumb > *:nth-child(odd) {
+  padding: 8px;
+}
+
+.breadcrumb > *:last-child {
+  color: var(--amplify-colors-black);
+}
+
+.link {
+  color: unset;
+  text-decoration: none;
+}
