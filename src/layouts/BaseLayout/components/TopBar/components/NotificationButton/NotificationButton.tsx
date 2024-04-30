@@ -1,12 +1,11 @@
-import { Button } from '@aws-amplify/ui-react';
 import React from 'react';
 import { MdOutlineNotificationsNone } from 'react-icons/md';
-import style from './NotificationButton.module.css';
+import IconButton from 'components/IconButton';
 
 const NotificationButton = () => (
-  <Button className={`${style.notificationButton}`} variation="link">
+  <IconButton variation="not-outlined">
     <MdOutlineNotificationsNone />
-  </Button>
+  </IconButton>
 );
 
 export default NotificationButton;
