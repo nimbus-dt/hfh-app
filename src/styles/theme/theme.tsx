@@ -43,8 +43,8 @@ const theme: Theme = {
     },
     fonts: {
       default: {
-        variable: { value: 'inter, sans-serif' },
-        static: { value: 'inter, sans-serif' },
+        variable: { value: 'Inter, sans-serif' },
+        static: { value: 'Inter, sans-serif' },
       },
     },
     fontSizes: {

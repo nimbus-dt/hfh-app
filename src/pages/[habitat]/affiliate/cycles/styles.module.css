@@ -1,11 +1,10 @@
 .page {
+  position: relative;
   padding: 2rem;
   width: 100%;
   background-color: var(--amplify-colors-neutral-20);
-}
-
-.page > * + * {
-  margin-top: 1rem;
+  display: grid;
+  gap: 1rem;
 }
 
 .cta {

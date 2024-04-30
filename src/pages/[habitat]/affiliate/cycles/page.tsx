@@ -2,14 +2,20 @@ import { useState } from 'react';
 import { Button, ScrollView } from '@aws-amplify/ui-react';
 import { MdArrowBack, MdOutlineOpenInNew, MdFilterList } from 'react-icons/md';
 
+import Chip from 'components/Chip';
 import TableWithPaginator from 'components/TableWithPaginator';
 
-import Chip from 'components/Chip';
+import Filters from './components/filters';
 import styles from './styles.module.css';
 import headers from './utils/headers';
 
 const CyclesPage = () => {
-  const [filters, setFilters] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
+  const [filters, setFilters] = useState({
+    startDate: '',
+    endDate: '',
+    status: '',
+  });
 
   const cycles = [
     {
@@ -66,7 +72,13 @@ const CyclesPage = () => {
             </p>
           </div>
           <div className={styles.options}>
-            <div className={styles.filters}>
+            <div
+              className={styles.filters}
+              onClick={() => {
+                setShowFilters((prev) => !prev);
+              }}
+              aria-hidden="true"
+            >
               <MdFilterList size="24px" />
             </div>
             <Button variation="primary">New Cycle +</Button>
@@ -104,6 +116,7 @@ const CyclesPage = () => {
           }))}
         />
       </div>
+      {showFilters && <Filters close={() => setShowFilters(false)} />}
     </ScrollView>
   );
 };
