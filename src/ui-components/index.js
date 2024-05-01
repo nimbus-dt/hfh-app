@@ -24,6 +24,8 @@ export { default as RecordCreateForm } from "./RecordCreateForm";
 export { default as RecordUpdateForm } from "./RecordUpdateForm";
 export { default as RootFormCreateForm } from "./RootFormCreateForm";
 export { default as RootFormUpdateForm } from "./RootFormUpdateForm";
+export { default as UserCreateForm } from "./UserCreateForm";
+export { default as UserUpdateForm } from "./UserUpdateForm";
 export { default as WrittenCreateForm } from "./WrittenCreateForm";
 export { default as WrittenUpdateForm } from "./WrittenUpdateForm";
 export { default as studioTheme } from "./studioTheme";

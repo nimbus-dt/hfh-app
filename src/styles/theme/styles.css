@@ -20,7 +20,7 @@
   font-family: var(--amplify-fonts-default-variable);
   font-weight: var(--amplify-font-weights-normal);
   font-size: var(--amplify-font-sizes-xxl);
-  line-height: var(--amplify-line-heights-medium);
+  line-height: var(--amplify-line-heights-large);
   letter-spacing: 0.25px;
 }
 

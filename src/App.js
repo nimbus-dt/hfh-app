@@ -1,7 +1,6 @@
 import './assets/styles/App.css';
 import { Routes, Route, Outlet } from 'react-router-dom';
 import { ScrollView } from '@aws-amplify/ui-react';
-import CyclesPage from 'pages/affiliate-portal/cycles';
 import ApplicationsPage from 'pages/affiliate-portal/cycles/[cycleId]';
 import ApplicationDetailsPage from 'pages/affiliate-portal/cycles/[cycleId]/[applicationId]';
 import AffiliatePortalRepairsPage from 'pages/affiliate-portal/repairs';
@@ -23,6 +22,7 @@ import { ROUTES } from 'utils/constants';
 import ApplicantApplicationsPage from 'pages/[habitat]/applicant/applications';
 import ApplicantDecisionsPage from 'pages/[habitat]/applicant/decisions/ApplicantDecisionsPage';
 import AffiliateFormsPage from 'pages/[habitat]/affiliate/forms';
+import CyclesPage from 'pages/[habitat]/affiliate/cycles';
 import NewAffiliateLayout from 'layouts/NewAffiliateLayout';
 
 function App() {

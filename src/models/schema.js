@@ -1,5 +1,80 @@
 export const schema = {
     "models": {
+        "User": {
+            "name": "User",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "props": {
+                    "name": "props",
+                    "isArray": false,
+                    "type": "AWSJSON",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "type": {
+                    "name": "type",
+                    "isArray": false,
+                    "type": {
+                        "enum": "UserTypes"
+                    },
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "owner": {
+                    "name": "owner",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Users",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "RootForm": {
             "name": "RootForm",
             "fields": {
@@ -522,7 +597,7 @@ export const schema = {
                 "startDate": {
                     "name": "startDate",
                     "isArray": false,
-                    "type": "AWSDate",
+                    "type": "AWSDateTime",
                     "isRequired": true,
                     "attributes": []
                 },
@@ -581,6 +656,13 @@ export const schema = {
                     "name": "rootformID",
                     "isArray": false,
                     "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -1682,6 +1764,13 @@ export const schema = {
         }
     },
     "enums": {
+        "UserTypes": {
+            "name": "UserTypes",
+            "values": [
+                "AFFILIATE",
+                "APPLICANT"
+            ]
+        },
         "RootFormStatusTypes": {
             "name": "RootFormStatusTypes",
             "values": [
@@ -1951,5 +2040,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "07494075b642e94cd17768d8fd0e2ce4"
+    "version": "ff3a8fce062d591094af783c991cb892"
 };
