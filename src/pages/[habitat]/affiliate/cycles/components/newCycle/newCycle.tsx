@@ -10,6 +10,7 @@ import { Habitat, TestCycle } from 'models';
 import styles from './newCycle.module.css';
 
 interface NewCycleProps {
+  formId?: string;
   open: boolean;
   close: () => void;
   openCycle?: TestCycle;
@@ -27,6 +28,7 @@ const NewCycle = ({
   openCycle,
   habitat,
   refetch,
+  formId,
 }: NewCycleProps) => {
   const {
     register,
@@ -49,23 +51,14 @@ const NewCycle = ({
     }
   };
   const onCreateCycle: SubmitHandler<Inputs> = async (data) => {
-    if (habitat) {
-      const forms = (await habitat.Forms.toArray()).sort((a, b) => {
-        if (a.createdAt && b.createdAt) {
-          return a.createdAt < b.createdAt ? 1 : -1;
-        }
-        return 0;
-      });
-      if (!forms.length) {
-        return;
-      }
+    if (habitat && formId) {
       await DataStore.save(
         new TestCycle({
           name: data.name,
           startDate: new Date().toISOString(),
           isOpen: true,
           habitatID: habitat.id,
-          form: forms[0].id,
+          form: formId,
         })
       );
       refetch();

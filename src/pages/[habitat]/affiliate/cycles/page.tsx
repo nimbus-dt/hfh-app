@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { DataStore, SortDirection } from 'aws-amplify';
 import { Button } from '@aws-amplify/ui-react';
 import { MdArrowBack, MdOutlineOpenInNew, MdFilterList } from 'react-icons/md';
@@ -27,6 +27,7 @@ interface OutletContextProps {
 
 const CyclesPage = () => {
   const navigate = useNavigate();
+  const { formId } = useParams();
   const context = useOutletContext<OutletContextProps>();
   const habitat = context?.habitat;
   const [showFilters, setShowFilters] = useState(false);
@@ -44,6 +45,10 @@ const CyclesPage = () => {
         (c1) =>
           c1.and((c2) => {
             const criteriaArray = [c2.habitatID.eq(habitat.id)];
+
+            if (formId) {
+              criteriaArray.push(c2.form.eq(formId));
+            }
 
             if (filters?.status === 'open' || filters.status === 'close') {
               criteriaArray.push(c2.isOpen.eq(filters.status === 'open'));
@@ -79,14 +84,18 @@ const CyclesPage = () => {
         openCycles: openCyclesResponse,
       };
     }
-  }, [filters, habitat]);
+  }, [filters, habitat, formId]);
 
   const { execute, value, status } = useAsync({
     asyncFunction: getCycles,
   });
 
+  const onGoBack = () => {
+    navigate('../forms');
+  };
+
   const onClickView = (id: string) => {
-    navigate(`../${id}`);
+    navigate(`./${id}`);
   };
 
   if (status === Status.REJECTED) {
@@ -113,14 +122,19 @@ const CyclesPage = () => {
       <div className={styles.cta}>
         <BreadCrumbs
           items={[
-            { label: 'Homeownership Form' },
+            { label: 'Homeownership Form', to: '../forms' },
             {
               label: 'Cycles',
             },
           ]}
         />
         <div className={styles.title}>
-          <MdArrowBack className={styles.hide_on_small} size="24px" />
+          <MdArrowBack
+            className={styles.hide_on_small}
+            style={{ cursor: 'pointer' }}
+            size="24px"
+            onClick={onGoBack}
+          />
           <p className="theme-headline-medium">Cycles Dashboard</p>
         </div>
       </div>
@@ -201,6 +215,7 @@ const CyclesPage = () => {
           openCycle={
             value.openCycles.length > 0 ? value.openCycles[0] : undefined
           }
+          formId={formId}
           habitat={habitat}
           open={showModal}
           close={() => setShowModal(false)}

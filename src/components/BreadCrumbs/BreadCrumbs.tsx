@@ -16,12 +16,12 @@ const BreadCrumbs = ({ items }: IProperties) => (
     className={`theme-body-medium ${styles.hide_on_small} ${styles.breadcrumb}`}
   >
     {items.map((item, index) => (
-      <>
+      <div key={item.label}>
         <Link to={item.to || '#'} className={styles.link}>
           <span>{item.label}</span>
         </Link>
         {index + 1 < items.length && <span>&gt;</span>}
-      </>
+      </div>
     ))}
   </div>
 );

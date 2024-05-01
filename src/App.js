@@ -133,13 +133,14 @@ function App() {
             path={ROUTES.HABITAT_AFFILIATE_USERS}
             element={<p>This page is under construction</p>}
           />
+
           <Route path=":formId">
-            <Route index element={<h1>Cycles Dashboard Page</h1>} />
-            <Route path=":cycleId">
-              <Route index element={<h1>Applications Dashboard Page</h1>} />
+            <Route index element={<CyclesPage />} />
+            <Route path={ROUTES.HABITAT_AFFILIATE_CYCLES_CYCLE}>
+              <Route index element={<ApplicationsPage />} />
               <Route
-                path=":applicationId"
-                element={<h1>Application Detail</h1>}
+                path={ROUTES.HABITAT_AFFILIATE_CYCLES_CYCLE_APPLICATION}
+                element={<ApplicationDetailsPage />}
               />
             </Route>
           </Route>
