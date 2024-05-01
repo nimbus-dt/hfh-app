@@ -54,7 +54,7 @@ const CyclesPage = () => {
             }
 
             if (filters?.endDate) {
-              criteriaArray.push(c2.startDate.le(filters.endDate));
+              criteriaArray.push(c2.endDate.le(filters.endDate));
             }
 
             return criteriaArray;
