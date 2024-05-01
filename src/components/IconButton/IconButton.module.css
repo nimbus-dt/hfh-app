@@ -6,6 +6,8 @@
   line-height: 24px;
   width: 48px;
   height: 48px;
+  min-height: 48px;
+  min-width: 48px;
   border: none;
   display: flex;
   justify-content: center;
