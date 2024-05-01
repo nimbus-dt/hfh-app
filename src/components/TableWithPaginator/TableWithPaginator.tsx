@@ -107,6 +107,17 @@ const TableWithPaginator = ({
               ))}
             </TableRow>
           ))}
+          {pageData.length === 0 && (
+            <TableRow>
+              <TableCell
+                colSpan={'100%' as unknown as number}
+                textAlign="center"
+                color="var(--amplify-colors-neutral-80)"
+              >
+                No data
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
         <TableFoot>
           <TableRow>
