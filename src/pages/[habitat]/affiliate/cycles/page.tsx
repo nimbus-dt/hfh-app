@@ -14,6 +14,7 @@ import useAsync from 'hooks/utils/useAsync/useAsync';
 import { Habitat, TestCycle } from 'models';
 import { Status } from 'utils/enums';
 
+import { dateOnly } from 'utils/dates';
 import Filters from './components/filters';
 import NewCycle from './components/newCycle';
 import styles from './styles.module.css';
@@ -100,8 +101,8 @@ const CyclesPage = () => {
     ({ id, name, startDate, endDate, isOpen, createdAt }: TestCycle) => ({
       id,
       name,
-      startDate: startDate.split('T')[0],
-      endDate,
+      startDate: dateOnly(startDate.split('T')[0]),
+      endDate: endDate ? dateOnly(endDate) : '',
       status: isOpen ? 'Open' : 'Closed',
       createdAt,
     })
