@@ -145,6 +145,7 @@ function App() {
           </Route>
         </Route>
       </Route>
+      <Route path="testing" element={<AffiliateFormsPage />} />
 
       <Route path="/*" element={<h1>404</h1>} />
     </Routes>
