@@ -36,6 +36,7 @@ import {
   Flex,
   Text,
   TextField,
+  useBreakpointValue,
 } from '@aws-amplify/ui-react';
 import NewApplicationModal from 'pages/affiliate-portal/cycles/[cycleId]/components/NewApplicationModal';
 import { Controller, useForm } from 'react-hook-form';
@@ -57,6 +58,10 @@ interface IOutletContext {
 const REVIEW_STATUS = ['All', DEFAULT_REVIEW_STATUS];
 
 const AffiliateCycleApplications = () => {
+  const isSmall = useBreakpointValue({
+    base: true,
+    medium: false,
+  });
   const { cycleId } = useParams();
   const {
     habitat,
@@ -205,13 +210,15 @@ const AffiliateCycleApplications = () => {
 
   return (
     <div className={style.container}>
-      <BreadCrumbs
-        items={[
-          { label: 'Homeownership Form' },
-          { label: 'Cycles' },
-          { label: 'Applications' },
-        ]}
-      />
+      {!isSmall && (
+        <BreadCrumbs
+          items={[
+            { label: 'Homeownership Form' },
+            { label: 'Cycles' },
+            { label: 'Applications' },
+          ]}
+        />
+      )}
       <div className={`${style.titleContainer}`}>
         <IconButton variation="not-outlined">
           <MdOutlineArrowBack />
@@ -380,11 +387,12 @@ const AffiliateCycleApplications = () => {
             cycle={cycle}
             setTrigger={setTrigger}
           />
+
           <CustomButton
             onClick={handleAddNewApplicationOnClick}
-            icon={<MdOutlineAdd />}
+            icon={isSmall ? undefined : <MdOutlineAdd />}
           >
-            New Application
+            {isSmall ? <MdOutlineAdd size="24px" /> : 'New Application'}
           </CustomButton>
         </div>
       </div>

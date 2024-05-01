@@ -17,12 +17,14 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 16px;
-  align-items: center;
+  align-items: end;
 }
 
 .resultsContainer {
   display: flex;
   gap: 12px;
+  flex-direction: column;
+  align-items: start;
 }
 
 .results {
@@ -32,6 +34,8 @@
 .options {
   display: flex;
   gap: 16px;
+  flex-direction: column;
+  align-items: end;
 }
 
 .openButtonContainer {
@@ -108,4 +112,10 @@
 
 .reviewStatus {
   cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .options {
+    flex-direction: row;
+  }
 }
