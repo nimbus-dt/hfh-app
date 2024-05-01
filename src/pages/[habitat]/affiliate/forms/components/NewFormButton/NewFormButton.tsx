@@ -20,7 +20,11 @@ import { Habitat, RootForm, RootFormStatusTypes } from 'models';
 import { useOutletContext } from 'react-router-dom';
 import { Storage } from 'aws-amplify';
 
-function NewFormButton() {
+interface IProperties {
+  triggerUpdate: () => void;
+}
+
+function NewFormButton({ triggerUpdate }: IProperties) {
   const [modalOpen, setModalOpen] = useState(false);
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -89,6 +93,7 @@ function NewFormButton() {
           item.files = valuesArray;
         })
       );
+      triggerUpdate();
     } catch (error) {
       console.log(`Error creating new form: ${error}`);
     }
@@ -138,7 +143,9 @@ function NewFormButton() {
               files={files}
             />
             <Flex direction="row" justifyContent="end">
-              <CustomButton type="submit">Submit</CustomButton>
+              <CustomButton disabled={loading} type="submit">
+                Submit
+              </CustomButton>
             </Flex>
           </Flex>
         </form>

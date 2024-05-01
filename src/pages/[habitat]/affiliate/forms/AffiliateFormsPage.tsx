@@ -27,6 +27,7 @@ const StatusChip = ({ status }: { status: string }) => {
 
 const AffiliateFormsPage = () => {
   const [latestForms, setLatestForms] = useState([]);
+  const [trigger, setTrigger] = useState(true);
 
   // Get context
   interface OutletContextType {
@@ -44,10 +45,12 @@ const AffiliateFormsPage = () => {
         return criteriaArr;
       }),
     paginationProducer: {},
-    dependencyArray: [habitat],
+    dependencyArray: [habitat, trigger],
   });
 
   const [view, setView] = useState<'ACTIVE' | 'PENDING'>('ACTIVE');
+
+  const triggerUpdate = () => setTrigger((prevTrigger) => !prevTrigger);
 
   // Change forms according on view
   useEffect(() => {
@@ -100,7 +103,7 @@ const AffiliateFormsPage = () => {
               {latestForms.length} results
             </Text>
           </Flex>
-          <NewFormButton />
+          <NewFormButton triggerUpdate={triggerUpdate} />
         </Flex>
         {view === 'PENDING' ? (
           <TableWithPaginator
