@@ -1,8 +1,16 @@
 /* eslint-disable react/button-has-type */
-import React, { ReactNode } from 'react';
+import React, {
+  ButtonHTMLAttributes,
+  DetailedHTMLProps,
+  ReactNode,
+} from 'react';
 import style from './CustomButton.module.css';
 
-interface IProperties extends React.HTMLAttributes<HTMLButtonElement> {
+interface IProperties
+  extends DetailedHTMLProps<
+    ButtonHTMLAttributes<HTMLButtonElement>,
+    HTMLButtonElement
+  > {
   icon?: ReactNode;
   variation?: 'primary' | 'secondary' | 'text-only';
   type?: 'submit';
