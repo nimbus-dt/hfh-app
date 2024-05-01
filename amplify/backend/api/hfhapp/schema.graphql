@@ -1,3 +1,29 @@
+type ApplicantProps {
+  state: String!
+  city: String!
+  street: String!
+  householdMembersNumber: Int!
+  householdAnnualIncome: Float!
+  currentlyUnemployed: String!
+  currentWorkTitle: String
+  nameOfEmployer: String
+  howDidYouHearAbout: String!
+  firstTimeApplying: String!
+  whatAreYouInterestedIn: String!
+}
+
+type AffiliateProps {
+  titleAtHabitat: String!
+  roleDescription: String!
+  joinDate: AWSDate!
+}
+
+enum Sexs {
+  MALE
+  FEMALE
+  OTHER
+}
+
 enum UserTypes {
   AFFILIATE
   APPLICANT
@@ -5,7 +31,13 @@ enum UserTypes {
 
 type User @model @auth(rules: [{allow: public}]) {
   id: ID!
-  props: AWSJSON!
+  firstName: String!
+  lastName: String!
+  dateOfBirth: AWSDate!
+  sex: Sexs!
+  phoneNumber: String!
+  affiliateProps: AffiliateProps!
+  applicantProps: ApplicantProps
   type: UserTypes!
   owner: ID!
 }
