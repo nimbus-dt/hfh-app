@@ -1,3 +1,15 @@
+enum UserTypes {
+  AFFILIATE
+  APPLICANT
+}
+
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  props: AWSJSON!
+  type: UserTypes!
+  owner: ID!
+}
+
 enum RootFormStatusTypes {
   ACTIVE
   PENDING
@@ -95,7 +107,7 @@ type HabitatProps {
 
 type TestCycle @model @auth(rules: [{allow: public}]) {
   id: ID!
-  startDate: AWSDate!
+  startDate: AWSDateTime!
   endDate: AWSDate
   isOpen: Boolean!
   props: AWSJSON
@@ -103,6 +115,7 @@ type TestCycle @model @auth(rules: [{allow: public}]) {
   TestApplications: [TestApplication] @hasMany(indexName: "byTestCycle", fields: ["id"])
   form: ID!
   rootformID: ID @index(name: "byRootForm")
+  name: String
 }
 
 enum ApplicationTypes {
