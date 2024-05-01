@@ -1,20 +1,21 @@
 import { useCallback, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
-import { DataStore } from 'aws-amplify';
+import { useNavigate, useOutletContext } from 'react-router-dom';
+import { DataStore, SortDirection } from 'aws-amplify';
 import { Button } from '@aws-amplify/ui-react';
 import { MdArrowBack, MdOutlineOpenInNew, MdFilterList } from 'react-icons/md';
-
-import Chip from 'components/Chip';
-import TableWithPaginator from 'components/TableWithPaginator';
+import { throttle } from 'lodash';
 
 import BreadCrumbs from 'components/BreadCrumbs/BreadCrumbs';
+import Chip from 'components/Chip';
 import Loading from 'components/Loading';
 import Error from 'components/Error';
+import TableWithPaginator from 'components/TableWithPaginator';
 import useAsync from 'hooks/utils/useAsync/useAsync';
 import { Habitat, TestCycle } from 'models';
 import { Status } from 'utils/enums';
 
 import Filters from './components/filters';
+import NewCycle from './components/newCycle';
 import styles from './styles.module.css';
 import headers from './utils/headers';
 import { Inputs } from './types';
@@ -24,9 +25,11 @@ interface OutletContextProps {
 }
 
 const CyclesPage = () => {
+  const navigate = useNavigate();
   const context = useOutletContext<OutletContextProps>();
   const habitat = context?.habitat;
   const [showFilters, setShowFilters] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [filters, setFilters] = useState<Inputs>({
     startDate: '',
     endDate: '',
@@ -35,31 +38,55 @@ const CyclesPage = () => {
 
   const getCycles = useCallback(async () => {
     if (habitat) {
-      return DataStore.query(TestCycle, (c1) =>
+      const cyclesResponse = await DataStore.query(
+        TestCycle,
+        (c1) =>
+          c1.and((c2) => {
+            const criteriaArray = [c2.habitatID.eq(habitat.id)];
+
+            if (filters?.status === 'open' || filters.status === 'close') {
+              criteriaArray.push(c2.isOpen.eq(filters.status === 'open'));
+            }
+
+            if (filters?.startDate) {
+              criteriaArray.push(c2.startDate.ge(filters.startDate));
+            }
+
+            if (filters?.endDate) {
+              criteriaArray.push(c2.startDate.le(filters.endDate));
+            }
+
+            return criteriaArray;
+          }),
+        {
+          sort: (s) => s.startDate(SortDirection.DESCENDING),
+        }
+      );
+
+      const openCyclesResponse = await DataStore.query(TestCycle, (c1) =>
         c1.and((c2) => {
-          const criteriaArray = [c2.habitatID.eq(habitat.id)];
-
-          if (filters?.status === 'open' || filters.status === 'close') {
-            criteriaArray.push(c2.isOpen.eq(filters.status === 'open'));
-          }
-
-          if (filters?.startDate) {
-            criteriaArray.push(c2.startDate.ge(filters.startDate));
-          }
-
-          if (filters?.endDate) {
-            criteriaArray.push(c2.startDate.le(filters.endDate));
-          }
-
+          const criteriaArray = [
+            c2.habitatID.eq(habitat.id),
+            c2.isOpen.eq(true),
+          ];
           return criteriaArray;
         })
       );
+
+      return {
+        cycles: cyclesResponse,
+        openCycles: openCyclesResponse,
+      };
     }
   }, [filters, habitat]);
 
-  const { value, status } = useAsync({
+  const { execute, value, status } = useAsync({
     asyncFunction: getCycles,
   });
+
+  const onClickView = (id: string) => {
+    navigate(`../${id}`);
+  };
 
   if (status === Status.REJECTED) {
     return <Error />;
@@ -69,13 +96,14 @@ const CyclesPage = () => {
     return <Loading />;
   }
 
-  const cycles = value?.map(
-    ({ id, startDate, endDate, isOpen }: TestCycle) => ({
+  const cycles = value.cycles?.map(
+    ({ id, name, startDate, endDate, isOpen, createdAt }: TestCycle) => ({
       id,
-      name: 'Spring Application Cycle 01',
-      startDate,
+      name,
+      startDate: startDate.split('T')[0],
       endDate,
       status: isOpen ? 'Open' : 'Closed',
+      createdAt,
     })
   );
 
@@ -100,20 +128,27 @@ const CyclesPage = () => {
           <div className={styles.table_title}>
             <p className={`${styles.neutral_100} theme-subtitle-s2`}>Cycles</p>
             <p className={`${styles.neutral_80} theme-body-small`}>
-              15 results
+              {cycles.length} results
             </p>
           </div>
           <div className={styles.options}>
             <div
               className={styles.filters}
-              onClick={() => {
+              onClick={throttle(() => {
                 setShowFilters((prev) => !prev);
-              }}
+              }, 500)}
               aria-hidden="true"
             >
               <MdFilterList size="24px" />
             </div>
-            <Button variation="primary">New Cycle +</Button>
+            <Button
+              onClick={throttle(() => {
+                setShowModal(true);
+              }, 500)}
+              variation="primary"
+            >
+              {value.openCycles.length > 0 ? 'Close Cycle' : 'New Cycle +'}
+            </Button>
           </div>
         </div>
         <TableWithPaginator
@@ -135,7 +170,11 @@ const CyclesPage = () => {
               },
               {
                 value: (
-                  <Button variation="link" padding="0">
+                  <Button
+                    variation="link"
+                    padding="0"
+                    onClick={throttle(() => onClickView(data.id), 500)}
+                  >
                     <MdOutlineOpenInNew
                       size="24px"
                       color="var(--amplify-colors-neutral-90)"
@@ -153,6 +192,17 @@ const CyclesPage = () => {
           filters={filters}
           setFilters={(data) => setFilters(data)}
           close={() => setShowFilters(false)}
+        />
+      )}
+      {showModal && (
+        <NewCycle
+          refetch={execute}
+          openCycle={
+            value.openCycles.length > 0 ? value.openCycles[0] : undefined
+          }
+          habitat={habitat}
+          open={showModal}
+          close={() => setShowModal(false)}
         />
       )}
     </div>

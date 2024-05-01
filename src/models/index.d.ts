@@ -2,6 +2,11 @@ import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-
 // @ts-ignore
 import { LazyLoading, LazyLoadingDisabled, AsyncCollection } from "@aws-amplify/datastore";
 
+export enum UserTypes {
+  AFFILIATE = "AFFILIATE",
+  APPLICANT = "APPLICANT"
+}
+
 export enum RootFormStatusTypes {
   ACTIVE = "ACTIVE",
   PENDING = "PENDING"
@@ -134,6 +139,38 @@ type LazyHabitatProps = {
 export declare type HabitatProps = LazyLoading extends LazyLoadingDisabled ? EagerHabitatProps : LazyHabitatProps
 
 export declare const HabitatProps: (new (init: ModelInit<HabitatProps>) => HabitatProps)
+
+type EagerUser = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<User, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly props: string;
+  readonly type: UserTypes | keyof typeof UserTypes;
+  readonly owner: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyUser = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<User, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly props: string;
+  readonly type: UserTypes | keyof typeof UserTypes;
+  readonly owner: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type User = LazyLoading extends LazyLoadingDisabled ? EagerUser : LazyUser
+
+export declare const User: (new (init: ModelInit<User>) => User) & {
+  copyOf(source: User, mutator: (draft: MutableModel<User>) => MutableModel<User> | void): User;
+}
 
 type EagerRootForm = {
   readonly [__modelMeta__]: {
@@ -345,6 +382,7 @@ type EagerTestCycle = {
   readonly TestApplications?: (TestApplication | null)[] | null;
   readonly form: string;
   readonly rootformID?: string | null;
+  readonly name?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -363,6 +401,7 @@ type LazyTestCycle = {
   readonly TestApplications: AsyncCollection<TestApplication>;
   readonly form: string;
   readonly rootformID?: string | null;
+  readonly name?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

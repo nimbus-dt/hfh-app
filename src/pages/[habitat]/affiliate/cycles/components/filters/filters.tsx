@@ -3,6 +3,7 @@
 import { MdCheck, MdClose } from 'react-icons/md';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Button } from '@aws-amplify/ui-react';
+import { throttle } from 'lodash';
 
 import styles from './filters.module.css';
 import { Inputs, FilterProps } from '../../types';
@@ -16,7 +17,10 @@ const Filters = ({ close, filters, setFilters }: FilterProps) => {
   };
 
   return (
-    <form className={styles.background} onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className={styles.background}
+      onSubmit={throttle(handleSubmit(onSubmit), 500)}
+    >
       <div className={styles.header}>
         <p className={`theme-subtitle-s2 ${styles.color_neutral_100}`}>
           Filter Options
@@ -92,14 +96,14 @@ const Filters = ({ close, filters, setFilters }: FilterProps) => {
       <div className={styles.buttons}>
         <Button
           variation="link"
-          onClick={() => {
+          onClick={throttle(() => {
             setFilters({
               startDate: '',
               endDate: '',
               status: null,
             });
             reset();
-          }}
+          }, 500)}
         >
           Clear Filters
         </Button>
