@@ -98,8 +98,9 @@ const NewAffiliateLayout = () => {
         const habitatsResponse = await DataStore.query(Habitat, (c) =>
           c.urlName.eq(habitatUrlName)
         );
-        console.log(habitatsResponse);
+
         const habitatObject = habitatsResponse[0];
+
         setHabitat(habitatObject);
 
         const allowedUsers = habitatObject.users || [];
@@ -115,7 +116,9 @@ const NewAffiliateLayout = () => {
       setIsLoading((previousIsLoading) => previousIsLoading - 1);
     };
 
-    fetchData();
+    if (user) {
+      fetchData();
+    }
   }, [habitatUrlName, user, authStatus]);
 
   if (isLoading) {
