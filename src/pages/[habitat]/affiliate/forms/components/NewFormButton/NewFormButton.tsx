@@ -19,6 +19,7 @@ import { DataStore } from '@aws-amplify/datastore';
 import { Habitat, RootForm, RootFormStatusTypes } from 'models';
 import { useOutletContext } from 'react-router-dom';
 import { Storage } from 'aws-amplify';
+import { set } from 'lodash';
 
 interface IProperties {
   triggerUpdate: () => void;
@@ -28,6 +29,9 @@ function NewFormButton({ triggerUpdate }: IProperties) {
   const [modalOpen, setModalOpen] = useState(false);
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [invalidName, setInvalidName] = useState(false);
+  const [invalidDescription, setInvalidDescription] = useState(false);
+  const [invalidFiles, setInvalidFiles] = useState(false);
   const isMobile = useBreakpointValue({
     base: true,
     medium: false,
@@ -126,12 +130,20 @@ function NewFormButton({ triggerUpdate }: IProperties) {
               label="What is your form's name?"
               placeholder="Homeownership Program Application"
               required
+              onInvalid={() => setInvalidName(true)}
+              errorMessage="Please enter a name for your form."
+              hasError={invalidName}
+              onBlur={() => setInvalidName(false)}
             />
             <TextAreaField
               name="description"
               label="Can you describe your form in a couple of words?"
               placeholder="The form is an application that determines if a family is fit to participate in Habitat for Humanity's Homeownership Program. These are received twice a year and reviewed by Habitat workers."
               required
+              onInvalid={() => setInvalidDescription(true)}
+              errorMessage="Please enter a description for your form."
+              hasError={invalidDescription}
+              onBlur={() => setInvalidDescription(false)}
             />
             <FileInput
               label="Please upload your paper application"
@@ -141,6 +153,10 @@ function NewFormButton({ triggerUpdate }: IProperties) {
               accept="image/*, .pdf"
               maxFileCount={20}
               files={files}
+              onInvalid={() => setInvalidFiles(true)}
+              errorMessage="Please upload at least one file."
+              hasError={invalidFiles}
+              onBlur={() => setInvalidFiles(false)}
             />
             <Flex direction="row" justifyContent="end">
               <CustomButton disabled={loading} type="submit">
