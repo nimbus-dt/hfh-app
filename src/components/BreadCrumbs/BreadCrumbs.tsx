@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './BreadCrumb.module.css';
 
@@ -16,12 +16,12 @@ const BreadCrumbs = ({ items }: IProperties) => (
     className={`theme-body-medium ${styles.hide_on_small} ${styles.breadcrumb}`}
   >
     {items.map((item, index) => (
-      <div key={item.label}>
+      <Fragment key={index}>
         <Link to={item.to || '#'} className={styles.link}>
           <span>{item.label}</span>
         </Link>
-        {index + 1 < items.length && <span className={styles.gt}>&gt;</span>}
-      </div>
+        {index + 1 < items.length && <span>&gt;</span>}
+      </Fragment>
     ))}
   </div>
 );

@@ -32,9 +32,9 @@ import {
 import { DEFAULT_REVIEW_STATUS, SUBMISSION_STATUS_LIST } from 'utils/constants';
 import { stringToHumanReadable } from 'utils/strings';
 import Modal from 'components/Modal';
+import NewApplicationModal from 'pages/[habitat]/affiliate/cycles/[cycleId]/components/NewApplicationModal';
+import StatusModal from 'pages/[habitat]/affiliate/cycles/[cycleId]/components/StatusModal';
 import PageTitle from '../../components/PageTitle/PageTitle';
-import StatusModal from './components/StatusModal';
-import NewApplicationModal from './components/NewApplicationModal';
 
 const REVIEW_STATUS = ['All', DEFAULT_REVIEW_STATUS];
 const SUBMISSION_STATUS = [
