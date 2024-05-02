@@ -13,6 +13,7 @@ import {
   TestApplication,
   Habitat,
   ApplicationTypes,
+  ReviewStatus,
 } from 'models';
 import React, { useState } from 'react';
 import {
@@ -71,12 +72,12 @@ const AffiliateCycleApplications = () => {
   const [dateSubmitted, setDateSubmitted] =
     useState<TApplicationsFilter['dateSubmitted']>();
   const [type, setType] = useState<TApplicationsFilter['type']>();
-  const [submissionStatus, setSubmissionStatus] =
-    useState<TApplicationsFilter['submissionStatus']>();
+  const [reviewStatus, setReviewStatus] =
+    useState<TApplicationsFilter['reviewStatus']>();
 
   const [filterModal, setFilterModal] = useState(false);
   const { register, control, handleSubmit, reset } = useForm({
-    values: { dateSubmitted, type, submissionStatus },
+    values: { dateSubmitted, type, reviewStatus },
     resolver: zodResolver(applicationsFilterSchema),
   });
 
@@ -91,12 +92,8 @@ const AffiliateCycleApplications = () => {
               ]
             : [];
 
-          // TODO change to be reviewStatus
-          if (submissionStatus) {
-            criteriaArr = [
-              ...criteriaArr,
-              c2.submissionStatus.eq(submissionStatus),
-            ];
+          if (reviewStatus) {
+            criteriaArr = [...criteriaArr, c2.reviewStatus.eq(reviewStatus)];
           }
 
           if (dateSubmitted) {
@@ -113,13 +110,7 @@ const AffiliateCycleApplications = () => {
         sort: (s: SortPredicate<LazyTestApplication>) =>
           s.submittedDate(SortDirection.DESCENDING),
       },
-      dependencyArray: [
-        submissionStatus,
-        cycleId,
-        trigger,
-        type,
-        dateSubmitted,
-      ],
+      dependencyArray: [reviewStatus, cycleId, trigger, type, dateSubmitted],
     });
 
   const { data: cycle } = useTestCycleById({
@@ -159,14 +150,14 @@ const AffiliateCycleApplications = () => {
   const handleFilterOnValid = (data: TApplicationsFilter) => {
     setDateSubmitted(data.dateSubmitted);
     setType(data.type);
-    setSubmissionStatus(data.submissionStatus);
+    setReviewStatus(data.reviewStatus);
     setFilterModal(false);
   };
 
   const handleResetFilters = () => {
     setDateSubmitted(undefined);
     setType(undefined);
-    setSubmissionStatus(undefined);
+    setReviewStatus(undefined);
   };
 
   return (
@@ -271,18 +262,16 @@ const AffiliateCycleApplications = () => {
                 </div>
                 <Controller
                   control={control}
-                  name="submissionStatus"
+                  name="reviewStatus"
                   render={({ field: { value, onChange } }) => (
                     <>
                       <CheckboxField
                         name=""
                         label="Pending"
-                        checked={value === SubmissionStatus.PENDING}
+                        checked={value === ReviewStatus.PENDING}
                         onChange={(event) =>
                           onChange(
-                            event.target.checked
-                              ? SubmissionStatus.PENDING
-                              : null
+                            event.target.checked ? ReviewStatus.PENDING : null
                           )
                         }
                         className={`${style.customCheckbox}`}
@@ -290,25 +279,21 @@ const AffiliateCycleApplications = () => {
                       <CheckboxField
                         name=""
                         label="Accepted"
-                        checked={value === SubmissionStatus.ACCEPTED}
+                        checked={value === ReviewStatus.ACCEPTED}
                         onChange={(event) =>
                           onChange(
-                            event.target.checked
-                              ? SubmissionStatus.ACCEPTED
-                              : null
+                            event.target.checked ? ReviewStatus.ACCEPTED : null
                           )
                         }
                         className={`${style.customCheckbox}`}
                       />
                       <CheckboxField
                         name=""
-                        label="Rejected"
-                        checked={value === SubmissionStatus.REJECTED}
+                        label="Denied"
+                        checked={value === ReviewStatus.DENIED}
                         onChange={(event) =>
                           onChange(
-                            event.target.checked
-                              ? SubmissionStatus.REJECTED
-                              : null
+                            event.target.checked ? ReviewStatus.DENIED : null
                           )
                         }
                         className={`${style.customCheckbox}`}
@@ -316,12 +301,10 @@ const AffiliateCycleApplications = () => {
                       <CheckboxField
                         name=""
                         label="Returned"
-                        checked={value === SubmissionStatus.RETURNED}
+                        checked={value === ReviewStatus.RETURNED}
                         onChange={(event) =>
                           onChange(
-                            event.target.checked
-                              ? SubmissionStatus.RETURNED
-                              : null
+                            event.target.checked ? ReviewStatus.RETURNED : null
                           )
                         }
                         className={`${style.customCheckbox}`}
@@ -382,18 +365,18 @@ const AffiliateCycleApplications = () => {
             value: 'Date Submitted',
           },
           {
-            id: 'submissionStatus',
-            value: 'Submission Status',
+            id: 'reviewStatus',
+            value: 'Review Status',
           },
           {
-            id: 'reviewStatus',
+            id: 'customStatus',
             value: (
               <span
                 className={`${style.reviewStatus}`}
                 onClick={handleStatusOnClick}
                 aria-hidden="true"
               >
-                Review Status
+                Custom Status
               </span>
             ),
           },
@@ -425,20 +408,20 @@ const AffiliateCycleApplications = () => {
                 value: dateOnly(application.submittedDate),
               },
               {
-                id: 'submissionStatus',
-                value: application.submissionStatus && (
+                id: 'reviewStatus',
+                value: application.reviewStatus && (
                   <div className={`${style.statusContainer}`}>
-                    <StatusChip status={application.submissionStatus} />
+                    <StatusChip status={application.reviewStatus} />
                   </div>
                 ),
               },
               {
-                id: 'reviewStatus',
+                id: 'customStatus',
                 value: (
                   <DropdownMenu
                     className={`${style.customStatusSelect}`}
                     variation="small"
-                    value={application.reviewStatus || ''}
+                    value={application.customStatus || ''}
                     onChange={(event) =>
                       handleUpdateApplicationStatus(
                         application.id,
