@@ -20,7 +20,7 @@ const BreadCrumbs = ({ items }: IProperties) => (
         <Link to={item.to || '#'} className={styles.link}>
           <span>{item.label}</span>
         </Link>
-        {index + 1 < items.length && <span>&gt;</span>}
+        {index + 1 < items.length && <span className={styles.gt}>&gt;</span>}
       </div>
     ))}
   </div>
