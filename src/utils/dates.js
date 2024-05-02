@@ -62,7 +62,9 @@ export const isAdult = (dob) => {
  * @returns {string} date as an ISO string
  */
 export const dateOnly = (date) => {
-  const awsDate = date || date == null ? new Date() : new Date(date);
+  console.log('date', date);
+  const awsDate = !date || date == null ? new Date() : new Date(date);
+  console.log('awsDate', awsDate);
   const yourDateStr = awsDate.toLocaleDateString();
 
   return yourDateStr;
