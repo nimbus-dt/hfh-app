@@ -38,15 +38,16 @@ import {
   TextField,
   useBreakpointValue,
 } from '@aws-amplify/ui-react';
-import NewApplicationModal from 'pages/affiliate-portal/cycles/[cycleId]/components/NewApplicationModal';
+
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import StatusModal from 'pages/affiliate-portal/cycles/[cycleId]/components/StatusModal';
 import style from './AffiliateCycleApplications.module.css';
 import {
   applicationsFilterSchema,
   TApplicationsFilter,
 } from './AffiliateCycleApplications.schema';
+import NewApplicationModal from './components/NewApplicationModal';
+import StatusModal from './components/StatusModal';
 
 interface IOutletContext {
   habitat?: Habitat;
