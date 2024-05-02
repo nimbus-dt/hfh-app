@@ -11,7 +11,7 @@ import Loading from 'components/Loading';
 import Error from 'components/Error';
 import TableWithPaginator from 'components/TableWithPaginator';
 import useAsync from 'hooks/utils/useAsync/useAsync';
-import { Habitat, TestCycle } from 'models';
+import { Habitat, RootForm, TestCycle } from 'models';
 import { Status } from 'utils/enums';
 
 import { dateOnly } from 'utils/dates';
@@ -75,11 +75,29 @@ const CyclesPage = () => {
             c2.habitatID.eq(habitat.id),
             c2.isOpen.eq(true),
           ];
+
+          if (formId) {
+            criteriaArray.push(c2.form.eq(formId));
+          }
+
+          return criteriaArray;
+        })
+      );
+
+      const formResponse = await DataStore.query(RootForm, (c1) =>
+        c1.and((c2) => {
+          const criteriaArray = [c2.habitatID.eq(habitat.id)];
+
+          if (formId) {
+            criteriaArray.push(c2.id.eq(formId));
+          }
+
           return criteriaArray;
         })
       );
 
       return {
+        formName: formResponse[0].name,
         cycles: cyclesResponse,
         openCycles: openCyclesResponse,
       };
@@ -117,12 +135,14 @@ const CyclesPage = () => {
     })
   );
 
+  const { formName } = value;
+
   return (
     <div className={styles.page}>
       <div className={styles.cta}>
         <BreadCrumbs
           items={[
-            { label: 'Homeownership Form', to: '../forms' },
+            { label: `${formName}`, to: '../forms' },
             {
               label: 'Cycles',
             },
