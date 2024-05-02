@@ -1,7 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Flex, ScrollView, useBreakpointValue } from '@aws-amplify/ui-react';
+import {
+  Flex,
+  ScrollView,
+  useAuthenticator,
+  useBreakpointValue,
+} from '@aws-amplify/ui-react';
 import { getRouteTitle } from 'utils/routes';
+import { useUserQuery } from 'hooks/services';
+import { initial } from 'lodash';
 import TopBar from './components/TopBar';
 import SideBar from './components/SideBar';
 
@@ -23,10 +31,32 @@ const BaseLayout = ({ variation, children, hideSideBar }: IProperties) => {
 
   const [title, setTitle] = useState('');
 
-  // const { authStatus, user } = useAuthenticator((context) => [
-  //   context.authStatus,
-  //   context.user,
-  // ]);
+  const { authStatus, user } = useAuthenticator((context) => [
+    context.authStatus,
+    context.user,
+  ]);
+
+  // Get User
+  const { data: userData } = useUserQuery({
+    criteria: (c1: any) =>
+      c1.and((c2: any) => {
+        const criteriaArr = user ? [c2.owner.eq(user.username)] : [];
+        return criteriaArr;
+      }),
+    paginationProducer: {},
+    dependencyArray: [user],
+  });
+
+  const [initials, setInitials] = useState('');
+
+  useEffect(() => {
+    if (userData.length !== 0) {
+      const tempUser = userData[0];
+      const firstNameInit = tempUser.firstName.charAt(0);
+      const lastNameInit = tempUser.lastName.charAt(0);
+      setInitials(firstNameInit + lastNameInit);
+    }
+  }, [initials, userData]);
 
   const handleOnExpand = () => {
     if (isMobile) {
@@ -59,7 +89,7 @@ const BaseLayout = ({ variation, children, hideSideBar }: IProperties) => {
       >
         <TopBar
           title={title}
-          initials="GA"
+          initials={initials}
           mobile={typeof isMobile === 'boolean' && isMobile}
           onExpand={handleOnExpand}
         />
