@@ -15,6 +15,7 @@ import {
   RootForm,
   TestApplication,
   TestCycle,
+  User,
   Written,
 } from 'models';
 import { dataStoreQueryHookBuilder } from './useDataStoreQuery/useDataStoreQuery';
@@ -129,5 +130,11 @@ export const useFormById = dataStoreQueryByIdHookBuilder({
 /* ROOT FORM MODEL SERVICES */
 export const useRootFormsQuery = dataStoreQueryHookBuilder({
   model: RootForm,
+  defaultDataValue: [],
+});
+
+/*  USER MODEL SERVICES */
+export const useUserQuery = dataStoreQueryHookBuilder({
+  model: User,
   defaultDataValue: [],
 });
