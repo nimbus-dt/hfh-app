@@ -14,12 +14,12 @@ interface IProperties {
 const MenuItem = ({ to, icon, label, active, expanded }: IProperties) => (
   <Link to={to || '#'} className={style.link}>
     <Flex
-      justifyContent="left"
+      justifyContent={expanded ? 'left' : 'center'}
       alignItems="center"
       gap={expanded ? '0.5rem' : '0'}
       className={`${style.menuItem} ${active ? style.active : ''}`}
     >
-      <Text as="span" className={style.icon}>
+      <Text as="span" className={style.icon} textAlign="center">
         {icon}
       </Text>
       {expanded && <Text color="inherit">{label}</Text>}
