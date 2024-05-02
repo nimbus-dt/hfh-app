@@ -28,19 +28,15 @@ import IconButton from 'components/IconButton';
 import BreadCrumbs from 'components/BreadCrumbs/BreadCrumbs';
 import DropdownMenu from 'components/DropdownMenu';
 import { DEFAULT_REVIEW_STATUS } from 'utils/constants';
-import { Storage } from 'aws-amplify';
-import Modal from 'components/Modal';
 import {
-  Button,
   CheckboxField,
-  Flex,
-  Text,
   TextField,
   useBreakpointValue,
 } from '@aws-amplify/ui-react';
 
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { dateOnly } from 'utils/dates';
 import style from './AffiliateCycleApplications.module.css';
 import {
   applicationsFilterSchema,
@@ -56,8 +52,6 @@ interface IOutletContext {
   updateCustomStatusToHabitat: (status: string) => void;
 }
 
-const REVIEW_STATUS = ['All', DEFAULT_REVIEW_STATUS];
-
 const AffiliateCycleApplications = () => {
   const isSmall = useBreakpointValue({
     base: true,
@@ -70,10 +64,8 @@ const AffiliateCycleApplications = () => {
     removeCustomStatusToHabitat,
     updateCustomStatusToHabitat,
   } = useOutletContext<IOutletContext>();
-  const [reviewStatus, setReviewStatus] = useState(REVIEW_STATUS[0]);
   const [statusModalOpen, setStatusModalOpen] = useState(false);
   const [newApplicationOpen, setNewApplicationOpen] = useState(false);
-  const [applicationToDelete, setApplicationToDelete] = useState<string>();
   const [trigger, setTrigger] = useState(0);
   const [dateSubmitted, setDateSubmitted] =
     useState<TApplicationsFilter['dateSubmitted']>();
@@ -153,43 +145,6 @@ const AffiliateCycleApplications = () => {
 
   const handleAddNewApplicationOnClick = () => setNewApplicationOpen(true);
   const handleOnCloseNewApplicationModal = () => setNewApplicationOpen(false);
-
-  const removeFiles = async (keys: string[]) => {
-    try {
-      const promisesArr = keys.map((key) =>
-        Storage.remove(key, {
-          level: 'public',
-        })
-      );
-      await Promise.all(promisesArr);
-    } catch (error) {
-      console.log('Error deleting files.');
-    }
-  };
-
-  const handleDeleteOnClick = (applicationId: string) =>
-    setApplicationToDelete(applicationId);
-
-  const handleDeleteOnClose = () => setApplicationToDelete(undefined);
-
-  const handleDeleteOnAccept = async () => {
-    try {
-      if (applicationToDelete === undefined) return;
-      const application = await DataStore.query(
-        TestApplication,
-        applicationToDelete
-      );
-      const applicationProps = application?.props as unknown as {
-        paperApplicationKeys: string[];
-      };
-      removeFiles(applicationProps.paperApplicationKeys);
-      await DataStore.delete(TestApplication, applicationToDelete);
-      setTrigger((prevTrigger) => prevTrigger + 1);
-    } catch (error) {
-      console.log('Error deleting application.');
-    }
-    setApplicationToDelete(undefined);
-  };
 
   const handleOpenCloseFilters = () => {
     reset();
@@ -397,25 +352,6 @@ const AffiliateCycleApplications = () => {
           </CustomButton>
         </div>
       </div>
-      <Modal
-        title="Alert"
-        open={applicationToDelete !== undefined}
-        onClickClose={handleDeleteOnClose}
-        width="30rem"
-      >
-        <Flex direction="column">
-          <Text>
-            Are you sure you want to delete the application? This can't be
-            undone.
-          </Text>
-          <Flex justifyContent="end">
-            <Button onClick={handleDeleteOnClose}>Cancel</Button>
-            <Button variation="primary" onClick={handleDeleteOnAccept}>
-              Accept
-            </Button>
-          </Flex>
-        </Flex>
-      </Modal>
       <StatusModal
         open={statusModalOpen}
         onClose={handleOnCloseStatusModal}
@@ -481,7 +417,7 @@ const AffiliateCycleApplications = () => {
               },
               {
                 id: 'dateSubmitted',
-                value: application.submittedDate,
+                value: dateOnly(application.submittedDate),
               },
               {
                 id: 'submissionStatus',
