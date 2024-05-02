@@ -5,12 +5,18 @@ import { useAuthenticator } from '@aws-amplify/ui-react';
 import Authentication from 'components/Authentication';
 import useHabitatByUrlName from 'hooks/services/useHabitatByUrlName';
 import useScrollToTopOnRouteChange from 'hooks/utils/useScrollToTopOnRouteChange';
-import { TestApplication, SubmissionStatus, ApplicationTypes } from 'models';
+import {
+  TestApplication,
+  SubmissionStatus,
+  ApplicationTypes,
+  User,
+} from 'models';
 import { DEFAULT_REVIEW_STATUS } from 'utils/constants';
 import { getHabitatOpenCycle } from 'utils/misc';
 import BaseLayout from 'layouts/BaseLayout';
 
 import { AUTHENTICATION_STATUS } from './utils';
+import SignUpQuestions from './SignUpQuestions';
 
 const HabitatLayout = () => {
   const { habitat: habitatUrlName } = useParams();
@@ -18,6 +24,8 @@ const HabitatLayout = () => {
   const { habitat } = useHabitatByUrlName({
     habitatUrlName,
   });
+
+  const [userData, setUserData] = useState();
 
   const [openCycle, setOpenCycle] = useState();
 
@@ -143,6 +151,29 @@ const HabitatLayout = () => {
     getOpenCycle();
   }, [habitat?.id]);
 
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const persistUserDatas = await DataStore.query(User, (c) =>
+          c.owner.eq(user.username)
+        );
+        if (persistUserDatas.length > 0) {
+          setUserData(persistUserDatas[0]);
+        }
+      } catch (error) {
+        console.log('Error fetching user data.');
+      }
+    };
+
+    if (user) {
+      getUserData();
+    }
+  });
+
+  if (habitat == null || authStatus === AUTHENTICATION_STATUS.CONFIGURING) {
+    return <div>Loading...</div>;
+  }
+
   if (AUTHENTICATION_STATUS.AUTHENTICATED !== authStatus) {
     return (
       <Authentication
@@ -150,6 +181,10 @@ const HabitatLayout = () => {
         gallery={habitat?.props?.gallery}
       />
     );
+  }
+
+  if (!userData) {
+    return <SignUpQuestions />;
   }
 
   return (
