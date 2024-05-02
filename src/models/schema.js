@@ -1088,8 +1088,10 @@ export const schema = {
                 "reviewStatus": {
                     "name": "reviewStatus",
                     "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
+                    "type": {
+                        "enum": "ReviewStatus"
+                    },
+                    "isRequired": true,
                     "attributes": []
                 },
                 "submissionStatus": {
@@ -1098,7 +1100,7 @@ export const schema = {
                     "type": {
                         "enum": "SubmissionStatus"
                     },
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "props": {
@@ -1171,6 +1173,13 @@ export const schema = {
                             "testapplicationID"
                         ]
                     }
+                },
+                "customStatus": {
+                    "name": "customStatus",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -1812,6 +1821,15 @@ export const schema = {
         }
     },
     "enums": {
+        "ReviewStatus": {
+            "name": "ReviewStatus",
+            "values": [
+                "ACCEPTED",
+                "PENDING",
+                "DENIED",
+                "RETURNED"
+            ]
+        },
         "Sexs": {
             "name": "Sexs",
             "values": [
@@ -1844,14 +1862,31 @@ export const schema = {
         "SubmissionStatus": {
             "name": "SubmissionStatus",
             "values": [
-                "PENDING",
-                "ACCEPTED",
-                "REJECTED",
-                "RETURNED"
+                "INCOMPLETE",
+                "COMPLETED"
             ]
         }
     },
     "nonModels": {
+        "SidebarName": {
+            "name": "SidebarName",
+            "fields": {
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "fontSize": {
+                    "name": "fontSize",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
         "ApplicantProps": {
             "name": "ApplicantProps",
             "fields": {
@@ -2199,10 +2234,19 @@ export const schema = {
                     "isRequired": true,
                     "attributes": [],
                     "isArrayNullable": true
+                },
+                "sidebarName": {
+                    "name": "sidebarName",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "SidebarName"
+                    },
+                    "isRequired": false,
+                    "attributes": []
                 }
             }
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "237be774ee730217daaa3251e61e53bd"
+    "version": "059f6b519cc1858d53c1d629d32a4398"
 };

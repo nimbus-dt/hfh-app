@@ -2,6 +2,13 @@ import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-
 // @ts-ignore
 import { LazyLoading, LazyLoadingDisabled, AsyncCollection } from "@aws-amplify/datastore";
 
+export enum ReviewStatus {
+  ACCEPTED = "ACCEPTED",
+  PENDING = "PENDING",
+  DENIED = "DENIED",
+  RETURNED = "RETURNED"
+}
+
 export enum Sexs {
   MALE = "MALE",
   FEMALE = "FEMALE",
@@ -24,11 +31,23 @@ export enum ApplicationTypes {
 }
 
 export enum SubmissionStatus {
-  PENDING = "PENDING",
-  ACCEPTED = "ACCEPTED",
-  REJECTED = "REJECTED",
-  RETURNED = "RETURNED"
+  INCOMPLETE = "INCOMPLETE",
+  COMPLETED = "COMPLETED"
 }
+
+type EagerSidebarName = {
+  readonly name?: string | null;
+  readonly fontSize?: string | null;
+}
+
+type LazySidebarName = {
+  readonly name?: string | null;
+  readonly fontSize?: string | null;
+}
+
+export declare type SidebarName = LazyLoading extends LazyLoadingDisabled ? EagerSidebarName : LazySidebarName
+
+export declare const SidebarName: (new (init: ModelInit<SidebarName>) => SidebarName)
 
 type EagerApplicantProps = {
   readonly state: string;
@@ -174,9 +193,11 @@ type EagerHabitatProps = {
   readonly homeownershipWrittenQuestions?: WrittenQuestion[] | null;
   readonly optionalSections: OptionalSections;
   readonly gallery?: GalleryItem[] | null;
+  readonly sidebarName?: SidebarName | null;
 }
 
 type LazyHabitatProps = {
+  sideBar: { name: string; fontSize: string; };
   readonly customStatus?: string[] | null;
   readonly homeownershipTermsText: string;
   readonly homeownershipMinCurrentAddressMonths: number;
@@ -188,6 +209,7 @@ type LazyHabitatProps = {
   readonly homeownershipWrittenQuestions?: WrittenQuestion[] | null;
   readonly optionalSections: OptionalSections;
   readonly gallery?: GalleryItem[] | null;
+  readonly sidebarName?: SidebarName | null;
 }
 
 export declare type HabitatProps = LazyLoading extends LazyLoadingDisabled ? EagerHabitatProps : LazyHabitatProps
@@ -608,14 +630,15 @@ type EagerTestApplication = {
   readonly lastSection?: string | null;
   readonly members?: (Member | null)[] | null;
   readonly submittedDate: string;
-  readonly reviewStatus?: string | null;
-  readonly submissionStatus?: SubmissionStatus | keyof typeof SubmissionStatus | null;
+  readonly reviewStatus: ReviewStatus | keyof typeof ReviewStatus;
+  readonly submissionStatus: SubmissionStatus | keyof typeof SubmissionStatus;
   readonly props?: string | null;
   readonly type: ApplicationTypes | keyof typeof ApplicationTypes;
   readonly testcycleID: string;
   readonly Notes?: (Note | null)[] | null;
   readonly FormAnswers?: (FormAnswer | null)[] | null;
   readonly Decisions?: (Decision | null)[] | null;
+  readonly customStatus?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -630,14 +653,15 @@ type LazyTestApplication = {
   readonly lastSection?: string | null;
   readonly members: AsyncCollection<Member>;
   readonly submittedDate: string;
-  readonly reviewStatus?: string | null;
-  readonly submissionStatus?: SubmissionStatus | keyof typeof SubmissionStatus | null;
+  readonly reviewStatus: ReviewStatus | keyof typeof ReviewStatus;
+  readonly submissionStatus: SubmissionStatus | keyof typeof SubmissionStatus;
   readonly props?: string | null;
   readonly type: ApplicationTypes | keyof typeof ApplicationTypes;
   readonly testcycleID: string;
   readonly Notes: AsyncCollection<Note>;
   readonly FormAnswers: AsyncCollection<FormAnswer>;
   readonly Decisions: AsyncCollection<Decision>;
+  readonly customStatus?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
