@@ -37,7 +37,7 @@ const NewApplicationModal = ({ open, onClose, setTrigger, habitat, cycle }) => {
   const uploadFiles = async (applicationId, files) => {
     const promisesArr = files.map((file) =>
       Storage.put(
-        `application/${habitat?.urlName}/${cycle?.id}/${applicationId}/${file.name}`,
+        `application/${habitat?.urlName}/${cycle.id}/${applicationId}/${file.name}`,
         file,
         {
           level: 'public',
@@ -60,13 +60,14 @@ const NewApplicationModal = ({ open, onClose, setTrigger, habitat, cycle }) => {
           },
           submittedDate: data.submittedDate,
           reviewStatus: data.reviewStatus,
-          submissionStatus: SubmissionStatus.SUBMITTED,
+          submissionStatus: SubmissionStatus.PENDING,
           testcycleID: cycle.id,
           type: ApplicationTypes.PAPER,
         })
       );
 
       const results = await uploadFiles(newApplication.id, data.application);
+
       const resultsArray = results.map((result) => result.key);
 
       const applicationToUpdate = await DataStore.query(
