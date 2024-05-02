@@ -1,0 +1,39 @@
+.background > * + * {
+  margin-top: 1rem;
+
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.text_input {
+  padding: 1rem;
+  border: 1px solid var(--amplify-colors-neutral-80);
+  border-radius: 0.5rem;
+  margin-top: 0.5rem;
+
+  color: var(--amplify-colors-neutral-90);
+  background-color: var(--amplify-colors-neutral-10);
+}
+
+.text_input:focus-visible {
+  border: 1px solid var(--amplify-colors-neutral-90);
+  outline: 0;
+  outline-offset: 0;
+}
+
+.text_label {
+  display: flex;
+  flex-direction: column;
+}
+
+.error {
+  color: red;
+}

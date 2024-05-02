@@ -35,6 +35,8 @@ const { User, RootForm, Form, Decision, FormAnswer, Note, Property, TestCycle, A
 export {
   User,
   RootForm,
+  User,
+  RootForm,
   Form,
   Decision,
   FormAnswer,
