@@ -1,17 +1,17 @@
 import React from 'react';
-import { SubmissionStatus } from 'models';
 import Chip from 'components/Chip';
 import { stringToHumanReadable } from 'utils/strings';
+import { ReviewStatus } from 'models';
 
-const StatusChip = ({ status }: { status: keyof typeof SubmissionStatus }) => {
+const StatusChip = ({ status }: { status: keyof typeof ReviewStatus }) => {
   switch (status) {
-    case SubmissionStatus.PENDING:
+    case ReviewStatus.PENDING:
       return <Chip variation="warning" text={stringToHumanReadable(status)} />;
-    case SubmissionStatus.ACCEPTED:
+    case ReviewStatus.ACCEPTED:
       return <Chip variation="success" text={stringToHumanReadable(status)} />;
-    case SubmissionStatus.REJECTED:
+    case ReviewStatus.DENIED:
       return <Chip variation="danger" text={stringToHumanReadable(status)} />;
-    case SubmissionStatus.RETURNED:
+    case ReviewStatus.RETURNED:
       return <Chip variation="disabled" text={stringToHumanReadable(status)} />;
     default:
       return <Chip variation="disabled" text={stringToHumanReadable(status)} />;
