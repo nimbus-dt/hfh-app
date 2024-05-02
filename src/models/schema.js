@@ -10,11 +10,59 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "props": {
-                    "name": "props",
+                "firstName": {
+                    "name": "firstName",
                     "isArray": false,
-                    "type": "AWSJSON",
+                    "type": "String",
                     "isRequired": true,
+                    "attributes": []
+                },
+                "lastName": {
+                    "name": "lastName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "dateOfBirth": {
+                    "name": "dateOfBirth",
+                    "isArray": false,
+                    "type": "AWSDate",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "sex": {
+                    "name": "sex",
+                    "isArray": false,
+                    "type": {
+                        "enum": "Sexs"
+                    },
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "phoneNumber": {
+                    "name": "phoneNumber",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "affiliateProps": {
+                    "name": "affiliateProps",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "AffiliateProps"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "applicantProps": {
+                    "name": "applicantProps",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "ApplicantProps"
+                    },
+                    "isRequired": false,
                     "attributes": []
                 },
                 "type": {
@@ -1764,6 +1812,14 @@ export const schema = {
         }
     },
     "enums": {
+        "Sexs": {
+            "name": "Sexs",
+            "values": [
+                "MALE",
+                "FEMALE",
+                "OTHER"
+            ]
+        },
         "UserTypes": {
             "name": "UserTypes",
             "values": [
@@ -1796,6 +1852,114 @@ export const schema = {
         }
     },
     "nonModels": {
+        "ApplicantProps": {
+            "name": "ApplicantProps",
+            "fields": {
+                "state": {
+                    "name": "state",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "city": {
+                    "name": "city",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "street": {
+                    "name": "street",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "householdMembersNumber": {
+                    "name": "householdMembersNumber",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "householdAnnualIncome": {
+                    "name": "householdAnnualIncome",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "currentlyUnemployed": {
+                    "name": "currentlyUnemployed",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "currentWorkTitle": {
+                    "name": "currentWorkTitle",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "nameOfEmployer": {
+                    "name": "nameOfEmployer",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "howDidYouHearAbout": {
+                    "name": "howDidYouHearAbout",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "firstTimeApplying": {
+                    "name": "firstTimeApplying",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "whatAreYouInterestedIn": {
+                    "name": "whatAreYouInterestedIn",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                }
+            }
+        },
+        "AffiliateProps": {
+            "name": "AffiliateProps",
+            "fields": {
+                "titleAtHabitat": {
+                    "name": "titleAtHabitat",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "roleDescription": {
+                    "name": "roleDescription",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "joinDate": {
+                    "name": "joinDate",
+                    "isArray": false,
+                    "type": "AWSDate",
+                    "isRequired": true,
+                    "attributes": []
+                }
+            }
+        },
         "GalleryItem": {
             "name": "GalleryItem",
             "fields": {
@@ -2040,5 +2204,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "ff3a8fce062d591094af783c991cb892"
+    "version": "237be774ee730217daaa3251e61e53bd"
 };

@@ -2,6 +2,12 @@ import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-
 // @ts-ignore
 import { LazyLoading, LazyLoadingDisabled, AsyncCollection } from "@aws-amplify/datastore";
 
+export enum Sexs {
+  MALE = "MALE",
+  FEMALE = "FEMALE",
+  OTHER = "OTHER"
+}
+
 export enum UserTypes {
   AFFILIATE = "AFFILIATE",
   APPLICANT = "APPLICANT"
@@ -23,6 +29,54 @@ export enum SubmissionStatus {
   REJECTED = "REJECTED",
   RETURNED = "RETURNED"
 }
+
+type EagerApplicantProps = {
+  readonly state: string;
+  readonly city: string;
+  readonly street: string;
+  readonly householdMembersNumber: number;
+  readonly householdAnnualIncome: number;
+  readonly currentlyUnemployed: string;
+  readonly currentWorkTitle?: string | null;
+  readonly nameOfEmployer?: string | null;
+  readonly howDidYouHearAbout: string;
+  readonly firstTimeApplying: string;
+  readonly whatAreYouInterestedIn: string;
+}
+
+type LazyApplicantProps = {
+  readonly state: string;
+  readonly city: string;
+  readonly street: string;
+  readonly householdMembersNumber: number;
+  readonly householdAnnualIncome: number;
+  readonly currentlyUnemployed: string;
+  readonly currentWorkTitle?: string | null;
+  readonly nameOfEmployer?: string | null;
+  readonly howDidYouHearAbout: string;
+  readonly firstTimeApplying: string;
+  readonly whatAreYouInterestedIn: string;
+}
+
+export declare type ApplicantProps = LazyLoading extends LazyLoadingDisabled ? EagerApplicantProps : LazyApplicantProps
+
+export declare const ApplicantProps: (new (init: ModelInit<ApplicantProps>) => ApplicantProps)
+
+type EagerAffiliateProps = {
+  readonly titleAtHabitat: string;
+  readonly roleDescription: string;
+  readonly joinDate: string;
+}
+
+type LazyAffiliateProps = {
+  readonly titleAtHabitat: string;
+  readonly roleDescription: string;
+  readonly joinDate: string;
+}
+
+export declare type AffiliateProps = LazyLoading extends LazyLoadingDisabled ? EagerAffiliateProps : LazyAffiliateProps
+
+export declare const AffiliateProps: (new (init: ModelInit<AffiliateProps>) => AffiliateProps)
 
 type EagerGalleryItem = {
   readonly id?: string | null;
@@ -146,7 +200,13 @@ type EagerUser = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly props: string;
+  readonly firstName: string;
+  readonly lastName: string;
+  readonly dateOfBirth: string;
+  readonly sex: Sexs | keyof typeof Sexs;
+  readonly phoneNumber: string;
+  readonly affiliateProps?: AffiliateProps | null;
+  readonly applicantProps?: ApplicantProps | null;
   readonly type: UserTypes | keyof typeof UserTypes;
   readonly owner: string;
   readonly createdAt?: string | null;
@@ -159,7 +219,13 @@ type LazyUser = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly props: string;
+  readonly firstName: string;
+  readonly lastName: string;
+  readonly dateOfBirth: string;
+  readonly sex: Sexs | keyof typeof Sexs;
+  readonly phoneNumber: string;
+  readonly affiliateProps?: AffiliateProps | null;
+  readonly applicantProps?: ApplicantProps | null;
   readonly type: UserTypes | keyof typeof UserTypes;
   readonly owner: string;
   readonly createdAt?: string | null;

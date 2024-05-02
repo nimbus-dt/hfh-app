@@ -6,6 +6,7 @@ import TableWithPaginator from 'components/TableWithPaginator';
 import Chip from 'components/Chip';
 import { stringToHumanReadable } from 'utils/strings';
 import Toggle from 'components/Toggle';
+import StatusChip from 'components/StatusChip';
 import style from './ApplicantApplicationsPage.module.css';
 
 const dummyData = [
@@ -14,14 +15,14 @@ const dummyData = [
     affiliate: 'Habitat for Humanity of Kenosha',
     type: 'Online',
     dateSubmitted: '04/20/2024',
-    status: SubmissionStatus.SUBMITTED,
+    status: SubmissionStatus.PENDING,
   },
   {
     name: 'Repairs',
     affiliate: 'Habitat for Humanity',
     type: 'Online',
     dateSubmitted: '04/20/2024',
-    status: SubmissionStatus.UNSUBMITTED,
+    status: SubmissionStatus.REJECTED,
   },
   {
     name: 'Pre-Screen',
@@ -35,14 +36,14 @@ const dummyData = [
     affiliate: 'Habitat for Humanity of Kenosha',
     type: 'Online',
     dateSubmitted: '04/20/2024',
-    status: SubmissionStatus.SUBMITTED,
+    status: SubmissionStatus.PENDING,
   },
   {
     name: 'Repairs',
     affiliate: 'Habitat for Humanity',
     type: 'Online',
     dateSubmitted: '04/20/2024',
-    status: SubmissionStatus.UNSUBMITTED,
+    status: SubmissionStatus.REJECTED,
   },
   {
     name: 'Pre-Screen',
@@ -56,14 +57,14 @@ const dummyData = [
     affiliate: 'Habitat for Humanity of Kenosha',
     type: 'Online',
     dateSubmitted: '04/20/2024',
-    status: SubmissionStatus.SUBMITTED,
+    status: SubmissionStatus.PENDING,
   },
   {
     name: 'Repairs',
     affiliate: 'Habitat for Humanity',
     type: 'Online',
     dateSubmitted: '04/20/2024',
-    status: SubmissionStatus.UNSUBMITTED,
+    status: SubmissionStatus.REJECTED,
   },
   {
     name: 'Pre-Screen',
@@ -77,14 +78,14 @@ const dummyData = [
     affiliate: 'Habitat for Humanity of Kenosha',
     type: 'Online',
     dateSubmitted: '04/20/2024',
-    status: SubmissionStatus.SUBMITTED,
+    status: SubmissionStatus.PENDING,
   },
   {
     name: 'Repairs',
     affiliate: 'Habitat for Humanity',
     type: 'Online',
     dateSubmitted: '04/20/2024',
-    status: SubmissionStatus.UNSUBMITTED,
+    status: SubmissionStatus.REJECTED,
   },
   {
     name: 'Pre-Screen',
@@ -94,19 +95,6 @@ const dummyData = [
     status: SubmissionStatus.RETURNED,
   },
 ];
-
-const StatusChip = ({ status }: { status: keyof typeof SubmissionStatus }) => {
-  switch (status) {
-    case SubmissionStatus.SUBMITTED:
-      return <Chip variation="success" text={stringToHumanReadable(status)} />;
-    case SubmissionStatus.UNSUBMITTED:
-      return <Chip variation="warning" text={stringToHumanReadable(status)} />;
-    case SubmissionStatus.RETURNED:
-      return <Chip variation="danger" text={stringToHumanReadable(status)} />;
-    default:
-      return <Chip variation="disabled" text={stringToHumanReadable(status)} />;
-  }
-};
 
 const ApplicantApplicationsPage = () => {
   const [view, setView] = useState<'current' | 'past'>('current');

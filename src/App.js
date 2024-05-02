@@ -24,6 +24,7 @@ import ApplicantDecisionsPage from 'pages/[habitat]/applicant/decisions/Applican
 import AffiliateFormsPage from 'pages/[habitat]/affiliate/forms';
 import CyclesPage from 'pages/[habitat]/affiliate/cycles';
 import NewAffiliateLayout from 'layouts/NewAffiliateLayout';
+import AffiliateCycleApplications from 'pages/[habitat]/affiliate/cycles/[cycleId]/AffiliateCycleApplications';
 
 function App() {
   return (
@@ -102,7 +103,7 @@ function App() {
           <Route path={ROUTES.HABITAT_AFFILIATE_CYCLES}>
             <Route index element={<CyclesPage />} />
             <Route path={ROUTES.HABITAT_AFFILIATE_CYCLES_CYCLE}>
-              <Route index element={<ApplicationsPage />} />
+              <Route index element={<AffiliateCycleApplications />} />
               <Route
                 path={ROUTES.HABITAT_AFFILIATE_CYCLES_CYCLE_APPLICATION}
                 element={<ApplicationDetailsPage />}

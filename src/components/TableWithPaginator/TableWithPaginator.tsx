@@ -12,6 +12,7 @@ import {
   Text,
 } from '@aws-amplify/ui-react';
 import React, { ReactNode, useEffect, useMemo, useState } from 'react';
+import DropdownMenu from 'components/DropdownMenu';
 import style from './TableWithPaginator.module.css';
 import Paginator from './components/Paginator';
 import { TPerPage } from './components/Paginator/Paginator';
@@ -106,6 +107,17 @@ const TableWithPaginator = ({
               ))}
             </TableRow>
           ))}
+          {pageData.length === 0 && (
+            <TableRow>
+              <TableCell
+                colSpan={'100%' as unknown as number}
+                textAlign="center"
+                color="var(--amplify-colors-neutral-80)"
+              >
+                No data
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
         <TableFoot>
           <TableRow>
@@ -114,7 +126,7 @@ const TableWithPaginator = ({
                 <Text color="var(--amplify-colors-neutral-90)">
                   Rows per page
                 </Text>
-                <SelectField
+                <DropdownMenu
                   value={`${perPage}`}
                   onChange={(event) => {
                     const newPerPage = Number(event.currentTarget.value);
@@ -126,20 +138,12 @@ const TableWithPaginator = ({
                       setPerPage(newPerPage);
                     }
                   }}
-                  label=""
-                  labelHidden
-                  padding="4px 16px"
-                  minWidth="108px"
-                  lineHeight="var(--amplify-line-heights-small)"
-                  className={`${style.select}`}
-                  style={{
-                    paddingBlock: 'unset',
-                  }}
+                  variation="small"
                 >
                   <option>5</option>
                   <option>10</option>
                   <option>15</option>
-                </SelectField>
+                </DropdownMenu>
                 <Paginator
                   current={currentPage}
                   total={totalPages}

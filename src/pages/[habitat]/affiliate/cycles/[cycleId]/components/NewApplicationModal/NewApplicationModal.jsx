@@ -16,6 +16,7 @@ import FileInput from 'components/FileInput';
 import { DataStore, Storage } from 'aws-amplify';
 import { TestApplication, SubmissionStatus, ApplicationTypes } from 'models';
 import { DEFAULT_REVIEW_STATUS } from 'utils/constants';
+import CustomButton from 'components/CustomButton/CustomButton';
 import { newPaperApplicationSchema } from './NewApplicationModal.schema';
 
 const NewApplicationModal = ({ open, onClose, setTrigger, habitat, cycle }) => {
@@ -36,7 +37,7 @@ const NewApplicationModal = ({ open, onClose, setTrigger, habitat, cycle }) => {
   const uploadFiles = async (applicationId, files) => {
     const promisesArr = files.map((file) =>
       Storage.put(
-        `application/${habitat?.urlName}/${cycle?.id}/${applicationId}/${file.name}`,
+        `application/${habitat?.urlName}/${cycle.id}/${applicationId}/${file.name}`,
         file,
         {
           level: 'public',
@@ -59,13 +60,14 @@ const NewApplicationModal = ({ open, onClose, setTrigger, habitat, cycle }) => {
           },
           submittedDate: data.submittedDate,
           reviewStatus: data.reviewStatus,
-          submissionStatus: SubmissionStatus.SUBMITTED,
+          submissionStatus: SubmissionStatus.PENDING,
           testcycleID: cycle.id,
           type: ApplicationTypes.PAPER,
         })
       );
 
       const results = await uploadFiles(newApplication.id, data.application);
+
       const resultsArray = results.map((result) => result.key);
 
       const applicationToUpdate = await DataStore.query(
@@ -185,12 +187,16 @@ const NewApplicationModal = ({ open, onClose, setTrigger, habitat, cycle }) => {
             </Flex>
           )}
           <Flex justifyContent="end">
-            <Button onClick={onClose} disabled={loading > 0}>
+            <CustomButton
+              variation="secondary"
+              onClick={onClose}
+              disabled={loading > 0}
+            >
               Cancel
-            </Button>
-            <Button type="submit" variation="primary" disabled={loading > 0}>
+            </CustomButton>
+            <CustomButton variation="primary" disabled={loading > 0}>
               Submit
-            </Button>
+            </CustomButton>
           </Flex>
         </Flex>
       </form>
