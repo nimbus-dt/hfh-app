@@ -136,7 +136,7 @@ const AffiliateCycleApplications = () => {
       if (!original) return;
       await DataStore.save(
         TestApplication.copyOf(original, (originalApplication) => {
-          originalApplication.reviewStatus = newStatusValue;
+          originalApplication.customStatus = newStatusValue;
         })
       );
       setTrigger((previousTrigger) => previousTrigger + 1);
