@@ -84,15 +84,19 @@ const AffiliateCycleApplications = () => {
     useTestApplicationsQuery({
       criteria: (c1: RecursiveModelPredicate<LazyTestApplication>) =>
         c1.and((c2) => {
-          let criteriaArr = cycleId ? [c2.testcycleID.eq(cycleId)] : [];
+          let criteriaArr = cycleId
+            ? [
+                c2.testcycleID.eq(cycleId),
+                c2.submissionStatus.eq(SubmissionStatus.COMPLETED),
+              ]
+            : [];
 
+          // TODO change to be reviewStatus
           if (submissionStatus) {
             criteriaArr = [
               ...criteriaArr,
               c2.submissionStatus.eq(submissionStatus),
             ];
-          } else {
-            criteriaArr = [...criteriaArr, c2.submissionStatus.ne(undefined)];
           }
 
           if (dateSubmitted) {
