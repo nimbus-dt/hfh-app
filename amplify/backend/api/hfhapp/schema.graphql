@@ -36,7 +36,7 @@ type User @model @auth(rules: [{allow: public}]) {
   dateOfBirth: AWSDate!
   sex: Sexs!
   phoneNumber: String!
-  affiliateProps: AffiliateProps!
+  affiliateProps: AffiliateProps
   applicantProps: ApplicantProps
   type: UserTypes!
   owner: ID!

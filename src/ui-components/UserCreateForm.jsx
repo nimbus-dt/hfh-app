@@ -11,7 +11,6 @@ import {
   Flex,
   Grid,
   SelectField,
-  TextAreaField,
   TextField,
 } from "@aws-amplify/ui-react";
 import { User } from "../models";
@@ -29,22 +28,42 @@ export default function UserCreateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    props: "",
+    firstName: "",
+    lastName: "",
+    dateOfBirth: "",
+    sex: "",
+    phoneNumber: "",
     type: "",
     owner: "",
   };
-  const [props, setProps] = React.useState(initialValues.props);
+  const [firstName, setFirstName] = React.useState(initialValues.firstName);
+  const [lastName, setLastName] = React.useState(initialValues.lastName);
+  const [dateOfBirth, setDateOfBirth] = React.useState(
+    initialValues.dateOfBirth
+  );
+  const [sex, setSex] = React.useState(initialValues.sex);
+  const [phoneNumber, setPhoneNumber] = React.useState(
+    initialValues.phoneNumber
+  );
   const [type, setType] = React.useState(initialValues.type);
   const [owner, setOwner] = React.useState(initialValues.owner);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    setProps(initialValues.props);
+    setFirstName(initialValues.firstName);
+    setLastName(initialValues.lastName);
+    setDateOfBirth(initialValues.dateOfBirth);
+    setSex(initialValues.sex);
+    setPhoneNumber(initialValues.phoneNumber);
     setType(initialValues.type);
     setOwner(initialValues.owner);
     setErrors({});
   };
   const validations = {
-    props: [{ type: "Required" }, { type: "JSON" }],
+    firstName: [{ type: "Required" }],
+    lastName: [{ type: "Required" }],
+    dateOfBirth: [{ type: "Required" }],
+    sex: [{ type: "Required" }],
+    phoneNumber: [{ type: "Required" }],
     type: [{ type: "Required" }],
     owner: [{ type: "Required" }],
   };
@@ -74,7 +93,11 @@ export default function UserCreateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          props,
+          firstName,
+          lastName,
+          dateOfBirth,
+          sex,
+          phoneNumber,
           type,
           owner,
         };
@@ -122,31 +145,173 @@ export default function UserCreateForm(props) {
       {...getOverrideProps(overrides, "UserCreateForm")}
       {...rest}
     >
-      <TextAreaField
-        label="Props"
+      <TextField
+        label="First name"
         isRequired={true}
         isReadOnly={false}
+        value={firstName}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              props: value,
+              firstName: value,
+              lastName,
+              dateOfBirth,
+              sex,
+              phoneNumber,
               type,
               owner,
             };
             const result = onChange(modelFields);
-            value = result?.props ?? value;
+            value = result?.firstName ?? value;
           }
-          if (errors.props?.hasError) {
-            runValidationTasks("props", value);
+          if (errors.firstName?.hasError) {
+            runValidationTasks("firstName", value);
           }
-          setProps(value);
+          setFirstName(value);
         }}
-        onBlur={() => runValidationTasks("props", props)}
-        errorMessage={errors.props?.errorMessage}
-        hasError={errors.props?.hasError}
-        {...getOverrideProps(overrides, "props")}
-      ></TextAreaField>
+        onBlur={() => runValidationTasks("firstName", firstName)}
+        errorMessage={errors.firstName?.errorMessage}
+        hasError={errors.firstName?.hasError}
+        {...getOverrideProps(overrides, "firstName")}
+      ></TextField>
+      <TextField
+        label="Last name"
+        isRequired={true}
+        isReadOnly={false}
+        value={lastName}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              firstName,
+              lastName: value,
+              dateOfBirth,
+              sex,
+              phoneNumber,
+              type,
+              owner,
+            };
+            const result = onChange(modelFields);
+            value = result?.lastName ?? value;
+          }
+          if (errors.lastName?.hasError) {
+            runValidationTasks("lastName", value);
+          }
+          setLastName(value);
+        }}
+        onBlur={() => runValidationTasks("lastName", lastName)}
+        errorMessage={errors.lastName?.errorMessage}
+        hasError={errors.lastName?.hasError}
+        {...getOverrideProps(overrides, "lastName")}
+      ></TextField>
+      <TextField
+        label="Date of birth"
+        isRequired={true}
+        isReadOnly={false}
+        type="date"
+        value={dateOfBirth}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              firstName,
+              lastName,
+              dateOfBirth: value,
+              sex,
+              phoneNumber,
+              type,
+              owner,
+            };
+            const result = onChange(modelFields);
+            value = result?.dateOfBirth ?? value;
+          }
+          if (errors.dateOfBirth?.hasError) {
+            runValidationTasks("dateOfBirth", value);
+          }
+          setDateOfBirth(value);
+        }}
+        onBlur={() => runValidationTasks("dateOfBirth", dateOfBirth)}
+        errorMessage={errors.dateOfBirth?.errorMessage}
+        hasError={errors.dateOfBirth?.hasError}
+        {...getOverrideProps(overrides, "dateOfBirth")}
+      ></TextField>
+      <SelectField
+        label="Sex"
+        placeholder="Please select an option"
+        isDisabled={false}
+        value={sex}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              firstName,
+              lastName,
+              dateOfBirth,
+              sex: value,
+              phoneNumber,
+              type,
+              owner,
+            };
+            const result = onChange(modelFields);
+            value = result?.sex ?? value;
+          }
+          if (errors.sex?.hasError) {
+            runValidationTasks("sex", value);
+          }
+          setSex(value);
+        }}
+        onBlur={() => runValidationTasks("sex", sex)}
+        errorMessage={errors.sex?.errorMessage}
+        hasError={errors.sex?.hasError}
+        {...getOverrideProps(overrides, "sex")}
+      >
+        <option
+          children="Male"
+          value="MALE"
+          {...getOverrideProps(overrides, "sexoption0")}
+        ></option>
+        <option
+          children="Female"
+          value="FEMALE"
+          {...getOverrideProps(overrides, "sexoption1")}
+        ></option>
+        <option
+          children="Other"
+          value="OTHER"
+          {...getOverrideProps(overrides, "sexoption2")}
+        ></option>
+      </SelectField>
+      <TextField
+        label="Phone number"
+        isRequired={true}
+        isReadOnly={false}
+        value={phoneNumber}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              firstName,
+              lastName,
+              dateOfBirth,
+              sex,
+              phoneNumber: value,
+              type,
+              owner,
+            };
+            const result = onChange(modelFields);
+            value = result?.phoneNumber ?? value;
+          }
+          if (errors.phoneNumber?.hasError) {
+            runValidationTasks("phoneNumber", value);
+          }
+          setPhoneNumber(value);
+        }}
+        onBlur={() => runValidationTasks("phoneNumber", phoneNumber)}
+        errorMessage={errors.phoneNumber?.errorMessage}
+        hasError={errors.phoneNumber?.hasError}
+        {...getOverrideProps(overrides, "phoneNumber")}
+      ></TextField>
       <SelectField
         label="Type"
         placeholder="Please select an option"
@@ -156,7 +321,11 @@ export default function UserCreateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              props,
+              firstName,
+              lastName,
+              dateOfBirth,
+              sex,
+              phoneNumber,
               type: value,
               owner,
             };
@@ -193,7 +362,11 @@ export default function UserCreateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              props,
+              firstName,
+              lastName,
+              dateOfBirth,
+              sex,
+              phoneNumber,
               type,
               owner: value,
             };

@@ -53,7 +53,7 @@ export const schema = {
                     "type": {
                         "nonModel": "AffiliateProps"
                     },
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
                 "applicantProps": {
@@ -2204,5 +2204,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "186692aaa8b1ec098f9c0293911b27b3"
+    "version": "237be774ee730217daaa3251e61e53bd"
 };
