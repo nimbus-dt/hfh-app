@@ -6,6 +6,7 @@ import TableWithPaginator from 'components/TableWithPaginator';
 import Chip from 'components/Chip';
 import { stringToHumanReadable } from 'utils/strings';
 import Toggle from 'components/Toggle';
+import StatusChip from 'components/StatusChip';
 import style from './ApplicantApplicationsPage.module.css';
 
 const dummyData = [
@@ -94,19 +95,6 @@ const dummyData = [
     status: SubmissionStatus.RETURNED,
   },
 ];
-
-const StatusChip = ({ status }: { status: keyof typeof SubmissionStatus }) => {
-  switch (status) {
-    case SubmissionStatus.PENDING:
-      return <Chip variation="success" text={stringToHumanReadable(status)} />;
-    case SubmissionStatus.REJECTED:
-      return <Chip variation="warning" text={stringToHumanReadable(status)} />;
-    case SubmissionStatus.RETURNED:
-      return <Chip variation="danger" text={stringToHumanReadable(status)} />;
-    default:
-      return <Chip variation="disabled" text={stringToHumanReadable(status)} />;
-  }
-};
 
 const ApplicantApplicationsPage = () => {
   const [view, setView] = useState<'current' | 'past'>('current');

@@ -37,6 +37,7 @@ import {
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { dateOnly } from 'utils/dates';
+import StatusChip from 'components/StatusChip';
 import style from './AffiliateCycleApplications.module.css';
 import {
   applicationsFilterSchema,
@@ -421,9 +422,11 @@ const AffiliateCycleApplications = () => {
               },
               {
                 id: 'submissionStatus',
-                value:
-                  application.submissionStatus &&
-                  stringToHumanReadable(application.submissionStatus),
+                value: application.submissionStatus && (
+                  <div className={`${style.statusContainer}`}>
+                    <StatusChip status={application.submissionStatus} />
+                  </div>
+                ),
               },
               {
                 id: 'reviewStatus',
