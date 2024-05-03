@@ -1,13 +1,18 @@
 import React from 'react';
-import { Text } from '@aws-amplify/ui-react';
-import { Habitat } from 'models';
+import { TestCycle } from 'models';
+import DOMPurify from 'dompurify';
 
 interface IProperties {
-  habitat?: Habitat;
+  cycle?: TestCycle;
 }
 
-const NoOpenCycle = ({ habitat }: IProperties) => (
-  <Text fontWeight="bold">{habitat?.props.homeownershipNoOpenCycle}</Text>
+const NoOpenCycle = ({ cycle }: IProperties) => (
+  <div
+    // eslint-disable-next-line react/no-danger
+    dangerouslySetInnerHTML={{
+      __html: DOMPurify.sanitize(cycle?.closedCycleMessage || ''),
+    }}
+  />
 );
 
 export default NoOpenCycle;
