@@ -23,13 +23,13 @@ const LandingPage = () => (
       position="absolute"
       width="100%"
       minHeight="100vh"
-      style={{ zIndex: 1 }}
+      style={{ zIndex: 0 }}
       backgroundColor="white"
     >
       <View height="510px" backgroundColor="#34548C" />
       <Image width="100%" src={rectangle} />
     </View>
-    <View position="absolute" style={{ zIndex: 100 }} width="100%">
+    <View position="absolute" style={{ zIndex: 1 }} width="100%">
       <Flex
         direction="column"
         justifyContent="center"
