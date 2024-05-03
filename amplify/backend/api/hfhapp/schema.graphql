@@ -1,3 +1,8 @@
+type SidebarName {
+  name: String
+  fontSize: String
+}
+
 enum ReviewStatus {
   ACCEPTED
   PENDING
@@ -142,6 +147,8 @@ type HabitatProps {
   homeownershipWrittenQuestions: [WrittenQuestion!]
   optionalSections: OptionalSections!
   gallery: [GalleryItem!]
+  sidebarName: SidebarName
+  closedCycleMessages: [String!]!
 }
 
 type TestCycle @model @auth(rules: [{allow: public}]) {
@@ -155,6 +162,7 @@ type TestCycle @model @auth(rules: [{allow: public}]) {
   form: ID!
   rootformID: ID @index(name: "byRootForm")
   name: String
+  closedCycleMessage: String
 }
 
 enum ApplicationTypes {

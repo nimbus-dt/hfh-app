@@ -35,6 +35,20 @@ export enum SubmissionStatus {
   COMPLETED = "COMPLETED"
 }
 
+type EagerSidebarName = {
+  readonly name?: string | null;
+  readonly fontSize?: string | null;
+}
+
+type LazySidebarName = {
+  readonly name?: string | null;
+  readonly fontSize?: string | null;
+}
+
+export declare type SidebarName = LazyLoading extends LazyLoadingDisabled ? EagerSidebarName : LazySidebarName
+
+export declare const SidebarName: (new (init: ModelInit<SidebarName>) => SidebarName)
+
 type EagerApplicantProps = {
   readonly state: string;
   readonly city: string;
@@ -179,6 +193,8 @@ type EagerHabitatProps = {
   readonly homeownershipWrittenQuestions?: WrittenQuestion[] | null;
   readonly optionalSections: OptionalSections;
   readonly gallery?: GalleryItem[] | null;
+  readonly sidebarName?: SidebarName | null;
+  readonly closedCycleMessages: string[];
 }
 
 type LazyHabitatProps = {
@@ -193,6 +209,8 @@ type LazyHabitatProps = {
   readonly homeownershipWrittenQuestions?: WrittenQuestion[] | null;
   readonly optionalSections: OptionalSections;
   readonly gallery?: GalleryItem[] | null;
+  readonly sidebarName?: SidebarName | null;
+  readonly closedCycleMessages: string[];
 }
 
 export declare type HabitatProps = LazyLoading extends LazyLoadingDisabled ? EagerHabitatProps : LazyHabitatProps
@@ -454,6 +472,7 @@ type EagerTestCycle = {
   readonly form: string;
   readonly rootformID?: string | null;
   readonly name?: string | null;
+  readonly closedCycleMessage?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -473,6 +492,7 @@ type LazyTestCycle = {
   readonly form: string;
   readonly rootformID?: string | null;
   readonly name?: string | null;
+  readonly closedCycleMessage?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

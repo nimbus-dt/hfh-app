@@ -714,6 +714,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "closedCycleMessage": {
+                    "name": "closedCycleMessage",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -1868,6 +1875,25 @@ export const schema = {
         }
     },
     "nonModels": {
+        "SidebarName": {
+            "name": "SidebarName",
+            "fields": {
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "fontSize": {
+                    "name": "fontSize",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
         "ApplicantProps": {
             "name": "ApplicantProps",
             "fields": {
@@ -2215,10 +2241,27 @@ export const schema = {
                     "isRequired": true,
                     "attributes": [],
                     "isArrayNullable": true
+                },
+                "sidebarName": {
+                    "name": "sidebarName",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "SidebarName"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "closedCycleMessages": {
+                    "name": "closedCycleMessages",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": false
                 }
             }
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "fec4bf1ecb673b48816ec4bb9a6627f6"
+    "version": "29d8437abb69c9603cece41d77358fe9"
 };
