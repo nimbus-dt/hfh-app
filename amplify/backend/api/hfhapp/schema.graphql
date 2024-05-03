@@ -162,7 +162,7 @@ type TestCycle @model @auth(rules: [{allow: public}]) {
   form: ID!
   rootformID: ID @index(name: "byRootForm")
   name: String
-  closedCycleMessage: String
+  closedCycleMessage: String!
 }
 
 enum ApplicationTypes {

@@ -472,7 +472,7 @@ type EagerTestCycle = {
   readonly form: string;
   readonly rootformID?: string | null;
   readonly name?: string | null;
-  readonly closedCycleMessage?: string | null;
+  readonly closedCycleMessage: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -492,7 +492,7 @@ type LazyTestCycle = {
   readonly form: string;
   readonly rootformID?: string | null;
   readonly name?: string | null;
-  readonly closedCycleMessage?: string | null;
+  readonly closedCycleMessage: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

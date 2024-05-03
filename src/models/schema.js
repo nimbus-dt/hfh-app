@@ -718,7 +718,7 @@ export const schema = {
                     "name": "closedCycleMessage",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "createdAt": {
@@ -2263,5 +2263,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "29d8437abb69c9603cece41d77358fe9"
+    "version": "222054bed4cc2772f3c959e11ad74842"
 };
