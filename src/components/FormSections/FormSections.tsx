@@ -1,4 +1,3 @@
-import React from 'react';
 import style from './FormSections.module.css';
 
 interface IProperties {

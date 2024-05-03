@@ -184,7 +184,7 @@ const HabitatLayout = () => {
   }
 
   if (!userData) {
-    return <SignUpQuestions />;
+    return <SignUpQuestions habitat={habitat} />;
   }
 
   return (

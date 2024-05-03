@@ -6,13 +6,18 @@
   width: 100%;
   max-width: 1184px;
   padding: 1rem;
+  margin-top: auto;
 }
 
 .next {
+  width: fit-content;
   max-width: 456px;
+  margin-left: auto;
 }
 
 .previous {
+  width: fit-content;
+  margin-right: auto;
 }
 
 .help_icon {
@@ -36,8 +41,26 @@
   transform: translate(-50%, -50%);
 }
 
-@media (min-width: 480px) {
+.background_without_back {
+  grid-template-areas: 'next' 'help';
+  padding: 1rem;
+}
+
+.help_icon_without_back {
+  margin-top: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.next_without_back {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 992px) {
   .background {
+    grid-template-columns: 145px 1fr 145px;
     grid-template-areas: 'previous next help';
     padding: 2rem;
   }
@@ -53,5 +76,7 @@
 
   .next {
     width: 100%;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
