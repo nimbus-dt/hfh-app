@@ -27,7 +27,6 @@ import NewAffiliateLayout from 'layouts/NewAffiliateLayout';
 import AffiliateCycleApplications from 'pages/[habitat]/affiliate/cycles/[cycleId]/AffiliateCycleApplications';
 
 function App() {
-  console.log('routes', ROUTES);
   return (
     <Routes>
       <Route
