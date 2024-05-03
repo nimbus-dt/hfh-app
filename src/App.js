@@ -14,7 +14,7 @@ import ContactPage from 'pages/contact';
 import DataPage from 'pages/data';
 // eslint-disable-next-line import/no-unresolved
 import '@aws-amplify/ui-react/styles.css';
-import HomeownershipHomePage from 'pages/homeownership/[habitat]/home';
+import ApplicantCyclePage from 'pages/[habitat]/applicant/[cycleId]';
 import HomeownershipReviewPage from 'pages/homeownership/[habitat]/review';
 import HabitatLayout from 'layouts/HabitatLayout';
 import ApplicantLayout from 'layouts/ApplicantLayout';
@@ -27,6 +27,7 @@ import NewAffiliateLayout from 'layouts/NewAffiliateLayout';
 import AffiliateCycleApplications from 'pages/[habitat]/affiliate/cycles/[cycleId]/AffiliateCycleApplications';
 
 function App() {
+  console.log('routes', ROUTES);
   return (
     <Routes>
       <Route
@@ -82,10 +83,6 @@ function App() {
       <Route path={ROUTES.HABITAT} element={<HabitatLayout />}>
         <Route path={ROUTES.HABITAT_APPLICANT} element={<ApplicantLayout />}>
           <Route
-            path={ROUTES.HABITAT_APPLICANT_FORM}
-            element={<HomeownershipHomePage />}
-          />
-          <Route
             path={ROUTES.HABITAT_APPLICANT_REVIEW}
             element={<HomeownershipReviewPage />}
           />
@@ -96,6 +93,10 @@ function App() {
           <Route
             path={ROUTES.HABITAT_APPLICANT_DECISIONS}
             element={<ApplicantDecisionsPage />}
+          />
+          <Route
+            path={ROUTES.HABITAT_APPLICANT_CYCLE}
+            element={<ApplicantCyclePage />}
           />
         </Route>
         <Route path={ROUTES.HABITAT_AFFILIATE} element={<NewAffiliateLayout />}>
