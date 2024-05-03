@@ -2,6 +2,13 @@
 import { initSchema } from '@aws-amplify/datastore';
 import { schema } from './schema';
 
+const ReviewStatus = {
+  "ACCEPTED": "ACCEPTED",
+  "PENDING": "PENDING",
+  "DENIED": "DENIED",
+  "RETURNED": "RETURNED"
+};
+
 const Sexs = {
   "MALE": "MALE",
   "FEMALE": "FEMALE",
@@ -24,10 +31,8 @@ const ApplicationTypes = {
 };
 
 const SubmissionStatus = {
-  "PENDING": "PENDING",
-  "ACCEPTED": "ACCEPTED",
-  "REJECTED": "REJECTED",
-  "RETURNED": "RETURNED"
+  "INCOMPLETE": "INCOMPLETE",
+  "COMPLETED": "COMPLETED"
 };
 
 const { User, RootForm, Form, Decision, FormAnswer, Note, Property, TestCycle, ApplicantOptional, Asset, Debt, Income, TestApplication, EmploymentInfo, Member, Record, Written, Checklist, ApplicantInfo, Habitat, ApplicantProps, AffiliateProps, GalleryItem, OptionalSections, WrittenQuestion, RecordQuestion, CheckQuestion, HabitatProps } = initSchema(schema);
@@ -53,6 +58,7 @@ export {
   Checklist,
   ApplicantInfo,
   Habitat,
+  ReviewStatus,
   Sexs,
   UserTypes,
   RootFormStatusTypes,

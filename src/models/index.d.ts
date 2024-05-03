@@ -2,6 +2,13 @@ import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-
 // @ts-ignore
 import { LazyLoading, LazyLoadingDisabled, AsyncCollection } from "@aws-amplify/datastore";
 
+export enum ReviewStatus {
+  ACCEPTED = "ACCEPTED",
+  PENDING = "PENDING",
+  DENIED = "DENIED",
+  RETURNED = "RETURNED"
+}
+
 export enum Sexs {
   MALE = "MALE",
   FEMALE = "FEMALE",
@@ -24,10 +31,8 @@ export enum ApplicationTypes {
 }
 
 export enum SubmissionStatus {
-  PENDING = "PENDING",
-  ACCEPTED = "ACCEPTED",
-  REJECTED = "REJECTED",
-  RETURNED = "RETURNED"
+  INCOMPLETE = "INCOMPLETE",
+  COMPLETED = "COMPLETED"
 }
 
 type EagerApplicantProps = {
@@ -608,14 +613,15 @@ type EagerTestApplication = {
   readonly lastSection?: string | null;
   readonly members?: (Member | null)[] | null;
   readonly submittedDate: string;
-  readonly reviewStatus?: string | null;
-  readonly submissionStatus?: SubmissionStatus | keyof typeof SubmissionStatus | null;
+  readonly reviewStatus: ReviewStatus | keyof typeof ReviewStatus;
+  readonly submissionStatus: SubmissionStatus | keyof typeof SubmissionStatus;
   readonly props?: string | null;
   readonly type: ApplicationTypes | keyof typeof ApplicationTypes;
   readonly testcycleID: string;
   readonly Notes?: (Note | null)[] | null;
   readonly FormAnswers?: (FormAnswer | null)[] | null;
   readonly Decisions?: (Decision | null)[] | null;
+  readonly customStatus?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -630,14 +636,15 @@ type LazyTestApplication = {
   readonly lastSection?: string | null;
   readonly members: AsyncCollection<Member>;
   readonly submittedDate: string;
-  readonly reviewStatus?: string | null;
-  readonly submissionStatus?: SubmissionStatus | keyof typeof SubmissionStatus | null;
+  readonly reviewStatus: ReviewStatus | keyof typeof ReviewStatus;
+  readonly submissionStatus: SubmissionStatus | keyof typeof SubmissionStatus;
   readonly props?: string | null;
   readonly type: ApplicationTypes | keyof typeof ApplicationTypes;
   readonly testcycleID: string;
   readonly Notes: AsyncCollection<Note>;
   readonly FormAnswers: AsyncCollection<FormAnswer>;
   readonly Decisions: AsyncCollection<Decision>;
+  readonly customStatus?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
