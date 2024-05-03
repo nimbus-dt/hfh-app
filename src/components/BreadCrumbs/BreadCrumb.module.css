@@ -17,3 +17,17 @@
   color: unset;
   text-decoration: none;
 }
+
+.hide_on_small {
+  display: none;
+}
+
+.gt {
+  padding-left: 0.5rem;
+}
+
+@media (min-width: 480px) {
+  .hide_on_small {
+    display: flex;
+  }
+}

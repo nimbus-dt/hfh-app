@@ -127,7 +127,10 @@ const ApplicantApplicationsPage = () => {
           },
           {
             id: 'status',
-            value: 'Status',
+            value:
+              submissionStatusFilter === SubmissionStatus.INCOMPLETE
+                ? 'Status'
+                : 'Review Status',
             textAlign: 'center',
           },
           {

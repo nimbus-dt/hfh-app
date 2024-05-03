@@ -112,4 +112,5 @@ export const ROUTES = {
   HABITAT_AFFILIATE_FORMS: 'forms',
   HABITAT_AFFILIATE_ANALYTICS: 'analytics',
   HABITAT_AFFILIATE_USERS: 'users',
+  HABITAT_AFFILIATE_FORM: ':formId',
 };
