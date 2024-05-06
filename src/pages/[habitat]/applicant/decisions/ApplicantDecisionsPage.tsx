@@ -68,8 +68,9 @@ const ApplicantDecisionsPage = () => (
       </View>
     </Flex>
     <Flex className={`${style.decisionsContainer}`}>
-      {dummyData.map((data) => (
+      {dummyData.map((data, index) => (
         <DecisionCard
+          key={index}
           date={data.date}
           time={data.time}
           habitat={data.habitat}
