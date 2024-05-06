@@ -68,3 +68,16 @@ export const dateOnly = (date) => {
 
   return yourDateStr;
 };
+
+/**
+ *  Removes date component from AWSDateTime object
+ * @param {string} date date as an ISO string
+ * @returns {string} date as an ISO string
+ */
+export const timeOnly = (date) => {
+  const awsDate = !date || date == null ? new Date() : new Date(date);
+
+  const yourDateStr = awsDate.toLocaleTimeString();
+
+  return yourDateStr;
+};
