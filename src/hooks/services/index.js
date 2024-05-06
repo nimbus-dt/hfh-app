@@ -12,6 +12,7 @@ import {
   Note,
   Property,
   Record,
+  RootForm,
   TestApplication,
   TestCycle,
   Written,
@@ -123,4 +124,10 @@ export const useDecisionsQuery = dataStoreQueryHookBuilder({
 export const useFormById = dataStoreQueryByIdHookBuilder({
   model: Form,
   defaultDataValue: null,
+});
+
+/* ROOT FORM MODEL SERVICES */
+export const useRootFormsQuery = dataStoreQueryHookBuilder({
+  model: RootForm,
+  defaultDataValue: [],
 });

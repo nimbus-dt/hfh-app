@@ -13,6 +13,7 @@ interface IProperties
   > {
   icon?: ReactNode;
   variation?: 'primary' | 'secondary' | 'text-only';
+  type?: 'submit';
 }
 
 const CustomButton = ({

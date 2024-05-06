@@ -65,6 +65,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "props": {
+                    "name": "props",
+                    "isArray": false,
+                    "type": "AWSJSON",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "type": {
                     "name": "type",
                     "isArray": false,
@@ -2204,5 +2211,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "186692aaa8b1ec098f9c0293911b27b3"
+    "version": "ff3a8fce062d591094af783c991cb892"
 };

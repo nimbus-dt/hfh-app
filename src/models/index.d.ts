@@ -207,6 +207,7 @@ type EagerUser = {
   readonly phoneNumber: string;
   readonly affiliateProps: AffiliateProps;
   readonly applicantProps?: ApplicantProps | null;
+  readonly props: string;
   readonly type: UserTypes | keyof typeof UserTypes;
   readonly owner: string;
   readonly createdAt?: string | null;
@@ -226,6 +227,7 @@ type LazyUser = {
   readonly phoneNumber: string;
   readonly affiliateProps: AffiliateProps;
   readonly applicantProps?: ApplicantProps | null;
+  readonly props: string;
   readonly type: UserTypes | keyof typeof UserTypes;
   readonly owner: string;
   readonly createdAt?: string | null;

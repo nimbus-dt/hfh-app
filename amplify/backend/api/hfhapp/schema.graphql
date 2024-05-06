@@ -38,6 +38,7 @@ type User @model @auth(rules: [{allow: public}]) {
   phoneNumber: String!
   affiliateProps: AffiliateProps!
   applicantProps: ApplicantProps
+  props: AWSJSON!
   type: UserTypes!
   owner: ID!
 }
