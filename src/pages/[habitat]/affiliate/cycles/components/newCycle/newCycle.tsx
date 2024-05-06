@@ -3,10 +3,8 @@ import { DataStore } from 'aws-amplify';
 import { Button } from '@aws-amplify/ui-react';
 import { throttle } from 'lodash';
 import dayjs from 'dayjs';
-
 import Modal from 'components/Modal';
 import { Habitat, TestCycle } from 'models';
-
 import styles from './newCycle.module.css';
 
 interface NewCycleProps {
@@ -59,6 +57,10 @@ const NewCycle = ({
           isOpen: true,
           habitatID: habitat.id,
           form: formId,
+          closedCycleMessage:
+            habitat.props.closedCycleMessages[
+              habitat.props.closedCycleMessages.length - 1
+            ],
         })
       );
       refetch();
