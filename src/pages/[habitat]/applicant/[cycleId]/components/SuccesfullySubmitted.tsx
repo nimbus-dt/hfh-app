@@ -6,9 +6,10 @@ import CustomButton from 'components/CustomButton/CustomButton';
 
 interface IProperties {
   habitat?: Habitat;
+  onReview: () => void;
 }
 
-const SuccesfullySubmitted = ({ habitat }: IProperties) => (
+const SuccesfullySubmitted = ({ habitat, onReview }: IProperties) => (
   <Flex direction="column">
     <Text fontWeight="bold">
       {`You have succesfully submitted your Homeownership Program application
@@ -17,8 +18,12 @@ const SuccesfullySubmitted = ({ habitat }: IProperties) => (
     </Text>
     <Flex justifyContent="end">
       <Link to="../applications">
-        <CustomButton variation="primary">Go to applications</CustomButton>
+        <CustomButton variation="secondary">Go to applications</CustomButton>
       </Link>
+
+      <CustomButton onClick={onReview} variation="primary">
+        Review
+      </CustomButton>
     </Flex>
   </Flex>
 );

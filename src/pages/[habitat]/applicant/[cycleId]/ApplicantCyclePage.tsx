@@ -38,6 +38,9 @@ const ApplicantCyclePage = () => {
   });
 
   const [application, setApplication] = useState<TestApplication>();
+  const [review, setReview] = useState(false);
+
+  const onReview = () => setReview(true);
 
   const getApplication = useCallback(
     async (username: string) => {
@@ -139,9 +142,10 @@ const ApplicantCyclePage = () => {
       </div>
     );
 
-  return application.submissionStatus === SubmissionStatus.COMPLETED ? (
+  return application.submissionStatus === SubmissionStatus.COMPLETED &&
+    !review ? (
     <div className={`${style.page}`}>
-      <SuccesfullySubmitted habitat={habitat} />
+      <SuccesfullySubmitted habitat={habitat} onReview={onReview} />
     </div>
   ) : (
     <div className={`${style.page}`}>

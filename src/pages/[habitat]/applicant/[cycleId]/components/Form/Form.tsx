@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Form as FormioForm } from '@formio/react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   FormAnswer,
   Habitat,
@@ -151,7 +151,8 @@ const Form = ({ habitat, application, cycle }: IProperties) => {
   return (
     form && (
       <div className={`${style.formContainer}`}>
-        {reviewMode ? (
+        {reviewMode ||
+        application?.submissionStatus === SubmissionStatus.COMPLETED ? (
           <>
             <FormioForm
               key="review"
@@ -188,12 +189,26 @@ const Form = ({ habitat, application, cycle }: IProperties) => {
               </Flex>
             </Modal>
             <Flex justifyContent="space-between">
-              <CustomButton onClick={handleOnClickGoBack} variation="secondary">
-                Go back to edit
-              </CustomButton>
-              <CustomButton onClick={handleOnClickSubmit} variation="primary">
-                Submit
-              </CustomButton>
+              {application?.submissionStatus !== SubmissionStatus.COMPLETED ? (
+                <>
+                  <CustomButton
+                    onClick={handleOnClickGoBack}
+                    variation="secondary"
+                  >
+                    Go back to edit
+                  </CustomButton>
+                  <CustomButton
+                    onClick={handleOnClickSubmit}
+                    variation="primary"
+                  >
+                    Submit
+                  </CustomButton>
+                </>
+              ) : (
+                <Link to="../">
+                  <CustomButton variation="primary">Go back</CustomButton>
+                </Link>
+              )}
             </Flex>
           </>
         ) : (
