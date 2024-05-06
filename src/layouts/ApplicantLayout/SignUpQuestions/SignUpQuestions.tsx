@@ -12,7 +12,7 @@ import Header from './Header';
 import dataProps from './types';
 
 const initialData: dataProps = {
-  current: 0,
+  current: 3,
 };
 
 interface SignUpQuestionsProps {

@@ -16,7 +16,7 @@
   padding: 1rem;
 
   display: grid;
-  grid-template-areas: 'logo close' 'progression-bar progression-bar';
+  grid-template-areas: 'logo close' 'progress-bar progress-bar';
 }
 
 .img {
@@ -50,13 +50,15 @@
 
 @media (min-width: 768px) {
   .banner {
-    grid-template-areas: 'logo progression-bar close';
+    grid-template-columns: 145px 1fr 145px;
+    grid-template-areas: 'logo progress-bar close';
   }
 }
 
 @media (min-width: 992px) {
   .banner {
+    grid-template-columns: 145px 1fr 145px;
     padding: 1.5rem 2rem;
-    grid-template-areas: 'logo progression-bar close';
+    grid-template-areas: 'logo progress-bar close';
   }
 }
