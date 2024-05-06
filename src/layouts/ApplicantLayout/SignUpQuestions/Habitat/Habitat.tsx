@@ -21,7 +21,6 @@ interface HabitatProps {
 }
 
 const Habitat = ({ data, setData, goBack, habitat }: HabitatProps) => {
-  console.log(habitat);
   const {
     register,
     handleSubmit,
