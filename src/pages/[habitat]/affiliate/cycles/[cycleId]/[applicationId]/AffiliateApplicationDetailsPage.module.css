@@ -1,0 +1,21 @@
+.page {
+  padding: 32px;
+}
+
+.cta {
+  display: flex;
+  gap: 4px;
+}
+
+.title {
+  font-weight: var(--amplify-font-weights-medium);
+}
+
+.detailsContainer {
+  display: flex;
+  gap: 24px;
+}
+
+.tabContainer {
+  flex: 1;
+}
