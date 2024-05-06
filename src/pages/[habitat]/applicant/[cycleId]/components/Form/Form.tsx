@@ -205,7 +205,7 @@ const Form = ({ habitat, application, cycle }: IProperties) => {
                   </CustomButton>
                 </>
               ) : (
-                <Link to="../">
+                <Link to="../applications">
                   <CustomButton variation="primary">Go back</CustomButton>
                 </Link>
               )}

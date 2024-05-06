@@ -185,9 +185,7 @@ const ApplicantApplicationsPage = () => {
               {
                 value: (
                   <Flex width="100%" justifyContent="center">
-                    <Link
-                      to={`../../${application.testcycleID}/${application.id}`}
-                    >
+                    <Link to={`../${application.testcycleID}`}>
                       <Button variation="link" padding="0">
                         <MdOutlineOpenInNew
                           size="24px"
