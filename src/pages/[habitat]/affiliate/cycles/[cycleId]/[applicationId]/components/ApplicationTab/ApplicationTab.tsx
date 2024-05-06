@@ -50,7 +50,7 @@ const ApplicationTab = ({
   handleDecideOnClick,
   loading,
 }: IProperties) => (
-  <div className="container">
+  <div>
     <Form
       key="review"
       src={`${FORMIO_URL}/${formUrl}`}
