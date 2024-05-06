@@ -157,17 +157,10 @@ const Form = ({ habitat, application, cycle }: IProperties) => {
             <FormioForm
               key="review"
               src={`${FORMIO_URL}/${form.url}`}
-              options={
-                {
-                  readOnly: true,
-                  renderMode: 'flat',
-                  additional: {
-                    application,
-                    habitat,
-                    openCycle: cycle,
-                  },
-                } as Options
-              }
+              options={{
+                readOnly: true,
+                renderMode: 'flat',
+              }}
               submission={generateSubmission(formAnswers)}
             />
             <Modal
