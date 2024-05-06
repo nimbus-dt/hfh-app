@@ -58,7 +58,6 @@ const ProgressBar = ({ current, pages }: IProperties) => {
   const width = 110.5 / length;
   const rightCurrentWidth = width * (findCurrentStepIndex + 1);
   const leftCurrentWidth = 110.5 - rightCurrentWidth;
-  console.log(rightCurrentWidth);
   let finished = false;
   return (
     <div className={styles.background}>

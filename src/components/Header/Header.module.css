@@ -50,7 +50,7 @@
 
 @media (min-width: 768px) {
   .banner {
-    grid-template-columns: 145px 1fr 145px;
+    grid-template-columns: 124px 1fr 124px;
     grid-template-areas: 'logo progress-bar close';
   }
 }

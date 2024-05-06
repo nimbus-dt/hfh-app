@@ -7,6 +7,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .container {
@@ -58,5 +62,11 @@
 @media (min-width: 480px) {
   .background {
     max-width: 456px;
+  }
+}
+
+@media (min-width: 768px) {
+  .background {
+    max-width: 716px;
   }
 }

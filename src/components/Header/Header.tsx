@@ -5,86 +5,20 @@ import ProgressBar from 'components/ProgressBar';
 
 import styles from './Header.module.css';
 
+type PageProps = {
+  section: string;
+  step: number;
+  number: number;
+}[];
+
 interface HeaderProps {
   current: number;
-  sections: string[];
+  pages: PageProps;
   habitat: Habitat;
+  cancel?: boolean;
 }
 
-const pages = [
-  {
-    number: 1,
-    step: 1,
-    section: 'General',
-  },
-  {
-    number: 2,
-    step: 1,
-    section: 'General',
-  },
-  {
-    number: 3,
-    step: 2,
-    section: 'Household',
-  },
-  {
-    number: 32,
-    step: 2,
-    section: 'Household',
-  },
-  {
-    number: 42,
-    step: 3,
-    section: 'Employment',
-  },
-  {
-    number: 43,
-    step: 3,
-    section: 'Employment',
-  },
-  {
-    number: 4,
-    step: 3,
-    section: 'Employment',
-  },
-  {
-    number: 5,
-    step: 4,
-    section: 'Habitat',
-  },
-  {
-    number: 6,
-    step: 5,
-    section: 'Habitat',
-  },
-  {
-    number: 7,
-    step: 6,
-    section: 'Habitat',
-  },
-  {
-    number: 8,
-    step: 7,
-    section: 'Habitat',
-  },
-  {
-    number: 9,
-    step: 8,
-    section: 'Habitat',
-  },
-  {
-    number: 10,
-    step: 9,
-    section: 'Habitat',
-  },
-  {
-    number: 11,
-    step: 11,
-    section: 'Habitat',
-  },
-];
-
-const Header = ({ current, sections, habitat }: HeaderProps) => (
+const Header = ({ current, pages, habitat, cancel }: HeaderProps) => (
   <div className={styles.background}>
     <div className={styles.banner}>
       <div className={styles.logo}>
@@ -96,9 +30,7 @@ const Header = ({ current, sections, habitat }: HeaderProps) => (
         <h1 className="theme-subtitle-s2">{habitat.name}</h1>
       </div>
       <ProgressBar current={current} pages={pages} />
-      <div className={styles.close}>
-        <MdClose size="1.5rem" />
-      </div>
+      <div className={styles.close}>{cancel && <MdClose size="1.5rem" />}</div>
     </div>
   </div>
 );

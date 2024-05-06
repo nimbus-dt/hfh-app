@@ -1,8 +1,9 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { throttle } from 'lodash';
 
+import Footer from 'components/Footer';
+
 import styles from '../SignUpQuestions.module.css';
-import Footer from '../Footer';
 import dataProps from '../types';
 
 interface Inputs {

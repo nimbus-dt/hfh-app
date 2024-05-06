@@ -1,11 +1,10 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { throttle } from 'lodash';
 
+import Footer from 'components/Footer';
 import { Habitat as HabitatModel } from 'models';
 
-import { MdCheck } from 'react-icons/md';
 import styles from '../SignUpQuestions.module.css';
-import Footer from '../Footer';
 import dataProps from '../types';
 
 interface Inputs {
