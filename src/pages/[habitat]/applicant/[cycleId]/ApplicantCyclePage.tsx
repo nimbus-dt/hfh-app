@@ -135,10 +135,16 @@ const ApplicantCyclePage = () => {
       </div>
     );
 
-  if (!cycle.isOpen)
+  if (!cycle.isOpen && !review)
     return (
       <div className={`${style.page}`}>
-        <NoOpenCycle cycle={cycle} />
+        <NoOpenCycle
+          cycle={cycle}
+          onReview={onReview}
+          showReview={
+            application.submissionStatus === SubmissionStatus.COMPLETED
+          }
+        />
       </div>
     );
 
