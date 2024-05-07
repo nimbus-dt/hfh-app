@@ -113,6 +113,13 @@ const General = ({ data, setData }: GeneralProps) => {
               placeholder="Phone Number"
               defaultValue={data?.general?.phone || ''}
               {...register('phone', { required: true })}
+              onChange={(e) => {
+                const { value } = e.target;
+                e.target.value = value
+                  .replace(/\D/g, '')
+                  .replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3')
+                  .replace(/(-\d{4})\d+?$/, '$1');
+              }}
               className={`${styles.text_input} theme-body-medium`}
             />
             {errors.phone && (
