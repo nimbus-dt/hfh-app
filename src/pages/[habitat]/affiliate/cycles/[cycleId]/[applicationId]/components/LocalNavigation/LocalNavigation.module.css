@@ -1,9 +1,9 @@
 .container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   padding: 16px;
-  min-width: 214px;
-  height: 800px;
+  min-width: fit-content;
+  height: fit-content;
   background-color: #f4f4f4;
   border-width: 1px;
   border-style: solid;
@@ -39,4 +39,13 @@
 .active {
   border-color: var(--amplify-colors-neutral-80);
   color: #3e3d3d;
+}
+
+/* Amplify UI medium */
+@media (min-width: 768px) {
+  .container {
+    min-width: 214px;
+    flex-direction: column;
+    height: 800px;
+  }
 }

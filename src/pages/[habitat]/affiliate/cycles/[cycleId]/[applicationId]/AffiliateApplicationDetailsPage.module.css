@@ -13,9 +13,17 @@
 
 .detailsContainer {
   display: flex;
+  flex-direction: column;
   gap: 24px;
 }
 
 .tabContainer {
   flex: 1;
+}
+
+/* Amplify UI medium */
+@media (min-width: 768px) {
+  .detailsContainer {
+    flex-direction: row;
+  }
 }

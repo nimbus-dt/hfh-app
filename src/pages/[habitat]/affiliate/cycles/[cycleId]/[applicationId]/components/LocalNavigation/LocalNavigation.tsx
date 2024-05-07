@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+import { useBreakpointValue } from '@aws-amplify/ui-react';
 import style from './LocalNavigation.module.css';
 
 interface IItem {
@@ -12,20 +13,26 @@ interface IProperties {
   onChange: (index: number) => void;
 }
 
-const LocalNavigation = ({ current, items, onChange }: IProperties) => (
-  <div className={`${style.container}`}>
-    {items.map((item, index) => (
-      <button
-        key={`${item.label}_${index}`}
-        type="button"
-        className={`${style.menuItem} ${current === index ? style.active : ''}`}
-        onClick={() => onChange(index)}
-      >
-        <div className={style.icon}>{item.icon}</div>
-        <span className={style.label}>{item.label}</span>
-      </button>
-    ))}
-  </div>
-);
+const LocalNavigation = ({ current, items, onChange }: IProperties) => {
+  const isMobile = useBreakpointValue({ base: true, medium: false });
+
+  return (
+    <div className={`${style.container}`}>
+      {items.map((item, index) => (
+        <button
+          key={`${item.label}_${index}`}
+          type="button"
+          className={`${style.menuItem} ${
+            current === index ? style.active : ''
+          }`}
+          onClick={() => onChange(index)}
+        >
+          <div className={style.icon}>{item.icon}</div>
+          {!isMobile && <span className={style.label}>{item.label}</span>}
+        </button>
+      ))}
+    </div>
+  );
+};
 
 export default LocalNavigation;
