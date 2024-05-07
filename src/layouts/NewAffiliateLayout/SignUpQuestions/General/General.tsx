@@ -13,7 +13,6 @@ interface Inputs {
   dob: string;
   phone: string;
   sex: '' | 'MALE' | 'FEMALE' | 'OTHER';
-  address: string;
 }
 
 interface GeneralProps {
@@ -142,29 +141,6 @@ const General = ({ data, setData }: GeneralProps) => {
               <MdArrowDropDown size="1.5rem" className={styles.arrow} />
             </div>
             {errors.sex && (
-              <span className={`${styles.error} theme-body-small`}>
-                This field is required
-              </span>
-            )}
-          </div>
-        </div>
-        <div>
-          <label
-            htmlFor="address"
-            className={`theme-body-medium ${styles.label}`}
-          >
-            What is your address?
-          </label>
-          <div>
-            <input
-              id="address"
-              placeholder="Address"
-              defaultValue={data?.general?.address || ''}
-              className={`theme-body-medium ${styles.text_input}`}
-              type="string"
-              {...register('address', { required: true })}
-            />
-            {errors.address && (
               <span className={`${styles.error} theme-body-small`}>
                 This field is required
               </span>

@@ -1,8 +1,9 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { DataStore } from 'aws-amplify';
 import { throttle } from 'lodash';
 
 import Footer from 'components/Footer';
-import { Habitat as HabitatModel } from 'models';
+import { Habitat as HabitatModel, User } from 'models';
 
 import styles from '../SignUpQuestions.module.css';
 import dataProps from '../types';
@@ -18,20 +19,24 @@ interface HabitatProps {
   setData: React.Dispatch<React.SetStateAction<dataProps>>;
   goBack: () => void;
   habitat: HabitatModel;
+  user: {
+    username: string;
+  };
 }
 
-const Habitat = ({ data, setData, goBack, habitat }: HabitatProps) => {
+const Habitat = ({ data, setData, goBack, habitat, user }: HabitatProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = (habitatData) => {
+  const onSubmit: SubmitHandler<Inputs> = async (habitatData) => {
     setData((prev) => ({
       ...prev,
       habitat: habitatData,
     }));
+
     console.log(data);
   };
 

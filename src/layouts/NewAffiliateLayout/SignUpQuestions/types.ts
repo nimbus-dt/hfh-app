@@ -1,3 +1,5 @@
+import { Habitat } from 'models';
+
 interface dataProps {
   current: number;
   general?: {
@@ -6,21 +8,19 @@ interface dataProps {
     dob: string;
     phone: string;
     sex: '' | 'MALE' | 'FEMALE' | 'OTHER';
-    address: string;
   };
-  household?: {
-    members: number;
-    income: number;
-  };
-  employment?: {
-    unemployed: 'Yes' | 'No';
+  affiliate?: {
     position: string;
-    employer: string;
+    description: string;
+    joinMonth: string;
+    joinYear: string;
   };
-  habitat?: {
-    source: string;
-    firstTime: 'Yes' | 'No';
-    interest: string;
+}
+
+export interface SignUpQuestionsProps {
+  habitat: Habitat;
+  user: {
+    username: string;
   };
 }
 
