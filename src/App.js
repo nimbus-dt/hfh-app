@@ -1,7 +1,6 @@
 import './assets/styles/App.css';
 import { Routes, Route, Outlet } from 'react-router-dom';
 import { ScrollView } from '@aws-amplify/ui-react';
-import ApplicationsPage from 'pages/affiliate-portal/cycles/[cycleId]';
 import AffiliatePortalRepairsPage from 'pages/affiliate-portal/repairs';
 import AffiliatePortalVolunteersPage from 'pages/affiliate-portal/volunteers';
 import AffiliatePortalSettingsPage from 'pages/affiliate-portal/settings';
