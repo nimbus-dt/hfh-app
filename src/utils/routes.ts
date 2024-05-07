@@ -34,7 +34,7 @@ export const ROUTES = {
     route: '/:habitat/affiliate/:formid/:cycleid',
   },
   affiliateApplicationDetail: {
-    title: 'Application',
+    title: 'Application Details',
     route: '/:habitat/affiliate/:formid/:cycleid/:applicationid',
   },
   affiliateAnalytics: {

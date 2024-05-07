@@ -1,8 +1,6 @@
 import './assets/styles/App.css';
 import { Routes, Route, Outlet } from 'react-router-dom';
 import { ScrollView } from '@aws-amplify/ui-react';
-import ApplicationsPage from 'pages/affiliate-portal/cycles/[cycleId]';
-import ApplicationDetailsPage from 'pages/affiliate-portal/cycles/[cycleId]/[applicationId]';
 import AffiliatePortalRepairsPage from 'pages/affiliate-portal/repairs';
 import AffiliatePortalVolunteersPage from 'pages/affiliate-portal/volunteers';
 import AffiliatePortalSettingsPage from 'pages/affiliate-portal/settings';
@@ -25,6 +23,7 @@ import AffiliateFormsPage from 'pages/[habitat]/affiliate/forms';
 import CyclesPage from 'pages/[habitat]/affiliate/cycles';
 import NewAffiliateLayout from 'layouts/NewAffiliateLayout';
 import AffiliateCycleApplications from 'pages/[habitat]/affiliate/cycles/[cycleId]/AffiliateCycleApplications';
+import AffiliateApplicationDetailsPage from 'pages/[habitat]/affiliate/cycles/[cycleId]/[applicationId]/AffiliateApplicationDetailsPage';
 
 function App() {
   return (
@@ -106,7 +105,7 @@ function App() {
               <Route index element={<AffiliateCycleApplications />} />
               <Route
                 path={ROUTES.HABITAT_AFFILIATE_CYCLES_CYCLE_APPLICATION}
-                element={<ApplicationDetailsPage />}
+                element={<AffiliateApplicationDetailsPage />}
               />
             </Route>
           </Route>
@@ -138,10 +137,10 @@ function App() {
           <Route path=":formId">
             <Route index element={<CyclesPage />} />
             <Route path={ROUTES.HABITAT_AFFILIATE_CYCLES_CYCLE}>
-              <Route index element={<ApplicationsPage />} />
+              <Route index element={<AffiliateCycleApplications />} />
               <Route
                 path={ROUTES.HABITAT_AFFILIATE_CYCLES_CYCLE_APPLICATION}
-                element={<ApplicationDetailsPage />}
+                element={<AffiliateApplicationDetailsPage />}
               />
             </Route>
           </Route>
