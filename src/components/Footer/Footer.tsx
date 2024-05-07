@@ -5,9 +5,10 @@ import styles from './Footer.module.css';
 
 interface FooterProps {
   goBack?: () => void;
+  submit?: boolean;
 }
 
-const Footer = ({ goBack }: FooterProps) => (
+const Footer = ({ goBack, submit = false }: FooterProps) => (
   <div
     className={`${styles.background} ${
       !goBack && styles.background_without_back
@@ -30,7 +31,7 @@ const Footer = ({ goBack }: FooterProps) => (
       variation="primary"
       className={`${styles.next} ${!goBack && styles.next_without_back}`}
     >
-      Continue
+      {submit ? 'Submit' : 'Continue'}
     </Button>
     <div
       className={`${styles.help_icon} ${

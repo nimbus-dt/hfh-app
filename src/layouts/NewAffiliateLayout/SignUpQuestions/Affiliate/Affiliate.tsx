@@ -119,7 +119,9 @@ const Affiliate = ({
                   {...register('joinMonth', { required: true })}
                 >
                   {months.map((month) => (
-                    <option value={month}>{month}</option>
+                    <option key={month} value={month}>
+                      {month}
+                    </option>
                   ))}
                 </select>
                 <MdArrowDropDown size="1.5rem" className={styles.arrow} />
@@ -139,7 +141,9 @@ const Affiliate = ({
                   {...register('joinYear', { required: true })}
                 >
                   {years.map((year) => (
-                    <option value={year}>{year}</option>
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
                   ))}
                 </select>
                 <MdArrowDropDown size="1.5rem" className={styles.arrow} />
@@ -153,7 +157,7 @@ const Affiliate = ({
           </div>
         </div>
       </div>
-      <Footer goBack={goBack} />
+      <Footer goBack={goBack} submit />
     </form>
   );
 };

@@ -127,7 +127,7 @@ const Habitat = ({ data, setData, goBack, habitat, user }: HabitatProps) => {
           </div>
         </div>
       </div>
-      <Footer goBack={goBack} />
+      <Footer goBack={goBack} submit />
     </form>
   );
 };

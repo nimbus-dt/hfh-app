@@ -33,7 +33,6 @@ const General = ({ data, setData }: GeneralProps) => {
       current: prev.current + 1,
       general: generalData,
     }));
-    console.log(data);
   };
 
   return (

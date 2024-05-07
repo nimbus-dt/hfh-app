@@ -35,7 +35,6 @@ const Employment = ({ data, setData, goBack }: EmploymentProps) => {
       current: prev.current + 1,
       employment: employmentData,
     }));
-    console.log(data);
   };
 
   return (

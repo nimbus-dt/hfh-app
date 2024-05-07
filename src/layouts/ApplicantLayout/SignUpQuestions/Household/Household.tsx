@@ -30,7 +30,6 @@ const Household = ({ data, setData, goBack }: HouseholdProps) => {
       current: prev.current + 1,
       household: householdData,
     }));
-    console.log(data);
   };
 
   return (
