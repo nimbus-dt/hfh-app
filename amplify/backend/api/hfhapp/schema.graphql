@@ -69,6 +69,7 @@ type RootForm @model @auth(rules: [{allow: public}]) {
   files: [String]
   Cycles: [TestCycle] @hasMany(indexName: "byRootForm", fields: ["id"])
   habitatID: ID @index(name: "byHabitat")
+  formUrls: [String]
 }
 
 type GalleryItem {
@@ -165,6 +166,7 @@ type TestCycle @model @auth(rules: [{allow: public}]) {
   rootformID: ID @index(name: "byRootForm")
   name: String
   closedCycleMessage: String!
+  formUrl: String
 }
 
 enum ApplicationTypes {

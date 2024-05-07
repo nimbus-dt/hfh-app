@@ -187,6 +187,14 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "formUrls": {
+                    "name": "formUrls",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -719,6 +727,13 @@ export const schema = {
                     "isArray": false,
                     "type": "String",
                     "isRequired": true,
+                    "attributes": []
+                },
+                "formUrl": {
+                    "name": "formUrl",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "createdAt": {
@@ -2271,5 +2286,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "602f82c8e21ef854c13e02d8a437b4d6"
+    "version": "33feb98f04adfffef5709515c6e24afe"
 };

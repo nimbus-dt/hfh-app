@@ -1,4 +1,4 @@
-import { SubmissionStatus, ApplicationTypes } from 'models';
+import { ReviewStatus, ApplicationTypes } from 'models';
 import { z } from 'zod';
 
 export const applicationsFilterSchema = z.object({
@@ -7,12 +7,12 @@ export const applicationsFilterSchema = z.object({
     .enum([ApplicationTypes.ONLINE, ApplicationTypes.PAPER])
     .nullable()
     .optional(),
-  submissionStatus: z
+  reviewStatus: z
     .enum([
-      SubmissionStatus.ACCEPTED,
-      SubmissionStatus.PENDING,
-      SubmissionStatus.REJECTED,
-      SubmissionStatus.RETURNED,
+      ReviewStatus.ACCEPTED,
+      ReviewStatus.PENDING,
+      ReviewStatus.DENIED,
+      ReviewStatus.RETURNED,
     ])
     .nullable()
     .optional(),

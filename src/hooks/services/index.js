@@ -7,6 +7,7 @@ import {
   Decision,
   EmploymentInfo,
   Form,
+  FormAnswer,
   Income,
   Member,
   Note,
@@ -129,5 +130,11 @@ export const useFormById = dataStoreQueryByIdHookBuilder({
 /* ROOT FORM MODEL SERVICES */
 export const useRootFormsQuery = dataStoreQueryHookBuilder({
   model: RootForm,
+  defaultDataValue: [],
+});
+
+/* FORMANSWERS MODEL SERVICES */
+export const useFormAnswersQuery = dataStoreQueryHookBuilder({
+  model: FormAnswer,
   defaultDataValue: [],
 });

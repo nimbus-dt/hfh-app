@@ -276,6 +276,7 @@ type EagerRootForm = {
   readonly files?: (string | null)[] | null;
   readonly Cycles?: (TestCycle | null)[] | null;
   readonly habitatID?: string | null;
+  readonly formUrls?: (string | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -292,6 +293,7 @@ type LazyRootForm = {
   readonly files?: (string | null)[] | null;
   readonly Cycles: AsyncCollection<TestCycle>;
   readonly habitatID?: string | null;
+  readonly formUrls?: (string | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -476,6 +478,7 @@ type EagerTestCycle = {
   readonly rootformID?: string | null;
   readonly name?: string | null;
   readonly closedCycleMessage: string;
+  readonly formUrl?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -496,6 +499,7 @@ type LazyTestCycle = {
   readonly rootformID?: string | null;
   readonly name?: string | null;
   readonly closedCycleMessage: string;
+  readonly formUrl?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

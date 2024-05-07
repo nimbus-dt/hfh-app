@@ -13,6 +13,7 @@ import {
   TestApplication,
   Habitat,
   ApplicationTypes,
+  ReviewStatus,
 } from 'models';
 import React, { useState } from 'react';
 import {
@@ -28,25 +29,23 @@ import IconButton from 'components/IconButton';
 import BreadCrumbs from 'components/BreadCrumbs/BreadCrumbs';
 import DropdownMenu from 'components/DropdownMenu';
 import { DEFAULT_REVIEW_STATUS } from 'utils/constants';
-import { Storage } from 'aws-amplify';
-import Modal from 'components/Modal';
 import {
-  Button,
   CheckboxField,
-  Flex,
-  Text,
   TextField,
   useBreakpointValue,
 } from '@aws-amplify/ui-react';
-import NewApplicationModal from 'pages/affiliate-portal/cycles/[cycleId]/components/NewApplicationModal';
+
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import StatusModal from 'pages/affiliate-portal/cycles/[cycleId]/components/StatusModal';
+import { dateOnly } from 'utils/dates';
+import StatusChip from 'components/StatusChip';
 import style from './AffiliateCycleApplications.module.css';
 import {
   applicationsFilterSchema,
   TApplicationsFilter,
 } from './AffiliateCycleApplications.schema';
+import NewApplicationModal from './components/NewApplicationModal';
+import StatusModal from './components/StatusModal';
 
 interface IOutletContext {
   habitat?: Habitat;
@@ -54,8 +53,6 @@ interface IOutletContext {
   removeCustomStatusToHabitat: (status: string) => void;
   updateCustomStatusToHabitat: (status: string) => void;
 }
-
-const REVIEW_STATUS = ['All', DEFAULT_REVIEW_STATUS];
 
 const AffiliateCycleApplications = () => {
   const isSmall = useBreakpointValue({
@@ -69,20 +66,18 @@ const AffiliateCycleApplications = () => {
     removeCustomStatusToHabitat,
     updateCustomStatusToHabitat,
   } = useOutletContext<IOutletContext>();
-  const [reviewStatus, setReviewStatus] = useState(REVIEW_STATUS[0]);
   const [statusModalOpen, setStatusModalOpen] = useState(false);
   const [newApplicationOpen, setNewApplicationOpen] = useState(false);
-  const [applicationToDelete, setApplicationToDelete] = useState<string>();
   const [trigger, setTrigger] = useState(0);
   const [dateSubmitted, setDateSubmitted] =
     useState<TApplicationsFilter['dateSubmitted']>();
   const [type, setType] = useState<TApplicationsFilter['type']>();
-  const [submissionStatus, setSubmissionStatus] =
-    useState<TApplicationsFilter['submissionStatus']>();
+  const [reviewStatus, setReviewStatus] =
+    useState<TApplicationsFilter['reviewStatus']>();
 
   const [filterModal, setFilterModal] = useState(false);
   const { register, control, handleSubmit, reset } = useForm({
-    values: { dateSubmitted, type, submissionStatus },
+    values: { dateSubmitted, type, reviewStatus },
     resolver: zodResolver(applicationsFilterSchema),
   });
 
@@ -90,15 +85,15 @@ const AffiliateCycleApplications = () => {
     useTestApplicationsQuery({
       criteria: (c1: RecursiveModelPredicate<LazyTestApplication>) =>
         c1.and((c2) => {
-          let criteriaArr = cycleId ? [c2.testcycleID.eq(cycleId)] : [];
+          let criteriaArr = cycleId
+            ? [
+                c2.testcycleID.eq(cycleId),
+                c2.submissionStatus.eq(SubmissionStatus.COMPLETED),
+              ]
+            : [];
 
-          if (submissionStatus) {
-            criteriaArr = [
-              ...criteriaArr,
-              c2.submissionStatus.eq(submissionStatus),
-            ];
-          } else {
-            criteriaArr = [...criteriaArr, c2.submissionStatus.ne(undefined)];
+          if (reviewStatus) {
+            criteriaArr = [...criteriaArr, c2.reviewStatus.eq(reviewStatus)];
           }
 
           if (dateSubmitted) {
@@ -115,13 +110,7 @@ const AffiliateCycleApplications = () => {
         sort: (s: SortPredicate<LazyTestApplication>) =>
           s.submittedDate(SortDirection.DESCENDING),
       },
-      dependencyArray: [
-        submissionStatus,
-        cycleId,
-        trigger,
-        type,
-        dateSubmitted,
-      ],
+      dependencyArray: [reviewStatus, cycleId, trigger, type, dateSubmitted],
     });
 
   const { data: cycle } = useTestCycleById({
@@ -138,7 +127,7 @@ const AffiliateCycleApplications = () => {
       if (!original) return;
       await DataStore.save(
         TestApplication.copyOf(original, (originalApplication) => {
-          originalApplication.reviewStatus = newStatusValue;
+          originalApplication.customStatus = newStatusValue;
         })
       );
       setTrigger((previousTrigger) => previousTrigger + 1);
@@ -153,43 +142,6 @@ const AffiliateCycleApplications = () => {
   const handleAddNewApplicationOnClick = () => setNewApplicationOpen(true);
   const handleOnCloseNewApplicationModal = () => setNewApplicationOpen(false);
 
-  const removeFiles = async (keys: string[]) => {
-    try {
-      const promisesArr = keys.map((key) =>
-        Storage.remove(key, {
-          level: 'public',
-        })
-      );
-      await Promise.all(promisesArr);
-    } catch (error) {
-      console.log('Error deleting files.');
-    }
-  };
-
-  const handleDeleteOnClick = (applicationId: string) =>
-    setApplicationToDelete(applicationId);
-
-  const handleDeleteOnClose = () => setApplicationToDelete(undefined);
-
-  const handleDeleteOnAccept = async () => {
-    try {
-      if (applicationToDelete === undefined) return;
-      const application = await DataStore.query(
-        TestApplication,
-        applicationToDelete
-      );
-      const applicationProps = application?.props as unknown as {
-        paperApplicationKeys: string[];
-      };
-      removeFiles(applicationProps.paperApplicationKeys);
-      await DataStore.delete(TestApplication, applicationToDelete);
-      setTrigger((prevTrigger) => prevTrigger + 1);
-    } catch (error) {
-      console.log('Error deleting application.');
-    }
-    setApplicationToDelete(undefined);
-  };
-
   const handleOpenCloseFilters = () => {
     reset();
     setFilterModal((prevFilterModal) => !prevFilterModal);
@@ -198,14 +150,14 @@ const AffiliateCycleApplications = () => {
   const handleFilterOnValid = (data: TApplicationsFilter) => {
     setDateSubmitted(data.dateSubmitted);
     setType(data.type);
-    setSubmissionStatus(data.submissionStatus);
+    setReviewStatus(data.reviewStatus);
     setFilterModal(false);
   };
 
   const handleResetFilters = () => {
     setDateSubmitted(undefined);
     setType(undefined);
-    setSubmissionStatus(undefined);
+    setReviewStatus(undefined);
   };
 
   return (
@@ -310,18 +262,16 @@ const AffiliateCycleApplications = () => {
                 </div>
                 <Controller
                   control={control}
-                  name="submissionStatus"
+                  name="reviewStatus"
                   render={({ field: { value, onChange } }) => (
                     <>
                       <CheckboxField
                         name=""
                         label="Pending"
-                        checked={value === SubmissionStatus.PENDING}
+                        checked={value === ReviewStatus.PENDING}
                         onChange={(event) =>
                           onChange(
-                            event.target.checked
-                              ? SubmissionStatus.PENDING
-                              : null
+                            event.target.checked ? ReviewStatus.PENDING : null
                           )
                         }
                         className={`${style.customCheckbox}`}
@@ -329,25 +279,21 @@ const AffiliateCycleApplications = () => {
                       <CheckboxField
                         name=""
                         label="Accepted"
-                        checked={value === SubmissionStatus.ACCEPTED}
+                        checked={value === ReviewStatus.ACCEPTED}
                         onChange={(event) =>
                           onChange(
-                            event.target.checked
-                              ? SubmissionStatus.ACCEPTED
-                              : null
+                            event.target.checked ? ReviewStatus.ACCEPTED : null
                           )
                         }
                         className={`${style.customCheckbox}`}
                       />
                       <CheckboxField
                         name=""
-                        label="Rejected"
-                        checked={value === SubmissionStatus.REJECTED}
+                        label="Denied"
+                        checked={value === ReviewStatus.DENIED}
                         onChange={(event) =>
                           onChange(
-                            event.target.checked
-                              ? SubmissionStatus.REJECTED
-                              : null
+                            event.target.checked ? ReviewStatus.DENIED : null
                           )
                         }
                         className={`${style.customCheckbox}`}
@@ -355,12 +301,10 @@ const AffiliateCycleApplications = () => {
                       <CheckboxField
                         name=""
                         label="Returned"
-                        checked={value === SubmissionStatus.RETURNED}
+                        checked={value === ReviewStatus.RETURNED}
                         onChange={(event) =>
                           onChange(
-                            event.target.checked
-                              ? SubmissionStatus.RETURNED
-                              : null
+                            event.target.checked ? ReviewStatus.RETURNED : null
                           )
                         }
                         className={`${style.customCheckbox}`}
@@ -396,25 +340,6 @@ const AffiliateCycleApplications = () => {
           </CustomButton>
         </div>
       </div>
-      <Modal
-        title="Alert"
-        open={applicationToDelete !== undefined}
-        onClickClose={handleDeleteOnClose}
-        width="30rem"
-      >
-        <Flex direction="column">
-          <Text>
-            Are you sure you want to delete the application? This can't be
-            undone.
-          </Text>
-          <Flex justifyContent="end">
-            <Button onClick={handleDeleteOnClose}>Cancel</Button>
-            <Button variation="primary" onClick={handleDeleteOnAccept}>
-              Accept
-            </Button>
-          </Flex>
-        </Flex>
-      </Modal>
       <StatusModal
         open={statusModalOpen}
         onClose={handleOnCloseStatusModal}
@@ -440,18 +365,18 @@ const AffiliateCycleApplications = () => {
             value: 'Date Submitted',
           },
           {
-            id: 'submissionStatus',
-            value: 'Submission Status',
+            id: 'reviewStatus',
+            value: 'Review Status',
           },
           {
-            id: 'reviewStatus',
+            id: 'customStatus',
             value: (
               <span
                 className={`${style.reviewStatus}`}
                 onClick={handleStatusOnClick}
                 aria-hidden="true"
               >
-                Review Status
+                Custom Status
               </span>
             ),
           },
@@ -480,21 +405,23 @@ const AffiliateCycleApplications = () => {
               },
               {
                 id: 'dateSubmitted',
-                value: application.submittedDate,
-              },
-              {
-                id: 'submissionStatus',
-                value:
-                  application.submissionStatus &&
-                  stringToHumanReadable(application.submissionStatus),
+                value: dateOnly(application.submittedDate),
               },
               {
                 id: 'reviewStatus',
+                value: application.reviewStatus && (
+                  <div className={`${style.statusContainer}`}>
+                    <StatusChip status={application.reviewStatus} />
+                  </div>
+                ),
+              },
+              {
+                id: 'customStatus',
                 value: (
                   <DropdownMenu
                     className={`${style.customStatusSelect}`}
                     variation="small"
-                    value={application.reviewStatus || ''}
+                    value={application.customStatus || ''}
                     onChange={(event) =>
                       handleUpdateApplicationStatus(
                         application.id,

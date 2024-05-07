@@ -9,8 +9,9 @@ import { stringToHumanReadable } from 'utils/strings';
 import Toggle from 'components/Toggle';
 import { Habitat } from 'models';
 import { useRootFormsQuery } from 'hooks/services';
-import { useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { dateOnly } from 'utils/dates';
+import { throttle } from 'lodash';
 import style from './AffiliateFormsPage.module.css';
 import NewFormButton from './components/NewFormButton';
 
@@ -26,6 +27,7 @@ const StatusChip = ({ status }: { status: string }) => {
 };
 
 const AffiliateFormsPage = () => {
+  const navigate = useNavigate();
   const [latestForms, setLatestForms] = useState([]);
   const [trigger, setTrigger] = useState(true);
 
@@ -60,6 +62,10 @@ const AffiliateFormsPage = () => {
     }
     filterForms();
   }, [view, forms]);
+
+  const onClickView = (id: string) => {
+    navigate(`../${id}`);
+  };
 
   return (
     <Flex padding="32px" direction="column" gap="60px">
@@ -183,7 +189,11 @@ const AffiliateFormsPage = () => {
                 {
                   value: (
                     <Flex width="100%" justifyContent="center">
-                      <Button variation="link" padding="0">
+                      <Button
+                        variation="link"
+                        padding="0"
+                        onClick={throttle(() => onClickView(data.id), 500)}
+                      >
                         <MdOutlineOpenInNew
                           size="24px"
                           color="var(--amplify-colors-neutral-90)"
