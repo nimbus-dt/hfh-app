@@ -70,7 +70,7 @@ const Employment = ({ data, setData, goBack }: EmploymentProps) => {
             )}
           </div>
         </div>
-        {watchUnemployed === 'Yes' && (
+        {watchUnemployed === 'No' && (
           <>
             <div>
               <label
