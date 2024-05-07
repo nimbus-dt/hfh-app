@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ScrollView } from '@aws-amplify/ui-react';
 
 import Header from 'components/Header';
+import Loading from 'components/Loading';
 
 import styles from './SignUpQuestions.module.css';
 import General from './General';
@@ -38,6 +39,10 @@ const SignUpQuestions = ({
       setUserData={setUserData}
     />,
   ];
+
+  if (!habitat || !user) {
+    return <Loading />;
+  }
 
   return (
     <ScrollView height="100vh" className={styles.page}>
