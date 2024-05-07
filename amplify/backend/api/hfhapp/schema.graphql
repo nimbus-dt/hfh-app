@@ -1,3 +1,15 @@
+type SidebarName {
+  name: String
+  fontSize: String
+}
+
+enum ReviewStatus {
+  ACCEPTED
+  PENDING
+  DENIED
+  RETURNED
+}
+
 type ApplicantProps {
   state: String!
   city: String!
@@ -27,6 +39,7 @@ enum Sexs {
 enum UserTypes {
   AFFILIATE
   APPLICANT
+  ADMIN
 }
 
 type User @model @auth(rules: [{allow: public}]) {
@@ -36,9 +49,8 @@ type User @model @auth(rules: [{allow: public}]) {
   dateOfBirth: AWSDate!
   sex: Sexs!
   phoneNumber: String!
-  affiliateProps: AffiliateProps!
+  affiliateProps: AffiliateProps
   applicantProps: ApplicantProps
-  props: AWSJSON!
   type: UserTypes!
   owner: ID!
 }
@@ -136,6 +148,8 @@ type HabitatProps {
   homeownershipWrittenQuestions: [WrittenQuestion!]
   optionalSections: OptionalSections!
   gallery: [GalleryItem!]
+  sidebarName: SidebarName
+  closedCycleMessages: [String!]!
 }
 
 type TestCycle @model @auth(rules: [{allow: public}]) {
@@ -149,6 +163,7 @@ type TestCycle @model @auth(rules: [{allow: public}]) {
   form: ID!
   rootformID: ID @index(name: "byRootForm")
   name: String
+  closedCycleMessage: String!
 }
 
 enum ApplicationTypes {
@@ -163,10 +178,8 @@ type ApplicantOptional @model @auth(rules: [{allow: public}]) {
 }
 
 enum SubmissionStatus {
-  PENDING
-  ACCEPTED
-  REJECTED
-  RETURNED
+  INCOMPLETE
+  COMPLETED
 }
 
 type Asset @model @auth(rules: [{allow: public}]) {
@@ -193,14 +206,15 @@ type TestApplication @model @auth(rules: [{allow: public}]) {
   lastSection: String
   members: [Member] @hasMany(indexName: "byTestApplication", fields: ["id"])
   submittedDate: AWSDate!
-  reviewStatus: String
-  submissionStatus: SubmissionStatus
+  reviewStatus: ReviewStatus!
+  submissionStatus: SubmissionStatus!
   props: AWSJSON
   type: ApplicationTypes!
   testcycleID: ID! @index(name: "byTestCycle")
   Notes: [Note] @hasMany(indexName: "byTestApplication", fields: ["id"])
   FormAnswers: [FormAnswer] @hasMany(indexName: "byTestApplication", fields: ["id"])
   Decisions: [Decision] @hasMany(indexName: "byTestApplication", fields: ["id"])
+  customStatus: String
 }
 
 type EmploymentInfo @model @auth(rules: [{allow: public}]) {

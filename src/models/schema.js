@@ -53,7 +53,7 @@ export const schema = {
                     "type": {
                         "nonModel": "AffiliateProps"
                     },
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
                 "applicantProps": {
@@ -63,13 +63,6 @@ export const schema = {
                         "nonModel": "ApplicantProps"
                     },
                     "isRequired": false,
-                    "attributes": []
-                },
-                "props": {
-                    "name": "props",
-                    "isArray": false,
-                    "type": "AWSJSON",
-                    "isRequired": true,
                     "attributes": []
                 },
                 "type": {
@@ -721,6 +714,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "closedCycleMessage": {
+                    "name": "closedCycleMessage",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -1095,8 +1095,10 @@ export const schema = {
                 "reviewStatus": {
                     "name": "reviewStatus",
                     "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
+                    "type": {
+                        "enum": "ReviewStatus"
+                    },
+                    "isRequired": true,
                     "attributes": []
                 },
                 "submissionStatus": {
@@ -1105,7 +1107,7 @@ export const schema = {
                     "type": {
                         "enum": "SubmissionStatus"
                     },
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "props": {
@@ -1178,6 +1180,13 @@ export const schema = {
                             "testapplicationID"
                         ]
                     }
+                },
+                "customStatus": {
+                    "name": "customStatus",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -1819,6 +1828,15 @@ export const schema = {
         }
     },
     "enums": {
+        "ReviewStatus": {
+            "name": "ReviewStatus",
+            "values": [
+                "ACCEPTED",
+                "PENDING",
+                "DENIED",
+                "RETURNED"
+            ]
+        },
         "Sexs": {
             "name": "Sexs",
             "values": [
@@ -1831,7 +1849,8 @@ export const schema = {
             "name": "UserTypes",
             "values": [
                 "AFFILIATE",
-                "APPLICANT"
+                "APPLICANT",
+                "ADMIN"
             ]
         },
         "RootFormStatusTypes": {
@@ -1851,14 +1870,31 @@ export const schema = {
         "SubmissionStatus": {
             "name": "SubmissionStatus",
             "values": [
-                "PENDING",
-                "ACCEPTED",
-                "REJECTED",
-                "RETURNED"
+                "INCOMPLETE",
+                "COMPLETED"
             ]
         }
     },
     "nonModels": {
+        "SidebarName": {
+            "name": "SidebarName",
+            "fields": {
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "fontSize": {
+                    "name": "fontSize",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
         "ApplicantProps": {
             "name": "ApplicantProps",
             "fields": {
@@ -2206,10 +2242,27 @@ export const schema = {
                     "isRequired": true,
                     "attributes": [],
                     "isArrayNullable": true
+                },
+                "sidebarName": {
+                    "name": "sidebarName",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "SidebarName"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "closedCycleMessages": {
+                    "name": "closedCycleMessages",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": false
                 }
             }
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "ff3a8fce062d591094af783c991cb892"
+    "version": "222054bed4cc2772f3c959e11ad74842"
 };

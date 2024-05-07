@@ -5,7 +5,7 @@ interface dataProps {
     lastName: string;
     dob: string;
     phone: string;
-    sex: '' | 'MALE' | 'FEMALE' | 'OTHER';
+    sex: 'MALE' | 'FEMALE' | 'OTHER';
     state: string;
     city: string;
     street: string;
@@ -13,7 +13,7 @@ interface dataProps {
   };
   household?: {
     members: number;
-    income: string;
+    income: number;
   };
   employment?: {
     unemployed: 'Yes' | 'No';

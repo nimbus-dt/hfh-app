@@ -7,7 +7,7 @@ import styles from '../SignUpQuestions.module.css';
 import dataProps from '../types';
 
 interface Inputs {
-  members: number;
+  members: string;
   income: string;
 }
 
@@ -28,7 +28,10 @@ const Household = ({ data, setData, goBack }: HouseholdProps) => {
     setData((prev) => ({
       ...prev,
       current: prev.current + 1,
-      household: householdData,
+      household: {
+        income: parseFloat(householdData.income.replace(/,/g, '')),
+        members: parseInt(householdData.members),
+      },
     }));
   };
 

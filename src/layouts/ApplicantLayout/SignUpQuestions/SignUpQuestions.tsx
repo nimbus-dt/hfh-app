@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ScrollView } from '@aws-amplify/ui-react';
 
 import Header from 'components/Header';
-import { Habitat as HabitatModel } from 'models';
+import { Habitat as HabitatModel, User } from 'models';
 
 import styles from './SignUpQuestions.module.css';
 import General from './General';
@@ -20,6 +20,7 @@ interface SignUpQuestionsProps {
   user: {
     username: string;
   };
+  setUserData: React.Dispatch<React.SetStateAction<User>>;
 }
 
 const pages = [
@@ -45,7 +46,11 @@ const pages = [
   },
 ];
 
-const SignUpQuestions = ({ habitat, user }: SignUpQuestionsProps) => {
+const SignUpQuestions = ({
+  habitat,
+  user,
+  setUserData,
+}: SignUpQuestionsProps) => {
   const [data, setData] = useState<dataProps>(initialData);
 
   const goBack = () => {
@@ -65,6 +70,7 @@ const SignUpQuestions = ({ habitat, user }: SignUpQuestionsProps) => {
       goBack={goBack}
       habitat={habitat}
       user={user}
+      setUserData={setUserData}
     />,
   ];
 

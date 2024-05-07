@@ -107,6 +107,22 @@
     }
   },
   "function": {
+    "convertOldRecords": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "hfhapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "exportOldApplicationsToFormio": {
       "build": true,
       "dependsOn": [
@@ -218,6 +234,22 @@
   },
   "hosting": {},
   "parameters": {
+    "AMPLIFY_function_convertOldRecords_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "convertOldRecords"
+        }
+      ]
+    },
+    "AMPLIFY_function_convertOldRecords_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "convertOldRecords"
+        }
+      ]
+    },
     "AMPLIFY_function_exportOldApplicationsToFormio_deploymentBucketName": {
       "usedBy": [
         {

@@ -1,9 +1,10 @@
+import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { DataStore } from 'aws-amplify';
 import { throttle } from 'lodash';
 
 import Footer from 'components/Footer';
-import { Habitat as HabitatModel, User } from 'models';
+import { Habitat as HabitatModel, User, Sexs, UserTypes } from 'models';
 
 import styles from '../SignUpQuestions.module.css';
 import dataProps from '../types';
@@ -22,22 +23,60 @@ interface HabitatProps {
   user: {
     username: string;
   };
+  setUserData: React.Dispatch<React.SetStateAction<User>>;
 }
 
-const Habitat = ({ data, setData, goBack, habitat, user }: HabitatProps) => {
+const Habitat = ({
+  data,
+  setData,
+  goBack,
+  habitat,
+  user,
+  setUserData,
+}: HabitatProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
+  const [error, setError] = useState<string | null>(null);
 
   const onSubmit: SubmitHandler<Inputs> = async (habitatData) => {
-    setData((prev) => ({
-      ...prev,
-      habitat: habitatData,
-    }));
+    try {
+      setData((prev) => ({
+        ...prev,
+        habitat: habitatData,
+      }));
 
-    console.log(data);
+      const sexByModel = Sexs[data.general?.sex || 'OTHER'];
+
+      const newUser = {
+        firstName: data.general?.firstName || '',
+        lastName: data.general?.lastName || '',
+        dateOfBirth: data.general?.dob || '',
+        sex: sexByModel,
+        phoneNumber: data.general?.phone || '',
+        applicantProps: {
+          state: data.general?.state || '',
+          city: data.general?.city || '',
+          street: data.general?.street || '',
+          householdMembersNumber: data.household?.members || 0,
+          householdAnnualIncome: data.household?.income || 0,
+          currentlyUnemployed: data.employment?.unemployed || '',
+          currentWorkTitle: data.employment?.position || '',
+          nameOfEmployer: data.employment?.employer || '',
+          howDidYouHearAbout: habitatData?.source || '',
+          firstTimeApplying: habitatData?.firstTime || '',
+          whatAreYouInterestedIn: habitatData?.interest || '',
+        },
+        type: UserTypes.APPLICANT,
+        owner: user.username,
+      };
+      const response = await DataStore.save(new User(newUser));
+      setUserData(response);
+    } catch (error) {
+      setError('Something went wrong!, refresh the page and try again.');
+    }
   };
 
   return (
@@ -126,6 +165,7 @@ const Habitat = ({ data, setData, goBack, habitat, user }: HabitatProps) => {
             )}
           </div>
         </div>
+        {error && <span className={styles.error}>{error}</span>}
       </div>
       <Footer goBack={goBack} submit />
     </form>
