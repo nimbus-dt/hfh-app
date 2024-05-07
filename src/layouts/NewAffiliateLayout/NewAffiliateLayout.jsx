@@ -160,7 +160,13 @@ const NewAffiliateLayout = () => {
   }
 
   if (!userData) {
-    return <SignUpQuestions habitat={habitat} user={user} />;
+    return (
+      <SignUpQuestions
+        habitat={habitat}
+        user={user}
+        setUserData={setUserData}
+      />
+    );
   }
 
   return (

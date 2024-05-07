@@ -1994,10 +1994,17 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "joinDate": {
-                    "name": "joinDate",
+                "joinMonth": {
+                    "name": "joinMonth",
                     "isArray": false,
-                    "type": "AWSDate",
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "joinYear": {
+                    "name": "joinYear",
+                    "isArray": false,
+                    "type": "String",
                     "isRequired": true,
                     "attributes": []
                 }
@@ -2264,5 +2271,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "222054bed4cc2772f3c959e11ad74842"
+    "version": "602f82c8e21ef854c13e02d8a437b4d6"
 };

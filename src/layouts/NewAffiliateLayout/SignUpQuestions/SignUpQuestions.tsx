@@ -13,7 +13,11 @@ const initialData: dataProps = {
   current: 0,
 };
 
-const SignUpQuestions = ({ habitat, user }: SignUpQuestionsProps) => {
+const SignUpQuestions = ({
+  habitat,
+  user,
+  setUserData,
+}: SignUpQuestionsProps) => {
   const [data, setData] = useState<dataProps>(initialData);
 
   const goBack = () => {
@@ -31,6 +35,7 @@ const SignUpQuestions = ({ habitat, user }: SignUpQuestionsProps) => {
       goBack={goBack}
       habitat={habitat}
       user={user}
+      setUserData={setUserData}
     />,
   ];
 

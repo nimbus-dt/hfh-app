@@ -1,4 +1,4 @@
-import { Habitat } from 'models';
+import { type Habitat, type User } from 'models';
 
 interface dataProps {
   current: number;
@@ -7,7 +7,7 @@ interface dataProps {
     lastName: string;
     dob: string;
     phone: string;
-    sex: '' | 'MALE' | 'FEMALE' | 'OTHER';
+    sex: 'MALE' | 'FEMALE' | 'OTHER';
   };
   affiliate?: {
     position: string;
@@ -22,6 +22,7 @@ export interface SignUpQuestionsProps {
   user: {
     username: string;
   };
+  setUserData: React.Dispatch<React.SetStateAction<User>>;
 }
 
 export default dataProps;

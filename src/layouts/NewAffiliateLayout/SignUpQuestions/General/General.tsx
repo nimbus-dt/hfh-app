@@ -12,7 +12,7 @@ interface Inputs {
   lastName: string;
   dob: string;
   phone: string;
-  sex: '' | 'MALE' | 'FEMALE' | 'OTHER';
+  sex: 'MALE' | 'FEMALE' | 'OTHER';
 }
 
 interface GeneralProps {
