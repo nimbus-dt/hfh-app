@@ -2,7 +2,6 @@ import './assets/styles/App.css';
 import { Routes, Route, Outlet } from 'react-router-dom';
 import { ScrollView } from '@aws-amplify/ui-react';
 import ApplicationsPage from 'pages/affiliate-portal/cycles/[cycleId]';
-import ApplicationDetailsPage from 'pages/affiliate-portal/cycles/[cycleId]/[applicationId]';
 import AffiliatePortalRepairsPage from 'pages/affiliate-portal/repairs';
 import AffiliatePortalVolunteersPage from 'pages/affiliate-portal/volunteers';
 import AffiliatePortalSettingsPage from 'pages/affiliate-portal/settings';
@@ -139,10 +138,10 @@ function App() {
           <Route path=":formId">
             <Route index element={<CyclesPage />} />
             <Route path={ROUTES.HABITAT_AFFILIATE_CYCLES_CYCLE}>
-              <Route index element={<ApplicationsPage />} />
+              <Route index element={<AffiliateCycleApplications />} />
               <Route
                 path={ROUTES.HABITAT_AFFILIATE_CYCLES_CYCLE_APPLICATION}
-                element={<ApplicationDetailsPage />}
+                element={<AffiliateApplicationDetailsPage />}
               />
             </Route>
           </Route>
