@@ -168,7 +168,7 @@
 }
 
 .arrow {
-  z-index: -1;
+  pointer-events: none;
   position: absolute;
   top: 50%;
   right: 1rem;
