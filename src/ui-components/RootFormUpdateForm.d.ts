@@ -27,12 +27,14 @@ export declare type RootFormUpdateFormInputValues = {
     status?: string;
     description?: string;
     files?: string[];
+    formUrls?: string[];
 };
 export declare type RootFormUpdateFormValidationValues = {
     name?: ValidationFunction<string>;
     status?: ValidationFunction<string>;
     description?: ValidationFunction<string>;
     files?: ValidationFunction<string>;
+    formUrls?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type RootFormUpdateFormOverridesProps = {
@@ -41,6 +43,7 @@ export declare type RootFormUpdateFormOverridesProps = {
     status?: PrimitiveOverrideProps<SelectFieldProps>;
     description?: PrimitiveOverrideProps<TextFieldProps>;
     files?: PrimitiveOverrideProps<TextFieldProps>;
+    formUrls?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type RootFormUpdateFormProps = React.PropsWithChildren<{
     overrides?: RootFormUpdateFormOverridesProps | undefined | null;

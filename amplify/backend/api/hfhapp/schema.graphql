@@ -67,6 +67,7 @@ type RootForm @model @auth(rules: [{allow: public}]) {
   files: [String]
   Cycles: [TestCycle] @hasMany(indexName: "byRootForm", fields: ["id"])
   habitatID: ID @index(name: "byHabitat")
+  formUrls: [String!]!
 }
 
 type GalleryItem {
@@ -74,12 +75,6 @@ type GalleryItem {
   image: String
   title: String
   message: String
-}
-
-type Form @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  url: String!
-  habitatID: ID! @index(name: "byHabitat")
 }
 
 type Decision @model @auth(rules: [{allow: public}]) {
@@ -157,12 +152,11 @@ type TestCycle @model @auth(rules: [{allow: public}]) {
   endDate: AWSDate
   isOpen: Boolean!
   props: AWSJSON
-  habitatID: ID! @index(name: "byHabitat")
   TestApplications: [TestApplication] @hasMany(indexName: "byTestCycle", fields: ["id"])
-  form: ID!
   rootformID: ID @index(name: "byRootForm")
   name: String
   closedCycleMessage: String!
+  formUrl: String!
 }
 
 enum ApplicationTypes {
@@ -264,8 +258,6 @@ type Habitat @model @auth(rules: [{allow: public}]) {
   props: HabitatProps!
   users: [ID]
   AMI: [String]
-  TestCycles: [TestCycle] @hasMany(indexName: "byHabitat", fields: ["id"])
-  Forms: [Form] @hasMany(indexName: "byHabitat", fields: ["id"])
   authenticationHeader: String
   RootForms: [RootForm] @hasMany(indexName: "byHabitat", fields: ["id"])
 }
