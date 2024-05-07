@@ -6,7 +6,6 @@ import {
   Debt,
   Decision,
   EmploymentInfo,
-  Form,
   FormAnswer,
   Income,
   Member,
@@ -119,12 +118,6 @@ export const useNotesQuery = dataStoreQueryHookBuilder({
 export const useDecisionsQuery = dataStoreQueryHookBuilder({
   model: Decision,
   defaultDataValue: [],
-});
-
-/* FORM MODEL SERVICES */
-export const useFormById = dataStoreQueryByIdHookBuilder({
-  model: Form,
-  defaultDataValue: null,
 });
 
 /* ROOT FORM MODEL SERVICES */

@@ -14,7 +14,7 @@ import { throttle } from 'lodash';
 import { DataStore } from 'aws-amplify';
 import { generateSubmission } from 'utils/formio';
 import { Options } from '@formio/react/lib/components/Form';
-import { useFormAnswersQuery, useFormById } from 'hooks/services';
+import { useFormAnswersQuery } from 'hooks/services';
 import Modal from 'components/Modal';
 import dayjs from 'dayjs';
 import { Button, Flex, Text } from '@aws-amplify/ui-react';
@@ -43,11 +43,6 @@ const Form = ({ habitat, application, cycle }: IProperties) => {
   });
 
   const navigate = useNavigate();
-
-  const { data: form } = useFormById({
-    id: cycle?.form || '',
-    dependencyArray: [cycle],
-  });
 
   const persistSubmission = useMemo(
     () =>
@@ -149,14 +144,14 @@ const Form = ({ habitat, application, cycle }: IProperties) => {
   };
 
   return (
-    form && (
+    cycle && (
       <div className={`${style.formContainer}`}>
         {reviewMode ||
         application?.submissionStatus === SubmissionStatus.COMPLETED ? (
           <>
             <FormioForm
               key="review"
-              src={`${FORMIO_URL}/${form.url}`}
+              src={`${FORMIO_URL}/${cycle.formUrl}`}
               options={{
                 readOnly: true,
                 renderMode: 'flat',
@@ -207,7 +202,7 @@ const Form = ({ habitat, application, cycle }: IProperties) => {
         ) : (
           <FormioForm
             key="real"
-            src={`${FORMIO_URL}/${form.url}`}
+            src={`${FORMIO_URL}/${cycle.formUrl}`}
             onSubmit={handleOnReview}
             options={
               {
