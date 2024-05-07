@@ -8,7 +8,7 @@ import dataProps from '../types';
 
 interface Inputs {
   members: number;
-  income: number;
+  income: string;
 }
 
 interface HouseholdProps {
@@ -72,11 +72,18 @@ const Household = ({ data, setData, goBack }: HouseholdProps) => {
           <div>
             <input
               id="income"
-              type="number"
+              type="string"
               placeholder="Annual income"
               defaultValue={data?.household?.income || ''}
               className={`theme-body-medium ${styles.number_input}`}
               {...register('income', { required: true })}
+              onChange={(e) => {
+                const { value } = e.target;
+                const formattedValue = value
+                  .replace(/\D/g, '')
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                e.target.value = formattedValue;
+              }}
             />
             {errors.income && (
               <span className={`${styles.error} theme-body-small`}>

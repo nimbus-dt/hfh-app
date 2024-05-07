@@ -10,7 +10,7 @@ interface dataProps {
   };
   household?: {
     members: number;
-    income: number;
+    income: string;
   };
   employment?: {
     unemployed: 'Yes' | 'No';
