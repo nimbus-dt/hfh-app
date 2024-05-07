@@ -6,7 +6,10 @@ interface dataProps {
     dob: string;
     phone: string;
     sex: '' | 'MALE' | 'FEMALE' | 'OTHER';
-    address: string;
+    state: string;
+    city: string;
+    street: string;
+    zipCode: string;
   };
   household?: {
     members: number;

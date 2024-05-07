@@ -3,6 +3,7 @@ import { MdArrowDropDown } from 'react-icons/md';
 import { throttle } from 'lodash';
 
 import Footer from 'components/Footer';
+import states from 'assets/jsons/states.json';
 
 import styles from '../SignUpQuestions.module.css';
 import dataProps from '../types';
@@ -13,7 +14,10 @@ interface Inputs {
   dob: string;
   phone: string;
   sex: '' | 'MALE' | 'FEMALE' | 'OTHER';
-  address: string;
+  state: string;
+  city: string;
+  street: string;
+  zipCode: string;
 }
 
 interface GeneralProps {
@@ -113,7 +117,10 @@ const General = ({ data, setData }: GeneralProps) => {
               type="tel"
               placeholder="Phone Number"
               defaultValue={data?.general?.phone || ''}
-              {...register('phone', { required: true })}
+              {...register('phone', {
+                required: true,
+                pattern: /\(\d{3}\) \d{3}-\d{4}/,
+              })}
               onChange={(e) => {
                 const { value } = e.target;
                 e.target.value = value
@@ -123,9 +130,14 @@ const General = ({ data, setData }: GeneralProps) => {
               }}
               className={`${styles.text_input} theme-body-medium`}
             />
-            {errors.phone && (
+            {errors.phone?.type === 'required' && (
               <span className={`${styles.error} theme-body-small`}>
                 This field is required
+              </span>
+            )}
+            {errors.phone?.type === 'pattern' && (
+              <span className={`${styles.error} theme-body-small`}>
+                Invalid Phone Number, should be in the format (XXX) XXX-XXXX
               </span>
             )}
           </div>
@@ -157,23 +169,111 @@ const General = ({ data, setData }: GeneralProps) => {
         </div>
         <div>
           <label
-            htmlFor="address"
+            htmlFor="state"
             className={`theme-body-medium ${styles.label}`}
           >
-            What is your address?
+            State
+          </label>
+          <div>
+            <div className={styles.select}>
+              <select
+                id="state"
+                className={styles.select_input}
+                defaultValue={data?.general?.state || '2013'}
+                {...register('state', { required: true })}
+              >
+                {states.map((state) => (
+                  <option key={state.abbreviation} value={state.abbreviation}>
+                    {state.name}
+                  </option>
+                ))}
+              </select>
+              <MdArrowDropDown size="1.5rem" className={styles.arrow} />
+            </div>
+            {errors.state && (
+              <span className={`${styles.error} theme-body-small`}>
+                This field is required
+              </span>
+            )}
+          </div>
+        </div>
+        <div>
+          <label htmlFor="city" className={`theme-body-medium ${styles.label}`}>
+            City
           </label>
           <div>
             <input
-              id="address"
-              placeholder="Address"
-              defaultValue={data?.general?.address || ''}
-              className={`theme-body-medium ${styles.text_input}`}
+              id="city"
               type="string"
-              {...register('address', { required: true })}
+              placeholder="City"
+              defaultValue={data?.general?.city || ''}
+              {...register('city', { required: true })}
+              className={`${styles.text_input} theme-body-medium`}
             />
-            {errors.address && (
+            {errors.city && (
               <span className={`${styles.error} theme-body-small`}>
                 This field is required
+              </span>
+            )}
+          </div>
+        </div>
+        <div>
+          <label
+            htmlFor="street"
+            className={`theme-body-medium ${styles.label}`}
+          >
+            Street
+          </label>
+          <div>
+            <input
+              id="street"
+              placeholder="Street"
+              defaultValue={data?.general?.street || ''}
+              className={`theme-body-medium ${styles.text_input}`}
+              type="string"
+              {...register('street', { required: true })}
+            />
+            {errors.street && (
+              <span className={`${styles.error} theme-body-small`}>
+                This field is required
+              </span>
+            )}
+          </div>
+        </div>
+        <div>
+          <label
+            htmlFor="zipCode"
+            className={`theme-body-medium ${styles.label}`}
+          >
+            Zip Code
+          </label>
+          <div>
+            <input
+              id="zipCode"
+              type="string"
+              placeholder="Zip Code"
+              defaultValue={data?.general?.zipCode || ''}
+              {...register('zipCode', {
+                required: true,
+                pattern: /^(\d{5}-\d{4}|\d{5})$/,
+              })}
+              onChange={(e) => {
+                const { value } = e.target;
+                e.target.value = value
+                  .replace(/\D/g, '')
+                  .replace(/(\d{5})(\d{4})/, '$1-$2')
+                  .replace(/(-\d{4})\d+?$/, '$1');
+              }}
+              className={`${styles.text_input} theme-body-medium`}
+            />
+            {errors.zipCode?.type === 'required' && (
+              <span className={`${styles.error} theme-body-small`}>
+                This field is required
+              </span>
+            )}
+            {errors.zipCode?.type === 'pattern' && (
+              <span className={`${styles.error} theme-body-small`}>
+                Invalid Zip Code, should be in the format XXXXX-XXXX or XXXXX
               </span>
             )}
           </div>

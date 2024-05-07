@@ -112,7 +112,10 @@ const General = ({ data, setData }: GeneralProps) => {
               type="tel"
               placeholder="Phone Number"
               defaultValue={data?.general?.phone || ''}
-              {...register('phone', { required: true })}
+              {...register('phone', {
+                required: true,
+                pattern: /\(\d{3}\) \d{3}-\d{4}/,
+              })}
               onChange={(e) => {
                 const { value } = e.target;
                 e.target.value = value
@@ -125,6 +128,11 @@ const General = ({ data, setData }: GeneralProps) => {
             {errors.phone && (
               <span className={`${styles.error} theme-body-small`}>
                 This field is required
+              </span>
+            )}
+            {errors.phone?.type === 'pattern' && (
+              <span className={`${styles.error} theme-body-small`}>
+                Invalid Phone Number, should be in the format (XXX) XXX-XXXX
               </span>
             )}
           </div>
