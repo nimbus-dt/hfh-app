@@ -10,6 +10,7 @@ import App from './App';
 import awsExports from './aws-exports';
 import { store } from './redux/configureStore';
 import 'components/Formio';
+import 'styles/formio/styles.css';
 
 Amplify.configure(awsExports);
 
