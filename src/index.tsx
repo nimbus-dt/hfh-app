@@ -6,11 +6,12 @@ import { Amplify } from 'aws-amplify';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from '@aws-amplify/ui-react';
 import theme from 'styles/theme';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import formioStyles from 'styles/formio';
 import App from './App';
 import awsExports from './aws-exports';
 import { store } from './redux/configureStore';
 import 'components/Formio';
-import 'styles/formio/styles.css';
 
 Amplify.configure(awsExports);
 
