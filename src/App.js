@@ -25,6 +25,7 @@ import AffiliateFormsPage from 'pages/[habitat]/affiliate/forms';
 import CyclesPage from 'pages/[habitat]/affiliate/cycles';
 import NewAffiliateLayout from 'layouts/NewAffiliateLayout';
 import AffiliateCycleApplications from 'pages/[habitat]/affiliate/cycles/[cycleId]/AffiliateCycleApplications';
+import { Form } from '@formio/react';
 
 function App() {
   return (
@@ -78,6 +79,16 @@ function App() {
           }
         />
       </Route>
+
+      {/* TODO: This route MUST be removed */}
+      <Route
+        path="/test-form"
+        element={
+          <ScrollView height="100vh">
+            <Form src="https://elpuyueyqvkywwg.form.io/loudoun" />
+          </ScrollView>
+        }
+      />
 
       <Route path={ROUTES.HABITAT} element={<HabitatLayout />}>
         <Route path={ROUTES.HABITAT_APPLICANT} element={<ApplicantLayout />}>
