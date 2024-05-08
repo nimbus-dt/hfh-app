@@ -11,7 +11,7 @@
 
 .hfh_formio_edit_grid button.btn-primary,
 .formio-dialog-content > button.btn-primary {
-  align-self: end;
+  align-self: flex-end;
   padding: 12px 16px;
   border-radius: 8px;
   border: none;
@@ -52,9 +52,17 @@
 
 .formio-dialog-content > button.btn-primary {
   margin-top: 16px;
-  align-self: end;
+  align-self: flex-end;
 }
 
 /* .formio-dialog-content > button.formio-dialog-close::before {
   font-size: 24px !important;
 } */
+
+.hfh_formio_edit_grid .editgrid-actions {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 16px;
+}
