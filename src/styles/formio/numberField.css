@@ -1,7 +1,7 @@
 /* 
-  hfh_formio_number_field must be added to the custom CSS class on the next fields: 
+  hfh_formio_number_field must be added to the custom CSS class on the next components: 
     - number field
-    - currency field
+    - currency
 */
 
 .hfh_formio_number_field label.col-form-label {

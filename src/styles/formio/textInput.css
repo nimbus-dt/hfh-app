@@ -1,6 +1,7 @@
 /* 
-  hfh_formio_text_input must be added to the custom CSS class on the next fields: 
+  hfh_formio_text_input must be added to the custom CSS class on the next components: 
     - text field
+    - phone number
 */
 
 .hfh_formio_text_input input.form-control {
