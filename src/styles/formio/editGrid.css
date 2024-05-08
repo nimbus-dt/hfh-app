@@ -55,6 +55,6 @@
   align-self: end;
 }
 
-.formio-dialog-content > button.formio-dialog-close::before {
+/* .formio-dialog-content > button.formio-dialog-close::before {
   font-size: 24px !important;
-}
+} */
