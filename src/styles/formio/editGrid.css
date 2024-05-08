@@ -58,3 +58,11 @@
 /* .formio-dialog-content > button.formio-dialog-close::before {
   font-size: 24px !important;
 } */
+
+.hfh_formio_edit_grid .editgrid-actions {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  gap: 16px;
+}
