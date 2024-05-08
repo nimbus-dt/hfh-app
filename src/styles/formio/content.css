@@ -1,0 +1,44 @@
+.hfh_formio_content_heading_1 {
+  font-family: var(--amplify-fonts-default-variable);
+  font-weight: var(--amplify-font-weights-normal);
+  font-size: var(--amplify-font-sizes-xxl);
+  line-height: var(--amplify-line-heights-large);
+  letter-spacing: 0.25px;
+  color: var(--amplify-colors-neutral-100);
+}
+
+.hfh_formio_content_heading_2 h3 {
+  font-family: var(--amplify-fonts-default-variable);
+  font-weight: var(--amplify-font-weights-medium);
+  font-size: var(--amplify-font-sizes-xl);
+  line-height: var(--amplify-line-heights-medium);
+  letter-spacing: 0px;
+  color: var(--amplify-colors-neutral-100);
+}
+
+.hfh_formio_content_heading_3 legend {
+  font-family: var(--amplify-fonts-default-variable);
+  font-weight: var(--amplify-font-weights-medium);
+  font-size: var(--amplify-font-sizes-large);
+  line-height: var(--amplify-line-heights-small);
+  letter-spacing: 0.15px;
+  color: var(--amplify-colors-neutral-90);
+}
+
+.hfh_formio_content_edit_grid:first-child {
+  font-family: var(--amplify-fonts-default-variable);
+  font-weight: var(--amplify-font-weights-medium);
+  font-size: var(--amplify-font-sizes-large);
+  line-height: var(--amplify-line-heights-small);
+  letter-spacing: 0.15px;
+  color: var(--amplify-colors-neutral-90);
+}
+
+.hfh_formio_content_paragraph p {
+  font-family: var(--amplify-fonts-default-variable);
+  font-weight: var(--amplify-font-weights-normal);
+  font-size: var(--amplify-font-sizes-small);
+  line-height: var(--amplify-line-heights-small);
+  letter-spacing: 0.5px;
+  color: var(--amplify-colors-neutral-100);
+}
