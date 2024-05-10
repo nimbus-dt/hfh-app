@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Form as FormioForm } from '@formio/react';
+import { Form as FormioForm, Wizard } from '@formio/react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   FormAnswer,
@@ -32,9 +32,50 @@ interface IProperties {
 
 const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
+const CustomFooter = ({ formReady }: { formReady: typeof Wizard }) => {
+  const [currentPage, setCurrentPage] = useState(0);
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <Footer
+        goBack={
+          currentPage === 0
+            ? undefined
+            : () => {
+                setCurrentPage((prev) => prev - 1);
+                formReady.prevPage().catch((error: unknown) => {
+                  console.log(error);
+                });
+              }
+        }
+        onNext={() => {
+          if (
+            formReady?.componentComponents &&
+            currentPage === formReady.componentComponents.length - 1
+          ) {
+            formReady.submit().catch((error: unknown) => {
+              console.log(error);
+            });
+            return;
+          }
+
+          setCurrentPage((prev) => prev + 1);
+          formReady.nextPage().catch((error: unknown) => {
+            console.log(error);
+          });
+        }}
+        submit={
+          formReady?.componentComponents &&
+          currentPage === formReady.componentComponents.length - 1
+        }
+      />
+    </div>
+  );
+};
+
 const Form = ({ habitat, application, cycle }: IProperties) => {
   console.log(habitat, application, cycle);
   const [reviewMode, setReviewMode] = useState(false);
+  const [formReady, setFormReady] = useState<typeof Wizard>();
 
   const [showSubmitModal, setShowSubmitModal] = useState(false);
 
@@ -45,16 +86,12 @@ const Form = ({ habitat, application, cycle }: IProperties) => {
     paginationProducer: undefined,
   });
 
-  console.log('formAnswers', formAnswers);
-
   const navigate = useNavigate();
 
   const { data: form } = useFormById({
     id: cycle?.rootformID || '',
     dependencyArray: [cycle],
   });
-
-  console.log('form', form);
 
   const persistSubmission = useMemo(
     () =>
@@ -159,10 +196,10 @@ const Form = ({ habitat, application, cycle }: IProperties) => {
     form && (
       <div style={{ padding: 0 }}>
         <Header current={0} pages={[]} habitat={habitat} />
-        <div className={`${style.formContainer}`}>
+        <div>
           {reviewMode ||
           application?.submissionStatus === SubmissionStatus.COMPLETED ? (
-            <>
+            <div className={`${style.formContainer}`}>
               <FormioForm
                 key="review"
                 src={`${FORMIO_URL}/loudoun`}
@@ -215,38 +252,39 @@ const Form = ({ habitat, application, cycle }: IProperties) => {
                   </Link>
                 )}
               </Flex>
-            </>
+            </div>
           ) : (
             <div>
-              <FormioForm
-                key="real"
-                src={`${FORMIO_URL}/loudoun`}
-                onSubmit={handleOnReview}
-                options={
-                  {
-                    additional: {
-                      application,
-                      habitat,
-                      openCycle: cycle,
-                    },
-                  } as Options
-                }
-                submission={generateSubmission(formAnswers)}
-                onNextPage={({
-                  submission,
-                  page,
-                }: {
-                  submission: unknown;
-                  page: number;
-                }) => {
-                  persistSubmission(submission, page);
-                }}
-              />
+              <div className={`${style.formContainer}`}>
+                <FormioForm
+                  key="real"
+                  src={`${FORMIO_URL}/loudoun`}
+                  onSubmit={handleOnReview}
+                  formReady={(f: typeof Wizard) => setFormReady(f)}
+                  options={
+                    {
+                      additional: {
+                        application,
+                        habitat,
+                        openCycle: cycle,
+                      },
+                    } as Options
+                  }
+                  submission={generateSubmission(formAnswers)}
+                  onNextPage={({
+                    submission,
+                    page,
+                  }: {
+                    submission: unknown;
+                    page: number;
+                  }) => {
+                    persistSubmission(submission, page);
+                  }}
+                />
+              </div>
+              <CustomFooter formReady={formReady} />
             </div>
           )}
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Footer />
         </div>
       </div>
     )
