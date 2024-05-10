@@ -20,6 +20,8 @@ import dayjs from 'dayjs';
 import { Button, Flex, Text } from '@aws-amplify/ui-react';
 import CustomButton from 'components/CustomButton/CustomButton';
 import { RecursiveModelPredicate } from '@aws-amplify/datastore';
+import Header from 'components/Header';
+import Footer from 'components/Footer';
 import style from './Form.module.css';
 
 interface IProperties {
@@ -31,6 +33,7 @@ interface IProperties {
 const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
 const Form = ({ habitat, application, cycle }: IProperties) => {
+  console.log(habitat, application, cycle);
   const [reviewMode, setReviewMode] = useState(false);
 
   const [showSubmitModal, setShowSubmitModal] = useState(false);
@@ -42,12 +45,16 @@ const Form = ({ habitat, application, cycle }: IProperties) => {
     paginationProducer: undefined,
   });
 
+  console.log('formAnswers', formAnswers);
+
   const navigate = useNavigate();
 
   const { data: form } = useFormById({
-    id: cycle?.form || '',
+    id: cycle?.rootformID || '',
     dependencyArray: [cycle],
   });
+
+  console.log('form', form);
 
   const persistSubmission = useMemo(
     () =>
@@ -150,86 +157,97 @@ const Form = ({ habitat, application, cycle }: IProperties) => {
 
   return (
     form && (
-      <div className={`${style.formContainer}`}>
-        {reviewMode ||
-        application?.submissionStatus === SubmissionStatus.COMPLETED ? (
-          <>
-            <FormioForm
-              key="review"
-              src={`${FORMIO_URL}/${form.url}`}
-              options={{
-                readOnly: true,
-                renderMode: 'flat',
-              }}
-              submission={generateSubmission(formAnswers)}
-            />
-            <Modal
-              title="Alert"
-              width={{ base: '95%', medium: '30rem' }}
-              open={showSubmitModal}
-              onClickClose={handleOnClickSubmitModalClose}
-            >
-              <Text>
-                Are you sure you want to submit your application? Once submited
-                you won't be able to resubmit.
-              </Text>
-              <br />
-              <Flex width="100%" justifyContent="end">
-                <Button variation="primary" onClick={handleOnSubmit}>
-                  Accept
-                </Button>
-                <Button onClick={handleOnClickSubmitModalClose}>Cancel</Button>
+      <div style={{ padding: 0 }}>
+        <Header current={0} pages={[]} habitat={habitat} />
+        <div className={`${style.formContainer}`}>
+          {reviewMode ||
+          application?.submissionStatus === SubmissionStatus.COMPLETED ? (
+            <>
+              <FormioForm
+                key="review"
+                src={`${FORMIO_URL}/loudoun`}
+                options={{
+                  readOnly: true,
+                  renderMode: 'flat',
+                }}
+                submission={generateSubmission(formAnswers)}
+              />
+              <Modal
+                title="Alert"
+                width={{ base: '95%', medium: '30rem' }}
+                open={showSubmitModal}
+                onClickClose={handleOnClickSubmitModalClose}
+              >
+                <Text>
+                  Are you sure you want to submit your application? Once
+                  submited you won't be able to resubmit.
+                </Text>
+                <br />
+                <Flex width="100%" justifyContent="end">
+                  <Button variation="primary" onClick={handleOnSubmit}>
+                    Accept
+                  </Button>
+                  <Button onClick={handleOnClickSubmitModalClose}>
+                    Cancel
+                  </Button>
+                </Flex>
+              </Modal>
+              <Flex justifyContent="space-between">
+                {application?.submissionStatus !==
+                SubmissionStatus.COMPLETED ? (
+                  <>
+                    <CustomButton
+                      onClick={handleOnClickGoBack}
+                      variation="secondary"
+                    >
+                      Go back to edit
+                    </CustomButton>
+                    <CustomButton
+                      onClick={handleOnClickSubmit}
+                      variation="primary"
+                    >
+                      Submit
+                    </CustomButton>
+                  </>
+                ) : (
+                  <Link to="../applications">
+                    <CustomButton variation="primary">Go back</CustomButton>
+                  </Link>
+                )}
               </Flex>
-            </Modal>
-            <Flex justifyContent="space-between">
-              {application?.submissionStatus !== SubmissionStatus.COMPLETED ? (
-                <>
-                  <CustomButton
-                    onClick={handleOnClickGoBack}
-                    variation="secondary"
-                  >
-                    Go back to edit
-                  </CustomButton>
-                  <CustomButton
-                    onClick={handleOnClickSubmit}
-                    variation="primary"
-                  >
-                    Submit
-                  </CustomButton>
-                </>
-              ) : (
-                <Link to="../applications">
-                  <CustomButton variation="primary">Go back</CustomButton>
-                </Link>
-              )}
-            </Flex>
-          </>
-        ) : (
-          <FormioForm
-            key="real"
-            src={`${FORMIO_URL}/${form.url}`}
-            onSubmit={handleOnReview}
-            options={
-              {
-                additional: {
-                  application,
-                  habitat,
-                  openCycle: cycle,
-                },
-              } as Options
-            }
-            submission={generateSubmission(formAnswers)}
-            onNextPage={({
-              submission,
-              page,
-            }: {
-              submission: unknown;
-              page: number;
-            }) => {
-              persistSubmission(submission, page);
-            }}
-          />
-        )}
+            </>
+          ) : (
+            <div>
+              <FormioForm
+                key="real"
+                src={`${FORMIO_URL}/loudoun`}
+                onSubmit={handleOnReview}
+                options={
+                  {
+                    additional: {
+                      application,
+                      habitat,
+                      openCycle: cycle,
+                    },
+                  } as Options
+                }
+                submission={generateSubmission(formAnswers)}
+                onNextPage={({
+                  submission,
+                  page,
+                }: {
+                  submission: unknown;
+                  page: number;
+                }) => {
+                  persistSubmission(submission, page);
+                }}
+              />
+            </div>
+          )}
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Footer />
+        </div>
       </div>
     )
   );

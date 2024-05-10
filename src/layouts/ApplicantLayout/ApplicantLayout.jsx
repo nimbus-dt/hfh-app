@@ -165,7 +165,7 @@ const HabitatLayout = () => {
       }
     };
 
-    if (user) {
+    if (user && !userData) {
       getUserData();
     }
   });

@@ -1,4 +1,16 @@
 .formContainer {
   max-width: 456px;
-  margin: auto;
+  margin: 2rem auto;
+}
+
+@media (min-width: 768px) {
+  .formContainer {
+    max-width: calc(100% - 248px);
+  }
+}
+
+@media (min-width: 992px) {
+  .formContainer {
+    max-width: calc(100% - 290px);
+  }
 }

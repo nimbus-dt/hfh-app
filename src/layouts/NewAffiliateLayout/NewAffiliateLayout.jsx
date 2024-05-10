@@ -137,7 +137,7 @@ const NewAffiliateLayout = () => {
       }
     };
 
-    if (user) {
+    if (user && !userData) {
       getUserData();
     }
   });

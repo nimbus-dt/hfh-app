@@ -7,6 +7,7 @@ import {
   TestCycle,
   ReviewStatus,
   ApplicationTypes,
+  User,
 } from 'models';
 import { useCallback, useEffect, useState } from 'react';
 import { DataStore, SortDirection } from 'aws-amplify';

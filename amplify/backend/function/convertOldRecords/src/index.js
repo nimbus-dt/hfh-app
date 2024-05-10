@@ -13,13 +13,16 @@ Amplify Params - DO NOT EDIT */
 const GRAPHQL_ENDPOINT = process.env.API_HFHAPP_GRAPHQLAPIENDPOINTOUTPUT;
 const GRAPHQL_API_KEY = process.env.API_HFHAPP_GRAPHQLAPIKEYOUTPUT;
 
-const convertTestCycles = async () => {
+const convertTestCyclesWithoutFormUrl = async () => {
     const getTestCyclesQuery = `
         query GetTestCyclesQuery {
-            listTestCycles(filter: {closedCycleMessage: {attributeExists: false}}) {
+            listTestCycles(
+                filter: {formUrl: {attributeExists: false}}
+            ) {
                 items {
                     id
                     closedCycleMessage
+                    formUrl
                 }
             }
         }
@@ -45,9 +48,10 @@ const convertTestCycles = async () => {
     for (const testCycle of testCycles) {
         const updateTestCycleQuery = `
             mutation UpdateTestCycleMutation {
-                updateTestCycle(input: {id: "${testCycle.id}", closedCycleMessage: "Cycle closed."}) {
+                updateTestCycle(input: {id: "${testCycle.id}", formUrl: "loudoun"}) {
                     id
                     closedCycleMessage
+                    formUrl
                 }
             }
         
@@ -72,10 +76,133 @@ const convertTestCycles = async () => {
     }
 }
 
+const convertTestCyclesWithoutRootFormID = async () => {
+    const getTestCyclesQuery = `
+        query GetTestCyclesQuery {
+            listTestCycles(
+                filter: {rootformID: {attributeExists: false}}
+            ) {
+                items {
+                    id
+                    rootformID
+                }
+            }
+        }
+    `
+
+    const getTestCyclesOptions = {
+        method: 'POST',
+        headers: {
+        'x-api-key': GRAPHQL_API_KEY,
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ query: getTestCyclesQuery })
+    };
+
+    const getTestCyclesRequest = new Request(GRAPHQL_ENDPOINT, getTestCyclesOptions);
+
+    const getTestCyclesResponse = await fetch(getTestCyclesRequest);
+
+    const getTestCyclesBody = await getTestCyclesResponse.json();
+
+    const testCycles = getTestCyclesBody.data.listTestCycles.items;
+
+    for (const testCycle of testCycles) {
+        const updateTestCycleQuery = `
+            mutation UpdateTestCycleMutation {
+                updateTestCycle(input: {id: "${testCycle.id}", rootformID: "80cd5995-1493-4f54-b7d5-c65018fdb8b6"}) {
+                    id
+                    rootformID
+                }
+            }
+        
+        `
+
+        const updateTestCycleOptions = {
+            method: 'POST',
+            headers: {
+            'x-api-key': GRAPHQL_API_KEY,
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ query: updateTestCycleQuery })
+        };
+
+        const updateTestCycleRequest = new Request(GRAPHQL_ENDPOINT, updateTestCycleOptions);
+
+        const updateTestCycleResponse = await fetch(updateTestCycleRequest);
+
+        const updateTestCycleBody = await updateTestCycleResponse.json();
+
+        console.log('===== Updated Test Cycle =====', updateTestCycleBody)
+    }
+}
+
+const convertRootForms = async () => {
+    const getRootFormsQuery = `
+        query GetRootFormsQuery {
+            listRootForms(filter: {formUrls: {attributeExists: false}}) {
+                items {
+                    id
+                    formUrls
+                }
+            }
+        }
+    `
+
+    const getRootFormsOptions = {
+        method: 'POST',
+        headers: {
+        'x-api-key': GRAPHQL_API_KEY,
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ query: getRootFormsQuery })
+    };
+
+    const getRootFormsRequest = new Request(GRAPHQL_ENDPOINT, getRootFormsOptions);
+
+    const getRootFormsResponse = await fetch(getRootFormsRequest);
+
+    const getRootFormsBody = await getRootFormsResponse.json();
+
+    const rootForms = getRootFormsBody.data.listRootForms.items;
+
+    for (const rootForm of rootForms) {
+        const updateRootFormMulation = `
+            mutation UpdateRootFormMutation {
+                    updateRootForm(
+                    input: {id: "${rootForm.id}", formUrls: "loudoun"}
+                ) {
+                    formUrls
+                    id
+                }
+            }
+        `
+
+        const updateRootFormOptions = {
+            method: 'POST',
+            headers: {
+            'x-api-key': GRAPHQL_API_KEY,
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ query: updateRootFormMulation })
+        };
+
+        const updateRootFormRequest = new Request(GRAPHQL_ENDPOINT, updateRootFormOptions);
+
+        const updateRootFormResponse = await fetch(updateRootFormRequest);
+
+        const updateRootFormBody = await updateRootFormResponse.json();
+
+        console.log('===== Updated Root Form =====', updateRootFormBody)
+    }
+}
+
 exports.handler = async (event) => {
     console.log(`EVENT: ${JSON.stringify(event)}`);
     try {
-        await convertTestCycles();
+        await convertTestCyclesWithoutFormUrl();
+        await convertTestCyclesWithoutRootFormID();
+        await convertRootForms();
 
         return {
             statusCode: 200,

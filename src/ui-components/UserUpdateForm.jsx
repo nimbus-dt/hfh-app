@@ -368,11 +368,6 @@ export default function UserUpdateForm(props) {
           value="APPLICANT"
           {...getOverrideProps(overrides, "typeoption1")}
         ></option>
-        <option
-          children="Admin"
-          value="ADMIN"
-          {...getOverrideProps(overrides, "typeoption2")}
-        ></option>
       </SelectField>
       <TextField
         label="Owner"
