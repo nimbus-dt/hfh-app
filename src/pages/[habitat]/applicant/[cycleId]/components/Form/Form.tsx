@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { type ReactNode, useMemo, useState } from 'react';
 import { Form as FormioForm, Wizard } from '@formio/react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -32,48 +32,112 @@ interface IProperties {
 
 const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
-const CustomFooter = ({ formReady }: { formReady: typeof Wizard }) => {
+const Layout = ({
+  formReady,
+  habitat,
+  children,
+}: {
+  formReady: typeof Wizard;
+  habitat?: Habitat;
+  children: ReactNode;
+}) => {
   const [currentPage, setCurrentPage] = useState(0);
+  const pages = formReady?._data?.page10?.pages;
+  const mock = [
+    {
+      number: 1,
+      step: 1,
+      section: 'General',
+    },
+    {
+      number: 2,
+      step: 1,
+      section: 'General',
+    },
+    {
+      number: 3,
+      step: 1,
+      section: 'General',
+    },
+    {
+      number: 4,
+      step: 1,
+      section: 'General',
+    },
+    {
+      number: 5,
+      step: 1,
+      section: 'General',
+    },
+    {
+      number: 6,
+      step: 1,
+      section: 'General',
+    },
+    {
+      number: 7,
+      step: 1,
+      section: 'General',
+    },
+    {
+      number: 8,
+      step: 2,
+      section: 'Members',
+    },
+    {
+      number: 9,
+      step: 3,
+      section: 'Employment',
+    },
+    {
+      number: 10,
+      step: 4,
+      section: 'Ownership',
+    },
+  ];
   return (
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
-      <Footer
-        goBack={
-          currentPage === 0
-            ? undefined
-            : () => {
-                setCurrentPage((prev) => prev - 1);
-                formReady.prevPage().catch((error: unknown) => {
-                  console.log(error);
-                });
-              }
-        }
-        onNext={() => {
-          if (
+    <div style={{ width: '100%' }}>
+      <Header current={currentPage} pages={pages || mock} habitat={habitat} />
+      {children}
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Footer
+          goBack={
+            currentPage === 0
+              ? undefined
+              : () => {
+                  setCurrentPage((prev) => prev - 1);
+                  formReady.prevPage().catch((error: unknown) => {
+                    console.log(error);
+                  });
+                }
+          }
+          onNext={() => {
+            if (
+              formReady?.componentComponents &&
+              currentPage === formReady.componentComponents.length - 1
+            ) {
+              formReady.submit().catch((error: unknown) => {
+                console.log(error);
+              });
+              return;
+            }
+            setCurrentPage((prev) => prev + 1);
+            formReady.nextPage().catch((error: unknown) => {
+              console.log(error);
+              setCurrentPage((prev) => prev - 1);
+            });
+          }}
+          submit={
             formReady?.componentComponents &&
             currentPage === formReady.componentComponents.length - 1
-          ) {
-            formReady.submit().catch((error: unknown) => {
-              console.log(error);
-            });
-            return;
           }
-
-          setCurrentPage((prev) => prev + 1);
-          formReady.nextPage().catch((error: unknown) => {
-            console.log(error);
-          });
-        }}
-        submit={
-          formReady?.componentComponents &&
-          currentPage === formReady.componentComponents.length - 1
-        }
-      />
+        />
+      </div>
     </div>
   );
 };
 
 const Form = ({ habitat, application, cycle }: IProperties) => {
-  console.log(habitat, application, cycle);
   const [reviewMode, setReviewMode] = useState(false);
   const [formReady, setFormReady] = useState<typeof Wizard>();
 
@@ -195,7 +259,6 @@ const Form = ({ habitat, application, cycle }: IProperties) => {
   return (
     form && (
       <div style={{ padding: 0 }}>
-        <Header current={0} pages={[]} habitat={habitat} />
         <div>
           {reviewMode ||
           application?.submissionStatus === SubmissionStatus.COMPLETED ? (
@@ -254,7 +317,7 @@ const Form = ({ habitat, application, cycle }: IProperties) => {
               </Flex>
             </div>
           ) : (
-            <div>
+            <Layout formReady={formReady} habitat={habitat}>
               <div className={`${style.formContainer}`}>
                 <FormioForm
                   key="real"
@@ -282,8 +345,7 @@ const Form = ({ habitat, application, cycle }: IProperties) => {
                   }}
                 />
               </div>
-              <CustomFooter formReady={formReady} />
-            </div>
+            </Layout>
           )}
         </div>
       </div>

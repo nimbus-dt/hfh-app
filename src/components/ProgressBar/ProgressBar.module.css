@@ -65,7 +65,7 @@
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
   .background {
     max-width: 716px;
   }

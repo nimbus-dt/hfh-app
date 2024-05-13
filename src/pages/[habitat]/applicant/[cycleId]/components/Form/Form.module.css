@@ -1,6 +1,7 @@
 .formContainer {
-  max-width: 456px;
-  margin: 2rem auto;
+  max-width: 520px;
+  padding: 2rem;
+  margin: auto;
 }
 
 @media (min-width: 768px) {
@@ -11,6 +12,8 @@
 
 @media (min-width: 992px) {
   .formContainer {
-    max-width: calc(100% - 290px);
+    padding: 0;
+    margin: 2rem auto;
+    max-width: 586px;
   }
 }
