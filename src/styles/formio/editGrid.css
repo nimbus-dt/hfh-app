@@ -1,6 +1,9 @@
 /* 
   hfh_formio_edit_grid must be added to the custom CSS class on the next components: 
     - edit grid
+  other notes:
+    - If the edit grid has a modal dialog, a content component must be added with a 
+      h3 title with the custom css class hfh_formio_edit_grid_title as the first component.
 */
 
 .hfh_formio_edit_grid {
@@ -74,7 +77,7 @@
   box-shadow: 0px 11px 15px 0px #8f9caf33, 0px 9px 46px 0px #8f9caf1f,
     0px 24px 38px 0px #8f9caf80;
   max-width: 456px !important;
-  padding: 72px 24px 32px 24px !important;
+  padding: 32px 24px 32px 24px !important;
 }
 
 .formio-dialog-content > div:nth-child(3) {
@@ -110,4 +113,13 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+.formio-dialog-content .hfh_formio_edit_grid_title {
+  font-family: var(--amplify-fonts-default-variable);
+  font-weight: var(--amplify-font-weights-medium);
+  font-size: var(--amplify-font-sizes-large);
+  line-height: var(--amplify-line-heights-small);
+  letter-spacing: 0.15px;
+  color: var(--amplify-colors-neutral-90);
 }
