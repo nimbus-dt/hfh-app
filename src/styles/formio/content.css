@@ -38,7 +38,7 @@
   margin-top: 1rem;
 }
 
-.hfh_formio_content_edit_grid:first-child {
+.hfh_formio_content_edit_grid > label:first-child {
   font-family: var(--amplify-fonts-default-variable);
   font-weight: var(--amplify-font-weights-medium);
   font-size: var(--amplify-font-sizes-large);
