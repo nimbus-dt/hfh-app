@@ -20,6 +20,19 @@
   margin-right: auto;
 }
 
+.no_interaction {
+  cursor: default;
+  user-select: default;
+  background-color: transparent;
+}
+
+.no_interaction:hover {
+  background-color: transparent;
+  border-color: transparent;
+  cursor: default;
+  user-select: default;
+}
+
 .help_icon {
   margin-top: 1rem;
   margin-left: calc(100% - 1.5rem);

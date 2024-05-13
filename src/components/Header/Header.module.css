@@ -49,10 +49,10 @@
 }
 
 @media (min-width: 768px) {
-  .banner {
+  /* .banner {
     grid-template-columns: 124px 1fr 124px;
     grid-template-areas: 'logo progress-bar close';
-  }
+  } */
 }
 
 @media (min-width: 992px) {

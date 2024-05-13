@@ -81,11 +81,7 @@ const ProgressBar = ({ current, pages }: IProperties) => {
                     style={{
                       width: `${leftCurrentWidth}px`,
                       height: '2px',
-                      left: `${
-                        leftCurrentWidth <= 55.25
-                          ? '0'
-                          : 55.25 - leftCurrentWidth
-                      }px`,
+                      left: `${55.25 - leftCurrentWidth}px`,
                       backgroundColor: `${colored ? '#BDBDBD' : '#325CCA'}`,
                     }}
                   />

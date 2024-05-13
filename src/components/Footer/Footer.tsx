@@ -15,7 +15,11 @@ const Footer = ({ goBack, onNext, submit = false }: FooterProps) => (
       !goBack && styles.background_without_back
     }`}
   >
-    <Button variation="link" className={styles.previous} onClick={goBack}>
+    <Button
+      variation="link"
+      className={goBack ? styles.previous : styles.no_interaction}
+      onClick={goBack}
+    >
       {goBack && (
         <>
           <MdArrowBack
