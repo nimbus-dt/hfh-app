@@ -168,26 +168,28 @@ const NewAffiliateLayout = () => {
   }
 
   return (
-    <BaseLayout variation="affiliate" hideSideBar={!isUserAllowed}>
+    <div>
       {isUserAllowed ? (
-        <Outlet
-          context={{
-            habitat,
-            setHabitat,
-            addCustomStatusToHabitat,
-            removeCustomStatusToHabitat,
-            updateCustomStatusToHabitat,
-          }}
-        />
+        <BaseLayout variation="affiliate" hideSideBar={!isUserAllowed}>
+          <Outlet
+            context={{
+              habitat,
+              setHabitat,
+              addCustomStatusToHabitat,
+              removeCustomStatusToHabitat,
+              updateCustomStatusToHabitat,
+            }}
+          />
+        </BaseLayout>
       ) : (
         <div className={style.notAllowedContainer}>
           <Text>
-            Sorry, you are not allowed to access this page. Please contact the
-            administrator for assistance.
+            Sorry, {habitat.name} has not authorized you to access this page.
+            Contact support@habitat-app.org for more information.
           </Text>
         </div>
       )}
-    </BaseLayout>
+    </div>
   );
 };
 
