@@ -1,9 +1,10 @@
-import { Flex, View } from '@aws-amplify/ui-react';
+import { View, Flex } from '@aws-amplify/ui-react';
+import Nav from './components/Nav';
 
-function LandingLayout() {
+function Landing() {
   const nav = (
     <View height="116px" border="1px solid black">
-      nav
+      <Nav />
     </View>
   );
 
@@ -42,4 +43,4 @@ function LandingLayout() {
   );
 }
 
-export default LandingLayout;
+export default Landing;
