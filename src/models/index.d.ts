@@ -84,13 +84,17 @@ export declare const ApplicantProps: (new (init: ModelInit<ApplicantProps>) => A
 type EagerAffiliateProps = {
   readonly titleAtHabitat: string;
   readonly roleDescription: string;
-  readonly joinDate: string;
+  readonly joinDate?: string | null;
+  readonly joinMonth?: string | null;
+  readonly joinYear?: string | null;
 }
 
 type LazyAffiliateProps = {
   readonly titleAtHabitat: string;
   readonly roleDescription: string;
-  readonly joinDate: string;
+  readonly joinDate?: string | null;
+  readonly joinMonth?: string | null;
+  readonly joinYear?: string | null;
 }
 
 export declare type AffiliateProps = LazyLoading extends LazyLoadingDisabled ? EagerAffiliateProps : LazyAffiliateProps

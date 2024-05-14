@@ -14,12 +14,9 @@ const initialData: dataProps = {
   current: 0,
 };
 
-const SignUpQuestions = ({
-  habitat,
-  user,
-  setUserData,
-}: SignUpQuestionsProps) => {
+const SignUpQuestions = ({ habitat, user }: SignUpQuestionsProps) => {
   const [data, setData] = useState<dataProps>(initialData);
+  const [finished, setFinished] = useState<boolean>(false);
 
   const goBack = () => {
     setData((prev) => ({
@@ -36,7 +33,7 @@ const SignUpQuestions = ({
       goBack={goBack}
       habitat={habitat}
       user={user}
-      setUserData={setUserData}
+      setFinished={setFinished}
     />,
   ];
 
@@ -46,8 +43,24 @@ const SignUpQuestions = ({
 
   return (
     <ScrollView height="100vh" className={styles.page}>
-      <Header habitat={habitat} current={data.current} pages={pages} />
-      {body[data.current]}
+      <Header
+        habitat={habitat}
+        current={data.current}
+        pages={!finished ? pages : []}
+      />
+      {!finished ? (
+        body[data.current]
+      ) : (
+        <div className={styles.message}>
+          <p className="theme-body-medium">
+            For security reasons, a member of HabitatApp needs to verify your
+            sign up. We are currently revising your information and confirming
+            that you have authorization by {habitat?.name}. Once we have revised
+            your information, we will send you an email.
+          </p>
+          <p className="theme-body-medium">The HabitatApp Team</p>
+        </div>
+      )}
     </ScrollView>
   );
 };

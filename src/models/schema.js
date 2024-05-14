@@ -1882,7 +1882,21 @@ export const schema = {
                     "name": "joinDate",
                     "isArray": false,
                     "type": "AWSDate",
-                    "isRequired": true,
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "joinMonth": {
+                    "name": "joinMonth",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "joinYear": {
+                    "name": "joinYear",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
                     "attributes": []
                 }
             }
@@ -2148,5 +2162,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "eb64eefae0e44f7e2d8fb6e2a76f6008"
+    "version": "ff35c2c53192a36058ff3f86dba2e795"
 };

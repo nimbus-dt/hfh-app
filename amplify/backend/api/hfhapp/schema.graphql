@@ -27,7 +27,9 @@ type ApplicantProps {
 type AffiliateProps {
   titleAtHabitat: String!
   roleDescription: String!
-  joinDate: AWSDate!
+  joinDate: AWSDate
+  joinMonth: String
+  joinYear: String
 }
 
 enum Sexs {

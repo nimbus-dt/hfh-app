@@ -27,7 +27,7 @@ interface AffiliateProps {
   user: {
     username: string;
   };
-  setUserData: React.Dispatch<React.SetStateAction<User>>;
+  setFinished: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Affiliate = ({
@@ -36,7 +36,7 @@ const Affiliate = ({
   goBack,
   habitat,
   user,
-  setUserData,
+  setFinished,
 }: AffiliateProps) => {
   const {
     register,
@@ -68,9 +68,10 @@ const Affiliate = ({
         type: UserTypes.AFFILIATE,
         owner: user.username,
       };
-      const response = await DataStore.save(new User(newUser));
-      setUserData(response);
+      await DataStore.save(new User(newUser));
+      setFinished(true);
     } catch (error) {
+      console.log(error);
       setError('Something went wrong!, refresh the page and try again.');
     }
   };
