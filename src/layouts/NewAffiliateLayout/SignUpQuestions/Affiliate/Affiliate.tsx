@@ -27,7 +27,6 @@ interface AffiliateProps {
   user: {
     username: string;
   };
-  setFinished: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Affiliate = ({
@@ -36,7 +35,6 @@ const Affiliate = ({
   goBack,
   habitat,
   user,
-  setFinished,
 }: AffiliateProps) => {
   const {
     register,
@@ -47,11 +45,6 @@ const Affiliate = ({
 
   const onSubmit: SubmitHandler<Inputs> = async (affiliateData) => {
     try {
-      setData((prev) => ({
-        ...prev,
-        affiliate: affiliateData,
-      }));
-
       const sexByModel = Sexs[data.general?.sex || 'OTHER'];
       const newUser = {
         firstName: data.general?.firstName || '',
@@ -69,9 +62,12 @@ const Affiliate = ({
         owner: user.username,
       };
       await DataStore.save(new User(newUser));
-      setFinished(true);
+      setData((prev) => ({
+        ...prev,
+        current: prev.current + 1,
+        affiliate: affiliateData,
+      }));
     } catch (error) {
-      console.log(error);
       setError('Something went wrong!, refresh the page and try again.');
     }
   };
