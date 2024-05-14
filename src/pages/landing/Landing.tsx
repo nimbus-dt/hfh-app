@@ -3,16 +3,12 @@ import Nav from './components/Nav';
 
 function Landing() {
   const nav = (
-    <View height="116px" border="1px solid black">
+    <View height="116px">
       <Nav />
     </View>
   );
 
-  const hero = (
-    <View height="1083px" border="1px solid black">
-      hero
-    </View>
-  );
+  const hero = <View height="1083px">hero</View>;
 
   const features = (
     <View height="1112px" border="1px solid black">
