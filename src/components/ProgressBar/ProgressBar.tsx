@@ -82,7 +82,7 @@ const ProgressBar = ({ current, pages }: IProperties) => {
                       width: `${leftCurrentWidth}px`,
                       height: '2px',
                       left: `${55.25 - leftCurrentWidth}px`,
-                      backgroundColor: `${colored ? '#BDBDBD' : '#325CCA'}`,
+                      backgroundColor: `${finished ? '#BDBDBD' : '#325CCA'}`,
                     }}
                   />
                 )}
@@ -101,7 +101,7 @@ const ProgressBar = ({ current, pages }: IProperties) => {
                     className={styles.line}
                     style={{
                       width: `${rightCurrentWidth}px`,
-                      background: `${colored ? '#BDBDBD' : '#325CCA'}`,
+                      background: `${finished ? '#BDBDBD' : '#325CCA'}`,
                       height: '2px',
                       left: '91.25px',
                     }}
