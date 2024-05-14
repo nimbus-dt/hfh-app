@@ -184,8 +184,16 @@ export const schema = {
                     "name": "habitatID",
                     "isArray": false,
                     "type": "ID",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
+                },
+                "formUrls": {
+                    "name": "formUrls",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": false
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -206,81 +214,6 @@ export const schema = {
             },
             "syncable": true,
             "pluralName": "RootForms",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byHabitat",
-                        "fields": [
-                            "habitatID"
-                        ]
-                    }
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "Form": {
-            "name": "Form",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "url": {
-                    "name": "url",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "habitatID": {
-                    "name": "habitatID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "Forms",
             "attributes": [
                 {
                     "type": "model",
@@ -670,13 +603,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "habitatID": {
-                    "name": "habitatID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "TestApplications": {
                     "name": "TestApplications",
                     "isArray": true,
@@ -693,18 +619,11 @@ export const schema = {
                         ]
                     }
                 },
-                "form": {
-                    "name": "form",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "rootformID": {
                     "name": "rootformID",
                     "isArray": false,
                     "type": "ID",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "name": {
@@ -716,6 +635,13 @@ export const schema = {
                 },
                 "closedCycleMessage": {
                     "name": "closedCycleMessage",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "formUrl": {
+                    "name": "formUrl",
                     "isArray": false,
                     "type": "String",
                     "isRequired": true,
@@ -744,15 +670,6 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byHabitat",
-                        "fields": [
-                            "habitatID"
-                        ]
-                    }
                 },
                 {
                     "type": "key",
@@ -1729,38 +1646,6 @@ export const schema = {
                     "attributes": [],
                     "isArrayNullable": true
                 },
-                "TestCycles": {
-                    "name": "TestCycles",
-                    "isArray": true,
-                    "type": {
-                        "model": "TestCycle"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "habitatID"
-                        ]
-                    }
-                },
-                "Forms": {
-                    "name": "Forms",
-                    "isArray": true,
-                    "type": {
-                        "model": "Form"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "habitatID"
-                        ]
-                    }
-                },
                 "authenticationHeader": {
                     "name": "authenticationHeader",
                     "isArray": false,
@@ -2263,5 +2148,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "222054bed4cc2772f3c959e11ad74842"
+    "version": "eb64eefae0e44f7e2d8fb6e2a76f6008"
 };

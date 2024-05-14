@@ -1,0 +1,125 @@
+/* 
+  hfh_formio_edit_grid must be added to the custom CSS class on the next components: 
+    - edit grid
+  other notes:
+    - If the edit grid has a modal dialog, a content component must be added with a 
+      h3 title with the custom css class hfh_formio_edit_grid_title as the first component.
+*/
+
+.hfh_formio_edit_grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hfh_formio_edit_grid button.btn-primary,
+.formio-dialog-content > button.btn-primary,
+.formio-dialog-content
+  > div[ref='confirmationDialog']
+  > div
+  > button.btn-danger {
+  align-self: flex-end;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: none;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 8px;
+}
+
+.hfh_formio_edit_grid button.btn-primary,
+.formio-dialog-content > button.btn-primary {
+  background-color: var(--amplify-colors-black);
+  color: var(--amplify-colors-neutral-10);
+}
+
+.formio-dialog-content
+  > div[ref='confirmationDialog']
+  > div
+  > button.btn-secondary {
+  border: 1px solid var(--amplify-colors-black);
+  background-color: var(--amplify-colors-neutral-10);
+  color: var(--amplify-colors-black);
+}
+
+.formio-dialog-content
+  > div[ref='confirmationDialog']
+  > div
+  > button.btn-secondary:hover {
+  background-color: var(--amplify-colors-neutral-20);
+}
+
+.formio-dialog-content
+  > div[ref='confirmationDialog']
+  > div
+  > button.btn-secondary:active {
+  background-color: var(--amplify-colors-neutral-40);
+}
+
+.hfh_formio_edit_grid button.btn-primary:hover {
+  background-color: #3e3d3d;
+}
+
+.formio-dialog {
+  background-color: color-mix(
+    in srgb,
+    var(--amplify-colors-neutral-80) 30%,
+    transparent
+  ) !important;
+}
+
+.formio-dialog-content {
+  border-radius: 8px !important;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--amplify-colors-white) !important;
+  box-shadow: 0px 11px 15px 0px #8f9caf33, 0px 9px 46px 0px #8f9caf1f,
+    0px 24px 38px 0px #8f9caf80;
+  max-width: 456px !important;
+  padding: 32px 24px 32px 24px !important;
+}
+
+.formio-dialog-content > div:nth-child(3) {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.formio-dialog-content > button.btn-primary {
+  margin-top: 16px;
+  align-self: flex-end;
+}
+
+.formio-dialog-content > button.formio-dialog-close {
+  top: 24px !important;
+  right: 16px !important;
+}
+
+.hfh_formio_edit_grid .editgrid-actions {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+.formio-dialog-content > div[ref='confirmationDialog'] > div {
+  display: flex;
+  gap: 16px;
+}
+
+.hfh_formio_edit_grid > ul.editgrid-listgroup > li.list-group-item {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.formio-dialog-content .hfh_formio_edit_grid_title {
+  font-family: var(--amplify-fonts-default-variable);
+  font-weight: var(--amplify-font-weights-medium);
+  font-size: var(--amplify-font-sizes-large);
+  line-height: var(--amplify-line-heights-small);
+  letter-spacing: 0.15px;
+  color: var(--amplify-colors-neutral-90);
+}

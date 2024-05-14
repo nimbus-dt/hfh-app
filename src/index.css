@@ -3,3 +3,6 @@
 body {
   overflow: hidden;
 }
+.btn-wizard-nav-submit {
+  display: none !important;
+}
