@@ -118,9 +118,7 @@ const NewAffiliateLayout = () => {
       setIsLoading((previousIsLoading) => previousIsLoading - 1);
     };
 
-    if (user) {
-      fetchData();
-    }
+    fetchData();
   }, [habitatUrlName, user, authStatus]);
 
   useEffect(() => {
