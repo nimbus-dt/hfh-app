@@ -24,10 +24,21 @@ import CyclesPage from 'pages/[habitat]/affiliate/cycles';
 import NewAffiliateLayout from 'layouts/NewAffiliateLayout';
 import AffiliateCycleApplications from 'pages/[habitat]/affiliate/cycles/[cycleId]/AffiliateCycleApplications';
 import AffiliateApplicationDetailsPage from 'pages/[habitat]/affiliate/cycles/[cycleId]/[applicationId]/AffiliateApplicationDetailsPage';
+import LandingLayout from 'layouts/LandingLayout';
 
 function App() {
   return (
     <Routes>
+      <Route
+        path="/landing"
+        element={
+          <ScrollView height="100vh" width="100%">
+            <Outlet />
+          </ScrollView>
+        }
+      >
+        <Route index element={<LandingLayout />} />
+      </Route>
       <Route
         path="/"
         element={
