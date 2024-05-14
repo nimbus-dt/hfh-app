@@ -52,7 +52,7 @@ const Household = ({ data, setData, goBack }: HouseholdProps) => {
             <input
               id="members"
               type="number"
-              placeholder="Number of people"
+              placeholder="4"
               defaultValue={data?.household?.members || ''}
               className={`theme-body-medium ${styles.number_input}`}
               {...register('members', { required: true })}
@@ -75,7 +75,7 @@ const Household = ({ data, setData, goBack }: HouseholdProps) => {
             <input
               id="income"
               type="string"
-              placeholder="Annual income"
+              placeholder="75,000"
               defaultValue={data?.household?.income || ''}
               className={`theme-body-medium ${styles.number_input}`}
               {...register('income', { required: true })}

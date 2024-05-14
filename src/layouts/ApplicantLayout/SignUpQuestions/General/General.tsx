@@ -57,7 +57,7 @@ const General = ({ data, setData }: GeneralProps) => {
             <div>
               <input
                 id="firstName"
-                placeholder="First Name"
+                placeholder="John"
                 defaultValue={data?.general?.firstName || ''}
                 {...register('firstName', { required: true })}
                 className={`${styles.text_input} theme-body-medium`}
@@ -71,7 +71,7 @@ const General = ({ data, setData }: GeneralProps) => {
             <div>
               <input
                 id="lastName"
-                placeholder="Last Name"
+                placeholder="Doe"
                 defaultValue={data?.general?.lastName || ''}
                 {...register('lastName', { required: true })}
                 className={`${styles.text_input} theme-body-medium`}
@@ -114,7 +114,7 @@ const General = ({ data, setData }: GeneralProps) => {
             <input
               id="phone"
               type="tel"
-              placeholder="Phone Number"
+              placeholder="(000) 000 0000"
               defaultValue={data?.general?.phone || ''}
               {...register('phone', {
                 required: true,
@@ -178,7 +178,7 @@ const General = ({ data, setData }: GeneralProps) => {
               <select
                 id="state"
                 className={styles.select_input}
-                defaultValue={data?.general?.state || '2013'}
+                defaultValue={data?.general?.state || 'CA'}
                 {...register('state', { required: true })}
               >
                 {states.map((state) => (
@@ -204,7 +204,7 @@ const General = ({ data, setData }: GeneralProps) => {
             <input
               id="city"
               type="string"
-              placeholder="City"
+              placeholder="Los Ángeles"
               defaultValue={data?.general?.city || ''}
               {...register('city', { required: true })}
               className={`${styles.text_input} theme-body-medium`}
@@ -226,7 +226,7 @@ const General = ({ data, setData }: GeneralProps) => {
           <div>
             <input
               id="street"
-              placeholder="Street"
+              placeholder="123 Main St"
               defaultValue={data?.general?.street || ''}
               className={`theme-body-medium ${styles.text_input}`}
               type="string"
@@ -250,7 +250,7 @@ const General = ({ data, setData }: GeneralProps) => {
             <input
               id="zipCode"
               type="string"
-              placeholder="Zip Code"
+              placeholder="90001"
               defaultValue={data?.general?.zipCode || ''}
               {...register('zipCode', {
                 required: true,
