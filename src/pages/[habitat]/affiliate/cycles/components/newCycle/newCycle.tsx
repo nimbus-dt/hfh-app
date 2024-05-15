@@ -4,7 +4,7 @@ import { Button } from '@aws-amplify/ui-react';
 import { throttle } from 'lodash';
 import dayjs from 'dayjs';
 import Modal from 'components/Modal';
-import { Habitat, TestCycle } from 'models';
+import { Habitat, RootForm, TestCycle } from 'models';
 import styles from './newCycle.module.css';
 
 interface NewCycleProps {
@@ -50,13 +50,15 @@ const NewCycle = ({
   };
   const onCreateCycle: SubmitHandler<Inputs> = async (data) => {
     if (habitat && formId) {
+      const form = await DataStore.query(RootForm, formId);
+      if (!form) return;
       await DataStore.save(
         new TestCycle({
           name: data.name,
           startDate: new Date().toISOString(),
           isOpen: true,
-          habitatID: habitat.id,
-          form: formId,
+          rootformID: formId,
+          formUrl: form?.formUrls[0],
           closedCycleMessage:
             habitat.props.closedCycleMessages[
               habitat.props.closedCycleMessages.length - 1
