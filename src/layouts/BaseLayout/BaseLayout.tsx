@@ -10,7 +10,8 @@ import {
 import { getRouteTitle } from 'utils/routes';
 import { useUserQuery } from 'hooks/services';
 import useHabitatByUrlName from 'hooks/services/useHabitatByUrlName';
-import { Habitat } from 'models';
+import { Habitat, LazyUser } from 'models';
+import { RecursiveModelPredicate } from '@aws-amplify/datastore';
 import TopBar from './components/TopBar';
 import SideBar from './components/SideBar';
 
@@ -46,9 +47,9 @@ const BaseLayout = ({ variation, children, hideSideBar }: IProperties) => {
 
   // Get User
   const { data: userData } = useUserQuery({
-    criteria: (c1: any) =>
-      c1.and((c2: any) => {
-        const criteriaArr = user ? [c2.owner.eq(user.username)] : [];
+    criteria: (c1: RecursiveModelPredicate<LazyUser>) =>
+      c1.and((c2) => {
+        const criteriaArr = user ? [c2.owner.eq(user.username as string)] : [];
         return criteriaArr;
       }),
     paginationProducer: {},
