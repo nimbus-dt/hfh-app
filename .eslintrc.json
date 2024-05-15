@@ -23,7 +23,8 @@
     "@typescript-eslint/no-explicit-any": "error",
     "no-restricted-syntax": "off",
     "guard-for-in": "off",
-    "no-restricted-exports": "off"
+    "no-restricted-exports": "off",
+    "no-plusplus": "off"
   },
   "root": true
 }

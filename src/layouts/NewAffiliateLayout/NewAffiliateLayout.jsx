@@ -3,9 +3,10 @@ import { Outlet, useParams } from 'react-router-dom';
 import { DataStore } from 'aws-amplify';
 import { Flex, Text, useAuthenticator } from '@aws-amplify/ui-react';
 import Authentication from 'components/Authentication';
-import { Habitat } from 'models';
+import { Habitat, User } from 'models';
 import { DEFAULT_REVIEW_STATUS, AUTHENTICATION_STATUS } from 'utils/constants';
 import BaseLayout from 'layouts/BaseLayout';
+import SignUpQuestions from './SignUpQuestions';
 import style from './NewAffiliateLayout.module.css';
 
 const NewAffiliateLayout = () => {
@@ -16,6 +17,7 @@ const NewAffiliateLayout = () => {
     context.authStatus,
     context.user,
   ]);
+  const [userData, setUserData] = useState();
 
   const habitatUrlName = useParams('habitat').habitat;
 
@@ -121,6 +123,25 @@ const NewAffiliateLayout = () => {
     }
   }, [habitatUrlName, user, authStatus]);
 
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const persistUserDatas = await DataStore.query(User, (c) =>
+          c.owner.eq(user.username)
+        );
+        if (persistUserDatas.length > 0) {
+          setUserData(persistUserDatas[0]);
+        }
+      } catch (error) {
+        console.log('Error fetching user data.');
+      }
+    };
+
+    if (user && !userData) {
+      getUserData();
+    }
+  });
+
   if (isLoading) {
     return (
       <Flex direction="column" height="100vh" alignItems="center">
@@ -134,6 +155,16 @@ const NewAffiliateLayout = () => {
       <Authentication
         authenticationHeader={habitat?.authenticationHeader}
         affiliate
+      />
+    );
+  }
+
+  if (!userData) {
+    return (
+      <SignUpQuestions
+        habitat={habitat}
+        user={user}
+        setUserData={setUserData}
       />
     );
   }

@@ -1,0 +1,51 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  padding: 16px;
+  min-width: fit-content;
+  height: fit-content;
+  background-color: #f4f4f4;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--amplify-colors-neutral-40);
+  border-radius: 8px;
+  gap: 10px;
+}
+
+.menuItem {
+  display: flex;
+  padding: 12px 16px;
+  color: var(--amplify-colors-neutral-90);
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 8px;
+  border-color: transparent;
+  background-color: transparent;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+  line-height: 24px;
+}
+
+.icon {
+  font-size: 24px;
+}
+
+.active,
+.menuItem:hover {
+  background-color: var(--amplify-colors-neutral-40);
+}
+
+.active {
+  border-color: var(--amplify-colors-neutral-80);
+  color: #3e3d3d;
+}
+
+/* Amplify UI medium */
+@media (min-width: 768px) {
+  .container {
+    min-width: 214px;
+    flex-direction: column;
+    height: 800px;
+  }
+}

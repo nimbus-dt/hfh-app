@@ -1,8 +1,6 @@
 import './assets/styles/App.css';
 import { Routes, Route, Outlet } from 'react-router-dom';
 import { ScrollView } from '@aws-amplify/ui-react';
-import ApplicationsPage from 'pages/affiliate-portal/cycles/[cycleId]';
-import ApplicationDetailsPage from 'pages/affiliate-portal/cycles/[cycleId]/[applicationId]';
 import AffiliatePortalRepairsPage from 'pages/affiliate-portal/repairs';
 import AffiliatePortalVolunteersPage from 'pages/affiliate-portal/volunteers';
 import AffiliatePortalSettingsPage from 'pages/affiliate-portal/settings';
@@ -14,7 +12,7 @@ import ContactPage from 'pages/contact';
 import DataPage from 'pages/data';
 // eslint-disable-next-line import/no-unresolved
 import '@aws-amplify/ui-react/styles.css';
-import HomeownershipHomePage from 'pages/homeownership/[habitat]/home';
+import ApplicantCyclePage from 'pages/[habitat]/applicant/[cycleId]';
 import HomeownershipReviewPage from 'pages/homeownership/[habitat]/review';
 import HabitatLayout from 'layouts/HabitatLayout';
 import ApplicantLayout from 'layouts/ApplicantLayout';
@@ -25,6 +23,8 @@ import AffiliateFormsPage from 'pages/[habitat]/affiliate/forms';
 import CyclesPage from 'pages/[habitat]/affiliate/cycles';
 import NewAffiliateLayout from 'layouts/NewAffiliateLayout';
 import AffiliateCycleApplications from 'pages/[habitat]/affiliate/cycles/[cycleId]/AffiliateCycleApplications';
+import AffiliateApplicationDetailsPage from 'pages/[habitat]/affiliate/cycles/[cycleId]/[applicationId]/AffiliateApplicationDetailsPage';
+import { Form } from '@formio/react';
 
 function App() {
   return (
@@ -82,10 +82,6 @@ function App() {
       <Route path={ROUTES.HABITAT} element={<HabitatLayout />}>
         <Route path={ROUTES.HABITAT_APPLICANT} element={<ApplicantLayout />}>
           <Route
-            path={ROUTES.HABITAT_APPLICANT_FORM}
-            element={<HomeownershipHomePage />}
-          />
-          <Route
             path={ROUTES.HABITAT_APPLICANT_REVIEW}
             element={<HomeownershipReviewPage />}
           />
@@ -97,6 +93,10 @@ function App() {
             path={ROUTES.HABITAT_APPLICANT_DECISIONS}
             element={<ApplicantDecisionsPage />}
           />
+          <Route
+            path={ROUTES.HABITAT_APPLICANT_CYCLE}
+            element={<ApplicantCyclePage />}
+          />
         </Route>
         <Route path={ROUTES.HABITAT_AFFILIATE} element={<NewAffiliateLayout />}>
           <Route path={ROUTES.HABITAT_AFFILIATE_HOME} element={<h1>Home</h1>} />
@@ -106,7 +106,7 @@ function App() {
               <Route index element={<AffiliateCycleApplications />} />
               <Route
                 path={ROUTES.HABITAT_AFFILIATE_CYCLES_CYCLE_APPLICATION}
-                element={<ApplicationDetailsPage />}
+                element={<AffiliateApplicationDetailsPage />}
               />
             </Route>
           </Route>
@@ -138,10 +138,10 @@ function App() {
           <Route path=":formId">
             <Route index element={<CyclesPage />} />
             <Route path={ROUTES.HABITAT_AFFILIATE_CYCLES_CYCLE}>
-              <Route index element={<ApplicationsPage />} />
+              <Route index element={<AffiliateCycleApplications />} />
               <Route
                 path={ROUTES.HABITAT_AFFILIATE_CYCLES_CYCLE_APPLICATION}
-                element={<ApplicationDetailsPage />}
+                element={<AffiliateApplicationDetailsPage />}
               />
             </Route>
           </Route>

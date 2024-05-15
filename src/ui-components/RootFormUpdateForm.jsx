@@ -194,6 +194,7 @@ export default function RootFormUpdateForm(props) {
     status: "",
     description: "",
     files: [],
+    formUrls: [],
   };
   const [name, setName] = React.useState(initialValues.name);
   const [status, setStatus] = React.useState(initialValues.status);
@@ -201,6 +202,7 @@ export default function RootFormUpdateForm(props) {
     initialValues.description
   );
   const [files, setFiles] = React.useState(initialValues.files);
+  const [formUrls, setFormUrls] = React.useState(initialValues.formUrls);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = rootFormRecord
@@ -211,6 +213,8 @@ export default function RootFormUpdateForm(props) {
     setDescription(cleanValues.description);
     setFiles(cleanValues.files ?? []);
     setCurrentFilesValue("");
+    setFormUrls(cleanValues.formUrls ?? []);
+    setCurrentFormUrlsValue("");
     setErrors({});
   };
   const [rootFormRecord, setRootFormRecord] = React.useState(rootFormModelProp);
@@ -226,11 +230,14 @@ export default function RootFormUpdateForm(props) {
   React.useEffect(resetStateValues, [rootFormRecord]);
   const [currentFilesValue, setCurrentFilesValue] = React.useState("");
   const filesRef = React.createRef();
+  const [currentFormUrlsValue, setCurrentFormUrlsValue] = React.useState("");
+  const formUrlsRef = React.createRef();
   const validations = {
     name: [],
     status: [],
     description: [],
     files: [],
+    formUrls: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -262,6 +269,7 @@ export default function RootFormUpdateForm(props) {
           status,
           description,
           files,
+          formUrls,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -321,6 +329,7 @@ export default function RootFormUpdateForm(props) {
               status,
               description,
               files,
+              formUrls,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -348,6 +357,7 @@ export default function RootFormUpdateForm(props) {
               status: value,
               description,
               files,
+              formUrls,
             };
             const result = onChange(modelFields);
             value = result?.status ?? value;
@@ -386,6 +396,7 @@ export default function RootFormUpdateForm(props) {
               status,
               description: value,
               files,
+              formUrls,
             };
             const result = onChange(modelFields);
             value = result?.description ?? value;
@@ -409,6 +420,7 @@ export default function RootFormUpdateForm(props) {
               status,
               description,
               files: values,
+              formUrls,
             };
             const result = onChange(modelFields);
             values = result?.files ?? values;
@@ -446,6 +458,55 @@ export default function RootFormUpdateForm(props) {
           ref={filesRef}
           labelHidden={true}
           {...getOverrideProps(overrides, "files")}
+        ></TextField>
+      </ArrayField>
+      <ArrayField
+        onChange={async (items) => {
+          let values = items;
+          if (onChange) {
+            const modelFields = {
+              name,
+              status,
+              description,
+              files,
+              formUrls: values,
+            };
+            const result = onChange(modelFields);
+            values = result?.formUrls ?? values;
+          }
+          setFormUrls(values);
+          setCurrentFormUrlsValue("");
+        }}
+        currentFieldValue={currentFormUrlsValue}
+        label={"Form urls"}
+        items={formUrls}
+        hasError={errors?.formUrls?.hasError}
+        runValidationTasks={async () =>
+          await runValidationTasks("formUrls", currentFormUrlsValue)
+        }
+        errorMessage={errors?.formUrls?.errorMessage}
+        setFieldValue={setCurrentFormUrlsValue}
+        inputFieldRef={formUrlsRef}
+        defaultFieldValue={""}
+      >
+        <TextField
+          label="Form urls"
+          isRequired={false}
+          isReadOnly={false}
+          value={currentFormUrlsValue}
+          onChange={(e) => {
+            let { value } = e.target;
+            if (errors.formUrls?.hasError) {
+              runValidationTasks("formUrls", value);
+            }
+            setCurrentFormUrlsValue(value);
+          }}
+          onBlur={() => runValidationTasks("formUrls", currentFormUrlsValue)}
+          errorMessage={errors.formUrls?.errorMessage}
+          hasError={errors.formUrls?.hasError}
+          ref={formUrlsRef}
+          labelHidden={true}
+          {...getOverrideProps(overrides, "formUrls")}
         ></TextField>
       </ArrayField>
       <Flex

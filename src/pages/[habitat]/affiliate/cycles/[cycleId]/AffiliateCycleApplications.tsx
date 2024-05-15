@@ -23,7 +23,7 @@ import {
   MdOutlineFilterList,
   MdOutlineOpenInNew,
 } from 'react-icons/md';
-import { useOutletContext, useParams } from 'react-router-dom';
+import { Link, useOutletContext, useParams } from 'react-router-dom';
 import { stringToHumanReadable } from 'utils/strings';
 import IconButton from 'components/IconButton';
 import BreadCrumbs from 'components/BreadCrumbs/BreadCrumbs';
@@ -444,15 +444,17 @@ const AffiliateCycleApplications = () => {
                 id: 'view',
                 value: (
                   <div className={style.openButtonContainer}>
-                    <CustomButton
-                      className={style.openButton}
-                      variation="text-only"
-                    >
-                      <MdOutlineOpenInNew
-                        size="24px"
-                        color="var(--amplify-colors-neutral-90)"
-                      />
-                    </CustomButton>
+                    <Link to={application.id}>
+                      <CustomButton
+                        className={style.openButton}
+                        variation="text-only"
+                      >
+                        <MdOutlineOpenInNew
+                          size="24px"
+                          color="var(--amplify-colors-neutral-90)"
+                        />
+                      </CustomButton>
+                    </Link>
                   </div>
                 ),
               },

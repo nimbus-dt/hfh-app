@@ -16,7 +16,7 @@ export function useHabitatByUrlName({ habitatUrlName, dependencyArray }) {
       page: 0,
       limit: 1,
     },
-    dependencyArray,
+    dependencyArray: [habitatUrlName, ...(dependencyArray || [])],
   });
 
   return {

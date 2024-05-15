@@ -194,6 +194,7 @@ type EagerHabitatProps = {
   readonly optionalSections: OptionalSections;
   readonly gallery?: GalleryItem[] | null;
   readonly sidebarName?: SidebarName | null;
+  readonly closedCycleMessages: string[];
 }
 
 type LazyHabitatProps = {
@@ -210,6 +211,7 @@ type LazyHabitatProps = {
   readonly optionalSections: OptionalSections;
   readonly gallery?: GalleryItem[] | null;
   readonly sidebarName?: SidebarName | null;
+  readonly closedCycleMessages: string[];
 }
 
 export declare type HabitatProps = LazyLoading extends LazyLoadingDisabled ? EagerHabitatProps : LazyHabitatProps
@@ -271,7 +273,8 @@ type EagerRootForm = {
   readonly description?: string | null;
   readonly files?: (string | null)[] | null;
   readonly Cycles?: (TestCycle | null)[] | null;
-  readonly habitatID?: string | null;
+  readonly habitatID: string;
+  readonly formUrls: string[];
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -287,7 +290,8 @@ type LazyRootForm = {
   readonly description?: string | null;
   readonly files?: (string | null)[] | null;
   readonly Cycles: AsyncCollection<TestCycle>;
-  readonly habitatID?: string | null;
+  readonly habitatID: string;
+  readonly formUrls: string[];
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -296,36 +300,6 @@ export declare type RootForm = LazyLoading extends LazyLoadingDisabled ? EagerRo
 
 export declare const RootForm: (new (init: ModelInit<RootForm>) => RootForm) & {
   copyOf(source: RootForm, mutator: (draft: MutableModel<RootForm>) => MutableModel<RootForm> | void): RootForm;
-}
-
-type EagerForm = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Form, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly url: string;
-  readonly habitatID: string;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-type LazyForm = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Form, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly url: string;
-  readonly habitatID: string;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-export declare type Form = LazyLoading extends LazyLoadingDisabled ? EagerForm : LazyForm
-
-export declare const Form: (new (init: ModelInit<Form>) => Form) & {
-  copyOf(source: Form, mutator: (draft: MutableModel<Form>) => MutableModel<Form> | void): Form;
 }
 
 type EagerDecision = {
@@ -466,11 +440,11 @@ type EagerTestCycle = {
   readonly endDate?: string | null;
   readonly isOpen: boolean;
   readonly props?: string | null;
-  readonly habitatID: string;
   readonly TestApplications?: (TestApplication | null)[] | null;
-  readonly form: string;
-  readonly rootformID?: string | null;
+  readonly rootformID: string;
   readonly name?: string | null;
+  readonly closedCycleMessage: string;
+  readonly formUrl: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -485,11 +459,11 @@ type LazyTestCycle = {
   readonly endDate?: string | null;
   readonly isOpen: boolean;
   readonly props?: string | null;
-  readonly habitatID: string;
   readonly TestApplications: AsyncCollection<TestApplication>;
-  readonly form: string;
-  readonly rootformID?: string | null;
+  readonly rootformID: string;
   readonly name?: string | null;
+  readonly closedCycleMessage: string;
+  readonly formUrl: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -869,8 +843,6 @@ type EagerHabitat = {
   readonly props: HabitatProps;
   readonly users?: (string | null)[] | null;
   readonly AMI?: (string | null)[] | null;
-  readonly TestCycles?: (TestCycle | null)[] | null;
-  readonly Forms?: (Form | null)[] | null;
   readonly authenticationHeader?: string | null;
   readonly RootForms?: (RootForm | null)[] | null;
   readonly createdAt?: string | null;
@@ -892,8 +864,6 @@ type LazyHabitat = {
   readonly props: HabitatProps;
   readonly users?: (string | null)[] | null;
   readonly AMI?: (string | null)[] | null;
-  readonly TestCycles: AsyncCollection<TestCycle>;
-  readonly Forms: AsyncCollection<Form>;
   readonly authenticationHeader?: string | null;
   readonly RootForms: AsyncCollection<RootForm>;
   readonly createdAt?: string | null;
