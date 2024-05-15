@@ -1,5 +1,7 @@
 import { View, Flex } from '@aws-amplify/ui-react';
 import Nav from './components/Nav';
+import Features from './components/Features';
+import Hero from './components/Hero';
 
 function Landing() {
   const nav = (
@@ -8,11 +10,15 @@ function Landing() {
     </View>
   );
 
-  const hero = <View height="1083px">hero</View>;
+  const hero = (
+    <View height="1083px">
+      <Hero />
+    </View>
+  );
 
   const features = (
     <View height="1112px" border="1px solid black">
-      features
+      <Features />
     </View>
   );
 
