@@ -1,6 +1,6 @@
 /* eslint-disable react/style-prop-object */
-import React, { useEffect, useState } from 'react';
-import { Button, Flex, Image, ScrollView, Text } from '@aws-amplify/ui-react';
+import React from 'react';
+import { Button, Flex, ScrollView } from '@aws-amplify/ui-react';
 import {
   MdAutoGraph,
   MdOutlineAssignmentTurnedIn,
@@ -14,6 +14,7 @@ import {
 import useIsHovered from 'hooks/utils/useIsHovered';
 import useCloseContextMenu from 'hooks/utils/useCloseContextMenu';
 import { isCurrentRouteActive, ROUTES } from 'utils/routes';
+import { Habitat } from 'models';
 import MenuItem from './components/MenuItem/MenuItem';
 import style from './SideBar.module.css';
 import HabitatHeader from './components/HabitatHeader';
@@ -24,6 +25,7 @@ interface IProperties {
   onExpand: () => void;
   pathname: string;
   variation: 'applicant' | 'affiliate';
+  habitat: Habitat;
 }
 
 const SideBar = ({
@@ -32,6 +34,7 @@ const SideBar = ({
   onExpand,
   pathname,
   variation,
+  habitat,
 }: IProperties) => {
   const sideBarRef = React.useRef<HTMLDivElement>(null);
   const isHovered = useIsHovered(sideBarRef);
@@ -66,7 +69,7 @@ const SideBar = ({
             </Button>
           )}
           <Flex direction="column" gap="16px" justifyContent="space-between">
-            <HabitatHeader />
+            <HabitatHeader habitat={habitat as unknown as Habitat} />
             {variation === 'affiliate' && (
               <>
                 <MenuItem

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import {
   Flex,
   ScrollView,
@@ -9,7 +9,8 @@ import {
 } from '@aws-amplify/ui-react';
 import { getRouteTitle } from 'utils/routes';
 import { useUserQuery } from 'hooks/services';
-import { initial } from 'lodash';
+import useHabitatByUrlName from 'hooks/services/useHabitatByUrlName';
+import { Habitat } from 'models';
 import TopBar from './components/TopBar';
 import SideBar from './components/SideBar';
 
@@ -20,6 +21,13 @@ interface IProperties {
 }
 
 const BaseLayout = ({ variation, children, hideSideBar }: IProperties) => {
+  // Get Habitat
+  const habitatUrlName = useParams().habitat as string;
+
+  const { habitat } = useHabitatByUrlName({
+    habitatUrlName,
+  });
+
   const location = useLocation();
 
   const [expandSideBar, setExpandSideBar] = useState(false);
@@ -31,7 +39,7 @@ const BaseLayout = ({ variation, children, hideSideBar }: IProperties) => {
 
   const [title, setTitle] = useState('');
 
-  const { authStatus, user } = useAuthenticator((context) => [
+  const { user } = useAuthenticator((context) => [
     context.authStatus,
     context.user,
   ]);
@@ -80,6 +88,7 @@ const BaseLayout = ({ variation, children, hideSideBar }: IProperties) => {
           expanded={expandSideBar}
           onExpand={handleOnExpand}
           variation={variation}
+          habitat={habitat as unknown as Habitat}
         />
       )}
       <ScrollView

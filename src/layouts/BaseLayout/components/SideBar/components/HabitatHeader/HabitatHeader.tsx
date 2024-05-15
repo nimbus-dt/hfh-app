@@ -3,41 +3,17 @@
 import { Flex, Image, Text } from '@aws-amplify/ui-react';
 import habitatLogo from 'assets/images/habitatlogowhite.svg';
 import { Habitat } from 'models';
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { DataStore } from '@aws-amplify/datastore';
+import React from 'react';
 import Ellipse from '../Ellipse';
 
-const HabitatHeader = () => {
-  const habitatURL = useParams().habitat;
-  const [name, setName] = useState('');
-  const [fontSize, setFontSize] = useState('');
+interface IProperties {
+  habitat: Habitat;
+}
 
-  // Get Habitat and set sidebarName
-  useEffect(() => {
-    async function getHabitat() {
-      try {
-        const habitatsResponse = await DataStore.query(Habitat, (c: any) =>
-          c.urlName.eq(habitatURL)
-        );
+const HabitatHeader = ({ habitat }: IProperties) => {
+  const habitatName = habitat?.props?.sidebarName?.name;
 
-        const habitatObject = habitatsResponse[0];
-        const { props } = habitatObject;
-        const { sidebarName } = props;
-
-        const nameTemp = sidebarName ? sidebarName.name : '';
-        const fontSizeTemp = sidebarName ? sidebarName.fontSize : '';
-
-        setName(nameTemp as string);
-        setFontSize(fontSizeTemp as string);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    getHabitat();
-  }, [habitatURL]);
-
-  return name !== '' ? (
+  return habitatName !== '' ? (
     <Flex
       direction="column"
       width="100%"
@@ -61,9 +37,9 @@ const HabitatHeader = () => {
         width="100%"
         whiteSpace="pre-wrap"
         textAlign="center"
-        fontSize={fontSize}
+        fontSize={habitat?.props?.sidebarName?.fontSize as string}
       >
-        {name}
+        {habitat?.props?.sidebarName?.name}
       </Text>
     </Flex>
   ) : (
