@@ -73,7 +73,11 @@ const ApplicantDecisionsPage = () => {
             habitat={habitat?.name || ''}
             status={ReviewStatus[data?.status || 'PENDING']}
             editorState={data.serializedEditorState}
-            showReviewButton
+            applicationRoute={`../${
+              applications.find(
+                (application) => data.testapplicationID === application.id
+              )?.testcycleID
+            }`}
           />
         ))}
       </Flex>
