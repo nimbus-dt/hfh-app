@@ -29,7 +29,7 @@ function Nav() {
       className="nav"
       direction="row"
       width="100%"
-      height="100%"
+      height="fit-content"
       justifyContent="space-between"
       alignItems="center"
       padding={{

@@ -1,59 +1,74 @@
-import { Flex, Text } from '@aws-amplify/ui-react';
+import { Flex, Image, Text } from '@aws-amplify/ui-react';
 import CustomButton from 'components/CustomButton/CustomButton';
-import style from './Hero.module.css';
-
-function HeroHeader() {
-  return (
-    <Flex
-      direction="column"
-      height="fit-content"
-      width="100%"
-      gap="24px"
-      alignItems="center"
-    >
-      <Text
-        fontWeight="medium"
-        fontSize="54px"
-        color="var(--amplify-colors-neutral-100)"
-        textAlign="center"
-      >
-        All-in-One Platform for Habitat affiliates
-      </Text>
-      <Text
-        fontWeight="light"
-        fontSize="24px"
-        color="var(--amplify-colors-neutral-90)"
-        textAlign="center"
-        width="80%"
-      >
-        HabitatApp is here to digitally transform how affiliates conduct their
-        operations. <br />
-        <br /> Contact us now and get a 1 month free trial.
-      </Text>
-      <CustomButton>Get the app</CustomButton>
-    </Flex>
-  );
-}
+import heroScreen from 'assets/images/hero-screen.svg';
 
 function Hero() {
   return (
     <Flex
       direction="column"
       width="100%"
-      height="100%"
-      padding="56px 128px"
+      height="fit-content"
+      padding={{ base: '56px 24px', medium: '56px 48px', xl: '56px 128px' }}
       gap="40px"
       backgroundColor="var(--amplify-colors-neutral-10)"
-      justifyContent="center"
       alignItems="center"
     >
-      <HeroHeader />
-      <img
+      <Flex
+        direction="column"
+        height="fit-content"
+        width={{ base: '100%', xl: '885px' }}
+        gap="24px"
+        alignItems="center"
+        padding="0px"
+      >
+        <Text
+          fontWeight="medium"
+          fontSize={{ base: '36px', medium: '48px', large: '54px' }}
+          color="var(--amplify-colors-neutral-100)"
+          width="100%"
+          height="fit-content"
+          textAlign="center"
+        >
+          Forget about paper applications
+        </Text>
+        <Text
+          fontWeight="light"
+          fontSize={{ base: '24px', medium: '24px', large: '24px' }}
+          color="var(--amplify-colors-neutral-90)"
+          textAlign="center"
+          width="100%"
+          height="100%"
+        >
+          HabitatApp is here to digitally transform how affiliates conduct their
+          operations. <br />
+          <br /> Contact us now and get a 1 month free trial.
+        </Text>
+        <CustomButton
+          style={{
+            width: 'fit-content',
+            height: 'fit-content',
+            fontSize: '18px',
+            padding: '12px 16px',
+          }}
+        >
+          Get the app
+        </CustomButton>
+      </Flex>
+      <Image
         alt="screen"
-        width="880px"
-        height="654px"
-        src="google.com"
-        className={`${style.image}`}
+        width={{
+          base: '300px',
+          small: '422.5px',
+          medium: '662px',
+          large: '880px',
+        }}
+        height={{
+          base: '223px',
+          small: '314px',
+          medium: '492px',
+          large: '654px',
+        }}
+        src={heroScreen}
       />
     </Flex>
   );

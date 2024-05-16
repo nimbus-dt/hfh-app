@@ -5,24 +5,6 @@ import Hero from './components/Hero';
 
 function Landing() {
   // Vars
-  const nav = (
-    <View height="116px">
-      <Nav />
-    </View>
-  );
-
-  const hero = (
-    <View height="1083px" id="#hero">
-      hero
-    </View>
-  );
-
-  const features = (
-    <View height="1112px" border="1px solid black">
-      <Features />
-    </View>
-  );
-
   const contact = (
     <View height="331px" border="1px solid black">
       contact
@@ -36,10 +18,10 @@ function Landing() {
   );
 
   return (
-    <Flex direction="column" width="100%" height="3374px" gap="0px">
-      {nav}
-      {hero}
-      {features}
+    <Flex direction="column" width="100%" height="fit-content" gap="0px">
+      <Nav />
+      <Hero />
+      <Features />
       {contact}
       {faq}
     </Flex>
