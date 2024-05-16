@@ -5,60 +5,28 @@ interface IProperties {
 }
 
 const ApplicationTab = ({ formAnswers }: IProperties) => {
-  let metrics: {
+  const metrics: {
     [key: string]: {
       type?: 'percentage' | 'currency' | 'number';
       label?: string;
       header?: string;
       value?: string | number;
     };
-  } = {};
+  } = (
+    formAnswers.at(formAnswers.length - 1) as {
+      values: {
+        metrics: {
+          [key: string]: {
+            type?: 'percentage' | 'currency' | 'number';
+            label?: string;
+            value?: string | number;
+            header?: string;
+          };
+        };
+      };
+    }
+  )?.values?.metrics;
 
-  if (
-    (
-      formAnswers.at(9) as {
-        values: {
-          metrics: {
-            [key: string]: {
-              type?: 'percentage' | 'currency' | 'number';
-              label?: string;
-              value?: string | number;
-              header?: string;
-            };
-          };
-        };
-      }
-    )?.values &&
-    typeof (
-      formAnswers.at(9) as {
-        values: {
-          metrics: {
-            [key: string]: {
-              type?: 'percentage' | 'currency' | 'number';
-              label?: string;
-              value?: string | number;
-              header?: string;
-            };
-          };
-        };
-      }
-    )?.values === 'object'
-  ) {
-    metrics = (
-      formAnswers.at(9) as {
-        values: {
-          metrics: {
-            [key: string]: {
-              type?: 'percentage' | 'currency' | 'number';
-              label?: string;
-              value?: string | number;
-              header?: string;
-            };
-          };
-        };
-      }
-    )?.values?.metrics;
-  }
   return (
     <div>
       <Metrics data={metrics} />
