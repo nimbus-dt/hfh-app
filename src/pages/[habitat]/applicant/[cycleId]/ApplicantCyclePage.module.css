@@ -1,9 +1,9 @@
 .page {
-  padding: 32px;
+  padding: 16px;
 }
 
 .page > * {
-  padding: 32px;
+  padding: 16px;
 }
 
 .detailsContainer {
@@ -20,6 +20,14 @@
 }
 
 @media (min-width: 768px) {
+  .page {
+    padding: 32px;
+  }
+
+  .page > * {
+    padding: 32px;
+  }
+
   .detailsContainer {
     flex-direction: row;
   }
