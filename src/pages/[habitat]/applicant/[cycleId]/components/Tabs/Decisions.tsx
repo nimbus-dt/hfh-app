@@ -1,4 +1,6 @@
 import { useOutletContext } from 'react-router-dom';
+
+import { Flex, Text } from '@aws-amplify/ui-react';
 import {
   RecursiveModelPredicate,
   SortDirection,
@@ -21,27 +23,34 @@ const Decisions = ({ application }: DecisionsProps) => {
   const { habitat }: IOutletContext = useOutletContext();
 
   const { data: decisions }: { data: Decision[] } = useDecisionsQuery({
-    criteria: (c2: RecursiveModelPredicate<Decision>) =>
-      c2.or((c3) => [c3.testapplicationID.eq(application.id)]),
-    dependencyArray: [application],
+    criteria: (c1: RecursiveModelPredicate<Decision>) =>
+      c1.and((c2) => [c2.testapplicationID.eq(application.id)]),
     paginationProducer: {
       sort: (s: SortPredicate<Decision>) =>
         s.createdAt(SortDirection.DESCENDING),
     },
+    dependencyArray: [application],
   });
 
   return (
-    <div className={`${style.decisionsContainer}`}>
-      {decisions.map((data) => (
-        <DecisionCard
-          key={data.id}
-          date={data.createdAt || ''}
-          habitat={habitat?.name || ''}
-          status={ReviewStatus[data?.status || 'PENDING']}
-          editorState={data.serializedEditorState}
-        />
-      ))}
-    </div>
+    <Flex className={`${style.decisionsContainer}`}>
+      {decisions.length > 0 ? (
+        decisions.map((data) => (
+          <DecisionCard
+            key={data.id}
+            date={data.createdAt || ''}
+            habitat={habitat?.name || ''}
+            status={ReviewStatus[data?.status || 'PENDING']}
+            editorState={data.serializedEditorState}
+            showReviewButton
+          />
+        ))
+      ) : (
+        <Text textAlign="center" fontWeight="bold">
+          There are no decisions for this application
+        </Text>
+      )}
+    </Flex>
   );
 };
 

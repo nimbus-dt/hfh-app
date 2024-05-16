@@ -89,7 +89,9 @@ const ApplicantApplicationsPage = () => {
         alignItems="center"
       >
         <Flex direction="column">
-          <Heading level={3}>Application Dashboard</Heading>
+          <Heading level={3} style={{ lineHeight: '56px' }}>
+            Application Dashboard
+          </Heading>
           <Text className={`theme-subtitle-s1 ${style.subtitle}`}>
             Select the type of application
           </Text>
