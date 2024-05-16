@@ -204,7 +204,7 @@ const General = ({ data, setData }: GeneralProps) => {
             <input
               id="city"
               type="string"
-              placeholder="Los Ángeles"
+              placeholder="Los Angeles"
               defaultValue={data?.general?.city || ''}
               {...register('city', { required: true })}
               className={`${styles.text_input} theme-body-medium`}
