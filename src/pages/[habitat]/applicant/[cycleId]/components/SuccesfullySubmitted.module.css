@@ -1,0 +1,26 @@
+.buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.buttons > * + * {
+  margin-top: 1rem;
+}
+
+.buttons button {
+  width: 100%;
+}
+
+@media (min-width: 480px) {
+  .buttons {
+    flex-direction: row;
+  }
+  .buttons > * + * {
+    margin-top: 0;
+    margin-left: 1rem;
+  }
+  .buttons button {
+    width: auto;
+  }
+}
