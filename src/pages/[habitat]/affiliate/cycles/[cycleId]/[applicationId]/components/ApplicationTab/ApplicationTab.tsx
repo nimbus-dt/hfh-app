@@ -14,6 +14,7 @@ const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
 const ApplicationTab = ({ application, formAnswers, formUrl }: IProperties) => (
   <div>
+    <br />
     <Form
       key="review"
       src={`${FORMIO_URL}/${formUrl}`}
