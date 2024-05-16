@@ -1,6 +1,6 @@
 import { useOutletContext } from 'react-router-dom';
 
-import { Flex } from '@aws-amplify/ui-react';
+import { Flex, Text } from '@aws-amplify/ui-react';
 import {
   RecursiveModelPredicate,
   SortDirection,
@@ -34,16 +34,22 @@ const Decisions = ({ application }: DecisionsProps) => {
 
   return (
     <Flex className={`${style.decisionsContainer}`}>
-      {decisions.map((data) => (
-        <DecisionCard
-          key={data.id}
-          date={data.updatedAt || ''}
-          habitat={habitat?.name || ''}
-          status={ReviewStatus[data?.status || 'PENDING']}
-          editorState={data.serializedEditorState}
-          showReviewButton
-        />
-      ))}
+      {decisions.length > 0 ? (
+        decisions.map((data) => (
+          <DecisionCard
+            key={data.id}
+            date={data.updatedAt || ''}
+            habitat={habitat?.name || ''}
+            status={ReviewStatus[data?.status || 'PENDING']}
+            editorState={data.serializedEditorState}
+            showReviewButton
+          />
+        ))
+      ) : (
+        <Text textAlign="center" fontWeight="bold">
+          There are no decisions for this application
+        </Text>
+      )}
     </Flex>
   );
 };
