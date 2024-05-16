@@ -1,16 +1,12 @@
 import { useOutletContext } from 'react-router-dom';
-
-import { Flex } from '@aws-amplify/ui-react';
 import {
   RecursiveModelPredicate,
   SortDirection,
   SortPredicate,
 } from '@aws-amplify/datastore';
-
 import DecisionCard from 'components/DecisionCard';
 import { useDecisionsQuery } from 'hooks/services';
 import { Decision, Habitat, ReviewStatus, TestApplication } from 'models';
-
 import style from './Decisions.module.css';
 
 interface IOutletContext {
@@ -33,7 +29,7 @@ const Decisions = ({ application }: DecisionsProps) => {
   });
 
   return (
-    <Flex className={`${style.decisionsContainer}`}>
+    <div className={`${style.decisionsContainer}`}>
       {decisions.map((data) => (
         <DecisionCard
           key={data.id}
@@ -44,7 +40,7 @@ const Decisions = ({ application }: DecisionsProps) => {
           showReviewButton
         />
       ))}
-    </Flex>
+    </div>
   );
 };
 
