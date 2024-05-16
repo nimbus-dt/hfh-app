@@ -16,6 +16,7 @@ function Features() {
       padding={{ base: '72px 32px', medium: '72px 48px', large: '72px 128px' }}
       alignItems="center"
       justifyContent="center"
+      id="features"
     >
       <Flex
         direction="column"

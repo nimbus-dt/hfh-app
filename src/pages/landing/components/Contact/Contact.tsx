@@ -12,6 +12,7 @@ function Contact() {
       padding={{ base: '56px 32px', medium: '56px 112px' }}
       direction="column"
       alignItems="center"
+      id="contact"
     >
       <Text
         fontWeight="medium"

@@ -10,6 +10,7 @@ function Faqs() {
       justifyContent="center"
       padding={{ base: '56px 32px', medium: '56px 48px', large: '56px 132px' }}
       backgroundColor="var(--amplify-colors-neutral-10)"
+      id="faqs"
     >
       <Flex
         width="100%"
