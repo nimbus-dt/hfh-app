@@ -3,9 +3,10 @@ import { Outlet, useParams } from 'react-router-dom';
 import { DataStore } from 'aws-amplify';
 import { Flex, Text, useAuthenticator } from '@aws-amplify/ui-react';
 import Authentication from 'components/Authentication';
-import { Habitat } from 'models';
+import { Habitat, User } from 'models';
 import { DEFAULT_REVIEW_STATUS, AUTHENTICATION_STATUS } from 'utils/constants';
 import BaseLayout from 'layouts/BaseLayout';
+import SignUpQuestions from './SignUpQuestions';
 import style from './NewAffiliateLayout.module.css';
 
 const NewAffiliateLayout = () => {
@@ -16,6 +17,7 @@ const NewAffiliateLayout = () => {
     context.authStatus,
     context.user,
   ]);
+  const [userData, setUserData] = useState();
 
   const habitatUrlName = useParams('habitat').habitat;
 
@@ -116,10 +118,27 @@ const NewAffiliateLayout = () => {
       setIsLoading((previousIsLoading) => previousIsLoading - 1);
     };
 
-    if (user) {
-      fetchData();
-    }
+    fetchData();
   }, [habitatUrlName, user, authStatus]);
+
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const persistUserDatas = await DataStore.query(User, (c) =>
+          c.owner.eq(user.username)
+        );
+        if (persistUserDatas.length > 0) {
+          setUserData(persistUserDatas[0]);
+        }
+      } catch (error) {
+        console.log('Error fetching user data.');
+      }
+    };
+
+    if (user && !userData) {
+      getUserData();
+    }
+  });
 
   if (isLoading) {
     return (
@@ -138,27 +157,41 @@ const NewAffiliateLayout = () => {
     );
   }
 
+  if (!userData) {
+    return (
+      <SignUpQuestions
+        habitat={habitat}
+        user={user}
+        setUserData={setUserData}
+      />
+    );
+  }
+
   return (
-    <BaseLayout variation="affiliate" hideSideBar={!isUserAllowed}>
+    <div>
       {isUserAllowed ? (
-        <Outlet
-          context={{
-            habitat,
-            setHabitat,
-            addCustomStatusToHabitat,
-            removeCustomStatusToHabitat,
-            updateCustomStatusToHabitat,
-          }}
-        />
+        <BaseLayout variation="affiliate" hideSideBar={!isUserAllowed}>
+          <Outlet
+            context={{
+              habitat,
+              setHabitat,
+              addCustomStatusToHabitat,
+              removeCustomStatusToHabitat,
+              updateCustomStatusToHabitat,
+            }}
+          />
+        </BaseLayout>
       ) : (
         <div className={style.notAllowedContainer}>
           <Text>
-            Sorry, you are not allowed to access this page. Please contact the
-            administrator for assistance.
+            Sorry, <b style={{ fontWeight: 'bold' }}>{habitat.name}</b> has not
+            authorized you to access this page. Contact{' '}
+            <a href="mailto:support@habitat-app.org">support@habitat-app.org</a>{' '}
+            for more information.
           </Text>
         </div>
       )}
-    </BaseLayout>
+    </div>
   );
 };
 

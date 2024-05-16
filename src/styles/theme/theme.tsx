@@ -40,6 +40,9 @@ const theme: Theme = {
       },
       black: { value: '#1F1F1F' },
       white: { value: '#FFFDFD' },
+      border: {
+        error: { value: '#B3261E' },
+      },
     },
     fonts: {
       default: {

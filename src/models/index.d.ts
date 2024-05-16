@@ -84,13 +84,17 @@ export declare const ApplicantProps: (new (init: ModelInit<ApplicantProps>) => A
 type EagerAffiliateProps = {
   readonly titleAtHabitat: string;
   readonly roleDescription: string;
-  readonly joinDate: string;
+  readonly joinDate?: string | null;
+  readonly joinMonth?: string | null;
+  readonly joinYear?: string | null;
 }
 
 type LazyAffiliateProps = {
   readonly titleAtHabitat: string;
   readonly roleDescription: string;
-  readonly joinDate: string;
+  readonly joinDate?: string | null;
+  readonly joinMonth?: string | null;
+  readonly joinYear?: string | null;
 }
 
 export declare type AffiliateProps = LazyLoading extends LazyLoadingDisabled ? EagerAffiliateProps : LazyAffiliateProps
@@ -272,7 +276,7 @@ type EagerRootForm = {
   readonly description?: string | null;
   readonly files?: (string | null)[] | null;
   readonly Cycles?: (TestCycle | null)[] | null;
-  readonly habitatID?: string | null;
+  readonly habitatID: string;
   readonly formUrls: string[];
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -289,7 +293,7 @@ type LazyRootForm = {
   readonly description?: string | null;
   readonly files?: (string | null)[] | null;
   readonly Cycles: AsyncCollection<TestCycle>;
-  readonly habitatID?: string | null;
+  readonly habitatID: string;
   readonly formUrls: string[];
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -307,7 +311,7 @@ type EagerDecision = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly status: string;
+  readonly status: ReviewStatus | keyof typeof ReviewStatus;
   readonly serializedEditorState: string;
   readonly testapplicationID: string;
   readonly createdAt?: string | null;
@@ -320,7 +324,7 @@ type LazyDecision = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly status: string;
+  readonly status: ReviewStatus | keyof typeof ReviewStatus;
   readonly serializedEditorState: string;
   readonly testapplicationID: string;
   readonly createdAt?: string | null;
@@ -440,7 +444,7 @@ type EagerTestCycle = {
   readonly isOpen: boolean;
   readonly props?: string | null;
   readonly TestApplications?: (TestApplication | null)[] | null;
-  readonly rootformID?: string | null;
+  readonly rootformID: string;
   readonly name?: string | null;
   readonly closedCycleMessage: string;
   readonly formUrl: string;
@@ -459,7 +463,7 @@ type LazyTestCycle = {
   readonly isOpen: boolean;
   readonly props?: string | null;
   readonly TestApplications: AsyncCollection<TestApplication>;
-  readonly rootformID?: string | null;
+  readonly rootformID: string;
   readonly name?: string | null;
   readonly closedCycleMessage: string;
   readonly formUrl: string;

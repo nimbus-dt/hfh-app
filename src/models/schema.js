@@ -184,7 +184,7 @@ export const schema = {
                     "name": "habitatID",
                     "isArray": false,
                     "type": "ID",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "formUrls": {
@@ -259,7 +259,9 @@ export const schema = {
                 "status": {
                     "name": "status",
                     "isArray": false,
-                    "type": "String",
+                    "type": {
+                        "enum": "ReviewStatus"
+                    },
                     "isRequired": true,
                     "attributes": []
                 },
@@ -623,7 +625,7 @@ export const schema = {
                     "name": "rootformID",
                     "isArray": false,
                     "type": "ID",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "name": {
@@ -1882,7 +1884,21 @@ export const schema = {
                     "name": "joinDate",
                     "isArray": false,
                     "type": "AWSDate",
-                    "isRequired": true,
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "joinMonth": {
+                    "name": "joinMonth",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "joinYear": {
+                    "name": "joinYear",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
                     "attributes": []
                 }
             }
@@ -2148,5 +2164,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "cd4e32d6006382ed64df52ccc15a2c7e"
+    "version": "1e4db53358620aed39ea03a75b4c0232"
 };

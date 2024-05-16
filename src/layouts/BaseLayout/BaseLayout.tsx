@@ -1,7 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { Flex, ScrollView, useBreakpointValue } from '@aws-amplify/ui-react';
+import { useLocation, useParams } from 'react-router-dom';
+import {
+  Flex,
+  ScrollView,
+  useAuthenticator,
+  useBreakpointValue,
+} from '@aws-amplify/ui-react';
 import { getRouteTitle } from 'utils/routes';
+import { useUserQuery } from 'hooks/services';
+import useHabitatByUrlName from 'hooks/services/useHabitatByUrlName';
+import { Habitat, LazyUser } from 'models';
+import { RecursiveModelPredicate } from '@aws-amplify/datastore';
 import TopBar from './components/TopBar';
 import SideBar from './components/SideBar';
 
@@ -12,6 +22,13 @@ interface IProperties {
 }
 
 const BaseLayout = ({ variation, children, hideSideBar }: IProperties) => {
+  // Get Habitat
+  const habitatUrlName = useParams().habitat as string;
+
+  const { habitat } = useHabitatByUrlName({
+    habitatUrlName,
+  });
+
   const location = useLocation();
 
   const [expandSideBar, setExpandSideBar] = useState(false);
@@ -23,10 +40,32 @@ const BaseLayout = ({ variation, children, hideSideBar }: IProperties) => {
 
   const [title, setTitle] = useState('');
 
-  // const { authStatus, user } = useAuthenticator((context) => [
-  //   context.authStatus,
-  //   context.user,
-  // ]);
+  const { user } = useAuthenticator((context) => [
+    context.authStatus,
+    context.user,
+  ]);
+
+  // Get User
+  const { data: userData } = useUserQuery({
+    criteria: (c1: RecursiveModelPredicate<LazyUser>) =>
+      c1.and((c2) => {
+        const criteriaArr = user ? [c2.owner.eq(user.username as string)] : [];
+        return criteriaArr;
+      }),
+    paginationProducer: {},
+    dependencyArray: [user],
+  });
+
+  const [initials, setInitials] = useState('');
+
+  useEffect(() => {
+    if (userData.length !== 0) {
+      const tempUser = userData[0];
+      const firstNameInit = tempUser.firstName.charAt(0);
+      const lastNameInit = tempUser.lastName.charAt(0);
+      setInitials(firstNameInit + lastNameInit);
+    }
+  }, [initials, userData]);
 
   const handleOnExpand = () => {
     if (isMobile) {
@@ -50,6 +89,7 @@ const BaseLayout = ({ variation, children, hideSideBar }: IProperties) => {
           expanded={expandSideBar}
           onExpand={handleOnExpand}
           variation={variation}
+          habitat={habitat as unknown as Habitat}
         />
       )}
       <ScrollView
@@ -59,7 +99,7 @@ const BaseLayout = ({ variation, children, hideSideBar }: IProperties) => {
       >
         <TopBar
           title={title}
-          initials="GA"
+          initials={initials}
           mobile={typeof isMobile === 'boolean' && isMobile}
           onExpand={handleOnExpand}
         />

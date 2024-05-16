@@ -1,0 +1,64 @@
+.background {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: var(--amplify-colors-neutral-10);
+  border-bottom: 1px solid var(--amplify-colors-neutral-60);
+}
+
+.banner {
+  width: 100%;
+  max-width: 1184px;
+
+  padding: 1rem;
+
+  display: grid;
+  grid-template-areas: 'logo close' 'progress-bar progress-bar';
+}
+
+.img {
+  width: 68px;
+  height: 80px;
+  object-fit: cover;
+  object-position: left center;
+}
+
+.logo {
+  grid-area: logo;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.logo > h1 {
+  margin-left: 0.5rem;
+}
+
+.close {
+  grid-area: close;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.close > svg {
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  /* .banner {
+    grid-template-columns: 124px 1fr 124px;
+    grid-template-areas: 'logo progress-bar close';
+  } */
+}
+
+@media (min-width: 992px) {
+  .banner {
+    grid-template-columns: 145px 1fr 145px;
+    padding: 1.5rem 2rem;
+    grid-template-areas: 'logo progress-bar close';
+  }
+}

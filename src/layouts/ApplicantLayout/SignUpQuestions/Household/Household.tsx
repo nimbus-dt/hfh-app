@@ -1,0 +1,103 @@
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { throttle } from 'lodash';
+
+import Footer from 'components/Footer';
+
+import styles from '../SignUpQuestions.module.css';
+import dataProps from '../types';
+
+interface Inputs {
+  members: string;
+  income: string;
+}
+
+interface HouseholdProps {
+  data: dataProps;
+  setData: React.Dispatch<React.SetStateAction<dataProps>>;
+  goBack: () => void;
+}
+
+const Household = ({ data, setData, goBack }: HouseholdProps) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>();
+
+  const onSubmit: SubmitHandler<Inputs> = (householdData) => {
+    setData((prev) => ({
+      ...prev,
+      current: prev.current + 1,
+      household: {
+        income: parseFloat(householdData.income.replace(/,/g, '')),
+        members: parseInt(householdData.members),
+      },
+    }));
+  };
+
+  return (
+    <form
+      className={styles.background}
+      onSubmit={throttle(handleSubmit(onSubmit), 500)}
+    >
+      <div className={styles.body}>
+        <div>
+          <label
+            htmlFor="members"
+            className={`theme-body-medium ${styles.label}`}
+          >
+            How many people reside with you in your household?
+          </label>
+          <div>
+            <input
+              id="members"
+              type="number"
+              placeholder="4"
+              defaultValue={data?.household?.members || ''}
+              className={`theme-body-medium ${styles.number_input}`}
+              {...register('members', { required: true })}
+            />
+            {errors.members && (
+              <span className={`${styles.error} theme-body-small`}>
+                This field is required
+              </span>
+            )}
+          </div>
+        </div>
+        <div>
+          <label
+            htmlFor="income"
+            className={`theme-body-medium ${styles.label}`}
+          >
+            What is your household's annual income?
+          </label>
+          <div>
+            <input
+              id="income"
+              type="string"
+              placeholder="$75,000"
+              defaultValue={data?.household?.income || ''}
+              className={`theme-body-medium ${styles.number_input}`}
+              {...register('income', { required: true })}
+              onChange={(e) => {
+                const { value } = e.target;
+                const formattedValue = value
+                  .replace(/\D/g, '')
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                e.target.value = formattedValue;
+              }}
+            />
+            {errors.income && (
+              <span className={`${styles.error} theme-body-small`}>
+                This field is required
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+      <Footer goBack={goBack} />
+    </form>
+  );
+};
+
+export default Household;

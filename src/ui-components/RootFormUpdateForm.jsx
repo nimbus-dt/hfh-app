@@ -238,6 +238,7 @@ export default function RootFormUpdateForm(props) {
     description: [],
     files: [],
     formUrls: [{ type: "Required" }],
+    formUrls: [],
   };
   const runValidationTasks = async (
     fieldName,
