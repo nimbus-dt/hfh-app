@@ -25,15 +25,15 @@ const DecisionCard = ({
   applicationRoute: applicantionRoute,
 }: IProperties) => (
   <ExpandableCard>
-    <Flex alignItems="start" gap="40px">
-      <Flex direction="column" alignItems="end" gap="0">
+    <div className={style.container}>
+      <div className={style.dateTimeContainer}>
         <View className="theme-subtitle-s2">
           <Text>{dateOnly(date)}</Text>
         </View>
         <Text as="span" className={style.time}>
           {timeOnly(date)}
         </Text>
-      </Flex>
+      </div>
       <View flex="1">
         <View className={`theme-subtitle-s1 ${style.habitat}`}>
           <Text>{habitat}</Text>
@@ -48,7 +48,7 @@ const DecisionCard = ({
           </Flex>
         )}
       </View>
-    </Flex>
+    </div>
   </ExpandableCard>
 );
 
