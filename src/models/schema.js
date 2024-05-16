@@ -259,7 +259,9 @@ export const schema = {
                 "status": {
                     "name": "status",
                     "isArray": false,
-                    "type": "String",
+                    "type": {
+                        "enum": "ReviewStatus"
+                    },
                     "isRequired": true,
                     "attributes": []
                 },
@@ -2162,5 +2164,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "ff35c2c53192a36058ff3f86dba2e795"
+    "version": "1e4db53358620aed39ea03a75b4c0232"
 };

@@ -311,7 +311,7 @@ type EagerDecision = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly status: string;
+  readonly status: ReviewStatus | keyof typeof ReviewStatus;
   readonly serializedEditorState: string;
   readonly testapplicationID: string;
   readonly createdAt?: string | null;
@@ -324,7 +324,7 @@ type LazyDecision = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly status: string;
+  readonly status: ReviewStatus | keyof typeof ReviewStatus;
   readonly serializedEditorState: string;
   readonly testapplicationID: string;
   readonly createdAt?: string | null;
