@@ -1,4 +1,4 @@
-import { Flex, Text, View } from '@aws-amplify/ui-react';
+import { Flex, Text } from '@aws-amplify/ui-react';
 import { MdCalculate } from 'react-icons/md';
 import { useState } from 'react';
 import FeatureCard from './components/FeatureCard';

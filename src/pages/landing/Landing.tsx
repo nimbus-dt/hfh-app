@@ -2,15 +2,9 @@ import { View, Flex } from '@aws-amplify/ui-react';
 import Nav from './components/Nav';
 import Features from './components/Features';
 import Hero from './components/Hero';
+import Contact from './components/Contact';
 
 function Landing() {
-  // Vars
-  const contact = (
-    <View height="331px" border="1px solid black">
-      contact
-    </View>
-  );
-
   const faq = (
     <View height="732px" border="1px solid black">
       faq
@@ -22,7 +16,7 @@ function Landing() {
       <Nav />
       <Hero />
       <Features />
-      {contact}
+      <Contact />
       {faq}
     </Flex>
   );
