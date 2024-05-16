@@ -1,12 +1,13 @@
-import DataTable from 'components/DataTable';
 import {
   formatNumberAsCurrency,
   formatNumberAsPercentage,
 } from 'utils/formatters';
+import styles from './Metrics.module.css';
 
 export interface MetricsProps {
   data: {
     [key: string]: {
+      header?: string;
       type?: 'percentage' | 'currency' | 'number';
       label?: string;
       value?: string | number;
@@ -38,19 +39,32 @@ const formatValue = (
 const Metrics = ({ data }: MetricsProps) => {
   const metrics = [];
   for (const key in data) {
-    const { label, value, type } = data[key];
+    const { label, value, type, header } = data[key];
     metrics.push({
-      header: label || camelCaseToTitle(key),
+      header,
+      label: label || camelCaseToTitle(key),
       value: formatValue(value, type),
     });
   }
+
   return (
-    <DataTable
-      heading="Metrics"
-      headingTextAlign="left"
-      divider
-      data={metrics}
-    />
+    <div className={styles.cards}>
+      {metrics?.map((metric, index) => (
+        <div key={index} className={styles.card}>
+          {metric.header ? (
+            <div
+              // eslint-disable-next-line react/no-danger
+              dangerouslySetInnerHTML={{
+                __html: metric.header,
+              }}
+            />
+          ) : (
+            <p>{metric.label}</p>
+          )}
+          <p style={{ fontWeight: 'bold' }}>{metric.value}</p>
+        </div>
+      ))}
+    </div>
   );
 };
 

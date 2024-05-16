@@ -11,6 +11,7 @@ import {
 
 import React from 'react';
 import { generateSubmission } from 'utils/formio';
+import Metrics from 'pages/affiliate-portal/cycles/[cycleId]/[applicationId]/components/Metrics/Metrics';
 import PaperApplicationTable from './components/PaperApplicationTable';
 import ReturnModal from './components/ReturnModal';
 import DecideModal from './components/DecideModal';
@@ -21,7 +22,7 @@ import {
 
 interface IProperties {
   application?: TestApplication;
-  formAnswers: FormAnswer[];
+  formAnswers: unknown[];
   formUrl: string;
   returnModalOpen: boolean;
   handleReturnModalOnClose: () => void;
@@ -49,48 +50,105 @@ const ApplicationTab = ({
   handleReturnOnClick,
   handleDecideOnClick,
   loading,
-}: IProperties) => (
-  <div>
-    <Form
-      key="review"
-      src={`${FORMIO_URL}/${formUrl}`}
-      options={{
-        readOnly: true,
-        renderMode: 'flat',
-      }}
-      submission={generateSubmission(formAnswers)}
-    />
-    {application?.type === ApplicationTypes.PAPER ? (
-      <PaperApplicationTable application={application} />
-    ) : (
-      application &&
-      application?.submissionStatus === SubmissionStatus.COMPLETED && (
-        <>
-          <br />
-          <Flex justifyContent="end">
-            <ReturnModal
-              open={returnModalOpen}
-              onClose={handleReturnModalOnClose}
-              onValidReturn={handleOnValidReturn}
-              loading={loading}
-            />
-            <DecideModal
-              open={decideModalOpen}
-              onClose={handleDecideModalOnClose}
-              onValid={handleOnValidDecide}
-              loading={loading}
-            />
-            <CustomButton variation="secondary" onClick={handleReturnOnClick}>
-              Return
-            </CustomButton>
-            <CustomButton variation="primary" onClick={handleDecideOnClick}>
-              Decide
-            </CustomButton>
-          </Flex>
-        </>
-      )
-    )}
-  </div>
-);
+}: IProperties) => {
+  let metrics: {
+    [key: string]: {
+      type?: 'percentage' | 'currency' | 'number';
+      label?: string;
+      header?: string;
+      value?: string | number;
+    };
+  } = {};
+
+  if (
+    (
+      formAnswers.at(9) as {
+        values: {
+          metrics: {
+            [key: string]: {
+              type?: 'percentage' | 'currency' | 'number';
+              label?: string;
+              value?: string | number;
+              header?: string;
+            };
+          };
+        };
+      }
+    )?.values &&
+    typeof (
+      formAnswers.at(9) as {
+        values: {
+          metrics: {
+            [key: string]: {
+              type?: 'percentage' | 'currency' | 'number';
+              label?: string;
+              value?: string | number;
+              header?: string;
+            };
+          };
+        };
+      }
+    )?.values === 'object'
+  ) {
+    metrics = (
+      formAnswers.at(9) as {
+        values: {
+          metrics: {
+            [key: string]: {
+              type?: 'percentage' | 'currency' | 'number';
+              label?: string;
+              value?: string | number;
+              header?: string;
+            };
+          };
+        };
+      }
+    )?.values?.metrics;
+  }
+  return (
+    <div>
+      <Form
+        key="review"
+        src={`${FORMIO_URL}/${formUrl}`}
+        options={{
+          readOnly: true,
+          renderMode: 'flat',
+        }}
+        submission={generateSubmission(formAnswers as FormAnswer[])}
+      />
+      <Metrics data={metrics} />
+      {application?.type === ApplicationTypes.PAPER ? (
+        <PaperApplicationTable application={application} />
+      ) : (
+        application &&
+        application?.submissionStatus === SubmissionStatus.COMPLETED && (
+          <>
+            <br />
+            <Flex justifyContent="end">
+              <ReturnModal
+                open={returnModalOpen}
+                onClose={handleReturnModalOnClose}
+                onValidReturn={handleOnValidReturn}
+                loading={loading}
+              />
+              <DecideModal
+                open={decideModalOpen}
+                onClose={handleDecideModalOnClose}
+                onValid={handleOnValidDecide}
+                loading={loading}
+              />
+              <CustomButton variation="secondary" onClick={handleReturnOnClick}>
+                Return
+              </CustomButton>
+              <CustomButton variation="primary" onClick={handleDecideOnClick}>
+                Decide
+              </CustomButton>
+            </Flex>
+          </>
+        )
+      )}
+    </div>
+  );
+};
 
 export default ApplicationTab;
