@@ -7,6 +7,7 @@ import Loading from 'components/Loading';
 import styles from './SignUpQuestions.module.css';
 import General from './General';
 import Affiliate from './Affiliate';
+import Confirmation from './Confirmation';
 import dataProps, { SignUpQuestionsProps } from './types';
 import pages from './utils/pages';
 
@@ -36,8 +37,8 @@ const SignUpQuestions = ({
       goBack={goBack}
       habitat={habitat}
       user={user}
-      setUserData={setUserData}
     />,
+    <Confirmation name={habitat?.name} />,
   ];
 
   if (!habitat || !user) {
