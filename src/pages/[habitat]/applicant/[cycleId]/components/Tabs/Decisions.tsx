@@ -24,8 +24,10 @@ const Decisions = ({ application }: DecisionsProps) => {
     criteria: (c2: RecursiveModelPredicate<Decision>) =>
       c2.or((c3) => [c3.testapplicationID.eq(application.id)]),
     dependencyArray: [application],
-    paginationProducer: (s: SortPredicate<Decision>) =>
-      s.createdAt(SortDirection.DESCENDING),
+    paginationProducer: {
+      sort: (s: SortPredicate<Decision>) =>
+        s.createdAt(SortDirection.DESCENDING),
+    },
   });
 
   return (
@@ -33,7 +35,7 @@ const Decisions = ({ application }: DecisionsProps) => {
       {decisions.map((data) => (
         <DecisionCard
           key={data.id}
-          date={data.updatedAt || ''}
+          date={data.createdAt || ''}
           habitat={habitat?.name || ''}
           status={ReviewStatus[data?.status || 'PENDING']}
           editorState={data.serializedEditorState}
