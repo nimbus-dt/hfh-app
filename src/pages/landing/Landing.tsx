@@ -4,6 +4,7 @@ import Features from './components/Features';
 import Hero from './components/Hero';
 
 function Landing() {
+  // Vars
   const nav = (
     <View height="116px">
       <Nav />
@@ -11,8 +12,8 @@ function Landing() {
   );
 
   const hero = (
-    <View height="1083px">
-      <Hero />
+    <View height="1083px" id="#hero">
+      hero
     </View>
   );
 

@@ -1,25 +1,98 @@
-import { Flex, Image, Text } from '@aws-amplify/ui-react';
+import {
+  Flex,
+  Image,
+  Menu,
+  MenuItem,
+  Text,
+  useBreakpointValue,
+} from '@aws-amplify/ui-react';
 import whiteLogo from 'assets/images/white-logo.jpg';
-import style from './Nav.module.css';
-
-function NavLink({ caption }: { caption: string }) {
-  return (
-    <Flex className={`${style.navLinkFlex}`}>
-      <Text className={`${style.navLinkText}`}>{caption}</Text>
-    </Flex>
-  );
-}
+import './styles.css';
+// eslint-disable-next-line import/no-unresolved
+import '@aws-amplify/ui-react/styles.css';
 
 function Nav() {
+  const mobile = useBreakpointValue({
+    base: true,
+    small: false,
+  });
+
+  function scrollToSection(sectionId: string) {
+    const section = document.querySelector(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
   return (
-    <Flex className={`${style.nav}`}>
-      <Image alt="Hey" src={whiteLogo} height="56px" width="176px" />
-      <Flex className={`${style.navLinks}`}>
-        <NavLink caption="Benefits" />
-        <NavLink caption="FAQs" />
-        <NavLink caption="Contact Us" />
-        <NavLink caption="Sign In" />
-      </Flex>
+    <Flex
+      className="nav"
+      direction="row"
+      width="100%"
+      height="100%"
+      justifyContent="space-between"
+      alignItems="center"
+      padding={{
+        base: '24px 24px',
+        medium: '24px 48px',
+        large: '24px 128px',
+      }}
+    >
+      <Image
+        alt="Habitat App Logo"
+        src={whiteLogo}
+        height="56px"
+        width="176px"
+      />
+      {mobile ? (
+        <Flex width="fit-content" height="fit-content" padding="10px">
+          <Menu triggerClassName="my-menu-trigger">
+            <MenuItem>Benefits</MenuItem>
+            <MenuItem>FAQs</MenuItem>
+            <MenuItem>Contact Us</MenuItem>
+          </Menu>
+        </Flex>
+      ) : (
+        <Flex
+          direction="row"
+          width="fit-content"
+          height="fit-content"
+          padding="10px"
+          gap="8px"
+          alignItems="center"
+        >
+          <Text
+            padding="12px 16px"
+            width="fit-content"
+            height="fit-content"
+            fontWeight="bold"
+            textAlign="center"
+            className="navLink"
+          >
+            Benefits
+          </Text>
+          <Text
+            padding="12px 16px"
+            width="fit-content"
+            height="fit-content"
+            fontWeight="bold"
+            textAlign="center"
+            className="navLink"
+          >
+            FAQs
+          </Text>
+          <Text
+            padding="12px 16px"
+            width="fit-content"
+            height="fit-content"
+            fontWeight="bold"
+            textAlign="center"
+            className="navLink"
+          >
+            Contact Us
+          </Text>
+        </Flex>
+      )}
     </Flex>
   );
 }

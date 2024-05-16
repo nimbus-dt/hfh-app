@@ -17,7 +17,7 @@ function HeroHeader() {
         color="var(--amplify-colors-neutral-100)"
         textAlign="center"
       >
-        Forget about paper applications
+        All-in-One Platform for Habitat affiliates
       </Text>
       <Text
         fontWeight="light"
@@ -27,7 +27,7 @@ function HeroHeader() {
         width="80%"
       >
         HabitatApp is here to digitally transform how affiliates conduct their
-        Homeownership Program. <br />
+        operations. <br />
         <br /> Contact us now and get a 1 month free trial.
       </Text>
       <CustomButton>Get the app</CustomButton>
