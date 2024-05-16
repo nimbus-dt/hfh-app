@@ -42,7 +42,6 @@ const Decisions = ({ application }: DecisionsProps) => {
             habitat={habitat?.name || ''}
             status={ReviewStatus[data?.status || 'PENDING']}
             editorState={data.serializedEditorState}
-            showReviewButton
           />
         ))
       ) : (
