@@ -3,6 +3,7 @@ import BreadCrumbs from 'components/BreadCrumbs/BreadCrumbs';
 import IconButton from 'components/IconButton';
 import {
   MdOutlineArrowBack,
+  MdOutlineCalculate,
   MdOutlineLibraryAddCheck,
   MdOutlineNoteAlt,
   MdOutlineTextSnippet,
@@ -48,10 +49,12 @@ import LocalNavigation from './components/LocalNavigation';
 import ApplicationTab from './components/ApplicationTab';
 import NotesTab from './components/NotesTab';
 import DecisionsTab from './components/DecisionsTab';
+import CalculationsTab from './components/Calculations';
 import {
   TDecideSchema,
   TReturnSchema,
 } from './AffiliateApplicationDetailsPage.schema';
+import Buttons from './components/Buttons';
 
 const AffiliateApplicationDetailsPage = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -329,26 +332,30 @@ const AffiliateApplicationDetailsPage = () => {
             { label: 'Applications', icon: <MdOutlineNoteAlt /> },
             { label: 'Notes', icon: <MdOutlineTextSnippet /> },
             { label: 'Decisions', icon: <MdOutlineLibraryAddCheck /> },
+            { label: 'Calculations', icon: <MdOutlineCalculate /> },
           ]}
           current={activeTab}
           onChange={(newCurrent) => setActiveTab(newCurrent)}
         />
         <div className={style.tabContainer}>
+          <Buttons
+            application={application}
+            returnModalOpen={returnModalOpen}
+            handleReturnModalOnClose={handleReturnModalOnClose}
+            handleOnValidReturn={handleOnValidReturn}
+            decideModalOpen={decideModalOpen}
+            handleDecideModalOnClose={handleDecideModalOnClose}
+            handleOnValidDecide={handleOnValidDecide}
+            handleReturnOnClick={handleReturnOnClick}
+            handleDecideOnClick={handleDecideOnClick}
+            loading={loading}
+          />
           {/* TODO: update formUrl to be the formUrl from the cycle */}
           {activeTab === 0 && (
             <ApplicationTab
               application={application}
               formUrl="loudoun"
               formAnswers={formAnswers}
-              returnModalOpen={returnModalOpen}
-              handleReturnModalOnClose={handleReturnModalOnClose}
-              handleOnValidReturn={handleOnValidReturn}
-              decideModalOpen={decideModalOpen}
-              handleDecideModalOnClose={handleDecideModalOnClose}
-              handleOnValidDecide={handleOnValidDecide}
-              handleReturnOnClick={handleReturnOnClick}
-              handleDecideOnClick={handleDecideOnClick}
-              loading={loading}
             />
           )}
           {activeTab === 1 && (
@@ -365,6 +372,7 @@ const AffiliateApplicationDetailsPage = () => {
           {activeTab === 2 && (
             <DecisionsTab decisions={decisions} habitat={habitat} />
           )}
+          {activeTab === 3 && <CalculationsTab formAnswers={formAnswers} />}
         </div>
       </div>
     </div>
