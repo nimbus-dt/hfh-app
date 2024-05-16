@@ -4,5 +4,5 @@
   color: var(--amplify-colors-neutral-10);
   height: 100vh;
   padding: 24px;
-  z-index: 3;
+  z-index: 16;
 }
