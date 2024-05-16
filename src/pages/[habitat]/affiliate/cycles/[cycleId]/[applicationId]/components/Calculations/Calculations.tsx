@@ -5,6 +5,12 @@ interface IProperties {
 }
 
 const ApplicationTab = ({ formAnswers }: IProperties) => {
+  const formAnswerWithMetrics = formAnswers.find(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (formAnswer: any) =>
+      formAnswer.values && typeof formAnswer.values.metrics === 'object'
+  );
+
   const metrics: {
     [key: string]: {
       type?: 'percentage' | 'currency' | 'number';
@@ -13,7 +19,7 @@ const ApplicationTab = ({ formAnswers }: IProperties) => {
       value?: string | number;
     };
   } = (
-    formAnswers.at(formAnswers.length - 1) as {
+    formAnswerWithMetrics as {
       values: {
         metrics: {
           [key: string]: {
