@@ -15,6 +15,7 @@ import { Habitat, RootForm, TestCycle } from 'models';
 import { Status } from 'utils/enums';
 
 import { dateOnly } from 'utils/dates';
+import { useRootFormById } from 'hooks/services';
 import Filters from './components/filters';
 import NewCycle from './components/newCycle';
 import styles from './styles.module.css';
@@ -38,17 +39,18 @@ const CyclesPage = () => {
     status: null,
   });
 
+  const { data: rootForm }: { data: RootForm | null } = useRootFormById({
+    id: formId,
+    dependencyArray: [formId],
+  });
+
   const getCycles = useCallback(async () => {
     if (habitat) {
       const cyclesResponse = await DataStore.query(
         TestCycle,
         (c1) =>
           c1.and((c2) => {
-            const criteriaArray = [c2.habitatID.eq(habitat.id)];
-
-            if (formId) {
-              criteriaArray.push(c2.form.eq(formId));
-            }
+            const criteriaArray = [c2.rootformID.eq(formId)];
 
             if (filters?.status === 'open' || filters.status === 'close') {
               criteriaArray.push(c2.isOpen.eq(filters.status === 'open'));
@@ -71,14 +73,7 @@ const CyclesPage = () => {
 
       const openCyclesResponse = await DataStore.query(TestCycle, (c1) =>
         c1.and((c2) => {
-          const criteriaArray = [
-            c2.habitatID.eq(habitat.id),
-            c2.isOpen.eq(true),
-          ];
-
-          if (formId) {
-            criteriaArray.push(c2.form.eq(formId));
-          }
+          const criteriaArray = [c2.rootformID.eq(formId), c2.isOpen.eq(true)];
 
           return criteriaArray;
         })
@@ -235,7 +230,7 @@ const CyclesPage = () => {
           openCycle={
             value.openCycles.length > 0 ? value.openCycles[0] : undefined
           }
-          formId={formId}
+          rootForm={rootForm}
           habitat={habitat}
           open={showModal}
           close={() => setShowModal(false)}

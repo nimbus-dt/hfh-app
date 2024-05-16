@@ -134,13 +134,19 @@ export const useRootFormsQuery = dataStoreQueryHookBuilder({
   defaultDataValue: [],
 });
 
+export const useRootFormById = dataStoreQueryByIdHookBuilder({
+  model: RootForm,
+  defaultDataValue: null,
+});
+
+/* FORMANSWERS MODEL SERVICES */
 /*  USER MODEL SERVICES */
 export const useUserQuery = dataStoreQueryHookBuilder({
   model: User,
   defaultDataValue: [],
 });
 
-  /* FORMANSWERS MODEL SERVICES */
+/* FORMANSWERS MODEL SERVICES */
 export const useFormAnswersQuery = dataStoreQueryHookBuilder({
   model: FormAnswer,
   defaultDataValue: [],

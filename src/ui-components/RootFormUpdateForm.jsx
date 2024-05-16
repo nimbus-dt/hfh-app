@@ -237,6 +237,7 @@ export default function RootFormUpdateForm(props) {
     status: [],
     description: [],
     files: [],
+    formUrls: [{ type: "Required" }],
     formUrls: [],
   };
   const runValidationTasks = async (
@@ -491,7 +492,7 @@ export default function RootFormUpdateForm(props) {
       >
         <TextField
           label="Form urls"
-          isRequired={false}
+          isRequired={true}
           isReadOnly={false}
           value={currentFormUrlsValue}
           onChange={(e) => {

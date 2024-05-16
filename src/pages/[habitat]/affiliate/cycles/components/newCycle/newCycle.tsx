@@ -4,16 +4,16 @@ import { Button } from '@aws-amplify/ui-react';
 import { throttle } from 'lodash';
 import dayjs from 'dayjs';
 import Modal from 'components/Modal';
-import { Habitat, TestCycle } from 'models';
+import { Habitat, RootForm, TestCycle } from 'models';
 import styles from './newCycle.module.css';
 
 interface NewCycleProps {
-  formId?: string;
   open: boolean;
   close: () => void;
   openCycle?: TestCycle;
   habitat?: Habitat;
   refetch: () => void;
+  rootForm: RootForm | null;
 }
 
 interface Inputs {
@@ -26,7 +26,7 @@ const NewCycle = ({
   openCycle,
   habitat,
   refetch,
-  formId,
+  rootForm,
 }: NewCycleProps) => {
   const {
     register,
@@ -49,18 +49,18 @@ const NewCycle = ({
     }
   };
   const onCreateCycle: SubmitHandler<Inputs> = async (data) => {
-    if (habitat && formId) {
+    if (habitat && rootForm && rootForm.formUrls.length > 0) {
       await DataStore.save(
         new TestCycle({
           name: data.name,
           startDate: new Date().toISOString(),
           isOpen: true,
-          habitatID: habitat.id,
-          form: formId,
+          rootformID: rootForm.id,
           closedCycleMessage:
             habitat.props.closedCycleMessages[
               habitat.props.closedCycleMessages.length - 1
             ],
+          formUrl: rootForm.formUrls[rootForm.formUrls.length - 1],
         })
       );
       refetch();

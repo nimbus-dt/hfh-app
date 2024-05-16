@@ -56,7 +56,7 @@ const ProgressBar = ({ current, pages }: IProperties) => {
     ) || 0;
   const length = currentStep?.pages.length || 1;
   const width = 110.5 / length;
-  const rightCurrentWidth = width * (findCurrentStepIndex + 1);
+  const rightCurrentWidth = width * findCurrentStepIndex;
   const leftCurrentWidth = 110.5 - rightCurrentWidth;
   let finished = false;
   return (
@@ -82,7 +82,7 @@ const ProgressBar = ({ current, pages }: IProperties) => {
                       width: `${leftCurrentWidth}px`,
                       height: '2px',
                       left: `${55.25 - leftCurrentWidth}px`,
-                      backgroundColor: `${finished ? '#BDBDBD' : '#325CCA'}`,
+                      backgroundColor: `${colored ? '#BDBDBD' : '#325CCA'}`,
                     }}
                   />
                 )}
@@ -101,7 +101,7 @@ const ProgressBar = ({ current, pages }: IProperties) => {
                     className={styles.line}
                     style={{
                       width: `${rightCurrentWidth}px`,
-                      background: `${finished ? '#BDBDBD' : '#325CCA'}`,
+                      background: `${colored ? '#BDBDBD' : '#325CCA'}`,
                       height: '2px',
                       left: '91.25px',
                     }}
