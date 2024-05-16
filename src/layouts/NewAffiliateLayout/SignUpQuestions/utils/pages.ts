@@ -9,6 +9,11 @@ const pages = [
     step: 2,
     section: 'Affiliate',
   },
+  {
+    number: 3,
+    step: 3,
+    section: 'Confirmation',
+  },
 ];
 
 export default pages;

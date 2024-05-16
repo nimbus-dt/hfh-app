@@ -1,0 +1,12 @@
+.message {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  padding: 2rem;
+  max-width: 1184px;
+}
+
+.message > * + * {
+  margin-top: 1rem;
+}

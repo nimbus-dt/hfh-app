@@ -202,6 +202,7 @@ type EagerHabitatProps = {
 }
 
 type LazyHabitatProps = {
+  sideBar: { name: string; fontSize: string; };
   readonly customStatus?: string[] | null;
   readonly homeownershipTermsText: string;
   readonly homeownershipMinCurrentAddressMonths: number;
