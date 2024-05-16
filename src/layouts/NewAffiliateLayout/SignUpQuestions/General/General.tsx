@@ -52,7 +52,7 @@ const General = ({ data, setData }: GeneralProps) => {
             <div>
               <input
                 id="firstName"
-                placeholder="First Name"
+                placeholder="John"
                 defaultValue={data?.general?.firstName || ''}
                 {...register('firstName', { required: true })}
                 className={`${styles.text_input} theme-body-medium`}
@@ -66,7 +66,7 @@ const General = ({ data, setData }: GeneralProps) => {
             <div>
               <input
                 id="lastName"
-                placeholder="Last Name"
+                placeholder="Doe"
                 defaultValue={data?.general?.lastName || ''}
                 {...register('lastName', { required: true })}
                 className={`${styles.text_input} theme-body-medium`}
@@ -109,7 +109,7 @@ const General = ({ data, setData }: GeneralProps) => {
             <input
               id="phone"
               type="tel"
-              placeholder="Phone Number"
+              placeholder="(000) 000 0000"
               defaultValue={data?.general?.phone || ''}
               {...register('phone', {
                 required: true,

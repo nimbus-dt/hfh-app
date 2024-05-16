@@ -55,7 +55,7 @@ const Employment = ({ data, setData, goBack }: EmploymentProps) => {
               <select
                 id="unemployed"
                 className={styles.select_input}
-                defaultValue={data?.employment?.unemployed || 'No'}
+                defaultValue={data?.employment?.unemployed || 'Yes'}
                 {...register('unemployed', { required: true })}
               >
                 <option value="Yes">Yes</option>
@@ -83,7 +83,7 @@ const Employment = ({ data, setData, goBack }: EmploymentProps) => {
                 <input
                   id="position"
                   type="string"
-                  placeholder="Position"
+                  placeholder="Assistant Manager"
                   defaultValue={data?.employment?.position || ''}
                   className={`theme-body-medium ${styles.number_input}`}
                   {...register('position', { required: true })}
@@ -106,7 +106,7 @@ const Employment = ({ data, setData, goBack }: EmploymentProps) => {
                 <input
                   id="employer"
                   type="string"
-                  placeholder="Employer"
+                  placeholder="Hilton Hotel"
                   defaultValue={data?.employment?.employer || ''}
                   className={`theme-body-medium ${styles.number_input}`}
                   {...register('employer', { required: true })}

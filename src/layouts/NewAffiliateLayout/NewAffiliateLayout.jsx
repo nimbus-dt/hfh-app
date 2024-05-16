@@ -118,9 +118,7 @@ const NewAffiliateLayout = () => {
       setIsLoading((previousIsLoading) => previousIsLoading - 1);
     };
 
-    if (user) {
-      fetchData();
-    }
+    fetchData();
   }, [habitatUrlName, user, authStatus]);
 
   useEffect(() => {
@@ -170,26 +168,30 @@ const NewAffiliateLayout = () => {
   }
 
   return (
-    <BaseLayout variation="affiliate" hideSideBar={!isUserAllowed}>
+    <div>
       {isUserAllowed ? (
-        <Outlet
-          context={{
-            habitat,
-            setHabitat,
-            addCustomStatusToHabitat,
-            removeCustomStatusToHabitat,
-            updateCustomStatusToHabitat,
-          }}
-        />
+        <BaseLayout variation="affiliate" hideSideBar={!isUserAllowed}>
+          <Outlet
+            context={{
+              habitat,
+              setHabitat,
+              addCustomStatusToHabitat,
+              removeCustomStatusToHabitat,
+              updateCustomStatusToHabitat,
+            }}
+          />
+        </BaseLayout>
       ) : (
         <div className={style.notAllowedContainer}>
           <Text>
-            Sorry, you are not allowed to access this page. Please contact the
-            administrator for assistance.
+            Sorry, <b style={{ fontWeight: 'bold' }}>{habitat.name}</b> has not
+            authorized you to access this page. Contact{' '}
+            <a href="mailto:support@habitat-app.org">support@habitat-app.org</a>{' '}
+            for more information.
           </Text>
         </div>
       )}
-    </BaseLayout>
+    </div>
   );
 };
 
