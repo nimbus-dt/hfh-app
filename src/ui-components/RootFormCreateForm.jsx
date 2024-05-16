@@ -222,6 +222,7 @@ export default function RootFormCreateForm(props) {
     status: [],
     description: [],
     files: [],
+    formUrls: [{ type: "Required" }],
     formUrls: [],
   };
   const runValidationTasks = async (
@@ -475,6 +476,7 @@ export default function RootFormCreateForm(props) {
       >
         <TextField
           label="Form urls"
+          isRequired={true}
           isRequired={false}
           isReadOnly={false}
           value={currentFormUrlsValue}

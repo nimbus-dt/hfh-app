@@ -1,7 +1,13 @@
 import React, { useCallback, useState } from 'react';
 import { Form } from '@formio/react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import { Habitat, TestApplication, TestCycle, SubmissionStatus } from 'models';
+import {
+  Habitat,
+  TestApplication,
+  TestCycle,
+  SubmissionStatus,
+  ReviewStatus,
+} from 'models';
 import { DataStore } from 'aws-amplify';
 import dayjs from 'dayjs';
 import { generateSubmission } from 'utils/formio';
@@ -13,7 +19,6 @@ import useAsync from 'hooks/utils/useAsync/useAsync';
 import { Status } from 'utils/enums';
 import Loading from 'components/Loading';
 import Error from 'components/Error';
-import { useFormById } from 'hooks/services';
 
 interface IProperties {
   habitat: Habitat;
@@ -30,11 +35,6 @@ const HomeownershipReviewPage = () => {
   const { application, habitat, openCycle, setApplication } =
     useOutletContext<IProperties>();
 
-  const { data: form } = useFormById({
-    id: openCycle?.form || '',
-    dependencyArray: [openCycle],
-  });
-
   const navigate = useNavigate();
 
   const handleOnClickGoBack = () => {
@@ -49,13 +49,10 @@ const HomeownershipReviewPage = () => {
         if (original) {
           const updatedApplication = await DataStore.save(
             TestApplication.copyOf(original, (originalApplication) => {
-              if (
-                originalApplication.submissionStatus !==
-                SubmissionStatus.RETURNED
-              ) {
+              if (originalApplication.reviewStatus !== ReviewStatus.RETURNED) {
                 originalApplication.testcycleID = openCycle.id;
               }
-              originalApplication.submissionStatus = SubmissionStatus.SUBMITTED;
+              originalApplication.submissionStatus = SubmissionStatus.COMPLETED;
               originalApplication.submittedDate = dayjs().format('YYYY-MM-DD');
             })
           );
@@ -92,7 +89,7 @@ const HomeownershipReviewPage = () => {
     return <Error />;
   }
 
-  if (status === Status.PENDING || !value || !habitat || !openCycle || !form) {
+  if (status === Status.PENDING || !value || !habitat || !openCycle) {
     return <Loading />;
   }
 
@@ -100,7 +97,7 @@ const HomeownershipReviewPage = () => {
     <CustomCard>
       {loadingForm && <Loading />}
       <Form
-        src={`${FORMIO_URL}/${form.url}`}
+        src={`${FORMIO_URL}/${openCycle.formUrl}`}
         onRender={() => {
           setLoadingForm(false);
         }}
@@ -137,11 +134,11 @@ const HomeownershipReviewPage = () => {
       </Modal>
       <Flex justifyContent="space-between">
         <Button onClick={handleOnClickGoBack} variation="primary">
-          {application?.submissionStatus === SubmissionStatus.SUBMITTED
+          {application?.submissionStatus === SubmissionStatus.COMPLETED
             ? 'Go back'
             : 'Go back to edit'}
         </Button>
-        {application?.submissionStatus !== SubmissionStatus.SUBMITTED && (
+        {application?.submissionStatus !== SubmissionStatus.COMPLETED && (
           <Button onClick={handleOnClickSubmit} variation="primary">
             Submit
           </Button>

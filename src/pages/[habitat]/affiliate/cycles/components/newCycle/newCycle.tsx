@@ -8,12 +8,12 @@ import { Habitat, RootForm, TestCycle } from 'models';
 import styles from './newCycle.module.css';
 
 interface NewCycleProps {
-  formId?: string;
   open: boolean;
   close: () => void;
   openCycle?: TestCycle;
   habitat?: Habitat;
   refetch: () => void;
+  rootForm: RootForm | null;
 }
 
 interface Inputs {
@@ -26,7 +26,7 @@ const NewCycle = ({
   openCycle,
   habitat,
   refetch,
-  formId,
+  rootForm,
 }: NewCycleProps) => {
   const {
     register,
@@ -49,20 +49,18 @@ const NewCycle = ({
     }
   };
   const onCreateCycle: SubmitHandler<Inputs> = async (data) => {
-    if (habitat && formId) {
-      const form = await DataStore.query(RootForm, formId);
-      if (!form) return;
+    if (habitat && rootForm && rootForm.formUrls.length > 0) {
       await DataStore.save(
         new TestCycle({
           name: data.name,
           startDate: new Date().toISOString(),
           isOpen: true,
-          rootformID: formId,
-          formUrl: form?.formUrls[0],
+          rootformID: rootForm.id,
           closedCycleMessage:
             habitat.props.closedCycleMessages[
               habitat.props.closedCycleMessages.length - 1
             ],
+          formUrl: rootForm.formUrls[rootForm.formUrls.length - 1],
         })
       );
       refetch();

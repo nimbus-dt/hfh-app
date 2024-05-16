@@ -172,9 +172,11 @@ const AffiliateCycleApplications = () => {
         />
       )}
       <div className={`${style.titleContainer}`}>
-        <IconButton variation="not-outlined">
-          <MdOutlineArrowBack />
-        </IconButton>
+        <Link to="../">
+          <IconButton variation="not-outlined">
+            <MdOutlineArrowBack />
+          </IconButton>
+        </Link>
         <span className={`theme-headline-medium ${style.title}`}>
           Applications Dashboard
         </span>
