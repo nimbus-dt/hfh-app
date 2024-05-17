@@ -44,6 +44,7 @@ import { ImageNode } from 'components/LexicalEditor/nodes/ImageNode';
 import { removeFiles } from 'utils/files';
 import { EditorState } from 'lexical';
 import { useAuthenticator } from '@aws-amplify/ui-react';
+import Loading from 'components/Loading';
 import style from './AffiliateApplicationDetailsPage.module.css';
 import LocalNavigation from './components/LocalNavigation';
 import ApplicationTab from './components/ApplicationTab';
@@ -306,6 +307,8 @@ const AffiliateApplicationDetailsPage = () => {
     }
   };
 
+  if (!cycle) return <Loading />;
+
   return (
     <div className={`${style.page}`}>
       <BreadCrumbs
@@ -350,11 +353,10 @@ const AffiliateApplicationDetailsPage = () => {
             handleDecideOnClick={handleDecideOnClick}
             loading={loading}
           />
-          {/* TODO: update formUrl to be the formUrl from the cycle */}
           {activeTab === 0 && (
             <ApplicationTab
               application={application}
-              formUrl="loudoun"
+              formUrl={cycle?.formUrl}
               formAnswers={formAnswers}
             />
           )}

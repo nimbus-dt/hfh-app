@@ -271,7 +271,7 @@ const Form = ({
             <div className={formContainer ? `${style.formContainer}` : ''}>
               <FormioForm
                 key="review"
-                src={`${FORMIO_URL}/loudoun`}
+                src={`${FORMIO_URL}/${cycle?.formUrl}`}
                 options={{
                   readOnly: true,
                   renderMode: 'flat',
@@ -327,7 +327,7 @@ const Form = ({
               <div className={`${style.formContainer}`}>
                 <FormioForm
                   key="real"
-                  src={`${FORMIO_URL}/loudoun`}
+                  src={`${FORMIO_URL}/${cycle?.formUrl}`}
                   onSubmit={handleOnReview}
                   formReady={(f: typeof Wizard) => setFormReady(f)}
                   options={

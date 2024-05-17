@@ -153,34 +153,50 @@ const ApplicantCyclePage = () => {
       </div>
     );
 
-  return application.submissionStatus === SubmissionStatus.COMPLETED &&
-    !review ? (
-    <div className={`${style.page}`}>
-      <SuccesfullySubmitted habitat={habitat} onReview={onReview} />
-    </div>
-  ) : (
-    <div className={`${style.page}`}>
-      <div className={style.detailsContainer}>
-        <LocalNavigation
-          items={[
-            { label: 'Application', icon: <MdOutlineNoteAlt /> },
-            { label: 'Decisions', icon: <MdOutlineLibraryAddCheck /> },
-          ]}
-          current={activeTab}
-          onChange={(newCurrent) => setActiveTab(newCurrent)}
-        />
-        <div className={style.tabContainer}>
-          {activeTab === 0 && (
-            <Form
-              habitat={habitat}
-              application={application}
-              cycle={cycle}
-              formContainer={false}
-            />
-          )}
-          {activeTab === 1 && <Decisions application={application} />}
+  if (application.submissionStatus === SubmissionStatus.COMPLETED && !review) {
+    return (
+      <div className={`${style.page}`}>
+        <SuccesfullySubmitted habitat={habitat} onReview={onReview} />
+      </div>
+    );
+  }
+
+  if (review) {
+    return (
+      <div className={`${style.page}`}>
+        <div className={style.detailsContainer}>
+          <LocalNavigation
+            items={[
+              { label: 'Application', icon: <MdOutlineNoteAlt /> },
+              { label: 'Decisions', icon: <MdOutlineLibraryAddCheck /> },
+            ]}
+            current={activeTab}
+            onChange={(newCurrent) => setActiveTab(newCurrent)}
+          />
+          <div className={style.tabContainer}>
+            {activeTab === 0 && (
+              <Form
+                habitat={habitat}
+                application={application}
+                cycle={cycle}
+                formContainer={false}
+              />
+            )}
+            {activeTab === 1 && <Decisions application={application} />}
+          </div>
         </div>
       </div>
+    );
+  }
+
+  return (
+    <div className={`${style.page}`}>
+      <Form
+        habitat={habitat}
+        application={application}
+        cycle={cycle}
+        formContainer={false}
+      />
     </div>
   );
 };
