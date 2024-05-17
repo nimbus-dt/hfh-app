@@ -46,7 +46,7 @@ export const calculateAgeInMonths = (dob) => {
 };
 
 /**
- *  Returns weather a person is an adult (>18 yo) or not
+ *  Returns wether a person is an adult (>18 yo) or not
  * @param {string} dob date of birth as a ISO string
  * @returns {boolean}
  */
@@ -54,4 +54,30 @@ export const isAdult = (dob) => {
   const age = calculateAge(dob);
 
   return age >= 18;
+};
+
+/**
+ *  Removes time component from AWSDateTime object
+ * @param {string} date date as an ISO string
+ * @returns {string} date as an ISO string
+ */
+export const dateOnly = (date) => {
+  const awsDate = !date || date == null ? new Date() : new Date(date);
+
+  const yourDateStr = awsDate.toLocaleDateString();
+
+  return yourDateStr;
+};
+
+/**
+ *  Removes date component from AWSDateTime object
+ * @param {string} date date as an ISO string
+ * @returns {string} date as an ISO string
+ */
+export const timeOnly = (date) => {
+  const awsDate = !date || date == null ? new Date() : new Date(date);
+
+  const yourDateStr = awsDate.toLocaleTimeString();
+
+  return yourDateStr;
 };

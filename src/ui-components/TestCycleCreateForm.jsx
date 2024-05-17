@@ -33,17 +33,28 @@ export default function TestCycleCreateForm(props) {
     endDate: "",
     isOpen: false,
     props: "",
+    name: "",
+    closedCycleMessage: "",
+    formUrl: "",
   };
   const [startDate, setStartDate] = React.useState(initialValues.startDate);
   const [endDate, setEndDate] = React.useState(initialValues.endDate);
   const [isOpen, setIsOpen] = React.useState(initialValues.isOpen);
   const [props, setProps] = React.useState(initialValues.props);
+  const [name, setName] = React.useState(initialValues.name);
+  const [closedCycleMessage, setClosedCycleMessage] = React.useState(
+    initialValues.closedCycleMessage
+  );
+  const [formUrl, setFormUrl] = React.useState(initialValues.formUrl);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setStartDate(initialValues.startDate);
     setEndDate(initialValues.endDate);
     setIsOpen(initialValues.isOpen);
     setProps(initialValues.props);
+    setName(initialValues.name);
+    setClosedCycleMessage(initialValues.closedCycleMessage);
+    setFormUrl(initialValues.formUrl);
     setErrors({});
   };
   const validations = {
@@ -51,6 +62,9 @@ export default function TestCycleCreateForm(props) {
     endDate: [],
     isOpen: [{ type: "Required" }],
     props: [{ type: "JSON" }],
+    name: [],
+    closedCycleMessage: [{ type: "Required" }],
+    formUrl: [{ type: "Required" }],
   };
   const runValidationTasks = async (
     fieldName,
@@ -69,6 +83,23 @@ export default function TestCycleCreateForm(props) {
     setErrors((errors) => ({ ...errors, [fieldName]: validationResponse }));
     return validationResponse;
   };
+  const convertToLocal = (date) => {
+    const df = new Intl.DateTimeFormat("default", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      calendar: "iso8601",
+      numberingSystem: "latn",
+      hourCycle: "h23",
+    });
+    const parts = df.formatToParts(date).reduce((acc, part) => {
+      acc[part.type] = part.value;
+      return acc;
+    }, {});
+    return `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}`;
+  };
   return (
     <Grid
       as="form"
@@ -82,6 +113,9 @@ export default function TestCycleCreateForm(props) {
           endDate,
           isOpen,
           props,
+          name,
+          closedCycleMessage,
+          formUrl,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -131,16 +165,20 @@ export default function TestCycleCreateForm(props) {
         label="Start date"
         isRequired={true}
         isReadOnly={false}
-        type="date"
-        value={startDate}
+        type="datetime-local"
+        value={startDate && convertToLocal(new Date(startDate))}
         onChange={(e) => {
-          let { value } = e.target;
+          let value =
+            e.target.value === "" ? "" : new Date(e.target.value).toISOString();
           if (onChange) {
             const modelFields = {
               startDate: value,
               endDate,
               isOpen,
               props,
+              name,
+              closedCycleMessage,
+              formUrl,
             };
             const result = onChange(modelFields);
             value = result?.startDate ?? value;
@@ -169,6 +207,9 @@ export default function TestCycleCreateForm(props) {
               endDate: value,
               isOpen,
               props,
+              name,
+              closedCycleMessage,
+              formUrl,
             };
             const result = onChange(modelFields);
             value = result?.endDate ?? value;
@@ -196,6 +237,9 @@ export default function TestCycleCreateForm(props) {
               endDate,
               isOpen: value,
               props,
+              name,
+              closedCycleMessage,
+              formUrl,
             };
             const result = onChange(modelFields);
             value = result?.isOpen ?? value;
@@ -222,6 +266,9 @@ export default function TestCycleCreateForm(props) {
               endDate,
               isOpen,
               props: value,
+              name,
+              closedCycleMessage,
+              formUrl,
             };
             const result = onChange(modelFields);
             value = result?.props ?? value;
@@ -236,6 +283,98 @@ export default function TestCycleCreateForm(props) {
         hasError={errors.props?.hasError}
         {...getOverrideProps(overrides, "props")}
       ></TextAreaField>
+      <TextField
+        label="Name"
+        isRequired={false}
+        isReadOnly={false}
+        value={name}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              startDate,
+              endDate,
+              isOpen,
+              props,
+              name: value,
+              closedCycleMessage,
+              formUrl,
+            };
+            const result = onChange(modelFields);
+            value = result?.name ?? value;
+          }
+          if (errors.name?.hasError) {
+            runValidationTasks("name", value);
+          }
+          setName(value);
+        }}
+        onBlur={() => runValidationTasks("name", name)}
+        errorMessage={errors.name?.errorMessage}
+        hasError={errors.name?.hasError}
+        {...getOverrideProps(overrides, "name")}
+      ></TextField>
+      <TextField
+        label="Closed cycle message"
+        isRequired={true}
+        isReadOnly={false}
+        value={closedCycleMessage}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              startDate,
+              endDate,
+              isOpen,
+              props,
+              name,
+              closedCycleMessage: value,
+              formUrl,
+            };
+            const result = onChange(modelFields);
+            value = result?.closedCycleMessage ?? value;
+          }
+          if (errors.closedCycleMessage?.hasError) {
+            runValidationTasks("closedCycleMessage", value);
+          }
+          setClosedCycleMessage(value);
+        }}
+        onBlur={() =>
+          runValidationTasks("closedCycleMessage", closedCycleMessage)
+        }
+        errorMessage={errors.closedCycleMessage?.errorMessage}
+        hasError={errors.closedCycleMessage?.hasError}
+        {...getOverrideProps(overrides, "closedCycleMessage")}
+      ></TextField>
+      <TextField
+        label="Form url"
+        isRequired={true}
+        isReadOnly={false}
+        value={formUrl}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              startDate,
+              endDate,
+              isOpen,
+              props,
+              name,
+              closedCycleMessage,
+              formUrl: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.formUrl ?? value;
+          }
+          if (errors.formUrl?.hasError) {
+            runValidationTasks("formUrl", value);
+          }
+          setFormUrl(value);
+        }}
+        onBlur={() => runValidationTasks("formUrl", formUrl)}
+        errorMessage={errors.formUrl?.errorMessage}
+        hasError={errors.formUrl?.hasError}
+        {...getOverrideProps(overrides, "formUrl")}
+      ></TextField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}

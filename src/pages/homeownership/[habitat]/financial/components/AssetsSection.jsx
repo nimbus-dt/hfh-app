@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { DataStore, Storage } from 'aws-amplify';
 import { Asset } from 'models';
@@ -16,7 +16,6 @@ import {
   TableRow,
   Text,
   TextField,
-  ThemeProvider,
 } from '@aws-amplify/ui-react';
 import { MdAdd, MdClose, MdMoreHoriz } from 'react-icons/md';
 import FileInput from 'components/FileInput';
@@ -253,104 +252,85 @@ const AssetsSection = ({
             <MdAdd size="1.25rem" />
           </Button>
         </Flex>
-        <ThemeProvider
-          theme={{
-            tokens: {
-              components: {
-                table: {
-                  header: {
-                    borderColor: 'black',
-                  },
-                  data: {
-                    borderColor: 'black',
-                  },
-                },
-              },
-            },
-          }}
-        >
-          <Table variation="small" style={{ wordBreak: 'break-word' }}>
-            <TableHead>
+        <Table variation="small" style={{ wordBreak: 'break-word' }}>
+          <TableHead>
+            <TableRow>
+              <TableCell as="th" width="40%">
+                Name
+              </TableCell>
+              <TableCell as="th" width="40%">
+                Total
+              </TableCell>
+              <TableCell as="th" width="20%">
+                Actions
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {assets.length > 0 ? (
+              assets.map((asset) => {
+                const handleOnClickDelete = () => {
+                  setAssetToDelete(asset);
+                };
+
+                const handleOnClickMore = () => {
+                  setEditingAsset(asset);
+                  const hasOtherType = !assetsTypes.includes(asset.props.type);
+                  const filesArray = asset.props.proofs.map((fileKey) => {
+                    const pathArray = fileKey.split('/');
+                    return new File([''], pathArray[pathArray.length - 1]);
+                  });
+
+                  reset({
+                    ...asset.props,
+                    type: hasOtherType ? 'Other' : asset.props.type,
+                    otherType: hasOtherType ? asset.props.type : undefined,
+                    proofs: filesArray,
+                  });
+                };
+                return (
+                  <TableRow key={asset.id}>
+                    <TableCell>{asset.props.type}</TableCell>
+                    <TableCell>{`$${asset.props.currentValue}`}</TableCell>
+                    <TableCell>
+                      <Flex
+                        direction={{ base: 'column', small: 'row' }}
+                        width="100%"
+                        justifyContent="center"
+                        gap="0.5rem"
+                      >
+                        <Button
+                          height="2rem"
+                          width="2rem"
+                          padding="0"
+                          title="Delete"
+                          onClick={handleOnClickDelete}
+                        >
+                          <MdClose size="1.25rem" />
+                        </Button>
+                        <Button
+                          height="2rem"
+                          width="2rem"
+                          padding="0"
+                          title="Open"
+                          onClick={handleOnClickMore}
+                        >
+                          <MdMoreHoriz size="1.25rem" />
+                        </Button>
+                      </Flex>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            ) : (
               <TableRow>
-                <TableCell as="th" width="40%">
-                  Name
-                </TableCell>
-                <TableCell as="th" width="40%">
-                  Total
-                </TableCell>
-                <TableCell as="th" width="20%">
-                  Actions
+                <TableCell colSpan={3} textAlign="center">
+                  No asset record added yet
                 </TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {assets.length > 0 ? (
-                assets.map((asset) => {
-                  const handleOnClickDelete = () => {
-                    setAssetToDelete(asset);
-                  };
-
-                  const handleOnClickMore = () => {
-                    setEditingAsset(asset);
-                    const hasOtherType = !assetsTypes.includes(
-                      asset.props.type
-                    );
-                    const filesArray = asset.props.proofs.map((fileKey) => {
-                      const pathArray = fileKey.split('/');
-                      return new File([''], pathArray[pathArray.length - 1]);
-                    });
-
-                    reset({
-                      ...asset.props,
-                      type: hasOtherType ? 'Other' : asset.props.type,
-                      otherType: hasOtherType ? asset.props.type : undefined,
-                      proofs: filesArray,
-                    });
-                  };
-                  return (
-                    <TableRow key={asset.id}>
-                      <TableCell>{asset.props.type}</TableCell>
-                      <TableCell>{`$${asset.props.currentValue}`}</TableCell>
-                      <TableCell>
-                        <Flex
-                          direction={{ base: 'column', small: 'row' }}
-                          width="100%"
-                          justifyContent="center"
-                          gap="0.5rem"
-                        >
-                          <Button
-                            height="2rem"
-                            width="2rem"
-                            padding="0"
-                            title="Delete"
-                            onClick={handleOnClickDelete}
-                          >
-                            <MdClose size="1.25rem" />
-                          </Button>
-                          <Button
-                            height="2rem"
-                            width="2rem"
-                            padding="0"
-                            title="Open"
-                            onClick={handleOnClickMore}
-                          >
-                            <MdMoreHoriz size="1.25rem" />
-                          </Button>
-                        </Flex>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={3} textAlign="center">
-                    No asset record added yet
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </ThemeProvider>
+            )}
+          </TableBody>
+        </Table>
         <Modal
           title="Asset"
           open={modal || editingAsset !== undefined}

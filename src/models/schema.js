@@ -1,5 +1,251 @@
 export const schema = {
     "models": {
+        "User": {
+            "name": "User",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "firstName": {
+                    "name": "firstName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "lastName": {
+                    "name": "lastName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "dateOfBirth": {
+                    "name": "dateOfBirth",
+                    "isArray": false,
+                    "type": "AWSDate",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "sex": {
+                    "name": "sex",
+                    "isArray": false,
+                    "type": {
+                        "enum": "Sexs"
+                    },
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "phoneNumber": {
+                    "name": "phoneNumber",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "affiliateProps": {
+                    "name": "affiliateProps",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "AffiliateProps"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "applicantProps": {
+                    "name": "applicantProps",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "ApplicantProps"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "type": {
+                    "name": "type",
+                    "isArray": false,
+                    "type": {
+                        "enum": "UserTypes"
+                    },
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "owner": {
+                    "name": "owner",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Users",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "RootForm": {
+            "name": "RootForm",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "status": {
+                    "name": "status",
+                    "isArray": false,
+                    "type": {
+                        "enum": "RootFormStatusTypes"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "description": {
+                    "name": "description",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "files": {
+                    "name": "files",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "Cycles": {
+                    "name": "Cycles",
+                    "isArray": true,
+                    "type": {
+                        "model": "TestCycle"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "rootformID"
+                        ]
+                    }
+                },
+                "habitatID": {
+                    "name": "habitatID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "formUrls": {
+                    "name": "formUrls",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": false
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "RootForms",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byHabitat",
+                        "fields": [
+                            "habitatID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "Decision": {
             "name": "Decision",
             "fields": {
@@ -13,7 +259,9 @@ export const schema = {
                 "status": {
                     "name": "status",
                     "isArray": false,
-                    "type": "String",
+                    "type": {
+                        "enum": "ReviewStatus"
+                    },
                     "isRequired": true,
                     "attributes": []
                 },
@@ -50,6 +298,95 @@ export const schema = {
             },
             "syncable": true,
             "pluralName": "Decisions",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byTestApplication",
+                        "fields": [
+                            "testapplicationID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "FormAnswer": {
+            "name": "FormAnswer",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "values": {
+                    "name": "values",
+                    "isArray": false,
+                    "type": "AWSJSON",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "page": {
+                    "name": "page",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "section": {
+                    "name": "section",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "testapplicationID": {
+                    "name": "testapplicationID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "FormAnswers",
             "attributes": [
                 {
                     "type": "model",
@@ -243,7 +580,7 @@ export const schema = {
                 "startDate": {
                     "name": "startDate",
                     "isArray": false,
-                    "type": "AWSDate",
+                    "type": "AWSDateTime",
                     "isRequired": true,
                     "attributes": []
                 },
@@ -268,13 +605,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "habitatID": {
-                    "name": "habitatID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "TestApplications": {
                     "name": "TestApplications",
                     "isArray": true,
@@ -290,6 +620,34 @@ export const schema = {
                             "testcycleID"
                         ]
                     }
+                },
+                "rootformID": {
+                    "name": "rootformID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "closedCycleMessage": {
+                    "name": "closedCycleMessage",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "formUrl": {
+                    "name": "formUrl",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -318,9 +676,9 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
-                        "name": "byHabitat",
+                        "name": "byRootForm",
                         "fields": [
-                            "habitatID"
+                            "rootformID"
                         ]
                     }
                 },
@@ -656,8 +1014,10 @@ export const schema = {
                 "reviewStatus": {
                     "name": "reviewStatus",
                     "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
+                    "type": {
+                        "enum": "ReviewStatus"
+                    },
+                    "isRequired": true,
                     "attributes": []
                 },
                 "submissionStatus": {
@@ -708,6 +1068,22 @@ export const schema = {
                         ]
                     }
                 },
+                "FormAnswers": {
+                    "name": "FormAnswers",
+                    "isArray": true,
+                    "type": {
+                        "model": "FormAnswer"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "testapplicationID"
+                        ]
+                    }
+                },
                 "Decisions": {
                     "name": "Decisions",
                     "isArray": true,
@@ -723,6 +1099,13 @@ export const schema = {
                             "testapplicationID"
                         ]
                     }
+                },
+                "customStatus": {
+                    "name": "customStatus",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -1265,11 +1648,18 @@ export const schema = {
                     "attributes": [],
                     "isArrayNullable": true
                 },
-                "TestCycles": {
-                    "name": "TestCycles",
+                "authenticationHeader": {
+                    "name": "authenticationHeader",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "RootForms": {
+                    "name": "RootForms",
                     "isArray": true,
                     "type": {
-                        "model": "TestCycle"
+                        "model": "RootForm"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -1325,6 +1715,37 @@ export const schema = {
         }
     },
     "enums": {
+        "ReviewStatus": {
+            "name": "ReviewStatus",
+            "values": [
+                "ACCEPTED",
+                "PENDING",
+                "DENIED",
+                "RETURNED"
+            ]
+        },
+        "Sexs": {
+            "name": "Sexs",
+            "values": [
+                "MALE",
+                "FEMALE",
+                "OTHER"
+            ]
+        },
+        "UserTypes": {
+            "name": "UserTypes",
+            "values": [
+                "AFFILIATE",
+                "APPLICANT"
+            ]
+        },
+        "RootFormStatusTypes": {
+            "name": "RootFormStatusTypes",
+            "values": [
+                "ACTIVE",
+                "PENDING"
+            ]
+        },
         "ApplicationTypes": {
             "name": "ApplicationTypes",
             "values": [
@@ -1335,13 +1756,186 @@ export const schema = {
         "SubmissionStatus": {
             "name": "SubmissionStatus",
             "values": [
-                "SUBMITTED",
-                "UNSUBMITTED",
-                "RETURNED"
+                "INCOMPLETE",
+                "COMPLETED"
             ]
         }
     },
     "nonModels": {
+        "SidebarName": {
+            "name": "SidebarName",
+            "fields": {
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "fontSize": {
+                    "name": "fontSize",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
+        "ApplicantProps": {
+            "name": "ApplicantProps",
+            "fields": {
+                "state": {
+                    "name": "state",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "city": {
+                    "name": "city",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "street": {
+                    "name": "street",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "householdMembersNumber": {
+                    "name": "householdMembersNumber",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "householdAnnualIncome": {
+                    "name": "householdAnnualIncome",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "currentlyUnemployed": {
+                    "name": "currentlyUnemployed",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "currentWorkTitle": {
+                    "name": "currentWorkTitle",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "nameOfEmployer": {
+                    "name": "nameOfEmployer",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "howDidYouHearAbout": {
+                    "name": "howDidYouHearAbout",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "firstTimeApplying": {
+                    "name": "firstTimeApplying",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "whatAreYouInterestedIn": {
+                    "name": "whatAreYouInterestedIn",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                }
+            }
+        },
+        "AffiliateProps": {
+            "name": "AffiliateProps",
+            "fields": {
+                "titleAtHabitat": {
+                    "name": "titleAtHabitat",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "roleDescription": {
+                    "name": "roleDescription",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "joinDate": {
+                    "name": "joinDate",
+                    "isArray": false,
+                    "type": "AWSDate",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "joinMonth": {
+                    "name": "joinMonth",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "joinYear": {
+                    "name": "joinYear",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
+        "GalleryItem": {
+            "name": "GalleryItem",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "image": {
+                    "name": "image",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "title": {
+                    "name": "title",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "message": {
+                    "name": "message",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
         "OptionalSections": {
             "name": "OptionalSections",
             "fields": {
@@ -1538,10 +2132,37 @@ export const schema = {
                     },
                     "isRequired": true,
                     "attributes": []
+                },
+                "gallery": {
+                    "name": "gallery",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "GalleryItem"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "sidebarName": {
+                    "name": "sidebarName",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "SidebarName"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "closedCycleMessages": {
+                    "name": "closedCycleMessages",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": false
                 }
             }
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "b112f2630e94e7ffcce3ff1d0177150d"
+    "version": "1e4db53358620aed39ea03a75b4c0232"
 };

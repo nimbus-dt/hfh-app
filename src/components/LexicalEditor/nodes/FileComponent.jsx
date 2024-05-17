@@ -13,7 +13,7 @@ import {
   KEY_BACKSPACE_COMMAND,
   KEY_DELETE_COMMAND,
 } from 'lexical';
-import { Button, Flex, Text, View } from '@aws-amplify/ui-react';
+import { Button, Flex, Text } from '@aws-amplify/ui-react';
 import { MdDownload } from 'react-icons/md';
 import { downloadWithUrl } from 'utils/files';
 import { Storage } from 'aws-amplify';

@@ -1,0 +1,7 @@
+.decisionsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 816px;
+  margin: auto;
+}

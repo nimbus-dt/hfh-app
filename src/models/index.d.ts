@@ -2,16 +2,122 @@ import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-
 // @ts-ignore
 import { LazyLoading, LazyLoadingDisabled, AsyncCollection } from "@aws-amplify/datastore";
 
+export enum ReviewStatus {
+  ACCEPTED = "ACCEPTED",
+  PENDING = "PENDING",
+  DENIED = "DENIED",
+  RETURNED = "RETURNED"
+}
+
+export enum Sexs {
+  MALE = "MALE",
+  FEMALE = "FEMALE",
+  OTHER = "OTHER"
+}
+
+export enum UserTypes {
+  AFFILIATE = "AFFILIATE",
+  APPLICANT = "APPLICANT"
+}
+
+export enum RootFormStatusTypes {
+  ACTIVE = "ACTIVE",
+  PENDING = "PENDING"
+}
+
 export enum ApplicationTypes {
   ONLINE = "ONLINE",
   PAPER = "PAPER"
 }
 
 export enum SubmissionStatus {
-  SUBMITTED = "SUBMITTED",
-  UNSUBMITTED = "UNSUBMITTED",
-  RETURNED = "RETURNED"
+  INCOMPLETE = "INCOMPLETE",
+  COMPLETED = "COMPLETED"
 }
+
+type EagerSidebarName = {
+  readonly name?: string | null;
+  readonly fontSize?: string | null;
+}
+
+type LazySidebarName = {
+  readonly name?: string | null;
+  readonly fontSize?: string | null;
+}
+
+export declare type SidebarName = LazyLoading extends LazyLoadingDisabled ? EagerSidebarName : LazySidebarName
+
+export declare const SidebarName: (new (init: ModelInit<SidebarName>) => SidebarName)
+
+type EagerApplicantProps = {
+  readonly state: string;
+  readonly city: string;
+  readonly street: string;
+  readonly householdMembersNumber: number;
+  readonly householdAnnualIncome: number;
+  readonly currentlyUnemployed: string;
+  readonly currentWorkTitle?: string | null;
+  readonly nameOfEmployer?: string | null;
+  readonly howDidYouHearAbout: string;
+  readonly firstTimeApplying: string;
+  readonly whatAreYouInterestedIn: string;
+}
+
+type LazyApplicantProps = {
+  readonly state: string;
+  readonly city: string;
+  readonly street: string;
+  readonly householdMembersNumber: number;
+  readonly householdAnnualIncome: number;
+  readonly currentlyUnemployed: string;
+  readonly currentWorkTitle?: string | null;
+  readonly nameOfEmployer?: string | null;
+  readonly howDidYouHearAbout: string;
+  readonly firstTimeApplying: string;
+  readonly whatAreYouInterestedIn: string;
+}
+
+export declare type ApplicantProps = LazyLoading extends LazyLoadingDisabled ? EagerApplicantProps : LazyApplicantProps
+
+export declare const ApplicantProps: (new (init: ModelInit<ApplicantProps>) => ApplicantProps)
+
+type EagerAffiliateProps = {
+  readonly titleAtHabitat: string;
+  readonly roleDescription: string;
+  readonly joinDate?: string | null;
+  readonly joinMonth?: string | null;
+  readonly joinYear?: string | null;
+}
+
+type LazyAffiliateProps = {
+  readonly titleAtHabitat: string;
+  readonly roleDescription: string;
+  readonly joinDate?: string | null;
+  readonly joinMonth?: string | null;
+  readonly joinYear?: string | null;
+}
+
+export declare type AffiliateProps = LazyLoading extends LazyLoadingDisabled ? EagerAffiliateProps : LazyAffiliateProps
+
+export declare const AffiliateProps: (new (init: ModelInit<AffiliateProps>) => AffiliateProps)
+
+type EagerGalleryItem = {
+  readonly id?: string | null;
+  readonly image?: string | null;
+  readonly title?: string | null;
+  readonly message?: string | null;
+}
+
+type LazyGalleryItem = {
+  readonly id?: string | null;
+  readonly image?: string | null;
+  readonly title?: string | null;
+  readonly message?: string | null;
+}
+
+export declare type GalleryItem = LazyLoading extends LazyLoadingDisabled ? EagerGalleryItem : LazyGalleryItem
+
+export declare const GalleryItem: (new (init: ModelInit<GalleryItem>) => GalleryItem)
 
 type EagerOptionalSections = {
   readonly coApplicant: boolean;
@@ -90,6 +196,9 @@ type EagerHabitatProps = {
   readonly homeownershipRecordQuestions?: RecordQuestion[] | null;
   readonly homeownershipWrittenQuestions?: WrittenQuestion[] | null;
   readonly optionalSections: OptionalSections;
+  readonly gallery?: GalleryItem[] | null;
+  readonly sidebarName?: SidebarName | null;
+  readonly closedCycleMessages: string[];
 }
 
 type LazyHabitatProps = {
@@ -103,11 +212,98 @@ type LazyHabitatProps = {
   readonly homeownershipRecordQuestions?: RecordQuestion[] | null;
   readonly homeownershipWrittenQuestions?: WrittenQuestion[] | null;
   readonly optionalSections: OptionalSections;
+  readonly gallery?: GalleryItem[] | null;
+  readonly sidebarName?: SidebarName | null;
+  readonly closedCycleMessages: string[];
 }
 
 export declare type HabitatProps = LazyLoading extends LazyLoadingDisabled ? EagerHabitatProps : LazyHabitatProps
 
 export declare const HabitatProps: (new (init: ModelInit<HabitatProps>) => HabitatProps)
+
+type EagerUser = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<User, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly firstName: string;
+  readonly lastName: string;
+  readonly dateOfBirth: string;
+  readonly sex: Sexs | keyof typeof Sexs;
+  readonly phoneNumber: string;
+  readonly affiliateProps?: AffiliateProps | null;
+  readonly applicantProps?: ApplicantProps | null;
+  readonly type: UserTypes | keyof typeof UserTypes;
+  readonly owner: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyUser = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<User, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly firstName: string;
+  readonly lastName: string;
+  readonly dateOfBirth: string;
+  readonly sex: Sexs | keyof typeof Sexs;
+  readonly phoneNumber: string;
+  readonly affiliateProps?: AffiliateProps | null;
+  readonly applicantProps?: ApplicantProps | null;
+  readonly type: UserTypes | keyof typeof UserTypes;
+  readonly owner: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type User = LazyLoading extends LazyLoadingDisabled ? EagerUser : LazyUser
+
+export declare const User: (new (init: ModelInit<User>) => User) & {
+  copyOf(source: User, mutator: (draft: MutableModel<User>) => MutableModel<User> | void): User;
+}
+
+type EagerRootForm = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<RootForm, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name?: string | null;
+  readonly status?: RootFormStatusTypes | keyof typeof RootFormStatusTypes | null;
+  readonly description?: string | null;
+  readonly files?: (string | null)[] | null;
+  readonly Cycles?: (TestCycle | null)[] | null;
+  readonly habitatID: string;
+  readonly formUrls: string[];
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyRootForm = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<RootForm, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name?: string | null;
+  readonly status?: RootFormStatusTypes | keyof typeof RootFormStatusTypes | null;
+  readonly description?: string | null;
+  readonly files?: (string | null)[] | null;
+  readonly Cycles: AsyncCollection<TestCycle>;
+  readonly habitatID: string;
+  readonly formUrls: string[];
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type RootForm = LazyLoading extends LazyLoadingDisabled ? EagerRootForm : LazyRootForm
+
+export declare const RootForm: (new (init: ModelInit<RootForm>) => RootForm) & {
+  copyOf(source: RootForm, mutator: (draft: MutableModel<RootForm>) => MutableModel<RootForm> | void): RootForm;
+}
 
 type EagerDecision = {
   readonly [__modelMeta__]: {
@@ -115,7 +311,7 @@ type EagerDecision = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly status: string;
+  readonly status: ReviewStatus | keyof typeof ReviewStatus;
   readonly serializedEditorState: string;
   readonly testapplicationID: string;
   readonly createdAt?: string | null;
@@ -128,7 +324,7 @@ type LazyDecision = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly status: string;
+  readonly status: ReviewStatus | keyof typeof ReviewStatus;
   readonly serializedEditorState: string;
   readonly testapplicationID: string;
   readonly createdAt?: string | null;
@@ -139,6 +335,40 @@ export declare type Decision = LazyLoading extends LazyLoadingDisabled ? EagerDe
 
 export declare const Decision: (new (init: ModelInit<Decision>) => Decision) & {
   copyOf(source: Decision, mutator: (draft: MutableModel<Decision>) => MutableModel<Decision> | void): Decision;
+}
+
+type EagerFormAnswer = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<FormAnswer, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly values?: string | null;
+  readonly page?: string | null;
+  readonly section?: string | null;
+  readonly testapplicationID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyFormAnswer = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<FormAnswer, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly values?: string | null;
+  readonly page?: string | null;
+  readonly section?: string | null;
+  readonly testapplicationID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type FormAnswer = LazyLoading extends LazyLoadingDisabled ? EagerFormAnswer : LazyFormAnswer
+
+export declare const FormAnswer: (new (init: ModelInit<FormAnswer>) => FormAnswer) & {
+  copyOf(source: FormAnswer, mutator: (draft: MutableModel<FormAnswer>) => MutableModel<FormAnswer> | void): FormAnswer;
 }
 
 type EagerNote = {
@@ -213,8 +443,11 @@ type EagerTestCycle = {
   readonly endDate?: string | null;
   readonly isOpen: boolean;
   readonly props?: string | null;
-  readonly habitatID: string;
   readonly TestApplications?: (TestApplication | null)[] | null;
+  readonly rootformID: string;
+  readonly name?: string | null;
+  readonly closedCycleMessage: string;
+  readonly formUrl: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -229,8 +462,11 @@ type LazyTestCycle = {
   readonly endDate?: string | null;
   readonly isOpen: boolean;
   readonly props?: string | null;
-  readonly habitatID: string;
   readonly TestApplications: AsyncCollection<TestApplication>;
+  readonly rootformID: string;
+  readonly name?: string | null;
+  readonly closedCycleMessage: string;
+  readonly formUrl: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -371,13 +607,15 @@ type EagerTestApplication = {
   readonly lastSection?: string | null;
   readonly members?: (Member | null)[] | null;
   readonly submittedDate: string;
-  readonly reviewStatus?: string | null;
+  readonly reviewStatus: ReviewStatus | keyof typeof ReviewStatus;
   readonly submissionStatus: SubmissionStatus | keyof typeof SubmissionStatus;
   readonly props?: string | null;
   readonly type: ApplicationTypes | keyof typeof ApplicationTypes;
   readonly testcycleID: string;
   readonly Notes?: (Note | null)[] | null;
+  readonly FormAnswers?: (FormAnswer | null)[] | null;
   readonly Decisions?: (Decision | null)[] | null;
+  readonly customStatus?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -392,13 +630,15 @@ type LazyTestApplication = {
   readonly lastSection?: string | null;
   readonly members: AsyncCollection<Member>;
   readonly submittedDate: string;
-  readonly reviewStatus?: string | null;
+  readonly reviewStatus: ReviewStatus | keyof typeof ReviewStatus;
   readonly submissionStatus: SubmissionStatus | keyof typeof SubmissionStatus;
   readonly props?: string | null;
   readonly type: ApplicationTypes | keyof typeof ApplicationTypes;
   readonly testcycleID: string;
   readonly Notes: AsyncCollection<Note>;
+  readonly FormAnswers: AsyncCollection<FormAnswer>;
   readonly Decisions: AsyncCollection<Decision>;
+  readonly customStatus?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -606,7 +846,8 @@ type EagerHabitat = {
   readonly props: HabitatProps;
   readonly users?: (string | null)[] | null;
   readonly AMI?: (string | null)[] | null;
-  readonly TestCycles?: (TestCycle | null)[] | null;
+  readonly authenticationHeader?: string | null;
+  readonly RootForms?: (RootForm | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -626,7 +867,8 @@ type LazyHabitat = {
   readonly props: HabitatProps;
   readonly users?: (string | null)[] | null;
   readonly AMI?: (string | null)[] | null;
-  readonly TestCycles: AsyncCollection<TestCycle>;
+  readonly authenticationHeader?: string | null;
+  readonly RootForms: AsyncCollection<RootForm>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

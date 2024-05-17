@@ -1,0 +1,8 @@
+.hfh_formio_space_y_6 div > div[ref='component'] + div[ref='component'] {
+  margin-top: 1.5rem;
+}
+
+.hfh_formio_space_y_6 div .formio-hidden,
+.formio-hidden {
+  margin-top: 0 !important;
+}

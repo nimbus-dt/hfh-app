@@ -1,0 +1,48 @@
+/* 
+  hfh_formio_file must be added to the custom CSS class on the next components: 
+    - file
+*/
+
+.hfh_formio_file label.col-form-label {
+  padding: 0.25rem 1rem;
+  color: var(--amplify-colors-neutral-100);
+  cursor: pointer;
+}
+
+.hfh_formio_file i.fa-remove {
+  cursor: pointer;
+}
+
+.hfh_formio_file div.file {
+  padding: 0.5rem !important;
+}
+
+.hfh_formio_file .list-group-item:only-child {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.hfh_formio_file .list-group-item {
+  border-color: var(--amplify-colors-neutral-80);
+  padding: 16px 12px;
+  background-color: var(--amplify-colors-white);
+  font-family: var(--amplify-fonts-default-variable);
+  font-weight: var(--amplify-font-weights-normal);
+  font-size: var(--amplify-font-sizes-small);
+  line-height: var(--amplify-line-heights-small);
+  letter-spacing: 0.5px;
+}
+
+.hfh_formio_file .list-group-item:first-child {
+  background-color: var(--amplify-colors-neutral-20);
+  font-weight: var(--amplify-font-weights-normal);
+  border-bottom-color: var(--amplify-colors-neutral-80);
+}
+
+.hfh_formio_file div.fileSelector {
+  border-color: var(--amplify-colors-neutral-40);
+}
+
+.hfh_formio_file i.fa-cloud-upload {
+  vertical-align: middle;
+}

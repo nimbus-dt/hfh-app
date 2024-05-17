@@ -1,7 +1,96 @@
+type SidebarName {
+  name: String
+  fontSize: String
+}
+
+enum ReviewStatus {
+  ACCEPTED
+  PENDING
+  DENIED
+  RETURNED
+}
+
+type ApplicantProps {
+  state: String!
+  city: String!
+  street: String!
+  householdMembersNumber: Int!
+  householdAnnualIncome: Float!
+  currentlyUnemployed: String!
+  currentWorkTitle: String
+  nameOfEmployer: String
+  howDidYouHearAbout: String!
+  firstTimeApplying: String!
+  whatAreYouInterestedIn: String!
+}
+
+type AffiliateProps {
+  titleAtHabitat: String!
+  roleDescription: String!
+  joinDate: AWSDate
+  joinMonth: String
+  joinYear: String
+}
+
+enum Sexs {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum UserTypes {
+  AFFILIATE
+  APPLICANT
+}
+
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  dateOfBirth: AWSDate!
+  sex: Sexs!
+  phoneNumber: String!
+  affiliateProps: AffiliateProps
+  applicantProps: ApplicantProps
+  type: UserTypes!
+  owner: ID!
+}
+
+enum RootFormStatusTypes {
+  ACTIVE
+  PENDING
+}
+
+type RootForm @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  status: RootFormStatusTypes
+  description: String
+  files: [String]
+  Cycles: [TestCycle] @hasMany(indexName: "byRootForm", fields: ["id"])
+  habitatID: ID! @index(name: "byHabitat")
+  formUrls: [String!]!
+}
+
+type GalleryItem {
+  id: String
+  image: String
+  title: String
+  message: String
+}
+
 type Decision @model @auth(rules: [{allow: public}]) {
   id: ID!
-  status: String!
+  status: ReviewStatus!
   serializedEditorState: String!
+  testapplicationID: ID! @index(name: "byTestApplication")
+}
+
+type FormAnswer @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  values: AWSJSON
+  page: String
+  section: String
   testapplicationID: ID! @index(name: "byTestApplication")
 }
 
@@ -54,16 +143,22 @@ type HabitatProps {
   homeownershipRecordQuestions: [RecordQuestion!]
   homeownershipWrittenQuestions: [WrittenQuestion!]
   optionalSections: OptionalSections!
+  gallery: [GalleryItem!]
+  sidebarName: SidebarName
+  closedCycleMessages: [String!]!
 }
 
 type TestCycle @model @auth(rules: [{allow: public}]) {
   id: ID!
-  startDate: AWSDate!
+  startDate: AWSDateTime!
   endDate: AWSDate
   isOpen: Boolean!
   props: AWSJSON
-  habitatID: ID! @index(name: "byHabitat")
   TestApplications: [TestApplication] @hasMany(indexName: "byTestCycle", fields: ["id"])
+  rootformID: ID! @index(name: "byRootForm")
+  name: String
+  closedCycleMessage: String!
+  formUrl: String!
 }
 
 enum ApplicationTypes {
@@ -78,9 +173,8 @@ type ApplicantOptional @model @auth(rules: [{allow: public}]) {
 }
 
 enum SubmissionStatus {
-  SUBMITTED
-  UNSUBMITTED
-  RETURNED
+  INCOMPLETE
+  COMPLETED
 }
 
 type Asset @model @auth(rules: [{allow: public}]) {
@@ -107,13 +201,15 @@ type TestApplication @model @auth(rules: [{allow: public}]) {
   lastSection: String
   members: [Member] @hasMany(indexName: "byTestApplication", fields: ["id"])
   submittedDate: AWSDate!
-  reviewStatus: String
+  reviewStatus: ReviewStatus!
   submissionStatus: SubmissionStatus!
   props: AWSJSON
   type: ApplicationTypes!
   testcycleID: ID! @index(name: "byTestCycle")
   Notes: [Note] @hasMany(indexName: "byTestApplication", fields: ["id"])
+  FormAnswers: [FormAnswer] @hasMany(indexName: "byTestApplication", fields: ["id"])
   Decisions: [Decision] @hasMany(indexName: "byTestApplication", fields: ["id"])
+  customStatus: String
 }
 
 type EmploymentInfo @model @auth(rules: [{allow: public}]) {
@@ -164,6 +260,7 @@ type Habitat @model @auth(rules: [{allow: public}]) {
   props: HabitatProps!
   users: [ID]
   AMI: [String]
-  TestCycles: [TestCycle] @hasMany(indexName: "byHabitat", fields: ["id"])
+  authenticationHeader: String
+  RootForms: [RootForm] @hasMany(indexName: "byHabitat", fields: ["id"])
 }
  

@@ -14,6 +14,8 @@ const FileInput = ({
   isDisabled,
   hasError,
   errorMessage,
+  onInvalid,
+  onBlur,
 }) => {
   const filesInputRef = useRef();
 
@@ -73,6 +75,8 @@ const FileInput = ({
         }
         hasError={hasError}
         errorMessage={errorMessage}
+        onInvalid={onInvalid}
+        onBlur={onBlur}
       />
 
       {files && files.length > 0 && (
@@ -144,6 +148,8 @@ FileInput.propTypes = {
   isDisabled: PropTypes.bool,
   hasError: PropTypes.bool,
   errorMessage: PropTypes.string,
+  onInvalid: PropTypes.func,
+  onBlur: PropTypes.func,
 };
 
 export default FileInput;

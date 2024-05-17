@@ -1,0 +1,170 @@
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { MdArrowDropDown } from 'react-icons/md';
+import { throttle } from 'lodash';
+
+import Footer from 'components/Footer';
+
+import styles from '../SignUpQuestions.module.css';
+import dataProps from '../types';
+
+interface Inputs {
+  firstName: string;
+  lastName: string;
+  dob: string;
+  phone: string;
+  sex: 'MALE' | 'FEMALE' | 'OTHER';
+}
+
+interface GeneralProps {
+  data: dataProps;
+  setData: React.Dispatch<React.SetStateAction<dataProps>>;
+}
+
+const General = ({ data, setData }: GeneralProps) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>();
+
+  const onSubmit: SubmitHandler<Inputs> = (generalData) => {
+    setData((prev) => ({
+      ...prev,
+      current: prev.current + 1,
+      general: generalData,
+    }));
+  };
+
+  return (
+    <form
+      className={styles.background}
+      onSubmit={throttle(handleSubmit(onSubmit), 500)}
+    >
+      <div className={styles.body}>
+        <div>
+          <label
+            htmlFor="firstName"
+            className={`theme-body-medium ${styles.label}`}
+          >
+            What is your name?
+          </label>
+          <div className={styles.fullname}>
+            <div>
+              <input
+                id="firstName"
+                placeholder="John"
+                defaultValue={data?.general?.firstName || ''}
+                {...register('firstName', { required: true })}
+                className={`${styles.text_input} theme-body-medium`}
+              />
+              {errors.firstName && (
+                <span className={`${styles.error} theme-body-small`}>
+                  This field is required
+                </span>
+              )}
+            </div>
+            <div>
+              <input
+                id="lastName"
+                placeholder="Doe"
+                defaultValue={data?.general?.lastName || ''}
+                {...register('lastName', { required: true })}
+                className={`${styles.text_input} theme-body-medium`}
+              />
+              {errors.lastName && (
+                <span className={`${styles.error} theme-body-small`}>
+                  This field is required
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+        <div>
+          <label htmlFor="dob" className={`theme-body-medium ${styles.label}`}>
+            What is your date of birth?
+          </label>
+          <div>
+            <input
+              id="dob"
+              type="date"
+              defaultValue={data?.general?.dob || ''}
+              className={`theme-body-medium ${styles.date_input}`}
+              {...register('dob', { required: true })}
+            />
+            {errors.dob && (
+              <span className={`${styles.error} theme-body-small`}>
+                This field is required
+              </span>
+            )}
+          </div>
+        </div>
+        <div>
+          <label
+            htmlFor="phone"
+            className={`theme-body-medium ${styles.label}`}
+          >
+            What is your phone number?
+          </label>
+          <div>
+            <input
+              id="phone"
+              type="tel"
+              placeholder="(000) 000 0000"
+              defaultValue={data?.general?.phone || ''}
+              {...register('phone', {
+                required: true,
+                pattern: /\(\d{3}\) \d{3}-\d{4}/,
+              })}
+              onChange={(e) => {
+                const { value } = e.target;
+                e.target.value = value
+                  .replace(/\D/g, '')
+                  .replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3')
+                  .replace(/(-\d{4})\d+?$/, '$1');
+              }}
+              className={`${styles.text_input} theme-body-medium`}
+            />
+            {errors.phone && (
+              <span className={`${styles.error} theme-body-small`}>
+                This field is required
+              </span>
+            )}
+            {errors.phone?.type === 'pattern' && (
+              <span className={`${styles.error} theme-body-small`}>
+                Invalid Phone Number, should be in the format (XXX) XXX-XXXX
+              </span>
+            )}
+          </div>
+        </div>
+        <div>
+          <label htmlFor="sex" className={`theme-body-medium ${styles.label}`}>
+            What is your sex?
+          </label>
+          <div>
+            <div className={styles.select}>
+              <select
+                id="sex"
+                className={styles.select_input}
+                defaultValue={data?.general?.sex || ''}
+                {...register('sex', { required: true })}
+              >
+                <option value="MALE">Male</option>
+                <option value="FEMALE">Female</option>
+                <option value="OTHER">Other</option>
+              </select>
+              <MdArrowDropDown size="1.5rem" className={styles.arrow} />
+            </div>
+            {errors.sex && (
+              <span className={`${styles.error} theme-body-small`}>
+                This field is required
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+      <Footer />
+    </form>
+  );
+};
+
+export default General;
