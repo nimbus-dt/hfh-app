@@ -43,15 +43,23 @@ const ApplicantDecisionsPage = () => {
 
   const { data: decisions }: { data: Decision[] } = useDecisionsQuery({
     criteria: (c2: RecursiveModelPredicate<Decision>) =>
-      c2.or((c3) =>
-        applications.map((application) =>
+      c2.or((c3) => {
+        const newDecisions = applications.map((application) =>
           c3.testapplicationID.eq(application.id)
-        )
-      ),
+        );
+
+        if (!newDecisions.length) {
+          return [c3.id.eq('')];
+        }
+
+        return newDecisions;
+      }),
     dependencyArray: [applications],
     paginationProducer: (s: SortPredicate<Decision>) =>
       s.createdAt(SortDirection.DESCENDING),
   });
+
+  console.log(applications, decisions);
 
   return (
     <View padding="32px">
