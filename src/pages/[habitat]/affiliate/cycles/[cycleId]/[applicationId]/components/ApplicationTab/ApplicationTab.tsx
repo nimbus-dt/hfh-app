@@ -1,56 +1,20 @@
-import { Flex } from '@aws-amplify/ui-react';
 import { Form } from '@formio/react';
-import CustomButton from 'components/CustomButton/CustomButton';
-import {
-  ApplicationTypes,
-  SubmissionStatus,
-  FormAnswer,
-  TestApplication,
-  Habitat,
-} from 'models';
+import { ApplicationTypes, FormAnswer, TestApplication } from 'models';
 
-import React from 'react';
 import { generateSubmission } from 'utils/formio';
 import PaperApplicationTable from './components/PaperApplicationTable';
-import ReturnModal from './components/ReturnModal';
-import DecideModal from './components/DecideModal';
-import {
-  TDecideSchema,
-  TReturnSchema,
-} from '../../AffiliateApplicationDetailsPage.schema';
 
 interface IProperties {
   application?: TestApplication;
-  formAnswers: FormAnswer[];
+  formAnswers: unknown[];
   formUrl: string;
-  returnModalOpen: boolean;
-  handleReturnModalOnClose: () => void;
-  handleOnValidReturn: (data: TReturnSchema) => void;
-  decideModalOpen: boolean;
-  handleDecideModalOnClose: () => void;
-  handleOnValidDecide: (data: TDecideSchema) => void;
-  handleReturnOnClick: () => void;
-  handleDecideOnClick: () => void;
-  loading: number;
 }
 
 const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
-const ApplicationTab = ({
-  application,
-  formAnswers,
-  formUrl,
-  returnModalOpen,
-  handleReturnModalOnClose,
-  handleOnValidReturn,
-  decideModalOpen,
-  handleDecideModalOnClose,
-  handleOnValidDecide,
-  handleReturnOnClick,
-  handleDecideOnClick,
-  loading,
-}: IProperties) => (
+const ApplicationTab = ({ application, formAnswers, formUrl }: IProperties) => (
   <div>
+    <br />
     <Form
       key="review"
       src={`${FORMIO_URL}/${formUrl}`}
@@ -58,37 +22,10 @@ const ApplicationTab = ({
         readOnly: true,
         renderMode: 'flat',
       }}
-      submission={generateSubmission(formAnswers)}
+      submission={generateSubmission(formAnswers as FormAnswer[])}
     />
-    {application?.type === ApplicationTypes.PAPER ? (
+    {application?.type === ApplicationTypes.PAPER && (
       <PaperApplicationTable application={application} />
-    ) : (
-      application &&
-      application?.submissionStatus === SubmissionStatus.COMPLETED && (
-        <>
-          <br />
-          <Flex justifyContent="end">
-            <ReturnModal
-              open={returnModalOpen}
-              onClose={handleReturnModalOnClose}
-              onValidReturn={handleOnValidReturn}
-              loading={loading}
-            />
-            <DecideModal
-              open={decideModalOpen}
-              onClose={handleDecideModalOnClose}
-              onValid={handleOnValidDecide}
-              loading={loading}
-            />
-            <CustomButton variation="secondary" onClick={handleReturnOnClick}>
-              Return
-            </CustomButton>
-            <CustomButton variation="primary" onClick={handleDecideOnClick}>
-              Decide
-            </CustomButton>
-          </Flex>
-        </>
-      )
     )}
   </div>
 );

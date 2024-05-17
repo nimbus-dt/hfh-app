@@ -134,7 +134,6 @@ function App() {
             path={ROUTES.HABITAT_AFFILIATE_USERS}
             element={<p>This page is under construction</p>}
           />
-
           <Route path=":formId">
             <Route index element={<CyclesPage />} />
             <Route path={ROUTES.HABITAT_AFFILIATE_CYCLES_CYCLE}>
@@ -147,7 +146,6 @@ function App() {
           </Route>
         </Route>
       </Route>
-      <Route path="testing" element={<AffiliateFormsPage />} />
 
       <Route path="/*" element={<h1>404</h1>} />
     </Routes>

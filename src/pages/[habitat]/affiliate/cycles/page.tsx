@@ -50,7 +50,11 @@ const CyclesPage = () => {
         TestCycle,
         (c1) =>
           c1.and((c2) => {
-            const criteriaArray = [c2.rootformID.eq(formId)];
+            const criteriaArray = [];
+
+            if (formId) {
+              criteriaArray.push(c2.rootformID.eq(formId));
+            }
 
             if (filters?.status === 'open' || filters.status === 'close') {
               criteriaArray.push(c2.isOpen.eq(filters.status === 'open'));
@@ -73,7 +77,11 @@ const CyclesPage = () => {
 
       const openCyclesResponse = await DataStore.query(TestCycle, (c1) =>
         c1.and((c2) => {
-          const criteriaArray = [c2.rootformID.eq(formId), c2.isOpen.eq(true)];
+          const criteriaArray = [c2.isOpen.eq(true)];
+
+          if (formId) {
+            criteriaArray.push(c2.rootformID.eq(formId));
+          }
 
           return criteriaArray;
         })
