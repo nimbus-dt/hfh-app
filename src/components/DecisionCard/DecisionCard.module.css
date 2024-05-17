@@ -1,3 +1,18 @@
+.container {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+  flex-direction: column;
+}
+
+.dateTimeContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
+}
+
 .time {
   color: var(--amplify-colors-neutral-90);
 }
@@ -6,4 +21,16 @@
   font-weight: var(--amplify-font-weights-semibold);
   line-height: var(--amplify-line-heights-small);
   margin-bottom: 12px;
+}
+
+/* Amplify UI large */
+@media (min-width: 992px) {
+  .container {
+    flex-direction: row;
+  }
+
+  .dateTimeContainer {
+    width: fit-content;
+    flex-direction: column;
+  }
 }

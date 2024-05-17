@@ -6,6 +6,7 @@ import React from 'react';
 import StatusChip from 'components/StatusChip';
 import { ReviewStatus } from 'models';
 import { dateOnly, timeOnly } from 'utils/dates';
+import { Link } from 'react-router-dom';
 import style from './DecisionCard.module.css';
 
 interface IProperties {
@@ -13,7 +14,7 @@ interface IProperties {
   habitat: string;
   status: keyof typeof ReviewStatus;
   editorState: string;
-  showReviewButton?: boolean;
+  applicationRoute?: string;
 }
 
 const DecisionCard = ({
@@ -21,31 +22,33 @@ const DecisionCard = ({
   habitat,
   status,
   editorState,
-  showReviewButton,
+  applicationRoute: applicantionRoute,
 }: IProperties) => (
   <ExpandableCard>
-    <Flex alignItems="start" gap="40px">
-      <Flex direction="column" alignItems="end" gap="0">
+    <div className={style.container}>
+      <div className={style.dateTimeContainer}>
         <View className="theme-subtitle-s2">
           <Text>{dateOnly(date)}</Text>
         </View>
         <Text as="span" className={style.time}>
           {timeOnly(date)}
         </Text>
-      </Flex>
+      </div>
       <View flex="1">
         <View className={`theme-subtitle-s1 ${style.habitat}`}>
           <Text>{habitat}</Text>
         </View>
         <StatusChip status={status} />
         <LexicalEditor serializedEditorState={editorState} />
-        {showReviewButton && (
+        {applicantionRoute && (
           <Flex justifyContent="right">
-            <CustomButton>Review</CustomButton>
+            <Link to={applicantionRoute}>
+              <CustomButton>Review</CustomButton>
+            </Link>
           </Flex>
         )}
       </View>
-    </Flex>
+    </div>
   </ExpandableCard>
 );
 

@@ -28,6 +28,7 @@ interface IProperties {
   habitat?: Habitat;
   application?: TestApplication;
   cycle?: TestCycle;
+  formContainer?: boolean;
 }
 
 const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
@@ -137,7 +138,12 @@ const Layout = ({
   );
 };
 
-const Form = ({ habitat, application, cycle }: IProperties) => {
+const Form = ({
+  habitat,
+  application,
+  cycle,
+  formContainer = true,
+}: IProperties) => {
   const [reviewMode, setReviewMode] = useState(false);
   const [formReady, setFormReady] = useState<typeof Wizard>();
 
@@ -262,7 +268,7 @@ const Form = ({ habitat, application, cycle }: IProperties) => {
         <div>
           {reviewMode ||
           application?.submissionStatus === SubmissionStatus.COMPLETED ? (
-            <div className={`${style.formContainer}`}>
+            <div className={formContainer ? `${style.formContainer}` : ''}>
               <FormioForm
                 key="review"
                 src={`${FORMIO_URL}/loudoun`}
