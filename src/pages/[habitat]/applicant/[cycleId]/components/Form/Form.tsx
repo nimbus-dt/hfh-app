@@ -268,7 +268,13 @@ const Form = ({
         <div>
           {reviewMode ||
           application?.submissionStatus === SubmissionStatus.COMPLETED ? (
-            <div className={formContainer ? `${style.formContainer}` : ''}>
+            <div
+              className={
+                formContainer
+                  ? style.formContainer
+                  : `${style.formContainer} ${style.newpadding}`
+              }
+            >
               <FormioForm
                 key="review"
                 src={`${FORMIO_URL}/${cycle?.formUrl}`}
@@ -324,7 +330,10 @@ const Form = ({
             </div>
           ) : (
             <Layout formReady={formReady} habitat={habitat}>
-              <div className={`${style.formContainer}`}>
+              <div
+                className={`${style.formContainer}`}
+                style={{ padding: '2rem 1rem' }}
+              >
                 <FormioForm
                   key="real"
                   src={`${FORMIO_URL}/${cycle?.formUrl}`}

@@ -175,12 +175,7 @@ const ApplicantCyclePage = () => {
           />
           <div className={style.tabContainer}>
             {activeTab === 0 && (
-              <Form
-                habitat={habitat}
-                application={application}
-                cycle={cycle}
-                formContainer={false}
-              />
+              <Form habitat={habitat} application={application} cycle={cycle} />
             )}
             {activeTab === 1 && <Decisions application={application} />}
           </div>
@@ -190,14 +185,12 @@ const ApplicantCyclePage = () => {
   }
 
   return (
-    <div className={`${style.page}`}>
-      <Form
-        habitat={habitat}
-        application={application}
-        cycle={cycle}
-        formContainer={false}
-      />
-    </div>
+    <Form
+      habitat={habitat}
+      application={application}
+      cycle={cycle}
+      formContainer={false}
+    />
   );
 };
 

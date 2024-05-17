@@ -3,6 +3,7 @@ import { ApplicationTypes, FormAnswer, TestApplication } from 'models';
 
 import { generateSubmission } from 'utils/formio';
 import PaperApplicationTable from './components/PaperApplicationTable';
+import style from './ApplicationTab.module.css';
 
 interface IProperties {
   application?: TestApplication;
@@ -13,7 +14,7 @@ interface IProperties {
 const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
 const ApplicationTab = ({ application, formAnswers, formUrl }: IProperties) => (
-  <div>
+  <div className={style.formContainer}>
     <br />
     <Form
       key="review"
