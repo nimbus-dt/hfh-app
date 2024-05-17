@@ -55,11 +55,11 @@ const ApplicantDecisionsPage = () => {
         return newDecisions;
       }),
     dependencyArray: [applications],
-    paginationProducer: (s: SortPredicate<Decision>) =>
-      s.createdAt(SortDirection.DESCENDING),
+    paginationProducer: {
+      sort: (s: SortPredicate<Decision>) =>
+        s.createdAt(SortDirection.DESCENDING),
+    },
   });
-
-  console.log(applications, decisions);
 
   return (
     <View padding="32px">
