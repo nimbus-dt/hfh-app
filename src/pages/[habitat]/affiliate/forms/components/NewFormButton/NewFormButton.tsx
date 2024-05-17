@@ -81,6 +81,7 @@ function NewFormButton({ triggerUpdate }: IProperties) {
           status: RootFormStatusTypes.PENDING,
           description: formDataObject.description as string,
           habitatID: habitat.id,
+          formUrls: [],
         })
       );
 
