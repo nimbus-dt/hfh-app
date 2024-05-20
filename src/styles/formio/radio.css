@@ -47,6 +47,10 @@
   border: 2px solid var(--amplify-colors-neutral-80);
 }
 
+.hfh_formio_radio input.form-check-input[type='radio']:checked + span {
+  color: var(--amplify-colors-neutral-100);
+}
+
 .hfh_formio_radio input.form-check-input:checked[type='radio'] {
   --bs-form-check-bg-image: url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%27-4 -4 8 8%27%3e%3ccircle r=%272%27 fill=%27%23325CCA%27/%3e%3c/svg%3e');
 }
