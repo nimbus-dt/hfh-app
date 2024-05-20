@@ -5,7 +5,9 @@ import PropTypes from 'prop-types';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import Modal from 'components/Modal';
 import FileInput from 'components/FileInput';
+import CustomButton from 'components/CustomButton/CustomButton';
 import { INSERT_IMAGE_COMMAND } from '../../ImagePlugin';
+import style from '../ToolbarPlugin.module.css';
 
 const InsertImageButton = ({ buttonProps }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -108,14 +110,16 @@ const InsertImageButton = ({ buttonProps }) => {
           </Flex>
         )}
       </Modal>
-      <Button
+      <CustomButton
+        variation="text-only"
         onClick={handleOpenClose}
         {...buttonProps}
         aria-label="Insert Image"
         title="Insert Image"
+        className={style.toolbarButton}
       >
         <MdInsertPhoto />
-      </Button>
+      </CustomButton>
     </>
   );
 };
