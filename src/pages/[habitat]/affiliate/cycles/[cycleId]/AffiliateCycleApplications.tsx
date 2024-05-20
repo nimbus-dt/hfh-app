@@ -165,8 +165,8 @@ const AffiliateCycleApplications = () => {
       {!isSmall && (
         <BreadCrumbs
           items={[
-            { label: 'Homeownership Form' },
-            { label: 'Cycles' },
+            { label: 'Homeownership Form', to: '../../forms' },
+            { label: 'Cycles', to: '../' },
             { label: 'Applications' },
           ]}
         />
