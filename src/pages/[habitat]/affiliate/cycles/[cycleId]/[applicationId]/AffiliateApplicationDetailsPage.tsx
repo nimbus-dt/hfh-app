@@ -313,9 +313,9 @@ const AffiliateApplicationDetailsPage = () => {
     <div className={`${style.page}`}>
       <BreadCrumbs
         items={[
-          { label: 'Active Forms' },
-          { label: 'Cycles' },
-          { label: 'Applications' },
+          { label: 'Active Forms', to: '../../../forms' },
+          { label: 'Cycles', to: '../../' },
+          { label: 'Applications', to: '../' },
           { label: 'Detail' },
         ]}
       />
