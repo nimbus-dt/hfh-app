@@ -1,6 +1,5 @@
 import {
   Alert,
-  Button,
   Flex,
   Loader,
   SelectField,
@@ -20,7 +19,6 @@ import {
   ApplicationTypes,
   ReviewStatus,
 } from 'models';
-import { DEFAULT_REVIEW_STATUS } from 'utils/constants';
 import CustomButton from 'components/CustomButton/CustomButton';
 import { stringToHumanReadable } from 'utils/strings';
 import { newPaperApplicationSchema } from './NewApplicationModal.schema';
@@ -63,6 +61,7 @@ const NewApplicationModal = ({ open, onClose, setTrigger, habitat, cycle }) => {
         new TestApplication({
           props: {
             name: data.name,
+            paperApplicationKeys: [],
           },
           submittedDate: data.submittedDate,
           reviewStatus: data.reviewStatus,
@@ -109,7 +108,7 @@ const NewApplicationModal = ({ open, onClose, setTrigger, habitat, cycle }) => {
     <Modal
       title="New Paper Application"
       open={open}
-      onClickClose={onClose}
+      onClickClose={() => loading === 0 && onClose()}
       width="35rem"
     >
       {showError && (
@@ -199,7 +198,7 @@ const NewApplicationModal = ({ open, onClose, setTrigger, habitat, cycle }) => {
           <Flex justifyContent="end">
             <CustomButton
               variation="secondary"
-              onClick={onClose}
+              onClick={() => loading === 0 && onClose()}
               disabled={loading > 0}
             >
               Cancel
