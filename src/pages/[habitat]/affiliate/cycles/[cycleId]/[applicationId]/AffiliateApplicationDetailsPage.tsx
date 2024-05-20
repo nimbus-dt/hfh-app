@@ -33,6 +33,7 @@ import {
   ReviewStatus,
   Habitat,
   LazyDecision,
+  ApplicationTypes,
 } from 'models';
 import { DataStore, RecursiveModelPredicate } from '@aws-amplify/datastore';
 import { getEditorStateWithFilesInBucket } from 'utils/lexicalEditor';
@@ -334,7 +335,9 @@ const AffiliateApplicationDetailsPage = () => {
             { label: 'Applications', icon: <MdOutlineNoteAlt /> },
             { label: 'Notes', icon: <MdOutlineTextSnippet /> },
             { label: 'Decisions', icon: <MdOutlineLibraryAddCheck /> },
-            { label: 'Calculations', icon: <MdOutlineCalculate /> },
+            ...(application?.type === ApplicationTypes.ONLINE
+              ? [{ label: 'Calculations', icon: <MdOutlineCalculate /> }]
+              : []),
           ]}
           current={activeTab}
           onChange={(newCurrent) => setActiveTab(newCurrent)}
