@@ -14,9 +14,15 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import FileInput from 'components/FileInput';
 import { DataStore, Storage } from 'aws-amplify';
-import { TestApplication, SubmissionStatus, ApplicationTypes } from 'models';
+import {
+  TestApplication,
+  SubmissionStatus,
+  ApplicationTypes,
+  ReviewStatus,
+} from 'models';
 import { DEFAULT_REVIEW_STATUS } from 'utils/constants';
 import CustomButton from 'components/CustomButton/CustomButton';
+import { stringToHumanReadable } from 'utils/strings';
 import { newPaperApplicationSchema } from './NewApplicationModal.schema';
 
 const NewApplicationModal = ({ open, onClose, setTrigger, habitat, cycle }) => {
@@ -60,7 +66,7 @@ const NewApplicationModal = ({ open, onClose, setTrigger, habitat, cycle }) => {
           },
           submittedDate: data.submittedDate,
           reviewStatus: data.reviewStatus,
-          submissionStatus: SubmissionStatus.PENDING,
+          submissionStatus: SubmissionStatus.COMPLETED,
           testcycleID: cycle.id,
           type: ApplicationTypes.PAPER,
         })
@@ -152,14 +158,18 @@ const NewApplicationModal = ({ open, onClose, setTrigger, habitat, cycle }) => {
             isRequired
             disabled={loading > 0}
           >
-            <option value={DEFAULT_REVIEW_STATUS}>
-              {DEFAULT_REVIEW_STATUS}
+            <option value={ReviewStatus.PENDING}>
+              {stringToHumanReadable(ReviewStatus.PENDING)}
             </option>
-            {habitat.props.customStatus?.map((statusItem) => (
-              <option key={statusItem} value={statusItem}>
-                {statusItem}
-              </option>
-            ))}
+            <option value={ReviewStatus.ACCEPTED}>
+              {stringToHumanReadable(ReviewStatus.ACCEPTED)}
+            </option>
+            <option value={ReviewStatus.RETURNED}>
+              {stringToHumanReadable(ReviewStatus.RETURNED)}
+            </option>
+            <option value={ReviewStatus.DENIED}>
+              {stringToHumanReadable(ReviewStatus.DENIED)}
+            </option>
           </SelectField>
           <Controller
             control={control}
