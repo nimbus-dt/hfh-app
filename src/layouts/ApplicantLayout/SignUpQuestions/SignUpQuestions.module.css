@@ -47,7 +47,7 @@
   border: 1px solid var(--amplify-colors-neutral-80);
   border-radius: 0.5rem;
 
-  color: var(--amplify-colors-neutral-90);
+  color: var(--amplify-colors-neutral-100);
   background-color: var(--amplify-colors-neutral-10);
 }
 
@@ -63,7 +63,7 @@
   border: 1px solid var(--amplify-colors-neutral-80);
   border-radius: 0.5rem;
 
-  color: var(--amplify-colors-neutral-90);
+  color: var(--amplify-colors-neutral-100);
   background-color: var(--amplify-colors-neutral-10);
 }
 
@@ -101,7 +101,7 @@
   border: 1px solid var(--amplify-colors-neutral-80);
   border-radius: 0.5rem;
 
-  color: var(--amplify-colors-neutral-90);
+  color: var(--amplify-colors-neutral-100);
   background-color: var(--amplify-colors-neutral-10);
 
   text-transform: uppercase;
@@ -145,7 +145,7 @@
   border: 1px solid var(--amplify-colors-neutral-80);
   border-radius: 0.5rem;
 
-  color: var(--amplify-colors-neutral-90);
+  color: var(--amplify-colors-neutral-100);
   background-color: transparent;
 
   cursor: pointer;
