@@ -21,7 +21,6 @@ import {
   useTestApplicationById,
   useTestCycleById,
 } from 'hooks/services';
-import { set } from 'lodash';
 import {
   Decision,
   FormAnswer,
