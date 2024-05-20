@@ -22,6 +22,7 @@ import CustomButton from 'components/CustomButton/CustomButton';
 import { RecursiveModelPredicate } from '@aws-amplify/datastore';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
+import Loading from 'components/Loading';
 import style from './Form.module.css';
 
 interface IProperties {
@@ -38,7 +39,7 @@ const Layout = ({
   habitat,
   children,
 }: {
-  formReady: typeof Wizard;
+  formReady?: typeof Wizard;
   habitat?: Habitat;
   children: ReactNode;
 }) => {
@@ -98,42 +99,47 @@ const Layout = ({
   ];
   return (
     <div style={{ width: '100%' }}>
-      <Header current={currentPage} pages={pages || mock} habitat={habitat} />
+      {!formReady && <Loading />}
+      {formReady && (
+        <Header current={currentPage} pages={pages || mock} habitat={habitat} />
+      )}
       {children}
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <Footer
-          goBack={
-            currentPage === 0
-              ? undefined
-              : () => {
-                  setCurrentPage((prev) => prev - 1);
-                  formReady.prevPage().catch((error: unknown) => {
-                    console.log(error);
-                  });
-                }
-          }
-          onNext={() => {
-            if (
+      {formReady && (
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Footer
+            goBack={
+              currentPage === 0
+                ? undefined
+                : () => {
+                    setCurrentPage((prev) => prev - 1);
+                    formReady.prevPage().catch((error: unknown) => {
+                      console.log(error);
+                    });
+                  }
+            }
+            onNext={() => {
+              if (
+                formReady?.componentComponents &&
+                currentPage === formReady.componentComponents.length - 1
+              ) {
+                formReady.submit().catch((error: unknown) => {
+                  console.log(error);
+                });
+                return;
+              }
+              setCurrentPage((prev) => prev + 1);
+              formReady.nextPage().catch((error: unknown) => {
+                console.log(error);
+                setCurrentPage((prev) => prev - 1);
+              });
+            }}
+            submit={
               formReady?.componentComponents &&
               currentPage === formReady.componentComponents.length - 1
-            ) {
-              formReady.submit().catch((error: unknown) => {
-                console.log(error);
-              });
-              return;
             }
-            setCurrentPage((prev) => prev + 1);
-            formReady.nextPage().catch((error: unknown) => {
-              console.log(error);
-              setCurrentPage((prev) => prev - 1);
-            });
-          }}
-          submit={
-            formReady?.componentComponents &&
-            currentPage === formReady.componentComponents.length - 1
-          }
-        />
-      </div>
+          />
+        </div>
+      )}
     </div>
   );
 };
