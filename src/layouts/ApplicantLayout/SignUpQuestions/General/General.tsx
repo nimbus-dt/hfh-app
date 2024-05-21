@@ -71,7 +71,10 @@ const General = ({ data, setData }: GeneralProps) => {
     setData((prev) => ({
       ...prev,
       current: prev.current + 1,
-      general: generalData,
+      general: {
+        ...generalData,
+        city: selectedCity,
+      },
     }));
   };
 

@@ -20,7 +20,6 @@ import { Habitat, RootForm, RootFormStatusTypes } from 'models';
 import { useOutletContext } from 'react-router-dom';
 import { API, Storage } from 'aws-amplify';
 
-const SUB_ADMINISTRATOR = process.env.REACT_APP_SUB_ADMINISTRATOR;
 const EMAIL_S3_BUCKET = process.env.REACT_APP_EMAIL_S3_BUCKET;
 
 interface IProperties {
@@ -101,7 +100,7 @@ function NewFormButton({ triggerUpdate }: IProperties) {
         })
       );
 
-      await API.post('sendEmailToApplicantAPI', '/notify', {
+      await API.post('public', '/email-admin', {
         body: {
           subject: `Action Required: Set Up New Form for ${habitat?.name} Habitat`,
           body: `
@@ -119,8 +118,6 @@ function NewFormButton({ triggerUpdate }: IProperties) {
               </ul>
             </div>
           `,
-          sub: SUB_ADMINISTRATOR,
-          habitat: habitat?.name,
         },
       });
 
