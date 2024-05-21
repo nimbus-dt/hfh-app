@@ -319,15 +319,31 @@ const AffiliateApplicationDetailsPage = () => {
           { label: 'Detail' },
         ]}
       />
-      <div className={`${style.cta}`}>
-        <Link to="../">
-          <IconButton variation="not-outlined">
-            <MdOutlineArrowBack />
-          </IconButton>
-        </Link>
-        <span className={`theme-headline-medium ${style.title}`}>
-          Application Details
-        </span>
+      <div className={`${style.ctaContainer}`}>
+        <div className={`${style.cta}`}>
+          <Link to="../">
+            <IconButton variation="not-outlined">
+              <MdOutlineArrowBack />
+            </IconButton>
+          </Link>
+          <span className={`theme-headline-medium ${style.title}`}>
+            Application Details
+          </span>
+        </div>
+        <div>
+          <Buttons
+            application={application}
+            returnModalOpen={returnModalOpen}
+            handleReturnModalOnClose={handleReturnModalOnClose}
+            handleOnValidReturn={handleOnValidReturn}
+            decideModalOpen={decideModalOpen}
+            handleDecideModalOnClose={handleDecideModalOnClose}
+            handleOnValidDecide={handleOnValidDecide}
+            handleReturnOnClick={handleReturnOnClick}
+            handleDecideOnClick={handleDecideOnClick}
+            loading={loading}
+          />
+        </div>
       </div>
       <div className={`${style.detailsContainer}`}>
         <LocalNavigation
@@ -343,18 +359,6 @@ const AffiliateApplicationDetailsPage = () => {
           onChange={(newCurrent) => setActiveTab(newCurrent)}
         />
         <div className={style.tabContainer}>
-          <Buttons
-            application={application}
-            returnModalOpen={returnModalOpen}
-            handleReturnModalOnClose={handleReturnModalOnClose}
-            handleOnValidReturn={handleOnValidReturn}
-            decideModalOpen={decideModalOpen}
-            handleDecideModalOnClose={handleDecideModalOnClose}
-            handleOnValidDecide={handleOnValidDecide}
-            handleReturnOnClick={handleReturnOnClick}
-            handleDecideOnClick={handleDecideOnClick}
-            loading={loading}
-          />
           {activeTab === 0 && (
             <ApplicationTab
               application={application}
