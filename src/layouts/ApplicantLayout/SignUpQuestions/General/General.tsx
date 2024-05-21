@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { MdArrowDropDown } from 'react-icons/md';
 import { throttle } from 'lodash';
@@ -5,6 +6,7 @@ import { throttle } from 'lodash';
 import Footer from 'components/Footer';
 import states from 'assets/jsons/states.json';
 
+import { API } from 'aws-amplify';
 import styles from '../SignUpQuestions.module.css';
 import dataProps from '../types';
 
@@ -20,6 +22,11 @@ interface Inputs {
   zipCode: string;
 }
 
+interface City {
+  id: string;
+  city: string;
+}
+
 interface GeneralProps {
   data: dataProps;
   setData: React.Dispatch<React.SetStateAction<dataProps>>;
@@ -28,9 +35,37 @@ interface GeneralProps {
 const General = ({ data, setData }: GeneralProps) => {
   const {
     register,
+    watch,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
+
+  const watchState = watch(['state']);
+
+  const [cities, setCities] = useState<City[]>([]);
+  const [selectedCity, setSelectedCity] = useState('');
+
+  const handleCityChange = async () => {
+    if (selectedCity.length > 0) {
+      try {
+        const response = await API.get(
+          'public',
+          `/cities?cityNameQuery=${selectedCity}&state=${watchState}`,
+          {}
+        );
+        setCities(response);
+      } catch (error) {
+        console.error('Error fetching cities:', error);
+      }
+    } else {
+      setCities([]);
+    }
+  };
+
+  const handleSelectCity = (city: string) => {
+    setSelectedCity(city);
+    setCities([]);
+  };
 
   const onSubmit: SubmitHandler<Inputs> = (generalData) => {
     setData((prev) => ({
@@ -205,10 +240,35 @@ const General = ({ data, setData }: GeneralProps) => {
               id="city"
               type="string"
               placeholder="Los Angeles"
-              defaultValue={data?.general?.city || ''}
+              value={selectedCity}
               {...register('city', { required: true })}
+              onChange={async (event) => {
+                setSelectedCity(event.target.value);
+                handleCityChange();
+              }}
               className={`${styles.text_input} theme-body-medium`}
             />
+            {cities.length > 0 && (
+              <ul
+                style={{
+                  border: '1px solid #ccc',
+                  maxHeight: '150px',
+                  overflowY: 'auto',
+                }}
+              >
+                {cities.map((city) => (
+                  // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
+                  <li
+                    key={city.id}
+                    onClick={() => handleSelectCity(city.city)}
+                    onKeyPress={() => handleSelectCity(city.city)}
+                    style={{ padding: '8px', cursor: 'pointer' }}
+                  >
+                    {city.city}
+                  </li>
+                ))}
+              </ul>
+            )}
             {errors.city && (
               <span className={`${styles.error} theme-body-small`}>
                 This field is required
