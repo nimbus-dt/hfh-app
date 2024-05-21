@@ -3,6 +3,12 @@
   border-radius: 8px;
 }
 
+.button:disabled {
+  background-color: var(--amplify-colors-neutral-40) !important;
+  color: var(--amplify-colors-neutral-80) !important;
+  border: none !important;
+}
+
 .primary {
   border: none;
   background-color: var(--amplify-colors-black);

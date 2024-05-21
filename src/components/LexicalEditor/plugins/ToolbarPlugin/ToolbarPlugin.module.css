@@ -1,0 +1,9 @@
+.toolbarButton {
+  padding: 0.5rem;
+  line-height: 1rem;
+}
+
+.selected {
+  background-color: var(--amplify-colors-black) !important;
+  color: var(--amplify-colors-white) !important;
+}
