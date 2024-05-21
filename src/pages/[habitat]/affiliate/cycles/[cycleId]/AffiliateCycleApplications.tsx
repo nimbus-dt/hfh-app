@@ -21,9 +21,16 @@ import {
   MdOutlineArrowBack,
   MdOutlineClose,
   MdOutlineFilterList,
+  MdOutlineLink,
   MdOutlineOpenInNew,
 } from 'react-icons/md';
-import { Link, useOutletContext, useParams } from 'react-router-dom';
+import {
+  Link,
+  resolvePath,
+  useLocation,
+  useOutletContext,
+  useParams,
+} from 'react-router-dom';
 import { stringToHumanReadable } from 'utils/strings';
 import IconButton from 'components/IconButton';
 import BreadCrumbs from 'components/BreadCrumbs/BreadCrumbs';
@@ -55,6 +62,7 @@ interface IOutletContext {
 }
 
 const AffiliateCycleApplications = () => {
+  const { pathname } = useLocation();
   const isSmall = useBreakpointValue({
     base: true,
     medium: false,
@@ -160,6 +168,13 @@ const AffiliateCycleApplications = () => {
     setReviewStatus(undefined);
   };
 
+  const handleCopyToClipboard = () => {
+    const pathToForm = resolvePath(`../../../applicant/${cycleId}`, pathname);
+    const { origin } = window.location;
+    const applicantLink = `${origin}${pathToForm.pathname}`;
+    navigator.clipboard.writeText(applicantLink);
+  };
+
   return (
     <div className={style.container}>
       {!isSmall && (
@@ -189,9 +204,18 @@ const AffiliateCycleApplications = () => {
           >{`${applications.length} results`}</span>
         </div>
         <div className={`${style.options}`}>
-          <IconButton type="button" onClick={handleOpenCloseFilters}>
-            <MdOutlineFilterList />
-          </IconButton>
+          <div className={`${style.suboptions}`}>
+            <IconButton
+              type="button"
+              onClick={handleCopyToClipboard}
+              title="Copy link for applicants to clipboard"
+            >
+              <MdOutlineLink />
+            </IconButton>
+            <IconButton type="button" onClick={handleOpenCloseFilters}>
+              <MdOutlineFilterList />
+            </IconButton>
+          </div>
           {filterModal && (
             <form
               onSubmit={handleSubmit(handleFilterOnValid)}

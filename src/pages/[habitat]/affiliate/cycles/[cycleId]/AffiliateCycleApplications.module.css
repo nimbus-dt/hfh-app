@@ -38,6 +38,12 @@
   align-items: flex-end;
 }
 
+.suboptions {
+  display: flex;
+  gap: 16px;
+  flex-direction: row;
+}
+
 .openButtonContainer {
   display: flex;
   justify-content: center;
