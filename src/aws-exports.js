@@ -3,31 +3,31 @@
 
 const awsmobile = {
     "aws_project_region": "us-east-1",
-    "aws_appsync_graphqlEndpoint": "https://7a5m3kr7srgjrgohwc2ntu566u.appsync-api.us-east-1.amazonaws.com/graphql",
+    "aws_appsync_graphqlEndpoint": "https://bzb3lua7prhnhmacovwset7uhm.appsync-api.us-east-1.amazonaws.com/graphql",
     "aws_appsync_region": "us-east-1",
     "aws_appsync_authenticationType": "API_KEY",
-    "aws_appsync_apiKey": "da2-5mejunhxonflln7d3n6lwkkgky",
+    "aws_appsync_apiKey": "da2-zovr7u2pcngvpi64lo4ifslk2q",
     "aws_cloud_logic_custom": [
         {
             "name": "public",
-            "endpoint": "https://xwgw1qqerd.execute-api.us-east-1.amazonaws.com/prod",
+            "endpoint": "https://i66lb0nl6d.execute-api.us-east-1.amazonaws.com/legacy",
             "region": "us-east-1"
         },
         {
             "name": "sendEmailToApplicantAPI",
-            "endpoint": "https://ezcqlkrlt3.execute-api.us-east-1.amazonaws.com/prod",
+            "endpoint": "https://4mi6thejn1.execute-api.us-east-1.amazonaws.com/legacy",
             "region": "us-east-1"
         },
         {
             "name": "userAPI",
-            "endpoint": "https://j8f0ysunl3.execute-api.us-east-1.amazonaws.com/prod",
+            "endpoint": "https://2ku1bqmk7b.execute-api.us-east-1.amazonaws.com/legacy",
             "region": "us-east-1"
         }
     ],
-    "aws_cognito_identity_pool_id": "us-east-1:775a799c-b880-4b85-910f-ae7a69182c58",
+    "aws_cognito_identity_pool_id": "us-east-1:f314e278-635e-49e5-b614-32b693edf68c",
     "aws_cognito_region": "us-east-1",
-    "aws_user_pools_id": "us-east-1_3zxo02ghK",
-    "aws_user_pools_web_client_id": "4d6574ks6b0h37sr6g6dqsq280",
+    "aws_user_pools_id": "us-east-1_WjYZe6cm8",
+    "aws_user_pools_web_client_id": "2t208fksh5s64o47bp3o5gsadn",
     "oauth": {},
     "aws_cognito_username_attributes": [
         "EMAIL"
@@ -45,7 +45,7 @@ const awsmobile = {
     "aws_cognito_verification_mechanisms": [
         "EMAIL"
     ],
-    "aws_user_files_s3_bucket": "hfh-app-storage-bucket160335-prod",
+    "aws_user_files_s3_bucket": "hfh-app-storage-bucket145532-legacy",
     "aws_user_files_s3_bucket_region": "us-east-1"
 };
 
