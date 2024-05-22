@@ -134,15 +134,6 @@ type CheckQuestion {
 
 type HabitatProps {
   customStatus: [String!]
-  homeownershipTermsText: String!
-  homeownershipMinCurrentAddressMonths: Int!
-  homeownershipMinCurrentEmploymentMonths: Int!
-  homeownershipNoOpenCycle: String!
-  homeownershipHomeText: String!
-  homeownershipCheckQuestions: [CheckQuestion!]
-  homeownershipRecordQuestions: [RecordQuestion!]
-  homeownershipWrittenQuestions: [WrittenQuestion!]
-  optionalSections: OptionalSections!
   gallery: [GalleryItem!]
   sidebarName: SidebarName
   closedCycleMessages: [String!]!

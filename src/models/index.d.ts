@@ -187,15 +187,6 @@ export declare const CheckQuestion: (new (init: ModelInit<CheckQuestion>) => Che
 
 type EagerHabitatProps = {
   readonly customStatus?: string[] | null;
-  readonly homeownershipTermsText: string;
-  readonly homeownershipMinCurrentAddressMonths: number;
-  readonly homeownershipMinCurrentEmploymentMonths: number;
-  readonly homeownershipNoOpenCycle: string;
-  readonly homeownershipHomeText: string;
-  readonly homeownershipCheckQuestions?: CheckQuestion[] | null;
-  readonly homeownershipRecordQuestions?: RecordQuestion[] | null;
-  readonly homeownershipWrittenQuestions?: WrittenQuestion[] | null;
-  readonly optionalSections: OptionalSections;
   readonly gallery?: GalleryItem[] | null;
   readonly sidebarName?: SidebarName | null;
   readonly closedCycleMessages: string[];
@@ -203,15 +194,6 @@ type EagerHabitatProps = {
 
 type LazyHabitatProps = {
   readonly customStatus?: string[] | null;
-  readonly homeownershipTermsText: string;
-  readonly homeownershipMinCurrentAddressMonths: number;
-  readonly homeownershipMinCurrentEmploymentMonths: number;
-  readonly homeownershipNoOpenCycle: string;
-  readonly homeownershipHomeText: string;
-  readonly homeownershipCheckQuestions?: CheckQuestion[] | null;
-  readonly homeownershipRecordQuestions?: RecordQuestion[] | null;
-  readonly homeownershipWrittenQuestions?: WrittenQuestion[] | null;
-  readonly optionalSections: OptionalSections;
   readonly gallery?: GalleryItem[] | null;
   readonly sidebarName?: SidebarName | null;
   readonly closedCycleMessages: string[];

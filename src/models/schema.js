@@ -2059,80 +2059,6 @@ export const schema = {
                     "attributes": [],
                     "isArrayNullable": true
                 },
-                "homeownershipTermsText": {
-                    "name": "homeownershipTermsText",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "homeownershipMinCurrentAddressMonths": {
-                    "name": "homeownershipMinCurrentAddressMonths",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "homeownershipMinCurrentEmploymentMonths": {
-                    "name": "homeownershipMinCurrentEmploymentMonths",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "homeownershipNoOpenCycle": {
-                    "name": "homeownershipNoOpenCycle",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "homeownershipHomeText": {
-                    "name": "homeownershipHomeText",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "homeownershipCheckQuestions": {
-                    "name": "homeownershipCheckQuestions",
-                    "isArray": true,
-                    "type": {
-                        "nonModel": "CheckQuestion"
-                    },
-                    "isRequired": true,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
-                "homeownershipRecordQuestions": {
-                    "name": "homeownershipRecordQuestions",
-                    "isArray": true,
-                    "type": {
-                        "nonModel": "RecordQuestion"
-                    },
-                    "isRequired": true,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
-                "homeownershipWrittenQuestions": {
-                    "name": "homeownershipWrittenQuestions",
-                    "isArray": true,
-                    "type": {
-                        "nonModel": "WrittenQuestion"
-                    },
-                    "isRequired": true,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
-                "optionalSections": {
-                    "name": "optionalSections",
-                    "isArray": false,
-                    "type": {
-                        "nonModel": "OptionalSections"
-                    },
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "gallery": {
                     "name": "gallery",
                     "isArray": true,
@@ -2164,5 +2090,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "1e4db53358620aed39ea03a75b4c0232"
+    "version": "bec3f924046e9c0b0b662e50d1fd1cac"
 };
