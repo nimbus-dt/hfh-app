@@ -79,7 +79,7 @@ const RecordsSection = ({
       >
         {records ? (
           <>
-            {habitat?.props.homeownershipRecordQuestions.map((record) => (
+            {[].map((record) => (
               <View key={record.name}>
                 <FileInput
                   label={record.label}

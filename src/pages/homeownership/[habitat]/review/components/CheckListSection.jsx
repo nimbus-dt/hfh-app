@@ -72,7 +72,7 @@ export function ChecklistSection({
       >
         {checklist ? (
           <>
-            {habitat?.props.homeownershipCheckQuestions.map((question) => (
+            {[].map((question) => (
               <View key={question.name}>
                 <RadioGroupField
                   label={question.label}

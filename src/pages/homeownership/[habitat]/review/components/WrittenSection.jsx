@@ -66,17 +66,15 @@ const WrittenSection = ({
       >
         {writtenQuestions ? (
           <>
-            {habitat?.props.homeownershipWrittenQuestions.map(
-              (writtenQuestion) => (
-                <TextAreaField
-                  key={writtenQuestion.name}
-                  label={writtenQuestion.label}
-                  value={writtenQuestions?.props[writtenQuestion.name] || ''}
-                  isDisabled
-                  marginBottom="1rem"
-                />
-              )
-            )}
+            {[].map((writtenQuestion) => (
+              <TextAreaField
+                key={writtenQuestion.name}
+                label={writtenQuestion.label}
+                value={writtenQuestions?.props[writtenQuestion.name] || ''}
+                isDisabled
+                marginBottom="1rem"
+              />
+            ))}
             {!submitted && (
               <Flex width="100%" justifyContent="end">
                 <Link to="../written">

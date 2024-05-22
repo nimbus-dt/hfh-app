@@ -112,22 +112,20 @@ export default function HomeownershipWrittenPage() {
         onExpandedChange={handleOnExpandedChange}
       >
         <form onSubmit={handleSubmit(onValidSubmit)}>
-          {habitat?.props.homeownershipWrittenQuestions.map(
-            (writtenQuestion) => (
-              <TextAreaField
-                {...register(writtenQuestion.name)}
-                key={writtenQuestion.name}
-                label={writtenQuestion.label}
-                placeholder={writtenQuestion.placeholder}
-                type="text"
-                hasError={errors[writtenQuestion.name] !== undefined}
-                errorMessage={errors[writtenQuestion.name]?.message}
-                isRequired
-                isDisabled={!isEnabled}
-                marginBottom="1rem"
-              />
-            )
-          )}
+          {[].map((writtenQuestion) => (
+            <TextAreaField
+              {...register(writtenQuestion.name)}
+              key={writtenQuestion.name}
+              label={writtenQuestion.label}
+              placeholder={writtenQuestion.placeholder}
+              type="text"
+              hasError={errors[writtenQuestion.name] !== undefined}
+              errorMessage={errors[writtenQuestion.name]?.message}
+              isRequired
+              isDisabled={!isEnabled}
+              marginBottom="1rem"
+            />
+          ))}
           <Flex width="100%" justifyContent="end">
             {writtenQuestions ? (
               <Button onClick={handleOnClickEdit} variation="secondary">

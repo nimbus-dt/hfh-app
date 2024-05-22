@@ -162,7 +162,7 @@ export default function HomeownershipRecordsPage() {
         onExpandedChange={handleOnExpandedChange}
       >
         <form onSubmit={handleSubmit(onValidSubmit)}>
-          {habitat?.props.homeownershipRecordQuestions.map((record) => (
+          {[].map((record) => (
             <View key={record.name}>
               <Controller
                 control={control}

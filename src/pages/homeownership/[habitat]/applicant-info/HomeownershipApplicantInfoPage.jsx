@@ -18,10 +18,9 @@ export default function HomeownershipApplicantInfoPage() {
   const { application, updateApplicationLastSection, habitat } =
     useOutletContext();
 
-  const shouldRenderCoApplicant = habitat?.props.optionalSections.coApplicant;
+  const shouldRenderCoApplicant = false;
 
-  const shouldRenderTypeOfOwnership =
-    habitat?.props.optionalSections.typeOfOwnership;
+  const shouldRenderTypeOfOwnership = false;
 
   const [applicantInfo, setApplicantInfo] = useState();
 
@@ -221,8 +220,7 @@ export default function HomeownershipApplicantInfoPage() {
             originalApplicantInfo.props = {
               ...originalApplicantInfo.props,
               previousAddress:
-                data.monthsLivedHere >=
-                habitat?.props.homeownershipMinCurrentAddressMonths
+                data.monthsLivedHere >= 12
                   ? undefined
                   : original.props.previousAddress,
               currentAddress: newData,
@@ -239,10 +237,7 @@ export default function HomeownershipApplicantInfoPage() {
           )
         );
       }
-      if (
-        data.monthsLivedHere <
-        habitat?.props.homeownershipMinCurrentAddressMonths
-      ) {
+      if (data.monthsLivedHere < 12) {
         setPreviousAddressOpen(true);
       } else if (shouldRenderCoApplicant) {
         setTypeOfCreditOpen(true);
@@ -657,8 +652,7 @@ export default function HomeownershipApplicantInfoPage() {
           originalApplicantInfo.props = {
             ...originalApplicantInfo.props,
             coApplicantPreviousAddress:
-              data.monthsLivedHere >=
-              habitat?.props.homeownershipMinCurrentAddressMonths
+              data.monthsLivedHere >= 12
                 ? undefined
                 : original.props.coApplicantPreviousAddress,
             coApplicantCurrentAddress: newData,
@@ -675,10 +669,7 @@ export default function HomeownershipApplicantInfoPage() {
         )
       );
 
-      if (
-        data.monthsLivedHere <
-        habitat?.props.homeownershipMinCurrentAddressMonths
-      ) {
+      if (data.monthsLivedHere < 12) {
         setCoApplicantPreviousAddressOpen(true);
       }
       setCoApplicantCurrentAddressOpen(false);
@@ -774,8 +765,7 @@ export default function HomeownershipApplicantInfoPage() {
         return true;
       }
       if (
-        applicantInfo.props.currentAddress.monthsLivedHere <
-          habitat?.props.homeownershipMinCurrentAddressMonths &&
+        applicantInfo.props.currentAddress.monthsLivedHere < 12 &&
         applicantInfo.props.previousAddress === undefined
       ) {
         return true;
@@ -793,8 +783,7 @@ export default function HomeownershipApplicantInfoPage() {
       if (
         applicantInfo?.props?.hasCoApplicant === 'Yes' &&
         shouldRenderCoApplicant &&
-        applicantInfo.props.coApplicantCurrentAddress.monthsLivedHere <
-          habitat?.props.homeownershipMinCurrentAddressMonths &&
+        applicantInfo.props.coApplicantCurrentAddress.monthsLivedHere < 12 &&
         applicantInfo.props.coApplicantPreviousAddress === undefined
       ) {
         return true;
@@ -869,8 +858,7 @@ export default function HomeownershipApplicantInfoPage() {
           onClickEdit={handleOnClickCurrentAddressEdit}
         />
         <br />
-        {applicantInfo?.props?.currentAddress?.monthsLivedHere <
-          habitat?.props.homeownershipMinCurrentAddressMonths && (
+        {applicantInfo?.props?.currentAddress?.monthsLivedHere < 12 && (
           <>
             <PrevAddress
               expanded={previousAddressOpen}
@@ -970,8 +958,7 @@ export default function HomeownershipApplicantInfoPage() {
                   />
                   <br />
                   {applicantInfo?.props?.coApplicantCurrentAddress
-                    ?.monthsLivedHere <
-                    habitat?.props.homeownershipMinCurrentAddressMonths && (
+                    ?.monthsLivedHere < 12 && (
                     <>
                       <PrevAddress
                         expanded={coApplicantPreviousAddressOpen}
