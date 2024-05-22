@@ -13,7 +13,6 @@ interface IProperties
   > {
   icon?: ReactNode;
   variation?: 'primary' | 'secondary' | 'text-only';
-  type?: 'submit';
 }
 
 const CustomButton = ({
@@ -21,10 +20,12 @@ const CustomButton = ({
   icon,
   variation = 'primary',
   className,
+  type = 'button',
   ...otherProps
 }: IProperties) => (
   <button
     className={`${style.button} ${style[variation]} theme-button ${className}`}
+    type={type}
     {...otherProps}
   >
     <div className={style.container}>
