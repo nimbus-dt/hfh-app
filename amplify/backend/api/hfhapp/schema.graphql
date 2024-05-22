@@ -246,11 +246,8 @@ type Habitat @model @auth(rules: [{allow: public}]) {
   urlName: String
   state: String
   city: String
-  county: String
-  countiesServed: [String]
   props: HabitatProps!
   users: [ID]
-  AMI: [String]
   authenticationHeader: String
   RootForms: [RootForm] @hasMany(indexName: "byHabitat", fields: ["id"])
 }

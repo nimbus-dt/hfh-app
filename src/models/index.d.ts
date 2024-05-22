@@ -823,11 +823,8 @@ type EagerHabitat = {
   readonly urlName?: string | null;
   readonly state?: string | null;
   readonly city?: string | null;
-  readonly county?: string | null;
-  readonly countiesServed?: (string | null)[] | null;
   readonly props: HabitatProps;
   readonly users?: (string | null)[] | null;
-  readonly AMI?: (string | null)[] | null;
   readonly authenticationHeader?: string | null;
   readonly RootForms?: (RootForm | null)[] | null;
   readonly createdAt?: string | null;
@@ -844,11 +841,8 @@ type LazyHabitat = {
   readonly urlName?: string | null;
   readonly state?: string | null;
   readonly city?: string | null;
-  readonly county?: string | null;
-  readonly countiesServed?: (string | null)[] | null;
   readonly props: HabitatProps;
   readonly users?: (string | null)[] | null;
-  readonly AMI?: (string | null)[] | null;
   readonly authenticationHeader?: string | null;
   readonly RootForms: AsyncCollection<RootForm>;
   readonly createdAt?: string | null;

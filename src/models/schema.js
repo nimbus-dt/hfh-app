@@ -1608,21 +1608,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "county": {
-                    "name": "county",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "countiesServed": {
-                    "name": "countiesServed",
-                    "isArray": true,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
                 "props": {
                     "name": "props",
                     "isArray": false,
@@ -1636,14 +1621,6 @@ export const schema = {
                     "name": "users",
                     "isArray": true,
                     "type": "ID",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
-                "AMI": {
-                    "name": "AMI",
-                    "isArray": true,
-                    "type": "String",
                     "isRequired": false,
                     "attributes": [],
                     "isArrayNullable": true
@@ -2090,5 +2067,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "bec3f924046e9c0b0b662e50d1fd1cac"
+    "version": "6c9412f86b67f2c1297d9db24687bef2"
 };
