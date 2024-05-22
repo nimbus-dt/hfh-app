@@ -81,11 +81,15 @@ const ApplicantDecisionsPage = () => {
             habitat={habitat?.name || ''}
             status={ReviewStatus[data?.status || 'PENDING']}
             editorState={data.serializedEditorState}
-            applicationRoute={`../${
-              applications.find(
-                (application) => data.testapplicationID === application.id
-              )?.testcycleID
-            }`}
+            applicationRoute={
+              data?.status === ReviewStatus.RETURNED
+                ? `../${
+                    applications.find(
+                      (application) => data.testapplicationID === application.id
+                    )?.testcycleID
+                  }`
+                : undefined
+            }
           />
         ))}
       </Flex>
