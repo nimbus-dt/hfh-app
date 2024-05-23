@@ -21,6 +21,7 @@
     "@lexical/rich-text": "^0.14.3",
     "@lexical/selection": "^0.14.3",
     "@lexical/utils": "^0.14.3",
+    "@paddle/paddle-js": "^1.1.0",
     "@react-email/render": "^0.0.7",
     "@reduxjs/toolkit": "^1.9.7",
     "@testing-library/jest-dom": "^5.17.0",

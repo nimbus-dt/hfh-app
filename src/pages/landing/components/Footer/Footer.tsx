@@ -2,14 +2,17 @@ import { Flex, Text, useBreakpointValue } from '@aws-amplify/ui-react';
 import Modal from 'components/Modal';
 import { useState } from 'react';
 import './style.css';
+import Payment from './components/Payment';
 
 function Footer() {
   const [modalOpen, setModalOpen] = useState(false);
   const [policy, setPolicy] = useState(0);
+
   const modalWidth = useBreakpointValue({
     base: '80%',
     large: '780px',
   });
+
   const policyTitles = [
     'Privacy Policy',
     'Terms of Service',
@@ -322,6 +325,7 @@ function Footer() {
   );
 
   const policyTexts = [privacyPolicy, termsOfService, dataPolicy];
+
   const policyModal = (
     <Modal
       title={policyTitles[policy]}
@@ -346,16 +350,7 @@ function Footer() {
       justifyContent="end"
       backgroundColor="var(--amplify-colors-neutral-10)"
     >
-      <Text
-        padding="12px 16px"
-        width="fit-content"
-        height="fit-content"
-        textAlign="center"
-        color="var(--amplify-colors-neutral-10)"
-        fontSize="12px"
-      >
-        Payment
-      </Text>
+      <Payment />
       <Text
         padding="12px 16px"
         width="fit-content"

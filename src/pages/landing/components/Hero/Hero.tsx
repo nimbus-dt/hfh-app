@@ -1,6 +1,6 @@
 import { Flex, Image, Text } from '@aws-amplify/ui-react';
 import CustomButton from 'components/CustomButton/CustomButton';
-import heroScreen from 'assets/images/hero-screen.svg';
+import heroScreen from 'assets/images/hero-screen.png';
 import './style.css';
 
 function Hero() {
@@ -70,6 +70,8 @@ function Hero() {
           large: '654px',
         }}
         src={heroScreen}
+        className="hero"
+        borderRadius="30px"
       />
     </Flex>
   );
