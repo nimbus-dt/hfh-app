@@ -14,8 +14,9 @@ import {
   Habitat,
   ApplicationTypes,
   ReviewStatus,
+  LazyFormAnswer,
 } from 'models';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   MdOutlineAdd,
   MdOutlineArrowBack,
@@ -415,15 +416,20 @@ const AffiliateCycleApplications = () => {
           const applicationProps = application.props as unknown as {
             name: string;
           };
+          console.log(applicationProps);
+          console.log(application);
+
           return {
             id: index,
             cells: [
               {
                 id: 'name',
                 value:
-                  application.type === ApplicationTypes.ONLINE
-                    ? 'John Doe'
-                    : applicationProps?.name || '',
+                  application.type === ApplicationTypes.ONLINE ? (
+                    <Name application={application} />
+                  ) : (
+                    applicationProps?.name || ''
+                  ),
               },
               {
                 id: 'type',
@@ -490,6 +496,30 @@ const AffiliateCycleApplications = () => {
       />
     </div>
   );
+};
+
+const Name = ({ application }: { application: TestApplication }) => {
+  const [name, setName] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await application.FormAnswers.toArray();
+      let response = 'unknown';
+      for (let i = 0; i < result.length; i++) {
+        // eslint-disable-next-line no-prototype-builtins
+        if (result[i]?.values?.hasOwnProperty('applicantBasicInformation')) {
+          response =
+            result[i]?.values?.applicantBasicInformation
+              ?.applicantBasicInformationFullName;
+        }
+      }
+      setName(response);
+    };
+
+    fetchData();
+  }, [application]);
+
+  return name;
 };
 
 export default AffiliateCycleApplications;
