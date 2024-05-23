@@ -1,10 +1,10 @@
 .nav {
   border-bottom: 1px solid var(--amplify-colors-neutral-60);
-  transition: transform 0.3s ease;
 }
 
 .navLink {
   cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
 .navLink:hover {

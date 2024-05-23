@@ -1,10 +1,14 @@
 import { Flex, Text } from '@aws-amplify/ui-react';
-import { MdCalculate } from 'react-icons/md';
+import {
+  MdOutlineAutoGraph,
+  MdOutlineCalculate,
+  MdOutlineFeed,
+} from 'react-icons/md';
 import { useState } from 'react';
 import FeatureCard from './components/FeatureCard';
 
 function Features() {
-  const [selectedCard, setSelectedCard] = useState(0);
+  const [selectedCard, setSelectedCard] = useState(1);
 
   return (
     <Flex
@@ -34,7 +38,7 @@ function Features() {
           height="fit-content"
           textAlign="center"
         >
-          Benefits of using the app
+          Habitat App automates your back-office
         </Text>
         <Text
           fontWeight="light"
@@ -44,8 +48,9 @@ function Features() {
           width="100%"
           height="100%"
         >
-          HabitatApp is here to digitally transform how affiliates conduct their
-          operations.
+          Don’t let complicated, expensive software get in the way of your home
+          builds. Habitat App's tools are easy to use and custom made to your
+          affiliate.
         </Text>
         <Flex
           direction={{ base: 'column', medium: 'row' }}
@@ -55,57 +60,45 @@ function Features() {
           height="fit-content"
         >
           <FeatureCard
-            title="Advanced Calculations"
-            description="Automate essential calculations like AMI, household income, and debt-to-income ratios."
+            title="Online Applications"
+            description="Fully online Homeownership, Repairs and Pre-Screening applications. Guidance at each step."
             icon={
-              <MdCalculate
+              <MdOutlineFeed
                 size="40px"
                 color="var(--amplify-colors-primary-100)"
               />
             }
             selected={selectedCard === 1}
             onClick={() => {
-              if (selectedCard !== 1) {
-                setSelectedCard(1);
-              } else {
-                setSelectedCard(0);
-              }
+              setSelectedCard(1);
             }}
           />
           <FeatureCard
             title="Advanced Calculations"
             description="Automate essential calculations like AMI, household income, and debt-to-income ratios."
             icon={
-              <MdCalculate
+              <MdOutlineCalculate
                 size="40px"
                 color="var(--amplify-colors-primary-100)"
               />
             }
             selected={selectedCard === 2}
             onClick={() => {
-              if (selectedCard !== 2) {
-                setSelectedCard(2);
-              } else {
-                setSelectedCard(0);
-              }
+              setSelectedCard(2);
             }}
           />
           <FeatureCard
-            title="Advanced Calculations"
-            description="Automate essential calculations like AMI, household income, and debt-to-income ratios."
+            title="Complete Analytics"
+            description="Directly report on reasons for denial, demographics, total acceptances per cycle and more."
             icon={
-              <MdCalculate
+              <MdOutlineAutoGraph
                 size="40px"
                 color="var(--amplify-colors-primary-100)"
               />
             }
             selected={selectedCard === 3}
             onClick={() => {
-              if (selectedCard !== 3) {
-                setSelectedCard(3);
-              } else {
-                setSelectedCard(0);
-              }
+              setSelectedCard(3);
             }}
           />
         </Flex>
@@ -119,7 +112,6 @@ function Features() {
           justifyContent="center"
           alignItems="center"
         >
-          {selectedCard === 0 && '0'}
           {selectedCard === 1 && '1'}
           {selectedCard === 2 && '2'}
           {selectedCard === 3 && '3'}

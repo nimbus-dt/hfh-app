@@ -1,3 +1,8 @@
 .mainContainer {
   cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.mainContainer:hover {
+  transform: translateY(-6px);
 }
