@@ -29,7 +29,7 @@ function Hero() {
           height="fit-content"
           textAlign="center"
         >
-          Forget about paper applications
+          Less paperwork. More builds.
         </Text>
         <Text
           fontWeight="light"
@@ -39,9 +39,11 @@ function Hero() {
           width="100%"
           height="100%"
         >
-          HabitatApp is here to digitally transform how affiliates conduct their
-          operations. <br />
-          <br /> Contact us now and get a 1 month free trial.
+          Habitat App is the only platform designed fully for Habitat for
+          Humanity affiliates.
+          <br />
+          <br />
+          Join our waitlist today and get a free application cycle.
         </Text>
         <CustomButton
           style={{
@@ -51,7 +53,7 @@ function Hero() {
             padding: '12px 16px',
           }}
         >
-          Get the app
+          Sign up
         </CustomButton>
       </Flex>
       <Image
