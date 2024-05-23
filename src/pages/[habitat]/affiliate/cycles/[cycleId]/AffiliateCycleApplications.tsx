@@ -270,7 +270,7 @@ const AffiliateCycleApplications = () => {
                       />
                       <CheckboxField
                         name=""
-                        label="Offline"
+                        label="Paper"
                         className={`${style.customCheckbox}`}
                         checked={value === ApplicationTypes.PAPER}
                         onChange={(event) =>
