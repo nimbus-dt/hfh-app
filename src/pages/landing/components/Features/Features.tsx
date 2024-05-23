@@ -1,10 +1,14 @@
-import { Flex, Text } from '@aws-amplify/ui-react';
+import { Flex, Image, Text } from '@aws-amplify/ui-react';
 import {
   MdOutlineAutoGraph,
   MdOutlineCalculate,
   MdOutlineFeed,
 } from 'react-icons/md';
 import { useState } from 'react';
+import featureAnalytics from 'assets/images/feature-analytics.svg';
+import featureCalculations from 'assets/images/feature-calculations.svg';
+import featureApplications from 'assets/images/feature-online.svg';
+
 import FeatureCard from './components/FeatureCard';
 
 function Features() {
@@ -107,14 +111,62 @@ function Features() {
           width="100%"
           height="fit-content"
           padding="32px"
-          backgroundColor="var(--amplify-colors-neutral-10)"
           alignContent="center"
           justifyContent="center"
           alignItems="center"
         >
-          {selectedCard === 1 && '1'}
-          {selectedCard === 2 && '2'}
-          {selectedCard === 3 && '3'}
+          {selectedCard === 1 && (
+            <Image
+              alt="application"
+              src={featureApplications}
+              width={{
+                base: '210px',
+                small: '296px',
+                medium: '463px',
+                large: '616px',
+              }}
+              height={{
+                base: '156px',
+                small: '220px',
+                medium: '344px',
+                large: '459px',
+              }}
+            />
+          )}
+          {selectedCard === 2 && (
+            <Image
+              alt="calculations"
+              width={{
+                base: '350px',
+                medium: '400px',
+                large: '576px',
+              }}
+              height={{
+                base: '241px',
+                medium: '274px',
+                large: '395px',
+              }}
+              src={featureCalculations}
+              borderRadius="30px"
+            />
+          )}
+          {selectedCard === 3 && (
+            <Image
+              alt="analytics"
+              width={{
+                base: '350px',
+                medium: '400px',
+                large: '576px',
+              }}
+              height={{
+                base: '241px',
+                medium: '274px',
+                large: '395px',
+              }}
+              src={featureAnalytics}
+              borderRadius="30px"
+            />
+          )}
         </Flex>
       </Flex>
     </Flex>

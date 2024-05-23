@@ -71,7 +71,7 @@ function Hero() {
         }}
         src={heroScreen}
         className="hero"
-        borderRadius="30px"
+        borderRadius={{ base: '5px', large: '30px' }}
       />
     </Flex>
   );
