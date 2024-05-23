@@ -99,17 +99,10 @@ function App() {
           />
         </Route>
         <Route path={ROUTES.HABITAT_AFFILIATE} element={<NewAffiliateLayout />}>
-          <Route path={ROUTES.HABITAT_AFFILIATE_HOME} element={<h1>Home</h1>} />
-          <Route path={ROUTES.HABITAT_AFFILIATE_CYCLES}>
-            <Route index element={<CyclesPage />} />
-            <Route path={ROUTES.HABITAT_AFFILIATE_CYCLES_CYCLE}>
-              <Route index element={<AffiliateCycleApplications />} />
-              <Route
-                path={ROUTES.HABITAT_AFFILIATE_CYCLES_CYCLE_APPLICATION}
-                element={<AffiliateApplicationDetailsPage />}
-              />
-            </Route>
-          </Route>
+          <Route
+            path={ROUTES.HABITAT_AFFILIATE_HOME}
+            element={<h1>This page is under construction</h1>}
+          />
           <Route
             path={ROUTES.HABITAT_AFFILIATE_REPAIRS}
             element={<AffiliatePortalRepairsPage />}
