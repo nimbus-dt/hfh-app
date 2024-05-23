@@ -242,14 +242,14 @@ const ApplicationsPage = () => {
           <Badge>
             <Flex alignItems="center">Total: {applications.length}</Flex>
           </Badge>
-          <Button
+          {/* <Button
             height="2rem"
             width="2rem"
             padding="0"
             onClick={handleAddNewApplicationOnClick}
           >
             <MdAdd size="1.25rem" />
-          </Button>
+          </Button> */}
         </Flex>
       </Flex>
       <Flex width="auto" direction="column" justifyContent="center">
