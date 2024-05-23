@@ -136,7 +136,8 @@
         },
         "getEmail": {
           "deploymentBucketName": "amplify-hfhapp-legacy-145532-deployment",
-          "s3Key": "amplify-builds/getEmail-32656859502b666c474d-build.zip"
+          "s3Key": "amplify-builds/getEmail-32656859502b666c474d-build.zip",
+          "authHfhappUserpoolid": "us-east-1_3zxo02ghK"
         },
         "getSubmittedApplicationsEmails": {
           "deploymentBucketName": "amplify-hfhapp-legacy-145532-deployment",

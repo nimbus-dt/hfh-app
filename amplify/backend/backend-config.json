@@ -211,6 +211,14 @@
         }
       ]
     },
+    "AMPLIFY_function_getEmail_authHfhappUserpoolid": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getEmail"
+        }
+      ]
+    },
     "AMPLIFY_function_getEmail_deploymentBucketName": {
       "usedBy": [
         {
