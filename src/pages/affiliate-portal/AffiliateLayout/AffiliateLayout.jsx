@@ -223,7 +223,7 @@ const AffiliateLayout = () => {
                           },
                         }}
                       >
-                        <Authenticator hideDefault />
+                        <Authenticator hideDefault hideSignUp />
                       </ThemeProvider>
                     </CustomCard>
                   )}

@@ -91,7 +91,7 @@ export default function HomeownershipHomePage() {
           },
         }}
       >
-        <Authenticator>{content}</Authenticator>
+        <Authenticator hideSignUp>{content}</Authenticator>
       </ThemeProvider>
     </CustomCard>
   );
