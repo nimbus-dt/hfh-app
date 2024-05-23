@@ -203,7 +203,11 @@ const NewApplicationModal = ({ open, onClose, setTrigger, habitat, cycle }) => {
             >
               Cancel
             </CustomButton>
-            <CustomButton variation="primary" disabled={loading > 0}>
+            <CustomButton
+              variation="primary"
+              type="submit"
+              disabled={loading > 0}
+            >
               Submit
             </CustomButton>
           </Flex>
