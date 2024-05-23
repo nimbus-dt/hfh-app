@@ -350,9 +350,11 @@ const AffiliateApplicationDetailsPage = () => {
           items={[
             { label: 'Applications', icon: <MdOutlineNoteAlt /> },
             { label: 'Notes', icon: <MdOutlineTextSnippet /> },
-            { label: 'Decisions', icon: <MdOutlineLibraryAddCheck /> },
             ...(application?.type === ApplicationTypes.ONLINE
-              ? [{ label: 'Calculations', icon: <MdOutlineCalculate /> }]
+              ? [
+                  { label: 'Decisions', icon: <MdOutlineLibraryAddCheck /> },
+                  { label: 'Calculations', icon: <MdOutlineCalculate /> },
+                ]
               : []),
           ]}
           current={activeTab}
