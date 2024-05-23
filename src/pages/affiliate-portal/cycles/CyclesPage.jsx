@@ -191,14 +191,14 @@ const CyclesPage = () => {
           <Badge>
             <Flex alignItems="center">Total: {cycles.length}</Flex>
           </Badge>
-          <Button
+          {/* <Button
             height="2rem"
             width="2rem"
             padding="0"
             onClick={handleOnClickNewCycle}
           >
             <MdAdd size="1.25rem" />
-          </Button>
+          </Button> */}
         </Flex>
       </Flex>
       <Flex width="auto" direction="column" justifyContent="center">
