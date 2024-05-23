@@ -416,9 +416,6 @@ const AffiliateCycleApplications = () => {
           const applicationProps = application.props as unknown as {
             name: string;
           };
-          console.log(applicationProps);
-          console.log(application);
-
           return {
             id: index,
             cells: [
