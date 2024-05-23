@@ -157,7 +157,11 @@
           "deploymentBucketName": "amplify-hfhapp-legacy-145532-deployment",
           "s3Key": "amplify-builds/sendEmailToApplicant-494f4a4e754a7533616d-build.zip"
         },
-        "hfhapp": {}
+        "hfhapp": {},
+        "updateApplicationOwner": {
+          "deploymentBucketName": "amplify-hfhapp-legacy-145532-deployment",
+          "s3Key": "amplify-builds/updateApplicationOwner-483278706e51324f3866-build.zip"
+        }
       },
       "api": {
         "hfhapp": {},
