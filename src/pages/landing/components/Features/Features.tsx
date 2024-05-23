@@ -120,14 +120,12 @@ function Features() {
               alt="application"
               src={featureApplications}
               width={{
-                base: '210px',
-                small: '296px',
+                base: '90%',
                 medium: '463px',
                 large: '616px',
               }}
               height={{
-                base: '156px',
-                small: '220px',
+                base: '67%',
                 medium: '344px',
                 large: '459px',
               }}
