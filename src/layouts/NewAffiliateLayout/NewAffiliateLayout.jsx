@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Outlet, useParams } from 'react-router-dom';
+import { Outlet, useParams, useOutlet, useNavigate } from 'react-router-dom';
 import { DataStore } from 'aws-amplify';
 import { Flex, Text, useAuthenticator } from '@aws-amplify/ui-react';
 import Authentication from 'components/Authentication';
@@ -18,8 +18,16 @@ const NewAffiliateLayout = () => {
     context.user,
   ]);
   const [userData, setUserData] = useState();
+  const outlet = useOutlet();
+  const navigate = useNavigate();
 
   const habitatUrlName = useParams('habitat').habitat;
+
+  useEffect(() => {
+    if (!outlet) {
+      navigate(`./forms`);
+    }
+  }, [outlet, navigate, habitatUrlName]);
 
   const addCustomStatusToHabitat = useCallback(
     async (newCustomStatus) => {
