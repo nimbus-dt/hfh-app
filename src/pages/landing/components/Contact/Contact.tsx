@@ -42,7 +42,7 @@ function Contact() {
           fontSize: '18px',
           padding: '12px 16px',
           backgroundColor: 'white',
-          color: 'black',
+          color: 'var(--amplify-colors-primary-110)',
         }}
       >
         Contact Us

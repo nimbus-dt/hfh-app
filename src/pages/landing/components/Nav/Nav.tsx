@@ -65,7 +65,6 @@ function Nav() {
             padding="12px 16px"
             width="fit-content"
             height="fit-content"
-            fontWeight="bold"
             textAlign="center"
             className="navLink"
             onClick={() => scrollToSection('#features')}
@@ -76,7 +75,6 @@ function Nav() {
             padding="12px 16px"
             width="fit-content"
             height="fit-content"
-            fontWeight="bold"
             textAlign="center"
             className="navLink"
             onClick={() => scrollToSection('#contact')}
@@ -87,7 +85,6 @@ function Nav() {
             padding="12px 16px"
             width="fit-content"
             height="fit-content"
-            fontWeight="bold"
             textAlign="center"
             className="navLink"
             onClick={() => scrollToSection('#faqs')}

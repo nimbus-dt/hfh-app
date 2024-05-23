@@ -11,7 +11,6 @@ function Features() {
       direction="row"
       width="100%"
       height="fit-content"
-      border="1px solid cyan"
       gap="48px"
       padding={{ base: '72px 32px', medium: '72px 48px', large: '72px 128px' }}
       alignItems="center"
