@@ -192,8 +192,11 @@ const NewAffiliateLayout = () => {
       ) : (
         <div className={style.notAllowedContainer}>
           <Text>
-            Sorry, <b style={{ fontWeight: 'bold' }}>{habitat.name}</b> has not
-            authorized you to access this page. Contact{' '}
+            Sorry,{' '}
+            <b style={{ fontWeight: 'bold' }}>
+              {habitat?.name || 'this habitat'}
+            </b>{' '}
+            has not authorized you to access this page. Contact{' '}
             <a href="mailto:support@habitat-app.org">support@habitat-app.org</a>{' '}
             for more information.
           </Text>
