@@ -2,7 +2,6 @@ import { Flex } from '@aws-amplify/ui-react';
 import Nav from './components/Nav';
 import Features from './components/Features';
 import Hero from './components/Hero';
-import Contact from './components/Contact';
 import Faqs from './components/Faqs';
 import Footer from './components/Footer';
 
@@ -12,7 +11,6 @@ function Landing() {
       <Nav />
       <Hero />
       <Features />
-      <Contact />
       <Faqs />
       <Footer />
     </Flex>

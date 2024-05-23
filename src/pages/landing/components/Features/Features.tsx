@@ -38,7 +38,7 @@ function Features() {
           height="fit-content"
           textAlign="center"
         >
-          Habitat App automates your back-office
+          No more paper applications
         </Text>
         <Text
           fontWeight="light"
@@ -48,9 +48,9 @@ function Features() {
           width="100%"
           height="100%"
         >
-          Don’t let complicated, expensive software get in the way of your home
-          builds. Habitat App's tools are easy to use and custom made to your
-          affiliate.
+          Habitat App allows applicants to submit online applications, upload
+          income records, revise application mistakes, and review decisions -
+          all in one place.
         </Text>
         <Flex
           direction={{ base: 'column', medium: 'row' }}
@@ -61,7 +61,7 @@ function Features() {
         >
           <FeatureCard
             title="Online Applications"
-            description="Fully online Homeownership, Repairs and Pre-Screening applications. Guidance at each step."
+            description="Fully online Homeownership and Critical Home Repair applications. Guidance at each step."
             icon={
               <MdOutlineFeed
                 size="40px"
@@ -89,7 +89,7 @@ function Features() {
           />
           <FeatureCard
             title="Complete Analytics"
-            description="Directly report on reasons for denial, demographics, total acceptances per cycle and more."
+            description="Gather reports on reasons for denial, demographics, total acceptances per cycle and more."
             icon={
               <MdOutlineAutoGraph
                 size="40px"

@@ -40,11 +40,8 @@ function Hero() {
           width="100%"
           height="100%"
         >
-          Habitat App is the only platform designed fully for Habitat for
-          Humanity affiliates.
-          <br />
-          <br />
-          Join our waitlist today and get a free application cycle.
+          Habitat App is the only platform designed specifically for your
+          affiliate's Homeownership and Critical Home Repair programs.
         </Text>
         <CustomButton
           style={{

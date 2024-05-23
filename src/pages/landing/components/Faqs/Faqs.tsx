@@ -28,34 +28,36 @@ function Faqs() {
           textAlign="center"
           color="var(--amplify-colors-neutral-100)"
         >
-          FAQs
-        </Text>
-        <Text
-          fontWeight="light"
-          fontSize="24px"
-          width="100%"
-          height="fit-content"
-          textAlign="center"
-          color="var(--amplify-colors-neutral-100)"
-        >
-          HabitatApp is here to digitally transform how affiliates conduct their
-          Homeownership Program.
+          FAQ
         </Text>
       </Flex>
       <Flex width={{ base: '100%', large: '780px' }} padding="0px">
         <Expander isCollapsible>
-          <ExpanderItem title="What is Habitat App?" value="demo-item-2">
-            HabitatApp is the all-in-one app for Habitat for Humanity
-            affiliates. With it, affiliates can conduct all of their operations
-            online - Homeownership Programs, Repairs, Volunteer Management and
-            more.
+          <ExpanderItem title="What is Habitat App?" value="demo-item-1">
+            HabitatApp is the all-in-one platform for Habitat for Humanity
+            affiliates. Currently, affiliates can conduct Homeownership and
+            Critical Home Repair applications online through Habitat App.
           </ExpanderItem>
           <ExpanderItem
-            title="How can I gain access to HabitatApp?"
+            title="Is Habitat App customizable?"
+            value="demo-item-2"
+          >
+            Yes! Habitat App is totally customizable. Affiliates can edit their
+            applications, reports, analytics and more.
+          </ExpanderItem>
+          <ExpanderItem
+            title="Can Habitat App integrate with other software?"
             value="demo-item-3"
           >
-            To get access, contact us now so that we can reach out to you and
-            schedule a demo!
+            Yes! Habitat App can integrate with almost any software to allow a
+            smooth operation for your affiliate.
+          </ExpanderItem>
+          <ExpanderItem
+            title="How can I gain access to Habitat App?"
+            value="demo-item-4"
+          >
+            To get access, sign up to our waitlist now. We will contact you as
+            soon as possible.
           </ExpanderItem>
         </Expander>
       </Flex>
