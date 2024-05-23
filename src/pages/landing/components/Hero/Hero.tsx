@@ -1,6 +1,7 @@
 import { Flex, Image, Text } from '@aws-amplify/ui-react';
 import CustomButton from 'components/CustomButton/CustomButton';
 import heroScreen from 'assets/images/hero-screen.svg';
+import './style.css';
 
 function Hero() {
   return (
@@ -52,6 +53,7 @@ function Hero() {
             fontSize: '18px',
             padding: '12px 16px',
           }}
+          className="signUp"
         >
           Sign up
         </CustomButton>

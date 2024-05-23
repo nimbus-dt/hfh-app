@@ -1,5 +1,6 @@
 .nav {
   border-bottom: 1px solid var(--amplify-colors-neutral-60);
+  transition: transform 0.3s ease;
 }
 
 .navLink {
@@ -7,7 +8,9 @@
 }
 
 .navLink:hover {
-  color: var(--amplify-colors-primary-100);
+  background-color: var(--amplify-colors-neutral-40);
+  border-radius: 10px;
+  transform: translateY(-6px);
 }
 
 .my-menu-trigger.amplify-menu-trigger {

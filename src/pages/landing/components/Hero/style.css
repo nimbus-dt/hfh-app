@@ -1,0 +1,7 @@
+.signUp {
+  transition: transform 0.3s ease;
+}
+
+.signUp:hover {
+  transform: translateY(-6px);
+}
