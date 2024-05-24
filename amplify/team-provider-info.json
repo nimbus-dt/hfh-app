@@ -138,7 +138,7 @@
         "getEmail": {
           "deploymentBucketName": "amplify-hfhapp-legacy-101310-deployment",
           "s3Key": "amplify-builds/getEmail-32656859502b666c474d-build.zip",
-          "authHfhappUserpoolid": "update"
+          "authHfhappUserpoolid": "us-east-1_lA5eRfjN4"
         },
         "getSubmittedApplicationsEmails": {
           "deploymentBucketName": "amplify-hfhapp-legacy-101310-deployment",
@@ -160,7 +160,7 @@
         },
         "updateApplicationOwner": {
           "deploymentBucketName": "amplify-hfhapp-legacy-101310-deployment",
-          "s3Key": "amplify-builds/updateApplicationOwner-43497749494448646274-build.zip"
+          "s3Key": "amplify-builds/updateApplicationOwner-5543704a774c3944436a-build.zip"
         },
         "hfhapp": {}
       },

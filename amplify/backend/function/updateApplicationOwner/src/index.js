@@ -92,7 +92,7 @@ export const handler = async (event) => {
         
                 const updateTestApplicationBody = await updateTestApplicationResponse.json();
         
-                console.log('===== Updated Test Application =====', updateTestApplicationBody)
+                console.log('=== Updated Test Application ===', updateTestApplicationBody)
             }else{
                 console.log('User not found', testApplication.ownerID)
             }
