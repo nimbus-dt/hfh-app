@@ -1,8 +1,31 @@
+.hfh_page div > div[ref='component'] + div[ref='component'],
 .hfh_formio_space_y_6 div > div[ref='component'] + div[ref='component'] {
   margin-top: 1.5rem;
 }
 
-.hfh_formio_space_y_6 div .formio-hidden,
+.hfh_page
+  div[ref^='nested-page']
+  > div[ref='component']
+  + div[ref='component'] {
+  margin-top: 6rem; /*gap between pages*/
+}
+
+.hfh_page
+  div[ref^='nested-page']
+  > div[ref='component'].hfh_hidden.form-group {
+  margin-top: 0rem;
+}
+
+.hfh_page div .formio-hidden,
 .formio-hidden {
   margin-top: 0 !important;
+}
+
+.hfh_hidden {
+  margin-top: -1.5rem !important;
+  display: hidden;
+  height: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
 }

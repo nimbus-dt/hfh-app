@@ -9,6 +9,7 @@
 body {
   overflow: hidden;
 }
-.btn-wizard-nav-submit {
-  display: none !important;
+
+.formio-wizard-nav-container {
+  display: none;
 }
