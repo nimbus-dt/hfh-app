@@ -28,6 +28,7 @@ export const handler = async (event) => {
               items {
                 id
                 ownerID 
+                _version
               }
             }
           }
@@ -62,9 +63,13 @@ export const handler = async (event) => {
     
                 const user = listUsers.Users[0]
 
+                console.log('user', user);
+
+                console.log('oldUser', oldUser);
+
                 const updateTestApplicationMutation = `
                     mutation UpdateTestApplicationMutation {
-                        updateTestApplication(input: {id: "${testApplication.id}", ownerID: "${user.Username}"}) {
+                        updateTestApplication(input: {id: "${testApplication.id}", ownerID: "${user.Username}", _version: ${testApplication._version}}) {
                             id
                             ownerID
                         }
