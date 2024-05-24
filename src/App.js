@@ -1,6 +1,5 @@
 import './assets/styles/App.css';
 import { Routes, Route, Outlet } from 'react-router-dom';
-import { ScrollView } from '@aws-amplify/ui-react';
 import AffiliatePortalRepairsPage from 'pages/affiliate-portal/repairs';
 import AffiliatePortalVolunteersPage from 'pages/affiliate-portal/volunteers';
 import AffiliatePortalSettingsPage from 'pages/affiliate-portal/settings';
@@ -10,8 +9,6 @@ import TermsPage from 'pages/terms/TermsPage';
 import PrivacyPage from 'pages/privacy';
 import ContactPage from 'pages/contact';
 import DataPage from 'pages/data';
-// eslint-disable-next-line import/no-unresolved
-import '@aws-amplify/ui-react/styles.css';
 import ApplicantCyclePage from 'pages/[habitat]/applicant/[cycleId]';
 import HomeownershipReviewPage from 'pages/homeownership/[habitat]/review';
 import HabitatLayout from 'layouts/HabitatLayout';
@@ -24,19 +21,11 @@ import CyclesPage from 'pages/[habitat]/affiliate/cycles';
 import NewAffiliateLayout from 'layouts/NewAffiliateLayout';
 import AffiliateCycleApplications from 'pages/[habitat]/affiliate/cycles/[cycleId]/AffiliateCycleApplications';
 import AffiliateApplicationDetailsPage from 'pages/[habitat]/affiliate/cycles/[cycleId]/[applicationId]/AffiliateApplicationDetailsPage';
-import { Form } from '@formio/react';
 
 function App() {
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
-          <ScrollView height="100vh" width="100%">
-            <Outlet />
-          </ScrollView>
-        }
-      >
+      <Route path="/" element={<Outlet />}>
         <Route
           index
           element={

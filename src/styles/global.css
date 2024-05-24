@@ -3,12 +3,9 @@
 @font-face {
   font-family: 'opti';
   src: local('Opti'),
-    url(./assets/fonts/OPTIClearfaceGothicDemiAg.woff) format('woff');
+    url(../assets/fonts/OPTIClearfaceGothicDemiAg.woff) format('woff');
 }
 
-body {
-  overflow: hidden;
-}
 .btn-wizard-nav-submit {
   display: none !important;
 }
