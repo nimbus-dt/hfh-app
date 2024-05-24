@@ -1,4 +1,4 @@
-import { Card, Flex, Image, ScrollView } from '@aws-amplify/ui-react';
+import { Card, Flex, Image } from '@aws-amplify/ui-react';
 import useScrollToTopOnRouteChange from 'hooks/utils/useScrollToTopOnRouteChange';
 import { useRef } from 'react';
 import PropTypes from 'prop-types';
@@ -10,7 +10,10 @@ export function NewLandingLayout({ children }) {
   useScrollToTopOnRouteChange(scrollViewReference);
 
   return (
-    <ScrollView height="100vh" ref={scrollViewReference}>
+    <div
+      style={{ height: 'auto', minHeight: '100vh' }}
+      ref={scrollViewReference}
+    >
       <Flex
         direction="column"
         alignItems="center"
@@ -34,7 +37,7 @@ export function NewLandingLayout({ children }) {
         </Card>
         {children}
       </Flex>
-    </ScrollView>
+    </div>
   );
 }
 

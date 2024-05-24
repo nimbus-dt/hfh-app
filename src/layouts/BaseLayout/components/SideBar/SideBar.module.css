@@ -5,4 +5,8 @@
   height: 100vh;
   padding: 24px;
   z-index: 16;
+  width: 100%;
+  height: auto;
+  overflow: auto;
+  min-height: 100vh;
 }

@@ -1,4 +1,4 @@
-import React, { type ReactNode, useMemo, useState } from 'react';
+import { type ReactNode, useMemo, useState } from 'react';
 import { Form as FormioForm, Wizard } from '@formio/react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -111,6 +111,7 @@ const Layout = ({
               currentPage === 0
                 ? undefined
                 : () => {
+                    window.scrollTo(0, 0);
                     setCurrentPage((prev) => prev - 1);
                     formReady.prevPage().catch((error: unknown) => {
                       console.log(error);
@@ -118,6 +119,7 @@ const Layout = ({
                   }
             }
             onNext={() => {
+              window.scrollTo(0, 0);
               if (
                 formReady?.componentComponents &&
                 currentPage === formReady.componentComponents.length - 1

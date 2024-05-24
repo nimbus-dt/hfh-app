@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import {
   Flex,
-  ScrollView,
   useAuthenticator,
   useBreakpointValue,
 } from '@aws-amplify/ui-react';
@@ -92,10 +91,15 @@ const BaseLayout = ({ variation, children, hideSideBar }: IProperties) => {
           habitat={habitat as unknown as Habitat}
         />
       )}
-      <ScrollView
-        height="100vh"
-        flex={1}
-        backgroundColor="var(--amplify-colors-neutral-20)"
+      <div
+        style={{
+          flex: 1,
+          backgroundColor: 'var(--amplify-colors-neutral-20)',
+          width: '100%',
+          height: 'auto',
+          overflow: 'auto',
+          minHeight: '100vh',
+        }}
       >
         <TopBar
           title={title}
@@ -104,7 +108,7 @@ const BaseLayout = ({ variation, children, hideSideBar }: IProperties) => {
           onExpand={handleOnExpand}
         />
         {children}
-      </ScrollView>
+      </div>
     </Flex>
   );
 };
