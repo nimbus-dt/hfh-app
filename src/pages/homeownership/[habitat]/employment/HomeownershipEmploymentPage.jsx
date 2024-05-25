@@ -64,12 +64,11 @@ export default function HomeownershipEmploymentPage() {
   const { application, updateApplicationLastSection, habitat } =
     useOutletContext();
 
-  const shouldRedirectToProperty = habitat?.props.optionalSections.propertyInfo;
+  const shouldRedirectToProperty = false;
 
-  const shouldRenderBusinessOwnerOrSelfEmployed =
-    habitat?.props.optionalSections.businessOwnerOrSelfEmployed;
+  const shouldRenderBusinessOwnerOrSelfEmployed = false;
 
-  const shouldRenderCoApplicant = habitat?.props.optionalSections.coApplicant;
+  const shouldRenderCoApplicant = false;
 
   const [alert, setAlert] = useState();
   const navigate = useNavigate();
@@ -223,8 +222,7 @@ export default function HomeownershipEmploymentPage() {
           originalEmploymentInfo.props = {
             ...originalEmploymentInfo.props,
             previousEmployment:
-              calculateAgeInMonths(data.startDate) >=
-              habitat?.props.homeownershipMinCurrentEmploymentMonths
+              calculateAgeInMonths(data.startDate) >= 12
                 ? undefined
                 : original.props.previousEmployment,
             currentEmployment: newData,
@@ -241,10 +239,7 @@ export default function HomeownershipEmploymentPage() {
         )
       );
 
-      if (
-        calculateAgeInMonths(data.startDate) <
-        habitat?.props.homeownershipMinCurrentEmploymentMonths
-      ) {
+      if (calculateAgeInMonths(data.startDate) < 12) {
         setPreviousEmploymentOpen(true);
       } else if (shouldRenderCoApplicant) {
         setCoApplicantUnemploymentOpen(true);
@@ -421,8 +416,7 @@ export default function HomeownershipEmploymentPage() {
           originalEmploymentInfo.props = {
             ...originalEmploymentInfo.props,
             coApplicantPreviousEmployment:
-              calculateAgeInMonths(data.startDate) >=
-              habitat?.props.homeownershipMinCurrentEmploymentMonths
+              calculateAgeInMonths(data.startDate) >= 12
                 ? undefined
                 : original.props.coApplicantPreviousEmployment,
             coApplicantCurrentEmployment: newData,
@@ -439,10 +433,7 @@ export default function HomeownershipEmploymentPage() {
         )
       );
 
-      if (
-        calculateAgeInMonths(data.startDate) <
-        habitat?.props.homeownershipMinCurrentEmploymentMonths
-      ) {
+      if (calculateAgeInMonths(data.startDate) < 12) {
         setCoApplicantPreviousEmploymentOpen(true);
       }
 
@@ -531,7 +522,7 @@ export default function HomeownershipEmploymentPage() {
       if (
         calculateAgeInMonths(
           employmentInfo?.props?.currentEmployment?.startDate
-        ) < habitat?.props.homeownershipMinCurrentEmploymentMonths &&
+        ) < 12 &&
         employmentInfo?.props?.currentEmployment?.firstJob === 'No' &&
         employmentInfo.props.previousEmployment === undefined
       ) {
@@ -551,7 +542,7 @@ export default function HomeownershipEmploymentPage() {
         shouldRenderCoApplicant &&
         calculateAgeInMonths(
           employmentInfo?.props?.coApplicantCurrentEmployment?.startDate
-        ) < habitat?.props.homeownershipMinCurrentEmploymentMonths &&
+        ) < 12 &&
         employmentInfo?.props?.coApplicantCurrentEmployment?.firstJob ===
           'No' &&
         employmentInfo.props.coApplicantPreviousEmployment === undefined
@@ -632,7 +623,7 @@ export default function HomeownershipEmploymentPage() {
       )}
       {calculateAgeInMonths(
         employmentInfo?.props?.currentEmployment?.startDate
-      ) < habitat?.props.homeownershipMinCurrentEmploymentMonths &&
+      ) < 12 &&
         employmentInfo?.props?.currentEmployment?.firstJob === 'No' && (
           <>
             <PreviousEmployment
@@ -689,7 +680,7 @@ export default function HomeownershipEmploymentPage() {
             )}
             {calculateAgeInMonths(
               employmentInfo?.props?.coApplicantCurrentEmployment?.startDate
-            ) < habitat?.props.homeownershipMinCurrentEmploymentMonths &&
+            ) < 12 &&
               employmentInfo?.props?.coApplicantCurrentEmployment?.firstJob ===
                 'No' && (
                 <>

@@ -133,8 +133,7 @@ const ApplicantInfoSection = ({
         setReviewedSections={setReviewedSections}
         onReview={() =>
           handleAddressOnReview(
-            applicantInfo?.props?.currentAddress?.monthsLivedHere <
-              habitat?.props.homeownershipMinCurrentAddressMonths
+            applicantInfo?.props?.currentAddress?.monthsLivedHere < 12
           )
         }
         submitted={submitted}
@@ -251,8 +250,7 @@ const ApplicantInfoSection = ({
                 onReview={() =>
                   handleCoApplicantAddressOnReview(
                     applicantInfo?.props?.coApplicantCurrentAddress
-                      ?.monthsLivedHere <
-                      habitat?.props.homeownershipMinCurrentAddressMonths
+                      ?.monthsLivedHere < 12
                   )
                 }
                 submitted={submitted}
@@ -260,8 +258,7 @@ const ApplicantInfoSection = ({
               />
               <br />
               {applicantInfo?.props?.coApplicantCurrentAddress
-                ?.monthsLivedHere <
-                habitat?.props.homeownershipMinCurrentAddressMonths && (
+                ?.monthsLivedHere < 12 && (
                 <>
                   <PrevAddress
                     expanded={coApplicantPreviousAddressOpen}

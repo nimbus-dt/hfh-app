@@ -19,6 +19,7 @@ import NewAffiliateLayout from 'layouts/NewAffiliateLayout';
 import AffiliateCycleApplications from 'pages/[habitat]/affiliate/cycles/[cycleId]/AffiliateCycleApplications';
 import AffiliateApplicationDetailsPage from 'pages/[habitat]/affiliate/cycles/[cycleId]/[applicationId]/AffiliateApplicationDetailsPage';
 import Landing from 'pages/landing';
+import { Form } from '@formio/react';
 
 function App() {
   return (
@@ -52,17 +53,10 @@ function App() {
           />
         </Route>
         <Route path={ROUTES.HABITAT_AFFILIATE} element={<NewAffiliateLayout />}>
-          <Route path={ROUTES.HABITAT_AFFILIATE_HOME} element={<h1>Home</h1>} />
-          <Route path={ROUTES.HABITAT_AFFILIATE_CYCLES}>
-            <Route index element={<CyclesPage />} />
-            <Route path={ROUTES.HABITAT_AFFILIATE_CYCLES_CYCLE}>
-              <Route index element={<AffiliateCycleApplications />} />
-              <Route
-                path={ROUTES.HABITAT_AFFILIATE_CYCLES_CYCLE_APPLICATION}
-                element={<AffiliateApplicationDetailsPage />}
-              />
-            </Route>
-          </Route>
+          <Route
+            path={ROUTES.HABITAT_AFFILIATE_HOME}
+            element={<h1>This page is under construction</h1>}
+          />
           <Route
             path={ROUTES.HABITAT_AFFILIATE_REPAIRS}
             element={<AffiliatePortalRepairsPage />}
@@ -87,7 +81,6 @@ function App() {
             path={ROUTES.HABITAT_AFFILIATE_USERS}
             element={<p>This page is under construction</p>}
           />
-
           <Route path=":formId">
             <Route index element={<CyclesPage />} />
             <Route path={ROUTES.HABITAT_AFFILIATE_CYCLES_CYCLE}>
@@ -100,7 +93,6 @@ function App() {
           </Route>
         </Route>
       </Route>
-      <Route path="testing" element={<AffiliateFormsPage />} />
 
       <Route path="/*" element={<h1>404</h1>} />
     </Routes>

@@ -7,14 +7,18 @@ import {
   TestCycle,
   ReviewStatus,
   ApplicationTypes,
+  User,
 } from 'models';
+import { MdOutlineNoteAlt, MdOutlineLibraryAddCheck } from 'react-icons/md';
 import { useCallback, useEffect, useState } from 'react';
 import { DataStore, SortDirection } from 'aws-amplify';
 import { useTestCycleById } from 'hooks/services';
+import LocalNavigation from 'pages/[habitat]/affiliate/cycles/[cycleId]/[applicationId]/components/LocalNavigation';
 import Form from './components/Form/Form';
 import SuccesfullySubmitted from './components/SuccesfullySubmitted';
 import NoOpenCycle from './components/NoOpenCycle';
 import style from './ApplicantCyclePage.module.css';
+import Decisions from './components/Tabs/Decisions';
 
 interface IOutletContext {
   habitat?: Habitat;
@@ -38,6 +42,7 @@ const ApplicantCyclePage = () => {
   });
 
   const [application, setApplication] = useState<TestApplication>();
+  const [activeTab, setActiveTab] = useState(0);
   const [review, setReview] = useState(false);
 
   const onReview = () => setReview(true);
@@ -148,15 +153,44 @@ const ApplicantCyclePage = () => {
       </div>
     );
 
-  return application.submissionStatus === SubmissionStatus.COMPLETED &&
-    !review ? (
-    <div className={`${style.page}`}>
-      <SuccesfullySubmitted habitat={habitat} onReview={onReview} />
-    </div>
-  ) : (
-    <div className={`${style.page}`}>
-      <Form habitat={habitat} application={application} cycle={cycle} />
-    </div>
+  if (application.submissionStatus === SubmissionStatus.COMPLETED && !review) {
+    return (
+      <div className={`${style.page}`}>
+        <SuccesfullySubmitted habitat={habitat} onReview={onReview} />
+      </div>
+    );
+  }
+
+  if (review) {
+    return (
+      <div className={`${style.page}`}>
+        <div className={style.detailsContainer}>
+          <LocalNavigation
+            items={[
+              { label: 'Application', icon: <MdOutlineNoteAlt /> },
+              { label: 'Decisions', icon: <MdOutlineLibraryAddCheck /> },
+            ]}
+            current={activeTab}
+            onChange={(newCurrent) => setActiveTab(newCurrent)}
+          />
+          <div className={style.tabContainer}>
+            {activeTab === 0 && (
+              <Form habitat={habitat} application={application} cycle={cycle} />
+            )}
+            {activeTab === 1 && <Decisions application={application} />}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <Form
+      habitat={habitat}
+      application={application}
+      cycle={cycle}
+      formContainer={false}
+    />
   );
 };
 

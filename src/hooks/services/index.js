@@ -6,7 +6,7 @@ import {
   Debt,
   Decision,
   EmploymentInfo,
-  Form,
+  // Form,
   FormAnswer,
   Income,
   Member,
@@ -16,6 +16,7 @@ import {
   RootForm,
   TestApplication,
   TestCycle,
+  User,
   Written,
 } from 'models';
 import { dataStoreQueryHookBuilder } from './useDataStoreQuery/useDataStoreQuery';
@@ -123,13 +124,25 @@ export const useDecisionsQuery = dataStoreQueryHookBuilder({
 
 /* FORM MODEL SERVICES */
 export const useFormById = dataStoreQueryByIdHookBuilder({
-  model: Form,
+  model: RootForm,
   defaultDataValue: null,
 });
 
 /* ROOT FORM MODEL SERVICES */
 export const useRootFormsQuery = dataStoreQueryHookBuilder({
   model: RootForm,
+  defaultDataValue: [],
+});
+
+export const useRootFormById = dataStoreQueryByIdHookBuilder({
+  model: RootForm,
+  defaultDataValue: null,
+});
+
+/* FORMANSWERS MODEL SERVICES */
+/*  USER MODEL SERVICES */
+export const useUserQuery = dataStoreQueryHookBuilder({
+  model: User,
   defaultDataValue: [],
 });
 

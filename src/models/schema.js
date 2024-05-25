@@ -184,8 +184,16 @@ export const schema = {
                     "name": "habitatID",
                     "isArray": false,
                     "type": "ID",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
+                },
+                "formUrls": {
+                    "name": "formUrls",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": false
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -238,81 +246,6 @@ export const schema = {
                 }
             ]
         },
-        "Form": {
-            "name": "Form",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "url": {
-                    "name": "url",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "habitatID": {
-                    "name": "habitatID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "Forms",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byHabitat",
-                        "fields": [
-                            "habitatID"
-                        ]
-                    }
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
         "Decision": {
             "name": "Decision",
             "fields": {
@@ -326,7 +259,9 @@ export const schema = {
                 "status": {
                     "name": "status",
                     "isArray": false,
-                    "type": "String",
+                    "type": {
+                        "enum": "ReviewStatus"
+                    },
                     "isRequired": true,
                     "attributes": []
                 },
@@ -670,13 +605,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "habitatID": {
-                    "name": "habitatID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "TestApplications": {
                     "name": "TestApplications",
                     "isArray": true,
@@ -693,18 +621,11 @@ export const schema = {
                         ]
                     }
                 },
-                "form": {
-                    "name": "form",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "rootformID": {
                     "name": "rootformID",
                     "isArray": false,
                     "type": "ID",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "name": {
@@ -716,6 +637,13 @@ export const schema = {
                 },
                 "closedCycleMessage": {
                     "name": "closedCycleMessage",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "formUrl": {
+                    "name": "formUrl",
                     "isArray": false,
                     "type": "String",
                     "isRequired": true,
@@ -744,15 +672,6 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byHabitat",
-                        "fields": [
-                            "habitatID"
-                        ]
-                    }
                 },
                 {
                     "type": "key",
@@ -1689,21 +1608,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "county": {
-                    "name": "county",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "countiesServed": {
-                    "name": "countiesServed",
-                    "isArray": true,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
                 "props": {
                     "name": "props",
                     "isArray": false,
@@ -1720,46 +1624,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isArrayNullable": true
-                },
-                "AMI": {
-                    "name": "AMI",
-                    "isArray": true,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
-                "TestCycles": {
-                    "name": "TestCycles",
-                    "isArray": true,
-                    "type": {
-                        "model": "TestCycle"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "habitatID"
-                        ]
-                    }
-                },
-                "Forms": {
-                    "name": "Forms",
-                    "isArray": true,
-                    "type": {
-                        "model": "Form"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "habitatID"
-                        ]
-                    }
                 },
                 "authenticationHeader": {
                     "name": "authenticationHeader",
@@ -1997,7 +1861,21 @@ export const schema = {
                     "name": "joinDate",
                     "isArray": false,
                     "type": "AWSDate",
-                    "isRequired": true,
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "joinMonth": {
+                    "name": "joinMonth",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "joinYear": {
+                    "name": "joinYear",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
                     "attributes": []
                 }
             }
@@ -2158,80 +2036,6 @@ export const schema = {
                     "attributes": [],
                     "isArrayNullable": true
                 },
-                "homeownershipTermsText": {
-                    "name": "homeownershipTermsText",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "homeownershipMinCurrentAddressMonths": {
-                    "name": "homeownershipMinCurrentAddressMonths",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "homeownershipMinCurrentEmploymentMonths": {
-                    "name": "homeownershipMinCurrentEmploymentMonths",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "homeownershipNoOpenCycle": {
-                    "name": "homeownershipNoOpenCycle",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "homeownershipHomeText": {
-                    "name": "homeownershipHomeText",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "homeownershipCheckQuestions": {
-                    "name": "homeownershipCheckQuestions",
-                    "isArray": true,
-                    "type": {
-                        "nonModel": "CheckQuestion"
-                    },
-                    "isRequired": true,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
-                "homeownershipRecordQuestions": {
-                    "name": "homeownershipRecordQuestions",
-                    "isArray": true,
-                    "type": {
-                        "nonModel": "RecordQuestion"
-                    },
-                    "isRequired": true,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
-                "homeownershipWrittenQuestions": {
-                    "name": "homeownershipWrittenQuestions",
-                    "isArray": true,
-                    "type": {
-                        "nonModel": "WrittenQuestion"
-                    },
-                    "isRequired": true,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
-                "optionalSections": {
-                    "name": "optionalSections",
-                    "isArray": false,
-                    "type": {
-                        "nonModel": "OptionalSections"
-                    },
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "gallery": {
                     "name": "gallery",
                     "isArray": true,
@@ -2263,5 +2067,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "222054bed4cc2772f3c959e11ad74842"
+    "version": "6c9412f86b67f2c1297d9db24687bef2"
 };

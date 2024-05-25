@@ -3,6 +3,7 @@ import BreadCrumbs from 'components/BreadCrumbs/BreadCrumbs';
 import IconButton from 'components/IconButton';
 import {
   MdOutlineArrowBack,
+  MdOutlineCalculate,
   MdOutlineLibraryAddCheck,
   MdOutlineNoteAlt,
   MdOutlineTextSnippet,
@@ -20,7 +21,6 @@ import {
   useTestApplicationById,
   useTestCycleById,
 } from 'hooks/services';
-import { set } from 'lodash';
 import {
   Decision,
   FormAnswer,
@@ -33,6 +33,7 @@ import {
   ReviewStatus,
   Habitat,
   LazyDecision,
+  ApplicationTypes,
 } from 'models';
 import { DataStore, RecursiveModelPredicate } from '@aws-amplify/datastore';
 import { getEditorStateWithFilesInBucket } from 'utils/lexicalEditor';
@@ -43,15 +44,18 @@ import { ImageNode } from 'components/LexicalEditor/nodes/ImageNode';
 import { removeFiles } from 'utils/files';
 import { EditorState } from 'lexical';
 import { useAuthenticator } from '@aws-amplify/ui-react';
+import Loading from 'components/Loading';
 import style from './AffiliateApplicationDetailsPage.module.css';
 import LocalNavigation from './components/LocalNavigation';
 import ApplicationTab from './components/ApplicationTab';
 import NotesTab from './components/NotesTab';
 import DecisionsTab from './components/DecisionsTab';
+import CalculationsTab from './components/Calculations';
 import {
   TDecideSchema,
   TReturnSchema,
 } from './AffiliateApplicationDetailsPage.schema';
+import Buttons from './components/Buttons';
 
 const AffiliateApplicationDetailsPage = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -303,52 +307,65 @@ const AffiliateApplicationDetailsPage = () => {
     }
   };
 
+  if (!cycle) return <Loading />;
+
   return (
     <div className={`${style.page}`}>
       <BreadCrumbs
         items={[
-          { label: 'Active Forms' },
-          { label: 'Cycles' },
-          { label: 'Applications' },
+          { label: 'Active Forms', to: '../../../forms' },
+          { label: 'Cycles', to: '../../' },
+          { label: 'Applications', to: '../' },
           { label: 'Detail' },
         ]}
       />
-      <div className={`${style.cta}`}>
-        <Link to="../">
-          <IconButton variation="not-outlined">
-            <MdOutlineArrowBack />
-          </IconButton>
-        </Link>
-        <span className={`theme-headline-medium ${style.title}`}>
-          Application Details
-        </span>
+      <div className={`${style.ctaContainer}`}>
+        <div className={`${style.cta}`}>
+          <Link to="../">
+            <IconButton variation="not-outlined">
+              <MdOutlineArrowBack />
+            </IconButton>
+          </Link>
+          <span className={`theme-headline-medium ${style.title}`}>
+            Application Details
+          </span>
+        </div>
+        <div>
+          <Buttons
+            application={application}
+            returnModalOpen={returnModalOpen}
+            handleReturnModalOnClose={handleReturnModalOnClose}
+            handleOnValidReturn={handleOnValidReturn}
+            decideModalOpen={decideModalOpen}
+            handleDecideModalOnClose={handleDecideModalOnClose}
+            handleOnValidDecide={handleOnValidDecide}
+            handleReturnOnClick={handleReturnOnClick}
+            handleDecideOnClick={handleDecideOnClick}
+            loading={loading}
+          />
+        </div>
       </div>
       <div className={`${style.detailsContainer}`}>
         <LocalNavigation
           items={[
             { label: 'Applications', icon: <MdOutlineNoteAlt /> },
             { label: 'Notes', icon: <MdOutlineTextSnippet /> },
-            { label: 'Decisions', icon: <MdOutlineLibraryAddCheck /> },
+            ...(application?.type === ApplicationTypes.ONLINE
+              ? [
+                  { label: 'Decisions', icon: <MdOutlineLibraryAddCheck /> },
+                  { label: 'Calculations', icon: <MdOutlineCalculate /> },
+                ]
+              : []),
           ]}
           current={activeTab}
           onChange={(newCurrent) => setActiveTab(newCurrent)}
         />
         <div className={style.tabContainer}>
-          {/* TODO: update formUrl to be the formUrl from the cycle */}
           {activeTab === 0 && (
             <ApplicationTab
               application={application}
-              formUrl="loudoun"
+              formUrl={cycle?.formUrl}
               formAnswers={formAnswers}
-              returnModalOpen={returnModalOpen}
-              handleReturnModalOnClose={handleReturnModalOnClose}
-              handleOnValidReturn={handleOnValidReturn}
-              decideModalOpen={decideModalOpen}
-              handleDecideModalOnClose={handleDecideModalOnClose}
-              handleOnValidDecide={handleOnValidDecide}
-              handleReturnOnClick={handleReturnOnClick}
-              handleDecideOnClick={handleDecideOnClick}
-              loading={loading}
             />
           )}
           {activeTab === 1 && (
@@ -365,6 +382,7 @@ const AffiliateApplicationDetailsPage = () => {
           {activeTab === 2 && (
             <DecisionsTab decisions={decisions} habitat={habitat} />
           )}
+          {activeTab === 3 && <CalculationsTab formAnswers={formAnswers} />}
         </div>
       </div>
     </div>

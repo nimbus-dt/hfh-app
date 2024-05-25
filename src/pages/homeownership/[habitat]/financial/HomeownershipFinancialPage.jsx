@@ -33,7 +33,7 @@ export default function HomeownershipFinancialPage() {
   const { habitat, application, updateApplicationLastSection } =
     useOutletContext();
 
-  const shouldRedirectToProperty = habitat?.props.optionalSections.propertyInfo;
+  const shouldRedirectToProperty = false;
 
   const navigate = useNavigate();
 

@@ -70,6 +70,16 @@ const Auth = ({ header }: AuthProps) => {
       },
     },
     SignUp: {
+      Header() {
+        return (
+          <div
+            dangerouslySetInnerHTML={{
+              __html: header,
+            }}
+          />
+        );
+        return null;
+      },
       Footer() {
         return (
           <div className={styles['signup-container']}>

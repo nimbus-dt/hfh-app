@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from 'react';
-import { Form as FormioForm } from '@formio/react';
+import React, { type ReactNode, useMemo, useState } from 'react';
+import { Form as FormioForm, Wizard } from '@formio/react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   FormAnswer,
@@ -20,18 +20,138 @@ import dayjs from 'dayjs';
 import { Button, Flex, Text } from '@aws-amplify/ui-react';
 import CustomButton from 'components/CustomButton/CustomButton';
 import { RecursiveModelPredicate } from '@aws-amplify/datastore';
+import Header from 'components/Header';
+import Footer from 'components/Footer';
+import Loading from 'components/Loading';
 import style from './Form.module.css';
 
 interface IProperties {
   habitat?: Habitat;
   application?: TestApplication;
   cycle?: TestCycle;
+  formContainer?: boolean;
 }
 
 const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
-const Form = ({ habitat, application, cycle }: IProperties) => {
+const Layout = ({
+  formReady,
+  habitat,
+  children,
+}: {
+  formReady?: typeof Wizard;
+  habitat?: Habitat;
+  children: ReactNode;
+}) => {
+  const [currentPage, setCurrentPage] = useState(0);
+  const pages = formReady?._data?.page10?.pages;
+  const mock = [
+    {
+      number: 1,
+      step: 1,
+      section: 'General',
+    },
+    {
+      number: 2,
+      step: 1,
+      section: 'General',
+    },
+    {
+      number: 3,
+      step: 1,
+      section: 'General',
+    },
+    {
+      number: 4,
+      step: 1,
+      section: 'General',
+    },
+    {
+      number: 5,
+      step: 1,
+      section: 'General',
+    },
+    {
+      number: 6,
+      step: 1,
+      section: 'General',
+    },
+    {
+      number: 7,
+      step: 1,
+      section: 'General',
+    },
+    {
+      number: 8,
+      step: 2,
+      section: 'Members',
+    },
+    {
+      number: 9,
+      step: 3,
+      section: 'Employment',
+    },
+    {
+      number: 10,
+      step: 4,
+      section: 'Ownership',
+    },
+  ];
+  return (
+    <div style={{ width: '100%' }}>
+      {!formReady && <Loading />}
+      {formReady && (
+        <Header current={currentPage} pages={pages || mock} habitat={habitat} />
+      )}
+      {children}
+      {formReady && (
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Footer
+            goBack={
+              currentPage === 0
+                ? undefined
+                : () => {
+                    setCurrentPage((prev) => prev - 1);
+                    formReady.prevPage().catch((error: unknown) => {
+                      console.log(error);
+                    });
+                  }
+            }
+            onNext={() => {
+              if (
+                formReady?.componentComponents &&
+                currentPage === formReady.componentComponents.length - 1
+              ) {
+                formReady.submit().catch((error: unknown) => {
+                  console.log(error);
+                });
+                return;
+              }
+              setCurrentPage((prev) => prev + 1);
+              formReady.nextPage().catch((error: unknown) => {
+                console.log(error);
+                setCurrentPage((prev) => prev - 1);
+              });
+            }}
+            submit={
+              formReady?.componentComponents &&
+              currentPage === formReady.componentComponents.length - 1
+            }
+          />
+        </div>
+      )}
+    </div>
+  );
+};
+
+const Form = ({
+  habitat,
+  application,
+  cycle,
+  formContainer = true,
+}: IProperties) => {
   const [reviewMode, setReviewMode] = useState(false);
+  const [formReady, setFormReady] = useState<typeof Wizard>();
 
   const [showSubmitModal, setShowSubmitModal] = useState(false);
 
@@ -45,7 +165,7 @@ const Form = ({ habitat, application, cycle }: IProperties) => {
   const navigate = useNavigate();
 
   const { data: form } = useFormById({
-    id: cycle?.form || '',
+    id: cycle?.rootformID || '',
     dependencyArray: [cycle],
   });
 
@@ -150,86 +270,105 @@ const Form = ({ habitat, application, cycle }: IProperties) => {
 
   return (
     form && (
-      <div className={`${style.formContainer}`}>
-        {reviewMode ||
-        application?.submissionStatus === SubmissionStatus.COMPLETED ? (
-          <>
-            <FormioForm
-              key="review"
-              src={`${FORMIO_URL}/${form.url}`}
-              options={{
-                readOnly: true,
-                renderMode: 'flat',
-              }}
-              submission={generateSubmission(formAnswers)}
-            />
-            <Modal
-              title="Alert"
-              width={{ base: '95%', medium: '30rem' }}
-              open={showSubmitModal}
-              onClickClose={handleOnClickSubmitModalClose}
+      <div style={{ padding: 0 }}>
+        <div>
+          {reviewMode ||
+          application?.submissionStatus === SubmissionStatus.COMPLETED ? (
+            <div
+              className={
+                formContainer
+                  ? style.formContainer
+                  : `${style.formContainer} ${style.newpadding}`
+              }
             >
-              <Text>
-                Are you sure you want to submit your application? Once submited
-                you won't be able to resubmit.
-              </Text>
-              <br />
-              <Flex width="100%" justifyContent="end">
-                <Button variation="primary" onClick={handleOnSubmit}>
-                  Accept
-                </Button>
-                <Button onClick={handleOnClickSubmitModalClose}>Cancel</Button>
+              <FormioForm
+                key="review"
+                src={`${FORMIO_URL}/${cycle?.formUrl}`}
+                options={{
+                  readOnly: true,
+                  renderMode: 'flat',
+                }}
+                submission={generateSubmission(formAnswers)}
+              />
+              <Modal
+                title="Alert"
+                width={{ base: '95%', medium: '30rem' }}
+                open={showSubmitModal}
+                onClickClose={handleOnClickSubmitModalClose}
+              >
+                <Text>
+                  Are you sure you want to submit your application? Once
+                  submited you won't be able to resubmit.
+                </Text>
+                <br />
+                <Flex width="100%" justifyContent="end">
+                  <Button variation="primary" onClick={handleOnSubmit}>
+                    Accept
+                  </Button>
+                  <Button onClick={handleOnClickSubmitModalClose}>
+                    Cancel
+                  </Button>
+                </Flex>
+              </Modal>
+              <Flex justifyContent="space-between">
+                {application?.submissionStatus !==
+                SubmissionStatus.COMPLETED ? (
+                  <>
+                    <CustomButton
+                      onClick={handleOnClickGoBack}
+                      variation="secondary"
+                    >
+                      Go back to edit
+                    </CustomButton>
+                    <CustomButton
+                      onClick={handleOnClickSubmit}
+                      variation="primary"
+                    >
+                      Submit
+                    </CustomButton>
+                  </>
+                ) : (
+                  <Link to="../applications">
+                    <CustomButton variation="primary">Go back</CustomButton>
+                  </Link>
+                )}
               </Flex>
-            </Modal>
-            <Flex justifyContent="space-between">
-              {application?.submissionStatus !== SubmissionStatus.COMPLETED ? (
-                <>
-                  <CustomButton
-                    onClick={handleOnClickGoBack}
-                    variation="secondary"
-                  >
-                    Go back to edit
-                  </CustomButton>
-                  <CustomButton
-                    onClick={handleOnClickSubmit}
-                    variation="primary"
-                  >
-                    Submit
-                  </CustomButton>
-                </>
-              ) : (
-                <Link to="../applications">
-                  <CustomButton variation="primary">Go back</CustomButton>
-                </Link>
-              )}
-            </Flex>
-          </>
-        ) : (
-          <FormioForm
-            key="real"
-            src={`${FORMIO_URL}/${form.url}`}
-            onSubmit={handleOnReview}
-            options={
-              {
-                additional: {
-                  application,
-                  habitat,
-                  openCycle: cycle,
-                },
-              } as Options
-            }
-            submission={generateSubmission(formAnswers)}
-            onNextPage={({
-              submission,
-              page,
-            }: {
-              submission: unknown;
-              page: number;
-            }) => {
-              persistSubmission(submission, page);
-            }}
-          />
-        )}
+            </div>
+          ) : (
+            <Layout formReady={formReady} habitat={habitat}>
+              <div
+                className={`${style.formContainer}`}
+                style={{ padding: '2rem 1rem' }}
+              >
+                <FormioForm
+                  key="real"
+                  src={`${FORMIO_URL}/${cycle?.formUrl}`}
+                  onSubmit={handleOnReview}
+                  formReady={(f: typeof Wizard) => setFormReady(f)}
+                  options={
+                    {
+                      additional: {
+                        application,
+                        habitat,
+                        openCycle: cycle,
+                      },
+                    } as Options
+                  }
+                  submission={generateSubmission(formAnswers)}
+                  onNextPage={({
+                    submission,
+                    page,
+                  }: {
+                    submission: unknown;
+                    page: number;
+                  }) => {
+                    persistSubmission(submission, page);
+                  }}
+                />
+              </div>
+            </Layout>
+          )}
+        </div>
       </div>
     )
   );

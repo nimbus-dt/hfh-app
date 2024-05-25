@@ -84,13 +84,17 @@ export declare const ApplicantProps: (new (init: ModelInit<ApplicantProps>) => A
 type EagerAffiliateProps = {
   readonly titleAtHabitat: string;
   readonly roleDescription: string;
-  readonly joinDate: string;
+  readonly joinDate?: string | null;
+  readonly joinMonth?: string | null;
+  readonly joinYear?: string | null;
 }
 
 type LazyAffiliateProps = {
   readonly titleAtHabitat: string;
   readonly roleDescription: string;
-  readonly joinDate: string;
+  readonly joinDate?: string | null;
+  readonly joinMonth?: string | null;
+  readonly joinYear?: string | null;
 }
 
 export declare type AffiliateProps = LazyLoading extends LazyLoadingDisabled ? EagerAffiliateProps : LazyAffiliateProps
@@ -183,15 +187,6 @@ export declare const CheckQuestion: (new (init: ModelInit<CheckQuestion>) => Che
 
 type EagerHabitatProps = {
   readonly customStatus?: string[] | null;
-  readonly homeownershipTermsText: string;
-  readonly homeownershipMinCurrentAddressMonths: number;
-  readonly homeownershipMinCurrentEmploymentMonths: number;
-  readonly homeownershipNoOpenCycle: string;
-  readonly homeownershipHomeText: string;
-  readonly homeownershipCheckQuestions?: CheckQuestion[] | null;
-  readonly homeownershipRecordQuestions?: RecordQuestion[] | null;
-  readonly homeownershipWrittenQuestions?: WrittenQuestion[] | null;
-  readonly optionalSections: OptionalSections;
   readonly gallery?: GalleryItem[] | null;
   readonly sidebarName?: SidebarName | null;
   readonly closedCycleMessages: string[];
@@ -199,15 +194,6 @@ type EagerHabitatProps = {
 
 type LazyHabitatProps = {
   readonly customStatus?: string[] | null;
-  readonly homeownershipTermsText: string;
-  readonly homeownershipMinCurrentAddressMonths: number;
-  readonly homeownershipMinCurrentEmploymentMonths: number;
-  readonly homeownershipNoOpenCycle: string;
-  readonly homeownershipHomeText: string;
-  readonly homeownershipCheckQuestions?: CheckQuestion[] | null;
-  readonly homeownershipRecordQuestions?: RecordQuestion[] | null;
-  readonly homeownershipWrittenQuestions?: WrittenQuestion[] | null;
-  readonly optionalSections: OptionalSections;
   readonly gallery?: GalleryItem[] | null;
   readonly sidebarName?: SidebarName | null;
   readonly closedCycleMessages: string[];
@@ -272,7 +258,8 @@ type EagerRootForm = {
   readonly description?: string | null;
   readonly files?: (string | null)[] | null;
   readonly Cycles?: (TestCycle | null)[] | null;
-  readonly habitatID?: string | null;
+  readonly habitatID: string;
+  readonly formUrls: string[];
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -288,7 +275,8 @@ type LazyRootForm = {
   readonly description?: string | null;
   readonly files?: (string | null)[] | null;
   readonly Cycles: AsyncCollection<TestCycle>;
-  readonly habitatID?: string | null;
+  readonly habitatID: string;
+  readonly formUrls: string[];
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -299,43 +287,13 @@ export declare const RootForm: (new (init: ModelInit<RootForm>) => RootForm) & {
   copyOf(source: RootForm, mutator: (draft: MutableModel<RootForm>) => MutableModel<RootForm> | void): RootForm;
 }
 
-type EagerForm = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Form, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly url: string;
-  readonly habitatID: string;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-type LazyForm = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Form, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly url: string;
-  readonly habitatID: string;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-export declare type Form = LazyLoading extends LazyLoadingDisabled ? EagerForm : LazyForm
-
-export declare const Form: (new (init: ModelInit<Form>) => Form) & {
-  copyOf(source: Form, mutator: (draft: MutableModel<Form>) => MutableModel<Form> | void): Form;
-}
-
 type EagerDecision = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Decision, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly status: string;
+  readonly status: ReviewStatus | keyof typeof ReviewStatus;
   readonly serializedEditorState: string;
   readonly testapplicationID: string;
   readonly createdAt?: string | null;
@@ -348,7 +306,7 @@ type LazyDecision = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly status: string;
+  readonly status: ReviewStatus | keyof typeof ReviewStatus;
   readonly serializedEditorState: string;
   readonly testapplicationID: string;
   readonly createdAt?: string | null;
@@ -467,12 +425,11 @@ type EagerTestCycle = {
   readonly endDate?: string | null;
   readonly isOpen: boolean;
   readonly props?: string | null;
-  readonly habitatID: string;
   readonly TestApplications?: (TestApplication | null)[] | null;
-  readonly form: string;
-  readonly rootformID?: string | null;
+  readonly rootformID: string;
   readonly name?: string | null;
   readonly closedCycleMessage: string;
+  readonly formUrl: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -487,12 +444,11 @@ type LazyTestCycle = {
   readonly endDate?: string | null;
   readonly isOpen: boolean;
   readonly props?: string | null;
-  readonly habitatID: string;
   readonly TestApplications: AsyncCollection<TestApplication>;
-  readonly form: string;
-  readonly rootformID?: string | null;
+  readonly rootformID: string;
   readonly name?: string | null;
   readonly closedCycleMessage: string;
+  readonly formUrl: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -867,13 +823,8 @@ type EagerHabitat = {
   readonly urlName?: string | null;
   readonly state?: string | null;
   readonly city?: string | null;
-  readonly county?: string | null;
-  readonly countiesServed?: (string | null)[] | null;
   readonly props: HabitatProps;
   readonly users?: (string | null)[] | null;
-  readonly AMI?: (string | null)[] | null;
-  readonly TestCycles?: (TestCycle | null)[] | null;
-  readonly Forms?: (Form | null)[] | null;
   readonly authenticationHeader?: string | null;
   readonly RootForms?: (RootForm | null)[] | null;
   readonly createdAt?: string | null;
@@ -890,13 +841,8 @@ type LazyHabitat = {
   readonly urlName?: string | null;
   readonly state?: string | null;
   readonly city?: string | null;
-  readonly county?: string | null;
-  readonly countiesServed?: (string | null)[] | null;
   readonly props: HabitatProps;
   readonly users?: (string | null)[] | null;
-  readonly AMI?: (string | null)[] | null;
-  readonly TestCycles: AsyncCollection<TestCycle>;
-  readonly Forms: AsyncCollection<Form>;
   readonly authenticationHeader?: string | null;
   readonly RootForms: AsyncCollection<RootForm>;
   readonly createdAt?: string | null;

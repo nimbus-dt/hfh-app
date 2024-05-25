@@ -1,0 +1,96 @@
+.background {
+  display: grid;
+  grid-template-areas: 'previous next' 'help help';
+  align-items: center;
+
+  width: 100%;
+  max-width: 1184px;
+  padding: 1rem;
+  margin-top: auto;
+}
+
+.next {
+  width: fit-content;
+  max-width: 456px;
+  margin-left: auto;
+}
+
+.previous {
+  width: fit-content;
+  margin-right: auto;
+}
+
+.no_interaction {
+  cursor: default;
+  user-select: default;
+  background-color: transparent;
+}
+
+.no_interaction:hover {
+  background-color: transparent;
+  border-color: transparent;
+  cursor: default;
+  user-select: default;
+}
+
+.help_icon {
+  margin-top: 1rem;
+  margin-left: calc(100% - 1.5rem);
+  position: relative;
+
+  width: 3rem;
+  height: 3rem;
+  border: 1px solid var(--amplify-colors-neutral-80);
+
+  border-radius: 100%;
+
+  cursor: pointer;
+}
+
+.help_icon > svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.background_without_back {
+  grid-template-areas: 'next' 'help';
+  padding: 1rem;
+}
+
+.help_icon_without_back {
+  margin-top: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.next_without_back {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 992px) {
+  .background {
+    grid-template-columns: 145px 1fr 145px;
+    grid-template-areas: 'previous next help';
+    padding: 2rem;
+  }
+
+  .help_icon {
+    margin-top: 0;
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  .previous {
+    margin-right: auto;
+  }
+
+  .next {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

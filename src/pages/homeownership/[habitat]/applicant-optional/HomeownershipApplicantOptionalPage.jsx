@@ -14,7 +14,7 @@ export default function HomeownershipApplicantOptionalPage() {
   const { application, updateApplicationLastSection, habitat } =
     useOutletContext();
 
-  const shouldRenderCoApplicant = habitat?.props.optionalSections.coApplicant;
+  const shouldRenderCoApplicant = false;
 
   const { data: applicantInfos } = useApplicantInfosQuery({
     criteria: (c1) => c1.ownerID.eq(application?.id),

@@ -30,7 +30,7 @@ export default function HomeownershipTermsPage() {
           <View
             as="div"
             dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(habitat?.props.homeownershipTermsText),
+              __html: DOMPurify.sanitize(''),
             }}
           />
         </Flex>

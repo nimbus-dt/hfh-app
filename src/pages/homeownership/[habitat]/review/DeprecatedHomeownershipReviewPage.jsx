@@ -21,14 +21,12 @@ export default function HomeownershipReviewPage() {
   const { application, setApplication, openCycle, habitat } =
     useOutletContext();
 
-  const shouldRenderProperty = habitat?.props.optionalSections.propertyInfo;
+  const shouldRenderProperty = false;
 
-  const shouldRenderBusinessOwnerOrSelfEmployed =
-    habitat?.props.optionalSections.businessOwnerOrSelfEmployed;
+  const shouldRenderBusinessOwnerOrSelfEmployed = false;
 
-  const shouldRenderCoApplicant = habitat?.props.optionalSections.coApplicant;
-  const shouldRenderTypeOfOwnership =
-    habitat?.props.optionalSections.typeOfOwnership;
+  const shouldRenderCoApplicant = false;
+  const shouldRenderTypeOfOwnership = false;
 
   const [reviewedSections, setReviewedSections] = useState({});
   const [showSubmitModal, setShowSubmitModal] = useState(false);

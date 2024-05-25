@@ -14,16 +14,24 @@ import {
   Habitat,
   ApplicationTypes,
   ReviewStatus,
+  LazyFormAnswer,
 } from 'models';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   MdOutlineAdd,
   MdOutlineArrowBack,
   MdOutlineClose,
   MdOutlineFilterList,
+  MdOutlineLink,
   MdOutlineOpenInNew,
 } from 'react-icons/md';
-import { Link, useOutletContext, useParams } from 'react-router-dom';
+import {
+  Link,
+  resolvePath,
+  useLocation,
+  useOutletContext,
+  useParams,
+} from 'react-router-dom';
 import { stringToHumanReadable } from 'utils/strings';
 import IconButton from 'components/IconButton';
 import BreadCrumbs from 'components/BreadCrumbs/BreadCrumbs';
@@ -55,6 +63,7 @@ interface IOutletContext {
 }
 
 const AffiliateCycleApplications = () => {
+  const { pathname } = useLocation();
   const isSmall = useBreakpointValue({
     base: true,
     medium: false,
@@ -160,21 +169,30 @@ const AffiliateCycleApplications = () => {
     setReviewStatus(undefined);
   };
 
+  const handleCopyToClipboard = () => {
+    const pathToForm = resolvePath(`../../../applicant/${cycleId}`, pathname);
+    const { origin } = window.location;
+    const applicantLink = `${origin}${pathToForm.pathname}`;
+    navigator.clipboard.writeText(applicantLink);
+  };
+
   return (
     <div className={style.container}>
       {!isSmall && (
         <BreadCrumbs
           items={[
-            { label: 'Homeownership Form' },
-            { label: 'Cycles' },
+            { label: 'Homeownership Form', to: '../../forms' },
+            { label: 'Cycles', to: '../' },
             { label: 'Applications' },
           ]}
         />
       )}
       <div className={`${style.titleContainer}`}>
-        <IconButton variation="not-outlined">
-          <MdOutlineArrowBack />
-        </IconButton>
+        <Link to="../">
+          <IconButton variation="not-outlined">
+            <MdOutlineArrowBack />
+          </IconButton>
+        </Link>
         <span className={`theme-headline-medium ${style.title}`}>
           Applications Dashboard
         </span>
@@ -187,9 +205,18 @@ const AffiliateCycleApplications = () => {
           >{`${applications.length} results`}</span>
         </div>
         <div className={`${style.options}`}>
-          <IconButton type="button" onClick={handleOpenCloseFilters}>
-            <MdOutlineFilterList />
-          </IconButton>
+          <div className={`${style.suboptions}`}>
+            <IconButton
+              type="button"
+              onClick={handleCopyToClipboard}
+              title="Copy link for applicants to clipboard"
+            >
+              <MdOutlineLink />
+            </IconButton>
+            <IconButton type="button" onClick={handleOpenCloseFilters}>
+              <MdOutlineFilterList />
+            </IconButton>
+          </div>
           {filterModal && (
             <form
               onSubmit={handleSubmit(handleFilterOnValid)}
@@ -243,7 +270,7 @@ const AffiliateCycleApplications = () => {
                       />
                       <CheckboxField
                         name=""
-                        label="Offline"
+                        label="Paper"
                         className={`${style.customCheckbox}`}
                         checked={value === ApplicationTypes.PAPER}
                         onChange={(event) =>
@@ -395,9 +422,11 @@ const AffiliateCycleApplications = () => {
               {
                 id: 'name',
                 value:
-                  application.type === ApplicationTypes.ONLINE
-                    ? 'John Doe'
-                    : applicationProps?.name || '',
+                  application.type === ApplicationTypes.ONLINE ? (
+                    <Name application={application} />
+                  ) : (
+                    applicationProps?.name || ''
+                  ),
               },
               {
                 id: 'type',
@@ -464,6 +493,30 @@ const AffiliateCycleApplications = () => {
       />
     </div>
   );
+};
+
+const Name = ({ application }: { application: TestApplication }) => {
+  const [name, setName] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await application.FormAnswers.toArray();
+      let response = 'unknown';
+      for (let i = 0; i < result.length; i++) {
+        // eslint-disable-next-line no-prototype-builtins
+        if (result[i]?.values?.hasOwnProperty('applicantBasicInformation')) {
+          response =
+            result[i]?.values?.applicantBasicInformation
+              ?.applicantBasicInformationFullName;
+        }
+      }
+      setName(response);
+    };
+
+    fetchData();
+  }, [application]);
+
+  return name;
 };
 
 export default AffiliateCycleApplications;

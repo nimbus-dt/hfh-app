@@ -115,7 +115,7 @@ export default function HomeownershipChecklistPage() {
         onExpandedChange={handleOnExpandedChange}
       >
         <form onSubmit={handleSubmit(onValidSubmit)}>
-          {habitat?.props?.homeownershipCheckQuestions.map((question) => (
+          {[].map((question) => (
             <View key={question.name}>
               <Controller
                 control={control}

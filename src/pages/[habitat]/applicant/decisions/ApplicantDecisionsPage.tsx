@@ -1,79 +1,100 @@
-import React from 'react';
-import { Flex, Heading, Text, View } from '@aws-amplify/ui-react';
+import { useOutletContext } from 'react-router-dom';
+import {
+  Flex,
+  Heading,
+  Text,
+  View,
+  useAuthenticator,
+} from '@aws-amplify/ui-react';
+import {
+  RecursiveModelPredicate,
+  SortDirection,
+  SortPredicate,
+} from '@aws-amplify/datastore';
+
 import DecisionCard from 'components/DecisionCard';
-import { ReviewStatus } from 'models';
+import { useDecisionsQuery, useTestApplicationsQuery } from 'hooks/services';
+import {
+  Decision,
+  Habitat,
+  LazyTestApplication,
+  ReviewStatus,
+  TestApplication,
+} from 'models';
+
 import style from './ApplicantDecisionsPage.module.css';
 
-const dummyData = [
-  {
-    date: '2024-05-06T21:47:06.685Z',
-    habitat: 'Habitat for Humanity of Kenosha',
-    decision: ReviewStatus.ACCEPTED,
-    editorState:
-      '{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Hey! We just analyzed your latest application and we are wondering if you can revise the information you submitted in your financial section. Thank you.","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1},{"children":[{"detail":0,"format":1,"mode":"normal","style":"","text":"Lorem ipsum dolor sit amet","type":"text","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":", consectetur adipiscing elit. Duis leo quam, mollis sed mattis vel, eleifend quis odio. Nam non risus feugiat, facilisis mi eu, tristique elit. Aliquam ex nulla, rhoncus ac dui sed, facilisis fringilla velit. Vivamus ac auctor odio. Nunc egestas mi magna, in venenatis mauris iaculis ut. Donec efficitur lorem vel libero imperdiet, at dictum nulla congue. Mauris at dolor ut est auctor cursus. Phasellus vel velit pharetra, dictum lorem eu, lobortis magna. ","type":"text","version":1},{"detail":0,"format":8,"mode":"normal","style":"","text":"Aliquam non tortor lacus.","type":"text","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":" Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec magna risus, efficitur quis mattis non, ultricies quis nulla. Sed urna ex, malesuada vitae blandit ut, dapibus at tellus. Integer nec arcu finibus, dictum est id, placerat dui. Donec facilisis, mauris ac aliquam fermentum, metus augue interdum nisi, a pharetra metus enim in massa. Donec tempus turpis et efficitur tempus.","type":"text","version":1}],"direction":"ltr","format":"justify","indent":0,"type":"paragraph","version":1},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Sed rutrum elit augue. Nullam sit amet lobortis nisl, at pulvinar quam. Sed varius justo eu dolor pretium lobortis. Nulla imperdiet magna non aliquam ultricies. Vivamus dignissim velit est, sit amet porta risus lacinia at. Proin bibendum tortor rutrum justo scelerisque, vitae dignissim risus dignissim. Curabitur hendrerit commodo metus nec blandit. Nam id mi nunc. Donec non condimentum velit. Duis lacinia risus nunc, a vulputate sem imperdiet ac. Pellentesque posuere ornare velit, vitae tristique nulla dictum nec. Praesent vel justo molestie, euismod risus a, volutpat arcu.","type":"text","version":1}],"direction":"ltr","format":"justify","indent":0,"type":"paragraph","version":1},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Nullam massa nisi, varius eu bibendum quis, rhoncus at leo. Cras vitae posuere nisl. Vivamus laoreet diam non neque pulvinar rhoncus. Aliquam consequat sagittis lacinia. Nulla felis arcu, mollis id massa eu, dapibus lacinia odio. Aenean vulputate sed libero a imperdiet. Nullam felis dui, posuere sed sollicitudin eget, porta non diam. Maecenas quam erat, condimentum id ipsum id, lobortis finibus diam. Donec aliquet ipsum nec ante egestas, vitae fermentum ipsum semper. Nunc diam orci, varius id quam nec, sollicitudin imperdiet mi. Integer blandit risus at quam congue, quis congue arcu efficitur.","type":"text","version":1}],"direction":"ltr","format":"justify","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}',
-  },
-  {
-    date: '2024-05-06T21:47:06.685Z',
-    habitat: 'Habitat for Humanity of Kenosha',
-    decision: ReviewStatus.RETURNED,
-    editorState:
-      '{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Hey! We just analyzed your latest application and we are wondering if you can revise the information you submitted in your financial section. Thank you.","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1},{"children":[{"detail":0,"format":1,"mode":"normal","style":"","text":"Lorem ipsum dolor sit amet","type":"text","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":", consectetur adipiscing elit. Duis leo quam, mollis sed mattis vel, eleifend quis odio. Nam non risus feugiat, facilisis mi eu, tristique elit. Aliquam ex nulla, rhoncus ac dui sed, facilisis fringilla velit. Vivamus ac auctor odio. Nunc egestas mi magna, in venenatis mauris iaculis ut. Donec efficitur lorem vel libero imperdiet, at dictum nulla congue. Mauris at dolor ut est auctor cursus. Phasellus vel velit pharetra, dictum lorem eu, lobortis magna. ","type":"text","version":1},{"detail":0,"format":8,"mode":"normal","style":"","text":"Aliquam non tortor lacus.","type":"text","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":" Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec magna risus, efficitur quis mattis non, ultricies quis nulla. Sed urna ex, malesuada vitae blandit ut, dapibus at tellus. Integer nec arcu finibus, dictum est id, placerat dui. Donec facilisis, mauris ac aliquam fermentum, metus augue interdum nisi, a pharetra metus enim in massa. Donec tempus turpis et efficitur tempus.","type":"text","version":1}],"direction":"ltr","format":"justify","indent":0,"type":"paragraph","version":1},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Sed rutrum elit augue. Nullam sit amet lobortis nisl, at pulvinar quam. Sed varius justo eu dolor pretium lobortis. Nulla imperdiet magna non aliquam ultricies. Vivamus dignissim velit est, sit amet porta risus lacinia at. Proin bibendum tortor rutrum justo scelerisque, vitae dignissim risus dignissim. Curabitur hendrerit commodo metus nec blandit. Nam id mi nunc. Donec non condimentum velit. Duis lacinia risus nunc, a vulputate sem imperdiet ac. Pellentesque posuere ornare velit, vitae tristique nulla dictum nec. Praesent vel justo molestie, euismod risus a, volutpat arcu.","type":"text","version":1}],"direction":"ltr","format":"justify","indent":0,"type":"paragraph","version":1},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Nullam massa nisi, varius eu bibendum quis, rhoncus at leo. Cras vitae posuere nisl. Vivamus laoreet diam non neque pulvinar rhoncus. Aliquam consequat sagittis lacinia. Nulla felis arcu, mollis id massa eu, dapibus lacinia odio. Aenean vulputate sed libero a imperdiet. Nullam felis dui, posuere sed sollicitudin eget, porta non diam. Maecenas quam erat, condimentum id ipsum id, lobortis finibus diam. Donec aliquet ipsum nec ante egestas, vitae fermentum ipsum semper. Nunc diam orci, varius id quam nec, sollicitudin imperdiet mi. Integer blandit risus at quam congue, quis congue arcu efficitur.","type":"text","version":1}],"direction":"ltr","format":"justify","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}',
-  },
-  {
-    date: '2024-05-06T21:47:06.685Z',
-    habitat: 'Habitat for Humanity of Kenosha',
-    decision: ReviewStatus.PENDING,
-    editorState:
-      '{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Hey! We just analyzed your latest application and we are wondering if you can revise the information you submitted in your financial section. Thank you.","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1},{"children":[{"detail":0,"format":1,"mode":"normal","style":"","text":"Lorem ipsum dolor sit amet","type":"text","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":", consectetur adipiscing elit. Duis leo quam, mollis sed mattis vel, eleifend quis odio. Nam non risus feugiat, facilisis mi eu, tristique elit. Aliquam ex nulla, rhoncus ac dui sed, facilisis fringilla velit. Vivamus ac auctor odio. Nunc egestas mi magna, in venenatis mauris iaculis ut. Donec efficitur lorem vel libero imperdiet, at dictum nulla congue. Mauris at dolor ut est auctor cursus. Phasellus vel velit pharetra, dictum lorem eu, lobortis magna. ","type":"text","version":1},{"detail":0,"format":8,"mode":"normal","style":"","text":"Aliquam non tortor lacus.","type":"text","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":" Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec magna risus, efficitur quis mattis non, ultricies quis nulla. Sed urna ex, malesuada vitae blandit ut, dapibus at tellus. Integer nec arcu finibus, dictum est id, placerat dui. Donec facilisis, mauris ac aliquam fermentum, metus augue interdum nisi, a pharetra metus enim in massa. Donec tempus turpis et efficitur tempus.","type":"text","version":1}],"direction":"ltr","format":"justify","indent":0,"type":"paragraph","version":1},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Sed rutrum elit augue. Nullam sit amet lobortis nisl, at pulvinar quam. Sed varius justo eu dolor pretium lobortis. Nulla imperdiet magna non aliquam ultricies. Vivamus dignissim velit est, sit amet porta risus lacinia at. Proin bibendum tortor rutrum justo scelerisque, vitae dignissim risus dignissim. Curabitur hendrerit commodo metus nec blandit. Nam id mi nunc. Donec non condimentum velit. Duis lacinia risus nunc, a vulputate sem imperdiet ac. Pellentesque posuere ornare velit, vitae tristique nulla dictum nec. Praesent vel justo molestie, euismod risus a, volutpat arcu.","type":"text","version":1}],"direction":"ltr","format":"justify","indent":0,"type":"paragraph","version":1},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Nullam massa nisi, varius eu bibendum quis, rhoncus at leo. Cras vitae posuere nisl. Vivamus laoreet diam non neque pulvinar rhoncus. Aliquam consequat sagittis lacinia. Nulla felis arcu, mollis id massa eu, dapibus lacinia odio. Aenean vulputate sed libero a imperdiet. Nullam felis dui, posuere sed sollicitudin eget, porta non diam. Maecenas quam erat, condimentum id ipsum id, lobortis finibus diam. Donec aliquet ipsum nec ante egestas, vitae fermentum ipsum semper. Nunc diam orci, varius id quam nec, sollicitudin imperdiet mi. Integer blandit risus at quam congue, quis congue arcu efficitur.","type":"text","version":1}],"direction":"ltr","format":"justify","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}',
-  },
-  {
-    date: '2024-05-06T21:47:06.685Z',
-    habitat: 'Habitat for Humanity of Kenosha',
-    decision: ReviewStatus.DENIED,
-    editorState:
-      '{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Hey! We just analyzed your latest application and we are wondering if you can revise the information you submitted in your financial section. Thank you.","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1},{"children":[{"detail":0,"format":1,"mode":"normal","style":"","text":"Lorem ipsum dolor sit amet","type":"text","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":", consectetur adipiscing elit. Duis leo quam, mollis sed mattis vel, eleifend quis odio. Nam non risus feugiat, facilisis mi eu, tristique elit. Aliquam ex nulla, rhoncus ac dui sed, facilisis fringilla velit. Vivamus ac auctor odio. Nunc egestas mi magna, in venenatis mauris iaculis ut. Donec efficitur lorem vel libero imperdiet, at dictum nulla congue. Mauris at dolor ut est auctor cursus. Phasellus vel velit pharetra, dictum lorem eu, lobortis magna. ","type":"text","version":1},{"detail":0,"format":8,"mode":"normal","style":"","text":"Aliquam non tortor lacus.","type":"text","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":" Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec magna risus, efficitur quis mattis non, ultricies quis nulla. Sed urna ex, malesuada vitae blandit ut, dapibus at tellus. Integer nec arcu finibus, dictum est id, placerat dui. Donec facilisis, mauris ac aliquam fermentum, metus augue interdum nisi, a pharetra metus enim in massa. Donec tempus turpis et efficitur tempus.","type":"text","version":1}],"direction":"ltr","format":"justify","indent":0,"type":"paragraph","version":1},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Sed rutrum elit augue. Nullam sit amet lobortis nisl, at pulvinar quam. Sed varius justo eu dolor pretium lobortis. Nulla imperdiet magna non aliquam ultricies. Vivamus dignissim velit est, sit amet porta risus lacinia at. Proin bibendum tortor rutrum justo scelerisque, vitae dignissim risus dignissim. Curabitur hendrerit commodo metus nec blandit. Nam id mi nunc. Donec non condimentum velit. Duis lacinia risus nunc, a vulputate sem imperdiet ac. Pellentesque posuere ornare velit, vitae tristique nulla dictum nec. Praesent vel justo molestie, euismod risus a, volutpat arcu.","type":"text","version":1}],"direction":"ltr","format":"justify","indent":0,"type":"paragraph","version":1},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Nullam massa nisi, varius eu bibendum quis, rhoncus at leo. Cras vitae posuere nisl. Vivamus laoreet diam non neque pulvinar rhoncus. Aliquam consequat sagittis lacinia. Nulla felis arcu, mollis id massa eu, dapibus lacinia odio. Aenean vulputate sed libero a imperdiet. Nullam felis dui, posuere sed sollicitudin eget, porta non diam. Maecenas quam erat, condimentum id ipsum id, lobortis finibus diam. Donec aliquet ipsum nec ante egestas, vitae fermentum ipsum semper. Nunc diam orci, varius id quam nec, sollicitudin imperdiet mi. Integer blandit risus at quam congue, quis congue arcu efficitur.","type":"text","version":1}],"direction":"ltr","format":"justify","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}',
-  },
-  {
-    date: '2024-05-06T21:47:06.685Z',
-    habitat: 'Habitat for Humanity of Kenosha',
-    decision: ReviewStatus.RETURNED,
-    editorState:
-      '{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Hey! We just analyzed your latest application and we are wondering if you can revise the information you submitted in your financial section. Thank you.","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1},{"children":[{"detail":0,"format":1,"mode":"normal","style":"","text":"Lorem ipsum dolor sit amet","type":"text","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":", consectetur adipiscing elit. Duis leo quam, mollis sed mattis vel, eleifend quis odio. Nam non risus feugiat, facilisis mi eu, tristique elit. Aliquam ex nulla, rhoncus ac dui sed, facilisis fringilla velit. Vivamus ac auctor odio. Nunc egestas mi magna, in venenatis mauris iaculis ut. Donec efficitur lorem vel libero imperdiet, at dictum nulla congue. Mauris at dolor ut est auctor cursus. Phasellus vel velit pharetra, dictum lorem eu, lobortis magna. ","type":"text","version":1},{"detail":0,"format":8,"mode":"normal","style":"","text":"Aliquam non tortor lacus.","type":"text","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":" Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec magna risus, efficitur quis mattis non, ultricies quis nulla. Sed urna ex, malesuada vitae blandit ut, dapibus at tellus. Integer nec arcu finibus, dictum est id, placerat dui. Donec facilisis, mauris ac aliquam fermentum, metus augue interdum nisi, a pharetra metus enim in massa. Donec tempus turpis et efficitur tempus.","type":"text","version":1}],"direction":"ltr","format":"justify","indent":0,"type":"paragraph","version":1},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Sed rutrum elit augue. Nullam sit amet lobortis nisl, at pulvinar quam. Sed varius justo eu dolor pretium lobortis. Nulla imperdiet magna non aliquam ultricies. Vivamus dignissim velit est, sit amet porta risus lacinia at. Proin bibendum tortor rutrum justo scelerisque, vitae dignissim risus dignissim. Curabitur hendrerit commodo metus nec blandit. Nam id mi nunc. Donec non condimentum velit. Duis lacinia risus nunc, a vulputate sem imperdiet ac. Pellentesque posuere ornare velit, vitae tristique nulla dictum nec. Praesent vel justo molestie, euismod risus a, volutpat arcu.","type":"text","version":1}],"direction":"ltr","format":"justify","indent":0,"type":"paragraph","version":1},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Nullam massa nisi, varius eu bibendum quis, rhoncus at leo. Cras vitae posuere nisl. Vivamus laoreet diam non neque pulvinar rhoncus. Aliquam consequat sagittis lacinia. Nulla felis arcu, mollis id massa eu, dapibus lacinia odio. Aenean vulputate sed libero a imperdiet. Nullam felis dui, posuere sed sollicitudin eget, porta non diam. Maecenas quam erat, condimentum id ipsum id, lobortis finibus diam. Donec aliquet ipsum nec ante egestas, vitae fermentum ipsum semper. Nunc diam orci, varius id quam nec, sollicitudin imperdiet mi. Integer blandit risus at quam congue, quis congue arcu efficitur.","type":"text","version":1}],"direction":"ltr","format":"justify","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}',
-  },
-  {
-    date: '2024-05-06T21:47:06.685Z',
-    habitat: 'Habitat for Humanity of Kenosha',
-    decision: ReviewStatus.ACCEPTED,
-    editorState:
-      '{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Hey! We just analyzed your latest application and we are wondering if you can revise the information you submitted in your financial section. Thank you.","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1},{"children":[{"detail":0,"format":1,"mode":"normal","style":"","text":"Lorem ipsum dolor sit amet","type":"text","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":", consectetur adipiscing elit. Duis leo quam, mollis sed mattis vel, eleifend quis odio. Nam non risus feugiat, facilisis mi eu, tristique elit. Aliquam ex nulla, rhoncus ac dui sed, facilisis fringilla velit. Vivamus ac auctor odio. Nunc egestas mi magna, in venenatis mauris iaculis ut. Donec efficitur lorem vel libero imperdiet, at dictum nulla congue. Mauris at dolor ut est auctor cursus. Phasellus vel velit pharetra, dictum lorem eu, lobortis magna. ","type":"text","version":1},{"detail":0,"format":8,"mode":"normal","style":"","text":"Aliquam non tortor lacus.","type":"text","version":1},{"detail":0,"format":0,"mode":"normal","style":"","text":" Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec magna risus, efficitur quis mattis non, ultricies quis nulla. Sed urna ex, malesuada vitae blandit ut, dapibus at tellus. Integer nec arcu finibus, dictum est id, placerat dui. Donec facilisis, mauris ac aliquam fermentum, metus augue interdum nisi, a pharetra metus enim in massa. Donec tempus turpis et efficitur tempus.","type":"text","version":1}],"direction":"ltr","format":"justify","indent":0,"type":"paragraph","version":1},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Sed rutrum elit augue. Nullam sit amet lobortis nisl, at pulvinar quam. Sed varius justo eu dolor pretium lobortis. Nulla imperdiet magna non aliquam ultricies. Vivamus dignissim velit est, sit amet porta risus lacinia at. Proin bibendum tortor rutrum justo scelerisque, vitae dignissim risus dignissim. Curabitur hendrerit commodo metus nec blandit. Nam id mi nunc. Donec non condimentum velit. Duis lacinia risus nunc, a vulputate sem imperdiet ac. Pellentesque posuere ornare velit, vitae tristique nulla dictum nec. Praesent vel justo molestie, euismod risus a, volutpat arcu.","type":"text","version":1}],"direction":"ltr","format":"justify","indent":0,"type":"paragraph","version":1},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Nullam massa nisi, varius eu bibendum quis, rhoncus at leo. Cras vitae posuere nisl. Vivamus laoreet diam non neque pulvinar rhoncus. Aliquam consequat sagittis lacinia. Nulla felis arcu, mollis id massa eu, dapibus lacinia odio. Aenean vulputate sed libero a imperdiet. Nullam felis dui, posuere sed sollicitudin eget, porta non diam. Maecenas quam erat, condimentum id ipsum id, lobortis finibus diam. Donec aliquet ipsum nec ante egestas, vitae fermentum ipsum semper. Nunc diam orci, varius id quam nec, sollicitudin imperdiet mi. Integer blandit risus at quam congue, quis congue arcu efficitur.","type":"text","version":1}],"direction":"ltr","format":"justify","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}',
-  },
-];
+interface IOutletContext {
+  habitat?: Habitat;
+}
 
-const ApplicantDecisionsPage = () => (
-  <View padding="32px">
-    <Flex className={`${style.cta}`} direction="column">
-      <Heading level={3} className="theme-headline-medium">
-        Decisions Dashboard
-      </Heading>
-      <View className={`theme-body-medium ${style.subtitle}`}>
-        <Text color="inherit">
-          Exchange information with affiliates and revise your submissions
-        </Text>
-      </View>
-    </Flex>
-    <Flex className={`${style.decisionsContainer}`}>
-      {dummyData.map((data, index) => (
-        <DecisionCard
-          key={index}
-          date={data.date}
-          habitat={data.habitat}
-          status={data.decision}
-          editorState={data.editorState}
-          showReviewButton
-        />
-      ))}
-    </Flex>
-  </View>
-);
+const ApplicantDecisionsPage = () => {
+  const { user } = useAuthenticator((context) => [context.user]);
+  const { habitat }: IOutletContext = useOutletContext();
+
+  const { data: applications }: { data: TestApplication[] } =
+    useTestApplicationsQuery({
+      criteria: (c2: RecursiveModelPredicate<LazyTestApplication>) =>
+        c2.ownerID.eq(user?.username),
+      dependencyArray: [user],
+      paginationProducer: (s: SortPredicate<LazyTestApplication>) =>
+        s.createdAt(SortDirection.DESCENDING),
+    });
+
+  const { data: decisions }: { data: Decision[] } = useDecisionsQuery({
+    criteria: (c2: RecursiveModelPredicate<Decision>) =>
+      c2.or((c3) => {
+        const newDecisions = applications.map((application) =>
+          c3.testapplicationID.eq(application.id)
+        );
+
+        if (!newDecisions.length) {
+          return [c3.id.eq('')];
+        }
+
+        return newDecisions;
+      }),
+    dependencyArray: [applications],
+    paginationProducer: {
+      sort: (s: SortPredicate<Decision>) =>
+        s.createdAt(SortDirection.DESCENDING),
+    },
+  });
+
+  return (
+    <View padding="32px">
+      <Flex className={`${style.cta}`} direction="column">
+        <Heading level={3} className="theme-headline-medium">
+          Decisions Dashboard
+        </Heading>
+        <View className={`theme-body-medium ${style.subtitle}`}>
+          <Text color="inherit">
+            Exchange information with affiliates and revise your submissions
+          </Text>
+        </View>
+      </Flex>
+      <Flex className={`${style.decisionsContainer}`}>
+        {decisions.map((data) => (
+          <DecisionCard
+            key={data.id}
+            date={data.updatedAt || ''}
+            habitat={habitat?.name || ''}
+            status={ReviewStatus[data?.status || 'PENDING']}
+            editorState={data.serializedEditorState}
+            applicationRoute={
+              data?.status === ReviewStatus.RETURNED
+                ? `../${
+                    applications.find(
+                      (application) => data.testapplicationID === application.id
+                    )?.testcycleID
+                  }`
+                : undefined
+            }
+          />
+        ))}
+      </Flex>
+    </View>
+  );
+};
 
 export default ApplicantDecisionsPage;

@@ -115,7 +115,7 @@ const EmploymentSection = ({
               handleCurrentEmploymentOnReview(
                 calculateAgeInMonths(
                   employmentInfo?.props?.currentEmployment?.startDate
-                ) < habitat?.props.homeownershipMinCurrentEmploymentMonths &&
+                ) < 12 &&
                   employmentInfo?.props?.currentEmployment?.firstJob === 'No',
                 applicantInfos[0]?.props?.hasCoApplicant === 'Yes'
               )
@@ -127,7 +127,7 @@ const EmploymentSection = ({
       )}
       {calculateAgeInMonths(
         employmentInfo?.props?.currentEmployment?.startDate
-      ) < habitat?.props.homeownershipMinCurrentEmploymentMonths &&
+      ) < 12 &&
         employmentInfo?.props?.currentEmployment?.firstJob === 'No' && (
           <>
             <PreviousEmployment
@@ -199,9 +199,7 @@ const EmploymentSection = ({
                       calculateAgeInMonths(
                         employmentInfo?.props?.coApplicantCurrentEmployment
                           ?.startDate
-                      ) <
-                        habitat?.props
-                          .homeownershipMinCurrentEmploymentMonths &&
+                      ) < 12 &&
                         employmentInfo?.props?.coApplicantCurrentEmployment
                           ?.firstJob === 'No'
                     )
@@ -214,7 +212,7 @@ const EmploymentSection = ({
             )}
             {calculateAgeInMonths(
               employmentInfo?.props?.coApplicantCurrentEmployment?.startDate
-            ) < habitat?.props.homeownershipMinCurrentEmploymentMonths &&
+            ) < 12 &&
               employmentInfo?.props?.coApplicantCurrentEmployment?.firstJob ===
                 'No' && (
                 <>
