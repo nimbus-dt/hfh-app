@@ -4,6 +4,7 @@ import Features from './components/Features';
 import Hero from './components/Hero';
 import Faqs from './components/Faqs';
 import Footer from './components/Footer';
+import Client from './components/Client';
 
 function Landing() {
   return (
@@ -11,6 +12,7 @@ function Landing() {
       <Nav />
       <Hero />
       <Features />
+      <Client />
       <Faqs />
       <Footer />
     </Flex>
