@@ -1,15 +1,9 @@
 import './assets/styles/App.css';
-import { Routes, Route, Outlet } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { ScrollView } from '@aws-amplify/ui-react';
 import AffiliatePortalRepairsPage from 'pages/affiliate-portal/repairs';
 import AffiliatePortalVolunteersPage from 'pages/affiliate-portal/volunteers';
 import AffiliatePortalSettingsPage from 'pages/affiliate-portal/settings';
-import { NewLandingLayout } from 'pages/index/Layout/NewLandingLayout';
-import LandingPage from 'pages/index/LandingPage';
-import TermsPage from 'pages/terms/TermsPage';
-import PrivacyPage from 'pages/privacy';
-import ContactPage from 'pages/contact';
-import DataPage from 'pages/data';
 // eslint-disable-next-line import/no-unresolved
 import '@aws-amplify/ui-react/styles.css';
 import ApplicantCyclePage from 'pages/[habitat]/applicant/[cycleId]';
@@ -24,6 +18,7 @@ import CyclesPage from 'pages/[habitat]/affiliate/cycles';
 import NewAffiliateLayout from 'layouts/NewAffiliateLayout';
 import AffiliateCycleApplications from 'pages/[habitat]/affiliate/cycles/[cycleId]/AffiliateCycleApplications';
 import AffiliateApplicationDetailsPage from 'pages/[habitat]/affiliate/cycles/[cycleId]/[applicationId]/AffiliateApplicationDetailsPage';
+import Landing from 'pages/landing';
 import { Form } from '@formio/react';
 
 function App() {
@@ -33,51 +28,10 @@ function App() {
         path="/"
         element={
           <ScrollView height="100vh" width="100%">
-            <Outlet />
+            <Landing />
           </ScrollView>
         }
-      >
-        <Route
-          index
-          element={
-            <NewLandingLayout>
-              <LandingPage />
-            </NewLandingLayout>
-          }
-        />
-        <Route
-          path="privacy"
-          element={
-            <NewLandingLayout>
-              <PrivacyPage />
-            </NewLandingLayout>
-          }
-        />
-        <Route
-          path="data"
-          element={
-            <NewLandingLayout>
-              <DataPage />
-            </NewLandingLayout>
-          }
-        />
-        <Route
-          path="terms"
-          element={
-            <NewLandingLayout>
-              <TermsPage />
-            </NewLandingLayout>
-          }
-        />
-        <Route
-          path="contact"
-          element={
-            <NewLandingLayout>
-              <ContactPage />
-            </NewLandingLayout>
-          }
-        />
-      </Route>
+      />
 
       <Route path={ROUTES.HABITAT} element={<HabitatLayout />}>
         <Route path={ROUTES.HABITAT_APPLICANT} element={<ApplicantLayout />}>
