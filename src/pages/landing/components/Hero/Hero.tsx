@@ -51,6 +51,10 @@ function Hero() {
             padding: '12px 16px',
           }}
           className="signUp"
+          onClick={() => {
+            window.location.href =
+              'https://share.hsforms.com/1lqoUQWsfRm2AJVquaEMNCwqw1cl';
+          }}
         >
           Sign up
         </CustomButton>

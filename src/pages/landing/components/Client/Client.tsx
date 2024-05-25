@@ -97,6 +97,10 @@ function Client() {
               backgroundColor: 'var(--amplify-colors-neutral-10)',
             }}
             className="signUp"
+            onClick={() => {
+              window.location.href =
+                'https://share.hsforms.com/1lqoUQWsfRm2AJVquaEMNCwqw1cl';
+            }}
           >
             Sign up
           </CustomButton>
