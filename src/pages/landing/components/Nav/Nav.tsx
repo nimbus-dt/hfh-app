@@ -47,9 +47,13 @@ function Nav() {
       {mobile ? (
         <Flex width="fit-content" height="fit-content" padding="10px">
           <Menu triggerClassName="my-menu-trigger">
-            <MenuItem>Features</MenuItem>
-            <MenuItem>Contact Us</MenuItem>
-            <MenuItem>FAQs</MenuItem>
+            <MenuItem onClick={() => scrollToSection('#features')}>
+              Features
+            </MenuItem>
+            <MenuItem onClick={() => scrollToSection('#clients')}>
+              Clients
+            </MenuItem>
+            <MenuItem onClick={() => scrollToSection('#faq')}>FAQ</MenuItem>
           </Menu>
         </Flex>
       ) : (
@@ -77,9 +81,9 @@ function Nav() {
             height="fit-content"
             textAlign="center"
             className="navLink"
-            onClick={() => scrollToSection('#contact')}
+            onClick={() => scrollToSection('#clients')}
           >
-            Contact Us
+            Clients
           </Text>
           <Text
             padding="12px 16px"
@@ -87,9 +91,9 @@ function Nav() {
             height="fit-content"
             textAlign="center"
             className="navLink"
-            onClick={() => scrollToSection('#faqs')}
+            onClick={() => scrollToSection('#faq')}
           >
-            FAQs
+            FAQ
           </Text>
         </Flex>
       )}

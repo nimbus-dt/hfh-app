@@ -14,7 +14,7 @@ function Client() {
       padding={{ base: '72px 24px', medium: '72px 48px', large: '72px 128px' }}
       direction="column"
       alignItems="start"
-      id="contact"
+      id="clients"
     >
       <Text
         textAlign="center"
