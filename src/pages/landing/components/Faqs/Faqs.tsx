@@ -39,6 +39,13 @@ function Faqs() {
             Critical Home Repair applications online through Habitat App.
           </ExpanderItem>
           <ExpanderItem
+            title="Can I test Habitat App out before paying?"
+            value="demo-item-8"
+          >
+            Yes! We offer all affiliates a free application cycle where they can
+            try out Habitat App.
+          </ExpanderItem>
+          <ExpanderItem
             title="Is Habitat App customizable?"
             value="demo-item-2"
           >
@@ -49,8 +56,8 @@ function Faqs() {
             title="Can Habitat App integrate with other software?"
             value="demo-item-3"
           >
-            Yes! Habitat App can integrate with almost any software to allow a
-            smooth operation for your affiliate.
+            Yes! Habitat App can integrate with almost any other software to
+            allow a smooth operation for your affiliate.
           </ExpanderItem>
           <ExpanderItem
             title="How can I gain access to Habitat App?"
