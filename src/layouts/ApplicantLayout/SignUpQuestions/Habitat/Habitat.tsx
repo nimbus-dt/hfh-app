@@ -90,7 +90,7 @@ const Habitat = ({
             htmlFor="source"
             className={`theme-body-medium ${styles.label}`}
           >
-            How did you hear about {habitat.name}?
+            How did you hear about {habitat?.name}?
           </label>
           <div>
             <input
