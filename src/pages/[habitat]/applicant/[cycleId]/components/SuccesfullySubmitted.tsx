@@ -14,7 +14,7 @@ const SuccesfullySubmitted = ({ habitat, onReview }: IProperties) => (
   <Flex direction="column">
     <Text fontWeight="bold">
       {`You have succesfully submitted your Homeownership Program application
-          for ${habitat?.name}. You will receive an email with updates on your
+          for ${habitat?.longName}. You will receive an email with updates on your
           application.`}
     </Text>
     <div className={styles.buttons}>
