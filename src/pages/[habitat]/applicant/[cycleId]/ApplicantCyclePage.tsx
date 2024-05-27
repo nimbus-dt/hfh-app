@@ -140,7 +140,12 @@ const ApplicantCyclePage = () => {
       </div>
     );
 
-  if (!cycle.isOpen && !review)
+  const reviewed =
+    application.reviewStatus === ReviewStatus.ACCEPTED ||
+    application.reviewStatus === ReviewStatus.DENIED ||
+    application.reviewStatus === ReviewStatus.RETURNED;
+
+  if (!cycle.isOpen && !review && !reviewed)
     return (
       <div className={`${style.page}`}>
         <NoOpenCycle
@@ -153,7 +158,11 @@ const ApplicantCyclePage = () => {
       </div>
     );
 
-  if (application.submissionStatus === SubmissionStatus.COMPLETED && !review) {
+  if (
+    application.submissionStatus === SubmissionStatus.COMPLETED &&
+    !review &&
+    !reviewed
+  ) {
     return (
       <div className={`${style.page}`}>
         <SuccesfullySubmitted habitat={habitat} onReview={onReview} />
@@ -161,7 +170,7 @@ const ApplicantCyclePage = () => {
     );
   }
 
-  if (review) {
+  if (review || reviewed) {
     return (
       <div className={`${style.page}`}>
         <div className={style.detailsContainer}>
