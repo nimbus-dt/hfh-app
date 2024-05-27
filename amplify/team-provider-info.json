@@ -36,12 +36,12 @@
           "deploymentBucketName": "amplify-hfhapp-prod-160335-deployment",
           "s3Key": "amplify-builds/getSubmittedApplicationsEmails-434e66354c6f53536d78-build.zip"
         },
+        "hfhapp": {},
+        "updateApplicationOwner": {},
         "sendConfirmSubmitEmail": {
           "deploymentBucketName": "amplify-hfhapp-prod-160335-deployment",
           "s3Key": "amplify-builds/sendConfirmSubmitEmail-5537767178654e47545a-build.zip"
-        },
-        "hfhapp": {},
-        "updateApplicationOwner": {}
+        }
       },
       "auth": {
         "hfhapp": {}
@@ -115,16 +115,16 @@
   },
   "legacy": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-hfhapp-legacy-101310-authRole",
-      "UnauthRoleArn": "arn:aws:iam::719959370210:role/amplify-hfhapp-legacy-101310-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::719959370210:role/amplify-hfhapp-legacy-101310-authRole",
+      "AuthRoleName": "amplify-hfhapp-legacy-90853-authRole",
+      "UnauthRoleArn": "arn:aws:iam::719959370210:role/amplify-hfhapp-legacy-90853-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::719959370210:role/amplify-hfhapp-legacy-90853-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-hfhapp-legacy-101310-deployment",
-      "UnauthRoleName": "amplify-hfhapp-legacy-101310-unauthRole",
-      "StackName": "amplify-hfhapp-legacy-101310",
-      "StackId": "arn:aws:cloudformation:us-east-1:719959370210:stack/amplify-hfhapp-legacy-101310/a4cd4dc0-19e8-11ef-8435-0e1996c83d01",
+      "DeploymentBucketName": "amplify-hfhapp-legacy-90853-deployment",
+      "UnauthRoleName": "amplify-hfhapp-legacy-90853-unauthRole",
+      "StackName": "amplify-hfhapp-legacy-90853",
+      "StackId": "arn:aws:cloudformation:us-east-1:719959370210:stack/amplify-hfhapp-legacy-90853/2a56e240-1c3b-11ef-ae75-0affccf52609",
       "AmplifyAppId": "dgfg84wx7ntah",
-      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-hfhapp-legacy-101310-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-hfhapp-legacy-90853-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "auth": {
@@ -132,37 +132,37 @@
       },
       "function": {
         "getCitiesByNameAndState": {
-          "deploymentBucketName": "amplify-hfhapp-legacy-101310-deployment",
+          "deploymentBucketName": "amplify-hfhapp-legacy-90853-deployment",
           "s3Key": "amplify-builds/getCitiesByNameAndState-6f57346f43326566336a-build.zip"
         },
         "getEmail": {
-          "deploymentBucketName": "amplify-hfhapp-legacy-101310-deployment",
-          "s3Key": "amplify-builds/getEmail-32656859502b666c474d-build.zip",
-          "authHfhappUserpoolid": "us-east-1_lA5eRfjN4"
+          "deploymentBucketName": "amplify-hfhapp-legacy-90853-deployment",
+          "s3Key": "amplify-builds/getEmail-32656859502b666c474d-build.zip"
         },
         "getSubmittedApplicationsEmails": {
-          "deploymentBucketName": "amplify-hfhapp-legacy-101310-deployment",
+          "deploymentBucketName": "amplify-hfhapp-legacy-90853-deployment",
           "s3Key": "amplify-builds/getSubmittedApplicationsEmails-4b7a4c6e35382b726443-build.zip"
-        },
-        "sendConfirmSubmitEmail": {
-          "deploymentBucketName": "amplify-hfhapp-legacy-101310-deployment",
-          "s3Key": "amplify-builds/sendConfirmSubmitEmail-5537767178654e47545a-build.zip"
         },
         "sendEmailToAdmin": {
           "adminEmail": "guillermo.avelar@habitat-app.org",
           "sesEmail": "support@nimbus-dt.com",
-          "deploymentBucketName": "amplify-hfhapp-legacy-101310-deployment",
+          "deploymentBucketName": "amplify-hfhapp-legacy-90853-deployment",
           "s3Key": "amplify-builds/sendEmailToAdmin-552f6736526d6c454868-build.zip"
         },
         "sendEmailToApplicant": {
-          "deploymentBucketName": "amplify-hfhapp-legacy-101310-deployment",
+          "deploymentBucketName": "amplify-hfhapp-legacy-90853-deployment",
           "s3Key": "amplify-builds/sendEmailToApplicant-494f4a4e754a7533616d-build.zip"
         },
-        "updateApplicationOwner": {
-          "deploymentBucketName": "amplify-hfhapp-legacy-101310-deployment",
-          "s3Key": "amplify-builds/updateApplicationOwner-5543704a774c3944436a-build.zip"
+        "hfhapp": {},
+        "sendConfirmSubmitEmail": {
+          "sesEmail": "support@habitat-app.org",
+          "deploymentBucketName": "amplify-hfhapp-legacy-90853-deployment",
+          "s3Key": "amplify-builds/sendConfirmSubmitEmail-62454a50314432554855-build.zip"
         },
-        "hfhapp": {}
+        "updateApplicationOwner": {
+          "deploymentBucketName": "amplify-hfhapp-legacy-90853-deployment",
+          "s3Key": "amplify-builds/updateApplicationOwner-5543704a774c3944436a-build.zip"
+        }
       },
       "api": {
         "hfhapp": {},

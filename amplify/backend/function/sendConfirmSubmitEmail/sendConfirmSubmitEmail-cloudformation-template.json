@@ -16,6 +16,9 @@
     "s3Key": {
       "Type": "String"
     },
+    "sesEmail": {
+      "Type": "String"
+    },
     "apihfhappGraphQLAPIIdOutput": {
       "Type": "String",
       "Default": "apihfhappGraphQLAPIIdOutput"
@@ -24,13 +27,13 @@
       "Type": "String",
       "Default": "apihfhappGraphQLAPIEndpointOutput"
     },
-    "authhfhappUserPoolId": {
-      "Type": "String",
-      "Default": "authhfhappUserPoolId"
-    },
     "apihfhappGraphQLAPIKeyOutput": {
       "Type": "String",
       "Default": "apihfhappGraphQLAPIKeyOutput"
+    },
+    "authhfhappUserPoolId": {
+      "Type": "String",
+      "Default": "authhfhappUserPoolId"
     }
   },
   "Conditions": {
@@ -86,9 +89,6 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "AUTH_HFHAPP_USERPOOLID": {
-              "Ref": "authhfhappUserPoolId"
-            },
             "API_HFHAPP_GRAPHQLAPIIDOUTPUT": {
               "Ref": "apihfhappGraphQLAPIIdOutput"
             },
@@ -97,6 +97,12 @@
             },
             "API_HFHAPP_GRAPHQLAPIKEYOUTPUT": {
               "Ref": "apihfhappGraphQLAPIKeyOutput"
+            },
+            "AUTH_HFHAPP_USERPOOLID": {
+              "Ref": "authhfhappUserPoolId"
+            },
+            "SES_EMAIL": {
+              "Ref": "sesEmail"
             }
           }
         },
@@ -117,12 +123,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "hfhappLambdaRole4606a37e",
+            "hfhappLambdaRolec7a9b126",
             {
               "Fn::Join": [
                 "",
                 [
-                  "hfhappLambdaRole4606a37e",
+                  "hfhappLambdaRolec7a9b126",
                   "-",
                   {
                     "Ref": "env"

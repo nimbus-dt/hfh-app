@@ -3,6 +3,7 @@ type Note @model @auth(rules: [{allow: public}]) {
   serializedEditorState: String!
   ownerID: ID!
   testapplicationID: ID! @index(name: "byTestApplication")
+  untitledfield: String
 }
 
 type OptionalSections {

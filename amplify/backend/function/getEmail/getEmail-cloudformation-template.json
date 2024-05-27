@@ -19,9 +19,6 @@
     "authhfhappUserPoolId": {
       "Type": "String",
       "Default": "authhfhappUserPoolId"
-    },
-    "authHfhappUserpoolid": {
-      "Type": "String"
     }
   },
   "Conditions": {
@@ -78,7 +75,7 @@
               "Ref": "AWS::Region"
             },
             "AUTH_HFHAPP_USERPOOLID": {
-              "Ref": "authHfhappUserpoolid"
+              "Ref": "authhfhappUserPoolId"
             }
           }
         },

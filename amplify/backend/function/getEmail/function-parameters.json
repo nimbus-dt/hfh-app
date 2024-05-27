@@ -6,11 +6,5 @@
       ]
     }
   },
-  "lambdaLayers": [],
-  "environmentVariableList": [
-    {
-      "cloudFormationParameterName": "authHfhappUserpoolid",
-      "environmentVariableName": "AUTH_HFHAPP_USERPOOLID"
-    }
-  ]
+  "lambdaLayers": []
 }
