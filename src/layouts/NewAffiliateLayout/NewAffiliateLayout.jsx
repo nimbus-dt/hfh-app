@@ -194,7 +194,7 @@ const NewAffiliateLayout = () => {
           <Text>
             Sorry,{' '}
             <b style={{ fontWeight: 'bold' }}>
-              {habitat?.name || 'this habitat'}
+              {habitat?.longName || 'this habitat'}
             </b>{' '}
             has not authorized you to access this page. Contact{' '}
             <a href="mailto:support@habitat-app.org">support@habitat-app.org</a>{' '}

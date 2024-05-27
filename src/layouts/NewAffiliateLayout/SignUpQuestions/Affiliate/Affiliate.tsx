@@ -83,7 +83,7 @@ const Affiliate = ({
             htmlFor="position"
             className={`theme-body-medium ${styles.label}`}
           >
-            What is your current title at {habitat?.name}?
+            What is your current title at {habitat?.longName}?
           </label>
           <div>
             <input
@@ -129,7 +129,7 @@ const Affiliate = ({
             htmlFor="joinMonth"
             className={`theme-body-medium ${styles.label}`}
           >
-            When did you join {habitat?.name}?
+            When did you join {habitat?.longName}?
           </label>
           <div className={styles.fullname}>
             <div>
