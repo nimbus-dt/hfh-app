@@ -118,7 +118,6 @@ type EagerNote = {
   readonly serializedEditorState: string;
   readonly ownerID: string;
   readonly testapplicationID: string;
-  readonly untitledfield?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -132,7 +131,6 @@ type LazyNote = {
   readonly serializedEditorState: string;
   readonly ownerID: string;
   readonly testapplicationID: string;
-  readonly untitledfield?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

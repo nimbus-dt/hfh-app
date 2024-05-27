@@ -157,7 +157,7 @@
         "sendConfirmSubmitEmail": {
           "sesEmail": "support@habitat-app.org",
           "deploymentBucketName": "amplify-hfhapp-legacy-90853-deployment",
-          "s3Key": "amplify-builds/sendConfirmSubmitEmail-62454a50314432554855-build.zip"
+          "s3Key": "amplify-builds/sendConfirmSubmitEmail-3875416b6a4358425a59-build.zip"
         },
         "updateApplicationOwner": {
           "deploymentBucketName": "amplify-hfhapp-legacy-90853-deployment",
