@@ -16,7 +16,7 @@ const DecisionsTab = ({ habitat, decisions }: IProperties) => (
         <DecisionCard
           key={decision.id}
           date={decision.createdAt || ''}
-          habitat={habitat?.name || ''}
+          habitat={habitat?.longName || ''}
           status={decision.status as keyof typeof ReviewStatus}
           editorState={decision.serializedEditorState}
         />

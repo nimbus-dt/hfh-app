@@ -102,12 +102,10 @@ function NewFormButton({ triggerUpdate }: IProperties) {
 
       await API.post('public', '/email-admin', {
         body: {
-          subject: `Action Required: Set Up New Form for ${habitat?.name} Habitat`,
+          subject: `Action Required: Set Up New Form for ${habitat?.name} habitat`,
           body: `
             <div>
-              <p>A new form needs to be set up for the ${
-                habitat?.name
-              } habitat</p>
+              <p>A new form needs to be set up for ${habitat?.longName}</p>
               <ul>
                 <li>Name: ${newForm?.name}</li>
                 <li>Description: ${newForm?.description}</li>
