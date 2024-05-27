@@ -243,12 +243,13 @@ type ApplicantInfo @model @auth(rules: [{allow: public}]) {
 type Habitat @model @auth(rules: [{allow: public}]) {
   id: ID!
   name: String
-  urlName: String
+  longName: String
   state: String
   city: String
   props: HabitatProps!
   users: [ID]
   authenticationHeader: String
   RootForms: [RootForm] @hasMany(indexName: "byHabitat", fields: ["id"])
+  urlName: String
 }
  

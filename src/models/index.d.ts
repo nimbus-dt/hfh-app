@@ -820,13 +820,14 @@ type EagerHabitat = {
   };
   readonly id: string;
   readonly name?: string | null;
-  readonly urlName?: string | null;
+  readonly longName?: string | null;
   readonly state?: string | null;
   readonly city?: string | null;
   readonly props: HabitatProps;
   readonly users?: (string | null)[] | null;
   readonly authenticationHeader?: string | null;
   readonly RootForms?: (RootForm | null)[] | null;
+  readonly urlName?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -838,13 +839,14 @@ type LazyHabitat = {
   };
   readonly id: string;
   readonly name?: string | null;
-  readonly urlName?: string | null;
+  readonly longName?: string | null;
   readonly state?: string | null;
   readonly city?: string | null;
   readonly props: HabitatProps;
   readonly users?: (string | null)[] | null;
   readonly authenticationHeader?: string | null;
   readonly RootForms: AsyncCollection<RootForm>;
+  readonly urlName?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
