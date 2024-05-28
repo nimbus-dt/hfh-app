@@ -191,10 +191,10 @@ const AffiliateCycleApplications = () => {
   };
 
   const handleResetFilters = () => {
-    setStartDateSubmitted(undefined);
-    setEndDateSubmitted(undefined);
-    setType(undefined);
-    setReviewStatus(undefined);
+    setStartDateSubmitted('MM/DD/YYYY');
+    setEndDateSubmitted('MM/DD/YYYY');
+    setType(null);
+    setReviewStatus(null);
     reset();
   };
 
