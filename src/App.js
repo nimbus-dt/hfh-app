@@ -1,6 +1,5 @@
 import './assets/styles/App.css';
 import { Routes, Route } from 'react-router-dom';
-import { ScrollView } from '@aws-amplify/ui-react';
 import AffiliatePortalRepairsPage from 'pages/[habitat]/affiliate/repairs';
 import AffiliatePortalVolunteersPage from 'pages/[habitat]/affiliate/volunteers';
 import AffiliatePortalSettingsPage from 'pages/[habitat]/affiliate/settings';
@@ -25,9 +24,9 @@ function App() {
       <Route
         path="/"
         element={
-          <ScrollView height="100vh" width="100%">
+          <div style={{ height: 'auto', minHeight: '100vh', width: '100%' }}>
             <Landing />
-          </ScrollView>
+          </div>
         }
       />
 

@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useState, useEffect, useCallback } from 'react';
+import { Outlet, useLocation, useParams } from 'react-router-dom';
 import { DataStore, SortDirection } from 'aws-amplify';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import Authentication from 'components/Authentication';
@@ -31,8 +31,7 @@ const HabitatLayout = () => {
 
   const [application, setApplication] = useState();
 
-  const scrollViewReference = useRef(null);
-  useScrollToTopOnRouteChange(scrollViewReference);
+  useScrollToTopOnRouteChange();
 
   const location = useLocation();
 

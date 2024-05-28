@@ -1,0 +1,11 @@
+@import '~formiojs/dist/formio.full.min.css';
+
+@font-face {
+  font-family: 'opti';
+  src: local('Opti'),
+    url(../assets/fonts/OPTIClearfaceGothicDemiAg.woff) format('woff');
+}
+
+.btn-wizard-nav-submit {
+  display: none !important;
+}
