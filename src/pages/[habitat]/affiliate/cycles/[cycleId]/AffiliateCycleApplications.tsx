@@ -88,8 +88,8 @@ const AffiliateCycleApplications = () => {
   const [filterModal, setFilterModal] = useState(false);
   const { register, control, handleSubmit, reset, watch } = useForm({
     values: {
-      startDateSubmitted: startDateSubmitted || '',
-      endDateSubmitted: endDateSubmitted || '',
+      startDateSubmitted,
+      endDateSubmitted,
       type,
       reviewStatus,
     },
@@ -273,7 +273,8 @@ const AffiliateCycleApplications = () => {
                     }}
                     className={style.textDate}
                   >
-                    {watchStartDateSubmitted
+                    {watchStartDateSubmitted &&
+                    watchStartDateSubmitted !== 'MM/DD/YYYY'
                       ? convertDateYYYYMMDDtoDDMMYYYY(watchStartDateSubmitted)
                       : 'MM/DD/YYYY'}
                   </span>
@@ -294,7 +295,8 @@ const AffiliateCycleApplications = () => {
                     }}
                     className={style.textDate}
                   >
-                    {watchEndDateSubmitted
+                    {watchEndDateSubmitted &&
+                    watchEndDateSubmitted !== 'MM/DD/YYYY'
                       ? convertDateYYYYMMDDtoDDMMYYYY(watchEndDateSubmitted)
                       : 'MM/DD/YYYY'}
                   </span>
