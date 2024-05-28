@@ -42,10 +42,13 @@ const ApplicantCyclePage = () => {
   });
 
   const [application, setApplication] = useState<TestApplication>();
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(1);
   const [review, setReview] = useState(false);
 
-  const onReview = () => setReview(true);
+  const onReview = () => {
+    setActiveTab(0);
+    setReview(true);
+  };
 
   const getApplication = useCallback(
     async (username: string) => {
