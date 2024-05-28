@@ -1,6 +1,339 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createUser = /* GraphQL */ `
+  mutation CreateUser(
+    $input: CreateUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    createUser(input: $input, condition: $condition) {
+      id
+      firstName
+      lastName
+      dateOfBirth
+      sex
+      phoneNumber
+      affiliateProps {
+        titleAtHabitat
+        roleDescription
+        joinDate
+        joinMonth
+        joinYear
+        __typename
+      }
+      applicantProps {
+        state
+        city
+        street
+        householdMembersNumber
+        householdAnnualIncome
+        currentlyUnemployed
+        currentWorkTitle
+        nameOfEmployer
+        howDidYouHearAbout
+        firstTimeApplying
+        whatAreYouInterestedIn
+        __typename
+      }
+      type
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updateUser = /* GraphQL */ `
+  mutation UpdateUser(
+    $input: UpdateUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    updateUser(input: $input, condition: $condition) {
+      id
+      firstName
+      lastName
+      dateOfBirth
+      sex
+      phoneNumber
+      affiliateProps {
+        titleAtHabitat
+        roleDescription
+        joinDate
+        joinMonth
+        joinYear
+        __typename
+      }
+      applicantProps {
+        state
+        city
+        street
+        householdMembersNumber
+        householdAnnualIncome
+        currentlyUnemployed
+        currentWorkTitle
+        nameOfEmployer
+        howDidYouHearAbout
+        firstTimeApplying
+        whatAreYouInterestedIn
+        __typename
+      }
+      type
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deleteUser = /* GraphQL */ `
+  mutation DeleteUser(
+    $input: DeleteUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    deleteUser(input: $input, condition: $condition) {
+      id
+      firstName
+      lastName
+      dateOfBirth
+      sex
+      phoneNumber
+      affiliateProps {
+        titleAtHabitat
+        roleDescription
+        joinDate
+        joinMonth
+        joinYear
+        __typename
+      }
+      applicantProps {
+        state
+        city
+        street
+        householdMembersNumber
+        householdAnnualIncome
+        currentlyUnemployed
+        currentWorkTitle
+        nameOfEmployer
+        howDidYouHearAbout
+        firstTimeApplying
+        whatAreYouInterestedIn
+        __typename
+      }
+      type
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const createRootForm = /* GraphQL */ `
+  mutation CreateRootForm(
+    $input: CreateRootFormInput!
+    $condition: ModelRootFormConditionInput
+  ) {
+    createRootForm(input: $input, condition: $condition) {
+      id
+      name
+      status
+      description
+      files
+      Cycles {
+        nextToken
+        startedAt
+        __typename
+      }
+      habitatID
+      formUrls
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updateRootForm = /* GraphQL */ `
+  mutation UpdateRootForm(
+    $input: UpdateRootFormInput!
+    $condition: ModelRootFormConditionInput
+  ) {
+    updateRootForm(input: $input, condition: $condition) {
+      id
+      name
+      status
+      description
+      files
+      Cycles {
+        nextToken
+        startedAt
+        __typename
+      }
+      habitatID
+      formUrls
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deleteRootForm = /* GraphQL */ `
+  mutation DeleteRootForm(
+    $input: DeleteRootFormInput!
+    $condition: ModelRootFormConditionInput
+  ) {
+    deleteRootForm(input: $input, condition: $condition) {
+      id
+      name
+      status
+      description
+      files
+      Cycles {
+        nextToken
+        startedAt
+        __typename
+      }
+      habitatID
+      formUrls
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const createDecision = /* GraphQL */ `
+  mutation CreateDecision(
+    $input: CreateDecisionInput!
+    $condition: ModelDecisionConditionInput
+  ) {
+    createDecision(input: $input, condition: $condition) {
+      id
+      status
+      serializedEditorState
+      testapplicationID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updateDecision = /* GraphQL */ `
+  mutation UpdateDecision(
+    $input: UpdateDecisionInput!
+    $condition: ModelDecisionConditionInput
+  ) {
+    updateDecision(input: $input, condition: $condition) {
+      id
+      status
+      serializedEditorState
+      testapplicationID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deleteDecision = /* GraphQL */ `
+  mutation DeleteDecision(
+    $input: DeleteDecisionInput!
+    $condition: ModelDecisionConditionInput
+  ) {
+    deleteDecision(input: $input, condition: $condition) {
+      id
+      status
+      serializedEditorState
+      testapplicationID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const createFormAnswer = /* GraphQL */ `
+  mutation CreateFormAnswer(
+    $input: CreateFormAnswerInput!
+    $condition: ModelFormAnswerConditionInput
+  ) {
+    createFormAnswer(input: $input, condition: $condition) {
+      id
+      values
+      page
+      section
+      testapplicationID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updateFormAnswer = /* GraphQL */ `
+  mutation UpdateFormAnswer(
+    $input: UpdateFormAnswerInput!
+    $condition: ModelFormAnswerConditionInput
+  ) {
+    updateFormAnswer(input: $input, condition: $condition) {
+      id
+      values
+      page
+      section
+      testapplicationID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deleteFormAnswer = /* GraphQL */ `
+  mutation DeleteFormAnswer(
+    $input: DeleteFormAnswerInput!
+    $condition: ModelFormAnswerConditionInput
+  ) {
+    deleteFormAnswer(input: $input, condition: $condition) {
+      id
+      values
+      page
+      section
+      testapplicationID
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
 export const createNote = /* GraphQL */ `
   mutation CreateNote(
     $input: CreateNoteInput!
@@ -58,60 +391,6 @@ export const deleteNote = /* GraphQL */ `
     }
   }
 `;
-export const createProperty = /* GraphQL */ `
-  mutation CreateProperty(
-    $input: CreatePropertyInput!
-    $condition: ModelPropertyConditionInput
-  ) {
-    createProperty(input: $input, condition: $condition) {
-      id
-      ownerID
-      props
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const updateProperty = /* GraphQL */ `
-  mutation UpdateProperty(
-    $input: UpdatePropertyInput!
-    $condition: ModelPropertyConditionInput
-  ) {
-    updateProperty(input: $input, condition: $condition) {
-      id
-      ownerID
-      props
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const deleteProperty = /* GraphQL */ `
-  mutation DeleteProperty(
-    $input: DeletePropertyInput!
-    $condition: ModelPropertyConditionInput
-  ) {
-    deleteProperty(input: $input, condition: $condition) {
-      id
-      ownerID
-      props
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
 export const createTestCycle = /* GraphQL */ `
   mutation CreateTestCycle(
     $input: CreateTestCycleInput!
@@ -123,12 +402,15 @@ export const createTestCycle = /* GraphQL */ `
       endDate
       isOpen
       props
-      habitatID
       TestApplications {
         nextToken
         startedAt
         __typename
       }
+      rootformID
+      name
+      closedCycleMessage
+      formUrl
       createdAt
       updatedAt
       _version
@@ -149,12 +431,15 @@ export const updateTestCycle = /* GraphQL */ `
       endDate
       isOpen
       props
-      habitatID
       TestApplications {
         nextToken
         startedAt
         __typename
       }
+      rootformID
+      name
+      closedCycleMessage
+      formUrl
       createdAt
       updatedAt
       _version
@@ -175,228 +460,15 @@ export const deleteTestCycle = /* GraphQL */ `
       endDate
       isOpen
       props
-      habitatID
       TestApplications {
         nextToken
         startedAt
         __typename
       }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const createApplicantOptional = /* GraphQL */ `
-  mutation CreateApplicantOptional(
-    $input: CreateApplicantOptionalInput!
-    $condition: ModelApplicantOptionalConditionInput
-  ) {
-    createApplicantOptional(input: $input, condition: $condition) {
-      id
-      ownerID
-      props
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const updateApplicantOptional = /* GraphQL */ `
-  mutation UpdateApplicantOptional(
-    $input: UpdateApplicantOptionalInput!
-    $condition: ModelApplicantOptionalConditionInput
-  ) {
-    updateApplicantOptional(input: $input, condition: $condition) {
-      id
-      ownerID
-      props
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const deleteApplicantOptional = /* GraphQL */ `
-  mutation DeleteApplicantOptional(
-    $input: DeleteApplicantOptionalInput!
-    $condition: ModelApplicantOptionalConditionInput
-  ) {
-    deleteApplicantOptional(input: $input, condition: $condition) {
-      id
-      ownerID
-      props
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const createAsset = /* GraphQL */ `
-  mutation CreateAsset(
-    $input: CreateAssetInput!
-    $condition: ModelAssetConditionInput
-  ) {
-    createAsset(input: $input, condition: $condition) {
-      id
-      ownerId
-      props
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const updateAsset = /* GraphQL */ `
-  mutation UpdateAsset(
-    $input: UpdateAssetInput!
-    $condition: ModelAssetConditionInput
-  ) {
-    updateAsset(input: $input, condition: $condition) {
-      id
-      ownerId
-      props
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const deleteAsset = /* GraphQL */ `
-  mutation DeleteAsset(
-    $input: DeleteAssetInput!
-    $condition: ModelAssetConditionInput
-  ) {
-    deleteAsset(input: $input, condition: $condition) {
-      id
-      ownerId
-      props
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const createDebt = /* GraphQL */ `
-  mutation CreateDebt(
-    $input: CreateDebtInput!
-    $condition: ModelDebtConditionInput
-  ) {
-    createDebt(input: $input, condition: $condition) {
-      id
-      ownerId
-      props
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const updateDebt = /* GraphQL */ `
-  mutation UpdateDebt(
-    $input: UpdateDebtInput!
-    $condition: ModelDebtConditionInput
-  ) {
-    updateDebt(input: $input, condition: $condition) {
-      id
-      ownerId
-      props
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const deleteDebt = /* GraphQL */ `
-  mutation DeleteDebt(
-    $input: DeleteDebtInput!
-    $condition: ModelDebtConditionInput
-  ) {
-    deleteDebt(input: $input, condition: $condition) {
-      id
-      ownerId
-      props
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const createIncome = /* GraphQL */ `
-  mutation CreateIncome(
-    $input: CreateIncomeInput!
-    $condition: ModelIncomeConditionInput
-  ) {
-    createIncome(input: $input, condition: $condition) {
-      id
-      ownerId
-      props
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const updateIncome = /* GraphQL */ `
-  mutation UpdateIncome(
-    $input: UpdateIncomeInput!
-    $condition: ModelIncomeConditionInput
-  ) {
-    updateIncome(input: $input, condition: $condition) {
-      id
-      ownerId
-      props
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const deleteIncome = /* GraphQL */ `
-  mutation DeleteIncome(
-    $input: DeleteIncomeInput!
-    $condition: ModelIncomeConditionInput
-  ) {
-    deleteIncome(input: $input, condition: $condition) {
-      id
-      ownerId
-      props
+      rootformID
+      name
+      closedCycleMessage
+      formUrl
       createdAt
       updatedAt
       _version
@@ -415,11 +487,6 @@ export const createTestApplication = /* GraphQL */ `
       id
       ownerID
       lastSection
-      members {
-        nextToken
-        startedAt
-        __typename
-      }
       submittedDate
       reviewStatus
       submissionStatus
@@ -431,6 +498,17 @@ export const createTestApplication = /* GraphQL */ `
         startedAt
         __typename
       }
+      FormAnswers {
+        nextToken
+        startedAt
+        __typename
+      }
+      Decisions {
+        nextToken
+        startedAt
+        __typename
+      }
+      customStatus
       createdAt
       updatedAt
       _version
@@ -449,11 +527,6 @@ export const updateTestApplication = /* GraphQL */ `
       id
       ownerID
       lastSection
-      members {
-        nextToken
-        startedAt
-        __typename
-      }
       submittedDate
       reviewStatus
       submissionStatus
@@ -465,6 +538,17 @@ export const updateTestApplication = /* GraphQL */ `
         startedAt
         __typename
       }
+      FormAnswers {
+        nextToken
+        startedAt
+        __typename
+      }
+      Decisions {
+        nextToken
+        startedAt
+        __typename
+      }
+      customStatus
       createdAt
       updatedAt
       _version
@@ -483,11 +567,6 @@ export const deleteTestApplication = /* GraphQL */ `
       id
       ownerID
       lastSection
-      members {
-        nextToken
-        startedAt
-        __typename
-      }
       submittedDate
       reviewStatus
       submissionStatus
@@ -499,333 +578,17 @@ export const deleteTestApplication = /* GraphQL */ `
         startedAt
         __typename
       }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const createEmploymentInfo = /* GraphQL */ `
-  mutation CreateEmploymentInfo(
-    $input: CreateEmploymentInfoInput!
-    $condition: ModelEmploymentInfoConditionInput
-  ) {
-    createEmploymentInfo(input: $input, condition: $condition) {
-      id
-      ownerID
-      props
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const updateEmploymentInfo = /* GraphQL */ `
-  mutation UpdateEmploymentInfo(
-    $input: UpdateEmploymentInfoInput!
-    $condition: ModelEmploymentInfoConditionInput
-  ) {
-    updateEmploymentInfo(input: $input, condition: $condition) {
-      id
-      ownerID
-      props
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const deleteEmploymentInfo = /* GraphQL */ `
-  mutation DeleteEmploymentInfo(
-    $input: DeleteEmploymentInfoInput!
-    $condition: ModelEmploymentInfoConditionInput
-  ) {
-    deleteEmploymentInfo(input: $input, condition: $condition) {
-      id
-      ownerID
-      props
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const createMember = /* GraphQL */ `
-  mutation CreateMember(
-    $input: CreateMemberInput!
-    $condition: ModelMemberConditionInput
-  ) {
-    createMember(input: $input, condition: $condition) {
-      id
-      props
-      testapplicationID
-      isCoApplicant
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const updateMember = /* GraphQL */ `
-  mutation UpdateMember(
-    $input: UpdateMemberInput!
-    $condition: ModelMemberConditionInput
-  ) {
-    updateMember(input: $input, condition: $condition) {
-      id
-      props
-      testapplicationID
-      isCoApplicant
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const deleteMember = /* GraphQL */ `
-  mutation DeleteMember(
-    $input: DeleteMemberInput!
-    $condition: ModelMemberConditionInput
-  ) {
-    deleteMember(input: $input, condition: $condition) {
-      id
-      props
-      testapplicationID
-      isCoApplicant
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const createRecord = /* GraphQL */ `
-  mutation CreateRecord(
-    $input: CreateRecordInput!
-    $condition: ModelRecordConditionInput
-  ) {
-    createRecord(input: $input, condition: $condition) {
-      id
-      ownerID
-      props
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const updateRecord = /* GraphQL */ `
-  mutation UpdateRecord(
-    $input: UpdateRecordInput!
-    $condition: ModelRecordConditionInput
-  ) {
-    updateRecord(input: $input, condition: $condition) {
-      id
-      ownerID
-      props
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const deleteRecord = /* GraphQL */ `
-  mutation DeleteRecord(
-    $input: DeleteRecordInput!
-    $condition: ModelRecordConditionInput
-  ) {
-    deleteRecord(input: $input, condition: $condition) {
-      id
-      ownerID
-      props
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const createWritten = /* GraphQL */ `
-  mutation CreateWritten(
-    $input: CreateWrittenInput!
-    $condition: ModelWrittenConditionInput
-  ) {
-    createWritten(input: $input, condition: $condition) {
-      id
-      ownerID
-      props
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const updateWritten = /* GraphQL */ `
-  mutation UpdateWritten(
-    $input: UpdateWrittenInput!
-    $condition: ModelWrittenConditionInput
-  ) {
-    updateWritten(input: $input, condition: $condition) {
-      id
-      ownerID
-      props
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const deleteWritten = /* GraphQL */ `
-  mutation DeleteWritten(
-    $input: DeleteWrittenInput!
-    $condition: ModelWrittenConditionInput
-  ) {
-    deleteWritten(input: $input, condition: $condition) {
-      id
-      ownerID
-      props
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const createChecklist = /* GraphQL */ `
-  mutation CreateChecklist(
-    $input: CreateChecklistInput!
-    $condition: ModelChecklistConditionInput
-  ) {
-    createChecklist(input: $input, condition: $condition) {
-      id
-      ownerID
-      props
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const updateChecklist = /* GraphQL */ `
-  mutation UpdateChecklist(
-    $input: UpdateChecklistInput!
-    $condition: ModelChecklistConditionInput
-  ) {
-    updateChecklist(input: $input, condition: $condition) {
-      id
-      ownerID
-      props
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const deleteChecklist = /* GraphQL */ `
-  mutation DeleteChecklist(
-    $input: DeleteChecklistInput!
-    $condition: ModelChecklistConditionInput
-  ) {
-    deleteChecklist(input: $input, condition: $condition) {
-      id
-      ownerID
-      props
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const createApplicantInfo = /* GraphQL */ `
-  mutation CreateApplicantInfo(
-    $input: CreateApplicantInfoInput!
-    $condition: ModelApplicantInfoConditionInput
-  ) {
-    createApplicantInfo(input: $input, condition: $condition) {
-      id
-      ownerID
-      props
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const updateApplicantInfo = /* GraphQL */ `
-  mutation UpdateApplicantInfo(
-    $input: UpdateApplicantInfoInput!
-    $condition: ModelApplicantInfoConditionInput
-  ) {
-    updateApplicantInfo(input: $input, condition: $condition) {
-      id
-      ownerID
-      props
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const deleteApplicantInfo = /* GraphQL */ `
-  mutation DeleteApplicantInfo(
-    $input: DeleteApplicantInfoInput!
-    $condition: ModelApplicantInfoConditionInput
-  ) {
-    deleteApplicantInfo(input: $input, condition: $condition) {
-      id
-      ownerID
-      props
+      FormAnswers {
+        nextToken
+        startedAt
+        __typename
+      }
+      Decisions {
+        nextToken
+        startedAt
+        __typename
+      }
+      customStatus
       createdAt
       updatedAt
       _version
@@ -843,27 +606,22 @@ export const createHabitat = /* GraphQL */ `
     createHabitat(input: $input, condition: $condition) {
       id
       name
-      urlName
+      longName
       state
       city
-      county
-      countiesServed
       props {
         customStatus
-        homeownershipTermsText
-        homeownershipMinCurrentAddressMonths
-        homeownershipMinCurrentEmploymentMonths
-        homeownershipNoOpenCycle
-        homeownershipHomeText
+        closedCycleMessages
         __typename
       }
       users
-      AMI
-      TestCycles {
+      authenticationHeader
+      RootForms {
         nextToken
         startedAt
         __typename
       }
+      urlName
       createdAt
       updatedAt
       _version
@@ -881,27 +639,22 @@ export const updateHabitat = /* GraphQL */ `
     updateHabitat(input: $input, condition: $condition) {
       id
       name
-      urlName
+      longName
       state
       city
-      county
-      countiesServed
       props {
         customStatus
-        homeownershipTermsText
-        homeownershipMinCurrentAddressMonths
-        homeownershipMinCurrentEmploymentMonths
-        homeownershipNoOpenCycle
-        homeownershipHomeText
+        closedCycleMessages
         __typename
       }
       users
-      AMI
-      TestCycles {
+      authenticationHeader
+      RootForms {
         nextToken
         startedAt
         __typename
       }
+      urlName
       createdAt
       updatedAt
       _version
@@ -919,27 +672,22 @@ export const deleteHabitat = /* GraphQL */ `
     deleteHabitat(input: $input, condition: $condition) {
       id
       name
-      urlName
+      longName
       state
       city
-      county
-      countiesServed
       props {
         customStatus
-        homeownershipTermsText
-        homeownershipMinCurrentAddressMonths
-        homeownershipMinCurrentEmploymentMonths
-        homeownershipNoOpenCycle
-        homeownershipHomeText
+        closedCycleMessages
         __typename
       }
       users
-      AMI
-      TestCycles {
+      authenticationHeader
+      RootForms {
         nextToken
         startedAt
         __typename
       }
+      urlName
       createdAt
       updatedAt
       _version
