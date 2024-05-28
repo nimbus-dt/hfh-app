@@ -51,9 +51,14 @@
   margin-top: 1rem;
 }
 
+.dateInput,
 .input {
   display: flex;
   flex-direction: column;
+}
+
+.dateInput {
+  position: relative;
 }
 
 .label {
@@ -61,6 +66,18 @@
 
   color: var(--amplify-colors-neutral-100);
   cursor: pointer;
+}
+
+.input_date_text {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+
+  color: var(--amplify-colors-neutral-90);
+
+  cursor: pointer;
+  user-select: none;
+  text-transform: uppercase;
 }
 
 .input_date {
@@ -74,8 +91,10 @@
   border: 1px solid var(--amplify-colors-neutral-80);
   border-radius: 0.5rem;
 
-  color: var(--amplify-colors-neutral-90);
-  background-color: var(--amplify-colors-neutral-10);
+  font-size: 0;
+
+  color: transparent;
+  background-color: transparent;
 
   text-transform: uppercase;
 
