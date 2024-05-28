@@ -1,4 +1,4 @@
-import { type ReactNode, useMemo, useState } from 'react';
+import { type ReactNode, useMemo, useState, useRef } from 'react';
 import { Form as FormioForm, Wizard } from '@formio/react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -97,11 +97,18 @@ const Layout = ({
       section: 'Ownership',
     },
   ];
+  const headerRef = useRef<HTMLDivElement>(null);
   return (
     <div style={{ width: '100%' }}>
       {!formReady && <Loading />}
       {formReady && (
-        <Header current={currentPage} pages={pages || mock} habitat={habitat} />
+        <div ref={headerRef}>
+          <Header
+            current={currentPage}
+            pages={pages || mock}
+            habitat={habitat}
+          />
+        </div>
       )}
       {children}
       {formReady && (
@@ -111,7 +118,7 @@ const Layout = ({
               currentPage === 0
                 ? undefined
                 : () => {
-                    window.scrollTo(0, 0);
+                    headerRef.current?.scrollIntoView();
                     setCurrentPage((prev) => prev - 1);
                     formReady.prevPage().catch((error: unknown) => {
                       console.log(error);
@@ -119,7 +126,7 @@ const Layout = ({
                   }
             }
             onNext={() => {
-              window.scrollTo(0, 0);
+              headerRef.current?.scrollIntoView();
               if (
                 formReady?.componentComponents &&
                 currentPage === formReady.componentComponents.length - 1
