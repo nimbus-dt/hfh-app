@@ -1,12 +1,11 @@
 import './assets/styles/App.css';
 import { Routes, Route } from 'react-router-dom';
-import AffiliatePortalRepairsPage from 'pages/affiliate-portal/repairs';
-import AffiliatePortalVolunteersPage from 'pages/affiliate-portal/volunteers';
-import AffiliatePortalSettingsPage from 'pages/affiliate-portal/settings';
+import AffiliatePortalRepairsPage from 'pages/[habitat]/affiliate/repairs';
+import AffiliatePortalVolunteersPage from 'pages/[habitat]/affiliate/volunteers';
+import AffiliatePortalSettingsPage from 'pages/[habitat]/affiliate/settings';
 // eslint-disable-next-line import/no-unresolved
 import '@aws-amplify/ui-react/styles.css';
 import ApplicantCyclePage from 'pages/[habitat]/applicant/[cycleId]';
-import HomeownershipReviewPage from 'pages/homeownership/[habitat]/review';
 import HabitatLayout from 'layouts/HabitatLayout';
 import ApplicantLayout from 'layouts/ApplicantLayout';
 import { ROUTES } from 'utils/constants';
@@ -33,10 +32,6 @@ function App() {
 
       <Route path={ROUTES.HABITAT} element={<HabitatLayout />}>
         <Route path={ROUTES.HABITAT_APPLICANT} element={<ApplicantLayout />}>
-          <Route
-            path={ROUTES.HABITAT_APPLICANT_REVIEW}
-            element={<HomeownershipReviewPage />}
-          />
           <Route
             path={ROUTES.HABITAT_APPLICANT_APPLICATIONS}
             element={<ApplicantApplicationsPage />}
