@@ -14,9 +14,8 @@ import {
   Habitat,
   ApplicationTypes,
   ReviewStatus,
-  LazyFormAnswer,
 } from 'models';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   MdOutlineAdd,
   MdOutlineArrowBack,
@@ -45,7 +44,7 @@ import {
 
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { dateOnly } from 'utils/dates';
+import { convertDateYYYYMMDDtoDDMMYYYY, dateOnly } from 'utils/dates';
 import StatusChip from 'components/StatusChip';
 import style from './AffiliateCycleApplications.module.css';
 import {
@@ -78,15 +77,17 @@ const AffiliateCycleApplications = () => {
   const [statusModalOpen, setStatusModalOpen] = useState(false);
   const [newApplicationOpen, setNewApplicationOpen] = useState(false);
   const [trigger, setTrigger] = useState(0);
-  const [dateSubmitted, setDateSubmitted] =
-    useState<TApplicationsFilter['dateSubmitted']>();
+  const [startDateSubmitted, setStartDateSubmitted] =
+    useState<TApplicationsFilter['startDateSubmitted']>('MM/DD/YYYY');
+  const [endDateSubmitted, setEndDateSubmitted] =
+    useState<TApplicationsFilter['endDateSubmitted']>('MM/DD/YYYY');
   const [type, setType] = useState<TApplicationsFilter['type']>();
   const [reviewStatus, setReviewStatus] =
     useState<TApplicationsFilter['reviewStatus']>();
 
   const [filterModal, setFilterModal] = useState(false);
   const { register, control, handleSubmit, reset } = useForm({
-    values: { dateSubmitted, type, reviewStatus },
+    values: { startDateSubmitted, endDateSubmitted, type, reviewStatus },
     resolver: zodResolver(applicationsFilterSchema),
   });
 
@@ -105,8 +106,23 @@ const AffiliateCycleApplications = () => {
             criteriaArr = [...criteriaArr, c2.reviewStatus.eq(reviewStatus)];
           }
 
-          if (dateSubmitted) {
-            criteriaArr = [...criteriaArr, c2.submittedDate.eq(dateSubmitted)];
+          if (startDateSubmitted && startDateSubmitted !== 'MM/DD/YYYY') {
+            const [month, day, year] = startDateSubmitted.split('/');
+            const formattedStartDateSubmitted = `${year}-${month}-${day}`;
+
+            criteriaArr = [
+              ...criteriaArr,
+              c2.submittedDate.ge(formattedStartDateSubmitted),
+            ];
+          }
+
+          if (endDateSubmitted && endDateSubmitted !== 'MM/DD/YYYY') {
+            const [month, day, year] = endDateSubmitted.split('/');
+            const formattedEndDateSubmitted = `${year}-${month}-${day}`;
+            criteriaArr = [
+              ...criteriaArr,
+              c2.submittedDate.le(formattedEndDateSubmitted),
+            ];
           }
 
           if (type) {
@@ -119,7 +135,14 @@ const AffiliateCycleApplications = () => {
         sort: (s: SortPredicate<LazyTestApplication>) =>
           s.submittedDate(SortDirection.DESCENDING),
       },
-      dependencyArray: [reviewStatus, cycleId, trigger, type, dateSubmitted],
+      dependencyArray: [
+        reviewStatus,
+        cycleId,
+        trigger,
+        type,
+        startDateSubmitted,
+        endDateSubmitted,
+      ],
     });
 
   const { data: cycle } = useTestCycleById({
@@ -157,16 +180,17 @@ const AffiliateCycleApplications = () => {
   };
 
   const handleFilterOnValid = (data: TApplicationsFilter) => {
-    setDateSubmitted(data.dateSubmitted);
     setType(data.type);
     setReviewStatus(data.reviewStatus);
     setFilterModal(false);
   };
 
   const handleResetFilters = () => {
-    setDateSubmitted(undefined);
+    setStartDateSubmitted(undefined);
+    setEndDateSubmitted(undefined);
     setType(undefined);
     setReviewStatus(undefined);
+    reset();
   };
 
   const handleCopyToClipboard = () => {
@@ -235,14 +259,62 @@ const AffiliateCycleApplications = () => {
                 <div className={`theme-body-small ${style.inputTitle}`}>
                   <span>Dates</span>
                 </div>
-                <div>
-                  <span className={`${style.dateLabel}`}>Date Submitted</span>
+                <div style={{ position: 'relative' }}>
+                  <span
+                    style={{
+                      position: 'absolute',
+                      // center
+                      bottom: '1rem',
+                      left: '1rem',
+                    }}
+                    className={style.textDate}
+                  >
+                    {startDateSubmitted}
+                  </span>
                   <TextField
-                    {...register('dateSubmitted')}
-                    label=""
-                    labelHidden
+                    id="startDate"
+                    label="Start Date Submitted"
                     type="date"
                     className={`${style.customDateInput}`}
+                    onChange={(e) => {
+                      if (!e.target.value) {
+                        setStartDateSubmitted(undefined);
+                        return;
+                      }
+                      const date = e.target.value;
+                      const [year, month, day] = date.split('-');
+                      const formattedDate = `${month}/${day}/${year}`;
+                      setStartDateSubmitted(formattedDate);
+                    }}
+                  />
+                </div>
+                <div style={{ position: 'relative' }}>
+                  <span
+                    style={{
+                      position: 'absolute',
+                      // center
+                      bottom: '1rem',
+                      left: '1rem',
+                    }}
+                    className={style.textDate}
+                  >
+                    {endDateSubmitted}
+                  </span>
+                  <TextField
+                    id="endDate"
+                    label="End Date Submitted"
+                    type="date"
+                    className={`${style.customDateInput}`}
+                    onChange={(e) => {
+                      if (!e.target.value) {
+                        setEndDateSubmitted(undefined);
+                        return;
+                      }
+                      const date = e.target.value;
+                      const [year, month, day] = date.split('-');
+                      const formattedDate = `${month}/${day}/${year}`;
+                      setEndDateSubmitted(formattedDate);
+                    }}
                   />
                 </div>
               </div>
@@ -434,7 +506,7 @@ const AffiliateCycleApplications = () => {
               },
               {
                 id: 'dateSubmitted',
-                value: dateOnly(application.submittedDate),
+                value: convertDateYYYYMMDDtoDDMMYYYY(application.submittedDate),
               },
               {
                 id: 'reviewStatus',

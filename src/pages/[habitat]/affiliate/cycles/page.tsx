@@ -14,7 +14,7 @@ import useAsync from 'hooks/utils/useAsync/useAsync';
 import { Habitat, RootForm, TestCycle } from 'models';
 import { Status } from 'utils/enums';
 
-import { dateOnly } from 'utils/dates';
+import { convertDateYYYYMMDDtoDDMMYYYY, dateOnly } from 'utils/dates';
 import { useRootFormById } from 'hooks/services';
 import Filters from './components/filters';
 import NewCycle from './components/newCycle';
@@ -131,8 +131,8 @@ const CyclesPage = () => {
     ({ id, name, startDate, endDate, isOpen, createdAt }: TestCycle) => ({
       id,
       name,
-      startDate: dateOnly(startDate.split('T')[0]),
-      endDate: endDate ? dateOnly(endDate) : '',
+      startDate: convertDateYYYYMMDDtoDDMMYYYY(startDate.split('T')[0]),
+      endDate: endDate ? convertDateYYYYMMDDtoDDMMYYYY(endDate) : '',
       status: isOpen ? 'Open' : 'Closed',
       createdAt,
     })
