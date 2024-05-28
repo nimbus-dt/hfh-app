@@ -25,14 +25,6 @@
           "deploymentBucketName": "amplify-hfhapp-formio-134315-deployment",
           "s3Key": "amplify-builds/sendEmailToApplicant-385550787767576b3649-build.zip"
         },
-        "convertOldRecords": {
-          "deploymentBucketName": "amplify-hfhapp-formio-134315-deployment",
-          "s3Key": "amplify-builds/convertOldRecords-657738497068564d4431-build.zip"
-        },
-        "exportOldApplicationsToFormio": {
-          "deploymentBucketName": "amplify-hfhapp-formio-134315-deployment",
-          "s3Key": "amplify-builds/exportOldApplicationsToFormio-56386964596b754f367a-build.zip"
-        },
         "getCitiesByNameAndState": {
           "deploymentBucketName": "amplify-hfhapp-formio-134315-deployment",
           "s3Key": "amplify-builds/getCitiesByNameAndState-6f57346f43326566336a-build.zip"
