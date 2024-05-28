@@ -1,12 +1,11 @@
 .sideBar {
-  background-color: var(--amplify-colors-neutral-100);
-  width: fit-content !important;
-  color: var(--amplify-colors-neutral-10);
+  width: fit-content;
   height: 100vh;
-  padding: 24px;
-  z-index: 16;
-  width: 100%;
-  height: auto;
-  overflow: auto;
-  min-height: 100vh;
+
+  padding: 1.5rem;
+
+  color: var(--amplify-colors-neutral-10);
+  background-color: var(--amplify-colors-neutral-100);
+
+  z-index: 20;
 }
