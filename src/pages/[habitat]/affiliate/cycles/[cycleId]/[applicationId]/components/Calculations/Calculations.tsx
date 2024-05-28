@@ -1,4 +1,4 @@
-import Metrics from 'pages/affiliate-portal/cycles/[cycleId]/[applicationId]/components/Metrics/Metrics';
+import Metrics from 'pages/[habitat]/affiliate/cycles/[cycleId]/[applicationId]/components/Metrics/Metrics';
 
 interface IProperties {
   formAnswers: unknown[];
