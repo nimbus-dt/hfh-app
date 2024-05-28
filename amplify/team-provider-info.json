@@ -47,6 +47,12 @@
       },
       "storage": {
         "s3hfhappstoragebucket": {}
+      },
+      "api": {
+        "hfhapp": {},
+        "public": {},
+        "sendEmailToApplicantAPI": {},
+        "userAPI": {}
       }
     }
   }
