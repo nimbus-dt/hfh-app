@@ -1,12 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import {
-  Flex,
-  ScrollView,
-  useAuthenticator,
-  useBreakpointValue,
-} from '@aws-amplify/ui-react';
+import { useAuthenticator, useBreakpointValue } from '@aws-amplify/ui-react';
 import { getRouteTitle } from 'utils/routes';
 import { useUserQuery } from 'hooks/services';
 import useHabitatByUrlName from 'hooks/services/useHabitatByUrlName';
@@ -14,6 +8,7 @@ import { Habitat, LazyUser } from 'models';
 import { RecursiveModelPredicate } from '@aws-amplify/datastore';
 import TopBar from './components/TopBar';
 import SideBar from './components/SideBar';
+import styles from './BaseLayout.module.css';
 
 interface IProperties {
   variation: 'applicant' | 'affiliate';
@@ -22,30 +17,25 @@ interface IProperties {
 }
 
 const BaseLayout = ({ variation, children, hideSideBar }: IProperties) => {
-  // Get Habitat
-  const habitatUrlName = useParams().habitat as string;
-
-  const { habitat } = useHabitatByUrlName({
-    habitatUrlName,
-  });
+  const { habitat: habitatUrlName } = useParams();
 
   const location = useLocation();
+  const title = getRouteTitle(location.pathname);
 
-  const [expandSideBar, setExpandSideBar] = useState(false);
+  const { habitat } = useHabitatByUrlName({
+    habitatUrlName: habitatUrlName || '',
+  });
 
   const isMobile = useBreakpointValue({
     base: true,
     medium: false,
   });
 
-  const [title, setTitle] = useState('');
-
   const { user } = useAuthenticator((context) => [
     context.authStatus,
     context.user,
   ]);
 
-  // Get User
   const { data: userData } = useUserQuery({
     criteria: (c1: RecursiveModelPredicate<LazyUser>) =>
       c1.and((c2) => {
@@ -56,16 +46,7 @@ const BaseLayout = ({ variation, children, hideSideBar }: IProperties) => {
     dependencyArray: [user],
   });
 
-  const [initials, setInitials] = useState('');
-
-  useEffect(() => {
-    if (userData.length !== 0) {
-      const tempUser = userData[0];
-      const firstNameInit = tempUser.firstName.charAt(0);
-      const lastNameInit = tempUser.lastName.charAt(0);
-      setInitials(firstNameInit + lastNameInit);
-    }
-  }, [initials, userData]);
+  const [expandSideBar, setExpandSideBar] = useState(false);
 
   const handleOnExpand = () => {
     if (isMobile) {
@@ -73,15 +54,17 @@ const BaseLayout = ({ variation, children, hideSideBar }: IProperties) => {
     }
   };
 
-  useEffect(() => {
-    const newTitle = getRouteTitle(location.pathname);
-    if (newTitle) {
-      setTitle(newTitle);
-    }
-  }, [location.pathname]);
+  let initials = '';
+
+  if (userData) {
+    const tempUser = userData[0];
+    const firstNameInit = tempUser?.firstName.charAt(0);
+    const lastNameInit = tempUser?.lastName.charAt(0);
+    initials = firstNameInit + lastNameInit;
+  }
 
   return (
-    <Flex gap="0">
+    <div className={styles.layout}>
       {!hideSideBar && (
         <SideBar
           pathname={location.pathname}
@@ -92,20 +75,16 @@ const BaseLayout = ({ variation, children, hideSideBar }: IProperties) => {
           habitat={habitat as unknown as Habitat}
         />
       )}
-      <ScrollView
-        height="100vh"
-        flex={1}
-        backgroundColor="var(--amplify-colors-neutral-20)"
-      >
+      <div className={styles.rightSide}>
         <TopBar
-          title={title}
+          title={title || ''}
           initials={initials}
           mobile={typeof isMobile === 'boolean' && isMobile}
           onExpand={handleOnExpand}
         />
-        {children}
-      </ScrollView>
-    </Flex>
+        <div className={styles.content}>{children}</div>
+      </div>
+    </div>
   );
 };
 

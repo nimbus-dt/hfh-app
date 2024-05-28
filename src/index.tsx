@@ -1,16 +1,16 @@
-import React from 'react';
+import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 import { Amplify } from 'aws-amplify';
-import { Provider } from 'react-redux';
 import { ThemeProvider } from '@aws-amplify/ui-react';
+
 import theme from 'styles/theme';
-import 'styles/formio';
+
+import 'styles';
+import 'components';
+
 import App from './App';
 import awsExports from './aws-exports';
-import { store } from './redux/configureStore';
-import 'components/Formio';
 
 Amplify.configure(awsExports);
 
@@ -19,14 +19,12 @@ const rootElement = document.getElementById('root');
 if (rootElement) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
-    <React.StrictMode>
+    <StrictMode>
       <BrowserRouter>
-        <Provider store={store}>
-          <ThemeProvider theme={theme}>
-            <App />
-          </ThemeProvider>
-        </Provider>
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
       </BrowserRouter>
-    </React.StrictMode>
+    </StrictMode>
   );
 }

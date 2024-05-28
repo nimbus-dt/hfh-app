@@ -1,9 +1,10 @@
-import React from 'react';
 import { Button, Flex } from '@aws-amplify/ui-react';
 import { MdOutlineMenu } from 'react-icons/md';
-import style from './TopBar.module.css';
+
 import NotificationButton from './components/NotificationButton';
 import ProfileBadge from './components/ProfileBadge';
+
+import style from './TopBar.module.css';
 
 interface IProperties {
   title: string;
@@ -13,11 +14,7 @@ interface IProperties {
 }
 
 const TopBar = ({ title, initials, mobile, onExpand }: IProperties) => (
-  <Flex
-    className={`${style.topBar}`}
-    justifyContent="space-between"
-    alignItems="center"
-  >
+  <div className={`${style.topBar}`}>
     <Flex alignItems="center">
       {mobile && (
         <Button variation="menu" padding="12px" onClick={onExpand}>
@@ -30,7 +27,7 @@ const TopBar = ({ title, initials, mobile, onExpand }: IProperties) => (
       <NotificationButton />
       <ProfileBadge initials={initials} />
     </Flex>
-  </Flex>
+  </div>
 );
 
 export default TopBar;

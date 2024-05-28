@@ -42,10 +42,13 @@ const ApplicantCyclePage = () => {
   });
 
   const [application, setApplication] = useState<TestApplication>();
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(1);
   const [review, setReview] = useState(false);
 
-  const onReview = () => setReview(true);
+  const onReview = () => {
+    setActiveTab(0);
+    setReview(true);
+  };
 
   const getApplication = useCallback(
     async (username: string) => {
@@ -140,7 +143,12 @@ const ApplicantCyclePage = () => {
       </div>
     );
 
-  if (!cycle.isOpen && !review)
+  const reviewed =
+    application.reviewStatus === ReviewStatus.ACCEPTED ||
+    application.reviewStatus === ReviewStatus.DENIED ||
+    application.reviewStatus === ReviewStatus.RETURNED;
+
+  if (!cycle.isOpen && !review && !reviewed)
     return (
       <div className={`${style.page}`}>
         <NoOpenCycle
@@ -153,7 +161,11 @@ const ApplicantCyclePage = () => {
       </div>
     );
 
-  if (application.submissionStatus === SubmissionStatus.COMPLETED && !review) {
+  if (
+    application.submissionStatus === SubmissionStatus.COMPLETED &&
+    !review &&
+    !reviewed
+  ) {
     return (
       <div className={`${style.page}`}>
         <SuccesfullySubmitted
@@ -165,7 +177,7 @@ const ApplicantCyclePage = () => {
     );
   }
 
-  if (review) {
+  if (review || reviewed) {
     return (
       <div className={`${style.page}`}>
         <div className={style.detailsContainer}>
