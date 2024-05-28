@@ -78,7 +78,7 @@ const ApplicantDecisionsPage = () => {
           <DecisionCard
             key={data.id}
             date={data.updatedAt || ''}
-            habitat={habitat?.name || ''}
+            habitat={habitat?.longName || ''}
             status={ReviewStatus[data?.status || 'PENDING']}
             editorState={data.serializedEditorState}
             applicationRoute={

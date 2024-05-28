@@ -43,7 +43,7 @@ const General = ({ data, setData }: GeneralProps) => {
   const watchState = watch(['state']);
 
   const [cities, setCities] = useState<City[]>([]);
-  const [selectedCity, setSelectedCity] = useState('');
+  const [selectedCity, setSelectedCity] = useState(data?.general?.city || '');
 
   const handleCityChange = async () => {
     if (selectedCity.length > 0) {

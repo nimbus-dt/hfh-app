@@ -156,7 +156,11 @@ const ApplicantCyclePage = () => {
   if (application.submissionStatus === SubmissionStatus.COMPLETED && !review) {
     return (
       <div className={`${style.page}`}>
-        <SuccesfullySubmitted habitat={habitat} onReview={onReview} />
+        <SuccesfullySubmitted
+          habitat={habitat}
+          onReview={onReview}
+          application={application}
+        />
       </div>
     );
   }

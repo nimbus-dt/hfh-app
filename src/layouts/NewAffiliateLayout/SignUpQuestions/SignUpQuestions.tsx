@@ -37,7 +37,7 @@ const SignUpQuestions = ({
       habitat={habitat}
       user={user}
     />,
-    <Confirmation name={habitat?.name} />,
+    <Confirmation name={habitat?.longName} />,
   ];
 
   if (!habitat || !user) {

@@ -1,31 +1,71 @@
-import React from 'react';
-import { Flex, Text } from '@aws-amplify/ui-react';
-import { Habitat } from 'models';
 import { Link } from 'react-router-dom';
+import { Flex, Text } from '@aws-amplify/ui-react';
+import { Habitat, RootForm, TestApplication, TestCycle } from 'models';
+
 import CustomButton from 'components/CustomButton/CustomButton';
+import CustomCard from 'components/CustomCard';
+
+import { useEffect, useState } from 'react';
+import { DataStore } from 'aws-amplify';
+import { unknown } from 'zod';
 import styles from './SuccesfullySubmitted.module.css';
 
 interface IProperties {
   habitat?: Habitat;
   onReview: () => void;
+  application?: TestApplication;
 }
 
-const SuccesfullySubmitted = ({ habitat, onReview }: IProperties) => (
-  <Flex direction="column">
-    <Text fontWeight="bold">
-      {`You have succesfully submitted your Homeownership Program application
-          for ${habitat?.name}. You will receive an email with updates on your
-          application.`}
-    </Text>
-    <div className={styles.buttons}>
-      <Link to="../applications">
-        <CustomButton variation="secondary">Go to applications</CustomButton>
-      </Link>
-      <CustomButton onClick={onReview} variation="primary">
-        Review
-      </CustomButton>
-    </div>
-  </Flex>
-);
+const SuccesfullySubmitted = ({
+  habitat,
+  onReview,
+  application,
+}: IProperties) => {
+  const [rootForm, setRootForm] = useState<RootForm | undefined>(undefined);
+
+  useEffect(() => {
+    if (application) {
+      const fetchRootForm = async () => {
+        const cycles = await DataStore.query(TestCycle, (c1) =>
+          c1.id.eq(application?.testcycleID)
+        );
+
+        const rootForms = await DataStore.query(RootForm, (c1) =>
+          c1.id.eq(cycles[0].rootformID)
+        );
+
+        setRootForm(rootForms[0]);
+      };
+
+      fetchRootForm();
+    }
+  }, [application]);
+
+  return (
+    <CustomCard width={{ base: '100%', medium: '100%' }}>
+      <Flex direction="column">
+        <Text fontWeight="bold">
+          {`You have succesfully submitted your ${
+            rootForm?.name || unknown
+          } application
+            for ${
+              habitat?.longName
+            }. You will receive an email with updates on your
+            application.`}
+        </Text>
+        <div className={styles.buttons}>
+          <Link to="../applications">
+            <CustomButton variation="secondary">
+              Go to applications
+            </CustomButton>
+          </Link>
+          <CustomButton onClick={onReview} variation="primary">
+            Review
+          </CustomButton>
+        </div>
+      </Flex>
+    </CustomCard>
+  );
+};
 
 export default SuccesfullySubmitted;

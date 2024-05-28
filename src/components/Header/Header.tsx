@@ -30,7 +30,7 @@ const Header = ({ current, pages, habitat, cancel }: HeaderProps) => {
             alt="logo"
             className={styles.img}
           />
-          <h1 className="theme-subtitle-s2">{habitat.name}</h1>
+          <h1 className="theme-subtitle-s2">{habitat?.name}</h1>
         </div>
         <ProgressBar current={current} pages={pages} />
         <div className={styles.close}>

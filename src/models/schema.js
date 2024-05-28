@@ -1587,8 +1587,8 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "urlName": {
-                    "name": "urlName",
+                "longName": {
+                    "name": "longName",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -1647,6 +1647,13 @@ export const schema = {
                             "habitatID"
                         ]
                     }
+                },
+                "urlName": {
+                    "name": "urlName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -2067,5 +2074,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "6c9412f86b67f2c1297d9db24687bef2"
+    "version": "59dca913ec9e960a794c791f2106cb81"
 };
