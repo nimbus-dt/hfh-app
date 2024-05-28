@@ -86,10 +86,18 @@ const AffiliateCycleApplications = () => {
     useState<TApplicationsFilter['reviewStatus']>();
 
   const [filterModal, setFilterModal] = useState(false);
-  const { register, control, handleSubmit, reset } = useForm({
-    values: { startDateSubmitted, endDateSubmitted, type, reviewStatus },
+  const { register, control, handleSubmit, reset, watch } = useForm({
+    values: {
+      startDateSubmitted: startDateSubmitted || '',
+      endDateSubmitted: endDateSubmitted || '',
+      type,
+      reviewStatus,
+    },
     resolver: zodResolver(applicationsFilterSchema),
   });
+
+  const watchStartDateSubmitted = watch('startDateSubmitted');
+  const watchEndDateSubmitted = watch('endDateSubmitted');
 
   const { data: applications }: { data: TestApplication[] } =
     useTestApplicationsQuery({
@@ -107,21 +115,16 @@ const AffiliateCycleApplications = () => {
           }
 
           if (startDateSubmitted && startDateSubmitted !== 'MM/DD/YYYY') {
-            const [month, day, year] = startDateSubmitted.split('/');
-            const formattedStartDateSubmitted = `${year}-${month}-${day}`;
-
             criteriaArr = [
               ...criteriaArr,
-              c2.submittedDate.ge(formattedStartDateSubmitted),
+              c2.submittedDate.ge(startDateSubmitted),
             ];
           }
 
           if (endDateSubmitted && endDateSubmitted !== 'MM/DD/YYYY') {
-            const [month, day, year] = endDateSubmitted.split('/');
-            const formattedEndDateSubmitted = `${year}-${month}-${day}`;
             criteriaArr = [
               ...criteriaArr,
-              c2.submittedDate.le(formattedEndDateSubmitted),
+              c2.submittedDate.le(endDateSubmitted),
             ];
           }
 
@@ -180,6 +183,8 @@ const AffiliateCycleApplications = () => {
   };
 
   const handleFilterOnValid = (data: TApplicationsFilter) => {
+    setStartDateSubmitted(data.startDateSubmitted);
+    setEndDateSubmitted(data.endDateSubmitted);
     setType(data.type);
     setReviewStatus(data.reviewStatus);
     setFilterModal(false);
@@ -263,58 +268,42 @@ const AffiliateCycleApplications = () => {
                   <span
                     style={{
                       position: 'absolute',
-                      // center
                       bottom: '1rem',
                       left: '1rem',
                     }}
                     className={style.textDate}
                   >
-                    {startDateSubmitted}
+                    {watchStartDateSubmitted
+                      ? convertDateYYYYMMDDtoDDMMYYYY(watchStartDateSubmitted)
+                      : 'MM/DD/YYYY'}
                   </span>
                   <TextField
                     id="startDate"
                     label="Start Date Submitted"
                     type="date"
                     className={`${style.customDateInput}`}
-                    onChange={(e) => {
-                      if (!e.target.value) {
-                        setStartDateSubmitted(undefined);
-                        return;
-                      }
-                      const date = e.target.value;
-                      const [year, month, day] = date.split('-');
-                      const formattedDate = `${month}/${day}/${year}`;
-                      setStartDateSubmitted(formattedDate);
-                    }}
+                    {...register('startDateSubmitted')}
                   />
                 </div>
                 <div style={{ position: 'relative' }}>
                   <span
                     style={{
                       position: 'absolute',
-                      // center
                       bottom: '1rem',
                       left: '1rem',
                     }}
                     className={style.textDate}
                   >
-                    {endDateSubmitted}
+                    {watchEndDateSubmitted
+                      ? convertDateYYYYMMDDtoDDMMYYYY(watchEndDateSubmitted)
+                      : 'MM/DD/YYYY'}
                   </span>
                   <TextField
                     id="endDate"
                     label="End Date Submitted"
                     type="date"
                     className={`${style.customDateInput}`}
-                    onChange={(e) => {
-                      if (!e.target.value) {
-                        setEndDateSubmitted(undefined);
-                        return;
-                      }
-                      const date = e.target.value;
-                      const [year, month, day] = date.split('-');
-                      const formattedDate = `${month}/${day}/${year}`;
-                      setEndDateSubmitted(formattedDate);
-                    }}
+                    {...register('endDateSubmitted')}
                   />
                 </div>
               </div>
