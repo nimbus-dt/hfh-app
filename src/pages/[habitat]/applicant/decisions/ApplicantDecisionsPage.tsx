@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import {
   Flex,
@@ -6,24 +7,12 @@ import {
   View,
   useAuthenticator,
 } from '@aws-amplify/ui-react';
-import {
-  RecursiveModelPredicate,
-  SortDirection,
-  SortPredicate,
-} from '@aws-amplify/datastore';
+import { DataStore } from '@aws-amplify/datastore';
 
 import DecisionCard from 'components/DecisionCard';
 import {
-  useDecisionsQuery,
-  useRootFormsQuery,
-  useTestApplicationsQuery,
-  useTestCyclesQuery,
-} from 'hooks/services';
-import {
   Decision,
   Habitat,
-  LazyRootForm,
-  LazyTestApplication,
   ReviewStatus,
   RootForm,
   TestApplication,
@@ -39,73 +28,63 @@ interface IOutletContext {
 const ApplicantDecisionsPage = () => {
   const { user } = useAuthenticator((context) => [context.user]);
   const { habitat }: IOutletContext = useOutletContext();
+  const [applications, setApplications] = useState<TestApplication[]>([]);
+  const [decisions, setDecisions] = useState<Decision[]>([]);
 
-  const { data: rootForms }: { data: RootForm[] } = useRootFormsQuery({
-    criteria: (c1: RecursiveModelPredicate<LazyRootForm>) =>
-      c1.habitatID.eq(habitat?.id || ''),
-    dependencyArray: [habitat],
-    paginationProducer: (s: SortPredicate<LazyRootForm>) =>
-      s.createdAt(SortDirection.DESCENDING),
-  });
-
-  const { data: cycles }: { data: TestCycle[] } = useTestCyclesQuery({
-    criteria: (c2: RecursiveModelPredicate<TestCycle>) =>
-      c2.or((c3) => {
-        const newCycles = rootForms.map((rootForm) =>
-          c3.rootformID.eq(rootForm.id)
+  useEffect(() => {
+    if (habitat) {
+      const fetch = async () => {
+        const rootFormsResponse = await DataStore.query(RootForm, (c) =>
+          c.habitatID.eq(habitat.id)
         );
 
-        if (!newCycles.length) {
-          return [c3.id.eq('')];
-        }
+        let newCycles: TestCycle[] = [];
 
-        return newCycles;
-      }),
-    dependencyArray: [rootForms],
-    paginationProducer: {
-      sort: (s: SortPredicate<TestCycle>) =>
-        s.createdAt(SortDirection.DESCENDING),
-    },
-  });
-
-  const { data: applications }: { data: TestApplication[] } =
-    useTestApplicationsQuery({
-      criteria: (c2: RecursiveModelPredicate<TestApplication>) =>
-        c2.or((c3) => {
-          const newApplications = cycles.map((cycle) =>
-            c3.testcycleID.eq(cycle.id)
+        for (const rootFormResponse of rootFormsResponse) {
+          const cyclesResponse = await DataStore.query(TestCycle, (c) =>
+            c.rootformID.eq(rootFormResponse.id)
           );
-
-          if (!newApplications.length) {
-            return [c3.id.eq('')];
-          }
-
-          return newApplications;
-        }),
-      dependencyArray: [user, cycles],
-      paginationProducer: (s: SortPredicate<LazyTestApplication>) =>
-        s.createdAt(SortDirection.DESCENDING),
-    });
-
-  const { data: decisions }: { data: Decision[] } = useDecisionsQuery({
-    criteria: (c2: RecursiveModelPredicate<Decision>) =>
-      c2.or((c3) => {
-        const newDecisions = applications
-          .filter((application) => application.ownerID === user?.username)
-          .map((application) => c3.testapplicationID.eq(application.id));
-
-        if (!newDecisions.length) {
-          return [c3.id.eq('')];
+          newCycles = newCycles.concat(cyclesResponse);
         }
 
-        return newDecisions;
-      }),
-    dependencyArray: [applications],
-    paginationProducer: {
-      sort: (s: SortPredicate<Decision>) =>
-        s.createdAt(SortDirection.DESCENDING),
-    },
-  });
+        let newApplications: TestApplication[] = [];
+
+        for (const newCycle of newCycles) {
+          const applicationsResponse = await DataStore.query(
+            TestApplication,
+            (c) =>
+              c.and((c1) => [
+                c1.testcycleID.eq(newCycle.id),
+                c1.ownerID.eq(user?.username),
+              ])
+          );
+          newApplications = newApplications.concat(applicationsResponse);
+        }
+
+        let newDecisions: Decision[] = [];
+        for (const newApplication of newApplications) {
+          const decisionsResponse = await DataStore.query(Decision, (c) =>
+            c.testapplicationID.eq(newApplication.id)
+          );
+          newDecisions = newDecisions.concat(decisionsResponse);
+        }
+
+        setApplications(newApplications);
+        setDecisions(
+          newDecisions.sort((a, b) => {
+            if (a.updatedAt && b.updatedAt) {
+              return (
+                new Date(b.updatedAt).getTime() -
+                new Date(a.updatedAt).getTime()
+              );
+            }
+            return 0;
+          })
+        );
+      };
+      fetch();
+    }
+  }, [habitat, user?.username]);
 
   return (
     <View padding="32px">
