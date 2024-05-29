@@ -1,10 +1,7 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Flex, Image, Text } from '@aws-amplify/ui-react';
 import habitatLogo from 'assets/images/habitatlogowhite.svg';
+import SidebarLogoWithoutProps from 'assets/images/sidebar-logo-without-props.png';
 import { Habitat } from 'models';
-import React from 'react';
-import Ellipse from '../Ellipse';
 
 interface IProperties {
   habitat: Habitat;
@@ -51,7 +48,13 @@ const HabitatHeader = ({ habitat }: IProperties) => {
       gap="0px"
       marginBottom="24px"
     >
-      <Ellipse />
+      <Image
+        src={SidebarLogoWithoutProps}
+        alt="logo"
+        width="64px"
+        height="57px"
+        padding="8px"
+      />
     </Flex>
   );
 };
