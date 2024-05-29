@@ -7,31 +7,20 @@ import {
   View,
 } from '@aws-amplify/ui-react';
 import {
-  LazyRootForm,
-  LazyTestApplication,
-  LazyTestCycle,
+  Habitat,
   ReviewStatus,
   RootForm,
   SubmissionStatus,
   TestApplication,
   TestCycle,
 } from 'models';
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MdOutlineOpenInNew } from 'react-icons/md';
 import TableWithPaginator from 'components/TableWithPaginator';
 import Toggle from 'components/Toggle';
 import StatusChip from 'components/StatusChip';
-import {
-  useRootFormsQuery,
-  useTestApplicationsQuery,
-  useTestCyclesQuery,
-} from 'hooks/services';
-import {
-  RecursiveModelPredicate,
-  SortDirection,
-  SortPredicate,
-} from '@aws-amplify/datastore';
-import { Link } from 'react-router-dom';
+import { DataStore } from '@aws-amplify/datastore';
+import { Link, useOutletContext } from 'react-router-dom';
 import { dateOnly } from 'utils/dates';
 import Chip from 'components/Chip';
 import { stringToHumanReadable } from 'utils/strings';
@@ -44,39 +33,56 @@ const ReviewStatusChip = ({ status }: { status: keyof typeof ReviewStatus }) =>
     <Chip text="Reviewed" variation="active" />
   );
 
+interface IOutletContext {
+  habitat?: Habitat;
+}
+
 const ApplicantApplicationsPage = () => {
   const [submissionStatusFilter, setSubmissionStatusFilter] = useState<
     keyof typeof SubmissionStatus
   >(SubmissionStatus.INCOMPLETE);
-
+  const { habitat }: IOutletContext = useOutletContext();
   const { user } = useAuthenticator((context) => [context.user]);
+  const [applications, setApplications] = useState<TestApplication[]>([]);
+  const [rootForms, setRootForms] = useState<RootForm[]>([]);
+  const [cycles, setCycles] = useState<TestCycle[]>([]);
 
-  const { data: applications }: { data: TestApplication[] } =
-    useTestApplicationsQuery({
-      criteria: (c2: RecursiveModelPredicate<LazyTestApplication>) =>
-        c2.ownerID.eq(user?.username),
-      dependencyArray: [user, submissionStatusFilter],
-      paginationProducer: (s: SortPredicate<LazyTestApplication>) =>
-        s.createdAt(SortDirection.DESCENDING),
-    });
+  useEffect(() => {
+    if (habitat) {
+      const fetch = async () => {
+        const rootFormsResponse = await DataStore.query(RootForm, (c) =>
+          c.habitatID.eq(habitat.id)
+        );
 
-  const { data: cycles }: { data: TestCycle[] } = useTestCyclesQuery({
-    criteria: (c2: RecursiveModelPredicate<LazyTestCycle>) =>
-      c2.or((c3) =>
-        applications.map((application) => c3.id.eq(application.testcycleID))
-      ),
-    dependencyArray: [applications],
-    paginationProducer: (s: SortPredicate<LazyTestCycle>) =>
-      s.createdAt(SortDirection.DESCENDING),
-  });
+        let newCycles: TestCycle[] = [];
 
-  const { data: rootForms }: { data: RootForm[] } = useRootFormsQuery({
-    criteria: (c2: RecursiveModelPredicate<LazyRootForm>) =>
-      c2.or((c3) => cycles.map((cycle) => c3.id.eq(cycle.rootformID || ''))),
-    dependencyArray: [cycles],
-    paginationProducer: (s: SortPredicate<LazyRootForm>) =>
-      s.createdAt(SortDirection.DESCENDING),
-  });
+        for (const rootFormResponse of rootFormsResponse) {
+          const cyclesResponse = await DataStore.query(TestCycle, (c) =>
+            c.rootformID.eq(rootFormResponse.id)
+          );
+          newCycles = newCycles.concat(cyclesResponse);
+        }
+
+        let newApplications: TestApplication[] = [];
+
+        for (const newCycle of newCycles) {
+          const applicationsResponse = await DataStore.query(
+            TestApplication,
+            (c) =>
+              c.and((c1) => [
+                c1.testcycleID.eq(newCycle.id),
+                c1.ownerID.eq(user?.username),
+              ])
+          );
+          newApplications = newApplications.concat(applicationsResponse);
+        }
+        setRootForms(rootFormsResponse);
+        setApplications(newApplications);
+        setCycles(newCycles);
+      };
+      fetch();
+    }
+  }, [habitat, user?.username]);
 
   return (
     <Flex padding="32px" direction="column">
