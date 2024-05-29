@@ -25,11 +25,17 @@ interface IOutletContext {
   habitat?: Habitat;
 }
 
+type DataProps =
+  | {
+      decisions: Decision[];
+      applications: TestApplication[];
+    }
+  | undefined;
+
 const ApplicantDecisionsPage = () => {
   const { user } = useAuthenticator((context) => [context.user]);
   const { habitat }: IOutletContext = useOutletContext();
-  const [applications, setApplications] = useState<TestApplication[]>([]);
-  const [decisions, setDecisions] = useState<Decision[]>([]);
+  const [data, setData] = useState<DataProps>(undefined);
 
   useEffect(() => {
     if (habitat) {
@@ -69,9 +75,9 @@ const ApplicantDecisionsPage = () => {
           newDecisions = newDecisions.concat(decisionsResponse);
         }
 
-        setApplications(newApplications);
-        setDecisions(
-          newDecisions.sort((a, b) => {
+        setData({
+          applications: newApplications,
+          decisions: newDecisions.sort((a, b) => {
             if (a.updatedAt && b.updatedAt) {
               return (
                 new Date(b.updatedAt).getTime() -
@@ -79,8 +85,8 @@ const ApplicantDecisionsPage = () => {
               );
             }
             return 0;
-          })
-        );
+          }),
+        });
       };
       fetch();
     }
@@ -99,24 +105,26 @@ const ApplicantDecisionsPage = () => {
         </View>
       </Flex>
       <Flex className={`${style.decisionsContainer}`}>
-        {decisions.map((data) => (
-          <DecisionCard
-            key={data.id}
-            date={data.updatedAt || ''}
-            habitat={habitat?.longName || ''}
-            status={ReviewStatus[data?.status || 'PENDING']}
-            editorState={data.serializedEditorState}
-            applicationRoute={
-              data?.status === ReviewStatus.RETURNED
-                ? `../${
-                    applications.find(
-                      (application) => data.testapplicationID === application.id
-                    )?.testcycleID
-                  }`
-                : undefined
-            }
-          />
-        ))}
+        {data &&
+          data?.decisions.map((decision) => (
+            <DecisionCard
+              key={decision.id}
+              date={decision.updatedAt || ''}
+              habitat={habitat?.longName || ''}
+              status={ReviewStatus[decision?.status || 'PENDING']}
+              editorState={decision.serializedEditorState}
+              applicationRoute={
+                decision?.status === ReviewStatus.RETURNED
+                  ? `../${
+                      data.applications.find(
+                        (application) =>
+                          decision.testapplicationID === application.id
+                      )?.testcycleID
+                    }`
+                  : undefined
+              }
+            />
+          ))}
       </Flex>
     </View>
   );

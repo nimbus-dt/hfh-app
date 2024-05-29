@@ -37,15 +37,21 @@ interface IOutletContext {
   habitat?: Habitat;
 }
 
+type DataProps =
+  | {
+      applications: TestApplication[];
+      rootForms: RootForm[];
+      cycles: TestCycle[];
+    }
+  | undefined;
+
 const ApplicantApplicationsPage = () => {
   const [submissionStatusFilter, setSubmissionStatusFilter] = useState<
     keyof typeof SubmissionStatus
   >(SubmissionStatus.INCOMPLETE);
   const { habitat }: IOutletContext = useOutletContext();
   const { user } = useAuthenticator((context) => [context.user]);
-  const [applications, setApplications] = useState<TestApplication[]>([]);
-  const [rootForms, setRootForms] = useState<RootForm[]>([]);
-  const [cycles, setCycles] = useState<TestCycle[]>([]);
+  const [data, setData] = useState<DataProps>(undefined);
 
   useEffect(() => {
     if (habitat) {
@@ -76,13 +82,17 @@ const ApplicantApplicationsPage = () => {
           );
           newApplications = newApplications.concat(applicationsResponse);
         }
-        setRootForms(rootFormsResponse);
-        setApplications(newApplications);
-        setCycles(newCycles);
+        setData({
+          applications: newApplications,
+          rootForms: rootFormsResponse,
+          cycles: newCycles,
+        });
       };
       fetch();
     }
   }, [habitat, user?.username]);
+
+  if (!data) return null;
 
   return (
     <Flex padding="32px" direction="column">
@@ -147,7 +157,7 @@ const ApplicantApplicationsPage = () => {
             textAlign: 'center',
           },
         ]}
-        data={applications
+        data={data.applications
           .filter(
             (application) =>
               application.submissionStatus === submissionStatusFilter
@@ -157,8 +167,8 @@ const ApplicantApplicationsPage = () => {
             cells: [
               {
                 value:
-                  rootForms.find((rootForm) => {
-                    const foundCycle = cycles.find(
+                  data.rootForms.find((rootForm) => {
+                    const foundCycle = data.cycles.find(
                       (cycle) => cycle.id === application.testcycleID
                     );
                     return foundCycle && rootForm.id === foundCycle.rootformID;
