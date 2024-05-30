@@ -35,9 +35,10 @@ const SubmissionStatus = {
   "COMPLETED": "COMPLETED"
 };
 
-const { User, RootForm, Decision, FormAnswer, Note, TestCycle, TestApplication, Habitat, SidebarName, ApplicantProps, AffiliateProps, GalleryItem, HabitatProps } = initSchema(schema);
+const { Maintenance, User, RootForm, Decision, FormAnswer, Note, TestCycle, TestApplication, Habitat, SidebarName, ApplicantProps, AffiliateProps, GalleryItem, HabitatProps } = initSchema(schema);
 
 export {
+  Maintenance,
   User,
   RootForm,
   Decision,

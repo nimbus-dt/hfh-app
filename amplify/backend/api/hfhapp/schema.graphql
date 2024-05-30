@@ -1,3 +1,8 @@
+type Maintenance @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  maintenance: Boolean
+}
+
 type SidebarName {
   name: String
   fontSize: String

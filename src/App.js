@@ -16,6 +16,8 @@ import CyclesPage from 'pages/[habitat]/affiliate/cycles';
 import NewAffiliateLayout from 'layouts/NewAffiliateLayout';
 import AffiliateCycleApplications from 'pages/[habitat]/affiliate/cycles/[cycleId]/AffiliateCycleApplications';
 import AffiliateApplicationDetailsPage from 'pages/[habitat]/affiliate/cycles/[cycleId]/[applicationId]/AffiliateApplicationDetailsPage';
+import MaintenancePage from 'pages/maintenance/Maintenance';
+import CheckMaintenance from 'layouts/Maintenance/CheckMaintenance';
 import Landing from 'pages/landing';
 
 function App() {
@@ -24,9 +26,11 @@ function App() {
       <Route
         path="/"
         element={
-          <div style={{ height: 'auto', minHeight: '100vh', width: '100%' }}>
-            <Landing />
-          </div>
+          <CheckMaintenance>
+            <div style={{ height: 'auto', minHeight: '100vh', width: '100%' }}>
+              <Landing />
+            </div>
+          </CheckMaintenance>
         }
       />
 
@@ -86,8 +90,16 @@ function App() {
           </Route>
         </Route>
       </Route>
+      <Route
+        path="/*"
+        element={
+          <CheckMaintenance>
+            <h1>404</h1>
+          </CheckMaintenance>
+        }
+      />
 
-      <Route path="/*" element={<h1>404</h1>} />
+      <Route path={ROUTES.maintenance} element={<MaintenancePage />} />
     </Routes>
   );
 }

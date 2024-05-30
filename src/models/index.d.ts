@@ -137,6 +137,34 @@ export declare type HabitatProps = LazyLoading extends LazyLoadingDisabled ? Eag
 
 export declare const HabitatProps: (new (init: ModelInit<HabitatProps>) => HabitatProps)
 
+type EagerMaintenance = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Maintenance, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly maintenance?: boolean | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyMaintenance = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Maintenance, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly maintenance?: boolean | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Maintenance = LazyLoading extends LazyLoadingDisabled ? EagerMaintenance : LazyMaintenance
+
+export declare const Maintenance: (new (init: ModelInit<Maintenance>) => Maintenance) & {
+  copyOf(source: Maintenance, mutator: (draft: MutableModel<Maintenance>) => MutableModel<Maintenance> | void): Maintenance;
+}
+
 type EagerUser = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<User, 'id'>;
