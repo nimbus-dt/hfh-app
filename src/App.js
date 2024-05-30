@@ -18,8 +18,11 @@ import NewAffiliateLayout from 'layouts/NewAffiliateLayout';
 import AffiliateCycleApplications from 'pages/[habitat]/affiliate/cycles/[cycleId]/AffiliateCycleApplications';
 import AffiliateApplicationDetailsPage from 'pages/[habitat]/affiliate/cycles/[cycleId]/[applicationId]/AffiliateApplicationDetailsPage';
 import Landing from 'pages/landing';
+import useRedirectToLegacy from 'hooks/utils/useRedirectToLegacy';
 
 function App() {
+  useRedirectToLegacy();
+
   return (
     <Routes>
       <Route
