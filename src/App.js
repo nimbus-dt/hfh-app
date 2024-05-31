@@ -19,8 +19,11 @@ import AffiliateApplicationDetailsPage from 'pages/[habitat]/affiliate/cycles/[c
 import MaintenancePage from 'pages/maintenance/Maintenance';
 import CheckMaintenance from 'layouts/Maintenance/CheckMaintenance';
 import Landing from 'pages/landing';
+import useRedirectToLegacy from 'hooks/utils/useRedirectToLegacy';
 
 function App() {
+  useRedirectToLegacy();
+
   return (
     <Routes>
       <Route
