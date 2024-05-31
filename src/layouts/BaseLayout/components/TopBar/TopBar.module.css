@@ -1,0 +1,21 @@
+.topBar {
+  position: absolute;
+  height: 72px;
+  width: 100%;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 12px 32px;
+
+  border: 1px solid var(--amplify-colors-neutral-80);
+  background-color: var(--amplify-colors-neutral-10);
+}
+
+.title {
+  font-weight: var(--amplify-font-weights-normal);
+  font-size: var(--amplify-font-sizes-small);
+  line-height: var(--amplify-line-heights-small);
+  text-align: center;
+}

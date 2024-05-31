@@ -28,17 +28,18 @@
           "deploymentBucketName": "amplify-hfhapp-prod-160335-deployment",
           "s3Key": "amplify-builds/getEmail-32656859502b666c474d-build.zip"
         },
-        "sendEmailToApplicant": {
-          "deploymentBucketName": "amplify-hfhapp-prod-160335-deployment",
-          "s3Key": "amplify-builds/sendEmailToApplicant-494f4a4e754a7533616d-build.zip"
-        },
         "getSubmittedApplicationsEmails": {
           "deploymentBucketName": "amplify-hfhapp-prod-160335-deployment",
           "s3Key": "amplify-builds/getSubmittedApplicationsEmails-434e66354c6f53536d78-build.zip"
         },
         "sendConfirmSubmitEmail": {
           "deploymentBucketName": "amplify-hfhapp-prod-160335-deployment",
-          "s3Key": "amplify-builds/sendConfirmSubmitEmail-5537767178654e47545a-build.zip"
+          "s3Key": "amplify-builds/sendConfirmSubmitEmail-6959767167586677494e-build.zip"
+        },
+        "sendEmailToApplicant": {
+          "deploymentBucketName": "amplify-hfhapp-prod-160335-deployment",
+          "s3Key": "amplify-builds/sendEmailToApplicant-385550787767576b3649-build.zip",
+          "sesEmail": "support@habitat-app.org"
         }
       },
       "auth": {
@@ -76,6 +77,11 @@
           "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
           "s3Key": "amplify-builds/sendEmailToAdmin-552f6736526d6c454868-build.zip"
         },
+        "sendEmailToApplicant": {
+          "sesEmail": "support@habitat-app.org",
+          "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
+          "s3Key": "amplify-builds/sendEmailToApplicant-385550787767576b3649-build.zip"
+        },
         "getCitiesByNameAndState": {
           "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
           "s3Key": "amplify-builds/getCitiesByNameAndState-6f57346f43326566336a-build.zip"
@@ -84,17 +90,70 @@
           "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
           "s3Key": "amplify-builds/getEmail-32656859502b666c474d-build.zip"
         },
-        "sendEmailToApplicant": {
-          "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
-          "s3Key": "amplify-builds/sendEmailToApplicant-494f4a4e754a7533616d-build.zip"
-        },
-        "sendConfirmSubmitEmail": {
-          "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
-          "s3Key": "amplify-builds/sendConfirmSubmitEmail-5537767178654e47545a-build.zip"
-        },
         "getSubmittedApplicationsEmails": {
           "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
           "s3Key": "amplify-builds/getSubmittedApplicationsEmails-4b7a4c6e35382b726443-build.zip"
+        },
+        "sendConfirmSubmitEmail": {
+          "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
+          "s3Key": "amplify-builds/sendConfirmSubmitEmail-6959767167586677494e-build.zip"
+        }
+      },
+      "auth": {
+        "hfhapp": {}
+      },
+      "storage": {
+        "s3hfhappstoragebucket": {}
+      },
+      "api": {
+        "hfhapp": {},
+        "public": {},
+        "sendEmailToApplicantAPI": {},
+        "userAPI": {}
+      }
+    }
+  },
+  "formio": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-hfhapp-formio-134315-authRole",
+      "UnauthRoleArn": "arn:aws:iam::719959370210:role/amplify-hfhapp-formio-134315-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::719959370210:role/amplify-hfhapp-formio-134315-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-hfhapp-formio-134315-deployment",
+      "UnauthRoleName": "amplify-hfhapp-formio-134315-unauthRole",
+      "StackName": "amplify-hfhapp-formio-134315",
+      "StackId": "arn:aws:cloudformation:us-east-1:719959370210:stack/amplify-hfhapp-formio-134315/6c6c5910-f6a9-11ee-8cd3-1264393f3acf",
+      "AmplifyAppId": "dgfg84wx7ntah",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-hfhapp-formio-134315-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
+    },
+    "categories": {
+      "function": {
+        "sendEmailToAdmin": {
+          "adminEmail": "guillermo.avelar@habitat-app.org",
+          "sesEmail": "support@nimbus-dt.com",
+          "deploymentBucketName": "amplify-hfhapp-formio-134315-deployment",
+          "s3Key": "amplify-builds/sendEmailToAdmin-552f6736526d6c454868-build.zip"
+        },
+        "sendEmailToApplicant": {
+          "sesEmail": "support@habitat-app.org",
+          "deploymentBucketName": "amplify-hfhapp-formio-134315-deployment",
+          "s3Key": "amplify-builds/sendEmailToApplicant-385550787767576b3649-build.zip"
+        },
+        "getCitiesByNameAndState": {
+          "deploymentBucketName": "amplify-hfhapp-formio-134315-deployment",
+          "s3Key": "amplify-builds/getCitiesByNameAndState-6f57346f43326566336a-build.zip"
+        },
+        "getEmail": {
+          "deploymentBucketName": "amplify-hfhapp-formio-134315-deployment",
+          "s3Key": "amplify-builds/getEmail-32656859502b666c474d-build.zip"
+        },
+        "getSubmittedApplicationsEmails": {
+          "deploymentBucketName": "amplify-hfhapp-formio-134315-deployment",
+          "s3Key": "amplify-builds/getSubmittedApplicationsEmails-4b7a4c6e35382b726443-build.zip"
+        },
+        "sendConfirmSubmitEmail": {
+          "deploymentBucketName": "amplify-hfhapp-formio-134315-deployment",
+          "s3Key": "amplify-builds/sendConfirmSubmitEmail-5537767178654e47545a-build.zip"
         }
       },
       "auth": {

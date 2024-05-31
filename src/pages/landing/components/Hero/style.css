@@ -1,0 +1,17 @@
+.signUp {
+  transition: transform 0.3s ease;
+}
+
+.signUp:hover {
+  transform: translateY(-6px);
+}
+
+.hero {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.hero:hover {
+  transform: translateY(-6px);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+}

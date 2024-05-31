@@ -1,0 +1,38 @@
+.page {
+  padding: 16px;
+}
+
+.page > * {
+  padding: 16px;
+}
+
+.detailsContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.tabContainer {
+  flex: 1;
+}
+
+.detailsContainer > * + * {
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .page {
+    padding: 32px;
+  }
+
+  .page > * {
+    padding: 32px;
+  }
+
+  .detailsContainer {
+    flex-direction: row;
+  }
+  .detailsContainer > * + * {
+    margin-top: 0rem;
+    margin-left: 1.5rem;
+  }
+}

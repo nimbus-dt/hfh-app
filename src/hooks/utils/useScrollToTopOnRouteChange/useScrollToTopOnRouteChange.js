@@ -10,7 +10,7 @@ const useScrollToTopOnRouteChange = (elementReference) => {
     } else {
       window.scrollTo(0, 0);
     }
-  }, [pathname]);
+  }, [elementReference, pathname]);
 };
 
 export default useScrollToTopOnRouteChange;

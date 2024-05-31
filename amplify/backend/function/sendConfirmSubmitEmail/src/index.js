@@ -29,13 +29,13 @@ export const handler = async (event) => {
     console.log(record.eventName);
     const dynamoRecord = record.dynamodb;
     console.log('DynamoDB Record: %j', dynamoRecord);
-    if(record.eventName === "MODIFY" && dynamoRecord.NewImage.submissionStatus.S === "SUBMITTED" && dynamoRecord.OldImage.submissionStatus.S !== dynamoRecord.NewImage.submissionStatus.S){
+    if(record.eventName === "MODIFY" && dynamoRecord.NewImage.submissionStatus.S === "COMPLETED" && dynamoRecord.OldImage.submissionStatus.S !== dynamoRecord.NewImage.submissionStatus.S){
       console.log("Application was submitted.")
       try {
         const cycleQuery = /* GraphQL */ `
           query GET_CYCLE {
             getTestCycle(id: "${dynamoRecord.NewImage.testcycleID.S}") {
-              habitatID
+              rootformID
             }
           }
         `;
@@ -55,9 +55,32 @@ export const handler = async (event) => {
 
         const cycleBody = await cycleResponse.json();
 
+        const rootFormQuery = /* GraphQL */ `
+          query GetRootForm {
+            getRootForm(id: "${cycleBody.data.getTestCycle.rootformID}") {
+              habitatID
+            }
+          }
+        `;
+
+        const rootFormOptions = {
+          method: 'POST',
+          headers: {
+            'x-api-key': GRAPHQL_API_KEY,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ query: rootFormQuery })
+        };
+      
+        const rootFormRequest = new Request(GRAPHQL_ENDPOINT, rootFormOptions);
+
+        const rootFormResponse = await fetch(rootFormRequest);
+
+        const rootFormBody = await rootFormResponse.json();
+
         const habitatQuery = /* GraphQL */ `
           query GET_HABITAT {
-            getHabitat(id: "${cycleBody.data.getTestCycle.habitatID}") {
+            getHabitat(id: "${rootFormBody.data.getRootForm.habitatID}") {
               name
             }
           }

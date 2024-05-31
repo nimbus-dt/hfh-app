@@ -1,3 +1,0 @@
-import HomeownershipApplicantOptionalPage from './HomeownershipApplicantOptionalPage';
-
-export default HomeownershipApplicantOptionalPage;

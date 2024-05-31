@@ -1,0 +1,75 @@
+.hfh_formio_radio label.col-form-label {
+  font-family: var(--amplify-fonts-default-variable);
+  font-weight: var(--amplify-font-weights-normal);
+  font-size: var(--amplify-font-sizes-small);
+  line-height: var(--amplify-line-heights-small);
+  color: var(--amplify-colors-neutral-100);
+  letter-spacing: 0.5px;
+  padding: 0.25rem 1rem;
+}
+
+.hfh_formio_radio div.form-check {
+  position: relative;
+  min-height: 28px;
+}
+
+.hfh_formio_radio label.form-check-label {
+  padding-top: 3px;
+  padding-left: 9px;
+}
+
+.hfh_formio_radio label.form-check-label span {
+  font-family: var(--amplify-fonts-default-variable);
+  font-weight: var(--amplify-font-weights-normal);
+  font-size: var(--amplify-font-sizes-small);
+  line-height: var(--amplify-line-heights-small);
+  letter-spacing: 0.5px;
+  color: var(--amplify-colors-neutral-90);
+  cursor: pointer;
+}
+
+.hfh_formio_radio input.form-check-input[type='radio'] {
+  position: absolute;
+  top: 0;
+  left: 24px;
+  height: 24px;
+  width: 24px;
+  padding: 6px;
+  border-radius: 25px;
+  border: 2px solid var(--amplify-colors-neutral-80);
+  cursor: pointer;
+}
+
+.hfh_formio_radio input.form-check-input[type='radio']:checked {
+  height: 24px;
+  width: 24px;
+  background-color: transparent;
+  border: 2px solid var(--amplify-colors-neutral-80);
+}
+
+.hfh_formio_radio input.form-check-input[type='radio']:checked + span {
+  color: var(--amplify-colors-neutral-100);
+}
+
+.hfh_formio_radio input.form-check-input:checked[type='radio'] {
+  --bs-form-check-bg-image: url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%27-4 -4 8 8%27%3e%3ccircle r=%272%27 fill=%27%23325CCA%27/%3e%3c/svg%3e');
+}
+
+.hfh_formio_radio input.form-check-input[type='radio']:focus,
+.hfh_formio_radio input.form-check-input[type='radio']:hover {
+  box-shadow: 0 0 0 0.25rem #325cca14;
+}
+
+.hfh_formio_radio input.form-check-input[type='radio'].is-invalid:focus {
+  box-shadow: 0 0 0 0.25rem #b3261e14;
+}
+
+.hfh_formio_radio .error {
+  font-family: var(--amplify-fonts-default-variable);
+  font-weight: var(--amplify-font-weights-normal);
+  font-size: var(--amplify-font-sizes-xs);
+  line-height: var(--amplify-line-heights-small);
+  letter-spacing: 0.5px;
+  padding-left: 1rem;
+  color: var(--amplify-colors-border-error);
+}

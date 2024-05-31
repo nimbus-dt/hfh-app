@@ -1,3 +1,104 @@
+type Maintenance @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  maintenance: Boolean
+}
+
+type SidebarName {
+  name: String
+  fontSize: String
+}
+
+enum ReviewStatus {
+  ACCEPTED
+  PENDING
+  DENIED
+  RETURNED
+}
+
+type ApplicantProps {
+  state: String!
+  city: String!
+  street: String!
+  householdMembersNumber: Int!
+  householdAnnualIncome: Float!
+  currentlyUnemployed: String!
+  currentWorkTitle: String
+  nameOfEmployer: String
+  howDidYouHearAbout: String!
+  firstTimeApplying: String!
+  whatAreYouInterestedIn: String!
+}
+
+type AffiliateProps {
+  titleAtHabitat: String!
+  roleDescription: String!
+  joinDate: AWSDate
+  joinMonth: String
+  joinYear: String
+}
+
+enum Sexs {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum UserTypes {
+  AFFILIATE
+  APPLICANT
+}
+
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  dateOfBirth: AWSDate!
+  sex: Sexs!
+  phoneNumber: String!
+  affiliateProps: AffiliateProps
+  applicantProps: ApplicantProps
+  type: UserTypes!
+  owner: ID!
+}
+
+enum RootFormStatusTypes {
+  ACTIVE
+  PENDING
+}
+
+type RootForm @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  status: RootFormStatusTypes
+  description: String
+  files: [String]
+  Cycles: [TestCycle] @hasMany(indexName: "byRootForm", fields: ["id"])
+  habitatID: ID! @index(name: "byHabitat")
+  formUrls: [String!]!
+}
+
+type GalleryItem {
+  id: String
+  image: String
+  title: String
+  message: String
+}
+
+type Decision @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  status: ReviewStatus!
+  serializedEditorState: String!
+  testapplicationID: ID! @index(name: "byTestApplication")
+}
+
+type FormAnswer @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  values: AWSJSON
+  page: String
+  section: String
+  testapplicationID: ID! @index(name: "byTestApplication")
+}
+
 type Note @model @auth(rules: [{allow: public}]) {
   id: ID!
   serializedEditorState: String!
@@ -5,58 +106,24 @@ type Note @model @auth(rules: [{allow: public}]) {
   testapplicationID: ID! @index(name: "byTestApplication")
 }
 
-type OptionalSections {
-  coApplicant: Boolean!
-  propertyInfo: Boolean!
-  businessOwnerOrSelfEmployed: Boolean!
-  typeOfOwnership: Boolean!
-}
-
-type Property @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  ownerID: ID!
-  props: AWSJSON!
-}
-
-type WrittenQuestion {
-  name: String!
-  label: String!
-  placeholder: String!
-}
-
-type RecordQuestion {
-  name: String!
-  max: Int!
-  label: String!
-  acceptedFileTypes: [String!]
-}
-
-type CheckQuestion {
-  name: String!
-  label: String!
-}
-
 type HabitatProps {
   customStatus: [String!]
-  homeownershipTermsText: String!
-  homeownershipMinCurrentAddressMonths: Int!
-  homeownershipMinCurrentEmploymentMonths: Int!
-  homeownershipNoOpenCycle: String!
-  homeownershipHomeText: String!
-  homeownershipCheckQuestions: [CheckQuestion!]
-  homeownershipRecordQuestions: [RecordQuestion!]
-  homeownershipWrittenQuestions: [WrittenQuestion!]
-  optionalSections: OptionalSections!
+  gallery: [GalleryItem!]
+  sidebarName: SidebarName
+  closedCycleMessages: [String!]!
 }
 
 type TestCycle @model @auth(rules: [{allow: public}]) {
   id: ID!
-  startDate: AWSDate!
+  startDate: AWSDateTime!
   endDate: AWSDate
   isOpen: Boolean!
   props: AWSJSON
-  habitatID: ID! @index(name: "byHabitat")
   TestApplications: [TestApplication] @hasMany(indexName: "byTestCycle", fields: ["id"])
+  rootformID: ID! @index(name: "byRootForm")
+  name: String
+  closedCycleMessage: String!
+  formUrl: String!
 }
 
 enum ApplicationTypes {
@@ -64,98 +131,37 @@ enum ApplicationTypes {
   PAPER
 }
 
-type ApplicantOptional @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  ownerID: ID
-  props: AWSJSON
-}
-
 enum SubmissionStatus {
-  SUBMITTED
-  UNSUBMITTED
-  RETURNED
-}
-
-type Asset @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  ownerId: ID
-  props: AWSJSON
-}
-
-type Debt @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  ownerId: ID
-  props: AWSJSON
-}
-
-type Income @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  ownerId: ID
-  props: AWSJSON
+  INCOMPLETE
+  COMPLETED
 }
 
 type TestApplication @model @auth(rules: [{allow: public}]) {
   id: ID!
   ownerID: ID
   lastSection: String
-  members: [Member] @hasMany(indexName: "byTestApplication", fields: ["id"])
   submittedDate: AWSDate!
-  reviewStatus: String
+  reviewStatus: ReviewStatus!
   submissionStatus: SubmissionStatus!
   props: AWSJSON
   type: ApplicationTypes!
   testcycleID: ID! @index(name: "byTestCycle")
   Notes: [Note] @hasMany(indexName: "byTestApplication", fields: ["id"])
-}
-
-type EmploymentInfo @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  ownerID: ID
-  props: AWSJSON
-}
-
-type Member @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  props: AWSJSON
-  testapplicationID: ID! @index(name: "byTestApplication")
-  isCoApplicant: Boolean
-}
-
-type Record @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  ownerID: ID
-  props: AWSJSON
-}
-
-type Written @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  ownerID: ID
-  props: AWSJSON
-}
-
-type Checklist @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  ownerID: ID
-  props: AWSJSON
-}
-
-type ApplicantInfo @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  ownerID: ID
-  props: AWSJSON
+  FormAnswers: [FormAnswer] @hasMany(indexName: "byTestApplication", fields: ["id"])
+  Decisions: [Decision] @hasMany(indexName: "byTestApplication", fields: ["id"])
+  customStatus: String
 }
 
 type Habitat @model @auth(rules: [{allow: public}]) {
   id: ID!
   name: String
-  urlName: String
+  longName: String
   state: String
   city: String
-  county: String
-  countiesServed: [String]
   props: HabitatProps!
   users: [ID]
-  AMI: [String]
-  TestCycles: [TestCycle] @hasMany(indexName: "byHabitat", fields: ["id"])
+  authenticationHeader: String
+  RootForms: [RootForm] @hasMany(indexName: "byHabitat", fields: ["id"])
+  urlName: String
 }
  

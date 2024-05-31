@@ -77,7 +77,7 @@ const FileComponent = ({ nodeKey, name, s3key, path }) => {
 
       return false;
     },
-    [isSelected, setSelected, clearSelection, nodeKey]
+    [isSelected, setSelected, clearSelection]
   );
 
   useEffect(() => {
@@ -134,7 +134,9 @@ const FileComponent = ({ nodeKey, name, s3key, path }) => {
         title={name}
       >
         <Flex alignItems="center" maxWidth="100%">
-          <MdDownload />
+          <Flex>
+            <MdDownload />
+          </Flex>
           <Text
             color="white"
             overflow="hidden"

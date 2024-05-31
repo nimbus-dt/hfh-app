@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:slnt,wght@-10..0,100..900&display=swap');
+
+.theme-display {
+  font-family: var(--amplify-fonts-default-variable);
+  font-weight: var(--amplify-font-weights-light);
+  font-size: var(--amplify-font-sizes-xxxxl);
+  line-height: var(--amplify-line-heights-large);
+  letter-spacing: -0.5px;
+}
+
+.theme-headline-large {
+  font-family: var(--amplify-fonts-default-variable);
+  font-weight: var(--amplify-font-weights-normal);
+  font-size: var(--amplify-font-sizes-xxxl);
+  line-height: var(--amplify-line-heights-medium);
+  letter-spacing: 0px;
+}
+
+.theme-headline-medium {
+  font-family: var(--amplify-fonts-default-variable);
+  font-weight: var(--amplify-font-weights-normal);
+  font-size: var(--amplify-font-sizes-xxl);
+  line-height: var(--amplify-line-heights-large);
+  letter-spacing: 0.25px;
+}
+
+.theme-subtitle-s1 {
+  font-family: var(--amplify-fonts-default-variable);
+  font-weight: var(--amplify-font-weights-medium);
+  font-size: var(--amplify-font-sizes-xl);
+  line-height: var(--amplify-line-heights-medium);
+  letter-spacing: 0px;
+}
+
+.theme-subtitle-s2 {
+  font-family: var(--amplify-fonts-default-variable);
+  font-weight: var(--amplify-font-weights-medium);
+  font-size: var(--amplify-font-sizes-large);
+  line-height: var(--amplify-line-heights-small);
+  letter-spacing: 0.15px;
+}
+
+.theme-body-medium {
+  font-family: var(--amplify-fonts-default-variable);
+  font-weight: var(--amplify-font-weights-normal);
+  font-size: var(--amplify-font-sizes-small);
+  line-height: var(--amplify-line-heights-small);
+  letter-spacing: 0.5px;
+}
+
+.theme-body-small {
+  font-family: var(--amplify-fonts-default-variable);
+  font-weight: var(--amplify-font-weights-normal);
+  font-size: var(--amplify-font-sizes-xs);
+  line-height: var(--amplify-line-heights-small);
+  letter-spacing: 0.5px;
+}
+
+.theme-button {
+  font-family: var(--amplify-fonts-default-variable);
+  font-weight: var(--amplify-font-weights-medium);
+  font-size: var(--amplify-font-sizes-medium);
+  line-height: var(--amplify-line-heights-small);
+  letter-spacing: 1.25px;
+}
+
+.theme-button-link {
+  font-family: var(--amplify-fonts-default-variable);
+  font-weight: var(--amplify-font-weights-normal);
+  font-size: var(--amplify-font-sizes-small);
+  line-height: var(--amplify-line-heights-small);
+  letter-spacing: 1.25px;
+}
+
+.theme-caption {
+  font-family: var(--amplify-fonts-default-variable);
+  font-weight: var(--amplify-font-weights-normal);
+  font-size: var(--amplify-font-sizes-xxs);
+  line-height: var(--amplify-line-heights-small);
+  letter-spacing: 0.5px;
+}
+
+[data-amplify-authenticator] .amplify-tabs[data-indicator-position='top'] {
+  display: none;
+}
+
+[data-amplify-authenticator] .amplify-input {
+  background-color: var(--amplify-colors-neutral-10);
+}
+
+[data-amplify-authenticator] .amplify-label {
+  padding: 4px 16px;
+  background-color: var(--amplify-colors-neutral-10);
+}
+
+[data-amplify-authenticator]
+  .amplify-button.amplify-field-group__control.amplify-field__show-password {
+  border: 1px solid var(--amplify-colors-neutral-80);
+}
+
+[data-amplify-authenticator]
+  .amplify-button.amplify-field-group__control.amplify-field__show-password:focus {
+  border: 1px solid var(--amplify-colors-neutral-100);
+}

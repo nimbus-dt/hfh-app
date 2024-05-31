@@ -50,8 +50,15 @@ export class ImageNode extends DecoratorNode {
 
   exportDOM() {
     const element = document.createElement('img');
+
     element.setAttribute('src', this.__src);
+
     element.setAttribute('alt', this.__altText);
+
+    element.setAttribute('data-name', this.__name);
+
+    element.setAttribute('style', 'min-width:90%;max-width:90%;');
+
     return { element };
   }
 

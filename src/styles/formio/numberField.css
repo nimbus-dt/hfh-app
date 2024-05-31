@@ -1,0 +1,32 @@
+/* 
+  hfh_formio_number_field must be added to the custom CSS class on the next components: 
+    - number field
+    - currency
+*/
+
+.hfh_formio_number_field label.col-form-label {
+  padding: 0.25rem 1rem;
+  color: var(--amplify-colors-neutral-100);
+  cursor: pointer;
+}
+
+.hfh_formio_number_field input.form-control {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid var(--amplify-colors-neutral-80);
+  border-radius: 0.5rem;
+  color: var(--amplify-colors-neutral-100);
+  background-color: var(--amplify-colors-neutral-10);
+}
+
+.hfh_formio_number_field input.form-control:focus-visible {
+  border: 1px solid var(--amplify-colors-neutral-90);
+  outline: 0;
+  outline-offset: 0;
+}
+
+.hfh_formio_number_field input.form-control::-webkit-inner-spin-button,
+.hfh_formio_number_field input.form-control::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

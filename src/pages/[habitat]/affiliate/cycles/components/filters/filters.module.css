@@ -1,0 +1,212 @@
+.background {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10;
+
+  padding: 1rem 1.5rem;
+
+  background-color: var(--amplify-colors-neutral-10);
+  box-shadow: 0px 11px 15px 0px #8f9caf33;
+  box-shadow: 0px 9px 46px 0px #8f9caf1f;
+  box-shadow: 0px 24px 38px 0px #8f9caf80;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.background > * + * {
+  margin-top: 1.5rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+}
+
+.close {
+  padding: 0 0.75rem;
+}
+
+.color_neutral_100 {
+  color: var(--amplify-colors-neutral-100);
+}
+
+.dates_title {
+  padding: 0.5rem;
+  color: #3e3d3d;
+  background-color: var(--amplify-colors-neutral-20);
+  border-bottom: 1px solid var(--amplify-colors-neutral-40);
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputs > * + * {
+  margin-top: 1rem;
+}
+
+.dateInput,
+.input {
+  display: flex;
+  flex-direction: column;
+}
+
+.dateInput {
+  position: relative;
+}
+
+.label {
+  padding: 0.25rem 1rem;
+
+  color: var(--amplify-colors-neutral-100);
+  cursor: pointer;
+}
+
+.input_date_text {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+
+  color: var(--amplify-colors-neutral-90);
+
+  cursor: pointer;
+  user-select: none;
+  text-transform: uppercase;
+}
+
+.input_date {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+
+  border: 1px solid var(--amplify-colors-neutral-80);
+  border-radius: 0.5rem;
+
+  font-size: 0;
+
+  color: transparent;
+  background-color: transparent;
+
+  text-transform: uppercase;
+
+  appearance: none;
+  user-select: none;
+  -webkit-appearance: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.input_date::-webkit-inner-spin-button,
+.input_date::-webkit-outer-spin-button,
+.input_date::-webkit-clear-button {
+  -webkit-appearance: none;
+  display: none;
+}
+
+.input_date::-webkit-calendar-picker-indicator {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: transparent;
+  background: 0 0;
+  margin: 0;
+  opacity: 0;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.input_date::-webkit-date-and-time-value {
+  margin: 0;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+}
+
+.radio_label {
+  position: relative;
+
+  padding-left: 2.625rem;
+  padding-top: 0.563rem;
+  padding-bottom: 0.563rem;
+
+  cursor: pointer;
+}
+
+.radio_input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.radio_checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  height: 1.125rem;
+  width: 1.125rem;
+  margin: 0.75rem;
+
+  border: 0.125rem solid #49454f;
+  border-radius: 0.125rem;
+
+  background-color: transparent;
+}
+
+.radio_icon {
+  display: none;
+}
+
+.radio_label:hover input ~ .radio_circle {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  height: 2.5rem;
+  width: 2.5rem;
+  margin: 0.063rem;
+
+  border-radius: 100%;
+
+  background-color: #1d1b2014;
+}
+.radio_label input:checked ~ .radio_icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  display: block;
+
+  height: 1.125rem;
+  width: 1.125rem;
+  margin: 0.75rem;
+
+  color: var(--amplify-colors-neutral-10);
+  border-radius: 0.125rem;
+
+  background-color: transparent;
+}
+
+.radio_label input:checked ~ .radio_checkmark {
+  background-color: var(--amplify-colors-neutral-100);
+}
+
+.buttons > * + * {
+  margin-left: 1rem;
+}

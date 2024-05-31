@@ -1,0 +1,197 @@
+.container {
+  padding: 32px;
+  position: relative;
+}
+
+.titleContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.title {
+  font-weight: var(--amplify-font-weights-medium);
+}
+
+.tableOptions {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  align-items: flex-end;
+}
+
+.resultsContainer {
+  display: flex;
+  gap: 12px;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.results {
+  color: var(--amplify-colors-neutral-90);
+}
+
+.options {
+  display: flex;
+  gap: 16px;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.suboptions {
+  display: flex;
+  gap: 16px;
+  flex-direction: row;
+}
+
+.openButtonContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.openButton {
+  padding: 0px;
+}
+
+.customStatusSelect {
+  max-width: 200px;
+  margin: -4px;
+}
+
+.filterModal {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--amplify-colors-neutral-10);
+  width: 320px;
+  padding: 16px 24px;
+  z-index: 1;
+  box-shadow: 0px 11px 15px 0px #8f9caf33;
+  box-shadow: 0px 9px 46px 0px #8f9caf1f;
+  box-shadow: 0px 24px 38px 0px #8f9caf80;
+}
+
+.filterModalTitleContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filterModalButtonsContainer {
+  display: flex;
+  gap: 16px;
+  justify-content: right;
+}
+
+.customCheckbox {
+  gap: 12px;
+  margin-left: 12px;
+}
+
+.customDateInput input {
+  padding: 16px;
+  line-height: var(--amplify-line-height-small);
+  height: 56px;
+}
+.customDateInput label {
+  padding: 4px 16px;
+  user-select: none;
+  font-size: 1rem;
+  color: #212529;
+}
+
+.textDate {
+  color: var(--amplify-colors-neutral-90);
+  user-select: none;
+  cursor: pointer;
+
+  text-transform: uppercase;
+}
+
+.customDateInput input {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+
+  border: 1px solid var(--amplify-colors-neutral-80);
+  border-radius: 0.5rem;
+
+  font-size: 0;
+  color: transparent;
+  background-color: transparent;
+
+  text-transform: none;
+
+  appearance: none;
+  user-select: none;
+  -webkit-appearance: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.customDateInput input::-webkit-inner-spin-button,
+.customDateInput input::-webkit-outer-spin-button,
+.customDateInput input::-webkit-clear-button {
+  -webkit-appearance: none;
+  display: none;
+}
+
+.customDateInput input::-webkit-calendar-picker-indicator {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: transparent;
+  background: 0 0;
+  margin: 0;
+  opacity: 0;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.customDateInput input::-webkit-date-and-time-value {
+  margin: 0;
+}
+
+.inputTitle {
+  background-color: var(--amplify-colors-neutral-20);
+  border-bottom-width: 1px;
+  border-style: solid;
+  border-color: var(--amplify-colors-neutral-40);
+  padding: 8px;
+}
+
+.dateLabel {
+  padding: 4px 16px;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reviewStatus {
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .options {
+    flex-direction: row;
+  }
+}
+
+.statusContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

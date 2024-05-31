@@ -1,10 +1,4 @@
-import {
-  Button,
-  Divider,
-  Flex,
-  SelectField,
-  View,
-} from '@aws-amplify/ui-react';
+import { Divider, Flex, View } from '@aws-amplify/ui-react';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import {
   $findMatchingParent,
@@ -46,8 +40,12 @@ import {
   INSERT_UNORDERED_LIST_COMMAND,
   ListNode,
 } from '@lexical/list';
+import PropTypes from 'prop-types';
+import CustomSelect from 'components/DropdownMenu/DropdownMenu';
+import CustomButton from 'components/CustomButton/CustomButton';
 import InsertImageButton from './components/InsertImageButton';
 import InsertFileButton from './components/InsertFileButton';
+import style from './ToolbarPlugin.module.css';
 
 const LowPriority = 1;
 
@@ -60,7 +58,7 @@ const VerticalDivider = () => (
   <Divider orientation="vertical" opacity={1} alignSelf="stretch" />
 );
 
-const ToolbarPlugin = () => {
+const ToolbarPlugin = ({ disableFiles }) => {
   const [editor] = useLexicalComposerContext();
   const toolbarRef = useRef(null);
   const [canUndo, setCanUndo] = useState(false);
@@ -190,7 +188,7 @@ const ToolbarPlugin = () => {
         }),
         editor.registerCommand(
           SELECTION_CHANGE_COMMAND,
-          (_payload) => {
+          () => {
             updateToolbar();
             return false;
           },
@@ -228,32 +226,35 @@ const ToolbarPlugin = () => {
         ref={toolbarRef}
         padding="0.25rem"
         alignItems="center"
+        wrap="wrap"
       >
-        <Button
-          isDisabled={!canUndo}
+        <CustomButton
+          variation="text-only"
+          disabled={!canUndo}
           onClick={() => {
             editor.dispatchCommand(UNDO_COMMAND, undefined);
           }}
           aria-label="Undo"
           title="Undo"
-          {...buttonProps}
+          className={style.toolbarButton}
         >
           <MdUndo />
-        </Button>
-        <Button
+        </CustomButton>
+        <CustomButton
           disabled={!canRedo}
           onClick={() => {
             editor.dispatchCommand(REDO_COMMAND, undefined);
           }}
           aria-label="Redo"
           title="Redo"
-          {...buttonProps}
+          variation="text-only"
+          className={style.toolbarButton}
         >
           <MdRedo />
-        </Button>
+        </CustomButton>
         <VerticalDivider />
-        <SelectField
-          labelHidden
+        <CustomSelect
+          variation="small"
           value={blockType}
           onChange={handleTextTypeOnChange}
         >
@@ -263,100 +264,119 @@ const ToolbarPlugin = () => {
           <option value="h3">Heading 3</option>
           <option value="bullet">Bullet List</option>
           <option value="number">Numbered List</option>
-        </SelectField>
+        </CustomSelect>
         <VerticalDivider />
-        <Button
+        <CustomButton
           onClick={() => {
             editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold');
           }}
           aria-label="Format Bold"
           title="Format Bold"
-          {...buttonProps}
-          backgroundColor={isBold && 'brand.primary.10'}
+          variation="text-only"
+          className={`${style.toolbarButton} ${isBold ? style.selected : ''}`}
         >
           <MdFormatBold />
-        </Button>
-        <Button
+        </CustomButton>
+        <CustomButton
+          variation="text-only"
           onClick={() => {
             editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic');
           }}
           {...buttonProps}
-          backgroundColor={isItalic && 'brand.primary.10'}
+          className={`${style.toolbarButton} ${isItalic ? style.selected : ''}`}
           aria-label="Format Italics"
           title="Format Italics"
         >
           <MdFormatItalic />
-        </Button>
-        <Button
+        </CustomButton>
+        <CustomButton
+          variation="text-only"
           onClick={() => {
             editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline');
           }}
           {...buttonProps}
-          backgroundColor={isUnderline && 'brand.primary.10'}
+          className={`${style.toolbarButton} ${
+            isUnderline ? style.selected : ''
+          }`}
           aria-label="Format Underline"
           title="Format Underline"
         >
           <MdFormatUnderlined />
-        </Button>
-        <Button
+        </CustomButton>
+        <CustomButton
+          variation="text-only"
           onClick={() => {
             editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough');
           }}
           {...buttonProps}
-          backgroundColor={isStrikethrough && 'brand.primary.10'}
+          className={`${style.toolbarButton} ${
+            isStrikethrough ? style.selected : ''
+          }`}
           aria-label="Format Strikethrough"
           title="Format Strikethrough"
         >
           <MdFormatStrikethrough />
-        </Button>
+        </CustomButton>
         <VerticalDivider />
-        <Button
+        <CustomButton
+          variation="text-only"
           onClick={() => {
             editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left');
           }}
           {...buttonProps}
           aria-label="Left Align"
           title="Left Align"
+          className={`${style.toolbarButton}`}
         >
           <MdFormatAlignLeft />
-        </Button>
-        <Button
+        </CustomButton>
+        <CustomButton
+          variation="text-only"
           onClick={() => {
             editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'center');
           }}
           {...buttonProps}
           aria-label="Center Align"
           title="Center Align"
+          className={`${style.toolbarButton}`}
         >
           <MdFormatAlignCenter />
-        </Button>
-        <Button
+        </CustomButton>
+        <CustomButton
+          variation="text-only"
           onClick={() => {
             editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'right');
           }}
           {...buttonProps}
           aria-label="Right Align"
           title="Right Align"
+          className={`${style.toolbarButton}`}
         >
           <MdFormatAlignRight />
-        </Button>
-        <Button
+        </CustomButton>
+        <CustomButton
+          variation="text-only"
           onClick={() => {
             editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'justify');
           }}
           {...buttonProps}
           aria-label="Justify Align"
           title="Justify Align"
+          className={`${style.toolbarButton}`}
         >
           <MdFormatAlignJustify />
-        </Button>
+        </CustomButton>
         <VerticalDivider />
         <InsertImageButton buttonProps={buttonProps} />
-        <InsertFileButton buttonProps={buttonProps} />
+        {!disableFiles && <InsertFileButton buttonProps={buttonProps} />}
       </Flex>
       <Divider opacity={1} />
     </View>
   );
+};
+
+ToolbarPlugin.propTypes = {
+  disableFiles: PropTypes.bool,
 };
 
 export default ToolbarPlugin;

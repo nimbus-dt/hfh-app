@@ -75,7 +75,15 @@ const ImageComponent = ({ src, nodeKey, altText, s3key }) => {
     return () => {
       unregister();
     };
-  }, [clearSelection, editor, isSelected, nodeKey, onClick, setSelected]);
+  }, [
+    clearSelection,
+    editor,
+    isSelected,
+    nodeKey,
+    onClick,
+    onDelete,
+    setSelected,
+  ]);
 
   return (
     <div onClick={onClick} aria-hidden="true">

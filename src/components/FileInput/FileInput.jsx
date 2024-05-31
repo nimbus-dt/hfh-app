@@ -12,6 +12,10 @@ const FileInput = ({
   isRequired,
   accept,
   isDisabled,
+  hasError,
+  errorMessage,
+  onInvalid,
+  onBlur,
 }) => {
   const filesInputRef = useRef();
 
@@ -69,6 +73,10 @@ const FileInput = ({
           onChange === undefined ||
           (maxFileCount !== undefined && files && files.length >= maxFileCount)
         }
+        hasError={hasError}
+        errorMessage={errorMessage}
+        onInvalid={onInvalid}
+        onBlur={onBlur}
       />
 
       {files && files.length > 0 && (
@@ -138,6 +146,10 @@ FileInput.propTypes = {
   isRequired: PropTypes.bool,
   accept: PropTypes.string,
   isDisabled: PropTypes.bool,
+  hasError: PropTypes.bool,
+  errorMessage: PropTypes.string,
+  onInvalid: PropTypes.func,
+  onBlur: PropTypes.func,
 };
 
 export default FileInput;

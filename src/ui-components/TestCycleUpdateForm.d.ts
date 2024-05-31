@@ -27,12 +27,18 @@ export declare type TestCycleUpdateFormInputValues = {
     endDate?: string;
     isOpen?: boolean;
     props?: string;
+    name?: string;
+    closedCycleMessage?: string;
+    formUrl?: string;
 };
 export declare type TestCycleUpdateFormValidationValues = {
     startDate?: ValidationFunction<string>;
     endDate?: ValidationFunction<string>;
     isOpen?: ValidationFunction<boolean>;
     props?: ValidationFunction<string>;
+    name?: ValidationFunction<string>;
+    closedCycleMessage?: ValidationFunction<string>;
+    formUrl?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type TestCycleUpdateFormOverridesProps = {
@@ -41,6 +47,9 @@ export declare type TestCycleUpdateFormOverridesProps = {
     endDate?: PrimitiveOverrideProps<TextFieldProps>;
     isOpen?: PrimitiveOverrideProps<SwitchFieldProps>;
     props?: PrimitiveOverrideProps<TextAreaFieldProps>;
+    name?: PrimitiveOverrideProps<TextFieldProps>;
+    closedCycleMessage?: PrimitiveOverrideProps<TextFieldProps>;
+    formUrl?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type TestCycleUpdateFormProps = React.PropsWithChildren<{
     overrides?: TestCycleUpdateFormOverridesProps | undefined | null;
