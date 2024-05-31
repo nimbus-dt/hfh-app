@@ -1,6 +1,72 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getMaintenance = /* GraphQL */ `
+  query GetMaintenance($id: ID!) {
+    getMaintenance(id: $id) {
+      id
+      maintenance
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listMaintenances = /* GraphQL */ `
+  query ListMaintenances(
+    $filter: ModelMaintenanceFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listMaintenances(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        maintenance
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncMaintenances = /* GraphQL */ `
+  query SyncMaintenances(
+    $filter: ModelMaintenanceFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncMaintenances(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        maintenance
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
 export const getUser = /* GraphQL */ `
   query GetUser($id: ID!) {
     getUser(id: $id) {

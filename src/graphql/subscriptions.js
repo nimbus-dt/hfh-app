@@ -1,6 +1,54 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateMaintenance = /* GraphQL */ `
+  subscription OnCreateMaintenance(
+    $filter: ModelSubscriptionMaintenanceFilterInput
+  ) {
+    onCreateMaintenance(filter: $filter) {
+      id
+      maintenance
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateMaintenance = /* GraphQL */ `
+  subscription OnUpdateMaintenance(
+    $filter: ModelSubscriptionMaintenanceFilterInput
+  ) {
+    onUpdateMaintenance(filter: $filter) {
+      id
+      maintenance
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteMaintenance = /* GraphQL */ `
+  subscription OnDeleteMaintenance(
+    $filter: ModelSubscriptionMaintenanceFilterInput
+  ) {
+    onDeleteMaintenance(filter: $filter) {
+      id
+      maintenance
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
 export const onCreateUser = /* GraphQL */ `
   subscription OnCreateUser($filter: ModelSubscriptionUserFilterInput) {
     onCreateUser(filter: $filter) {

@@ -1,6 +1,57 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createMaintenance = /* GraphQL */ `
+  mutation CreateMaintenance(
+    $input: CreateMaintenanceInput!
+    $condition: ModelMaintenanceConditionInput
+  ) {
+    createMaintenance(input: $input, condition: $condition) {
+      id
+      maintenance
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updateMaintenance = /* GraphQL */ `
+  mutation UpdateMaintenance(
+    $input: UpdateMaintenanceInput!
+    $condition: ModelMaintenanceConditionInput
+  ) {
+    updateMaintenance(input: $input, condition: $condition) {
+      id
+      maintenance
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deleteMaintenance = /* GraphQL */ `
+  mutation DeleteMaintenance(
+    $input: DeleteMaintenanceInput!
+    $condition: ModelMaintenanceConditionInput
+  ) {
+    deleteMaintenance(input: $input, condition: $condition) {
+      id
+      maintenance
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
 export const createUser = /* GraphQL */ `
   mutation CreateUser(
     $input: CreateUserInput!
