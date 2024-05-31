@@ -2,7 +2,8 @@ import { ReviewStatus, ApplicationTypes } from 'models';
 import { z } from 'zod';
 
 export const applicationsFilterSchema = z.object({
-  dateSubmitted: z.string().nullable().optional(),
+  startDateSubmitted: z.string().nullable().optional(),
+  endDateSubmitted: z.string().nullable().optional(),
   type: z
     .enum([ApplicationTypes.ONLINE, ApplicationTypes.PAPER])
     .nullable()

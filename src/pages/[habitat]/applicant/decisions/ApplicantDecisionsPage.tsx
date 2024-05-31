@@ -43,14 +43,22 @@ const ApplicantDecisionsPage = () => {
 
   const { data: decisions }: { data: Decision[] } = useDecisionsQuery({
     criteria: (c2: RecursiveModelPredicate<Decision>) =>
-      c2.or((c3) =>
-        applications.map((application) =>
+      c2.or((c3) => {
+        const newDecisions = applications.map((application) =>
           c3.testapplicationID.eq(application.id)
-        )
-      ),
+        );
+
+        if (!newDecisions.length) {
+          return [c3.id.eq('')];
+        }
+
+        return newDecisions;
+      }),
     dependencyArray: [applications],
-    paginationProducer: (s: SortPredicate<Decision>) =>
-      s.createdAt(SortDirection.DESCENDING),
+    paginationProducer: {
+      sort: (s: SortPredicate<Decision>) =>
+        s.createdAt(SortDirection.DESCENDING),
+    },
   });
 
   return (
@@ -70,14 +78,18 @@ const ApplicantDecisionsPage = () => {
           <DecisionCard
             key={data.id}
             date={data.updatedAt || ''}
-            habitat={habitat?.name || ''}
+            habitat={habitat?.longName || ''}
             status={ReviewStatus[data?.status || 'PENDING']}
             editorState={data.serializedEditorState}
-            applicationRoute={`../${
-              applications.find(
-                (application) => data.testapplicationID === application.id
-              )?.testcycleID
-            }`}
+            applicationRoute={
+              data?.status === ReviewStatus.RETURNED
+                ? `../${
+                    applications.find(
+                      (application) => data.testapplicationID === application.id
+                    )?.testcycleID
+                  }`
+                : undefined
+            }
           />
         ))}
       </Flex>

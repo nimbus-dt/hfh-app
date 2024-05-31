@@ -1,6 +1,6 @@
 /* eslint-disable react/style-prop-object */
 import React from 'react';
-import { Button, Flex, ScrollView } from '@aws-amplify/ui-react';
+import { Button, Flex } from '@aws-amplify/ui-react';
 import {
   MdAutoGraph,
   MdOutlineAssignmentTurnedIn,
@@ -44,10 +44,10 @@ const SideBar = ({
 
   if (!mobile || (mobile && expanded)) {
     return (
-      <ScrollView
+      <div
         ref={sideBarRef}
         className={`${style.sideBar}`}
-        position={mobile ? 'absolute' : ''}
+        style={{ position: mobile ? 'absolute' : undefined }}
       >
         <Flex
           justifyContent="space-between"
@@ -148,7 +148,7 @@ const SideBar = ({
             />
           </Flex>
         </Flex>
-      </ScrollView>
+      </div>
     );
   }
 };

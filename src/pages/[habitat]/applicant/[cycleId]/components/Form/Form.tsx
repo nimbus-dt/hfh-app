@@ -1,4 +1,4 @@
-import React, { type ReactNode, useMemo, useState } from 'react';
+import { type ReactNode, useMemo, useState, useRef } from 'react';
 import { Form as FormioForm, Wizard } from '@formio/react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -22,6 +22,7 @@ import CustomButton from 'components/CustomButton/CustomButton';
 import { RecursiveModelPredicate } from '@aws-amplify/datastore';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
+import Loading from 'components/Loading';
 import style from './Form.module.css';
 
 interface IProperties {
@@ -38,7 +39,7 @@ const Layout = ({
   habitat,
   children,
 }: {
-  formReady: typeof Wizard;
+  formReady?: typeof Wizard;
   habitat?: Habitat;
   children: ReactNode;
 }) => {
@@ -96,44 +97,58 @@ const Layout = ({
       section: 'Ownership',
     },
   ];
+  const headerRef = useRef<HTMLDivElement>(null);
   return (
     <div style={{ width: '100%' }}>
-      <Header current={currentPage} pages={pages || mock} habitat={habitat} />
+      {!formReady && <Loading />}
+      {formReady && (
+        <div ref={headerRef}>
+          <Header
+            current={currentPage}
+            pages={pages || mock}
+            habitat={habitat}
+          />
+        </div>
+      )}
       {children}
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <Footer
-          goBack={
-            currentPage === 0
-              ? undefined
-              : () => {
-                  setCurrentPage((prev) => prev - 1);
-                  formReady.prevPage().catch((error: unknown) => {
-                    console.log(error);
-                  });
-                }
-          }
-          onNext={() => {
-            if (
+      {formReady && (
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Footer
+            goBack={
+              currentPage === 0
+                ? undefined
+                : () => {
+                    headerRef.current?.scrollIntoView();
+                    setCurrentPage((prev) => prev - 1);
+                    formReady.prevPage().catch((error: unknown) => {
+                      console.log(error);
+                    });
+                  }
+            }
+            onNext={() => {
+              headerRef.current?.scrollIntoView();
+              if (
+                formReady?.componentComponents &&
+                currentPage === formReady.componentComponents.length - 1
+              ) {
+                formReady.submit().catch((error: unknown) => {
+                  console.log(error);
+                });
+                return;
+              }
+              setCurrentPage((prev) => prev + 1);
+              formReady.nextPage().catch((error: unknown) => {
+                console.log(error);
+                setCurrentPage((prev) => prev - 1);
+              });
+            }}
+            submit={
               formReady?.componentComponents &&
               currentPage === formReady.componentComponents.length - 1
-            ) {
-              formReady.submit().catch((error: unknown) => {
-                console.log(error);
-              });
-              return;
             }
-            setCurrentPage((prev) => prev + 1);
-            formReady.nextPage().catch((error: unknown) => {
-              console.log(error);
-              setCurrentPage((prev) => prev - 1);
-            });
-          }}
-          submit={
-            formReady?.componentComponents &&
-            currentPage === formReady.componentComponents.length - 1
-          }
-        />
-      </div>
+          />
+        </div>
+      )}
     </div>
   );
 };
@@ -268,10 +283,16 @@ const Form = ({
         <div>
           {reviewMode ||
           application?.submissionStatus === SubmissionStatus.COMPLETED ? (
-            <div className={formContainer ? `${style.formContainer}` : ''}>
+            <div
+              className={
+                formContainer
+                  ? style.formContainer
+                  : `${style.formContainer} ${style.newpadding}`
+              }
+            >
               <FormioForm
                 key="review"
-                src={`${FORMIO_URL}/loudoun`}
+                src={`${FORMIO_URL}/${cycle?.formUrl}`}
                 options={{
                   readOnly: true,
                   renderMode: 'flat',
@@ -324,10 +345,13 @@ const Form = ({
             </div>
           ) : (
             <Layout formReady={formReady} habitat={habitat}>
-              <div className={`${style.formContainer}`}>
+              <div
+                className={`${style.formContainer}`}
+                style={{ padding: '2rem 1rem' }}
+              >
                 <FormioForm
                   key="real"
-                  src={`${FORMIO_URL}/loudoun`}
+                  src={`${FORMIO_URL}/${cycle?.formUrl}`}
                   onSubmit={handleOnReview}
                   formReady={(f: typeof Wizard) => setFormReady(f)}
                   options={

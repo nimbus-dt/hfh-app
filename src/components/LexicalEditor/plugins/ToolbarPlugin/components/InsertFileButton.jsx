@@ -1,13 +1,14 @@
 import { Button, Flex } from '@aws-amplify/ui-react';
 import React, { useState } from 'react';
 import { MdInsertDriveFile } from 'react-icons/md';
-import PropTypes from 'prop-types';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import Modal from 'components/Modal';
 import FileInput from 'components/FileInput';
+import CustomButton from 'components/CustomButton/CustomButton';
 import { INSERT_FILE_COMMAND } from '../../FilePlugin';
+import style from '../ToolbarPlugin.module.css';
 
-const InsertFileButton = ({ buttonProps }) => {
+const InsertFileButton = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [editor] = useLexicalComposerContext();
   const [files, setFiles] = useState([]);
@@ -51,20 +52,17 @@ const InsertFileButton = ({ buttonProps }) => {
           </Flex>
         </Flex>
       </Modal>
-      <Button
+      <CustomButton
+        variation="text-only"
         onClick={handleOpenClose}
-        {...buttonProps}
         aria-label="Insert File"
         title="Insert File"
+        className={style.toolbarButton}
       >
         <MdInsertDriveFile />
-      </Button>
+      </CustomButton>
     </>
   );
-};
-
-InsertFileButton.propTypes = {
-  buttonProps: PropTypes.object,
 };
 
 export default InsertFileButton;

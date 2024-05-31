@@ -34,6 +34,13 @@
   color: var(--amplify-colors-neutral-10);
 }
 
+.formio-dialog-content:has(input:disabled) button.btn-primary,
+.formio-dialog-content:has(input:disabled) button.btn-primary {
+  user-select: none;
+  height: 0;
+  display: none;
+}
+
 .formio-dialog-content
   > div[ref='confirmationDialog']
   > div
@@ -67,6 +74,9 @@
     var(--amplify-colors-neutral-80) 30%,
     transparent
   ) !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .formio-dialog-content {

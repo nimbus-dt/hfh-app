@@ -69,6 +69,11 @@ export const dateOnly = (date) => {
   return yourDateStr;
 };
 
+export const convertDateYYYYMMDDtoDDMMYYYY = (date) => {
+  const [year, month, day] = date.split('-');
+  return `${month}/${day}/${year}`;
+};
+
 /**
  *  Removes date component from AWSDateTime object
  * @param {string} date date as an ISO string

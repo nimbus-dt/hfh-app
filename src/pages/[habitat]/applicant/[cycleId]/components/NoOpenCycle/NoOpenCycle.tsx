@@ -1,8 +1,10 @@
-import React from 'react';
-import { TestCycle } from 'models';
 import DOMPurify from 'dompurify';
-import CustomButton from 'components/CustomButton/CustomButton';
 import { Link } from 'react-router-dom';
+import { TestCycle } from 'models';
+
+import CustomButton from 'components/CustomButton';
+import CustomCard from 'components/CustomCard';
+
 import style from './NoOpenCycle.module.css';
 
 interface IProperties {
@@ -12,9 +14,8 @@ interface IProperties {
 }
 
 const NoOpenCycle = ({ cycle, onReview, showReview }: IProperties) => (
-  <>
-    <div
-      // eslint-disable-next-line react/no-danger
+  <CustomCard width={{ base: '100%', medium: '100%' }}>
+    <div // eslint-disable-next-line react/no-danger
       dangerouslySetInnerHTML={{
         __html: DOMPurify.sanitize(cycle?.closedCycleMessage || ''),
       }}
@@ -27,7 +28,7 @@ const NoOpenCycle = ({ cycle, onReview, showReview }: IProperties) => (
       </Link>
       {showReview && <CustomButton onClick={onReview}>Review</CustomButton>}
     </div>
-  </>
+  </CustomCard>
 );
 
 export default NoOpenCycle;

@@ -32,19 +32,21 @@ const PaperApplicationTable = ({ application }) => {
       setLoading((previousLoading) => previousLoading + 1);
       let arrayOfLinks = [];
 
-      for (const s3key of application.props.paperApplicationKeys) {
-        const getUrlResult = await Storage.get(s3key, {
-          expires: 3600,
-          validateObjectExistence: true,
-        });
-        const fileNameArray = s3key.split('/');
-        arrayOfLinks = [
-          ...arrayOfLinks,
-          {
-            link: getUrlResult,
-            fileName: fileNameArray[fileNameArray.length - 1],
-          },
-        ];
+      if (application.props.paperApplicationKeys) {
+        for (const s3key of application.props.paperApplicationKeys) {
+          const getUrlResult = await Storage.get(s3key, {
+            expires: 3600,
+            validateObjectExistence: true,
+          });
+          const fileNameArray = s3key.split('/');
+          arrayOfLinks = [
+            ...arrayOfLinks,
+            {
+              link: getUrlResult,
+              fileName: fileNameArray[fileNameArray.length - 1],
+            },
+          ];
+        }
       }
       setLinks(arrayOfLinks);
       setLoading((previousLoading) => previousLoading - 1);

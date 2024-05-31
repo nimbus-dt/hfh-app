@@ -1,7 +1,5 @@
 import {
   Flex,
-  ScrollView,
-  SelectField,
   Table,
   TableBody,
   TableCell,
@@ -11,7 +9,7 @@ import {
   TableRow,
   Text,
 } from '@aws-amplify/ui-react';
-import React, { ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 import DropdownMenu from 'components/DropdownMenu';
 import style from './TableWithPaginator.module.css';
 import Paginator from './components/Paginator';
@@ -71,7 +69,7 @@ const TableWithPaginator = ({
   }, [currentPage, data.length, perPage, totalPages]);
 
   return (
-    <ScrollView width="100%" className={`${style.container}`}>
+    <div className={`${style.container}`}>
       <Table className={`${style.table} theme-body-medium`}>
         <TableHead>
           <TableRow>
@@ -155,7 +153,7 @@ const TableWithPaginator = ({
           </TableRow>
         </TableFoot>
       </Table>
-    </ScrollView>
+    </div>
   );
 };
 

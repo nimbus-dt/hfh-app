@@ -42,10 +42,13 @@ const ApplicantCyclePage = () => {
   });
 
   const [application, setApplication] = useState<TestApplication>();
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(1);
   const [review, setReview] = useState(false);
 
-  const onReview = () => setReview(true);
+  const onReview = () => {
+    setActiveTab(0);
+    setReview(true);
+  };
 
   const getApplication = useCallback(
     async (username: string) => {
@@ -140,7 +143,12 @@ const ApplicantCyclePage = () => {
       </div>
     );
 
-  if (!cycle.isOpen && !review)
+  const reviewed =
+    application.reviewStatus === ReviewStatus.ACCEPTED ||
+    application.reviewStatus === ReviewStatus.DENIED ||
+    application.reviewStatus === ReviewStatus.RETURNED;
+
+  if (!cycle.isOpen && !review && !reviewed)
     return (
       <div className={`${style.page}`}>
         <NoOpenCycle
@@ -153,35 +161,52 @@ const ApplicantCyclePage = () => {
       </div>
     );
 
-  return application.submissionStatus === SubmissionStatus.COMPLETED &&
-    !review ? (
-    <div className={`${style.page}`}>
-      <SuccesfullySubmitted habitat={habitat} onReview={onReview} />
-    </div>
-  ) : (
-    <div className={`${style.page}`}>
-      <div className={style.detailsContainer}>
-        <LocalNavigation
-          items={[
-            { label: 'Application', icon: <MdOutlineNoteAlt /> },
-            { label: 'Decisions', icon: <MdOutlineLibraryAddCheck /> },
-          ]}
-          current={activeTab}
-          onChange={(newCurrent) => setActiveTab(newCurrent)}
+  if (
+    application.submissionStatus === SubmissionStatus.COMPLETED &&
+    !review &&
+    !reviewed
+  ) {
+    return (
+      <div className={`${style.page}`}>
+        <SuccesfullySubmitted
+          habitat={habitat}
+          onReview={onReview}
+          application={application}
         />
-        <div className={style.tabContainer}>
-          {activeTab === 0 && (
-            <Form
-              habitat={habitat}
-              application={application}
-              cycle={cycle}
-              formContainer={false}
-            />
-          )}
-          {activeTab === 1 && <Decisions application={application} />}
+      </div>
+    );
+  }
+
+  if (review || reviewed) {
+    return (
+      <div className={`${style.page}`}>
+        <div className={style.detailsContainer}>
+          <LocalNavigation
+            items={[
+              { label: 'Application', icon: <MdOutlineNoteAlt /> },
+              { label: 'Decisions', icon: <MdOutlineLibraryAddCheck /> },
+            ]}
+            current={activeTab}
+            onChange={(newCurrent) => setActiveTab(newCurrent)}
+          />
+          <div className={style.tabContainer}>
+            {activeTab === 0 && (
+              <Form habitat={habitat} application={application} cycle={cycle} />
+            )}
+            {activeTab === 1 && <Decisions application={application} />}
+          </div>
         </div>
       </div>
-    </div>
+    );
+  }
+
+  return (
+    <Form
+      habitat={habitat}
+      application={application}
+      cycle={cycle}
+      formContainer={false}
+    />
   );
 };
 

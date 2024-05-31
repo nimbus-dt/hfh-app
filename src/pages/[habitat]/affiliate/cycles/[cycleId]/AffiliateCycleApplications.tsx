@@ -15,15 +15,22 @@ import {
   ApplicationTypes,
   ReviewStatus,
 } from 'models';
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   MdOutlineAdd,
   MdOutlineArrowBack,
   MdOutlineClose,
   MdOutlineFilterList,
+  MdOutlineLink,
   MdOutlineOpenInNew,
 } from 'react-icons/md';
-import { Link, useOutletContext, useParams } from 'react-router-dom';
+import {
+  Link,
+  resolvePath,
+  useLocation,
+  useOutletContext,
+  useParams,
+} from 'react-router-dom';
 import { stringToHumanReadable } from 'utils/strings';
 import IconButton from 'components/IconButton';
 import BreadCrumbs from 'components/BreadCrumbs/BreadCrumbs';
@@ -37,7 +44,7 @@ import {
 
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { dateOnly } from 'utils/dates';
+import { convertDateYYYYMMDDtoDDMMYYYY, dateOnly } from 'utils/dates';
 import StatusChip from 'components/StatusChip';
 import style from './AffiliateCycleApplications.module.css';
 import {
@@ -55,6 +62,7 @@ interface IOutletContext {
 }
 
 const AffiliateCycleApplications = () => {
+  const { pathname } = useLocation();
   const isSmall = useBreakpointValue({
     base: true,
     medium: false,
@@ -69,17 +77,27 @@ const AffiliateCycleApplications = () => {
   const [statusModalOpen, setStatusModalOpen] = useState(false);
   const [newApplicationOpen, setNewApplicationOpen] = useState(false);
   const [trigger, setTrigger] = useState(0);
-  const [dateSubmitted, setDateSubmitted] =
-    useState<TApplicationsFilter['dateSubmitted']>();
+  const [startDateSubmitted, setStartDateSubmitted] =
+    useState<TApplicationsFilter['startDateSubmitted']>('MM/DD/YYYY');
+  const [endDateSubmitted, setEndDateSubmitted] =
+    useState<TApplicationsFilter['endDateSubmitted']>('MM/DD/YYYY');
   const [type, setType] = useState<TApplicationsFilter['type']>();
   const [reviewStatus, setReviewStatus] =
     useState<TApplicationsFilter['reviewStatus']>();
 
   const [filterModal, setFilterModal] = useState(false);
-  const { register, control, handleSubmit, reset } = useForm({
-    values: { dateSubmitted, type, reviewStatus },
+  const { register, control, handleSubmit, reset, watch } = useForm({
+    values: {
+      startDateSubmitted,
+      endDateSubmitted,
+      type,
+      reviewStatus,
+    },
     resolver: zodResolver(applicationsFilterSchema),
   });
+
+  const watchStartDateSubmitted = watch('startDateSubmitted');
+  const watchEndDateSubmitted = watch('endDateSubmitted');
 
   const { data: applications }: { data: TestApplication[] } =
     useTestApplicationsQuery({
@@ -96,8 +114,18 @@ const AffiliateCycleApplications = () => {
             criteriaArr = [...criteriaArr, c2.reviewStatus.eq(reviewStatus)];
           }
 
-          if (dateSubmitted) {
-            criteriaArr = [...criteriaArr, c2.submittedDate.eq(dateSubmitted)];
+          if (startDateSubmitted && startDateSubmitted !== 'MM/DD/YYYY') {
+            criteriaArr = [
+              ...criteriaArr,
+              c2.submittedDate.ge(startDateSubmitted),
+            ];
+          }
+
+          if (endDateSubmitted && endDateSubmitted !== 'MM/DD/YYYY') {
+            criteriaArr = [
+              ...criteriaArr,
+              c2.submittedDate.le(endDateSubmitted),
+            ];
           }
 
           if (type) {
@@ -110,7 +138,14 @@ const AffiliateCycleApplications = () => {
         sort: (s: SortPredicate<LazyTestApplication>) =>
           s.submittedDate(SortDirection.DESCENDING),
       },
-      dependencyArray: [reviewStatus, cycleId, trigger, type, dateSubmitted],
+      dependencyArray: [
+        reviewStatus,
+        cycleId,
+        trigger,
+        type,
+        startDateSubmitted,
+        endDateSubmitted,
+      ],
     });
 
   const { data: cycle } = useTestCycleById({
@@ -148,16 +183,26 @@ const AffiliateCycleApplications = () => {
   };
 
   const handleFilterOnValid = (data: TApplicationsFilter) => {
-    setDateSubmitted(data.dateSubmitted);
+    setStartDateSubmitted(data.startDateSubmitted);
+    setEndDateSubmitted(data.endDateSubmitted);
     setType(data.type);
     setReviewStatus(data.reviewStatus);
     setFilterModal(false);
   };
 
   const handleResetFilters = () => {
-    setDateSubmitted(undefined);
-    setType(undefined);
-    setReviewStatus(undefined);
+    setStartDateSubmitted('MM/DD/YYYY');
+    setEndDateSubmitted('MM/DD/YYYY');
+    setType(null);
+    setReviewStatus(null);
+    reset();
+  };
+
+  const handleCopyToClipboard = () => {
+    const pathToForm = resolvePath(`../../../applicant/${cycleId}`, pathname);
+    const { origin } = window.location;
+    const applicantLink = `${origin}${pathToForm.pathname}`;
+    navigator.clipboard.writeText(applicantLink);
   };
 
   return (
@@ -165,8 +210,8 @@ const AffiliateCycleApplications = () => {
       {!isSmall && (
         <BreadCrumbs
           items={[
-            { label: 'Homeownership Form' },
-            { label: 'Cycles' },
+            { label: 'Homeownership Form', to: '../../forms' },
+            { label: 'Cycles', to: '../' },
             { label: 'Applications' },
           ]}
         />
@@ -189,9 +234,18 @@ const AffiliateCycleApplications = () => {
           >{`${applications.length} results`}</span>
         </div>
         <div className={`${style.options}`}>
-          <IconButton type="button" onClick={handleOpenCloseFilters}>
-            <MdOutlineFilterList />
-          </IconButton>
+          <div className={`${style.suboptions}`}>
+            <IconButton
+              type="button"
+              onClick={handleCopyToClipboard}
+              title="Copy link for applicants to clipboard"
+            >
+              <MdOutlineLink />
+            </IconButton>
+            <IconButton type="button" onClick={handleOpenCloseFilters}>
+              <MdOutlineFilterList />
+            </IconButton>
+          </div>
           {filterModal && (
             <form
               onSubmit={handleSubmit(handleFilterOnValid)}
@@ -210,14 +264,48 @@ const AffiliateCycleApplications = () => {
                 <div className={`theme-body-small ${style.inputTitle}`}>
                   <span>Dates</span>
                 </div>
-                <div>
-                  <span className={`${style.dateLabel}`}>Date Submitted</span>
+                <div style={{ position: 'relative' }}>
+                  <span
+                    style={{
+                      position: 'absolute',
+                      bottom: '1rem',
+                      left: '1rem',
+                    }}
+                    className={style.textDate}
+                  >
+                    {watchStartDateSubmitted &&
+                    watchStartDateSubmitted !== 'MM/DD/YYYY'
+                      ? convertDateYYYYMMDDtoDDMMYYYY(watchStartDateSubmitted)
+                      : 'MM/DD/YYYY'}
+                  </span>
                   <TextField
-                    {...register('dateSubmitted')}
-                    label=""
-                    labelHidden
+                    id="startDate"
+                    label="Start Date Submitted"
                     type="date"
                     className={`${style.customDateInput}`}
+                    {...register('startDateSubmitted')}
+                  />
+                </div>
+                <div style={{ position: 'relative' }}>
+                  <span
+                    style={{
+                      position: 'absolute',
+                      bottom: '1rem',
+                      left: '1rem',
+                    }}
+                    className={style.textDate}
+                  >
+                    {watchEndDateSubmitted &&
+                    watchEndDateSubmitted !== 'MM/DD/YYYY'
+                      ? convertDateYYYYMMDDtoDDMMYYYY(watchEndDateSubmitted)
+                      : 'MM/DD/YYYY'}
+                  </span>
+                  <TextField
+                    id="endDate"
+                    label="End Date Submitted"
+                    type="date"
+                    className={`${style.customDateInput}`}
+                    {...register('endDateSubmitted')}
                   />
                 </div>
               </div>
@@ -245,7 +333,7 @@ const AffiliateCycleApplications = () => {
                       />
                       <CheckboxField
                         name=""
-                        label="Offline"
+                        label="Paper"
                         className={`${style.customCheckbox}`}
                         checked={value === ApplicationTypes.PAPER}
                         onChange={(event) =>
@@ -397,9 +485,11 @@ const AffiliateCycleApplications = () => {
               {
                 id: 'name',
                 value:
-                  application.type === ApplicationTypes.ONLINE
-                    ? 'John Doe'
-                    : applicationProps?.name || '',
+                  application.type === ApplicationTypes.ONLINE ? (
+                    <Name application={application} />
+                  ) : (
+                    applicationProps?.name || ''
+                  ),
               },
               {
                 id: 'type',
@@ -407,7 +497,7 @@ const AffiliateCycleApplications = () => {
               },
               {
                 id: 'dateSubmitted',
-                value: dateOnly(application.submittedDate),
+                value: convertDateYYYYMMDDtoDDMMYYYY(application.submittedDate),
               },
               {
                 id: 'reviewStatus',
@@ -466,6 +556,30 @@ const AffiliateCycleApplications = () => {
       />
     </div>
   );
+};
+
+const Name = ({ application }: { application: TestApplication }) => {
+  const [name, setName] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await application.FormAnswers.toArray();
+      let response = 'unknown';
+      for (let i = 0; i < result.length; i++) {
+        // eslint-disable-next-line no-prototype-builtins
+        if (result[i]?.values?.hasOwnProperty('applicantBasicInformation')) {
+          response =
+            result[i]?.values?.applicantBasicInformation
+              ?.applicantBasicInformationFullName;
+        }
+      }
+      setName(response);
+    };
+
+    fetchData();
+  }, [application]);
+
+  return name;
 };
 
 export default AffiliateCycleApplications;

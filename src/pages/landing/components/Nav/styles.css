@@ -1,0 +1,35 @@
+.nav {
+  border-bottom: 1px solid var(--amplify-colors-neutral-60);
+}
+
+.navLink {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.navLink:hover {
+  background-color: var(--amplify-colors-neutral-40);
+  border-radius: 10px;
+  transform: translateY(-6px);
+}
+
+.my-menu-trigger.amplify-menu-trigger {
+  border-color: white;
+}
+
+.amplify-menu-content__item:hover {
+  background-color: var(--amplify-colors-primary-100);
+  color: white;
+}
+
+.navLinkText {
+  color: var(--amplify-colors-neutral-100);
+  font-family: var(--amplify-fonts-default-variable);
+  font-weight: var(--amplify-font-weights-medium);
+  font-size: var(--amplify-font-sizes-medium);
+  cursor: pointer;
+}
+
+.navLinkText:hover {
+  color: var(--amplify-colors-primary-100);
+}

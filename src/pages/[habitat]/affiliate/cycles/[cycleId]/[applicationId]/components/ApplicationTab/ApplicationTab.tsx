@@ -3,6 +3,7 @@ import { ApplicationTypes, FormAnswer, TestApplication } from 'models';
 
 import { generateSubmission } from 'utils/formio';
 import PaperApplicationTable from './components/PaperApplicationTable';
+import style from './ApplicationTab.module.css';
 
 interface IProperties {
   application?: TestApplication;
@@ -13,18 +14,19 @@ interface IProperties {
 const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
 const ApplicationTab = ({ application, formAnswers, formUrl }: IProperties) => (
-  <div>
+  <div className={style.formContainer}>
     <br />
-    <Form
-      key="review"
-      src={`${FORMIO_URL}/${formUrl}`}
-      options={{
-        readOnly: true,
-        renderMode: 'flat',
-      }}
-      submission={generateSubmission(formAnswers as FormAnswer[])}
-    />
-    {application?.type === ApplicationTypes.PAPER && (
+    {application?.type === ApplicationTypes.ONLINE ? (
+      <Form
+        key="review"
+        src={`${FORMIO_URL}/${formUrl}`}
+        options={{
+          readOnly: true,
+          renderMode: 'flat',
+        }}
+        submission={generateSubmission(formAnswers as FormAnswer[])}
+      />
+    ) : (
       <PaperApplicationTable application={application} />
     )}
   </div>

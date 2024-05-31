@@ -18,8 +18,9 @@ import FileInput from 'components/FileInput';
 import { DataStore } from '@aws-amplify/datastore';
 import { Habitat, RootForm, RootFormStatusTypes } from 'models';
 import { useOutletContext } from 'react-router-dom';
-import { Storage } from 'aws-amplify';
-import { set } from 'lodash';
+import { API, Storage } from 'aws-amplify';
+
+const EMAIL_S3_BUCKET = process.env.REACT_APP_EMAIL_S3_BUCKET;
 
 interface IProperties {
   triggerUpdate: () => void;
@@ -81,6 +82,7 @@ function NewFormButton({ triggerUpdate }: IProperties) {
           status: RootFormStatusTypes.PENDING,
           description: formDataObject.description as string,
           habitatID: habitat.id,
+          formUrls: [],
         })
       );
 
@@ -97,6 +99,26 @@ function NewFormButton({ triggerUpdate }: IProperties) {
           item.files = valuesArray;
         })
       );
+
+      await API.post('public', '/email-admin', {
+        body: {
+          subject: `Action Required: Set Up New Form for ${habitat?.name} habitat`,
+          body: `
+            <div>
+              <p>A new form needs to be set up for ${habitat?.longName}</p>
+              <ul>
+                <li>Name: ${newForm?.name}</li>
+                <li>Description: ${newForm?.description}</li>
+                ${valuesArray?.map(
+                  (file, index) =>
+                    `<li>File ${index + 1}: ${EMAIL_S3_BUCKET}${file}</li>`
+                )}
+              </ul>
+            </div>
+          `,
+        },
+      });
+
       triggerUpdate();
     } catch (error) {
       console.log(`Error creating new form: ${error}`);

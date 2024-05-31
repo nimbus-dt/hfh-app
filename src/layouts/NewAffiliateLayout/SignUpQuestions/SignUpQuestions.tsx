@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { ScrollView } from '@aws-amplify/ui-react';
 
 import Header from 'components/Header';
 import Loading from 'components/Loading';
@@ -38,7 +37,7 @@ const SignUpQuestions = ({
       habitat={habitat}
       user={user}
     />,
-    <Confirmation name={habitat?.name} />,
+    <Confirmation name={habitat?.longName} />,
   ];
 
   if (!habitat || !user) {
@@ -46,10 +45,10 @@ const SignUpQuestions = ({
   }
 
   return (
-    <ScrollView height="100vh" className={styles.page}>
+    <div className={styles.page}>
       <Header habitat={habitat} current={data.current} pages={pages} />
       {body[data.current]}
-    </ScrollView>
+    </div>
   );
 };
 

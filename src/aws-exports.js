@@ -3,31 +3,31 @@
 
 const awsmobile = {
     "aws_project_region": "us-east-1",
-    "aws_appsync_graphqlEndpoint": "https://gfnt3mz2pbb7pom5i3grdb3yoa.appsync-api.us-east-1.amazonaws.com/graphql",
+    "aws_appsync_graphqlEndpoint": "https://7a5m3kr7srgjrgohwc2ntu566u.appsync-api.us-east-1.amazonaws.com/graphql",
     "aws_appsync_region": "us-east-1",
     "aws_appsync_authenticationType": "API_KEY",
-    "aws_appsync_apiKey": "da2-dlusue4nwfclnfim2x76wohzri",
+    "aws_appsync_apiKey": "da2-5mejunhxonflln7d3n6lwkkgky",
     "aws_cloud_logic_custom": [
         {
             "name": "public",
-            "endpoint": "https://ugd1vdxvgg.execute-api.us-east-1.amazonaws.com/formio",
+            "endpoint": "https://xwgw1qqerd.execute-api.us-east-1.amazonaws.com/prod",
             "region": "us-east-1"
         },
         {
             "name": "sendEmailToApplicantAPI",
-            "endpoint": "https://akc2461p8d.execute-api.us-east-1.amazonaws.com/formio",
+            "endpoint": "https://ezcqlkrlt3.execute-api.us-east-1.amazonaws.com/prod",
             "region": "us-east-1"
         },
         {
             "name": "userAPI",
-            "endpoint": "https://1d9mspuzj2.execute-api.us-east-1.amazonaws.com/formio",
+            "endpoint": "https://j8f0ysunl3.execute-api.us-east-1.amazonaws.com/prod",
             "region": "us-east-1"
         }
     ],
-    "aws_cognito_identity_pool_id": "us-east-1:99011d3a-026d-4481-9148-bdea8ddb3eca",
+    "aws_cognito_identity_pool_id": "us-east-1:775a799c-b880-4b85-910f-ae7a69182c58",
     "aws_cognito_region": "us-east-1",
-    "aws_user_pools_id": "us-east-1_AuPiGjoOz",
-    "aws_user_pools_web_client_id": "1mp4qjci9lachpi6cfj4iop3kg",
+    "aws_user_pools_id": "us-east-1_3zxo02ghK",
+    "aws_user_pools_web_client_id": "4d6574ks6b0h37sr6g6dqsq280",
     "oauth": {},
     "aws_cognito_username_attributes": [
         "EMAIL"
@@ -45,7 +45,7 @@ const awsmobile = {
     "aws_cognito_verification_mechanisms": [
         "EMAIL"
     ],
-    "aws_user_files_s3_bucket": "hfh-app-storage-bucket134315-formio",
+    "aws_user_files_s3_bucket": "hfh-app-storage-bucket160335-prod",
     "aws_user_files_s3_bucket_region": "us-east-1"
 };
 

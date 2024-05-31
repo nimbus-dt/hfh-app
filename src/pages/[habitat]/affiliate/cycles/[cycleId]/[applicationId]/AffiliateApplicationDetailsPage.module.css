@@ -2,6 +2,13 @@
   padding: 32px;
 }
 
+.ctaContainer {
+  display: flex;
+  gap: 16px;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
 .cta {
   display: flex;
   gap: 4px;
@@ -23,6 +30,12 @@
 
 /* Amplify UI medium */
 @media (min-width: 768px) {
+  .ctaContainer {
+    flex-direction: row;
+
+    justify-content: space-between;
+  }
+
   .detailsContainer {
     flex-direction: row;
   }

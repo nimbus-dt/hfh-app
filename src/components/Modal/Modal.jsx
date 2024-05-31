@@ -1,6 +1,5 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Flex, ScrollView, Text, View } from '@aws-amplify/ui-react';
+import { Button, Flex, Text, View } from '@aws-amplify/ui-react';
 import { MdClose } from 'react-icons/md';
 
 const Modal = ({ title, children, onClickClose, open, width }) => {
@@ -64,9 +63,9 @@ const Modal = ({ title, children, onClickClose, open, width }) => {
               <MdClose size="1.5rem" />
             </Button>
           </Flex>
-          <ScrollView>
+          <div style={{ overflow: 'auto' }}>
             <View padding="1.5rem">{children}</View>
-          </ScrollView>
+          </div>
         </Flex>
       </Flex>
     )

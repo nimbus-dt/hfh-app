@@ -43,7 +43,7 @@ const DecisionCard = ({
         {applicantionRoute && (
           <Flex justifyContent="right">
             <Link to={applicantionRoute}>
-              <CustomButton>Review</CustomButton>
+              <CustomButton>Update Now</CustomButton>
             </Link>
           </Flex>
         )}
