@@ -103,12 +103,7 @@ const AffiliateCycleApplications = () => {
     useTestApplicationsQuery({
       criteria: (c1: RecursiveModelPredicate<LazyTestApplication>) =>
         c1.and((c2) => {
-          let criteriaArr = cycleId
-            ? [
-                c2.testcycleID.eq(cycleId),
-                c2.submissionStatus.eq(SubmissionStatus.COMPLETED),
-              ]
-            : [];
+          let criteriaArr = cycleId ? [c2.testcycleID.eq(cycleId)] : [];
 
           if (reviewStatus) {
             criteriaArr = [...criteriaArr, c2.reviewStatus.eq(reviewStatus)];
@@ -147,6 +142,21 @@ const AffiliateCycleApplications = () => {
         endDateSubmitted,
       ],
     });
+
+  let applicationsCompleted: TestApplication[] = [];
+  let applicationsPending: TestApplication[] = [];
+
+  if (applications) {
+    applicationsCompleted = applications.filter(
+      (application) =>
+        application.submissionStatus === SubmissionStatus.COMPLETED
+    );
+
+    applicationsPending = applications.filter(
+      (application) =>
+        application.submissionStatus === SubmissionStatus.INCOMPLETE
+    );
+  }
 
   const { data: cycle } = useTestCycleById({
     id: cycleId,
@@ -207,15 +217,20 @@ const AffiliateCycleApplications = () => {
 
   return (
     <div className={style.container}>
-      {!isSmall && (
-        <BreadCrumbs
-          items={[
-            { label: 'Homeownership Form', to: '../../forms' },
-            { label: 'Cycles', to: '../' },
-            { label: 'Applications' },
-          ]}
-        />
-      )}
+      <div className={style.firstRow}>
+        {!isSmall && (
+          <BreadCrumbs
+            items={[
+              { label: 'Homeownership Form', to: '../../forms' },
+              { label: 'Cycles', to: '../' },
+              { label: 'Applications' },
+            ]}
+          />
+        )}
+        <p className={`theme-body-medium ${style.incompleteApplications}`}>
+          Incomplete Applications: {applicationsPending.length}
+        </p>
+      </div>
       <div className={`${style.titleContainer}`}>
         <Link to="../">
           <IconButton variation="not-outlined">
@@ -231,7 +246,7 @@ const AffiliateCycleApplications = () => {
           <span className="theme-subtitle-s2">Applications</span>
           <span
             className={`${style.results}`}
-          >{`${applications.length} results`}</span>
+          >{`${applicationsCompleted.length} results`}</span>
         </div>
         <div className={`${style.options}`}>
           <div className={`${style.suboptions}`}>
@@ -475,7 +490,7 @@ const AffiliateCycleApplications = () => {
             value: 'View',
           },
         ]}
-        data={applications.map((application, index) => {
+        data={applicationsCompleted.map((application, index) => {
           const applicationProps = application.props as unknown as {
             name: string;
           };
