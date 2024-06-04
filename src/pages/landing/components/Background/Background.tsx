@@ -7,6 +7,13 @@ interface BackgroundProps {
   bgColor: string;
   direction: 'column' | 'row';
   gap: string;
+  padding?: {
+    base?: string;
+    medium?: string;
+    large?: string;
+    xl?: string;
+    xxl?: string;
+  };
 }
 
 function Background({
@@ -15,6 +22,7 @@ function Background({
   direction,
   gap,
   id,
+  padding = { base: '4.5rem 2rem', medium: '4.5rem 2rem' },
 }: BackgroundProps) {
   return (
     <Flex
@@ -24,9 +32,7 @@ function Background({
       alignItems="center"
       gap="32px"
       width="100%"
-      padding={{
-        base: '4.5rem 3rem',
-      }}
+      padding={padding}
       backgroundColor={bgColor}
     >
       <Flex
