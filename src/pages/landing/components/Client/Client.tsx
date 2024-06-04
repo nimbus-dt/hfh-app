@@ -7,7 +7,7 @@ import Background from '../Background';
 
 function Client() {
   return (
-    <Background bgColor="#092C76" direction="column" gap="48px">
+    <Background id="clients" bgColor="#092C76" direction="column" gap="48px">
       <Flex direction="column" gap="24px">
         <Text
           fontWeight="medium"

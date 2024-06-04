@@ -10,52 +10,58 @@ import featureCalculations from 'assets/images/feature-calculations.svg';
 import featureApplications from 'assets/images/feature-online.svg';
 
 import FeatureCard from './components/FeatureCard';
+import Background from '../Background';
 
 function Features() {
   const [selectedCard, setSelectedCard] = useState(1);
 
   return (
-    <Flex
-      direction="row"
-      width="100%"
-      height="fit-content"
-      gap="48px"
-      padding={{ base: '72px 32px', medium: '72px 48px', large: '72px 128px' }}
-      alignItems="center"
-      justifyContent="center"
+    <Background
       id="features"
+      direction="row"
+      gap="48px"
+      bgColor="var(--amplify-colors-neutral-10)"
     >
       <Flex
         direction="column"
-        gap="24px"
+        gap="48px"
         width="100%"
         height="fit-content"
         padding="0px"
         alignContent="center"
         backgroundColor="var(--amplify-colors-neutral-0)"
       >
-        <Text
-          fontWeight="medium"
-          fontSize={{ base: '36px', medium: '48px', large: '54px' }}
-          color="var(--amplify-colors-neutral-100)"
-          width="100%"
-          height="fit-content"
-          textAlign="center"
-        >
-          No more paper applications
-        </Text>
-        <Text
-          fontWeight="light"
-          fontSize={{ base: '24px', medium: '24px', large: '24px' }}
-          color="var(--amplify-colors-neutral-90)"
-          textAlign="center"
-          width="100%"
-          height="100%"
-        >
-          Habitat App allows applicants to submit online applications, upload
-          income records, revise application mistakes, and review decisions -
-          all in one place.
-        </Text>
+        <Flex direction="column" gap="24px">
+          <Text
+            fontWeight="medium"
+            fontSize={{ base: '36px', medium: '48px', large: '54px' }}
+            lineHeight={{
+              base: '43.57px',
+              medium: '58.09px',
+              large: '65.35px',
+            }}
+            letterSpacing={{
+              base: '-0.005em',
+              medium: '-0.05em',
+              large: '-0.05em',
+            }}
+            textAlign="center"
+            color="var(--amplify-colors-neutral-100)"
+          >
+            No more paper applications
+          </Text>
+          <Text
+            fontWeight="light"
+            fontSize="24px"
+            lineHeight="29.05px"
+            textAlign="center"
+            color="var(--amplify-colors-neutral-90)"
+          >
+            Habitat App allows applicants to submit online applications, upload
+            income records, revise application mistakes, and review decisions -
+            all in one place.
+          </Text>
+        </Flex>
         <Flex
           direction={{ base: 'column', medium: 'row' }}
           padding="0px"
@@ -167,7 +173,7 @@ function Features() {
           )}
         </Flex>
       </Flex>
-    </Flex>
+    </Background>
   );
 }
 

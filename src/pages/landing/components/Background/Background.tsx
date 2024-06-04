@@ -2,16 +2,23 @@ import { Flex } from '@aws-amplify/ui-react';
 import { ReactNode } from 'react';
 
 interface BackgroundProps {
+  id: string;
   children: ReactNode;
   bgColor: string;
   direction: 'column' | 'row';
   gap: string;
 }
 
-function Background({ bgColor, children, direction, gap }: BackgroundProps) {
+function Background({
+  bgColor,
+  children,
+  direction,
+  gap,
+  id,
+}: BackgroundProps) {
   return (
     <Flex
-      id="clients"
+      id={id}
       direction="column"
       justifyContent="center"
       alignItems="center"
