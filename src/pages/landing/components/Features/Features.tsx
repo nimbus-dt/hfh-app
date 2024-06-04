@@ -112,63 +112,32 @@ function Features() {
             }}
           />
         </Flex>
-        <Flex
-          direction="column"
-          width="100%"
-          height="fit-content"
-          padding="32px"
-          alignContent="center"
-          justifyContent="center"
-          alignItems="center"
-        >
+        <Flex justifyContent="center">
           {selectedCard === 1 && (
             <Image
               alt="application"
               src={featureApplications}
-              width={{
-                base: '90%',
-                medium: '463px',
-                large: '616px',
-              }}
-              height={{
-                base: '67%',
-                medium: '344px',
-                large: '459px',
-              }}
+              width="100%"
+              maxWidth="880px"
+              height="auto"
             />
           )}
           {selectedCard === 2 && (
             <Image
               alt="calculations"
-              width={{
-                base: '350px',
-                medium: '400px',
-                large: '576px',
-              }}
-              height={{
-                base: '241px',
-                medium: '274px',
-                large: '395px',
-              }}
+              width={{ base: '100%', large: '33%' }}
+              maxWidth="405px"
+              height="auto"
               src={featureCalculations}
-              borderRadius="30px"
             />
           )}
           {selectedCard === 3 && (
             <Image
               alt="analytics"
-              width={{
-                base: '350px',
-                medium: '400px',
-                large: '576px',
-              }}
-              height={{
-                base: '241px',
-                medium: '274px',
-                large: '395px',
-              }}
               src={featureAnalytics}
-              borderRadius="30px"
+              width="100%"
+              maxWidth="880px"
+              height="auto"
             />
           )}
         </Flex>

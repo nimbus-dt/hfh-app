@@ -1,18 +1,17 @@
 import { Flex, Image, Text } from '@aws-amplify/ui-react';
 import CustomButton from 'components/CustomButton/CustomButton';
-import heroScreen from 'assets/images/hero-screen.png';
-import './style.css';
+import heroScreen from 'assets/images/hero-screen.svg';
+import styles from './styles.module.css';
+import Background from '../Background';
 
 function Hero() {
   return (
-    <Flex
+    <Background
+      id="hero"
       direction="column"
-      width="100%"
-      height="fit-content"
-      padding={{ base: '56px 24px', medium: '56px 48px', xl: '56px 128px' }}
       gap="40px"
-      backgroundColor="var(--amplify-colors-neutral-10)"
-      alignItems="center"
+      bgColor="var(--amplify-colors-neutral-10)"
+      padding={{ base: '4.5rem 2rem', medium: '3.5rem 2rem' }}
     >
       <Flex
         direction="column"
@@ -50,7 +49,7 @@ function Hero() {
             fontSize: '18px',
             padding: '12px 16px',
           }}
-          className="signUp"
+          className={styles.signUp}
           onClick={() => {
             window.location.href =
               'https://share.hsforms.com/1lqoUQWsfRm2AJVquaEMNCwqw1cl';
@@ -60,24 +59,15 @@ function Hero() {
         </CustomButton>
       </Flex>
       <Image
-        alt="screen"
-        width={{
-          base: '300px',
-          small: '422.5px',
-          medium: '662px',
-          large: '880px',
-        }}
-        height={{
-          base: '223px',
-          small: '314px',
-          medium: '492px',
-          large: '654px',
-        }}
+        alt="home screen"
+        width="100%"
+        maxWidth="880px"
+        height="auto"
         src={heroScreen}
-        className="hero"
+        className={styles.hero}
         borderRadius={{ base: '5px', large: '30px' }}
       />
-    </Flex>
+    </Background>
   );
 }
 
