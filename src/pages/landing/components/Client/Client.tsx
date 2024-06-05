@@ -1,14 +1,33 @@
 import { Flex, Text } from '@aws-amplify/ui-react';
+import { motion } from 'framer-motion';
 
 import TestimonialCard from './components/TestimonialCard';
 import testimonials from './data/testimonials';
 
 import Background from '../Background';
 
+const textVariants = {
+  hidden: { opacity: 0, y: -10 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: { opacity: 1, scale: 1 },
+};
+
 function Client() {
   return (
     <Background id="clients" bgColor="#092C76" direction="column" gap="48px">
-      <Flex direction="column" gap="24px">
+      <Flex
+        direction="column"
+        gap="24px"
+        as={motion.div}
+        initial="hidden"
+        whileInView="visible"
+        variants={textVariants}
+        transition={{ duration: 1.5 }}
+      >
         <Text
           fontWeight="medium"
           fontSize="54px"
@@ -30,7 +49,15 @@ function Client() {
           Hear what they have to say and their amazing stories!
         </Text>
       </Flex>
-      <Flex direction={{ base: 'column', large: 'row' }} gap="48px">
+      <Flex
+        direction={{ base: 'column', large: 'row' }}
+        gap="48px"
+        as={motion.div}
+        initial="hidden"
+        whileInView="visible"
+        variants={cardVariants}
+        transition={{ duration: 1.5, staggerChildren: 0.2 }}
+      >
         {testimonials.map((testimonial) => (
           <TestimonialCard key={testimonial.id} testimonial={testimonial} />
         ))}

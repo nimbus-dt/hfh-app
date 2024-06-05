@@ -34,12 +34,12 @@ const cardCenterVariants = {
 };
 
 const imageLeftVariants = {
-  hidden: { opacity: 0, x: 200 },
+  hidden: { opacity: 0, x: 100 },
   visible: { opacity: 1, x: 0 },
 };
 
 const imageRightVariants = {
-  hidden: { opacity: 0, x: -200 },
+  hidden: { opacity: 0, x: -100 },
   visible: { opacity: 1, x: 0 },
 };
 
