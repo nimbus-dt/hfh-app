@@ -1,4 +1,22 @@
 import { Flex, Text, Expander, ExpanderItem } from '@aws-amplify/ui-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { random } from 'lodash';
+import faqs from './data/faqs';
+
+const textVariants = {
+  hidden: { opacity: 0, y: -20 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, height: 0 },
+  visible: { opacity: 1, height: 'auto' },
+};
+
+const expanderVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
 
 function Faqs() {
   return (
@@ -27,45 +45,42 @@ function Faqs() {
           height="fit-content"
           textAlign="center"
           color="var(--amplify-colors-neutral-100)"
+          as={motion.p}
+          initial="hidden"
+          animate="visible"
+          variants={textVariants}
+          transition={{ duration: 1.5 }}
         >
           FAQ
         </Text>
       </Flex>
       <Flex width={{ base: '100%', large: '780px' }} padding="0px">
         <Expander isCollapsible>
-          <ExpanderItem title="What is Habitat App?" value="demo-item-1">
-            HabitatApp is the all-in-one platform for Habitat for Humanity
-            affiliates. Currently, affiliates can conduct Homeownership and
-            Critical Home Repair applications online through Habitat App.
-          </ExpanderItem>
-          <ExpanderItem
-            title="Can I test Habitat App out before paying?"
-            value="demo-item-8"
-          >
-            Yes! We offer all affiliates a free application cycle where they can
-            try out Habitat App.
-          </ExpanderItem>
-          <ExpanderItem
-            title="Is Habitat App customizable?"
-            value="demo-item-2"
-          >
-            Yes! Habitat App is totally customizable. Affiliates can edit their
-            applications, reports, analytics and more.
-          </ExpanderItem>
-          <ExpanderItem
-            title="Can Habitat App integrate with other software?"
-            value="demo-item-3"
-          >
-            Yes! Habitat App can integrate with almost any other software to
-            allow a smooth operation for your affiliate.
-          </ExpanderItem>
-          <ExpanderItem
-            title="How can I gain access to Habitat App?"
-            value="demo-item-4"
-          >
-            To get access, sign up to our waitlist now. We will contact you as
-            soon as possible.
-          </ExpanderItem>
+          {faqs.map((faq, index) => (
+            <motion.div
+              key={faq.key}
+              initial="hidden"
+              whileInView="visible"
+              exit="hidden"
+              variants={expanderVariants}
+              transition={{ duration: 1, delay: random(0.3, 1) }}
+            >
+              <ExpanderItem value={faq.key} title={faq.question}>
+                <AnimatePresence>
+                  <motion.p
+                    key={`${faq.key}-answer`}
+                    initial="hidden"
+                    whileInView="visible"
+                    exit="hidden"
+                    variants={itemVariants}
+                    transition={{ duration: 1 }}
+                  >
+                    {faq.answer}
+                  </motion.p>
+                </AnimatePresence>
+              </ExpanderItem>
+            </motion.div>
+          ))}
         </Expander>
       </Flex>
     </Flex>
