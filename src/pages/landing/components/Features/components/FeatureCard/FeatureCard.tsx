@@ -41,6 +41,7 @@ function FeatureCard({
           : 'var(--amplify-colors-neutral-60)'
       }
       className="mainContainer"
+      maxWidth="425px"
       onClick={onClick}
     >
       <Flex

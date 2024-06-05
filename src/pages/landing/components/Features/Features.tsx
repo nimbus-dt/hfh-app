@@ -121,12 +121,17 @@ function Features() {
           gap="32px"
           width="100%"
           height="fit-content"
+          alignContent="center"
+          justifyContent="center"
         >
-          <motion.div
+          <Flex
             initial="hidden"
+            as={motion.div}
             whileInView="visible"
             variants={cardLeftVariants}
             transition={{ duration: 1, staggerChildren: 0.2 }}
+            alignContent="center"
+            justifyContent="center"
           >
             <FeatureCard
               title="Online Applications"
@@ -142,12 +147,15 @@ function Features() {
                 setSelectedCard(1);
               }}
             />
-          </motion.div>
-          <motion.div
+          </Flex>
+          <Flex
             initial="hidden"
+            as={motion.div}
             whileInView="visible"
             variants={cardCenterVariants}
             transition={{ duration: 1, staggerChildren: 0.2 }}
+            alignContent="center"
+            justifyContent="center"
           >
             <FeatureCard
               title="Advanced Calculations"
@@ -163,12 +171,15 @@ function Features() {
                 setSelectedCard(2);
               }}
             />
-          </motion.div>
-          <motion.div
+          </Flex>
+          <Flex
             initial="hidden"
+            as={motion.div}
             whileInView="visible"
             variants={cardRightVariants}
             transition={{ duration: 1, staggerChildren: 0.2 }}
+            alignContent="center"
+            justifyContent="center"
           >
             <FeatureCard
               title="Complete Analytics"
@@ -184,7 +195,7 @@ function Features() {
                 setSelectedCard(3);
               }}
             />
-          </motion.div>
+          </Flex>
         </Flex>
         <Flex justifyContent="center">
           {selectedCard === 1 && (
