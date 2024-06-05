@@ -6,6 +6,8 @@ import {
   Text,
   useBreakpointValue,
 } from '@aws-amplify/ui-react';
+import { motion } from 'framer-motion';
+
 import whiteLogo from 'assets/images/white-logo.jpg';
 import './styles.css';
 // eslint-disable-next-line import/no-unresolved
@@ -24,8 +26,14 @@ function Nav() {
     }
   }
 
+  const menuVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
+  };
+
   return (
     <Flex
+      as={motion.div}
       className="nav"
       direction="row"
       width="100%"
@@ -37,6 +45,10 @@ function Nav() {
         medium: '24px 48px',
         large: '24px 128px',
       }}
+      initial="hidden"
+      animate="visible"
+      transition={{ duration: 1 }}
+      variants={menuVariants}
     >
       <Image
         alt="Habitat App Logo"

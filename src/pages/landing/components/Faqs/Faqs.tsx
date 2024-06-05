@@ -73,7 +73,7 @@ function Faqs() {
                     whileInView="visible"
                     exit="hidden"
                     variants={itemVariants}
-                    transition={{ duration: 1 }}
+                    transition={{ duration: 0.5 }}
                   >
                     {faq.answer}
                   </motion.p>
