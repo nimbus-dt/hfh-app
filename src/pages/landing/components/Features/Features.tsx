@@ -34,18 +34,27 @@ const cardCenterVariants = {
 };
 
 const imageLeftVariants = {
-  hidden: { opacity: 0, x: 100 },
-  visible: { opacity: 1, x: 0 },
+  hidden: { opacity: 0, x: 100, rotate: 0 },
+  visible: { opacity: 1, x: 0, rotate: 0 },
+  hover: {
+    rotate: [0, 3, -3, 3, -3, 0],
+  },
 };
 
 const imageRightVariants = {
-  hidden: { opacity: 0, x: -100 },
-  visible: { opacity: 1, x: 0 },
+  hidden: { opacity: 0, x: -100, rotate: 0 },
+  visible: { opacity: 1, x: 0, rotate: 0 },
+  hover: {
+    rotate: [0, 3, -3, 3, -3, 0],
+  },
 };
 
 const imageCenterVariants = {
-  hidden: { opacity: 0, scale: 1.2 },
-  visible: { opacity: 1, scale: 1 },
+  hidden: { opacity: 0, scale: 1.2, rotate: 0 },
+  visible: { opacity: 1, scale: 1, rotate: 0 },
+  hover: {
+    rotate: [0, 3, -3, 3, -3, 0],
+  },
 };
 
 function Features() {
@@ -183,6 +192,7 @@ function Features() {
               as={motion.img}
               initial="hidden"
               whileInView="visible"
+              whileHover="hover"
               variants={imageLeftVariants}
               transition={{ duration: 1.5 }}
               alt="application"
@@ -197,6 +207,7 @@ function Features() {
               as={motion.img}
               initial="hidden"
               whileInView="visible"
+              whileHover="hover"
               variants={imageCenterVariants}
               transition={{ duration: 1.5 }}
               alt="calculations"
@@ -211,6 +222,7 @@ function Features() {
               as={motion.img}
               initial="hidden"
               whileInView="visible"
+              whileHover="hover"
               variants={imageRightVariants}
               transition={{ duration: 1.5 }}
               alt="analytics"

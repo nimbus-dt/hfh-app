@@ -10,9 +10,12 @@ const upDownVarians = {
   visible: { opacity: 1, y: 0 },
 };
 
-const growthVariants = {
-  hidden: { opacity: 0, scale: 0.8 },
-  visible: { opacity: 1, scale: 1 },
+const imageVariants = {
+  hidden: { opacity: 0, scale: 0.8, rotate: 0 },
+  visible: { opacity: 1, scale: 1, rotate: 0 },
+  hover: {
+    rotate: [0, 3, -3, 3, -3, 0],
+  },
 };
 
 function Hero() {
@@ -93,7 +96,8 @@ function Hero() {
           as={motion.img}
           initial="hidden"
           whileInView="visible"
-          variants={growthVariants}
+          whileHover="hover"
+          variants={imageVariants}
           transition={{ duration: 1 }}
           alt="home screen"
           width="100%"

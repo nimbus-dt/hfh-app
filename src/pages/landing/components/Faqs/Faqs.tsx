@@ -63,7 +63,7 @@ function Faqs() {
               whileInView="visible"
               exit="hidden"
               variants={expanderVariants}
-              transition={{ duration: 1, delay: random(0.3, 1) }}
+              transition={{ duration: 1, delay: random(0.1, 0.5) }}
             >
               <ExpanderItem value={faq.key} title={faq.question}>
                 <AnimatePresence>
