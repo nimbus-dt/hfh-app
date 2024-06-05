@@ -21,6 +21,7 @@ function FeatureCard({
     <Flex
       direction="column"
       width="100%"
+      height="100%"
       alignContent="center"
       justifyContent="center"
       alignItems="center"
