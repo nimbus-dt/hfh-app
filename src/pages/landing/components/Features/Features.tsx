@@ -4,13 +4,29 @@ import {
   MdOutlineCalculate,
   MdOutlineFeed,
 } from 'react-icons/md';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { motion, useAnimate, useAnimation, useInView } from 'framer-motion';
 import featureAnalytics from 'assets/images/feature-analytics.svg';
 import featureCalculations from 'assets/images/feature-calculations.svg';
 import featureApplications from 'assets/images/feature-online.svg';
 
 import FeatureCard from './components/FeatureCard';
 import Background from '../Background';
+
+const textVariants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: { opacity: 1, scale: 1 },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: { opacity: 1, scale: 1 },
+};
+
+const imageVariants = {
+  hidden: { opacity: 0, scale: 0.6 },
+  visible: { opacity: 1, scale: 1 },
+};
 
 function Features() {
   const [selectedCard, setSelectedCard] = useState(1);
@@ -31,7 +47,15 @@ function Features() {
         alignContent="center"
         backgroundColor="var(--amplify-colors-neutral-0)"
       >
-        <Flex direction="column" gap="24px">
+        <Flex
+          direction="column"
+          gap="24px"
+          as={motion.div}
+          initial="hidden"
+          whileInView="visible"
+          variants={textVariants}
+          transition={{ duration: 1 }}
+        >
           <Text
             fontWeight="medium"
             fontSize={{ base: '36px', medium: '48px', large: '54px' }}
@@ -68,6 +92,11 @@ function Features() {
           gap="32px"
           width="100%"
           height="fit-content"
+          as={motion.div}
+          initial="hidden"
+          whileInView="visible"
+          variants={cardVariants}
+          transition={{ duration: 1, staggerChildren: 0.2 }}
         >
           <FeatureCard
             title="Online Applications"
@@ -115,6 +144,11 @@ function Features() {
         <Flex justifyContent="center">
           {selectedCard === 1 && (
             <Image
+              as={motion.img}
+              initial="hidden"
+              whileInView="visible"
+              variants={imageVariants}
+              transition={{ duration: 1.5 }}
               alt="application"
               src={featureApplications}
               width="100%"
@@ -124,6 +158,11 @@ function Features() {
           )}
           {selectedCard === 2 && (
             <Image
+              as={motion.img}
+              initial="hidden"
+              whileInView="visible"
+              variants={imageVariants}
+              transition={{ duration: 1.5 }}
               alt="calculations"
               width={{ base: '100%', large: '33%' }}
               maxWidth="405px"
@@ -133,6 +172,11 @@ function Features() {
           )}
           {selectedCard === 3 && (
             <Image
+              as={motion.img}
+              initial="hidden"
+              whileInView="visible"
+              variants={imageVariants}
+              transition={{ duration: 1.5 }}
               alt="analytics"
               src={featureAnalytics}
               width="100%"

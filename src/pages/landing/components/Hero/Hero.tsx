@@ -1,5 +1,4 @@
-import { useEffect, useRef } from 'react';
-import { motion, useAnimation, useInView } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Flex, Image, Text } from '@aws-amplify/ui-react';
 import CustomButton from 'components/CustomButton/CustomButton';
 import heroScreen from 'assets/images/hero-screen.svg';
@@ -17,16 +16,6 @@ const growthVariants = {
 };
 
 function Hero() {
-  const controls = useAnimation();
-  const ref = useRef(null);
-  const isInView = useInView(ref);
-
-  useEffect(() => {
-    if (isInView) {
-      controls.start('visible');
-    }
-  }, [controls, isInView]);
-
   return (
     <Background
       id="hero"
@@ -36,10 +25,8 @@ function Hero() {
       padding={{ base: '4.5rem 2rem', medium: '3.5rem 2rem' }}
     >
       <Flex
-        ref={ref}
         as={motion.div}
         initial="hidden"
-        animate={controls}
         transition={{ duration: 0.5, staggerChildren: 0.5 }}
         direction="column"
       >
@@ -53,6 +40,8 @@ function Hero() {
         >
           <Text
             as={motion.p}
+            initial="hidden"
+            whileInView="visible"
             variants={upDownVarians}
             fontWeight="medium"
             fontSize={{ base: '36px', medium: '48px', large: '54px' }}
@@ -65,6 +54,8 @@ function Hero() {
           </Text>
           <Text
             as={motion.p}
+            initial="hidden"
+            whileInView="visible"
             variants={upDownVarians}
             fontWeight="light"
             fontSize={{ base: '24px', medium: '24px', large: '24px' }}
@@ -76,7 +67,11 @@ function Hero() {
             Habitat App is the only platform designed specifically for your
             affiliate's Homeownership and Critical Home Repair programs.
           </Text>
-          <motion.div variants={upDownVarians}>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            variants={upDownVarians}
+          >
             <CustomButton
               style={{
                 width: 'fit-content',
@@ -97,7 +92,7 @@ function Hero() {
         <Image
           as={motion.img}
           initial="hidden"
-          animate="visible"
+          whileInView="visible"
           variants={growthVariants}
           transition={{ duration: 1 }}
           alt="home screen"
