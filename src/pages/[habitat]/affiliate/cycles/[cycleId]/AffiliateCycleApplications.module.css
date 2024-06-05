@@ -3,6 +3,19 @@
   position: relative;
 }
 
+.firstRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.incompleteApplications {
+  padding: 0.6rem 1rem;
+  background-color: var(--amplify-colors-primary-30);
+  border-radius: 0.5rem;
+  color: #092c76;
+}
+
 .titleContainer {
   display: flex;
   align-items: center;
