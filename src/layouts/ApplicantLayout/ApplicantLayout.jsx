@@ -176,7 +176,8 @@ const HabitatLayout = () => {
   if (AUTHENTICATION_STATUS.AUTHENTICATED !== authStatus) {
     return (
       <Authentication
-        authenticationHeader={habitat?.authenticationHeader}
+        type="applicant"
+        habitat={habitat}
         gallery={habitat?.props?.gallery}
       />
     );

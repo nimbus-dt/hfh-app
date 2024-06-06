@@ -157,12 +157,7 @@ const NewAffiliateLayout = () => {
   }
 
   if (AUTHENTICATION_STATUS.AUTHENTICATED !== authStatus) {
-    return (
-      <Authentication
-        authenticationHeader={habitat?.authenticationHeader}
-        affiliate
-      />
-    );
+    return <Authentication type="affiliate" habitat={habitat} />;
   }
 
   if (!userData) {

@@ -1,24 +1,25 @@
+import { Habitat } from 'models';
 import Auth from './Auth';
 import Gallery from './Gallery';
 import GalleryProps from './Gallery/types';
 import styles from './styles.module.css';
 
 interface AuthenticationProps {
-  authenticationHeader: string;
+  habitat: Habitat;
   gallery: GalleryProps['data'];
-  affiliate?: boolean;
+  type: 'applicant' | 'affiliate';
 }
 
-const Authentication = ({
-  authenticationHeader,
-  gallery,
-  affiliate,
-}: AuthenticationProps) => (
+const Authentication = ({ habitat, gallery, type }: AuthenticationProps) => (
   <div className={styles.container}>
     <div className={styles.authentification}>
-      <Auth header={authenticationHeader} />
+      <Auth
+        type={type}
+        habitat={habitat}
+        header={habitat?.authenticationHeader || ''}
+      />
     </div>
-    {!affiliate && gallery && <Gallery data={gallery} />}
+    {!(type === 'affiliate') && gallery && <Gallery data={gallery} />}
   </div>
 );
 
