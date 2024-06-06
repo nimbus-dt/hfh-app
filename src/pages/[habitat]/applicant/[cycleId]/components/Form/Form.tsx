@@ -39,10 +39,14 @@ const Layout = ({
   formReady,
   habitat,
   children,
+  application,
+  cycle,
 }: {
   formReady?: typeof Wizard;
   habitat?: Habitat;
   children: ReactNode;
+  application?: TestApplication;
+  cycle?: TestCycle;
 }) => {
   const posthog = usePostHog();
 
@@ -132,6 +136,9 @@ const Layout = ({
                           }_to_page_${currentPage}`,
                           {
                             data: formReady.data[`page${currentPage + 1}`],
+                            habitat,
+                            cycle,
+                            application,
                           }
                         );
                       })
@@ -148,6 +155,9 @@ const Layout = ({
                               }_to_page_${currentPage}`,
                               {
                                 data: formReady.data[`page${currentPage + 1}`],
+                                habitat,
+                                cycle,
+                                application,
                                 error,
                               }
                             );
@@ -158,6 +168,9 @@ const Layout = ({
                               }_to_page_${currentPage}`,
                               {
                                 data: formReady.data[`page${currentPage + 1}`],
+                                habitat,
+                                cycle,
+                                application,
                                 error: error.reduce(
                                   (acc, { message, formattedKeyOrPath }) => {
                                     acc[formattedKeyOrPath] = message;
@@ -185,6 +198,9 @@ const Layout = ({
                       `form_submit_from_page_${currentPage + 1}`,
                       {
                         data: formReady.data[`page${currentPage + 1}`],
+                        habitat,
+                        cycle,
+                        application,
                       }
                     );
                   })
@@ -196,6 +212,9 @@ const Layout = ({
                         `form_submit_error_from_page_${currentPage + 1}`,
                         {
                           data: formReady.data[`page${currentPage + 1}`],
+                          habitat,
+                          cycle,
+                          application,
                           error: error.reduce(
                             (acc, { message, formattedKeyOrPath }) => {
                               acc[formattedKeyOrPath] = message;
@@ -219,6 +238,9 @@ const Layout = ({
                     }`,
                     {
                       data: formReady.data[`page${currentPage + 1}`],
+                      habitat,
+                      cycle,
+                      application,
                     }
                   );
                 })
@@ -232,6 +254,9 @@ const Layout = ({
                       }`,
                       {
                         data: formReady.data[`page${currentPage + 1}`],
+                        habitat,
+                        cycle,
+                        application,
                         error: error.reduce(
                           (acc, { message, formattedKeyOrPath }) => {
                             acc[formattedKeyOrPath] = message;
@@ -454,7 +479,12 @@ const Form = ({
               </Flex>
             </div>
           ) : (
-            <Layout formReady={formReady} habitat={habitat}>
+            <Layout
+              formReady={formReady}
+              habitat={habitat}
+              application={application}
+              cycle={cycle}
+            >
               <div
                 className={`${style.formContainer}`}
                 style={{ padding: '2rem 1rem' }}
