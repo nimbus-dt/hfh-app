@@ -17,6 +17,7 @@ import { Options } from '@formio/react/lib/components/Form';
 import { useFormAnswersQuery, useFormById } from 'hooks/services';
 import Modal from 'components/Modal';
 import dayjs from 'dayjs';
+import { usePostHog } from 'posthog-js/react';
 import { Button, Flex, Text } from '@aws-amplify/ui-react';
 import CustomButton from 'components/CustomButton/CustomButton';
 import { RecursiveModelPredicate } from '@aws-amplify/datastore';
@@ -43,6 +44,8 @@ const Layout = ({
   habitat?: Habitat;
   children: ReactNode;
 }) => {
+  const posthog = usePostHog();
+
   const [currentPage, setCurrentPage] = useState(0);
   const pages = formReady?._data?.page10?.pages;
   const mock = [
@@ -120,9 +123,53 @@ const Layout = ({
                 : () => {
                     headerRef.current?.scrollIntoView();
                     setCurrentPage((prev) => prev - 1);
-                    formReady.prevPage().catch((error: unknown) => {
-                      console.log(error);
-                    });
+                    formReady
+                      .prevPage()
+                      .then(() => {
+                        posthog?.capture(
+                          `form_previous_from_page_${
+                            currentPage + 1
+                          }_to_page_${currentPage}`,
+                          {
+                            data: formReady.data[`page${currentPage + 1}`],
+                          }
+                        );
+                      })
+                      .catch(
+                        (
+                          error:
+                            | string
+                            | { message: string; formattedKeyOrPath: string }[]
+                        ) => {
+                          if (typeof error === 'string') {
+                            posthog?.capture(
+                              `form_previous_from_page_${
+                                currentPage + 1
+                              }_to_page_${currentPage}`,
+                              {
+                                data: formReady.data[`page${currentPage + 1}`],
+                                error,
+                              }
+                            );
+                          } else {
+                            posthog?.capture(
+                              `form_previous_error_from_page_${
+                                currentPage + 1
+                              }_to_page_${currentPage}`,
+                              {
+                                data: formReady.data[`page${currentPage + 1}`],
+                                error: error.reduce(
+                                  (acc, { message, formattedKeyOrPath }) => {
+                                    acc[formattedKeyOrPath] = message;
+                                    return acc;
+                                  },
+                                  {} as { [key: string]: string }
+                                ),
+                              }
+                            );
+                          }
+                        }
+                      );
                   }
             }
             onNext={() => {
@@ -131,16 +178,72 @@ const Layout = ({
                 formReady?.componentComponents &&
                 currentPage === formReady.componentComponents.length - 1
               ) {
-                formReady.submit().catch((error: unknown) => {
-                  console.log(error);
-                });
+                formReady
+                  .submit()
+                  .then(() => {
+                    posthog?.capture(
+                      `form_submit_from_page_${currentPage + 1}`,
+                      {
+                        data: formReady.data[`page${currentPage + 1}`],
+                      }
+                    );
+                  })
+                  .catch(
+                    (
+                      error: { message: string; formattedKeyOrPath: string }[]
+                    ) => {
+                      posthog?.capture(
+                        `form_submit_error_from_page_${currentPage + 1}`,
+                        {
+                          data: formReady.data[`page${currentPage + 1}`],
+                          error: error.reduce(
+                            (acc, { message, formattedKeyOrPath }) => {
+                              acc[formattedKeyOrPath] = message;
+                              return acc;
+                            },
+                            {} as { [key: string]: string }
+                          ),
+                        }
+                      );
+                    }
+                  );
                 return;
               }
               setCurrentPage((prev) => prev + 1);
-              formReady.nextPage().catch((error: unknown) => {
-                console.log(error);
-                setCurrentPage((prev) => prev - 1);
-              });
+              formReady
+                .nextPage()
+                .then(() => {
+                  posthog?.capture(
+                    `form_next_from_page_${currentPage + 1}_to_page_${
+                      currentPage + 2
+                    }`,
+                    {
+                      data: formReady.data[`page${currentPage + 1}`],
+                    }
+                  );
+                })
+                .catch(
+                  (
+                    error: { message: string; formattedKeyOrPath: string }[]
+                  ) => {
+                    posthog?.capture(
+                      `form_next_error_from_page_${currentPage + 1}_to_page_${
+                        currentPage + 2
+                      }`,
+                      {
+                        data: formReady.data[`page${currentPage + 1}`],
+                        error: error.reduce(
+                          (acc, { message, formattedKeyOrPath }) => {
+                            acc[formattedKeyOrPath] = message;
+                            return acc;
+                          },
+                          {} as { [key: string]: string }
+                        ),
+                      }
+                    );
+                    setCurrentPage((prev) => prev - 1);
+                  }
+                );
             }}
             submit={
               formReady?.componentComponents &&
