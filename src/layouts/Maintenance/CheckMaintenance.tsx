@@ -15,10 +15,11 @@ const CheckMaintenance = ({ children }: CheckMaintenanceProps) => {
   useEffect(() => {
     const fetchMaintenance = async () => {
       const response = await DataStore.query(Maintenance);
+      if (response.length < 0) return;
 
-      const { maintenance } = response[0];
+      const shouldNavigate = response[0]?.maintenance;
 
-      if (maintenance) {
+      if (shouldNavigate) {
         navigate('/maintenance');
       }
 
