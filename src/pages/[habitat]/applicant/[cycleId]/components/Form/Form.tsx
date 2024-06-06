@@ -264,6 +264,7 @@ const Form = ({
 }: IProperties) => {
   const [reviewMode, setReviewMode] = useState(false);
   const [formReady, setFormReady] = useState<typeof Wizard>();
+  const posthog = usePostHog();
 
   const [showSubmitModal, setShowSubmitModal] = useState(false);
 
@@ -352,6 +353,12 @@ const Form = ({
         const original = await DataStore.query(TestApplication, application.id);
 
         if (original) {
+          posthog?.capture('application_submitted', {
+            application,
+            cycle,
+            habitat,
+          });
+
           await DataStore.save(
             TestApplication.copyOf(original, (originalApplication) => {
               originalApplication.submissionStatus = SubmissionStatus.COMPLETED;
