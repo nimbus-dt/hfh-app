@@ -28,13 +28,14 @@ function TestimonialCard({ testimonial }: TestimonialCardProps) {
       whileHover="hover"
       variants={testimonialCardVariants}
       justifyContent="center"
+      alignItems="center"
+      textAlign="center"
       style={{
         cursor: 'pointer',
       }}
     >
-      <Flex direction="column" gap="64px">
+      <Flex direction="column" gap="64px" alignItems="center">
         <Text
-          fontStyle="italic"
           fontWeight="light"
           fontSize="20px"
           lineHeight="24px"
