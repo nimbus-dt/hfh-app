@@ -383,6 +383,11 @@ const Form = ({
             cycle,
             habitat,
           });
+          posthog?.capture('application_pending', {
+            application,
+            habitat,
+            cycle,
+          });
 
           await DataStore.save(
             TestApplication.copyOf(original, (originalApplication) => {
