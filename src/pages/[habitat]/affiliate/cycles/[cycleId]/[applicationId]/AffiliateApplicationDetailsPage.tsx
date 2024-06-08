@@ -152,7 +152,7 @@ const AffiliateApplicationDetailsPage = () => {
         uploadDecisionFile
       );
 
-      posthog.capture('application_returned', {
+      posthog?.capture('application_returned', {
         data,
         application,
         habitat,
@@ -230,7 +230,7 @@ const AffiliateApplicationDetailsPage = () => {
         type = 'application_pending';
       }
 
-      posthog.capture(type, {
+      posthog?.capture(type, {
         data,
         application,
         habitat,
