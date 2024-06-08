@@ -14,13 +14,14 @@ type PageProps = {
 
 interface HeaderProps {
   current: number;
-  pages: PageProps;
+  pages?: PageProps;
   habitat?: Habitat;
   cancel?: boolean;
 }
 
 const Header = ({ current, pages, habitat, cancel }: HeaderProps) => {
   if (!habitat) return <Loading />;
+  if (!pages) return null;
   return (
     <div className={styles.background}>
       <div className={styles.banner}>

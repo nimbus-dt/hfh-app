@@ -34,6 +34,16 @@ interface IProperties {
 
 const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const getPage = (formReady: any) => {
+  const pagesCount = formReady?.components;
+  if (!pagesCount) return 0;
+  const lastPageComponents =
+    pagesCount[pagesCount.length - 1]?.components[0]?.components;
+  if (!lastPageComponents) return 0;
+  return lastPageComponents[lastPageComponents.length - 1].component.value;
+};
+
 const Layout = ({
   formReady,
   habitat,
@@ -44,70 +54,14 @@ const Layout = ({
   children: ReactNode;
 }) => {
   const [currentPage, setCurrentPage] = useState(0);
-  const pages = formReady?._data?.page10?.pages;
-  const mock = [
-    {
-      number: 1,
-      step: 1,
-      section: 'General',
-    },
-    {
-      number: 2,
-      step: 1,
-      section: 'General',
-    },
-    {
-      number: 3,
-      step: 1,
-      section: 'General',
-    },
-    {
-      number: 4,
-      step: 1,
-      section: 'General',
-    },
-    {
-      number: 5,
-      step: 1,
-      section: 'General',
-    },
-    {
-      number: 6,
-      step: 1,
-      section: 'General',
-    },
-    {
-      number: 7,
-      step: 1,
-      section: 'General',
-    },
-    {
-      number: 8,
-      step: 2,
-      section: 'Members',
-    },
-    {
-      number: 9,
-      step: 3,
-      section: 'Employment',
-    },
-    {
-      number: 10,
-      step: 4,
-      section: 'Ownership',
-    },
-  ];
+  const pages = getPage(formReady);
   const headerRef = useRef<HTMLDivElement>(null);
   return (
     <div style={{ width: '100%' }}>
       {!formReady && <Loading />}
       {formReady && (
         <div ref={headerRef}>
-          <Header
-            current={currentPage}
-            pages={pages || mock}
-            habitat={habitat}
-          />
+          <Header current={currentPage} pages={pages} habitat={habitat} />
         </div>
       )}
       {children}
