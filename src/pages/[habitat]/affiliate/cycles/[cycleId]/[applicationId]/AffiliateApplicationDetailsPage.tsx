@@ -45,6 +45,7 @@ import { removeFiles } from 'utils/files';
 import { EditorState } from 'lexical';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import Loading from 'components/Loading';
+import { usePostHog } from 'posthog-js/react';
 import style from './AffiliateApplicationDetailsPage.module.css';
 import LocalNavigation from './components/LocalNavigation';
 import ApplicationTab from './components/ApplicationTab';
@@ -58,6 +59,7 @@ import {
 import Buttons from './components/Buttons';
 
 const AffiliateApplicationDetailsPage = () => {
+  const posthog = usePostHog();
   const [activeTab, setActiveTab] = useState(0);
   const [triggerApplication, setTriggerApplication] = useState(false);
   const [triggerNotes, setTriggerNotes] = useState(false);
@@ -150,6 +152,13 @@ const AffiliateApplicationDetailsPage = () => {
         uploadDecisionFile
       );
 
+      posthog.capture('application_returned', {
+        data,
+        application,
+        habitat,
+        cycle,
+      });
+
       await DataStore.save(
         new Decision({
           testapplicationID: applicationId || '',
@@ -208,6 +217,25 @@ const AffiliateApplicationDetailsPage = () => {
           serializedEditorState: JSON.stringify(editorStateWithFilesInS3),
         })
       );
+
+      let type = '';
+
+      if (data.status === ReviewStatus.ACCEPTED) {
+        type = 'application_accepted';
+      } else if (data.status === ReviewStatus.DENIED) {
+        type = 'application_denied';
+      } else if (data.status === ReviewStatus.RETURNED) {
+        type = 'application_returned';
+      } else {
+        type = 'application_pending';
+      }
+
+      posthog.capture(type, {
+        data,
+        application,
+        habitat,
+        cycle,
+      });
 
       await API.post('sendEmailToApplicantAPI', '/notify', {
         body: {

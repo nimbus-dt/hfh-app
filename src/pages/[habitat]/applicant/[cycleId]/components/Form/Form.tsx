@@ -17,6 +17,7 @@ import { Options } from '@formio/react/lib/components/Form';
 import { useFormAnswersQuery, useFormById } from 'hooks/services';
 import Modal from 'components/Modal';
 import dayjs from 'dayjs';
+import { usePostHog } from 'posthog-js/react';
 import { Button, Flex, Text } from '@aws-amplify/ui-react';
 import CustomButton from 'components/CustomButton/CustomButton';
 import { RecursiveModelPredicate } from '@aws-amplify/datastore';
@@ -34,80 +35,40 @@ interface IProperties {
 
 const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const getPage = (formReady: any) => {
+  const pagesCount = formReady?.components;
+  if (!pagesCount) return 0;
+  const lastPageComponents =
+    pagesCount[pagesCount.length - 1]?.components[0]?.components;
+  if (!lastPageComponents) return 0;
+  return lastPageComponents[lastPageComponents.length - 1].component.value;
+};
+
 const Layout = ({
   formReady,
   habitat,
   children,
+  application,
+  cycle,
 }: {
   formReady?: typeof Wizard;
   habitat?: Habitat;
   children: ReactNode;
+  application?: TestApplication;
+  cycle?: TestCycle;
 }) => {
+  const posthog = usePostHog();
+
   const [currentPage, setCurrentPage] = useState(0);
-  const pages = formReady?._data?.page10?.pages;
-  const mock = [
-    {
-      number: 1,
-      step: 1,
-      section: 'General',
-    },
-    {
-      number: 2,
-      step: 1,
-      section: 'General',
-    },
-    {
-      number: 3,
-      step: 1,
-      section: 'General',
-    },
-    {
-      number: 4,
-      step: 1,
-      section: 'General',
-    },
-    {
-      number: 5,
-      step: 1,
-      section: 'General',
-    },
-    {
-      number: 6,
-      step: 1,
-      section: 'General',
-    },
-    {
-      number: 7,
-      step: 1,
-      section: 'General',
-    },
-    {
-      number: 8,
-      step: 2,
-      section: 'Members',
-    },
-    {
-      number: 9,
-      step: 3,
-      section: 'Employment',
-    },
-    {
-      number: 10,
-      step: 4,
-      section: 'Ownership',
-    },
-  ];
+  const pages = getPage(formReady);
   const headerRef = useRef<HTMLDivElement>(null);
   return (
     <div style={{ width: '100%' }}>
       {!formReady && <Loading />}
       {formReady && (
         <div ref={headerRef}>
-          <Header
-            current={currentPage}
-            pages={pages || mock}
-            habitat={habitat}
-          />
+          <Header current={currentPage} pages={pages} habitat={habitat} />
         </div>
       )}
       {children}
@@ -120,9 +81,62 @@ const Layout = ({
                 : () => {
                     headerRef.current?.scrollIntoView();
                     setCurrentPage((prev) => prev - 1);
-                    formReady.prevPage().catch((error: unknown) => {
-                      console.log(error);
-                    });
+                    formReady
+                      .prevPage()
+                      .then(() => {
+                        posthog?.capture(
+                          `form_previous_from_page_${
+                            currentPage + 1
+                          }_to_page_${currentPage}`,
+                          {
+                            data: formReady.data[`page${currentPage + 1}`],
+                            habitat,
+                            cycle,
+                            application,
+                          }
+                        );
+                      })
+                      .catch(
+                        (
+                          error:
+                            | string
+                            | { message: string; formattedKeyOrPath: string }[]
+                        ) => {
+                          if (typeof error === 'string') {
+                            posthog?.capture(
+                              `form_previous_from_page_${
+                                currentPage + 1
+                              }_to_page_${currentPage}`,
+                              {
+                                data: formReady.data[`page${currentPage + 1}`],
+                                habitat,
+                                cycle,
+                                application,
+                                error,
+                              }
+                            );
+                          } else {
+                            posthog?.capture(
+                              `form_previous_error_from_page_${
+                                currentPage + 1
+                              }_to_page_${currentPage}`,
+                              {
+                                data: formReady.data[`page${currentPage + 1}`],
+                                habitat,
+                                cycle,
+                                application,
+                                error: error.reduce(
+                                  (acc, { message, formattedKeyOrPath }) => {
+                                    acc[formattedKeyOrPath] = message;
+                                    return acc;
+                                  },
+                                  {} as { [key: string]: string }
+                                ),
+                              }
+                            );
+                          }
+                        }
+                      );
                   }
             }
             onNext={() => {
@@ -131,16 +145,84 @@ const Layout = ({
                 formReady?.componentComponents &&
                 currentPage === formReady.componentComponents.length - 1
               ) {
-                formReady.submit().catch((error: unknown) => {
-                  console.log(error);
-                });
+                formReady
+                  .submit()
+                  .then(() => {
+                    posthog?.capture(
+                      `form_submit_from_page_${currentPage + 1}`,
+                      {
+                        data: formReady.data[`page${currentPage + 1}`],
+                        habitat,
+                        cycle,
+                        application,
+                      }
+                    );
+                  })
+                  .catch(
+                    (
+                      error: { message: string; formattedKeyOrPath: string }[]
+                    ) => {
+                      posthog?.capture(
+                        `form_submit_error_from_page_${currentPage + 1}`,
+                        {
+                          data: formReady.data[`page${currentPage + 1}`],
+                          habitat,
+                          cycle,
+                          application,
+                          error: error.reduce(
+                            (acc, { message, formattedKeyOrPath }) => {
+                              acc[formattedKeyOrPath] = message;
+                              return acc;
+                            },
+                            {} as { [key: string]: string }
+                          ),
+                        }
+                      );
+                    }
+                  );
                 return;
               }
               setCurrentPage((prev) => prev + 1);
-              formReady.nextPage().catch((error: unknown) => {
-                console.log(error);
-                setCurrentPage((prev) => prev - 1);
-              });
+              formReady
+                .nextPage()
+                .then(() => {
+                  posthog?.capture(
+                    `form_next_from_page_${currentPage + 1}_to_page_${
+                      currentPage + 2
+                    }`,
+                    {
+                      data: formReady.data[`page${currentPage + 1}`],
+                      habitat,
+                      cycle,
+                      application,
+                    }
+                  );
+                })
+                .catch(
+                  (
+                    error: { message: string; formattedKeyOrPath: string }[]
+                  ) => {
+                    posthog?.capture(
+                      `form_next_error_from_page_${currentPage + 1}_to_page_${
+                        currentPage + 2
+                      }`,
+                      {
+                        data: formReady.data[`page${currentPage + 1}`],
+                        habitat,
+                        cycle,
+                        application,
+                        error: error.reduce(
+                          (acc, { message, formattedKeyOrPath }) => {
+                            acc[formattedKeyOrPath] = message;
+                            return acc;
+                          },
+                          {} as { [key: string]: string }
+                        ),
+                      }
+                    );
+                    setCurrentPage((prev) => prev - 1);
+                  }
+                );
             }}
             submit={
               formReady?.componentComponents &&
@@ -161,6 +243,7 @@ const Form = ({
 }: IProperties) => {
   const [reviewMode, setReviewMode] = useState(false);
   const [formReady, setFormReady] = useState<typeof Wizard>();
+  const posthog = usePostHog();
 
   const [showSubmitModal, setShowSubmitModal] = useState(false);
 
@@ -249,6 +332,12 @@ const Form = ({
         const original = await DataStore.query(TestApplication, application.id);
 
         if (original) {
+          posthog?.capture('application_submitted', {
+            application,
+            cycle,
+            habitat,
+          });
+
           await DataStore.save(
             TestApplication.copyOf(original, (originalApplication) => {
               originalApplication.submissionStatus = SubmissionStatus.COMPLETED;
@@ -344,7 +433,12 @@ const Form = ({
               </Flex>
             </div>
           ) : (
-            <Layout formReady={formReady} habitat={habitat}>
+            <Layout
+              formReady={formReady}
+              habitat={habitat}
+              application={application}
+              cycle={cycle}
+            >
               <div
                 className={`${style.formContainer}`}
                 style={{ padding: '2rem 1rem' }}

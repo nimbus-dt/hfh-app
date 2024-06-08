@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/no-danger */
 /* eslint-disable react/no-unstable-nested-components */
 import { Authenticator, Button, useAuthenticator } from '@aws-amplify/ui-react';
