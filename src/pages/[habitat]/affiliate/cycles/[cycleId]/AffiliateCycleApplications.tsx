@@ -563,14 +563,19 @@ const Name = ({ application }: { application: TestApplication }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await application.FormAnswers.toArray();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const result: any = await application.FormAnswers.toArray();
       let response = 'unknown';
       for (let i = 0; i < result.length; i++) {
-        // eslint-disable-next-line no-prototype-builtins
-        if (result[i]?.values?.hasOwnProperty('applicantBasicInformation')) {
+        if (
+          // eslint-disable-next-line no-prototype-builtins
+          result[i]?.values?.hasOwnProperty(
+            'applicantBasicInformationContainer'
+          )
+        ) {
           response =
-            result[i]?.values?.applicantBasicInformation
-              ?.applicantBasicInformationFullName;
+            result[i]?.values?.applicantBasicInformationContainer
+              ?.applicantBasicInformationFirstName;
         }
       }
       setName(response);
