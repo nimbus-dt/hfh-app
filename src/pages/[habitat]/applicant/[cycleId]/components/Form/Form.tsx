@@ -24,6 +24,7 @@ import { RecursiveModelPredicate } from '@aws-amplify/datastore';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import Loading from 'components/Loading';
+import { formatHabitatCycleApplicationData } from 'utils/formatters';
 import style from './Form.module.css';
 
 interface IProperties {
@@ -88,55 +89,27 @@ const Layout = ({
                           `form_previous_from_page_${
                             currentPage + 1
                           }_to_page_${currentPage}`,
-                          {
-                            data: formReady.data[`page${currentPage + 1}`],
+                          formatHabitatCycleApplicationData({
                             habitat,
                             cycle,
                             application,
-                          }
+                          })
                         );
                       })
-                      .catch(
-                        (
-                          error:
-                            | string
-                            | { message: string; formattedKeyOrPath: string }[]
-                        ) => {
-                          if (typeof error === 'string') {
-                            posthog?.capture(
-                              `form_previous_from_page_${
-                                currentPage + 1
-                              }_to_page_${currentPage}`,
-                              {
-                                data: formReady.data[`page${currentPage + 1}`],
-                                habitat,
-                                cycle,
-                                application,
-                                error,
-                              }
-                            );
-                          } else {
-                            posthog?.capture(
-                              `form_previous_error_from_page_${
-                                currentPage + 1
-                              }_to_page_${currentPage}`,
-                              {
-                                data: formReady.data[`page${currentPage + 1}`],
-                                habitat,
-                                cycle,
-                                application,
-                                error: error.reduce(
-                                  (acc, { message, formattedKeyOrPath }) => {
-                                    acc[formattedKeyOrPath] = message;
-                                    return acc;
-                                  },
-                                  {} as { [key: string]: string }
-                                ),
-                              }
-                            );
-                          }
-                        }
-                      );
+                      .catch((error: unknown) => {
+                        console.log(error);
+                        posthog?.capture(
+                          `form_previous_error_from_page_${
+                            currentPage + 1
+                          }_to_page_${currentPage}`,
+                          formatHabitatCycleApplicationData({
+                            habitat,
+                            cycle,
+                            application,
+                            error,
+                          })
+                        );
+                      });
                   }
             }
             onNext={() => {
@@ -150,36 +123,24 @@ const Layout = ({
                   .then(() => {
                     posthog?.capture(
                       `form_submit_from_page_${currentPage + 1}`,
-                      {
-                        data: formReady.data[`page${currentPage + 1}`],
+                      formatHabitatCycleApplicationData({
                         habitat,
                         cycle,
                         application,
-                      }
+                      })
                     );
                   })
-                  .catch(
-                    (
-                      error: { message: string; formattedKeyOrPath: string }[]
-                    ) => {
-                      posthog?.capture(
-                        `form_submit_error_from_page_${currentPage + 1}`,
-                        {
-                          data: formReady.data[`page${currentPage + 1}`],
-                          habitat,
-                          cycle,
-                          application,
-                          error: error.reduce(
-                            (acc, { message, formattedKeyOrPath }) => {
-                              acc[formattedKeyOrPath] = message;
-                              return acc;
-                            },
-                            {} as { [key: string]: string }
-                          ),
-                        }
-                      );
-                    }
-                  );
+                  .catch((error: unknown) => {
+                    posthog?.capture(
+                      `form_submit_error_from_page_${currentPage + 1}`,
+                      formatHabitatCycleApplicationData({
+                        habitat,
+                        cycle,
+                        application,
+                        error,
+                      })
+                    );
+                  });
                 return;
               }
               setCurrentPage((prev) => prev + 1);
@@ -190,39 +151,27 @@ const Layout = ({
                     `form_next_from_page_${currentPage + 1}_to_page_${
                       currentPage + 2
                     }`,
-                    {
-                      data: formReady.data[`page${currentPage + 1}`],
+                    formatHabitatCycleApplicationData({
                       habitat,
                       cycle,
                       application,
-                    }
+                    })
                   );
                 })
-                .catch(
-                  (
-                    error: { message: string; formattedKeyOrPath: string }[]
-                  ) => {
-                    posthog?.capture(
-                      `form_next_error_from_page_${currentPage + 1}_to_page_${
-                        currentPage + 2
-                      }`,
-                      {
-                        data: formReady.data[`page${currentPage + 1}`],
-                        habitat,
-                        cycle,
-                        application,
-                        error: error.reduce(
-                          (acc, { message, formattedKeyOrPath }) => {
-                            acc[formattedKeyOrPath] = message;
-                            return acc;
-                          },
-                          {} as { [key: string]: string }
-                        ),
-                      }
-                    );
-                    setCurrentPage((prev) => prev - 1);
-                  }
-                );
+                .catch((error: unknown) => {
+                  posthog?.capture(
+                    `form_next_error_from_page_${currentPage + 1}_to_page_${
+                      currentPage + 2
+                    }`,
+                    formatHabitatCycleApplicationData({
+                      habitat,
+                      cycle,
+                      application,
+                      error,
+                    })
+                  );
+                  setCurrentPage((prev) => prev - 1);
+                });
             }}
             submit={
               formReady?.componentComponents &&
