@@ -19,6 +19,7 @@ const DecisionsTab = ({ habitat, decisions }: IProperties) => (
           habitat={habitat?.longName || ''}
           status={decision.status as keyof typeof ReviewStatus}
           editorState={decision.serializedEditorState}
+          shouldRenderStatusChip
         />
       ))
     ) : (

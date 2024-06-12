@@ -15,6 +15,7 @@ interface IProperties {
   status: keyof typeof ReviewStatus;
   editorState: string;
   applicationRoute?: string;
+  shouldRenderStatusChip?: boolean;
 }
 
 const DecisionCard = ({
@@ -23,6 +24,7 @@ const DecisionCard = ({
   status,
   editorState,
   applicationRoute: applicantionRoute,
+  shouldRenderStatusChip,
 }: IProperties) => (
   <ExpandableCard>
     <div className={style.container}>
@@ -38,7 +40,7 @@ const DecisionCard = ({
         <View className={`theme-subtitle-s1 ${style.habitat}`}>
           <Text>{habitat}</Text>
         </View>
-        <StatusChip status={status} />
+        {shouldRenderStatusChip && <StatusChip status={status} />}
         <LexicalEditor serializedEditorState={editorState} />
         {applicantionRoute && (
           <Flex justifyContent="right">
