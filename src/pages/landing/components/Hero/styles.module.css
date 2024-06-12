@@ -1,0 +1,42 @@
+.signUp {
+  transition: transform 0.3s ease;
+}
+
+.signUp:hover {
+  transform: translateY(-6px);
+}
+
+.hero {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.hero:hover {
+  transform: translateY(-6px);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+}
+/* 
+alt="home screen"
+width="100%"
+height="auto"
+maxWidth={{
+  base: '300px',
+  small: '422.5px',
+  medium: '662px',
+  large: '880px',
+}}
+src={heroScreen}
+className={styles.hero}
+borderRadius={{ base: '5px', large: '30px' }} */
+.image {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.image:hover {
+  transform: translateY(-6px);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+}

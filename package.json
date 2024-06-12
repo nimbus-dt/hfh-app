@@ -36,6 +36,7 @@
     "dayjs": "^1.11.10",
     "dompurify": "^3.0.9",
     "formiojs": "^4.20.0",
+    "framer-motion": "^11.2.10",
     "html5-device-mockups": "^3.2.1",
     "lexical": "^0.14.5",
     "lodash": "^4.17.21",

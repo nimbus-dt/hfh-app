@@ -1,83 +1,114 @@
+import { motion } from 'framer-motion';
 import { Flex, Image, Text } from '@aws-amplify/ui-react';
 import CustomButton from 'components/CustomButton/CustomButton';
-import heroScreen from 'assets/images/hero-screen.png';
-import './style.css';
+import heroScreen from 'assets/images/hero-screen.svg';
+import styles from './styles.module.css';
+import Background from '../Background';
+
+const upDownVarians = {
+  hidden: { opacity: 0, y: -20 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const imageVariants = {
+  hidden: { opacity: 0, scale: 0.8, rotate: 0 },
+  visible: { opacity: 1, scale: 1, rotate: 0 },
+  hover: {
+    rotate: [0, 3, -3, 3, -3, 0],
+  },
+};
 
 function Hero() {
   return (
-    <Flex
+    <Background
+      id="hero"
       direction="column"
-      width="100%"
-      height="fit-content"
-      padding={{ base: '56px 24px', medium: '56px 48px', xl: '56px 128px' }}
       gap="40px"
-      backgroundColor="var(--amplify-colors-neutral-10)"
-      alignItems="center"
+      bgColor="var(--amplify-colors-neutral-10)"
+      padding={{ base: '4.5rem 2rem', medium: '3.5rem 2rem' }}
     >
       <Flex
+        as={motion.div}
+        initial="hidden"
+        transition={{ duration: 0.5, staggerChildren: 0.5 }}
         direction="column"
-        height="fit-content"
-        width={{ base: '100%', xl: '885px' }}
-        gap="24px"
-        alignItems="center"
-        padding="0px"
       >
-        <Text
-          fontWeight="medium"
-          fontSize={{ base: '36px', medium: '48px', large: '54px' }}
-          color="var(--amplify-colors-neutral-100)"
-          width="100%"
+        <Flex
+          direction="column"
           height="fit-content"
-          textAlign="center"
+          width={{ base: '100%', xl: '885px' }}
+          gap="24px"
+          alignItems="center"
+          padding="0px"
         >
-          Less paperwork. More builds.
-        </Text>
-        <Text
-          fontWeight="light"
-          fontSize={{ base: '24px', medium: '24px', large: '24px' }}
-          color="var(--amplify-colors-neutral-90)"
-          textAlign="center"
+          <Text
+            as={motion.p}
+            initial="hidden"
+            whileInView="visible"
+            variants={upDownVarians}
+            fontWeight="medium"
+            fontSize={{ base: '36px', medium: '48px', large: '54px' }}
+            color="var(--amplify-colors-neutral-100)"
+            width="100%"
+            height="fit-content"
+            textAlign="center"
+          >
+            Less paperwork. More builds.
+          </Text>
+          <Text
+            as={motion.p}
+            initial="hidden"
+            whileInView="visible"
+            variants={upDownVarians}
+            fontWeight="light"
+            fontSize={{ base: '24px', medium: '24px', large: '24px' }}
+            color="var(--amplify-colors-neutral-90)"
+            textAlign="center"
+            width="100%"
+            height="100%"
+          >
+            Habitat App is the only platform designed specifically for your
+            affiliate's Homeownership and Critical Home Repair programs.
+          </Text>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            variants={upDownVarians}
+          >
+            <CustomButton
+              style={{
+                width: 'fit-content',
+                height: 'fit-content',
+                fontSize: '18px',
+                padding: '12px 16px',
+              }}
+              className={styles.signUp}
+              onClick={() => {
+                window.location.href =
+                  'https://share.hsforms.com/1lqoUQWsfRm2AJVquaEMNCwqw1cl';
+              }}
+            >
+              Sign up
+            </CustomButton>
+          </motion.div>
+        </Flex>
+        <Image
+          as={motion.img}
+          initial="hidden"
+          whileInView="visible"
+          whileHover="hover"
+          variants={imageVariants}
+          transition={{ duration: 1 }}
+          alt="home screen"
           width="100%"
-          height="100%"
-        >
-          Habitat App is the only platform designed specifically for your
-          affiliate's Homeownership and Critical Home Repair programs.
-        </Text>
-        <CustomButton
-          style={{
-            width: 'fit-content',
-            height: 'fit-content',
-            fontSize: '18px',
-            padding: '12px 16px',
-          }}
-          className="signUp"
-          onClick={() => {
-            window.location.href =
-              'https://share.hsforms.com/1lqoUQWsfRm2AJVquaEMNCwqw1cl';
-          }}
-        >
-          Sign up
-        </CustomButton>
+          maxWidth="880px"
+          height="auto"
+          src={heroScreen}
+          className={styles.hero}
+          borderRadius={{ base: '5px', large: '30px' }}
+        />
       </Flex>
-      <Image
-        alt="screen"
-        width={{
-          base: '300px',
-          small: '422.5px',
-          medium: '662px',
-          large: '880px',
-        }}
-        height={{
-          base: '223px',
-          small: '314px',
-          medium: '492px',
-          large: '654px',
-        }}
-        src={heroScreen}
-        className="hero"
-        borderRadius={{ base: '5px', large: '30px' }}
-      />
-    </Flex>
+    </Background>
   );
 }
 

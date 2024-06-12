@@ -21,7 +21,7 @@ function FeatureCard({
     <Flex
       direction="column"
       width="100%"
-      height="fit-content"
+      height="100%"
       alignContent="center"
       justifyContent="center"
       alignItems="center"
@@ -41,6 +41,7 @@ function FeatureCard({
           : 'var(--amplify-colors-neutral-60)'
       }
       className="mainContainer"
+      maxWidth="425px"
       onClick={onClick}
     >
       <Flex
@@ -66,18 +67,18 @@ function FeatureCard({
         <Text
           fontWeight="semibold"
           fontSize="24px"
+          lineHeight="29.05px"
           textAlign="center"
-          width="100%"
-          height="fit-content"
+          color="var(--amplify-colors-neutral-100)"
         >
           {title}
         </Text>
         <Text
           fontWeight="light"
           fontSize="20px"
+          lineHeight="24.2px"
           textAlign="center"
-          width="100%"
-          height="fit-content"
+          color="var(--amplify-colors-neutral-100)"
         >
           {description}
         </Text>
