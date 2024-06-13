@@ -13,13 +13,11 @@ import {
   TestApplication,
   Habitat,
   ApplicationTypes,
-  ReviewStatus,
 } from 'models';
 import { useEffect, useState } from 'react';
 import {
   MdOutlineAdd,
   MdOutlineArrowBack,
-  MdOutlineClose,
   MdOutlineFilterList,
   MdOutlineLink,
   MdOutlineOpenInNew,
@@ -36,23 +34,15 @@ import IconButton from 'components/IconButton';
 import BreadCrumbs from 'components/BreadCrumbs/BreadCrumbs';
 import DropdownMenu from 'components/DropdownMenu';
 import { DEFAULT_REVIEW_STATUS } from 'utils/constants';
-import {
-  CheckboxField,
-  TextField,
-  useBreakpointValue,
-} from '@aws-amplify/ui-react';
+import { useBreakpointValue } from '@aws-amplify/ui-react';
 
-import { Controller, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { convertDateYYYYMMDDtoDDMMYYYY, dateOnly } from 'utils/dates';
+import { convertDateYYYYMMDDtoDDMMYYYY } from 'utils/dates';
 import StatusChip from 'components/StatusChip';
 import style from './AffiliateCycleApplications.module.css';
-import {
-  applicationsFilterSchema,
-  TApplicationsFilter,
-} from './AffiliateCycleApplications.schema';
 import NewApplicationModal from './components/NewApplicationModal';
 import StatusModal from './components/StatusModal';
+import { Inputs } from './types';
+import Filters from './components/Filters';
 
 interface IOutletContext {
   habitat?: Habitat;
@@ -77,54 +67,57 @@ const AffiliateCycleApplications = () => {
   const [statusModalOpen, setStatusModalOpen] = useState(false);
   const [newApplicationOpen, setNewApplicationOpen] = useState(false);
   const [trigger, setTrigger] = useState(0);
-  const [startDateSubmitted, setStartDateSubmitted] =
-    useState<TApplicationsFilter['startDateSubmitted']>('MM/DD/YYYY');
-  const [endDateSubmitted, setEndDateSubmitted] =
-    useState<TApplicationsFilter['endDateSubmitted']>('MM/DD/YYYY');
-  const [type, setType] = useState<TApplicationsFilter['type']>();
-  const [reviewStatus, setReviewStatus] =
-    useState<TApplicationsFilter['reviewStatus']>();
 
   const [filterModal, setFilterModal] = useState(false);
-  const { register, control, handleSubmit, reset, watch } = useForm({
-    values: {
-      startDateSubmitted,
-      endDateSubmitted,
-      type,
-      reviewStatus,
-    },
-    resolver: zodResolver(applicationsFilterSchema),
+  const [filters, setFilters] = useState<Inputs>({
+    startDateSubmitted: '',
+    endDateSubmitted: '',
+    type: null,
+    reviewStatus: null,
+    customStatus: '',
   });
-
-  const watchStartDateSubmitted = watch('startDateSubmitted');
-  const watchEndDateSubmitted = watch('endDateSubmitted');
-
   const { data: applications }: { data: TestApplication[] } =
     useTestApplicationsQuery({
       criteria: (c1: RecursiveModelPredicate<LazyTestApplication>) =>
         c1.and((c2) => {
           let criteriaArr = cycleId ? [c2.testcycleID.eq(cycleId)] : [];
 
-          if (reviewStatus) {
-            criteriaArr = [...criteriaArr, c2.reviewStatus.eq(reviewStatus)];
-          }
-
-          if (startDateSubmitted && startDateSubmitted !== 'MM/DD/YYYY') {
+          if (filters.reviewStatus) {
             criteriaArr = [
               ...criteriaArr,
-              c2.submittedDate.ge(startDateSubmitted),
+              c2.reviewStatus.eq(filters.reviewStatus),
             ];
           }
 
-          if (endDateSubmitted && endDateSubmitted !== 'MM/DD/YYYY') {
+          if (
+            filters.startDateSubmitted &&
+            filters.startDateSubmitted !== 'MM/DD/YYYY'
+          ) {
             criteriaArr = [
               ...criteriaArr,
-              c2.submittedDate.le(endDateSubmitted),
+              c2.submittedDate.ge(filters.startDateSubmitted),
             ];
           }
 
-          if (type) {
-            criteriaArr = [...criteriaArr, c2.type.eq(type)];
+          if (
+            filters.endDateSubmitted &&
+            filters.endDateSubmitted !== 'MM/DD/YYYY'
+          ) {
+            criteriaArr = [
+              ...criteriaArr,
+              c2.submittedDate.le(filters.endDateSubmitted),
+            ];
+          }
+
+          if (filters.type) {
+            criteriaArr = [...criteriaArr, c2.type.eq(filters.type)];
+          }
+
+          if (filters.customStatus) {
+            criteriaArr = [
+              ...criteriaArr,
+              c2.customStatus.eq(filters.customStatus),
+            ];
           }
 
           return criteriaArr;
@@ -133,14 +126,7 @@ const AffiliateCycleApplications = () => {
         sort: (s: SortPredicate<LazyTestApplication>) =>
           s.submittedDate(SortDirection.DESCENDING),
       },
-      dependencyArray: [
-        reviewStatus,
-        cycleId,
-        trigger,
-        type,
-        startDateSubmitted,
-        endDateSubmitted,
-      ],
+      dependencyArray: [cycleId, trigger, filters],
     });
 
   let applicationsCompleted: TestApplication[] = [];
@@ -186,27 +172,6 @@ const AffiliateCycleApplications = () => {
 
   const handleAddNewApplicationOnClick = () => setNewApplicationOpen(true);
   const handleOnCloseNewApplicationModal = () => setNewApplicationOpen(false);
-
-  const handleOpenCloseFilters = () => {
-    reset();
-    setFilterModal((prevFilterModal) => !prevFilterModal);
-  };
-
-  const handleFilterOnValid = (data: TApplicationsFilter) => {
-    setStartDateSubmitted(data.startDateSubmitted);
-    setEndDateSubmitted(data.endDateSubmitted);
-    setType(data.type);
-    setReviewStatus(data.reviewStatus);
-    setFilterModal(false);
-  };
-
-  const handleResetFilters = () => {
-    setStartDateSubmitted('MM/DD/YYYY');
-    setEndDateSubmitted('MM/DD/YYYY');
-    setType(null);
-    setReviewStatus(null);
-    reset();
-  };
 
   const handleCopyToClipboard = () => {
     const pathToForm = resolvePath(`../../../applicant/${cycleId}`, pathname);
@@ -257,177 +222,17 @@ const AffiliateCycleApplications = () => {
             >
               <MdOutlineLink />
             </IconButton>
-            <IconButton type="button" onClick={handleOpenCloseFilters}>
+            <IconButton type="button" onClick={() => setFilterModal(true)}>
               <MdOutlineFilterList />
             </IconButton>
           </div>
           {filterModal && (
-            <form
-              onSubmit={handleSubmit(handleFilterOnValid)}
-              className={style.filterModal}
-            >
-              <div className={`${style.filterModalTitleContainer}`}>
-                <span className="theme-subtitle-s2">Filter Options</span>
-                <IconButton
-                  variation="not-outlined"
-                  onClick={handleOpenCloseFilters}
-                >
-                  <MdOutlineClose />
-                </IconButton>
-              </div>
-              <div className={`${style.inputContainer}`}>
-                <div className={`theme-body-small ${style.inputTitle}`}>
-                  <span>Dates</span>
-                </div>
-                <div style={{ position: 'relative' }}>
-                  <span
-                    style={{
-                      position: 'absolute',
-                      bottom: '1rem',
-                      left: '1rem',
-                    }}
-                    className={style.textDate}
-                  >
-                    {watchStartDateSubmitted &&
-                    watchStartDateSubmitted !== 'MM/DD/YYYY'
-                      ? convertDateYYYYMMDDtoDDMMYYYY(watchStartDateSubmitted)
-                      : 'MM/DD/YYYY'}
-                  </span>
-                  <TextField
-                    id="startDate"
-                    label="Start Date Submitted"
-                    type="date"
-                    className={`${style.customDateInput}`}
-                    {...register('startDateSubmitted')}
-                  />
-                </div>
-                <div style={{ position: 'relative' }}>
-                  <span
-                    style={{
-                      position: 'absolute',
-                      bottom: '1rem',
-                      left: '1rem',
-                    }}
-                    className={style.textDate}
-                  >
-                    {watchEndDateSubmitted &&
-                    watchEndDateSubmitted !== 'MM/DD/YYYY'
-                      ? convertDateYYYYMMDDtoDDMMYYYY(watchEndDateSubmitted)
-                      : 'MM/DD/YYYY'}
-                  </span>
-                  <TextField
-                    id="endDate"
-                    label="End Date Submitted"
-                    type="date"
-                    className={`${style.customDateInput}`}
-                    {...register('endDateSubmitted')}
-                  />
-                </div>
-              </div>
-              <div className={`${style.inputContainer}`}>
-                <div className={`theme-body-small ${style.inputTitle}`}>
-                  <span>Type</span>
-                </div>
-                <Controller
-                  control={control}
-                  name="type"
-                  render={({ field: { value, onChange } }) => (
-                    <>
-                      <CheckboxField
-                        name=""
-                        label="Online"
-                        className={`${style.customCheckbox}`}
-                        checked={value === ApplicationTypes.ONLINE}
-                        onChange={(event) =>
-                          onChange(
-                            event.target.checked
-                              ? ApplicationTypes.ONLINE
-                              : null
-                          )
-                        }
-                      />
-                      <CheckboxField
-                        name=""
-                        label="Paper"
-                        className={`${style.customCheckbox}`}
-                        checked={value === ApplicationTypes.PAPER}
-                        onChange={(event) =>
-                          onChange(
-                            event.target.checked ? ApplicationTypes.PAPER : null
-                          )
-                        }
-                      />
-                    </>
-                  )}
-                />
-              </div>
-              <div className={`${style.inputContainer}`}>
-                <div className={`theme-body-small ${style.inputTitle}`}>
-                  <span>Status</span>
-                </div>
-                <Controller
-                  control={control}
-                  name="reviewStatus"
-                  render={({ field: { value, onChange } }) => (
-                    <>
-                      <CheckboxField
-                        name=""
-                        label="Pending"
-                        checked={value === ReviewStatus.PENDING}
-                        onChange={(event) =>
-                          onChange(
-                            event.target.checked ? ReviewStatus.PENDING : null
-                          )
-                        }
-                        className={`${style.customCheckbox}`}
-                      />
-                      <CheckboxField
-                        name=""
-                        label="Accepted"
-                        checked={value === ReviewStatus.ACCEPTED}
-                        onChange={(event) =>
-                          onChange(
-                            event.target.checked ? ReviewStatus.ACCEPTED : null
-                          )
-                        }
-                        className={`${style.customCheckbox}`}
-                      />
-                      <CheckboxField
-                        name=""
-                        label="Denied"
-                        checked={value === ReviewStatus.DENIED}
-                        onChange={(event) =>
-                          onChange(
-                            event.target.checked ? ReviewStatus.DENIED : null
-                          )
-                        }
-                        className={`${style.customCheckbox}`}
-                      />
-                      <CheckboxField
-                        name=""
-                        label="Returned"
-                        checked={value === ReviewStatus.RETURNED}
-                        onChange={(event) =>
-                          onChange(
-                            event.target.checked ? ReviewStatus.RETURNED : null
-                          )
-                        }
-                        className={`${style.customCheckbox}`}
-                      />
-                    </>
-                  )}
-                />
-              </div>
-              <div className={`${style.filterModalButtonsContainer}`}>
-                <CustomButton
-                  variation="text-only"
-                  onClick={handleResetFilters}
-                >
-                  Clear Filters
-                </CustomButton>
-                <CustomButton type="submit">Save</CustomButton>
-              </div>
-            </form>
+            <Filters
+              filters={filters}
+              setFilters={(data) => setFilters(data)}
+              close={() => setFilterModal(false)}
+              customStatuses={habitat?.props?.customStatus || []}
+            />
           )}
           <NewApplicationModal
             open={newApplicationOpen}
