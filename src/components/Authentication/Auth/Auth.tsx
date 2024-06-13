@@ -126,7 +126,7 @@ const AuthComponent = ({ habitat, type, header }: AuthProps) => {
             posthog?.identify(user?.attributes?.email, {
               ...user,
               type,
-              habitat: habitat?.name,
+              habitat
             });
             posthog?.group('habitat', habitat?.name || 'unknown');
             posthog?.group('type', type || 'unknown');
