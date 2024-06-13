@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BreadCrumbs from 'components/BreadCrumbs/BreadCrumbs';
 import IconButton from 'components/IconButton';
 import {
@@ -168,11 +168,12 @@ const AffiliateApplicationDetailsPage = () => {
         type = 'application_pending';
       }
 
-      posthog.capture(type, {
+      posthog?.capture(type, {
         data,
         application,
         habitat,
         cycle,
+        posthogAction: 'application_reviewed',
       });
 
       await API.post('sendEmailToApplicantAPI', '/notify', {
@@ -267,6 +268,16 @@ const AffiliateApplicationDetailsPage = () => {
       setUploadingNote(false);
     }
   };
+
+  useEffect(() => {
+    if (application && cycle && habitat && posthog) {
+      posthog?.capture('application_opened', {
+        application,
+        habitat,
+        cycle,
+      });
+    }
+  }, [application, cycle, habitat, posthog]);
 
   if (!cycle) return <Loading />;
 
