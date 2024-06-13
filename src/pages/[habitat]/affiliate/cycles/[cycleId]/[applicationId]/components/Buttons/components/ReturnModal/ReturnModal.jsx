@@ -5,11 +5,11 @@ import { Controller, useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import { Button, Flex, Loader, Text, View } from '@aws-amplify/ui-react';
 import LexicalEditor from 'components/LexicalEditor';
-import { returnSchema } from '../../../../AffiliateApplicationDetailsPage.schema';
+import { baseSchema } from '../../../../AffiliateApplicationDetailsPage.schema';
 
 const ReturnModal = ({ open, onClose, onValidReturn, loading }) => {
   const { control, handleSubmit: handleSubmitReturn } = useForm({
-    resolver: zodResolver(returnSchema),
+    resolver: zodResolver(baseSchema),
     shouldUnregister: true,
     shouldFocusError: false,
   });
