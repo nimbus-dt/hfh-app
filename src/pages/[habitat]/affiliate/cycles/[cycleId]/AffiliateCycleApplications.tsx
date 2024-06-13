@@ -330,26 +330,34 @@ const AffiliateCycleApplications = () => {
               {
                 id: 'customStatus',
                 value: (
-                  <DropdownMenu
-                    className={`${style.customStatusSelect}`}
-                    variation="small"
-                    value={application.customStatus || ''}
-                    onChange={(event) =>
-                      handleUpdateApplicationStatus(
-                        application.id,
-                        event.currentTarget.value
-                      )
-                    }
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
                   >
-                    {[
-                      DEFAULT_REVIEW_STATUS,
-                      ...(habitat ? habitat.props.customStatus || [] : []),
-                    ].map((selectedStatus) => (
-                      <option key={selectedStatus} value={selectedStatus}>
-                        {selectedStatus}
-                      </option>
-                    ))}
-                  </DropdownMenu>
+                    <DropdownMenu
+                      className={`${style.customStatusSelect}`}
+                      variation="small"
+                      value={application.customStatus || ''}
+                      onChange={(event) =>
+                        handleUpdateApplicationStatus(
+                          application.id,
+                          event.currentTarget.value
+                        )
+                      }
+                    >
+                      {[
+                        DEFAULT_REVIEW_STATUS,
+                        ...(habitat ? habitat.props.customStatus || [] : []),
+                      ].map((selectedStatus) => (
+                        <option key={selectedStatus} value={selectedStatus}>
+                          {selectedStatus}
+                        </option>
+                      ))}
+                    </DropdownMenu>
+                  </div>
                 ),
               },
               {
