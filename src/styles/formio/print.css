@@ -1,0 +1,5 @@
+@media print {
+  .formio-form > div {
+    page-break-after: always !important;
+  }
+}
