@@ -14,7 +14,7 @@ interface IProperties {
 const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
 const ApplicationTab = ({ application, formAnswers, formUrl }: IProperties) => (
-  <div className={style.formContainer}>
+  <div className={style.formContainer} id="application-tab">
     <br />
     {application?.type === ApplicationTypes.ONLINE ? (
       <Form
