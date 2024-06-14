@@ -29,11 +29,11 @@ import {
   Note,
   TestApplication,
   TestCycle,
-  SubmissionStatus,
   ReviewStatus,
   Habitat,
   LazyDecision,
   ApplicationTypes,
+  SubmissionStatus,
 } from 'models';
 import { DataStore, RecursiveModelPredicate } from '@aws-amplify/datastore';
 import { getEditorStateWithFilesInBucket } from 'utils/lexicalEditor';
@@ -52,10 +52,7 @@ import ApplicationTab from './components/ApplicationTab';
 import NotesTab from './components/NotesTab';
 import DecisionsTab from './components/DecisionsTab';
 import CalculationsTab from './components/Calculations';
-import {
-  TDecideSchema,
-  TReturnSchema,
-} from './AffiliateApplicationDetailsPage.schema';
+import { TDecideSchema } from './AffiliateApplicationDetailsPage.schema';
 import Buttons from './components/Buttons';
 
 const AffiliateApplicationDetailsPage = () => {
@@ -64,7 +61,6 @@ const AffiliateApplicationDetailsPage = () => {
   const [triggerApplication, setTriggerApplication] = useState(false);
   const [triggerNotes, setTriggerNotes] = useState(false);
   const [loading, setLoading] = useState(0);
-  const [returnModalOpen, setReturnModalOpen] = useState(false);
   const [decideModalOpen, setDecideModalOpen] = useState(false);
   const [noteModal, setNoteModal] = useState(false);
   const [uploadingNote, setUploadingNote] = useState(false);
@@ -128,64 +124,6 @@ const AffiliateApplicationDetailsPage = () => {
     return result;
   };
 
-  const handleOnValidReturn = async (data: TReturnSchema) => {
-    setLoading((previousLoading) => previousLoading + 1);
-    try {
-      const original = await DataStore.query(
-        TestApplication,
-        applicationId || ''
-      );
-
-      if (!original) {
-        return;
-      }
-
-      const persistedApplication = await DataStore.save(
-        TestApplication.copyOf(original, (originalApplication) => {
-          originalApplication.submissionStatus = SubmissionStatus.INCOMPLETE;
-          originalApplication.reviewStatus = ReviewStatus.RETURNED;
-        })
-      );
-
-      const editorStateWithFilesInS3 = await getEditorStateWithFilesInBucket(
-        data.message,
-        uploadDecisionFile
-      );
-
-      posthog?.capture('application_returned', {
-        data,
-        application,
-        habitat,
-        cycle,
-        posthogAction: 'application_reviewed',
-      });
-
-      await DataStore.save(
-        new Decision({
-          testapplicationID: applicationId || '',
-          status: ReviewStatus.RETURNED,
-          serializedEditorState: JSON.stringify(editorStateWithFilesInS3),
-        })
-      );
-
-      await API.post('sendEmailToApplicantAPI', '/notify', {
-        body: {
-          subject: 'Status update on your Habitat for Humanity application',
-          body: '<p>A decision has been made on your application. Please log in to your application portal to see this.</p>',
-          sub: persistedApplication.ownerID,
-          habitat: habitat?.name,
-        },
-      });
-
-      setReturnModalOpen(false);
-      triggerApplicationRefetch();
-      navigate('..');
-    } catch (error) {
-      console.log('An error ocurred while returning the application', error);
-    }
-    setLoading((previousLoading) => previousLoading - 1);
-  };
-
   const handleDecideOnClick = () => setDecideModalOpen(true);
 
   const handleDecideModalOnClose = () =>
@@ -203,6 +141,9 @@ const AffiliateApplicationDetailsPage = () => {
       const persistedApplication = await DataStore.save(
         TestApplication.copyOf(original, (originalApplication) => {
           originalApplication.reviewStatus = data.status;
+          if (data.status === ReviewStatus.RETURNED) {
+            originalApplication.submissionStatus = SubmissionStatus.INCOMPLETE;
+          }
         })
       );
 
@@ -257,16 +198,11 @@ const AffiliateApplicationDetailsPage = () => {
     setLoading((previousLoading) => previousLoading - 1);
   };
 
-  const handleReturnModalOnClose = () =>
-    loading === 0 && setReturnModalOpen(false);
-
   const handleNoteOpenClose = () => {
     if (!uploadingNote) {
       setNoteModal((prevNoteModal) => !prevNoteModal);
     }
   };
-
-  const handleReturnOnClick = () => setReturnModalOpen(true);
 
   const deleteFilesOfNote = async (note: Note) => {
     const editorState = JSON.parse(note.serializedEditorState);
@@ -370,20 +306,16 @@ const AffiliateApplicationDetailsPage = () => {
             Application Details
           </span>
         </div>
-        <div>
-          <Buttons
-            application={application}
-            returnModalOpen={returnModalOpen}
-            handleReturnModalOnClose={handleReturnModalOnClose}
-            handleOnValidReturn={handleOnValidReturn}
-            decideModalOpen={decideModalOpen}
-            handleDecideModalOnClose={handleDecideModalOnClose}
-            handleOnValidDecide={handleOnValidDecide}
-            handleReturnOnClick={handleReturnOnClick}
-            handleDecideOnClick={handleDecideOnClick}
-            loading={loading}
-          />
-        </div>
+      </div>
+      <div>
+        <Buttons
+          application={application}
+          decideModalOpen={decideModalOpen}
+          handleDecideModalOnClose={handleDecideModalOnClose}
+          handleOnValidDecide={handleOnValidDecide}
+          handleDecideOnClick={handleDecideOnClick}
+          loading={loading}
+        />
       </div>
       <div className={`${style.detailsContainer}`}>
         <LocalNavigation

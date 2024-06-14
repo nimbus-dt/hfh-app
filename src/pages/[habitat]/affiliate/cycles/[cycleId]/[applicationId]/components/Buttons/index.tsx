@@ -5,22 +5,15 @@ import {
   type TestApplication,
 } from 'models';
 import CustomButton from 'components/CustomButton/CustomButton';
-import ReturnModal from './components/ReturnModal';
+import { MdOutlineMail, MdOutlinePrint } from 'react-icons/md';
 import DecideModal from './components/DecideModal';
-import {
-  TDecideSchema,
-  TReturnSchema,
-} from '../../AffiliateApplicationDetailsPage.schema';
+import { TDecideSchema } from '../../AffiliateApplicationDetailsPage.schema';
 
 interface ButtonsProps {
   application?: TestApplication;
-  returnModalOpen: boolean;
-  handleReturnModalOnClose: () => void;
-  handleOnValidReturn: (data: TReturnSchema) => void;
   decideModalOpen: boolean;
   handleDecideModalOnClose: () => void;
   handleOnValidDecide: (data: TDecideSchema) => void;
-  handleReturnOnClick: () => void;
   handleDecideOnClick: () => void;
   loading: number;
 }
@@ -28,13 +21,9 @@ interface ButtonsProps {
 const Buttons = ({
   loading,
   application,
-  returnModalOpen,
-  handleReturnModalOnClose,
-  handleOnValidReturn,
   decideModalOpen,
   handleDecideModalOnClose,
   handleOnValidDecide,
-  handleReturnOnClick,
   handleDecideOnClick,
 }: ButtonsProps) => {
   if (!application) return null;
@@ -44,23 +33,17 @@ const Buttons = ({
 
   return (
     <Flex justifyContent="end">
-      <ReturnModal
-        open={returnModalOpen}
-        onClose={handleReturnModalOnClose}
-        onValidReturn={handleOnValidReturn}
-        loading={loading}
-      />
       <DecideModal
         open={decideModalOpen}
         onClose={handleDecideModalOnClose}
         onValid={handleOnValidDecide}
         loading={loading}
       />
-      <CustomButton variation="secondary" onClick={handleReturnOnClick}>
-        Return
+      <CustomButton variation="primary">
+        <MdOutlinePrint size="24px" />
       </CustomButton>
       <CustomButton variation="primary" onClick={handleDecideOnClick}>
-        Decide
+        <MdOutlineMail size="24px" />
       </CustomButton>
     </Flex>
   );
