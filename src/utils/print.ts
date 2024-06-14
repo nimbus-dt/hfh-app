@@ -1,10 +1,4 @@
 /**
- * Returns a string with all the clases joined by empty space
- * @param {...string} classes
- * @returns {string}
- */
-
-/**
  * Print the provided element, replacing the body content with the element
  * after printing, the original body content is restored
  * @param element
