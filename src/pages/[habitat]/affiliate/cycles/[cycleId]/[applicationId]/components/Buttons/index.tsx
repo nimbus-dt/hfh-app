@@ -6,6 +6,7 @@ import {
 } from 'models';
 import CustomButton from 'components/CustomButton/CustomButton';
 import { MdOutlineMail, MdOutlinePrint } from 'react-icons/md';
+import { printElement } from 'utils/print';
 import DecideModal from './components/DecideModal';
 import { TDecideSchema } from '../../AffiliateApplicationDetailsPage.schema';
 
@@ -31,6 +32,14 @@ const Buttons = ({
   if (!(application?.submissionStatus === SubmissionStatus.COMPLETED))
     return null;
 
+  const handlePrintOnClick = () => {
+    const formioForm = document.querySelector(
+      '#application-tab'
+    ) as HTMLElement;
+
+    printElement(formioForm);
+  };
+
   return (
     <Flex justifyContent="end">
       <DecideModal
@@ -39,7 +48,7 @@ const Buttons = ({
         onValid={handleOnValidDecide}
         loading={loading}
       />
-      <CustomButton variation="primary">
+      <CustomButton variation="primary" onClick={handlePrintOnClick}>
         <MdOutlinePrint size="24px" />
       </CustomButton>
       <CustomButton variation="primary" onClick={handleDecideOnClick}>
