@@ -1,18 +1,27 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Outlet, useParams, useOutlet, useNavigate } from 'react-router-dom';
+import {
+  Outlet,
+  useParams,
+  useOutlet,
+  useNavigate,
+  Navigate,
+} from 'react-router-dom';
 import { DataStore } from 'aws-amplify';
+
 import { Flex, Text, useAuthenticator } from '@aws-amplify/ui-react';
+
 import Authentication from 'components/Authentication';
+import BaseLayout from 'layouts/BaseLayout';
 import { Habitat, User } from 'models';
 import { DEFAULT_REVIEW_STATUS, AUTHENTICATION_STATUS } from 'utils/constants';
-import BaseLayout from 'layouts/BaseLayout';
+
 import SignUpQuestions from './SignUpQuestions';
 import style from './NewAffiliateLayout.module.css';
 
 const NewAffiliateLayout = () => {
   const [habitat, setHabitat] = useState(null);
-  const [isUserAllowed, setIsUserAllowed] = useState(false); // New state to track user access
-  const [isLoading, setIsLoading] = useState(0); // New state to track loading status
+  const [isUserAllowed, setIsUserAllowed] = useState(false);
+  const [isLoading, setIsLoading] = useState(0);
   const { authStatus, user } = useAuthenticator((context) => [
     context.authStatus,
     context.user,
@@ -25,7 +34,7 @@ const NewAffiliateLayout = () => {
 
   useEffect(() => {
     if (!outlet) {
-      navigate(`./forms`);
+      navigate(`./home`);
     }
   }, [outlet, navigate, habitatUrlName]);
 
@@ -100,7 +109,6 @@ const NewAffiliateLayout = () => {
     [habitat]
   );
 
-  // fetch habitat on mount
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading((previousIsLoading) => previousIsLoading + 1);
@@ -166,25 +174,15 @@ const NewAffiliateLayout = () => {
         habitat={habitat}
         user={user}
         setUserData={setUserData}
+        isUserAllowed={isUserAllowed}
       />
     );
   }
 
-  return (
-    <div>
-      {isUserAllowed ? (
-        <BaseLayout variation="affiliate" hideSideBar={!isUserAllowed}>
-          <Outlet
-            context={{
-              habitat,
-              setHabitat,
-              addCustomStatusToHabitat,
-              removeCustomStatusToHabitat,
-              updateCustomStatusToHabitat,
-            }}
-          />
-        </BaseLayout>
-      ) : (
+  if (!isUserAllowed) {
+    localStorage.setItem('goto', 'forms');
+    return (
+      <div>
         <div className={style.notAllowedContainer}>
           <Text>
             Sorry,{' '}
@@ -196,7 +194,28 @@ const NewAffiliateLayout = () => {
             for more information.
           </Text>
         </div>
-      )}
+      </div>
+    );
+  }
+
+  const path = window.location.pathname.split('/').pop();
+  if (localStorage.getItem('goto') === 'forms' && path !== 'forms') {
+    return <Navigate to={`/${habitat.urlName}/affiliate/forms`} />;
+  }
+
+  return (
+    <div>
+      <BaseLayout variation="affiliate" hideSideBar={!isUserAllowed}>
+        <Outlet
+          context={{
+            habitat,
+            setHabitat,
+            addCustomStatusToHabitat,
+            removeCustomStatusToHabitat,
+            updateCustomStatusToHabitat,
+          }}
+        />
+      </BaseLayout>
     </div>
   );
 };
