@@ -65,14 +65,21 @@ const Layout = ({
   const pages = getPage(formReady);
   const headerRef = useRef<HTMLDivElement>(null);
   return (
-    <div style={{ width: '100%' }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        height: 'calc(100vh - 72px)',
+      }}
+    >
       {!formReady && <Loading />}
       {formReady && (
         <div ref={headerRef}>
           <Header current={currentPage} pages={pages} habitat={habitat} />
         </div>
       )}
-      {children}
+      <div style={{ flex: '1 1 auto' }}>{children}</div>
       {formReady && (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <Footer
