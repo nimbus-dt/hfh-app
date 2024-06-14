@@ -104,9 +104,10 @@ const ApplicantDecisionsPage = () => {
           </Text>
         </View>
       </Flex>
-      <Flex className={`${style.decisionsContainer}`}>
-        {data &&
-          data?.decisions.map((decision) => (
+
+      {data?.decisions.length ? (
+        <Flex className={`${style.decisionsContainer}`}>
+          {data?.decisions.map((decision) => (
             <DecisionCard
               key={decision.id}
               date={decision.updatedAt || ''}
@@ -125,7 +126,14 @@ const ApplicantDecisionsPage = () => {
               }
             />
           ))}
-      </Flex>
+        </Flex>
+      ) : (
+        <View className={`theme-body-medium ${style.subtitle}`}>
+          <Text style={{ textAlign: 'center' }} color="inherit">
+            You have no decision records.
+          </Text>
+        </View>
+      )}
     </View>
   );
 };
