@@ -33,6 +33,7 @@ import {
   Habitat,
   LazyDecision,
   ApplicationTypes,
+  SubmissionStatus,
 } from 'models';
 import { DataStore, RecursiveModelPredicate } from '@aws-amplify/datastore';
 import { getEditorStateWithFilesInBucket } from 'utils/lexicalEditor';
@@ -140,6 +141,9 @@ const AffiliateApplicationDetailsPage = () => {
       const persistedApplication = await DataStore.save(
         TestApplication.copyOf(original, (originalApplication) => {
           originalApplication.reviewStatus = data.status;
+          if (data.status === ReviewStatus.RETURNED) {
+            originalApplication.submissionStatus = SubmissionStatus.INCOMPLETE;
+          }
         })
       );
 
