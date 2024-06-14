@@ -31,6 +31,8 @@ const AffiliateFormsPage = () => {
   const [latestForms, setLatestForms] = useState([]);
   const [trigger, setTrigger] = useState(true);
 
+  localStorage.removeItem('goto');
+
   // Get context
   interface OutletContextType {
     habitat: Habitat;

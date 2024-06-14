@@ -19,10 +19,10 @@ interface dataProps {
 
 export interface SignUpQuestionsProps {
   habitat: Habitat;
+  isUserAllowed: boolean;
   user: {
     username: string;
   };
-  setUserData: React.Dispatch<React.SetStateAction<User>>;
 }
 
 export default dataProps;
