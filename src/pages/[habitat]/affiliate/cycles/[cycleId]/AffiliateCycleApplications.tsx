@@ -113,7 +113,15 @@ const AffiliateCycleApplications = () => {
             criteriaArr = [...criteriaArr, c2.type.eq(filters.type)];
           }
 
-          if (filters.customStatus) {
+          if (filters.customStatus === DEFAULT_REVIEW_STATUS) {
+            criteriaArr = [
+              ...criteriaArr,
+              c2.or((c3) => [
+                c3.customStatus.eq(filters.customStatus),
+                c3.customStatus.eq(null),
+              ]),
+            ];
+          } else if (filters.customStatus) {
             criteriaArr = [
               ...criteriaArr,
               c2.customStatus.eq(filters.customStatus),

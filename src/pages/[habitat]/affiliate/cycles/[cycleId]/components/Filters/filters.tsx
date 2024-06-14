@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import IconButton from 'components/IconButton';
 import CustomButton from 'components/CustomButton';
+import { DEFAULT_REVIEW_STATUS } from 'utils/constants';
 import { convertDateYYYYMMDDtoDDMMYYYY } from 'utils/dates';
 
 import style from '../../AffiliateCycleApplications.module.css';
@@ -52,11 +53,18 @@ const Filters = ({
     reset();
   };
 
-  const customStatusCheckboxData = customStatuses.map((customStatus) => ({
-    name: customStatus,
-    label: customStatus,
-    type: customStatus,
-  }));
+  const customStatusCheckboxData = [
+    {
+      name: DEFAULT_REVIEW_STATUS,
+      label: DEFAULT_REVIEW_STATUS,
+      type: DEFAULT_REVIEW_STATUS,
+    },
+    ...customStatuses.map((customStatus) => ({
+      name: customStatus,
+      label: customStatus,
+      type: customStatus,
+    })),
+  ];
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={style.filterModal}>
