@@ -67,8 +67,7 @@
 }
 
 .customStatusSelect {
-  max-width: 200px;
-  margin: -4px;
+  width: 100%;
 }
 
 .filterModal {
@@ -194,7 +193,13 @@
 }
 
 .reviewStatus {
+  padding: 0.2rem 0.4rem;
   cursor: pointer;
+}
+
+.reviewStatus:hover {
+  background-color: var(--amplify-colors-neutral-40);
+  border-radius: 10px;
 }
 
 @media (min-width: 768px) {
