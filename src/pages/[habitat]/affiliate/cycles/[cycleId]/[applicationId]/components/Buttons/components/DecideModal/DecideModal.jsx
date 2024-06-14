@@ -96,13 +96,13 @@ The Habitat for Humanity Team`;
         <br />
         <SelectField
           {...registerDecide('status')}
-          label="Status"
+          label="What is the type of decision you want to make?"
           hasError={errorsDecide?.status}
           errorMessage="Invalid status"
         >
-          <option value={ReviewStatus.ACCEPTED}>Accepted</option>
-          <option value={ReviewStatus.DENIED}>Denied</option>
-          <option value={ReviewStatus.RETURNED}>Returned</option>
+          <option value={ReviewStatus.RETURNED}>Return</option>
+          <option value={ReviewStatus.ACCEPTED}>Accept</option>
+          <option value={ReviewStatus.DENIED}>Deny</option>
         </SelectField>
         <br />
         {status === ReviewStatus.RETURNED && (
