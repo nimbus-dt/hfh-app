@@ -70,6 +70,7 @@ const HabitatLayout = () => {
       try {
         const newApplication = await DataStore.save(
           new TestApplication({
+            lastPage: 0,
             ownerID: username,
             lastSection: location.pathname,
             members: [],

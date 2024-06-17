@@ -409,6 +409,7 @@ type EagerTestApplication = {
   readonly FormAnswers?: (FormAnswer | null)[] | null;
   readonly Decisions?: (Decision | null)[] | null;
   readonly customStatus?: string | null;
+  readonly lastPage?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -431,6 +432,7 @@ type LazyTestApplication = {
   readonly FormAnswers: AsyncCollection<FormAnswer>;
   readonly Decisions: AsyncCollection<Decision>;
   readonly customStatus?: string | null;
+  readonly lastPage?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
