@@ -34,6 +34,8 @@ import {
   LazyDecision,
   ApplicationTypes,
   SubmissionStatus,
+  RootForm,
+  User,
 } from 'models';
 import { DataStore, RecursiveModelPredicate } from '@aws-amplify/datastore';
 import { getEditorStateWithFilesInBucket } from 'utils/lexicalEditor';
@@ -331,8 +333,17 @@ const AffiliateApplicationDetailsPage = () => {
       }
     }
 
+    const rootForm = await DataStore.query(RootForm, cycle?.rootformID);
+
+    const userData = await DataStore.query(User, (c) =>
+      c.owner.eq(application?.ownerID || '')
+    );
+
     zip.generateAsync({ type: 'blob' }).then((content) => {
-      saveAs(content, `${applicationId}.zip`);
+      saveAs(
+        content,
+        `${rootForm?.name}-${cycle?.name}-${userData[0].firstName} ${userData[0].lastName}.zip`
+      );
     });
 
     setDownloadingFiles((prevDownloadingFiles) => prevDownloadingFiles - 1);
