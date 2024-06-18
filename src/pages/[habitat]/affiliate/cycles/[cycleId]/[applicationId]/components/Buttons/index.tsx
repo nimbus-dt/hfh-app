@@ -1,11 +1,15 @@
-import { Flex } from '@aws-amplify/ui-react';
+import { Flex, Loader } from '@aws-amplify/ui-react';
 import {
   ApplicationTypes,
   SubmissionStatus,
   type TestApplication,
 } from 'models';
 import CustomButton from 'components/CustomButton/CustomButton';
-import { MdOutlineMail, MdOutlinePrint } from 'react-icons/md';
+import {
+  MdOutlineDownload,
+  MdOutlineMail,
+  MdOutlinePrint,
+} from 'react-icons/md';
 import { printElement } from 'utils/print';
 import DecideModal from './components/DecideModal';
 import { TDecideSchema } from '../../AffiliateApplicationDetailsPage.schema';
@@ -16,7 +20,9 @@ interface ButtonsProps {
   handleDecideModalOnClose: () => void;
   handleOnValidDecide: (data: TDecideSchema) => void;
   handleDecideOnClick: () => void;
+  handleDownloadFilesOnClick: () => void;
   loading: number;
+  downloading: boolean;
 }
 
 const Buttons = ({
@@ -26,6 +32,8 @@ const Buttons = ({
   handleDecideModalOnClose,
   handleOnValidDecide,
   handleDecideOnClick,
+  handleDownloadFilesOnClick,
+  downloading,
 }: ButtonsProps) => {
   if (!application) return null;
   if (application?.type === ApplicationTypes.PAPER) return null;
@@ -48,10 +56,26 @@ const Buttons = ({
         onValid={handleOnValidDecide}
         loading={loading}
       />
-      <CustomButton variation="primary" onClick={handlePrintOnClick}>
+      <CustomButton
+        variation="primary"
+        title="Download all files of application"
+        onClick={handleDownloadFilesOnClick}
+        disabled={downloading}
+      >
+        {downloading ? <Loader /> : <MdOutlineDownload size="24px" />}
+      </CustomButton>
+      <CustomButton
+        variation="primary"
+        onClick={handlePrintOnClick}
+        title="Print application"
+      >
         <MdOutlinePrint size="24px" />
       </CustomButton>
-      <CustomButton variation="primary" onClick={handleDecideOnClick}>
+      <CustomButton
+        variation="primary"
+        onClick={handleDecideOnClick}
+        title="Make a decision"
+      >
         <MdOutlineMail size="24px" />
       </CustomButton>
     </Flex>

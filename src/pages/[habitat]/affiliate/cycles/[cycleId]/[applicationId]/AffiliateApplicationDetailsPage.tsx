@@ -46,6 +46,10 @@ import { EditorState } from 'lexical';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import Loading from 'components/Loading';
 import { usePostHog } from 'posthog-js/react';
+import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import JSZIP from 'jszip';
+import { saveAs } from 'file-saver';
+import { flattenObject, getValueFromPath } from 'utils/objects';
 import style from './AffiliateApplicationDetailsPage.module.css';
 import LocalNavigation from './components/LocalNavigation';
 import ApplicationTab from './components/ApplicationTab';
@@ -54,6 +58,14 @@ import DecisionsTab from './components/DecisionsTab';
 import CalculationsTab from './components/Calculations';
 import { TDecideSchema } from './AffiliateApplicationDetailsPage.schema';
 import Buttons from './components/Buttons';
+
+const s3client = new S3Client({
+  region: 'us-east-1',
+  credentials: {
+    accessKeyId: process.env.REACT_APP_PUBLIC_S3_IDKEY || '',
+    secretAccessKey: process.env.REACT_APP_PUBLIC_S3_SECRETKEY || '',
+  },
+});
 
 const AffiliateApplicationDetailsPage = () => {
   const posthog = usePostHog();
@@ -65,6 +77,7 @@ const AffiliateApplicationDetailsPage = () => {
   const [noteModal, setNoteModal] = useState(false);
   const [uploadingNote, setUploadingNote] = useState(false);
   const [deletingNote, setDeletingNote] = useState(false);
+  const [downloadingFiles, setDownloadingFiles] = useState(0);
 
   const navigate = useNavigate();
 
@@ -273,6 +286,58 @@ const AffiliateApplicationDetailsPage = () => {
     }
   };
 
+  const handleDownloadFiles = async () => {
+    setDownloadingFiles((prevDownloadingFiles) => prevDownloadingFiles + 1);
+    const zip = new JSZIP();
+
+    for (const formAnswer of formAnswers) {
+      const { page, values } = formAnswer;
+      const stringValues = JSON.stringify(values);
+      const objectValues = JSON.parse(stringValues);
+      const flatValues = flattenObject(values);
+      const fileValuesPath = flatValues.filter((flatValue) =>
+        flatValue.path.endsWith('.originalName')
+      );
+      if (fileValuesPath.length > 0 && values) {
+        for (const fileValuePath of fileValuesPath) {
+          const path = fileValuePath.path.replace('.originalName', '');
+
+          const fileValue = getValueFromPath(objectValues, path);
+
+          const { originalName, key, bucket } = fileValue as {
+            originalName: string;
+            key: string;
+            bucket: string;
+          };
+
+          const command = new GetObjectCommand({
+            Bucket: bucket,
+            Key: key,
+          });
+
+          const response = await s3client.send(command);
+
+          const byteArr = await response.Body?.transformToByteArray();
+
+          if (!byteArr) {
+            return;
+          }
+
+          zip.file(
+            `${page}/${path.replaceAll('.', '/')}/${originalName}`,
+            byteArr
+          );
+        }
+      }
+    }
+
+    zip.generateAsync({ type: 'blob' }).then((content) => {
+      saveAs(content, `${applicationId}.zip`);
+    });
+
+    setDownloadingFiles((prevDownloadingFiles) => prevDownloadingFiles - 1);
+  };
+
   useEffect(() => {
     if (application && cycle && habitat && posthog) {
       posthog?.capture('application_opened', {
@@ -314,7 +379,9 @@ const AffiliateApplicationDetailsPage = () => {
           handleDecideModalOnClose={handleDecideModalOnClose}
           handleOnValidDecide={handleOnValidDecide}
           handleDecideOnClick={handleDecideOnClick}
+          handleDownloadFilesOnClick={handleDownloadFiles}
           loading={loading}
+          downloading={downloadingFiles > 0}
         />
       </div>
       <div className={`${style.detailsContainer}`}>
