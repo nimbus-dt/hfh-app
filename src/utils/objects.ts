@@ -36,3 +36,20 @@ export const flattenObject = (object: unknown): TPaths => {
   }
   return paths;
 };
+
+/**
+ * Gets the value of an object at a given path
+ * @param object The object to get the value from
+ * @param path The path to get the value from
+ * @returns The value of the object at the given path
+ */
+export const getValueFromPath = (object: object, path: string) => {
+  const pathArray = path.split('.');
+  let value: unknown = object;
+  for (const key of pathArray) {
+    if (typeof value === 'object' && value && key in value) {
+      value = (value as { [key: string]: unknown })[key];
+    }
+  }
+  return value;
+};
