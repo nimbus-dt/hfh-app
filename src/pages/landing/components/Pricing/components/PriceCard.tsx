@@ -69,7 +69,14 @@ const PriceCard = ({
         </Flex>
       ))}
     </Flex>
-    <Button variation="primary" isFullWidth>
+    <Button
+      variation="primary"
+      isFullWidth
+      onClick={() => {
+        window.location.href =
+          'https://share.hsforms.com/1lqoUQWsfRm2AJVquaEMNCwqw1cl';
+      }}
+    >
       {button}
     </Button>
   </Flex>
