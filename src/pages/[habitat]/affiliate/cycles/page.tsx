@@ -2,20 +2,21 @@ import { useCallback, useState } from 'react';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { DataStore, SortDirection } from 'aws-amplify';
 import { Button } from '@aws-amplify/ui-react';
-import { MdArrowBack, MdOutlineOpenInNew, MdFilterList } from 'react-icons/md';
+import { MdOutlineOpenInNew, MdFilterList } from 'react-icons/md';
 import { throttle } from 'lodash';
 
 import BreadCrumbs from 'components/BreadCrumbs/BreadCrumbs';
 import Chip from 'components/Chip';
 import Loading from 'components/Loading';
 import Error from 'components/Error';
+import GoBack from 'components/GoBack';
 import TableWithPaginator from 'components/TableWithPaginator';
+import { useRootFormById } from 'hooks/services';
 import useAsync from 'hooks/utils/useAsync/useAsync';
 import { Habitat, RootForm, TestCycle } from 'models';
+import { convertDateYYYYMMDDtoDDMMYYYY } from 'utils/dates';
 import { Status } from 'utils/enums';
 
-import { convertDateYYYYMMDDtoDDMMYYYY, dateOnly } from 'utils/dates';
-import { useRootFormById } from 'hooks/services';
 import Filters from './components/filters';
 import NewCycle from './components/newCycle';
 import styles from './styles.module.css';
@@ -111,10 +112,6 @@ const CyclesPage = () => {
     asyncFunction: getCycles,
   });
 
-  const onGoBack = () => {
-    navigate('../forms');
-  };
-
   const onClickView = (id: string) => {
     navigate(`./${id}`);
   };
@@ -140,24 +137,19 @@ const CyclesPage = () => {
 
   const { formName } = value;
 
+  const breadCrumbsItems = [
+    { label: `${formName}`, to: '../forms' },
+    {
+      label: 'Cycles',
+    },
+  ];
+
   return (
     <div className={styles.page}>
       <div className={styles.cta}>
-        <BreadCrumbs
-          items={[
-            { label: `${formName}`, to: '../forms' },
-            {
-              label: 'Cycles',
-            },
-          ]}
-        />
+        <BreadCrumbs items={breadCrumbsItems} />
         <div className={styles.title}>
-          <MdArrowBack
-            className={styles.hide_on_small}
-            style={{ cursor: 'pointer' }}
-            size="24px"
-            onClick={onGoBack}
-          />
+          <GoBack to="../forms" />
           <p className="theme-headline-medium">Cycles Dashboard</p>
         </div>
       </div>
