@@ -8,7 +8,7 @@ import { PostHogProvider } from 'posthog-js/react';
 import theme from 'styles/theme';
 
 import 'styles';
-import 'components';
+import 'components/Formio';
 
 import App from './App';
 import awsExports from './aws-exports';

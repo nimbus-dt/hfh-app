@@ -81,6 +81,7 @@ const ApplicantCyclePage = () => {
           const newApplication = await DataStore.save(
             new TestApplication({
               ownerID: username,
+              lastPage: 0,
               lastSection: location.pathname,
               members: [],
               submissionStatus: SubmissionStatus.INCOMPLETE,

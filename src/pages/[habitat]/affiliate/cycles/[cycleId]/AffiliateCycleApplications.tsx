@@ -17,7 +17,6 @@ import {
 import { useState } from 'react';
 import {
   MdOutlineAdd,
-  MdOutlineArrowBack,
   MdOutlineFilterList,
   MdOutlineLink,
   MdOutlineOpenInNew,
@@ -32,6 +31,7 @@ import { stringToHumanReadable } from 'utils/strings';
 import IconButton from 'components/IconButton';
 import BreadCrumbs from 'components/BreadCrumbs/BreadCrumbs';
 import DropdownMenu from 'components/DropdownMenu';
+import GoBack from 'components/GoBack';
 import { DEFAULT_REVIEW_STATUS } from 'utils/constants';
 import { useBreakpointValue } from '@aws-amplify/ui-react';
 
@@ -182,28 +182,22 @@ const AffiliateCycleApplications = () => {
   const handleAddNewApplicationOnClick = () => setNewApplicationOpen(true);
   const handleOnCloseNewApplicationModal = () => setNewApplicationOpen(false);
 
+  const breadCrumbsItems = [
+    { label: 'Homeownership Form', to: '../../forms' },
+    { label: 'Cycles', to: '..' },
+    { label: 'Applications' },
+  ];
+
   return (
     <div className={style.container}>
       <div className={style.firstRow}>
-        {!isSmall && (
-          <BreadCrumbs
-            items={[
-              { label: 'Homeownership Form', to: '../../forms' },
-              { label: 'Cycles', to: '../' },
-              { label: 'Applications' },
-            ]}
-          />
-        )}
+        {!isSmall && <BreadCrumbs items={breadCrumbsItems} />}
         <p className={`theme-body-medium ${style.incompleteApplications}`}>
           Incomplete Applications: {applicationsPending.length}
         </p>
       </div>
       <div className={`${style.titleContainer}`}>
-        <Link to="../">
-          <IconButton variation="not-outlined">
-            <MdOutlineArrowBack />
-          </IconButton>
-        </Link>
+        <GoBack />
         <span className={`theme-headline-medium ${style.title}`}>
           Applications Dashboard
         </span>
