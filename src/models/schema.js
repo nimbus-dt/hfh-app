@@ -820,6 +820,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "lastPage": {
+                    "name": "lastPage",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -1263,5 +1270,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "334970308e1d4fa0c92444614c0bd6a6"
+    "version": "801f8c34b8e1365b580fd72ad04df455"
 };
