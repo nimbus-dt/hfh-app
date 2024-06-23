@@ -11,6 +11,7 @@ import {
   Flex,
   Grid,
   SelectField,
+  SwitchField,
   TextField,
 } from "@aws-amplify/ui-react";
 import { User } from "../models";
@@ -35,6 +36,7 @@ export default function UserCreateForm(props) {
     phoneNumber: "",
     type: "",
     owner: "",
+    verified: false,
   };
   const [firstName, setFirstName] = React.useState(initialValues.firstName);
   const [lastName, setLastName] = React.useState(initialValues.lastName);
@@ -47,6 +49,7 @@ export default function UserCreateForm(props) {
   );
   const [type, setType] = React.useState(initialValues.type);
   const [owner, setOwner] = React.useState(initialValues.owner);
+  const [verified, setVerified] = React.useState(initialValues.verified);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setFirstName(initialValues.firstName);
@@ -56,6 +59,7 @@ export default function UserCreateForm(props) {
     setPhoneNumber(initialValues.phoneNumber);
     setType(initialValues.type);
     setOwner(initialValues.owner);
+    setVerified(initialValues.verified);
     setErrors({});
   };
   const validations = {
@@ -66,6 +70,7 @@ export default function UserCreateForm(props) {
     phoneNumber: [{ type: "Required" }],
     type: [{ type: "Required" }],
     owner: [{ type: "Required" }],
+    verified: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -100,6 +105,7 @@ export default function UserCreateForm(props) {
           phoneNumber,
           type,
           owner,
+          verified,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -161,6 +167,7 @@ export default function UserCreateForm(props) {
               phoneNumber,
               type,
               owner,
+              verified,
             };
             const result = onChange(modelFields);
             value = result?.firstName ?? value;
@@ -191,6 +198,7 @@ export default function UserCreateForm(props) {
               phoneNumber,
               type,
               owner,
+              verified,
             };
             const result = onChange(modelFields);
             value = result?.lastName ?? value;
@@ -222,6 +230,7 @@ export default function UserCreateForm(props) {
               phoneNumber,
               type,
               owner,
+              verified,
             };
             const result = onChange(modelFields);
             value = result?.dateOfBirth ?? value;
@@ -252,6 +261,7 @@ export default function UserCreateForm(props) {
               phoneNumber,
               type,
               owner,
+              verified,
             };
             const result = onChange(modelFields);
             value = result?.sex ?? value;
@@ -298,6 +308,7 @@ export default function UserCreateForm(props) {
               phoneNumber: value,
               type,
               owner,
+              verified,
             };
             const result = onChange(modelFields);
             value = result?.phoneNumber ?? value;
@@ -328,6 +339,7 @@ export default function UserCreateForm(props) {
               phoneNumber,
               type: value,
               owner,
+              verified,
             };
             const result = onChange(modelFields);
             value = result?.type ?? value;
@@ -369,6 +381,7 @@ export default function UserCreateForm(props) {
               phoneNumber,
               type,
               owner: value,
+              verified,
             };
             const result = onChange(modelFields);
             value = result?.owner ?? value;
@@ -383,6 +396,37 @@ export default function UserCreateForm(props) {
         hasError={errors.owner?.hasError}
         {...getOverrideProps(overrides, "owner")}
       ></TextField>
+      <SwitchField
+        label="Verified"
+        defaultChecked={false}
+        isDisabled={false}
+        isChecked={verified}
+        onChange={(e) => {
+          let value = e.target.checked;
+          if (onChange) {
+            const modelFields = {
+              firstName,
+              lastName,
+              dateOfBirth,
+              sex,
+              phoneNumber,
+              type,
+              owner,
+              verified: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.verified ?? value;
+          }
+          if (errors.verified?.hasError) {
+            runValidationTasks("verified", value);
+          }
+          setVerified(value);
+        }}
+        onBlur={() => runValidationTasks("verified", verified)}
+        errorMessage={errors.verified?.errorMessage}
+        hasError={errors.verified?.hasError}
+        {...getOverrideProps(overrides, "verified")}
+      ></SwitchField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}
