@@ -199,7 +199,7 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "verifyUser": {
+    "verifyUsers": {
       "build": true,
       "dependsOn": [
         {
@@ -208,6 +208,22 @@
             "GraphQLAPIEndpointOutput"
           ],
           "category": "api",
+          "resourceName": "hfhapp"
+        },
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "hfhapp"
+        },
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
           "resourceName": "hfhapp"
         }
       ],
@@ -350,6 +366,22 @@
         {
           "category": "function",
           "resourceName": "verifyUser"
+        }
+      ]
+    },
+    "AMPLIFY_function_verifyUsers_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "verifyUsers"
+        }
+      ]
+    },
+    "AMPLIFY_function_verifyUsers_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "verifyUsers"
         }
       ]
     }

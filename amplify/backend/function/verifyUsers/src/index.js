@@ -1,3 +1,17 @@
+/* Amplify Params - DO NOT EDIT
+	API_HFHAPP_GRAPHQLAPIENDPOINTOUTPUT
+	API_HFHAPP_GRAPHQLAPIIDOUTPUT
+	API_HFHAPP_GRAPHQLAPIKEYOUTPUT
+	AUTH_HFHAPP_USERPOOLID
+	ENV
+	REGION
+Amplify Params - DO NOT EDIT */
+
+import { default as fetch, Request } from 'node-fetch';
+
+const GRAPHQL_ENDPOINT = process.env.API_HFHAPP_GRAPHQLAPIENDPOINTOUTPUT;
+const GRAPHQL_API_KEY = process.env.API_HFHAPP_GRAPHQLAPIKEYOUTPUT;
+
 function deepEqual(obj1, obj2) {
   // Base case: If both objects are identical, return true.
   if (obj1 === obj2) {
@@ -27,9 +41,8 @@ function deepEqual(obj1, obj2) {
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
-exports.handler = (event) => {
+exports.handler = async event => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
-  
   for (const record of event.Records) {
     console.log(record.eventID);
     console.log(record.eventName);
@@ -50,8 +63,34 @@ exports.handler = (event) => {
 
     for (const user of NewUsers) {
       const userSub = user.S;
-      console.log(`userSub: ${userSub}`);
+
+      const query = /* GraphQL */ `
+        query GetUser($id: ID!) {
+          getUser(id: $id) {
+            id
+            email
+          }
+        }
+      `;
+
+      const variables = { id: userSub };
+
+      const options = {
+        method: 'POST',
+        headers: {
+          'x-api-key': GRAPHQL_API_KEY,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ query, variables })
+      };
+
+      const request = new Request(GRAPHQL_ENDPOINT, options);
+
+      const response = await fetch(request);
+
+      const body = await response.json();
+      console.log(JSON.stringify(body));
     }
   }
-  return Promise.resolve("Successfully processed DynamoDB record");
+  return Promise.resolve('Successfully processed DynamoDB record');
 };

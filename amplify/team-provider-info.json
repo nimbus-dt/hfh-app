@@ -44,6 +44,10 @@
         "verifyUser": {
           "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
           "s3Key": "amplify-builds/verifyUser-746d58645a693946364e-build.zip"
+        },
+        "verifyUsers": {
+          "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
+          "s3Key": "amplify-builds/verifyUsers-33445435695a79345238-build.zip"
         }
       },
       "auth": {

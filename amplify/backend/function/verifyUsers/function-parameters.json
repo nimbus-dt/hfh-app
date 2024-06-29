@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "api": {
+      "hfhapp": [
+        "Query",
+        "Mutation",
+        "Subscription"
+      ]
+    },
+    "auth": {
+      "hfhapp": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}
