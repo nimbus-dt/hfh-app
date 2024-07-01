@@ -1,19 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import BreadCrumbs from 'components/BreadCrumbs/BreadCrumbs';
-import IconButton from 'components/IconButton';
 import {
-  MdOutlineArrowBack,
   MdOutlineCalculate,
   MdOutlineLibraryAddCheck,
   MdOutlineNoteAlt,
   MdOutlineTextSnippet,
 } from 'react-icons/md';
-import {
-  Link,
-  useNavigate,
-  useOutletContext,
-  useParams,
-} from 'react-router-dom';
+import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import {
   useDecisionsQuery,
   useFormAnswersQuery,
@@ -41,6 +34,7 @@ import { API, Storage } from 'aws-amplify';
 import { v4 } from 'uuid';
 import { FileNode } from 'components/LexicalEditor/nodes/FileNode';
 import { ImageNode } from 'components/LexicalEditor/nodes/ImageNode';
+import GoBack from 'components/GoBack';
 import { removeFiles } from 'utils/files';
 import { EditorState } from 'lexical';
 import { useAuthenticator } from '@aws-amplify/ui-react';
@@ -285,23 +279,19 @@ const AffiliateApplicationDetailsPage = () => {
 
   if (!cycle) return <Loading />;
 
+  const breadCrumbsItems = [
+    { label: 'Active Forms', to: '../../../forms' },
+    { label: 'Cycles', to: '../..' },
+    { label: 'Applications', to: '..' },
+    { label: 'Detail' },
+  ];
+
   return (
     <div className={`${style.page}`}>
-      <BreadCrumbs
-        items={[
-          { label: 'Active Forms', to: '../../../forms' },
-          { label: 'Cycles', to: '../../' },
-          { label: 'Applications', to: '../' },
-          { label: 'Detail' },
-        ]}
-      />
+      <BreadCrumbs items={breadCrumbsItems} />
       <div className={`${style.ctaContainer}`}>
         <div className={`${style.cta}`}>
-          <Link to="../">
-            <IconButton variation="not-outlined">
-              <MdOutlineArrowBack />
-            </IconButton>
-          </Link>
+          <GoBack />
           <span className={`theme-headline-medium ${style.title}`}>
             Application Details
           </span>
