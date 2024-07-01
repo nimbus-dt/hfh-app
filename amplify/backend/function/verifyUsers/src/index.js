@@ -1,10 +1,10 @@
 /* Amplify Params - DO NOT EDIT
-    API_HFHAPP_GRAPHQLAPIENDPOINTOUTPUT
-    API_HFHAPP_GRAPHQLAPIIDOUTPUT
-    API_HFHAPP_GRAPHQLAPIKEYOUTPUT
-    AUTH_HFHAPP_USERPOOLID
-    ENV
-    REGION
+	API_HFHAPP_GRAPHQLAPIENDPOINTOUTPUT
+	API_HFHAPP_GRAPHQLAPIIDOUTPUT
+	API_HFHAPP_GRAPHQLAPIKEYOUTPUT
+	AUTH_HFHAPP_USERPOOLID
+	ENV
+	REGION
 Amplify Params - DO NOT EDIT */
 
 import { default as fetch, Request } from 'node-fetch';
@@ -38,69 +38,10 @@ function deepEqual(obj1, obj2) {
   return true;
 }
 
-const mutation = /* GraphQL */ `
-  mutation UpdateUser($input: UpdateUserInput!) {
-    updateUser(input: $input) {
-      verified
-    }
-  }
-`;
-
-const query = /* GraphQL */ `
-  query listUsers($filter: ModelUserFilterInput, $limit: Int, $nextToken: String) {
-    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-      }
-    }
-  }
-`;
-
-const extractUserSubs = (users)=> {
-  return users.map(user => user.S);
-}
-
-const updateUserVerification = async (userSub, verified) => {
-  const queryVariables = { filter: { owner: { eq: userSub } } };
-
-  const queryOptions = {
-    method: 'POST',
-    headers: {
-      'x-api-key': GRAPHQL_API_KEY,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ query: query, variables: queryVariables })
-  };
-
-  const queryRequest = new Request(GRAPHQL_ENDPOINT, queryOptions);
-  const queryResponse = await fetch(queryRequest);
-  const queryBody = await queryResponse.json();
-  
-  console.log(JSON.stringify(queryBody));
-  
-  const userIds = queryBody.data.listUsers.items;
-
-  for (const userId of userIds) {
-    const mutationVariables = { input: { id: userId.id, verified: verified } };
-
-    const mutationOptions = {
-      method: 'POST',
-      headers: {
-        'x-api-key': GRAPHQL_API_KEY,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ query: mutation, variables: mutationVariables })
-    };
-
-    const mutationRequest = new Request(GRAPHQL_ENDPOINT, mutationOptions);
-    const mutationResponse = await fetch(mutationRequest);
-    const mutationBody = await mutationResponse.json();
-    
-    console.log(JSON.stringify(mutationBody));
-  }
-};
-
-export const handler = async (event) => {
+/**
+ * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
+ */
+exports.handler = async event => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
   for (const record of event.Records) {
     console.log(record.eventID);
@@ -113,16 +54,42 @@ export const handler = async (event) => {
 
     const NewImage = record?.dynamodb?.NewImage;
     const OldImage = record?.dynamodb?.OldImage;
-    const NewUsers = NewImage?.users?.L || [];
-    const OldUsers = OldImage?.users?.L || [];
+    const NewUsers = NewImage?.users?.L;
+    const OldUsers = OldImage?.users?.L;
 
-    const newUserSubs = extractUserSubs(NewUsers);
-    const oldUserSubs = extractUserSubs(OldUsers);
+    if (deepEqual(NewUsers, OldUsers)) {
+      return Promise.resolve("Users are the same, No action required.");
+    }
 
-    const addedUsers = newUserSubs.filter(user => !oldUserSubs.includes(user));
+    for (const user of NewUsers) {
+      const userSub = user.S;
 
-    for (const userSub of addedUsers) {
-      await updateUserVerification(userSub, true);
+      const query = /* GraphQL */ `
+        query GetUser($id: ID!) {
+          getUser(id: $id) {
+            id
+            email
+          }
+        }
+      `;
+
+      const variables = { id: userSub };
+
+      const options = {
+        method: 'POST',
+        headers: {
+          'x-api-key': GRAPHQL_API_KEY,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ query, variables })
+      };
+
+      const request = new Request(GRAPHQL_ENDPOINT, options);
+
+      const response = await fetch(request);
+
+      const body = await response.json();
+      console.log(JSON.stringify(body));
     }
   }
   return Promise.resolve('Successfully processed DynamoDB record');
