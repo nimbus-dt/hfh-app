@@ -14,7 +14,7 @@ import {
   Habitat,
   ApplicationTypes,
 } from 'models';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   MdOutlineAdd,
   MdOutlineFilterList,
@@ -23,7 +23,6 @@ import {
 } from 'react-icons/md';
 import {
   Link,
-  resolvePath,
   useLocation,
   useOutletContext,
   useParams,
@@ -43,6 +42,8 @@ import NewApplicationModal from './components/NewApplicationModal';
 import StatusModal from './components/StatusModal';
 import { Inputs } from './types';
 import Filters from './components/Filters';
+import Username from './components/Username';
+import { handleCopyToClipboard } from './utils';
 
 interface IOutletContext {
   habitat?: Habitat;
@@ -181,13 +182,6 @@ const AffiliateCycleApplications = () => {
   const handleAddNewApplicationOnClick = () => setNewApplicationOpen(true);
   const handleOnCloseNewApplicationModal = () => setNewApplicationOpen(false);
 
-  const handleCopyToClipboard = () => {
-    const pathToForm = resolvePath(`../../../applicant/${cycleId}`, pathname);
-    const { origin } = window.location;
-    const applicantLink = `${origin}${pathToForm.pathname}`;
-    navigator.clipboard.writeText(applicantLink);
-  };
-
   const breadCrumbsItems = [
     { label: 'Homeownership Form', to: '../../forms' },
     { label: 'Cycles', to: '..' },
@@ -219,7 +213,7 @@ const AffiliateCycleApplications = () => {
           <div className={`${style.suboptions}`}>
             <IconButton
               type="button"
-              onClick={handleCopyToClipboard}
+              onClick={() => handleCopyToClipboard({ cycleId, pathname })}
               title="Copy link for applicants to clipboard"
             >
               <MdOutlineLink />
@@ -308,7 +302,7 @@ const AffiliateCycleApplications = () => {
                 id: 'name',
                 value:
                   application.type === ApplicationTypes.ONLINE ? (
-                    <Name application={application} />
+                    <Username application={application} />
                   ) : (
                     applicationProps?.name || ''
                   ),
@@ -386,30 +380,6 @@ const AffiliateCycleApplications = () => {
       />
     </div>
   );
-};
-
-const Name = ({ application }: { application: TestApplication }) => {
-  const [name, setName] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await application.FormAnswers.toArray();
-      let response = 'unknown';
-      for (let i = 0; i < result.length; i++) {
-        // eslint-disable-next-line no-prototype-builtins
-        if (result[i]?.values?.hasOwnProperty('applicantBasicInformation')) {
-          response =
-            result[i]?.values?.applicantBasicInformation
-              ?.applicantBasicInformationFullName;
-        }
-      }
-      setName(response);
-    };
-
-    fetchData();
-  }, [application]);
-
-  return name;
 };
 
 export default AffiliateCycleApplications;
