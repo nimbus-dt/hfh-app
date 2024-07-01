@@ -49,7 +49,7 @@ enum UserTypes {
 }
 
 type User @model @auth(rules: [{allow: public}]) {
-  id: ID
+  id: ID!
   firstName: String!
   lastName: String!
   dateOfBirth: AWSDate!
