@@ -59,6 +59,7 @@ type User @model @auth(rules: [{allow: public}]) {
   applicantProps: ApplicantProps
   type: UserTypes!
   owner: ID!
+  verified: Boolean
 }
 
 enum RootFormStatusTypes {

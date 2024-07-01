@@ -140,6 +140,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "verified": {
+                    "name": "verified",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -1270,5 +1277,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "801f8c34b8e1365b580fd72ad04df455"
+    "version": "a4ded4833af9f1511301b4d1a1c48132"
 };

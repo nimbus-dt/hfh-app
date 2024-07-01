@@ -180,6 +180,7 @@ type EagerUser = {
   readonly applicantProps?: ApplicantProps | null;
   readonly type: UserTypes | keyof typeof UserTypes;
   readonly owner: string;
+  readonly verified?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -199,6 +200,7 @@ type LazyUser = {
   readonly applicantProps?: ApplicantProps | null;
   readonly type: UserTypes | keyof typeof UserTypes;
   readonly owner: string;
+  readonly verified?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
