@@ -1,19 +1,12 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import BreadCrumbs from 'components/BreadCrumbs/BreadCrumbs';
-import IconButton from 'components/IconButton';
 import {
-  MdOutlineArrowBack,
   MdOutlineCalculate,
   MdOutlineLibraryAddCheck,
   MdOutlineNoteAlt,
   MdOutlineTextSnippet,
 } from 'react-icons/md';
-import {
-  Link,
-  useNavigate,
-  useOutletContext,
-  useParams,
-} from 'react-router-dom';
+import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import {
   useDecisionsQuery,
   useFormAnswersQuery,
@@ -29,11 +22,11 @@ import {
   Note,
   TestApplication,
   TestCycle,
-  SubmissionStatus,
   ReviewStatus,
   Habitat,
   LazyDecision,
   ApplicationTypes,
+  SubmissionStatus,
 } from 'models';
 import { DataStore, RecursiveModelPredicate } from '@aws-amplify/datastore';
 import { getEditorStateWithFilesInBucket } from 'utils/lexicalEditor';
@@ -41,28 +34,27 @@ import { API, Storage } from 'aws-amplify';
 import { v4 } from 'uuid';
 import { FileNode } from 'components/LexicalEditor/nodes/FileNode';
 import { ImageNode } from 'components/LexicalEditor/nodes/ImageNode';
+import GoBack from 'components/GoBack';
 import { removeFiles } from 'utils/files';
 import { EditorState } from 'lexical';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import Loading from 'components/Loading';
+import { usePostHog } from 'posthog-js/react';
 import style from './AffiliateApplicationDetailsPage.module.css';
 import LocalNavigation from './components/LocalNavigation';
 import ApplicationTab from './components/ApplicationTab';
 import NotesTab from './components/NotesTab';
 import DecisionsTab from './components/DecisionsTab';
 import CalculationsTab from './components/Calculations';
-import {
-  TDecideSchema,
-  TReturnSchema,
-} from './AffiliateApplicationDetailsPage.schema';
+import { TDecideSchema } from './AffiliateApplicationDetailsPage.schema';
 import Buttons from './components/Buttons';
 
 const AffiliateApplicationDetailsPage = () => {
+  const posthog = usePostHog();
   const [activeTab, setActiveTab] = useState(0);
   const [triggerApplication, setTriggerApplication] = useState(false);
   const [triggerNotes, setTriggerNotes] = useState(false);
   const [loading, setLoading] = useState(0);
-  const [returnModalOpen, setReturnModalOpen] = useState(false);
   const [decideModalOpen, setDecideModalOpen] = useState(false);
   const [noteModal, setNoteModal] = useState(false);
   const [uploadingNote, setUploadingNote] = useState(false);
@@ -126,56 +118,6 @@ const AffiliateApplicationDetailsPage = () => {
     return result;
   };
 
-  const handleOnValidReturn = async (data: TReturnSchema) => {
-    setLoading((previousLoading) => previousLoading + 1);
-    try {
-      const original = await DataStore.query(
-        TestApplication,
-        applicationId || ''
-      );
-
-      if (!original) {
-        return;
-      }
-
-      const persistedApplication = await DataStore.save(
-        TestApplication.copyOf(original, (originalApplication) => {
-          originalApplication.submissionStatus = SubmissionStatus.INCOMPLETE;
-          originalApplication.reviewStatus = ReviewStatus.RETURNED;
-        })
-      );
-
-      const editorStateWithFilesInS3 = await getEditorStateWithFilesInBucket(
-        data.message,
-        uploadDecisionFile
-      );
-
-      await DataStore.save(
-        new Decision({
-          testapplicationID: applicationId || '',
-          status: ReviewStatus.RETURNED,
-          serializedEditorState: JSON.stringify(editorStateWithFilesInS3),
-        })
-      );
-
-      await API.post('sendEmailToApplicantAPI', '/notify', {
-        body: {
-          subject: 'Status update on your Habitat for Humanity application',
-          body: '<p>A decision has been made on your application. Please log in to your application portal to see this.</p>',
-          sub: persistedApplication.ownerID,
-          habitat: habitat?.name,
-        },
-      });
-
-      setReturnModalOpen(false);
-      triggerApplicationRefetch();
-      navigate('..');
-    } catch (error) {
-      console.log('An error ocurred while returning the application', error);
-    }
-    setLoading((previousLoading) => previousLoading - 1);
-  };
-
   const handleDecideOnClick = () => setDecideModalOpen(true);
 
   const handleDecideModalOnClose = () =>
@@ -193,6 +135,9 @@ const AffiliateApplicationDetailsPage = () => {
       const persistedApplication = await DataStore.save(
         TestApplication.copyOf(original, (originalApplication) => {
           originalApplication.reviewStatus = data.status;
+          if (data.status === ReviewStatus.RETURNED) {
+            originalApplication.submissionStatus = SubmissionStatus.INCOMPLETE;
+          }
         })
       );
 
@@ -208,6 +153,26 @@ const AffiliateApplicationDetailsPage = () => {
           serializedEditorState: JSON.stringify(editorStateWithFilesInS3),
         })
       );
+
+      let type = '';
+
+      if (data.status === ReviewStatus.ACCEPTED) {
+        type = 'application_accepted';
+      } else if (data.status === ReviewStatus.DENIED) {
+        type = 'application_denied';
+      } else if (data.status === ReviewStatus.RETURNED) {
+        type = 'application_returned';
+      } else {
+        type = 'application_pending';
+      }
+
+      posthog?.capture(type, {
+        data,
+        application,
+        habitat,
+        cycle,
+        posthogAction: 'application_reviewed',
+      });
 
       await API.post('sendEmailToApplicantAPI', '/notify', {
         body: {
@@ -227,16 +192,11 @@ const AffiliateApplicationDetailsPage = () => {
     setLoading((previousLoading) => previousLoading - 1);
   };
 
-  const handleReturnModalOnClose = () =>
-    loading === 0 && setReturnModalOpen(false);
-
   const handleNoteOpenClose = () => {
     if (!uploadingNote) {
       setNoteModal((prevNoteModal) => !prevNoteModal);
     }
   };
-
-  const handleReturnOnClick = () => setReturnModalOpen(true);
 
   const deleteFilesOfNote = async (note: Note) => {
     const editorState = JSON.parse(note.serializedEditorState);
@@ -307,43 +267,45 @@ const AffiliateApplicationDetailsPage = () => {
     }
   };
 
+  useEffect(() => {
+    if (application && cycle && habitat && posthog) {
+      posthog?.capture('application_opened', {
+        application,
+        habitat,
+        cycle,
+      });
+    }
+  }, [application, cycle, habitat, posthog]);
+
   if (!cycle) return <Loading />;
+
+  const breadCrumbsItems = [
+    { label: 'Active Forms', to: '../../../forms' },
+    { label: 'Cycles', to: '../..' },
+    { label: 'Applications', to: '..' },
+    { label: 'Detail' },
+  ];
 
   return (
     <div className={`${style.page}`}>
-      <BreadCrumbs
-        items={[
-          { label: 'Active Forms', to: '../../../forms' },
-          { label: 'Cycles', to: '../../' },
-          { label: 'Applications', to: '../' },
-          { label: 'Detail' },
-        ]}
-      />
+      <BreadCrumbs items={breadCrumbsItems} />
       <div className={`${style.ctaContainer}`}>
         <div className={`${style.cta}`}>
-          <Link to="../">
-            <IconButton variation="not-outlined">
-              <MdOutlineArrowBack />
-            </IconButton>
-          </Link>
+          <GoBack />
           <span className={`theme-headline-medium ${style.title}`}>
             Application Details
           </span>
         </div>
-        <div>
-          <Buttons
-            application={application}
-            returnModalOpen={returnModalOpen}
-            handleReturnModalOnClose={handleReturnModalOnClose}
-            handleOnValidReturn={handleOnValidReturn}
-            decideModalOpen={decideModalOpen}
-            handleDecideModalOnClose={handleDecideModalOnClose}
-            handleOnValidDecide={handleOnValidDecide}
-            handleReturnOnClick={handleReturnOnClick}
-            handleDecideOnClick={handleDecideOnClick}
-            loading={loading}
-          />
-        </div>
+      </div>
+      <div>
+        <Buttons
+          application={application}
+          decideModalOpen={decideModalOpen}
+          handleDecideModalOnClose={handleDecideModalOnClose}
+          handleOnValidDecide={handleOnValidDecide}
+          handleDecideOnClick={handleDecideOnClick}
+          loading={loading}
+        />
       </div>
       <div className={`${style.detailsContainer}`}>
         <LocalNavigation

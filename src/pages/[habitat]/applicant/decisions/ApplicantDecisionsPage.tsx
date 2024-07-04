@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import {
   Flex,
@@ -6,20 +7,16 @@ import {
   View,
   useAuthenticator,
 } from '@aws-amplify/ui-react';
-import {
-  RecursiveModelPredicate,
-  SortDirection,
-  SortPredicate,
-} from '@aws-amplify/datastore';
+import { DataStore } from '@aws-amplify/datastore';
 
 import DecisionCard from 'components/DecisionCard';
-import { useDecisionsQuery, useTestApplicationsQuery } from 'hooks/services';
 import {
   Decision,
   Habitat,
-  LazyTestApplication,
   ReviewStatus,
+  RootForm,
   TestApplication,
+  TestCycle,
 } from 'models';
 
 import style from './ApplicantDecisionsPage.module.css';
@@ -28,38 +25,72 @@ interface IOutletContext {
   habitat?: Habitat;
 }
 
+type DataProps =
+  | {
+      decisions: Decision[];
+      applications: TestApplication[];
+    }
+  | undefined;
+
 const ApplicantDecisionsPage = () => {
   const { user } = useAuthenticator((context) => [context.user]);
   const { habitat }: IOutletContext = useOutletContext();
+  const [data, setData] = useState<DataProps>(undefined);
 
-  const { data: applications }: { data: TestApplication[] } =
-    useTestApplicationsQuery({
-      criteria: (c2: RecursiveModelPredicate<LazyTestApplication>) =>
-        c2.ownerID.eq(user?.username),
-      dependencyArray: [user],
-      paginationProducer: (s: SortPredicate<LazyTestApplication>) =>
-        s.createdAt(SortDirection.DESCENDING),
-    });
-
-  const { data: decisions }: { data: Decision[] } = useDecisionsQuery({
-    criteria: (c2: RecursiveModelPredicate<Decision>) =>
-      c2.or((c3) => {
-        const newDecisions = applications.map((application) =>
-          c3.testapplicationID.eq(application.id)
+  useEffect(() => {
+    if (habitat) {
+      const fetch = async () => {
+        const rootFormsResponse = await DataStore.query(RootForm, (c) =>
+          c.habitatID.eq(habitat.id)
         );
 
-        if (!newDecisions.length) {
-          return [c3.id.eq('')];
+        let newCycles: TestCycle[] = [];
+
+        for (const rootFormResponse of rootFormsResponse) {
+          const cyclesResponse = await DataStore.query(TestCycle, (c) =>
+            c.rootformID.eq(rootFormResponse.id)
+          );
+          newCycles = newCycles.concat(cyclesResponse);
         }
 
-        return newDecisions;
-      }),
-    dependencyArray: [applications],
-    paginationProducer: {
-      sort: (s: SortPredicate<Decision>) =>
-        s.createdAt(SortDirection.DESCENDING),
-    },
-  });
+        let newApplications: TestApplication[] = [];
+
+        for (const newCycle of newCycles) {
+          const applicationsResponse = await DataStore.query(
+            TestApplication,
+            (c) =>
+              c.and((c1) => [
+                c1.testcycleID.eq(newCycle.id),
+                c1.ownerID.eq(user?.username),
+              ])
+          );
+          newApplications = newApplications.concat(applicationsResponse);
+        }
+
+        let newDecisions: Decision[] = [];
+        for (const newApplication of newApplications) {
+          const decisionsResponse = await DataStore.query(Decision, (c) =>
+            c.testapplicationID.eq(newApplication.id)
+          );
+          newDecisions = newDecisions.concat(decisionsResponse);
+        }
+
+        setData({
+          applications: newApplications,
+          decisions: newDecisions.sort((a, b) => {
+            if (a.updatedAt && b.updatedAt) {
+              return (
+                new Date(b.updatedAt).getTime() -
+                new Date(a.updatedAt).getTime()
+              );
+            }
+            return 0;
+          }),
+        });
+      };
+      fetch();
+    }
+  }, [habitat, user?.username]);
 
   return (
     <View padding="32px">
@@ -73,26 +104,36 @@ const ApplicantDecisionsPage = () => {
           </Text>
         </View>
       </Flex>
-      <Flex className={`${style.decisionsContainer}`}>
-        {decisions.map((data) => (
-          <DecisionCard
-            key={data.id}
-            date={data.updatedAt || ''}
-            habitat={habitat?.longName || ''}
-            status={ReviewStatus[data?.status || 'PENDING']}
-            editorState={data.serializedEditorState}
-            applicationRoute={
-              data?.status === ReviewStatus.RETURNED
-                ? `../${
-                    applications.find(
-                      (application) => data.testapplicationID === application.id
-                    )?.testcycleID
-                  }`
-                : undefined
-            }
-          />
-        ))}
-      </Flex>
+
+      {data?.decisions.length ? (
+        <Flex className={`${style.decisionsContainer}`}>
+          {data?.decisions.map((decision) => (
+            <DecisionCard
+              key={decision.id}
+              date={decision.updatedAt || ''}
+              habitat={habitat?.longName || ''}
+              status={ReviewStatus[decision?.status || 'PENDING']}
+              editorState={decision.serializedEditorState}
+              applicationRoute={
+                decision?.status === ReviewStatus.RETURNED
+                  ? `../${
+                      data.applications.find(
+                        (application) =>
+                          decision.testapplicationID === application.id
+                      )?.testcycleID
+                    }`
+                  : undefined
+              }
+            />
+          ))}
+        </Flex>
+      ) : (
+        <View className={`theme-body-medium ${style.subtitle}`}>
+          <Text style={{ textAlign: 'center' }} color="inherit">
+            You have no decision records.
+          </Text>
+        </View>
+      )}
     </View>
   );
 };

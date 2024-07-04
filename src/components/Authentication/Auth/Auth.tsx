@@ -1,14 +1,22 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/no-danger */
 /* eslint-disable react/no-unstable-nested-components */
 import { Authenticator, Button, useAuthenticator } from '@aws-amplify/ui-react';
+import { Auth } from 'aws-amplify';
+import { usePostHog } from 'posthog-js/react';
+
+import { Habitat } from 'models';
 
 import styles from './styles.module.css';
 
 interface AuthProps {
+  type: 'applicant' | 'affiliate';
   header: string;
+  habitat: Habitat;
 }
 
-const Auth = ({ header }: AuthProps) => {
+const AuthComponent = ({ habitat, type, header }: AuthProps) => {
+  const posthog = usePostHog();
   const auth = useAuthenticator();
 
   const formFields = {
@@ -106,7 +114,31 @@ const Auth = ({ header }: AuthProps) => {
     },
   };
 
-  return <Authenticator formFields={formFields} components={components} />;
+  return (
+    <Authenticator
+      formFields={formFields}
+      components={components}
+      services={{
+        async handleSignIn({ username, password }) {
+          try {
+            if (!username || !password) return;
+            const user = await Auth.signIn(username, password);
+            posthog?.identify(user?.attributes?.email, {
+              ...user,
+              type,
+              habitat
+            });
+            posthog?.group('habitat', habitat?.name || 'unknown');
+            posthog?.group('type', type || 'unknown');
+            posthog?.capture('clicked_sign_in');
+            return user;
+          } catch (error) {
+            console.error(error);
+          }
+        },
+      }}
+    />
+  );
 };
 
-export default Auth;
+export default AuthComponent;

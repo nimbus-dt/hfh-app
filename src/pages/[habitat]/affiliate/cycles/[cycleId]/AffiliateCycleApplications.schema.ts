@@ -17,6 +17,7 @@ export const applicationsFilterSchema = z.object({
     ])
     .nullable()
     .optional(),
+  customStatus: z.string().nullable().optional(),
 });
 
 export type TApplicationsFilter = z.infer<typeof applicationsFilterSchema>;

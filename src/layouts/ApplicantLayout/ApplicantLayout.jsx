@@ -70,6 +70,7 @@ const HabitatLayout = () => {
       try {
         const newApplication = await DataStore.save(
           new TestApplication({
+            lastPage: 0,
             ownerID: username,
             lastSection: location.pathname,
             members: [],
@@ -176,7 +177,8 @@ const HabitatLayout = () => {
   if (AUTHENTICATION_STATUS.AUTHENTICATED !== authStatus) {
     return (
       <Authentication
-        authenticationHeader={habitat?.authenticationHeader}
+        type="applicant"
+        habitat={habitat}
         gallery={habitat?.props?.gallery}
       />
     );

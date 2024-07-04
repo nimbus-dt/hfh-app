@@ -17,7 +17,7 @@ const initialData: dataProps = {
 const SignUpQuestions = ({
   habitat,
   user,
-  setUserData,
+  isUserAllowed,
 }: SignUpQuestionsProps) => {
   const [data, setData] = useState<dataProps>(initialData);
 
@@ -37,7 +37,11 @@ const SignUpQuestions = ({
       habitat={habitat}
       user={user}
     />,
-    <Confirmation name={habitat?.longName} />,
+    <Confirmation
+      name={habitat?.urlName}
+      longName={habitat?.longName}
+      isUserAllowed={isUserAllowed}
+    />,
   ];
 
   if (!habitat || !user) {

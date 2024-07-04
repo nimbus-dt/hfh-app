@@ -1,4 +1,4 @@
-import { type ReactNode, useMemo, useState, useRef } from 'react';
+import { useState } from 'react';
 import { Form as FormioForm, Wizard } from '@formio/react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -10,20 +10,19 @@ import {
   ReviewStatus,
   LazyFormAnswer,
 } from 'models';
-import { throttle } from 'lodash';
 import { DataStore } from 'aws-amplify';
 import { generateSubmission } from 'utils/formio';
 import { Options } from '@formio/react/lib/components/Form';
 import { useFormAnswersQuery, useFormById } from 'hooks/services';
 import Modal from 'components/Modal';
 import dayjs from 'dayjs';
+import { usePostHog } from 'posthog-js/react';
 import { Button, Flex, Text } from '@aws-amplify/ui-react';
 import CustomButton from 'components/CustomButton/CustomButton';
 import { RecursiveModelPredicate } from '@aws-amplify/datastore';
-import Header from 'components/Header';
-import Footer from 'components/Footer';
-import Loading from 'components/Loading';
+import uploadSubmission from './services/uploadSubmission';
 import style from './Form.module.css';
+import FormLayout from './layouts/FormLayout';
 
 interface IProperties {
   habitat?: Habitat;
@@ -34,79 +33,6 @@ interface IProperties {
 
 const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const getPage = (formReady: any) => {
-  const pagesCount = formReady?.components;
-  if (!pagesCount) return 0;
-  const lastPageComponents =
-    pagesCount[pagesCount.length - 1]?.components[0]?.components;
-  if (!lastPageComponents) return 0;
-  return lastPageComponents[lastPageComponents.length - 1].component.value;
-};
-
-const Layout = ({
-  formReady,
-  habitat,
-  children,
-}: {
-  formReady?: typeof Wizard;
-  habitat?: Habitat;
-  children: ReactNode;
-}) => {
-  const [currentPage, setCurrentPage] = useState(0);
-  const pages = getPage(formReady);
-  const headerRef = useRef<HTMLDivElement>(null);
-  return (
-    <div style={{ width: '100%' }}>
-      {!formReady && <Loading />}
-      {formReady && (
-        <div ref={headerRef}>
-          <Header current={currentPage} pages={pages} habitat={habitat} />
-        </div>
-      )}
-      {children}
-      {formReady && (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Footer
-            goBack={
-              currentPage === 0
-                ? undefined
-                : () => {
-                    headerRef.current?.scrollIntoView();
-                    setCurrentPage((prev) => prev - 1);
-                    formReady.prevPage().catch((error: unknown) => {
-                      console.log(error);
-                    });
-                  }
-            }
-            onNext={() => {
-              headerRef.current?.scrollIntoView();
-              if (
-                formReady?.componentComponents &&
-                currentPage === formReady.componentComponents.length - 1
-              ) {
-                formReady.submit().catch((error: unknown) => {
-                  console.log(error);
-                });
-                return;
-              }
-              setCurrentPage((prev) => prev + 1);
-              formReady.nextPage().catch((error: unknown) => {
-                console.log(error);
-                setCurrentPage((prev) => prev - 1);
-              });
-            }}
-            submit={
-              formReady?.componentComponents &&
-              currentPage === formReady.componentComponents.length - 1
-            }
-          />
-        </div>
-      )}
-    </div>
-  );
-};
-
 const Form = ({
   habitat,
   application,
@@ -115,6 +41,7 @@ const Form = ({
 }: IProperties) => {
   const [reviewMode, setReviewMode] = useState(false);
   const [formReady, setFormReady] = useState<typeof Wizard>();
+  const posthog = usePostHog();
 
   const [showSubmitModal, setShowSubmitModal] = useState(false);
 
@@ -132,64 +59,10 @@ const Form = ({
     dependencyArray: [cycle],
   });
 
-  const persistSubmission = useMemo(
-    () =>
-      throttle(
-        async (submission, nextPage?: number) => {
-          try {
-            if (application) {
-              const submissionEntries = Object.entries(submission.data);
-
-              const [page, values] =
-                submissionEntries[
-                  nextPage ? nextPage - 1 : submissionEntries.length - 1
-                ];
-
-              const persistedFormAnswer = await DataStore.query(
-                FormAnswer,
-                (c1) =>
-                  c1.and((c2) => {
-                    const criteriaArray = [
-                      c2.testapplicationID.eq(application.id),
-                      c2.page.eq(page),
-                    ];
-
-                    return criteriaArray;
-                  })
-              );
-
-              if (persistedFormAnswer.length > 0) {
-                await DataStore.save(
-                  FormAnswer.copyOf(persistedFormAnswer[0], (original) => {
-                    original.values = JSON.stringify(values);
-                  })
-                );
-              } else {
-                await DataStore.save(
-                  new FormAnswer({
-                    testapplicationID: application.id,
-                    page,
-                    values: JSON.stringify(values),
-                  })
-                );
-              }
-            }
-
-            console.log('submission persisted');
-          } catch (error) {
-            console.log('Error persisting submission', error);
-          }
-        },
-        50,
-        { leading: true, trailing: false }
-      ),
-    [application]
-  );
-
   const handleOnReview = async (submission: unknown) => {
     try {
       if (application && cycle) {
-        await persistSubmission(submission);
+        await uploadSubmission({ submission, application });
         setReviewMode(true);
       }
     } catch (error) {
@@ -203,6 +76,17 @@ const Form = ({
         const original = await DataStore.query(TestApplication, application.id);
 
         if (original) {
+          posthog?.capture('application_submitted', {
+            application,
+            cycle,
+            habitat,
+          });
+          posthog?.capture('application_pending', {
+            application,
+            habitat,
+            cycle,
+          });
+
           await DataStore.save(
             TestApplication.copyOf(original, (originalApplication) => {
               originalApplication.submissionStatus = SubmissionStatus.COMPLETED;
@@ -219,7 +103,21 @@ const Form = ({
     }
   };
 
-  const handleOnClickGoBack = () => {
+  const handleOnClickGoBack = async () => {
+    if (application) {
+      const currentApplication = await DataStore.query(TestApplication, (c1) =>
+        c1.id.eq(application.id)
+      );
+
+      if (currentApplication) {
+        await DataStore.save(
+          TestApplication.copyOf(currentApplication[0], (original) => {
+            original.lastPage = 0;
+          })
+        );
+      }
+    }
+
     setReviewMode(false);
   };
 
@@ -298,7 +196,12 @@ const Form = ({
               </Flex>
             </div>
           ) : (
-            <Layout formReady={formReady} habitat={habitat}>
+            <FormLayout
+              formReady={formReady}
+              habitat={habitat}
+              application={application}
+              cycle={cycle}
+            >
               <div
                 className={`${style.formContainer}`}
                 style={{ padding: '2rem 1rem' }}
@@ -325,11 +228,15 @@ const Form = ({
                     submission: unknown;
                     page: number;
                   }) => {
-                    persistSubmission(submission, page);
+                    uploadSubmission({
+                      submission,
+                      application,
+                      nextPage: page,
+                    });
                   }}
                 />
               </div>
-            </Layout>
+            </FormLayout>
           )}
         </div>
       </div>

@@ -88,6 +88,7 @@ export const createUser = /* GraphQL */ `
       }
       type
       owner
+      verified
       createdAt
       updatedAt
       _version
@@ -133,6 +134,7 @@ export const updateUser = /* GraphQL */ `
       }
       type
       owner
+      verified
       createdAt
       updatedAt
       _version
@@ -178,6 +180,7 @@ export const deleteUser = /* GraphQL */ `
       }
       type
       owner
+      verified
       createdAt
       updatedAt
       _version
@@ -560,6 +563,7 @@ export const createTestApplication = /* GraphQL */ `
         __typename
       }
       customStatus
+      lastPage
       createdAt
       updatedAt
       _version
@@ -600,6 +604,7 @@ export const updateTestApplication = /* GraphQL */ `
         __typename
       }
       customStatus
+      lastPage
       createdAt
       updatedAt
       _version
@@ -640,6 +645,7 @@ export const deleteTestApplication = /* GraphQL */ `
         __typename
       }
       customStatus
+      lastPage
       createdAt
       updatedAt
       _version
