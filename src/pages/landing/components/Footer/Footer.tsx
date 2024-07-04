@@ -17,6 +17,7 @@ function Footer() {
     'Privacy Policy',
     'Terms of Service',
     'Data Sharing Policy',
+    'Return Policy',
   ];
 
   const privacyPolicy = (
@@ -324,7 +325,37 @@ function Footer() {
     </div>
   );
 
-  const policyTexts = [privacyPolicy, termsOfService, dataPolicy];
+  const returnPolicy = (
+    <div>
+      Return Policy This Return Policy ("Policy") outlines the terms and
+      conditions related to the use, termination, and extraction of data from
+      the Habitat App provided by Helpy, Inc. ("Provider," "we," or "us") by
+      Habitat affiliates ("Clients," "you," or "your"). Please read this Policy
+      carefully before using the Habitat App. 1. SaaS Service The Habitat App is
+      a Software-as-a-Service (SaaS) platform, and as such, there are no
+      physical products to be returned or refunded. This Policy primarily covers
+      the termination of service and the extraction of data. 2. Termination and
+      Refunds If a Client wishes to cease usage of the Habitat App, any fees
+      paid for the current month will not be refunded. Termination will be
+      effective at the end of the current billing cycle. 3. Data Extraction If a
+      Client wishes to extract their data from the Habitat App upon termination,
+      an additional fee may apply. This fee covers the costs associated with
+      extracting and providing the data in a usable format. The specific fee
+      will be communicated to the Client upon their request for data extraction.
+      4. Communication and Requests Any requests for termination or data
+      extraction should be submitted in writing or through the designated
+      communication channel provided by the Provider. We will make reasonable
+      efforts to respond to your requests in a timely manner. 5. Modifications
+      to the Policy We reserve the right to modify this Return Policy at any
+      time, without prior notice. Any changes will be effective immediately upon
+      posting the updated Policy on our website. It is your responsibility to
+      review this Policy periodically. 6. Contact Us If there are any questions
+      regarding this policy, contact us at
+      <a href="mailto:support@habitat-app.org">support@habitat-app.org</a>.
+    </div>
+  );
+
+  const policyTexts = [privacyPolicy, termsOfService, dataPolicy, returnPolicy];
 
   const policyModal = (
     <Modal
@@ -359,8 +390,10 @@ function Footer() {
         color="var(--amplify-colors-neutral-60)"
         fontSize="12px"
         onClick={() => {
-          setPolicy(0);
-          setModalOpen(!modalOpen);
+          window.open(
+            'https://docs.google.com/document/d/1twvTcfKZjkifMrIZfSiosIsRBPh9J0M_Uc7sXMmMftk/edit?usp=drive_link',
+            '_blank'
+          );
         }}
         className="policy"
       >
@@ -374,8 +407,10 @@ function Footer() {
         color="var(--amplify-colors-neutral-60)"
         fontSize="12px"
         onClick={() => {
-          setPolicy(1);
-          setModalOpen(!modalOpen);
+          window.open(
+            'https://docs.google.com/document/d/17WsJcxmKWwBx3K5tQG_muXGjzyZB6uO7s0WkSUU3ebI/edit?usp=drive_link',
+            '_blank'
+          );
         }}
         className="policy"
       >
@@ -389,12 +424,14 @@ function Footer() {
         color="var(--amplify-colors-neutral-60)"
         fontSize="12px"
         onClick={() => {
-          setPolicy(2);
-          setModalOpen(!modalOpen);
+          window.open(
+            'https://docs.google.com/document/d/1s_GhDaxFYXv8vhilBqrkX7zlTA72TbneAK7j-ZL-sVM/edit?usp=drive_link',
+            '_blank'
+          );
         }}
         className="policy"
       >
-        Data Sharing Policy
+        Return Policy
       </Text>
       {modalOpen && policyModal}
     </Flex>
