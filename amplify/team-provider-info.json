@@ -95,7 +95,7 @@
         },
         "getSubmittedApplicationsEmails": {
           "deploymentBucketName": "amplify-hfhapp-prod-160335-deployment",
-          "s3Key": "amplify-builds/getSubmittedApplicationsEmails-434e66354c6f53536d78-build.zip"
+          "s3Key": "amplify-builds/getSubmittedApplicationsEmails-4b7a4c6e35382b726443-build.zip"
         },
         "sendConfirmSubmitEmail": {
           "deploymentBucketName": "amplify-hfhapp-prod-160335-deployment",
@@ -105,6 +105,10 @@
           "deploymentBucketName": "amplify-hfhapp-prod-160335-deployment",
           "s3Key": "amplify-builds/sendEmailToApplicant-385550787767576b3649-build.zip",
           "sesEmail": "support@habitat-app.org"
+        },
+        "verifyUsers": {
+          "deploymentBucketName": "amplify-hfhapp-prod-160335-deployment",
+          "s3Key": "amplify-builds/verifyUsers-76383655646a68713752-build.zip"
         }
       },
       "auth": {
