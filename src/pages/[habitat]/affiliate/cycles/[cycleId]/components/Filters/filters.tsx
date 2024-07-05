@@ -37,7 +37,6 @@ const Filters = ({
   const watchEndDateSubmitted = watch('endDateSubmitted');
 
   const onSubmit = (data: Inputs) => {
-    console.log(data);
     setFilters(data);
     close();
   };

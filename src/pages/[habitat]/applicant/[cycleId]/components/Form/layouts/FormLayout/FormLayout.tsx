@@ -159,8 +159,6 @@ const FormLayout = ({
       });
   };
 
-  console.log(currentPage);
-
   const submit =
     formReady?.componentComponents &&
     currentPage === formReady.componentComponents.length - 1;
