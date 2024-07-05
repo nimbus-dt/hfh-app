@@ -123,7 +123,7 @@ const NewAffiliateLayout = () => {
 
         const allowedUsers = habitatObject.users || [];
 
-        if (allowedUsers.includes(user.username)) {
+        if (user && allowedUsers.includes(user.username)) {
           setIsUserAllowed(true);
         } else {
           setIsUserAllowed(false);
