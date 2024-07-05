@@ -51,7 +51,7 @@ import Buttons from './components/Buttons';
 
 const AffiliateApplicationDetailsPage = () => {
   const posthog = usePostHog();
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(1);
   const [triggerApplication, setTriggerApplication] = useState(false);
   const [triggerNotes, setTriggerNotes] = useState(false);
   const [loading, setLoading] = useState(0);
