@@ -47,9 +47,7 @@ import { handleCopyToClipboard } from './utils';
 
 interface IOutletContext {
   habitat?: Habitat;
-  addCustomStatusToHabitat: (status: string) => void;
-  removeCustomStatusToHabitat: (status: string) => void;
-  updateCustomStatusToHabitat: (status: string) => void;
+  setHabitat: (habitat: Habitat) => void;
 }
 
 const AffiliateCycleApplications = () => {
@@ -59,12 +57,7 @@ const AffiliateCycleApplications = () => {
     medium: false,
   });
   const { cycleId } = useParams();
-  const {
-    habitat,
-    addCustomStatusToHabitat,
-    removeCustomStatusToHabitat,
-    updateCustomStatusToHabitat,
-  } = useOutletContext<IOutletContext>();
+  const { habitat, setHabitat } = useOutletContext<IOutletContext>();
   const [statusModalOpen, setStatusModalOpen] = useState(false);
   const [newApplicationOpen, setNewApplicationOpen] = useState(false);
   const [trigger, setTrigger] = useState(0);
@@ -250,9 +243,7 @@ const AffiliateCycleApplications = () => {
         open={statusModalOpen}
         onClose={handleOnCloseStatusModal}
         habitat={habitat}
-        addCustomStatusToHabitat={addCustomStatusToHabitat}
-        removeCustomStatusToHabitat={removeCustomStatusToHabitat}
-        updateCustomStatusToHabitat={updateCustomStatusToHabitat}
+        setHabitat={setHabitat}
         setTrigger={setTrigger}
       />
       <TableWithPaginator
