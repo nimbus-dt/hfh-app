@@ -1,47 +1,36 @@
-import { Loader, useAuthenticator } from '@aws-amplify/ui-react';
+import { useCallback, useState } from 'react';
 import { useLocation, useOutletContext, useParams } from 'react-router-dom';
+import { MdOutlineNoteAlt, MdOutlineLibraryAddCheck } from 'react-icons/md';
+import { DataStore, SortDirection } from 'aws-amplify';
+
+import { Loader, useAuthenticator } from '@aws-amplify/ui-react';
+
 import {
-  Habitat,
   SubmissionStatus,
   TestApplication,
   TestCycle,
   ReviewStatus,
   ApplicationTypes,
-  User,
 } from 'models';
-import { MdOutlineNoteAlt, MdOutlineLibraryAddCheck } from 'react-icons/md';
-import { useCallback, useEffect, useState } from 'react';
-import { DataStore, SortDirection } from 'aws-amplify';
-import { useTestCycleById } from 'hooks/services';
+import { OutletContextProps } from 'types';
 import LocalNavigation from 'pages/[habitat]/affiliate/cycles/[cycleId]/[applicationId]/components/LocalNavigation';
-import Form from './components/Form/Form';
-import SuccesfullySubmitted from './components/SuccesfullySubmitted';
-import NoOpenCycle from './components/NoOpenCycle';
-import style from './ApplicantCyclePage.module.css';
-import Decisions from './components/Tabs/Decisions';
+import useAsync from 'hooks/utils/useAsync/useAsync';
+import { Status } from 'utils/enums';
 
-interface IOutletContext {
-  habitat?: Habitat;
-}
+import Form from './components/Form/Form';
+import NoOpenCycle from './components/NoOpenCycle';
+import Decisions from './components/Tabs/Decisions';
+import SuccesfullySubmitted from './components/SuccesfullySubmitted';
+import style from './ApplicantCyclePage.module.css';
+import { DataProps, DISPLAY, ERROR } from './ApplicantCyclePage.types';
 
 const ApplicantCyclePage = () => {
-  const { habitat }: IOutletContext = useOutletContext();
-
+  const { habitat }: OutletContextProps = useOutletContext();
   const { cycleId } = useParams();
 
-  const { authStatus, user } = useAuthenticator((context) => [
-    context.authStatus,
-    context.user,
-  ]);
+  const { user } = useAuthenticator((context) => [context.user]);
 
   const location = useLocation();
-
-  const { data: cycle }: { data: TestCycle | undefined } = useTestCycleById({
-    id: cycleId || '',
-    dependencyArray: [cycleId],
-  });
-
-  const [application, setApplication] = useState<TestApplication>();
   const [activeTab, setActiveTab] = useState(1);
   const [review, setReview] = useState(false);
 
@@ -50,135 +39,212 @@ const ApplicantCyclePage = () => {
     setReview(true);
   };
 
-  const getApplication = useCallback(
-    async (username: string) => {
-      try {
-        if (cycleId) {
-          const existingApplication = await DataStore.query(
-            TestApplication,
-            (c1) =>
-              c1.and((c2) => [
-                c2.ownerID.eq(username),
-                c2.testcycleID.eq(cycleId),
-              ]),
-            {
-              sort: (c) => c.createdAt(SortDirection.DESCENDING),
-            }
-          );
-          return existingApplication[0];
-        }
-      } catch (error) {
-        console.log(`Error fetching the application data. ${error}`);
+  const getData = useCallback(async (): Promise<DataProps> => {
+    try {
+      if (!habitat) {
+        return {
+          display: DISPLAY.ERROR,
+          data: {
+            error: ERROR.HABITAT_NOT_FOUND,
+          },
+        };
       }
-    },
-    [cycleId]
-  );
-
-  const createNewApplication = useCallback(
-    async (username: string) => {
-      try {
-        if (cycle) {
-          const newApplication = await DataStore.save(
-            new TestApplication({
-              ownerID: username,
-              lastPage: 0,
-              lastSection: location.pathname,
-              members: [],
-              submissionStatus: SubmissionStatus.INCOMPLETE,
-              reviewStatus: ReviewStatus.PENDING,
-              submittedDate: '0001-01-01',
-              testcycleID: cycle.id,
-              type: ApplicationTypes.ONLINE,
-            })
-          );
-
-          return newApplication;
-        }
-      } catch (error) {
-        console.log('Error creating new application.');
+      if (!cycleId) {
+        return {
+          display: DISPLAY.ERROR,
+          data: {
+            error: ERROR.CYCLE_NOT_FOUND,
+          },
+        };
       }
-    },
-    [location.pathname, cycle]
-  );
 
-  useEffect(() => {
-    const getOrCreateApplication = async () => {
-      if (user && user.username) {
-        const existingApplication = await getApplication(user.username);
-        if (existingApplication !== undefined) {
-          setApplication(existingApplication);
-        } else if (cycle) {
-          const newApplication = await createNewApplication(user.username);
-          setApplication(newApplication);
-        }
+      const cycle = await DataStore.query(TestCycle, cycleId);
+
+      if (!cycle) {
+        return {
+          display: DISPLAY.ERROR,
+          data: {
+            error: ERROR.CYCLE_NOT_FOUND,
+          },
+        };
       }
-    };
 
-    if (
-      authStatus === 'authenticated' &&
-      application === undefined &&
-      user !== undefined &&
-      habitat
-    ) {
-      getOrCreateApplication();
+      const applications = await DataStore.query(
+        TestApplication,
+        (c1) =>
+          c1.and((c2) => [
+            c2.testcycleID.eq(cycleId),
+            c2.ownerID.eq(user.username),
+          ]),
+        {
+          sort: (c) => c.createdAt(SortDirection.DESCENDING),
+        }
+      );
+
+      let [application] = applications;
+
+      if (!application) {
+        if (!cycle.isOpen) {
+          return {
+            display: DISPLAY.NO_OPEN_CYCLE,
+            data: {
+              error: ERROR.CYCLE_NOT_OPEN,
+              cycle,
+            },
+          };
+        }
+        const newApplication = await DataStore.save(
+          new TestApplication({
+            ownerID: user.username,
+            lastPage: 0,
+            lastSection: location.pathname,
+            submissionStatus: SubmissionStatus.INCOMPLETE,
+            reviewStatus: ReviewStatus.PENDING,
+            submittedDate: '0001-01-01',
+            testcycleID: cycleId,
+            type: ApplicationTypes.ONLINE,
+          })
+        );
+        application = newApplication;
+        return {
+          display: DISPLAY.APPLICATION,
+          data: {
+            cycle,
+            application,
+          },
+        };
+      }
+
+      if (!cycle.isOpen) {
+        return {
+          display: DISPLAY.NO_OPEN_CYCLE,
+          data: {
+            error: ERROR.CYCLE_NOT_OPEN,
+            cycle,
+            application,
+          },
+        };
+      }
+
+      const reviewed =
+        application.reviewStatus === ReviewStatus.ACCEPTED ||
+        application.reviewStatus === ReviewStatus.DENIED ||
+        application.reviewStatus === ReviewStatus.RETURNED;
+
+      if (reviewed || review) {
+        return {
+          display: DISPLAY.REVIEW,
+          data: {
+            cycle,
+            application,
+          },
+        };
+      }
+
+      if (application.submissionStatus === SubmissionStatus.COMPLETED) {
+        return {
+          display: DISPLAY.COMPLETED,
+          data: {
+            cycle,
+            application,
+          },
+        };
+      }
+
+      return {
+        display: DISPLAY.APPLICATION,
+        data: {
+          cycle,
+          application,
+        },
+      };
+    } catch (error) {
+      return {
+        display: DISPLAY.ERROR,
+        data: {
+          error: ERROR.UNEXPECTED_ERROR,
+        },
+      };
     }
+  }, [habitat, cycleId, review, user.username, location.pathname]);
 
-    if (authStatus === 'unauthenticated') {
-      setApplication(undefined);
-    }
-  }, [
-    authStatus,
-    application,
-    user,
-    habitat,
-    cycle,
-    getApplication,
-    createNewApplication,
-  ]);
+  const { value, status } = useAsync({
+    asyncFunction: getData,
+  });
 
-  if (!cycle || !application)
+  // DONE: PENDING
+  if (status === Status.PENDING) {
     return (
-      <div className={`${style.page}`}>
-        <Loader />
-        <span>Loading</span>
-      </div>
-    );
-
-  const reviewed =
-    application.reviewStatus === ReviewStatus.ACCEPTED ||
-    application.reviewStatus === ReviewStatus.DENIED ||
-    application.reviewStatus === ReviewStatus.RETURNED;
-
-  if (!cycle.isOpen && !review && !reviewed)
-    return (
-      <div className={`${style.page}`}>
-        <NoOpenCycle
-          cycle={cycle}
-          onReview={onReview}
-          showReview={
-            application.submissionStatus === SubmissionStatus.COMPLETED
-          }
-        />
-      </div>
-    );
-
-  if (
-    application.submissionStatus === SubmissionStatus.COMPLETED &&
-    !review &&
-    !reviewed
-  ) {
-    return (
-      <div className={`${style.page}`}>
-        <SuccesfullySubmitted
-          habitat={habitat}
-          onReview={onReview}
-          application={application}
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Loader
+          style={{
+            width: '2rem',
+            height: '2rem',
+          }}
+          emptyColor="var(--amplify-colors-neutral-80)"
+          filledColor="var(--amplify-colors-neutral-100)"
         />
       </div>
     );
   }
 
-  if (review || reviewed) {
+  // DONE: REJECTED
+  if (status === Status.REJECTED) {
+    return (
+      <div className={`${style.page}`}>
+        <span>Error</span>
+      </div>
+    );
+  }
+
+  // DONE: ERROR
+  if (value?.display === DISPLAY.ERROR) {
+    return (
+      <div className={`${style.page}`}>
+        <span>{value.data.error}</span>
+      </div>
+    );
+  }
+
+  // DONE: NO_OPEN_CYCLE
+  if (value?.display === DISPLAY.NO_OPEN_CYCLE) {
+    return (
+      <div className={`${style.page}`}>
+        <NoOpenCycle
+          cycle={value?.data?.cycle}
+          onReview={onReview}
+          showReview={
+            value?.data?.application?.submissionStatus ===
+            SubmissionStatus.COMPLETED
+          }
+        />
+      </div>
+    );
+  }
+
+  // DONE: COMPLETED
+  if (value?.display === DISPLAY.COMPLETED) {
+    return (
+      <div className={`${style.page}`}>
+        <SuccesfullySubmitted
+          habitat={habitat}
+          onReview={onReview}
+          application={value.data.application}
+        />
+      </div>
+    );
+  }
+
+  // DONE: REVIEW
+  if (value?.display === DISPLAY.REVIEW) {
     return (
       <div className={`${style.page}`}>
         <div className={style.detailsContainer}>
@@ -192,20 +258,27 @@ const ApplicantCyclePage = () => {
           />
           <div className={style.tabContainer}>
             {activeTab === 0 && (
-              <Form habitat={habitat} application={application} cycle={cycle} />
+              <Form
+                habitat={habitat}
+                application={value.data.application}
+                cycle={value.data.cycle}
+              />
             )}
-            {activeTab === 1 && <Decisions application={application} />}
+            {activeTab === 1 && (
+              <Decisions application={value.data.application} />
+            )}
           </div>
         </div>
       </div>
     );
   }
 
+  // DONE: APPLICATION
   return (
     <Form
       habitat={habitat}
-      application={application}
-      cycle={cycle}
+      application={value?.data?.application}
+      cycle={value?.data?.cycle}
       formContainer={false}
     />
   );
