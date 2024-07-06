@@ -17,6 +17,8 @@ const ProfileBadge = ({ initials }: IProperties) => {
       trigger={
         <Button className={`${style.profileBadge}`}>{initials || ''}</Button>
       }
+      className={style.menu}
+      menuAlign="end"
     >
       <MenuItem onClick={onLogOut}>Log out</MenuItem>
     </Menu>

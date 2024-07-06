@@ -21,30 +21,6 @@
 
 .menu {
   position: absolute;
-  top: 60px;
+  top: 1rem;
   right: 0;
-  z-index: 10;
-
-  border-radius: 0.5rem;
-  padding: 0;
-  margin: 0;
-}
-
-.menuItem {
-  padding: 1rem 1.5rem;
-  border-radius: 0.5rem;
-  border: 1px solid var(--amplify-colors-neutral-80);
-  margin: none;
-
-  color: var(--amplify-colors-primary-100);
-  background-color: var(--amplify-colors-neutral-10);
-
-  text-align: left;
-  white-space: nowrap;
-
-  cursor: pointer;
-}
-
-.menuItem:hover {
-  background-color: var(--amplify-colors-neutral-20);
 }
