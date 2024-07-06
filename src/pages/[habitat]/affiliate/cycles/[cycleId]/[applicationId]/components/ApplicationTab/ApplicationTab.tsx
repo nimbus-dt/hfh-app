@@ -1,22 +1,22 @@
 import { Form } from '@formio/react';
-import { ApplicationTypes, FormAnswer, TestApplication } from 'models';
 
+import { ApplicationTypes, FormAnswer } from 'models';
 import { generateSubmission } from 'utils/formio';
+
+import { ApplicationTabProps } from './ApplicationTab.types';
+
 import PaperApplicationTable from './components/PaperApplicationTable';
 import style from './ApplicationTab.module.css';
 
-interface IProperties {
-  application?: TestApplication;
-  formAnswers: unknown[];
-  formUrl: string;
-}
-
 const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
-const ApplicationTab = ({ application, formAnswers, formUrl }: IProperties) => (
-  <div className={style.formContainer}>
-    <br />
-    {application?.type === ApplicationTypes.ONLINE ? (
+const ApplicationTab = ({
+  application,
+  formAnswers,
+  formUrl,
+}: ApplicationTabProps) => {
+  const render = {
+    [ApplicationTypes.ONLINE]: (
       <Form
         key="review"
         src={`${FORMIO_URL}/${formUrl}`}
@@ -26,10 +26,19 @@ const ApplicationTab = ({ application, formAnswers, formUrl }: IProperties) => (
         }}
         submission={generateSubmission(formAnswers as FormAnswer[])}
       />
-    ) : (
+    ),
+    [ApplicationTypes.PAPER]: (
       <PaperApplicationTable application={application} />
-    )}
-  </div>
-);
+    ),
+    loading: <p>Loading</p>,
+  }[application?.type || 'loading'];
+
+  return (
+    <div className={style.formContainer}>
+      <br />
+      {render}
+    </div>
+  );
+};
 
 export default ApplicationTab;
