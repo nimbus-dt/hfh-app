@@ -3,7 +3,7 @@ import { useLocation, useOutletContext, useParams } from 'react-router-dom';
 import { MdOutlineNoteAlt, MdOutlineLibraryAddCheck } from 'react-icons/md';
 import { DataStore, SortDirection } from 'aws-amplify';
 
-import { Loader, useAuthenticator } from '@aws-amplify/ui-react';
+import { useAuthenticator } from '@aws-amplify/ui-react';
 
 import {
   SubmissionStatus,
@@ -21,6 +21,8 @@ import Form from './components/Form/Form';
 import NoOpenCycle from './components/NoOpenCycle';
 import Decisions from './components/Tabs/Decisions';
 import SuccesfullySubmitted from './components/SuccesfullySubmitted';
+import Loading from './components/Loading';
+import Error from './components/Error';
 import style from './ApplicantCyclePage.module.css';
 import { DataProps, DISPLAY, ERROR } from './ApplicantCyclePage.types';
 
@@ -174,44 +176,17 @@ const ApplicantCyclePage = () => {
 
   // DONE: PENDING
   if (status === Status.PENDING) {
-    return (
-      <div
-        style={{
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Loader
-          style={{
-            width: '2rem',
-            height: '2rem',
-          }}
-          emptyColor="var(--amplify-colors-neutral-80)"
-          filledColor="var(--amplify-colors-neutral-100)"
-        />
-      </div>
-    );
+    return <Loading />;
   }
 
   // DONE: REJECTED
   if (status === Status.REJECTED) {
-    return (
-      <div className={`${style.page}`}>
-        <span>Error</span>
-      </div>
-    );
+    return <Error />;
   }
 
   // DONE: ERROR
   if (value?.display === DISPLAY.ERROR) {
-    return (
-      <div className={`${style.page}`}>
-        <span>{value.data.error}</span>
-      </div>
-    );
+    return <Error error={value.data.error} />;
   }
 
   // DONE: NO_OPEN_CYCLE
