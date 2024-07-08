@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Outlet,
   useParams,
@@ -13,7 +13,7 @@ import { Flex, Text, useAuthenticator } from '@aws-amplify/ui-react';
 import Authentication from 'components/Authentication';
 import BaseLayout from 'layouts/BaseLayout';
 import { Habitat, User } from 'models';
-import { DEFAULT_REVIEW_STATUS, AUTHENTICATION_STATUS } from 'utils/constants';
+import { AUTHENTICATION_STATUS } from 'utils/constants';
 
 import SignUpQuestions from './SignUpQuestions';
 import style from './NewAffiliateLayout.module.css';
@@ -37,77 +37,6 @@ const NewAffiliateLayout = () => {
       navigate(`./home`);
     }
   }, [outlet, navigate, habitatUrlName]);
-
-  const addCustomStatusToHabitat = useCallback(
-    async (newCustomStatus) => {
-      try {
-        const original = await DataStore.query(Habitat, habitat);
-        const persistedHabitat = await DataStore.save(
-          Habitat.copyOf(original, (originalHabitat) => {
-            if (
-              !(
-                originalHabitat.props.customStatus
-                  ? originalHabitat.props.customStatus
-                  : []
-              ).includes(newCustomStatus) &&
-              newCustomStatus !== DEFAULT_REVIEW_STATUS
-            ) {
-              originalHabitat.props.customStatus = originalHabitat.props
-                .customStatus
-                ? [...originalHabitat.props.customStatus, newCustomStatus]
-                : [newCustomStatus];
-            }
-          })
-        );
-        setHabitat(persistedHabitat);
-      } catch (error) {
-        console.log(`Error updating the habitat's custom status.`);
-      }
-    },
-    [habitat]
-  );
-
-  const removeCustomStatusToHabitat = useCallback(
-    async (customStatus) => {
-      try {
-        const original = await DataStore.query(Habitat, habitat);
-        const persistedHabitat = await DataStore.save(
-          Habitat.copyOf(original, (originalHabitat) => {
-            originalHabitat.props.customStatus =
-              originalHabitat.props.customStatus.filter(
-                (customStatusIntem) => customStatusIntem !== customStatus
-              );
-          })
-        );
-        setHabitat(persistedHabitat);
-      } catch (error) {
-        console.log(`Error removing a custom status from the habitat.`);
-      }
-    },
-    [habitat]
-  );
-
-  const updateCustomStatusToHabitat = useCallback(
-    async (oldCustomStatus, newCustomStatus) => {
-      try {
-        const original = await DataStore.query(Habitat, habitat);
-        const persistedHabitat = await DataStore.save(
-          Habitat.copyOf(original, (originalHabitat) => {
-            originalHabitat.props.customStatus = [
-              ...originalHabitat.props.customStatus.filter(
-                (customStatusIntem) => customStatusIntem !== oldCustomStatus
-              ),
-              newCustomStatus,
-            ];
-          })
-        );
-        setHabitat(persistedHabitat);
-      } catch (error) {
-        console.log(`Error updating a custom status from the habitat.`);
-      }
-    },
-    [habitat]
-  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -210,9 +139,6 @@ const NewAffiliateLayout = () => {
           context={{
             habitat,
             setHabitat,
-            addCustomStatusToHabitat,
-            removeCustomStatusToHabitat,
-            updateCustomStatusToHabitat,
           }}
         />
       </BaseLayout>
