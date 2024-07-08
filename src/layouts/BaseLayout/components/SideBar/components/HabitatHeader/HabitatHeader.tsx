@@ -35,6 +35,7 @@ const HabitatHeader = ({ habitat }: IProperties) => {
         whiteSpace="pre-wrap"
         textAlign="center"
         fontSize={habitat?.props?.sidebarName?.fontSize as string}
+        lineHeight={1.1}
       >
         {habitat?.props?.sidebarName?.name}
       </Text>
