@@ -4,40 +4,44 @@ import { PricesProps } from '../types';
 
 const prices: PricesProps = [
   {
-    id: '1',
-    titleBlack: 'Free',
-    titleGray: '',
-    message: (
-      <span>
-        For affiliates building less than{' '}
-        <span style={{ fontWeight: '700', display: 'inline' }}>1 home</span> per
-        year
-      </span>
-    ),
+    id: '2',
+    titleBlack: '$125',
+    titleGray: '/month',
+    message: <span>Small affiliates</span>,
     body: [
       { id: '1', type: 'include', text: 'Custom program forms' },
       { id: '2', type: 'include', text: 'Unlimited application cycles' },
       { id: '3', type: 'include', text: 'Unlimited applications' },
-      { id: '4', type: 'include', text: 'Custom metrics' },
+      { id: '4', type: 'include', text: 'Unlimited users' },
+      { id: '5', type: 'include', text: 'Access to new features' },
     ],
     button: 'Try For Free',
   },
   {
-    id: '2',
+    id: '3',
     titleBlack: '$200',
     titleGray: '/month',
-    message: (
-      <span>
-        For affiliates building more than{' '}
-        <span style={{ fontWeight: '700', display: 'inline' }}>1 home</span> per
-        year
-      </span>
-    ),
+    message: <span>Medium affiliates</span>,
     body: [
       { id: '1', type: 'include', text: 'Custom program forms' },
       { id: '2', type: 'include', text: 'Unlimited application cycles' },
       { id: '3', type: 'include', text: 'Unlimited applications' },
-      { id: '4', type: 'include', text: 'Custom metrics' },
+      { id: '4', type: 'include', text: 'Unlimited users' },
+      { id: '5', type: 'include', text: 'Access to new features' },
+    ],
+    button: 'Try For Free',
+  },
+  {
+    id: '4',
+    titleBlack: '$275',
+    titleGray: '/month',
+    message: <span>Large affiliates</span>,
+    body: [
+      { id: '1', type: 'include', text: 'Custom program forms' },
+      { id: '2', type: 'include', text: 'Unlimited application cycles' },
+      { id: '3', type: 'include', text: 'Unlimited applications' },
+      { id: '4', type: 'include', text: 'Unlimited users' },
+      { id: '5', type: 'include', text: 'Access to new features' },
     ],
     button: 'Try For Free',
   },
