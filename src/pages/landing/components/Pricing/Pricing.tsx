@@ -72,6 +72,15 @@ const Pricing = () => (
         />
       ))}
     </Flex>
+    <Text
+      fontWeight="light"
+      fontSize="10px"
+      lineHeight="29.05px"
+      textAlign="center"
+      color="var(--amplify-colors-neutral-100)"
+    >
+      Monthly prices, charged per year.
+    </Text>
   </Background>
 );
 

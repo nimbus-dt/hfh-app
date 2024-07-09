@@ -74,7 +74,7 @@ const PriceCard = ({
       isFullWidth
       onClick={() => {
         window.location.href =
-          'https://share.hsforms.com/1lqoUQWsfRm2AJVquaEMNCwqw1cl';
+          'https://form-interface-0ce5ae.zapier.app/affiliate-form';
       }}
     >
       {button}
