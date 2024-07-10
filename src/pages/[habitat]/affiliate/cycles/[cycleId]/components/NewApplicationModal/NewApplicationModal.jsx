@@ -163,9 +163,6 @@ const NewApplicationModal = ({ open, onClose, setTrigger, habitat, cycle }) => {
             <option value={ReviewStatus.ACCEPTED}>
               {stringToHumanReadable(ReviewStatus.ACCEPTED)}
             </option>
-            <option value={ReviewStatus.RETURNED}>
-              {stringToHumanReadable(ReviewStatus.RETURNED)}
-            </option>
             <option value={ReviewStatus.DENIED}>
               {stringToHumanReadable(ReviewStatus.DENIED)}
             </option>
