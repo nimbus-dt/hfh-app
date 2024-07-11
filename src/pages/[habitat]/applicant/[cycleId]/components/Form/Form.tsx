@@ -1,35 +1,29 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Form as FormioForm, Wizard } from '@formio/react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   FormAnswer,
-  Habitat,
   TestApplication,
-  TestCycle,
   SubmissionStatus,
   ReviewStatus,
   LazyFormAnswer,
+  RootForm,
 } from 'models';
 import { DataStore } from 'aws-amplify';
 import { generateSubmission } from 'utils/formio';
 import { Options } from '@formio/react/lib/components/Form';
-import { useFormAnswersQuery, useFormById } from 'hooks/services';
 import Modal from 'components/Modal';
 import dayjs from 'dayjs';
 import { usePostHog } from 'posthog-js/react';
 import { Button, Flex, Text } from '@aws-amplify/ui-react';
 import CustomButton from 'components/CustomButton/CustomButton';
+import useAsync from 'hooks/utils/useAsync/useAsync';
 import { RecursiveModelPredicate } from '@aws-amplify/datastore';
+import { Status } from 'utils/enums';
 import uploadSubmission from './services/uploadSubmission';
 import style from './Form.module.css';
 import FormLayout from './layouts/FormLayout';
-
-interface IProperties {
-  habitat?: Habitat;
-  application?: TestApplication;
-  cycle?: TestCycle;
-  formContainer?: boolean;
-}
+import FormProps, { DataProps, DISPLAY, ERROR } from './Form.types';
 
 const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
@@ -38,25 +32,59 @@ const Form = ({
   application,
   cycle,
   formContainer = true,
-}: IProperties) => {
-  const [reviewMode, setReviewMode] = useState(false);
-  const [formReady, setFormReady] = useState<typeof Wizard>();
+}: FormProps) => {
   const posthog = usePostHog();
-
+  const navigate = useNavigate();
+  const [formReady, setFormReady] = useState<typeof Wizard>();
+  const [reviewMode, setReviewMode] = useState(false);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
 
-  const { data: formAnswers }: { data: FormAnswer[] } = useFormAnswersQuery({
-    criteria: (c1: RecursiveModelPredicate<LazyFormAnswer>) =>
-      c1.testapplicationID.eq(application?.id || ''),
-    dependencyArray: [application, reviewMode],
-    paginationProducer: undefined,
-  });
+  const getData = useCallback(async (): Promise<DataProps> => {
+    try {
+      if (cycle?.rootformID === undefined)
+        return {
+          display: DISPLAY.ERROR,
+          data: {
+            error: ERROR.CYCLE_NOT_FOUND,
+          },
+        };
+      const form = await DataStore.query(RootForm, cycle?.rootformID || '');
 
-  const navigate = useNavigate();
+      const formAnswers = await DataStore.query(
+        FormAnswer,
+        (c1: RecursiveModelPredicate<LazyFormAnswer>) =>
+          c1.testapplicationID.eq(application?.id || ''),
+        undefined
+      );
 
-  const { data: form } = useFormById({
-    id: cycle?.rootformID || '',
-    dependencyArray: [cycle],
+      if (!form) {
+        return {
+          display: DISPLAY.ERROR,
+          data: {
+            error: ERROR.CYCLE_NOT_FOUND,
+          },
+        };
+      }
+
+      return {
+        display: DISPLAY.APPLICATION,
+        data: {
+          form,
+          formAnswers,
+        },
+      };
+    } catch (error) {
+      return {
+        display: DISPLAY.ERROR,
+        data: {
+          error: ERROR.UNEXPECTED_ERROR,
+        },
+      };
+    }
+  }, [cycle, application]);
+
+  const { value, status } = useAsync({
+    asyncFunction: getData,
   });
 
   const handleOnReview = async (submission: unknown) => {
@@ -129,118 +157,144 @@ const Form = ({
     setShowSubmitModal(false);
   };
 
-  return (
-    form && (
+  const handleFormReady = (f: typeof Wizard) => {
+    setFormReady(f);
+  };
+
+  const handleNextPage = ({
+    submission,
+    page,
+  }: {
+    submission: unknown;
+    page: number;
+  }) => {
+    uploadSubmission({
+      submission,
+      application,
+      nextPage: page,
+    });
+  };
+
+  const options = {
+    additional: {
+      application,
+      habitat,
+      openCycle: cycle,
+    },
+  } as Options;
+
+  const reviewOptions = {
+    readOnly: true,
+    renderMode: 'flat',
+  };
+
+  if (status === Status.PENDING || !value) {
+    return null;
+  }
+
+  if (status === Status.REJECTED) {
+    return <div>Error</div>;
+  }
+
+  if (value.display === DISPLAY.ERROR || !habitat || !cycle || !application) {
+    return <div>Error</div>;
+  }
+
+  const submission = generateSubmission(value.data.formAnswers || []);
+  const src = `${FORMIO_URL}/${cycle?.formUrl}`;
+
+  if (
+    reviewMode ||
+    application?.submissionStatus === SubmissionStatus.COMPLETED
+  ) {
+    return (
       <div style={{ padding: 0 }}>
         <div>
-          {reviewMode ||
-          application?.submissionStatus === SubmissionStatus.COMPLETED ? (
-            <div
-              className={
-                formContainer
-                  ? style.formContainer
-                  : `${style.formContainer} ${style.newpadding}`
-              }
+          <div
+            className={
+              formContainer
+                ? style.formContainer
+                : `${style.formContainer} ${style.newpadding}`
+            }
+          >
+            <FormioForm
+              key="review"
+              src={src}
+              options={reviewOptions}
+              submission={submission}
+            />
+            <Modal
+              title="Alert"
+              width={{ base: '95%', medium: '30rem' }}
+              open={showSubmitModal}
+              onClickClose={handleOnClickSubmitModalClose}
             >
-              <FormioForm
-                key="review"
-                src={`${FORMIO_URL}/${cycle?.formUrl}`}
-                options={{
-                  readOnly: true,
-                  renderMode: 'flat',
-                }}
-                submission={generateSubmission(formAnswers)}
-              />
-              <Modal
-                title="Alert"
-                width={{ base: '95%', medium: '30rem' }}
-                open={showSubmitModal}
-                onClickClose={handleOnClickSubmitModalClose}
-              >
-                <Text>
-                  Are you sure you want to submit your application? Once
-                  submited you won't be able to resubmit.
-                </Text>
-                <br />
-                <Flex width="100%" justifyContent="end">
-                  <Button variation="primary" onClick={handleOnSubmit}>
-                    Accept
-                  </Button>
-                  <Button onClick={handleOnClickSubmitModalClose}>
-                    Cancel
-                  </Button>
-                </Flex>
-              </Modal>
-              <Flex justifyContent="space-between">
-                {application?.submissionStatus !==
-                SubmissionStatus.COMPLETED ? (
-                  <>
-                    <CustomButton
-                      onClick={handleOnClickGoBack}
-                      variation="secondary"
-                    >
-                      Go back to edit
-                    </CustomButton>
-                    <CustomButton
-                      onClick={handleOnClickSubmit}
-                      variation="primary"
-                    >
-                      Submit
-                    </CustomButton>
-                  </>
-                ) : (
-                  <Link to="../applications">
-                    <CustomButton variation="primary">Go back</CustomButton>
-                  </Link>
-                )}
+              <Text>
+                Are you sure you want to submit your application? Once submited
+                you won't be able to resubmit.
+              </Text>
+              <br />
+              <Flex width="100%" justifyContent="end">
+                <Button variation="primary" onClick={handleOnSubmit}>
+                  Accept
+                </Button>
+                <Button onClick={handleOnClickSubmitModalClose}>Cancel</Button>
               </Flex>
-            </div>
-          ) : (
-            <FormLayout
-              formReady={formReady}
-              habitat={habitat}
-              application={application}
-              cycle={cycle}
-            >
-              <div
-                className={`${style.formContainer}`}
-                style={{ padding: '2rem 1rem' }}
-              >
-                <FormioForm
-                  key="real"
-                  src={`${FORMIO_URL}/${cycle?.formUrl}`}
-                  onSubmit={handleOnReview}
-                  formReady={(f: typeof Wizard) => setFormReady(f)}
-                  options={
-                    {
-                      additional: {
-                        application,
-                        habitat,
-                        openCycle: cycle,
-                      },
-                    } as Options
-                  }
-                  submission={generateSubmission(formAnswers)}
-                  onNextPage={({
-                    submission,
-                    page,
-                  }: {
-                    submission: unknown;
-                    page: number;
-                  }) => {
-                    uploadSubmission({
-                      submission,
-                      application,
-                      nextPage: page,
-                    });
-                  }}
-                />
-              </div>
-            </FormLayout>
-          )}
+            </Modal>
+            <Flex justifyContent="space-between">
+              {application?.submissionStatus !== SubmissionStatus.COMPLETED ? (
+                <>
+                  <CustomButton
+                    onClick={handleOnClickGoBack}
+                    variation="secondary"
+                  >
+                    Go back to edit
+                  </CustomButton>
+                  <CustomButton
+                    onClick={handleOnClickSubmit}
+                    variation="primary"
+                  >
+                    Submit
+                  </CustomButton>
+                </>
+              ) : (
+                <Link to="../applications">
+                  <CustomButton variation="primary">Go back</CustomButton>
+                </Link>
+              )}
+            </Flex>
+          </div>
         </div>
       </div>
-    )
+    );
+  }
+
+  return (
+    <div style={{ padding: 0 }}>
+      <div>
+        <FormLayout
+          formReady={formReady}
+          habitat={habitat}
+          application={application}
+          cycle={cycle}
+        >
+          <div
+            className={`${style.formContainer}`}
+            style={{ padding: '2rem 1rem' }}
+          >
+            <FormioForm
+              key="real"
+              src={src}
+              submission={submission}
+              options={options}
+              onNextPage={handleNextPage}
+              onSubmit={handleOnReview}
+              formReady={handleFormReady}
+            />
+          </div>
+        </FormLayout>
+      </div>
+    </div>
   );
 };
 

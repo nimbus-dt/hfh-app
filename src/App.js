@@ -1,8 +1,5 @@
 import './assets/styles/App.css';
 import { Routes, Route } from 'react-router-dom';
-import AffiliatePortalRepairsPage from 'pages/[habitat]/affiliate/repairs';
-import AffiliatePortalVolunteersPage from 'pages/[habitat]/affiliate/volunteers';
-import AffiliatePortalSettingsPage from 'pages/[habitat]/affiliate/settings';
 // eslint-disable-next-line import/no-unresolved
 import '@aws-amplify/ui-react/styles.css';
 import ApplicantCyclePage from 'pages/[habitat]/applicant/[cycleId]';
@@ -56,18 +53,6 @@ function App() {
           <Route
             path={ROUTES.HABITAT_AFFILIATE_HOME}
             element={<h1>This page is under construction</h1>}
-          />
-          <Route
-            path={ROUTES.HABITAT_AFFILIATE_REPAIRS}
-            element={<AffiliatePortalRepairsPage />}
-          />
-          <Route
-            path={ROUTES.HABITAT_AFFILIATE_VOLUNTEERS}
-            element={<AffiliatePortalVolunteersPage />}
-          />
-          <Route
-            path={ROUTES.HABITAT_AFFILIATE_SETTINGS}
-            element={<AffiliatePortalSettingsPage />}
           />
           <Route
             path={ROUTES.HABITAT_AFFILIATE_FORMS}

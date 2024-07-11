@@ -66,7 +66,6 @@ const FormLayout = ({
         );
       })
       .catch((error: unknown) => {
-        console.log(error);
         posthog?.capture(
           `form_previous_error_from_page_${
             currentPage + 1

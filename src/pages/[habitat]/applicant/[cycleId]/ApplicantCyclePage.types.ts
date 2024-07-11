@@ -6,7 +6,7 @@ export const enum DISPLAY {
   NO_OPEN_CYCLE = 'noOpenCycle',
   APPLICATION = 'application',
   COMPLETED = 'completed',
-  REVIEW = 'review',
+  REVIEWED = 'reviewed',
 }
 
 export const enum ERROR {
@@ -32,7 +32,7 @@ interface DisplayApplicationProps {
 }
 
 interface DisplayReviewProps {
-  display: DISPLAY.REVIEW;
+  display: DISPLAY.REVIEWED;
   data: {
     cycle: TestCycle;
     application: TestApplication;

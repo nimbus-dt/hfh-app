@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react';
 import { useLocation, useOutletContext, useParams } from 'react-router-dom';
-import { MdOutlineNoteAlt, MdOutlineLibraryAddCheck } from 'react-icons/md';
 import { DataStore, SortDirection } from 'aws-amplify';
 
 import { useAuthenticator } from '@aws-amplify/ui-react';
@@ -13,18 +12,17 @@ import {
   ApplicationTypes,
 } from 'models';
 import { OutletContextProps } from 'types';
-import LocalNavigation from 'pages/[habitat]/affiliate/cycles/[cycleId]/[applicationId]/components/LocalNavigation';
 import useAsync from 'hooks/utils/useAsync/useAsync';
 import { Status } from 'utils/enums';
 
 import Form from './components/Form/Form';
 import NoOpenCycle from './components/NoOpenCycle';
-import Decisions from './components/Tabs/Decisions';
 import SuccesfullySubmitted from './components/SuccesfullySubmitted';
 import Loading from './components/Loading';
 import Error from './components/Error';
 import style from './ApplicantCyclePage.module.css';
 import { DataProps, DISPLAY, ERROR } from './ApplicantCyclePage.types';
+import Reviewed from './components/Reviewed/Reviewed';
 
 const ApplicantCyclePage = () => {
   const { habitat }: OutletContextProps = useOutletContext();
@@ -117,17 +115,6 @@ const ApplicantCyclePage = () => {
         };
       }
 
-      if (!cycle.isOpen) {
-        return {
-          display: DISPLAY.NO_OPEN_CYCLE,
-          data: {
-            error: ERROR.CYCLE_NOT_OPEN,
-            cycle,
-            application,
-          },
-        };
-      }
-
       const reviewed =
         application.reviewStatus === ReviewStatus.ACCEPTED ||
         application.reviewStatus === ReviewStatus.DENIED ||
@@ -135,7 +122,7 @@ const ApplicantCyclePage = () => {
 
       if (reviewed || review) {
         return {
-          display: DISPLAY.REVIEW,
+          display: DISPLAY.REVIEWED,
           data: {
             cycle,
             application,
@@ -147,6 +134,17 @@ const ApplicantCyclePage = () => {
         return {
           display: DISPLAY.COMPLETED,
           data: {
+            cycle,
+            application,
+          },
+        };
+      }
+
+      if (!cycle.isOpen) {
+        return {
+          display: DISPLAY.NO_OPEN_CYCLE,
+          data: {
+            error: ERROR.CYCLE_NOT_OPEN,
             cycle,
             application,
           },
@@ -174,22 +172,36 @@ const ApplicantCyclePage = () => {
     asyncFunction: getData,
   });
 
-  // DONE: PENDING
   if (status === Status.PENDING) {
     return <Loading />;
   }
 
-  // DONE: REJECTED
   if (status === Status.REJECTED) {
     return <Error />;
   }
 
-  // DONE: ERROR
   if (value?.display === DISPLAY.ERROR) {
     return <Error error={value.data.error} />;
   }
 
-  // DONE: NO_OPEN_CYCLE
+  if (!habitat) {
+    return <Error error={ERROR.HABITAT_NOT_FOUND} />;
+  }
+
+  if (value?.display === DISPLAY.REVIEWED) {
+    return (
+      <div className={`${style.page}`}>
+        <Reviewed
+          habitat={habitat}
+          cycle={value.data.cycle}
+          application={value.data.application}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+        />
+      </div>
+    );
+  }
+
   if (value?.display === DISPLAY.NO_OPEN_CYCLE) {
     return (
       <div className={`${style.page}`}>
@@ -205,7 +217,6 @@ const ApplicantCyclePage = () => {
     );
   }
 
-  // DONE: COMPLETED
   if (value?.display === DISPLAY.COMPLETED) {
     return (
       <div className={`${style.page}`}>
@@ -218,37 +229,6 @@ const ApplicantCyclePage = () => {
     );
   }
 
-  // DONE: REVIEW
-  if (value?.display === DISPLAY.REVIEW) {
-    return (
-      <div className={`${style.page}`}>
-        <div className={style.detailsContainer}>
-          <LocalNavigation
-            items={[
-              { label: 'Application', icon: <MdOutlineNoteAlt /> },
-              { label: 'Decisions', icon: <MdOutlineLibraryAddCheck /> },
-            ]}
-            current={activeTab}
-            onChange={(newCurrent) => setActiveTab(newCurrent)}
-          />
-          <div className={style.tabContainer}>
-            {activeTab === 0 && (
-              <Form
-                habitat={habitat}
-                application={value.data.application}
-                cycle={value.data.cycle}
-              />
-            )}
-            {activeTab === 1 && (
-              <Decisions application={value.data.application} />
-            )}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // DONE: APPLICATION
   return (
     <Form
       habitat={habitat}
