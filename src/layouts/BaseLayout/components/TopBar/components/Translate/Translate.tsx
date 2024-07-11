@@ -5,6 +5,7 @@ import { Menu, MenuItem } from '@aws-amplify/ui-react';
 
 const Translate = () => {
   const { t, i18n } = useTranslation();
+
   const lngs: { [key: string]: { nativeName: string } } = {
     en: { nativeName: t('English') },
     es: { nativeName: t('Spanish') },
