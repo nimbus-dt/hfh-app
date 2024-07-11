@@ -2,7 +2,11 @@ import { Habitat } from 'models';
 import React, { useMemo, useState } from 'react';
 import HabitatContext from 'contexts/HabitatContext';
 
-const HabitatProvider = () => {
+interface IProperties {
+  children: React.ReactNode;
+}
+
+const HabitatProvider = ({ children }: IProperties) => {
   const [habitat, setHabitat] = useState<Habitat>();
 
   const contextValue = useMemo(
@@ -10,7 +14,11 @@ const HabitatProvider = () => {
     [habitat, setHabitat]
   );
 
-  return <HabitatContext.Provider value={contextValue} />;
+  return (
+    <HabitatContext.Provider value={contextValue}>
+      {children}
+    </HabitatContext.Provider>
+  );
 };
 
 export default HabitatProvider;
