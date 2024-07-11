@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Form as FormioForm, Wizard } from '@formio/react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -21,6 +21,8 @@ import { Button, Flex, Text } from '@aws-amplify/ui-react';
 import CustomButton from 'components/CustomButton/CustomButton';
 import { RecursiveModelPredicate } from '@aws-amplify/datastore';
 import { useTranslation } from 'react-i18next';
+import useAsync from 'hooks/utils/useAsync/useAsync';
+import { Status } from 'utils/enums';
 import uploadSubmission from './services/uploadSubmission';
 import style from './Form.module.css';
 import FormLayout from './layouts/FormLayout';
@@ -40,10 +42,9 @@ const Form = ({
   cycle,
   formContainer = true,
 }: IProperties) => {
-  const { i18n: i18next } = useTranslation();
+  const { i18n } = useTranslation();
   const [reviewMode, setReviewMode] = useState(false);
   const [formReady, setFormReady] = useState<typeof Wizard>();
-  const [i18n, setI18n] = useState<{ [key: string]: unknown }>();
   const posthog = usePostHog();
 
   const [showSubmitModal, setShowSubmitModal] = useState(false);
@@ -54,23 +55,25 @@ const Form = ({
     dependencyArray: [application, reviewMode],
     paginationProducer: undefined,
   });
-  const { language } = i18next;
+  const { language } = i18n;
 
-  useEffect(() => {
-    const fetchI18n = async () => {
-      const response = await fetch(
-        `https://form.habitat-app.org/jcxuakumlexxzla/language/submission?data.language=${language}`
-      );
-      const array = await response.json();
-      const { data } = array[0];
-      const { translation } = data;
-      console.log(translation);
-      setI18n({
-        [`${language}`]: translation,
-      });
+  const fetchI18n = useCallback(async (): Promise<{
+    [key: string]: unknown;
+  }> => {
+    const response = await fetch(
+      `${FORMIO_URL}/language/submission?data.language=${language}`
+    );
+    const array = await response.json();
+    const { data } = array[0];
+    const { translation } = data;
+    return {
+      [`${language}`]: translation,
     };
-    fetchI18n();
   }, [language]);
+
+  const { value, status } = useAsync({
+    asyncFunction: fetchI18n,
+  });
 
   const navigate = useNavigate();
 
@@ -149,9 +152,12 @@ const Form = ({
     setShowSubmitModal(false);
   };
 
+  if (status === Status.PENDING) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    form &&
-    i18n && (
+    form && (
       <div style={{ padding: 0 }}>
         <div>
           {reviewMode ||
@@ -240,7 +246,7 @@ const Form = ({
                         openCycle: cycle,
                       },
                       language,
-                      i18n,
+                      i18n: value,
                     } as Options
                   }
                   submission={generateSubmission(formAnswers)}
