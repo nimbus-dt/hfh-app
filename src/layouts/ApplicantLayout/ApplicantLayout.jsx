@@ -1,9 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Outlet, useLocation, useParams } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { DataStore, SortDirection } from 'aws-amplify';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import Authentication from 'components/Authentication';
-import useHabitatByUrlName from 'hooks/services/useHabitatByUrlName';
 import useScrollToTopOnRouteChange from 'hooks/utils/useScrollToTopOnRouteChange';
 import {
   TestApplication,
@@ -14,16 +13,12 @@ import {
 import { DEFAULT_REVIEW_STATUS } from 'utils/constants';
 import { getHabitatOpenCycle } from 'utils/misc';
 import BaseLayout from 'layouts/BaseLayout';
-
+import useHabitat from 'hooks/utils/useHabitat';
 import { AUTHENTICATION_STATUS } from './utils';
 import SignUpQuestions from './SignUpQuestions';
 
 const HabitatLayout = () => {
-  const { habitat: habitatUrlName } = useParams();
-
-  const { habitat } = useHabitatByUrlName({
-    habitatUrlName,
-  });
+  const { habitat } = useHabitat();
 
   const [userData, setUserData] = useState();
 
