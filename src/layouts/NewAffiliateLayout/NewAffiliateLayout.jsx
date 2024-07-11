@@ -1,25 +1,17 @@
 import { useEffect, useState } from 'react';
-import {
-  Outlet,
-  useParams,
-  useOutlet,
-  useNavigate,
-  Navigate,
-} from 'react-router-dom';
+import { Outlet, useOutlet, useNavigate, Navigate } from 'react-router-dom';
 import { DataStore } from 'aws-amplify';
-
 import { Flex, Text, useAuthenticator } from '@aws-amplify/ui-react';
-
 import Authentication from 'components/Authentication';
 import BaseLayout from 'layouts/BaseLayout';
-import { Habitat, User } from 'models';
+import { User } from 'models';
 import { AUTHENTICATION_STATUS } from 'utils/constants';
-
+import useHabitat from 'hooks/utils/useHabitat';
 import SignUpQuestions from './SignUpQuestions';
 import style from './NewAffiliateLayout.module.css';
 
 const NewAffiliateLayout = () => {
-  const [habitat, setHabitat] = useState(null);
+  const { habitat, setHabitat } = useHabitat();
   const [isUserAllowed, setIsUserAllowed] = useState(false);
   const [isLoading, setIsLoading] = useState(0);
   const { authStatus, user } = useAuthenticator((context) => [
@@ -30,27 +22,17 @@ const NewAffiliateLayout = () => {
   const outlet = useOutlet();
   const navigate = useNavigate();
 
-  const habitatUrlName = useParams('habitat').habitat;
-
   useEffect(() => {
     if (!outlet) {
       navigate(`./home`);
     }
-  }, [outlet, navigate, habitatUrlName]);
+  }, [outlet, navigate]);
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading((previousIsLoading) => previousIsLoading + 1);
       try {
-        const habitatsResponse = await DataStore.query(Habitat, (c) =>
-          c.urlName.eq(habitatUrlName)
-        );
-
-        const habitatObject = habitatsResponse[0];
-
-        setHabitat(habitatObject);
-
-        const allowedUsers = habitatObject.users || [];
+        const allowedUsers = habitat.users || [];
 
         if (user && allowedUsers.includes(user.username)) {
           setIsUserAllowed(true);
@@ -64,7 +46,7 @@ const NewAffiliateLayout = () => {
     };
 
     fetchData();
-  }, [habitatUrlName, user, authStatus]);
+  }, [user, authStatus, setHabitat, habitat]);
 
   useEffect(() => {
     const getUserData = async () => {
