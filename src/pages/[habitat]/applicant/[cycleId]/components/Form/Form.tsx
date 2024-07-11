@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Form as FormioForm, Wizard } from '@formio/react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -20,6 +20,7 @@ import { usePostHog } from 'posthog-js/react';
 import { Button, Flex, Text } from '@aws-amplify/ui-react';
 import CustomButton from 'components/CustomButton/CustomButton';
 import { RecursiveModelPredicate } from '@aws-amplify/datastore';
+import { useTranslation } from 'react-i18next';
 import uploadSubmission from './services/uploadSubmission';
 import style from './Form.module.css';
 import FormLayout from './layouts/FormLayout';
@@ -39,8 +40,10 @@ const Form = ({
   cycle,
   formContainer = true,
 }: IProperties) => {
+  const { i18n: i18next } = useTranslation();
   const [reviewMode, setReviewMode] = useState(false);
   const [formReady, setFormReady] = useState<typeof Wizard>();
+  const [i18n, setI18n] = useState<{ [key: string]: unknown }>();
   const posthog = usePostHog();
 
   const [showSubmitModal, setShowSubmitModal] = useState(false);
@@ -51,6 +54,23 @@ const Form = ({
     dependencyArray: [application, reviewMode],
     paginationProducer: undefined,
   });
+  const { language } = i18next;
+
+  useEffect(() => {
+    const fetchI18n = async () => {
+      const response = await fetch(
+        `https://form.habitat-app.org/jcxuakumlexxzla/language/submission?data.language=${language}`
+      );
+      const array = await response.json();
+      const { data } = array[0];
+      const { translation } = data;
+      console.log(translation);
+      setI18n({
+        [`${language}`]: translation,
+      });
+    };
+    fetchI18n();
+  }, [language]);
 
   const navigate = useNavigate();
 
@@ -130,7 +150,8 @@ const Form = ({
   };
 
   return (
-    form && (
+    form &&
+    i18n && (
       <div style={{ padding: 0 }}>
         <div>
           {reviewMode ||
@@ -207,7 +228,7 @@ const Form = ({
                 style={{ padding: '2rem 1rem' }}
               >
                 <FormioForm
-                  key="real"
+                  key={`real-${language}`}
                   src={`${FORMIO_URL}/${cycle?.formUrl}`}
                   onSubmit={handleOnReview}
                   formReady={(f: typeof Wizard) => setFormReady(f)}
@@ -218,6 +239,8 @@ const Form = ({
                         habitat,
                         openCycle: cycle,
                       },
+                      language,
+                      i18n,
                     } as Options
                   }
                   submission={generateSubmission(formAnswers)}
