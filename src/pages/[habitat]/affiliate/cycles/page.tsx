@@ -1,10 +1,9 @@
 import { useCallback, useState } from 'react';
-import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { DataStore, SortDirection } from 'aws-amplify';
 import { Button } from '@aws-amplify/ui-react';
 import { MdOutlineOpenInNew, MdFilterList } from 'react-icons/md';
 import { throttle } from 'lodash';
-
 import BreadCrumbs from 'components/BreadCrumbs/BreadCrumbs';
 import Chip from 'components/Chip';
 import Loading from 'components/Loading';
@@ -13,27 +12,27 @@ import GoBack from 'components/GoBack';
 import TableWithPaginator from 'components/TableWithPaginator';
 import { useRootFormById } from 'hooks/services';
 import useAsync from 'hooks/utils/useAsync/useAsync';
-import { Habitat, RootForm, TestCycle } from 'models';
+import { RootForm, TestCycle } from 'models';
 import { convertDateYYYYMMDDtoDDMMYYYY } from 'utils/dates';
 import { Status } from 'utils/enums';
-
+import useHabitat from 'hooks/utils/useHabitat';
 import Filters from './components/filters';
 import NewCycle from './components/newCycle';
 import styles from './styles.module.css';
 import headers from './utils/headers';
 import { Inputs } from './types';
 
-interface OutletContextProps {
-  habitat?: Habitat;
-}
-
 const CyclesPage = () => {
   const navigate = useNavigate();
+
   const { formId } = useParams();
-  const context = useOutletContext<OutletContextProps>();
-  const habitat = context?.habitat;
+
+  const { habitat } = useHabitat();
+
   const [showFilters, setShowFilters] = useState(false);
+
   const [showModal, setShowModal] = useState(false);
+
   const [filters, setFilters] = useState<Inputs>({
     startDate: '',
     endDate: '',

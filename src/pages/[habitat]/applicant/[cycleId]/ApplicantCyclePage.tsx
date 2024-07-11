@@ -1,31 +1,26 @@
 import { Loader, useAuthenticator } from '@aws-amplify/ui-react';
-import { useLocation, useOutletContext, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import {
-  Habitat,
   SubmissionStatus,
   TestApplication,
   TestCycle,
   ReviewStatus,
   ApplicationTypes,
-  User,
 } from 'models';
 import { MdOutlineNoteAlt, MdOutlineLibraryAddCheck } from 'react-icons/md';
 import { useCallback, useEffect, useState } from 'react';
 import { DataStore, SortDirection } from 'aws-amplify';
 import { useTestCycleById } from 'hooks/services';
 import LocalNavigation from 'pages/[habitat]/affiliate/cycles/[cycleId]/[applicationId]/components/LocalNavigation';
+import useHabitat from 'hooks/utils/useHabitat';
 import Form from './components/Form/Form';
 import SuccesfullySubmitted from './components/SuccesfullySubmitted';
 import NoOpenCycle from './components/NoOpenCycle';
 import style from './ApplicantCyclePage.module.css';
 import Decisions from './components/Tabs/Decisions';
 
-interface IOutletContext {
-  habitat?: Habitat;
-}
-
 const ApplicantCyclePage = () => {
-  const { habitat }: IOutletContext = useOutletContext();
+  const { habitat } = useHabitat();
 
   const { cycleId } = useParams();
 
@@ -83,7 +78,6 @@ const ApplicantCyclePage = () => {
               ownerID: username,
               lastPage: 0,
               lastSection: location.pathname,
-              members: [],
               submissionStatus: SubmissionStatus.INCOMPLETE,
               reviewStatus: ReviewStatus.PENDING,
               submittedDate: '0001-01-01',

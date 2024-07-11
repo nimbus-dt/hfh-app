@@ -21,12 +21,7 @@ import {
   MdOutlineLink,
   MdOutlineOpenInNew,
 } from 'react-icons/md';
-import {
-  Link,
-  useLocation,
-  useOutletContext,
-  useParams,
-} from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { stringToHumanReadable } from 'utils/strings';
 import IconButton from 'components/IconButton';
 import BreadCrumbs from 'components/BreadCrumbs/BreadCrumbs';
@@ -34,9 +29,9 @@ import DropdownMenu from 'components/DropdownMenu';
 import GoBack from 'components/GoBack';
 import { DEFAULT_REVIEW_STATUS } from 'utils/constants';
 import { useBreakpointValue } from '@aws-amplify/ui-react';
-
 import { convertDateYYYYMMDDtoDDMMYYYY } from 'utils/dates';
 import StatusChip from 'components/StatusChip';
+import useHabitat from 'hooks/utils/useHabitat';
 import style from './AffiliateCycleApplications.module.css';
 import NewApplicationModal from './components/NewApplicationModal';
 import StatusModal from './components/StatusModal';
@@ -45,24 +40,25 @@ import Filters from './components/Filters';
 import Username from './components/Username';
 import { handleCopyToClipboard } from './utils';
 
-interface IOutletContext {
-  habitat?: Habitat;
-  setHabitat: (habitat: Habitat) => void;
-}
-
 const AffiliateCycleApplications = () => {
   const { pathname } = useLocation();
+
   const isSmall = useBreakpointValue({
     base: true,
     medium: false,
   });
   const { cycleId } = useParams();
-  const { habitat, setHabitat } = useOutletContext<IOutletContext>();
+
+  const { habitat, setHabitat } = useHabitat();
+
   const [statusModalOpen, setStatusModalOpen] = useState(false);
+
   const [newApplicationOpen, setNewApplicationOpen] = useState(false);
+
   const [trigger, setTrigger] = useState(0);
 
   const [filterModal, setFilterModal] = useState(false);
+
   const [filters, setFilters] = useState<Inputs>({
     startDateSubmitted: '',
     endDateSubmitted: '',
@@ -70,6 +66,7 @@ const AffiliateCycleApplications = () => {
     reviewStatus: null,
     customStatus: '',
   });
+
   const { data: applications }: { data: TestApplication[] } =
     useTestApplicationsQuery({
       criteria: (c1: RecursiveModelPredicate<LazyTestApplication>) =>
