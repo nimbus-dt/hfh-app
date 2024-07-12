@@ -230,7 +230,6 @@ const CyclesPage = () => {
             value.openCycles.length > 0 ? value.openCycles[0] : undefined
           }
           rootForm={rootForm}
-          habitat={habitat}
           open={showModal}
           close={() => setShowModal(false)}
         />
