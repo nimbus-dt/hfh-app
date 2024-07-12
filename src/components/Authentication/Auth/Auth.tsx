@@ -4,19 +4,20 @@
 import { Authenticator, Button, useAuthenticator } from '@aws-amplify/ui-react';
 import { Auth } from 'aws-amplify';
 import { usePostHog } from 'posthog-js/react';
-
-import { Habitat } from 'models';
-
+import useHabitat from 'hooks/utils/useHabitat';
 import styles from './styles.module.css';
 
 interface AuthProps {
   type: 'applicant' | 'affiliate';
-  header: string;
-  habitat: Habitat;
 }
 
-const AuthComponent = ({ habitat, type, header }: AuthProps) => {
+const AuthComponent = ({ type }: AuthProps) => {
+  const { habitat } = useHabitat();
+
+  const header = habitat?.authenticationHeader || '';
+
   const posthog = usePostHog();
+
   const auth = useAuthenticator();
 
   const formFields = {
@@ -126,7 +127,7 @@ const AuthComponent = ({ habitat, type, header }: AuthProps) => {
             posthog?.identify(user?.attributes?.email, {
               ...user,
               type,
-              habitat
+              habitat,
             });
             posthog?.group('habitat', habitat?.name || 'unknown');
             posthog?.group('type', type || 'unknown');
