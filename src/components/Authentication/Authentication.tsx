@@ -8,13 +8,13 @@ interface AuthenticationProps {
   type: 'applicant' | 'affiliate';
 }
 
-const Authentication = ({ gallery, type }: AuthenticationProps) => {
+const Authentication = ({ gallery, type }: AuthenticationProps) => (
   <div className={styles.container}>
     <div className={styles.authentification}>
       <Auth type={type} />
     </div>
     {!(type === 'affiliate') && gallery && <Gallery data={gallery} />}
-  </div>;
-};
+  </div>
+);
 
 export default Authentication;
