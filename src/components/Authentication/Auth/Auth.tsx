@@ -126,7 +126,7 @@ const AuthComponent = ({ habitat, type, header }: AuthProps) => {
             posthog?.identify(user?.attributes?.email, {
               ...user,
               type,
-              habitat
+              habitat,
             });
             posthog?.group('habitat', habitat?.name || 'unknown');
             posthog?.group('type', type || 'unknown');
@@ -134,6 +134,7 @@ const AuthComponent = ({ habitat, type, header }: AuthProps) => {
             return user;
           } catch (error) {
             console.error(error);
+            return Auth.signIn(username, password);
           }
         },
       }}
