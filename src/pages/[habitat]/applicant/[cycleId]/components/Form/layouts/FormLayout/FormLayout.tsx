@@ -168,7 +168,7 @@ const FormLayout = ({
       {!formReady && <Loading />}
       {formReady && (
         <div ref={headerRef}>
-          <Header current={currentPage} pages={pages} habitat={habitat} />
+          <Header current={currentPage} pages={pages} />
         </div>
       )}
       <div className={styles.body}>{children}</div>
