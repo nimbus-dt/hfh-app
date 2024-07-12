@@ -1,9 +1,7 @@
 import { useState } from 'react';
-
 import Header from 'components/Header';
 import Loading from 'components/Loading';
-import { Habitat as HabitatModel, User } from 'models';
-
+import { User } from 'models';
 import styles from './SignUpQuestions.module.css';
 import General from './General';
 import Household from './Household';
@@ -16,7 +14,6 @@ const initialData: dataProps = {
 };
 
 interface SignUpQuestionsProps {
-  habitat: HabitatModel;
   user: {
     username: string;
   };
@@ -46,11 +43,7 @@ const pages = [
   },
 ];
 
-const SignUpQuestions = ({
-  habitat,
-  user,
-  setUserData,
-}: SignUpQuestionsProps) => {
+const SignUpQuestions = ({ user, setUserData }: SignUpQuestionsProps) => {
   const [data, setData] = useState<dataProps>(initialData);
 
   const goBack = () => {
@@ -60,6 +53,10 @@ const SignUpQuestions = ({
     }));
   };
 
+  if (!user) {
+    return <Loading />;
+  }
+
   const body = [
     <General data={data} setData={setData} />,
     <Household data={data} setData={setData} goBack={goBack} />,
@@ -68,19 +65,14 @@ const SignUpQuestions = ({
       data={data}
       setData={setData}
       goBack={goBack}
-      habitat={habitat}
       user={user}
       setUserData={setUserData}
     />,
   ];
 
-  if (!habitat || !user) {
-    return <Loading />;
-  }
-
   return (
     <div className={styles.page}>
-      <Header habitat={habitat} current={data.current} pages={pages} />
+      <Header current={data.current} pages={pages} />
       {body[data.current]}
     </div>
   );
