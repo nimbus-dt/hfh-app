@@ -341,9 +341,7 @@ const AffiliateApplicationDetailsPage = () => {
               handleOnSaveNote={handleOnSaveNote}
             />
           )}
-          {activeTab === 2 && (
-            <DecisionsTab decisions={decisions} habitat={habitat} />
-          )}
+          {activeTab === 2 && <DecisionsTab decisions={decisions} />}
           {activeTab === 3 && <CalculationsTab formAnswers={formAnswers} />}
         </div>
       </div>
