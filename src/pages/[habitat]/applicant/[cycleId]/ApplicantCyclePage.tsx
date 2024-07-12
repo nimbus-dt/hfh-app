@@ -163,11 +163,7 @@ const ApplicantCyclePage = () => {
   ) {
     return (
       <div className={`${style.page}`}>
-        <SuccesfullySubmitted
-          habitat={habitat}
-          onReview={onReview}
-          application={application}
-        />
+        <SuccesfullySubmitted onReview={onReview} application={application} />
       </div>
     );
   }
