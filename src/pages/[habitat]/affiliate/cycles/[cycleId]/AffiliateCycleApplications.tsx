@@ -11,7 +11,6 @@ import {
   SubmissionStatus,
   LazyTestApplication,
   TestApplication,
-  Habitat,
   ApplicationTypes,
 } from 'models';
 import { useState } from 'react';
@@ -49,7 +48,7 @@ const AffiliateCycleApplications = () => {
   });
   const { cycleId } = useParams();
 
-  const { habitat, setHabitat } = useHabitat();
+  const { habitat } = useHabitat();
 
   const [statusModalOpen, setStatusModalOpen] = useState(false);
 
@@ -223,7 +222,6 @@ const AffiliateCycleApplications = () => {
           <NewApplicationModal
             open={newApplicationOpen}
             onClose={handleOnCloseNewApplicationModal}
-            habitat={habitat}
             cycle={cycle}
             setTrigger={setTrigger}
           />
@@ -239,8 +237,6 @@ const AffiliateCycleApplications = () => {
       <StatusModal
         open={statusModalOpen}
         onClose={handleOnCloseStatusModal}
-        habitat={habitat}
-        setHabitat={setHabitat}
         setTrigger={setTrigger}
       />
       <TableWithPaginator
