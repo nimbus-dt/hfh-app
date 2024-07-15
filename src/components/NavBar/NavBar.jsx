@@ -8,8 +8,8 @@ import {
   useBreakpointValue,
 } from '@aws-amplify/ui-react';
 import PropTypes from 'prop-types';
-import { Auth } from 'aws-amplify';
 import { MdLogout } from 'react-icons/md';
+import { signOut } from 'aws-amplify/auth';
 import logoHabitat from '../../assets/images/trace.svg';
 
 export default function NavBar({ isAuthenticated }) {
@@ -19,7 +19,7 @@ export default function NavBar({ isAuthenticated }) {
   });
 
   const handleSignOut = async () => {
-    await Auth.signOut();
+    await signOut();
   };
 
   return (
