@@ -3,6 +3,8 @@ import { CiGlobe } from 'react-icons/ci';
 
 import { Menu, MenuItem } from '@aws-amplify/ui-react';
 
+import IconButton from 'components/IconButton';
+
 const Translate = () => {
   const { t, i18n } = useTranslation();
 
@@ -23,7 +25,9 @@ const Translate = () => {
             width: '48px',
           }}
         >
-          <CiGlobe size="24px" color="var(--amplify-colors-neutral-90)" />
+          <IconButton variation="not-outlined">
+            <CiGlobe size="24px" color="var(--amplify-colors-neutral-90)" />
+          </IconButton>
         </div>
       }
     >
