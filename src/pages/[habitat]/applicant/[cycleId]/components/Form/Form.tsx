@@ -61,15 +61,22 @@ const Form = ({
     [key: string]: unknown;
   }> => {
     const response = await fetch(
-      `${FORMIO_URL}/language/submission?data.language=${language}`
+      `${FORMIO_URL}/language/submission?data.language=${language}&data.form=${cycle?.formUrl}`
     );
     const array = await response.json();
     const { data } = array[0];
     const { translation } = data;
+    Object.keys(translation).forEach((key) => {
+      const newKey = key.replace(/__DOT__/g, '.');
+      translation[newKey] = translation[key];
+      if (newKey !== key) {
+        delete translation[key];
+      }
+    });
     return {
       [`${language}`]: translation,
     };
-  }, [language]);
+  }, [cycle?.formUrl, language]);
 
   const { value, status } = useAsync({
     asyncFunction: fetchI18n,
@@ -170,12 +177,16 @@ const Form = ({
               }
             >
               <FormioForm
-                key="review"
+                key={`review-${language}`}
                 src={`${FORMIO_URL}/${cycle?.formUrl}`}
-                options={{
-                  readOnly: true,
-                  renderMode: 'flat',
-                }}
+                options={
+                  {
+                    readOnly: true,
+                    renderMode: 'flat',
+                    language,
+                    i18n: value,
+                  } as Options
+                }
                 submission={generateSubmission(formAnswers)}
               />
               <Modal
