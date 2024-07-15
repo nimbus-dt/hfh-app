@@ -9,7 +9,7 @@ import CustomButton from 'components/CustomButton/CustomButton';
 import { INSERT_IMAGE_COMMAND } from '../../ImagePlugin';
 import style from '../ToolbarPlugin.module.css';
 
-const InsertImageButton = ({ buttonProps }) => {
+const InsertImageButton = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [editor] = useLexicalComposerContext();
   const [type, setType] = useState();
@@ -113,7 +113,6 @@ const InsertImageButton = ({ buttonProps }) => {
       <CustomButton
         variation="text-only"
         onClick={handleOpenClose}
-        {...buttonProps}
         aria-label="Insert Image"
         title="Insert Image"
         className={style.toolbarButton}
@@ -122,10 +121,6 @@ const InsertImageButton = ({ buttonProps }) => {
       </CustomButton>
     </>
   );
-};
-
-InsertImageButton.propTypes = {
-  buttonProps: PropTypes.object,
 };
 
 export default InsertImageButton;
