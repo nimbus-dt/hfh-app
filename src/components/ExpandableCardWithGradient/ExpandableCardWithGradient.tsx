@@ -29,7 +29,7 @@ const ExpandableCardWithGradient = ({ children }: IProperties) => {
     }
 
     const resizeObserver = new ResizeObserver((entries) =>
-      setHeight(entries[0].target.clientHeight)
+      requestAnimationFrame(() => setHeight(entries[0].target.clientHeight))
     );
 
     resizeObserver.observe(cardRef.current);
