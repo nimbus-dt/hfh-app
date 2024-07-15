@@ -29,7 +29,7 @@ const Placeholder = ({ text, updateHeight }) => {
     if (!textRef.current) return;
     const resizeObserver = new ResizeObserver(() => {
       if (textRef.current) {
-        updateHeight(textRef.current.offsetHeight);
+        requestAnimationFrame(() => updateHeight(textRef.current.offsetHeight));
       }
     });
     resizeObserver.observe(textRef.current);
