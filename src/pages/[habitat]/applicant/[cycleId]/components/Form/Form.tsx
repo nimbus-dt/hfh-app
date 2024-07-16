@@ -10,7 +10,7 @@ import {
   ReviewStatus,
   LazyFormAnswer,
 } from 'models';
-import { DataStore } from 'aws-amplify';
+import { DataStore } from 'aws-amplify/datastore';
 import { generateSubmission } from 'utils/formio';
 import { Options } from '@formio/react/lib/components/Form';
 import { useFormAnswersQuery, useFormById } from 'hooks/services';
