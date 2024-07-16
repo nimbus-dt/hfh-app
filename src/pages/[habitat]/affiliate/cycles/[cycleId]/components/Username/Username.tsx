@@ -1,4 +1,4 @@
-import { DataStore } from 'aws-amplify';
+import { DataStore } from 'aws-amplify/datastore';
 import useAsync from 'hooks/utils/useAsync/useAsync';
 import { TestApplication, User } from 'models';
 import { useCallback } from 'react';
