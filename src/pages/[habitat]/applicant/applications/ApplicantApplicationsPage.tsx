@@ -7,7 +7,6 @@ import {
   View,
 } from '@aws-amplify/ui-react';
 import {
-  Habitat,
   ReviewStatus,
   RootForm,
   SubmissionStatus,
@@ -20,10 +19,11 @@ import TableWithPaginator from 'components/TableWithPaginator';
 import Toggle from 'components/Toggle';
 import StatusChip from 'components/StatusChip';
 import { DataStore } from '@aws-amplify/datastore';
-import { Link, useOutletContext } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { dateOnly } from 'utils/dates';
 import Chip from 'components/Chip';
 import { stringToHumanReadable } from 'utils/strings';
+import useHabitat from 'hooks/utils/useHabitat';
 import style from './ApplicantApplicationsPage.module.css';
 
 const ReviewStatusChip = ({ status }: { status: keyof typeof ReviewStatus }) =>
@@ -32,10 +32,6 @@ const ReviewStatusChip = ({ status }: { status: keyof typeof ReviewStatus }) =>
   ) : (
     <Chip text="Reviewed" variation="active" />
   );
-
-interface IOutletContext {
-  habitat?: Habitat;
-}
 
 type DataProps =
   | {
@@ -49,7 +45,7 @@ const ApplicantApplicationsPage = () => {
   const [submissionStatusFilter, setSubmissionStatusFilter] = useState<
     keyof typeof SubmissionStatus
   >(SubmissionStatus.INCOMPLETE);
-  const { habitat }: IOutletContext = useOutletContext();
+  const { habitat } = useHabitat();
   const { user } = useAuthenticator((context) => [context.user]);
   const [data, setData] = useState<DataProps>(undefined);
 

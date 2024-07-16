@@ -16,9 +16,9 @@ import {
 import { useState } from 'react';
 import FileInput from 'components/FileInput';
 import { DataStore } from '@aws-amplify/datastore';
-import { Habitat, RootForm, RootFormStatusTypes } from 'models';
-import { useOutletContext } from 'react-router-dom';
+import { RootForm, RootFormStatusTypes } from 'models';
 import { API, Storage } from 'aws-amplify';
+import useHabitat from 'hooks/utils/useHabitat';
 
 const EMAIL_S3_BUCKET = process.env.REACT_APP_EMAIL_S3_BUCKET;
 
@@ -39,12 +39,8 @@ function NewFormButton({ triggerUpdate }: IProperties) {
   });
 
   // Get context
-  interface OutletContextType {
-    habitat: Habitat;
-  }
 
-  const context = useOutletContext<OutletContextType>();
-  const { habitat } = context;
+  const { habitat } = useHabitat();
 
   // onChange
   const handleOnChange = (newFiles: any) => {
@@ -71,6 +67,11 @@ function NewFormButton({ triggerUpdate }: IProperties) {
   // Submit handler
   async function handleSubmit(event: any) {
     event.preventDefault();
+
+    if (!habitat) {
+      return;
+    }
+
     setLoading(true);
     const formData = new FormData(event.target);
     const formDataObject = Object.fromEntries(formData.entries());

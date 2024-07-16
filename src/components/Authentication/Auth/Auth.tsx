@@ -6,15 +6,18 @@ import { Hub } from 'aws-amplify';
 import { usePostHog } from 'posthog-js/react';
 import { Habitat } from 'models';
 import { useEffect } from 'react';
+import useHabitat from 'hooks/utils/useHabitat';
 import styles from './styles.module.css';
 
 interface AuthProps {
   type: 'applicant' | 'affiliate';
-  header: string;
-  habitat: Habitat;
 }
 
-const AuthComponent = ({ habitat, type, header }: AuthProps) => {
+const AuthComponent = ({ type }: AuthProps) => {
+  const { habitat } = useHabitat();
+
+  const header = habitat?.authenticationHeader || '';
+
   const posthog = usePostHog();
 
   const auth = useAuthenticator();

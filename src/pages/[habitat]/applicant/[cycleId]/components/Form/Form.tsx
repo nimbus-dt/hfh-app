@@ -20,12 +20,12 @@ import { usePostHog } from 'posthog-js/react';
 import { Button, Flex, Text } from '@aws-amplify/ui-react';
 import CustomButton from 'components/CustomButton/CustomButton';
 import { RecursiveModelPredicate } from '@aws-amplify/datastore';
+import useHabitat from 'hooks/utils/useHabitat';
 import uploadSubmission from './services/uploadSubmission';
 import style from './Form.module.css';
 import FormLayout from './layouts/FormLayout';
 
 interface IProperties {
-  habitat?: Habitat;
   application?: TestApplication;
   cycle?: TestCycle;
   formContainer?: boolean;
@@ -33,12 +33,8 @@ interface IProperties {
 
 const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
-const Form = ({
-  habitat,
-  application,
-  cycle,
-  formContainer = true,
-}: IProperties) => {
+const Form = ({ application, cycle, formContainer = true }: IProperties) => {
+  const { habitat } = useHabitat();
   const [reviewMode, setReviewMode] = useState(false);
   const [formReady, setFormReady] = useState<typeof Wizard>();
   const posthog = usePostHog();
@@ -198,7 +194,6 @@ const Form = ({
           ) : (
             <FormLayout
               formReady={formReady}
-              habitat={habitat}
               application={application}
               cycle={cycle}
             >

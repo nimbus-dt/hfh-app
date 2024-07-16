@@ -1,9 +1,7 @@
-import { Habitat } from 'models';
 import { MdClose } from 'react-icons/md';
-
 import ProgressBar from 'components/ProgressBar';
-
 import Loading from 'components/Loading';
+import useHabitat from 'hooks/utils/useHabitat';
 import styles from './Header.module.css';
 
 type PageProps = {
@@ -15,13 +13,16 @@ type PageProps = {
 interface HeaderProps {
   current: number;
   pages?: PageProps;
-  habitat?: Habitat;
   cancel?: boolean;
 }
 
-const Header = ({ current, pages, habitat, cancel }: HeaderProps) => {
+const Header = ({ current, pages, cancel }: HeaderProps) => {
+  const { habitat } = useHabitat();
+
   if (!habitat) return <Loading />;
+
   if (!pages) return null;
+
   return (
     <div className={styles.background}>
       <div className={styles.banner}>

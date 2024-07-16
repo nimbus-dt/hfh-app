@@ -1,13 +1,11 @@
 import { Flex, Image, Text } from '@aws-amplify/ui-react';
 import habitatLogo from 'assets/images/habitatlogowhite.svg';
 import SidebarLogoWithoutProps from 'assets/images/sidebar-logo-without-props.png';
-import { Habitat } from 'models';
+import useHabitat from 'hooks/utils/useHabitat';
 
-interface IProperties {
-  habitat: Habitat;
-}
+const HabitatHeader = () => {
+  const { habitat } = useHabitat();
 
-const HabitatHeader = ({ habitat }: IProperties) => {
   const habitatName = habitat?.props?.sidebarName?.name;
 
   return habitatName !== '' ? (
