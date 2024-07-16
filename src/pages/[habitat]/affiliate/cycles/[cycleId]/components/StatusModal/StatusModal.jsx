@@ -11,7 +11,7 @@ import {
   View,
   useBreakpointValue,
 } from '@aws-amplify/ui-react';
-import { DataStore } from 'aws-amplify';
+import { DataStore } from 'aws-amplify/datastore';
 import Modal from 'components/Modal';
 import { Habitat, TestApplication } from 'models';
 import React, { useCallback, useMemo, useState } from 'react';
