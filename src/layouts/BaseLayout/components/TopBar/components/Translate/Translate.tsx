@@ -39,6 +39,7 @@ const Translate = () => {
           type="submit"
           onClick={() => {
             i18n.changeLanguage(lng);
+            localStorage.setItem('lng', lng);
           }}
         >
           {lngs[lng].nativeName}
