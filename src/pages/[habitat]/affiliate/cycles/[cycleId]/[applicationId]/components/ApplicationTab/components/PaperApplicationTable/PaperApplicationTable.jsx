@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import DataTable from 'components/DataTable';
 import { useEffect, useState } from 'react';
-import { Storage } from 'aws-amplify';
+import { Storage } from 'aws-amplify/datastore';
 import { Loader } from '@aws-amplify/ui-react';
 
 const Links = ({ loading, links }) => {
