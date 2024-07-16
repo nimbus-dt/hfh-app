@@ -1,5 +1,5 @@
 import { type SubmitHandler, useForm } from 'react-hook-form';
-import { DataStore } from 'aws-amplify';
+import { DataStore } from 'aws-amplify/datastore';
 import { Button } from '@aws-amplify/ui-react';
 import { throttle } from 'lodash';
 import dayjs from 'dayjs';
