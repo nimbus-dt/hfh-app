@@ -30,6 +30,8 @@ const Translate = () => {
           </IconButton>
         </div>
       }
+      style={{ position: 'absolute', top: '1rem', right: '0' }}
+      menuAlign="end"
     >
       {Object.keys(lngs).map((lng) => (
         <MenuItem
