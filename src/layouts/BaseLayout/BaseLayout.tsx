@@ -4,7 +4,7 @@ import { useAuthenticator, useBreakpointValue } from '@aws-amplify/ui-react';
 import { getRouteTitle } from 'utils/routes';
 import { useUserQuery } from 'hooks/services';
 import { LazyUser } from 'models';
-import { RecursiveModelPredicate } from '@aws-amplify/datastore';
+import { RecursiveModelPredicate } from 'aws-amplify/datastore';
 import TopBar from './components/TopBar';
 import SideBar from './components/SideBar';
 import styles from './BaseLayout.module.css';
