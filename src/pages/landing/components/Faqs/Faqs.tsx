@@ -59,7 +59,7 @@ function Faqs() {
         <Accordion.Container width="100%">
           {faqs.map((faq) => (
             <Accordion.Item value={faq.key}>
-              <Accordion.Trigger padding="16px">
+              <Accordion.Trigger padding="16px 24px">
                 <motion.div
                   key={faq.key}
                   initial="hidden"
@@ -76,7 +76,10 @@ function Faqs() {
                   </Flex>
                 </motion.div>
               </Accordion.Trigger>
-              <Accordion.Content padding="16px">
+              <Accordion.Content
+                padding="16px 24px"
+                color="var(--amplify-colors-neutral-90)"
+              >
                 <AnimatePresence>
                   <motion.p
                     key={`${faq.key}-answer`}
