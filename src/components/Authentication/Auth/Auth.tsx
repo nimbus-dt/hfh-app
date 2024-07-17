@@ -1,12 +1,15 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/no-danger */
 /* eslint-disable react/no-unstable-nested-components */
-import { Authenticator, Button, useAuthenticator } from '@aws-amplify/ui-react';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Hub } from 'aws-amplify';
 import { usePostHog } from 'posthog-js/react';
-import { Habitat } from 'models';
-import { useEffect } from 'react';
+
+import { Authenticator, Button, useAuthenticator } from '@aws-amplify/ui-react';
+
 import useHabitat from 'hooks/utils/useHabitat';
+
 import styles from './styles.module.css';
 
 interface AuthProps {
@@ -14,6 +17,7 @@ interface AuthProps {
 }
 
 const AuthComponent = ({ type }: AuthProps) => {
+  const { t } = useTranslation();
   const { habitat } = useHabitat();
 
   const header = habitat?.authenticationHeader || '';
@@ -46,12 +50,16 @@ const AuthComponent = ({ type }: AuthProps) => {
   const formFields = {
     signIn: {
       username: {
-        label: 'Email',
-        placeholder: 'Enter your email',
+        label: t('components.authentication.auth.signin.username.label'),
+        placeholder: t(
+          'components.authentication.auth.signin.username.placeholder'
+        ),
       },
       password: {
-        label: 'Password',
-        placeholder: 'Enter your Password:',
+        label: t('components.authentication.auth.signin.password.label'),
+        placeholder: t(
+          'components.authentication.auth.signin.password.placeholder'
+        ),
       },
     },
   };

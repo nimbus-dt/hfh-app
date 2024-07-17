@@ -1,4 +1,20 @@
 {
   "English": "Inglés",
-  "Spanish": "Español"
+  "Spanish": "Español",
+  "components": {
+    "authentication": {
+      "auth": {
+        "signin": {
+          "username": {
+            "label": "Correo electrónico",
+            "placeholder": "Introduce tu correo electrónico"
+          },
+          "password": {
+            "label": "Contraseña",
+            "placeholder": "Ingresa tu contraseña:"
+          }
+        }
+      }
+    }
+  }
 }
