@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Form as FormioForm, Wizard } from '@formio/react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -20,6 +20,9 @@ import { usePostHog } from 'posthog-js/react';
 import { Button, Flex, Text } from '@aws-amplify/ui-react';
 import CustomButton from 'components/CustomButton/CustomButton';
 import { RecursiveModelPredicate } from '@aws-amplify/datastore';
+import { useTranslation } from 'react-i18next';
+import useAsync from 'hooks/utils/useAsync/useAsync';
+import { Status } from 'utils/enums';
 import useHabitat from 'hooks/utils/useHabitat';
 import uploadSubmission from './services/uploadSubmission';
 import style from './Form.module.css';
@@ -34,6 +37,7 @@ interface IProperties {
 const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
 const Form = ({ application, cycle, formContainer = true }: IProperties) => {
+  const { i18n } = useTranslation();
   const { habitat } = useHabitat();
   const [reviewMode, setReviewMode] = useState(false);
   const [formReady, setFormReady] = useState<typeof Wizard>();
@@ -46,6 +50,32 @@ const Form = ({ application, cycle, formContainer = true }: IProperties) => {
       c1.testapplicationID.eq(application?.id || ''),
     dependencyArray: [application, reviewMode],
     paginationProducer: undefined,
+  });
+  const { language } = i18n;
+
+  const fetchI18n = useCallback(async (): Promise<{
+    [key: string]: unknown;
+  }> => {
+    const response = await fetch(
+      `${FORMIO_URL}/language/submission?data.language=${language}&data.form=${cycle?.formUrl}`
+    );
+    const array = await response.json();
+    const { data } = array[0];
+    const { translation } = data;
+    Object.keys(translation).forEach((key) => {
+      const newKey = key.replace(/__DOT__/g, '.');
+      translation[newKey] = translation[key];
+      if (newKey !== key) {
+        delete translation[key];
+      }
+    });
+    return {
+      [`${language}`]: translation,
+    };
+  }, [cycle?.formUrl, language]);
+
+  const { value, status } = useAsync({
+    asyncFunction: fetchI18n,
   });
 
   const navigate = useNavigate();
@@ -125,6 +155,10 @@ const Form = ({ application, cycle, formContainer = true }: IProperties) => {
     setShowSubmitModal(false);
   };
 
+  if (status === Status.PENDING) {
+    return <div>Loading...</div>;
+  }
+
   return (
     form && (
       <div style={{ padding: 0 }}>
@@ -139,12 +173,16 @@ const Form = ({ application, cycle, formContainer = true }: IProperties) => {
               }
             >
               <FormioForm
-                key="review"
+                key={`review-${language}`}
                 src={`${FORMIO_URL}/${cycle?.formUrl}`}
-                options={{
-                  readOnly: true,
-                  renderMode: 'flat',
-                }}
+                options={
+                  {
+                    readOnly: true,
+                    renderMode: 'flat',
+                    language,
+                    i18n: value,
+                  } as Options
+                }
                 submission={generateSubmission(formAnswers)}
               />
               <Modal
@@ -202,7 +240,7 @@ const Form = ({ application, cycle, formContainer = true }: IProperties) => {
                 style={{ padding: '2rem 1rem' }}
               >
                 <FormioForm
-                  key="real"
+                  key={`real-${language}`}
                   src={`${FORMIO_URL}/${cycle?.formUrl}`}
                   onSubmit={handleOnReview}
                   formReady={(f: typeof Wizard) => setFormReady(f)}
@@ -213,6 +251,8 @@ const Form = ({ application, cycle, formContainer = true }: IProperties) => {
                         habitat,
                         openCycle: cycle,
                       },
+                      language,
+                      i18n: value,
                     } as Options
                   }
                   submission={generateSubmission(formAnswers)}
