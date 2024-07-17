@@ -80,7 +80,7 @@
   letter-spacing: 0.5px;
 }
 
-[data-amplify-authenticator] .amplify-tabs[data-indicator-position='top'] {
+[data-amplify-authenticator] div[role='tablist'] {
   display: none;
 }
 
