@@ -1,7 +1,8 @@
-import { Flex, Text, Expander, ExpanderItem } from '@aws-amplify/ui-react';
+import { Flex, Text, Accordion } from '@aws-amplify/ui-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { random } from 'lodash';
 import faqs from './data/faqs';
+import style from './Faqs.module.css';
 
 const textVariants = {
   hidden: { opacity: 0, y: -20 },
@@ -55,17 +56,27 @@ function Faqs() {
         </Text>
       </Flex>
       <Flex width={{ base: '100%', large: '780px' }} padding="0px">
-        <Expander isCollapsible>
-          {faqs.map((faq, index) => (
-            <motion.div
-              key={faq.key}
-              initial="hidden"
-              whileInView="visible"
-              exit="hidden"
-              variants={expanderVariants}
-              transition={{ duration: 1, delay: random(0.1, 0.5) }}
-            >
-              <ExpanderItem value={faq.key} title={faq.question}>
+        <Accordion.Container width="100%">
+          {faqs.map((faq) => (
+            <Accordion.Item value={faq.key}>
+              <Accordion.Trigger padding="16px">
+                <motion.div
+                  key={faq.key}
+                  initial="hidden"
+                  whileInView="visible"
+                  exit="hidden"
+                  variants={expanderVariants}
+                  transition={{ duration: 1, delay: random(0.1, 0.5) }}
+                  className={style.accordionTriggerContainer}
+                >
+                  <Flex width="100%" justifyContent="space-between">
+                    <Text>{faq.question}</Text>
+
+                    <Accordion.Icon />
+                  </Flex>
+                </motion.div>
+              </Accordion.Trigger>
+              <Accordion.Content padding="16px">
                 <AnimatePresence>
                   <motion.p
                     key={`${faq.key}-answer`}
@@ -78,10 +89,10 @@ function Faqs() {
                     {faq.answer}
                   </motion.p>
                 </AnimatePresence>
-              </ExpanderItem>
-            </motion.div>
+              </Accordion.Content>
+            </Accordion.Item>
           ))}
-        </Expander>
+        </Accordion.Container>
       </Flex>
     </Flex>
   );
