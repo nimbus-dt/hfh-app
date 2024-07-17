@@ -1,10 +1,32 @@
 {
+  "langCode": "es",
+  "language": "Español",
   "English": "Inglés",
   "Spanish": "Español",
   "components": {
     "authentication": {
       "auth": {
-        "signin": {
+        "vocabularies": {
+          "signIn": "Iniciar sesión",
+          "signingIn": "Iniciando sesión",
+          "signInToYourAccount": "Inicia sesión en tu cuenta",
+          "username": "Introduce tu nombre de usuario",
+          "password": "Introduce tu contraseña",
+          "signUp": "Regístrate",
+          "forgotPassword": "¿Olvidaste tu contraseña?",
+          "resetPassword": "Restablecer contraseña",
+          "enterYourEmail": "Introduce tu correo electrónico",
+          "sendCode": "Enviar código",
+          "backToSignIn": "Volver a iniciar sesión",
+          "createAccount": "Crear cuenta"
+        },
+        "errors": {
+          "usernameCannotBeEmpty": "Nombre de usuario o contraseña incorrectos",
+          "customAuthLambdaTriggerIsNotConfiguredForTheUserPool": "Nombre de usuario o contraseña incorrectos",
+          "userDoesNotExist": "El usuario no existe",
+          "incorrectUsernameOrPassword": "Nombre de usuario o contraseña incorrectos"
+        },
+        "signIn": {
           "username": {
             "label": "Correo electrónico",
             "placeholder": "Introduce tu correo electrónico"
@@ -12,6 +34,29 @@
           "password": {
             "label": "Contraseña",
             "placeholder": "Ingresa tu contraseña:"
+          },
+          "footer": {
+            "forgotPassword": "¿Olvidaste tu contraseña?",
+            "doNotHaveAnAccount": "¿No tienes una cuenta?",
+            "signUp": "Regístrate"
+          }
+        },
+        "signUp": {
+          "email": {
+            "label": "Correo electrónico",
+            "placeholder": "Introduce tu correo electrónico"
+          },
+          "password": {
+            "label": "Contraseña",
+            "placeholder": "Ingresa tu contraseña"
+          },
+          "confirmPassword": {
+            "label": "Confirmar contraseña",
+            "placeholder": "Confirma tu contraseña"
+          },
+          "footer": {
+            "haveAnAccountAlready": "¿Ya tienes una cuenta?",
+            "backToSignIn": "Volver a iniciar sesión"
           }
         }
       }

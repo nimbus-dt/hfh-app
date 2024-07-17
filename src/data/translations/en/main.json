@@ -1,10 +1,32 @@
 {
+  "langCode": "en",
+  "language": "English",
   "English": "English",
   "Spanish": "Spanish",
   "components": {
     "authentication": {
       "auth": {
-        "signin": {
+        "vocabularies": {
+          "signIn": "Sign In",
+          "signingIn": "Signing In",
+          "signInToYourAccount": "Sign in to your account",
+          "username": "Enter your username",
+          "password": "Enter your password",
+          "signUp": "Sign Up",
+          "forgotPassword": "Forgot Password?",
+          "resetPassword": "Forgot your password?",
+          "enterYourEmail": "Enter your email",
+          "sendCode": "Send code",
+          "backToSignIn": "Back to Sign In",
+          "createAccount": "Create Account"
+        },
+        "errors": {
+          "usernameCannotBeEmpty": "Incorrect username or password.",
+          "customAuthLambdaTriggerIsNotConfiguredForTheUserPool": "Incorrect username or password.",
+          "userDoesNotExist": "User does not exist.",
+          "incorrectUsernameOrPassword": "Incorrect username or password."
+        },
+        "signIn": {
           "username": {
             "label": "Email",
             "placeholder": "Enter your email"
@@ -12,6 +34,29 @@
           "password": {
             "label": "Password",
             "placeholder": "Enter your Password:"
+          },
+          "footer": {
+            "forgotPassword": "Forgot Password?",
+            "doNotHaveAnAccount": "Do not have an account?",
+            "signUp": "Sign Up"
+          }
+        },
+        "signUp": {
+          "email": {
+            "label": "Email",
+            "placeholder": "Enter your email"
+          },
+          "password": {
+            "label": "Password",
+            "placeholder": "Enter your Password"
+          },
+          "confirmPassword": {
+            "label": "Confirm Password",
+            "placeholder": "Confirm your password"
+          },
+          "footer": {
+            "haveAnAccountAlready": "Have an account already?",
+            "backToSignIn": "Back to Sign In"
           }
         }
       }
