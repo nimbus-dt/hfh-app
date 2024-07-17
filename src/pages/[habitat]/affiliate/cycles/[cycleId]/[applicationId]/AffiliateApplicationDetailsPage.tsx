@@ -27,9 +27,10 @@ import {
   ApplicationTypes,
   SubmissionStatus,
 } from 'models';
-import { DataStore, RecursiveModelPredicate } from '@aws-amplify/datastore';
+import { DataStore, RecursiveModelPredicate } from 'aws-amplify/datastore';
 import { getEditorStateWithFilesInBucket } from 'utils/lexicalEditor';
-import { API, Storage } from 'aws-amplify';
+import { uploadData } from 'aws-amplify/storage';
+import { post } from 'aws-amplify/api';
 import { v4 } from 'uuid';
 import { FileNode } from 'components/LexicalEditor/nodes/FileNode';
 import { ImageNode } from 'components/LexicalEditor/nodes/ImageNode';
@@ -107,13 +108,12 @@ const AffiliateApplicationDetailsPage = () => {
     setTriggerNotes((prevTriggerNotes) => !prevTriggerNotes);
 
   const uploadDecisionFile = async (file: File) => {
-    const result = await Storage.put(
-      `decision/${habitat?.urlName}/${application.id}/${v4()}_${file.name}`,
-      file,
-      {
-        level: 'public',
-      }
-    );
+    const result = await uploadData({
+      path: `public/decision/${habitat?.urlName}/${application.id}/${v4()}_${
+        file.name
+      }`,
+      data: file,
+    }).result;
 
     return result;
   };
@@ -174,14 +174,18 @@ const AffiliateApplicationDetailsPage = () => {
         posthogAction: 'application_reviewed',
       });
 
-      await API.post('sendEmailToApplicantAPI', '/notify', {
-        body: {
-          subject: 'Status update on your Habitat for Humanity application',
-          body: '<p>A decision has been made on your application. Please log in to your application portal to see this.</p>',
-          sub: persistedApplication.ownerID,
-          habitat: habitat?.name,
+      await post({
+        apiName: 'sendEmailToApplicantAPI',
+        path: '/notify',
+        options: {
+          body: {
+            subject: 'Status update on your Habitat for Humanity application',
+            body: '<p>A decision has been made on your application. Please log in to your application portal to see this.</p>',
+            sub: persistedApplication.ownerID || '',
+            habitat: habitat?.name || '',
+          },
         },
-      });
+      }).response;
 
       setDecideModalOpen(false);
       triggerApplicationRefetch();
@@ -218,7 +222,7 @@ const AffiliateApplicationDetailsPage = () => {
       await deleteFilesOfNote(note);
       await DataStore.delete(Note, note.id);
     } catch (error) {
-      console.log('Error deleting note');
+      console.log('Error deleting note', error);
     } finally {
       setDeletingNote(false);
       triggerNotesRefetch();
@@ -226,13 +230,12 @@ const AffiliateApplicationDetailsPage = () => {
   };
 
   const uploadNoteFile = async (file: File) => {
-    const result = await Storage.put(
-      `notes/${habitat?.urlName}/${application.id}/${v4()}_${file.name}`,
-      file,
-      {
-        level: 'public',
-      }
-    );
+    const result = await uploadData({
+      path: `public/notes/${habitat?.urlName}/${application.id}/${v4()}_${
+        file.name
+      }`,
+      data: file,
+    }).result;
 
     return result;
   };
