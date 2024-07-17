@@ -3,7 +3,7 @@ import {
   RecursiveModelPredicate,
   SortDirection,
   SortPredicate,
-} from '@aws-amplify/datastore';
+} from 'aws-amplify/datastore';
 import CustomButton from 'components/CustomButton/CustomButton';
 import TableWithPaginator from 'components/TableWithPaginator';
 import { useTestApplicationsQuery, useTestCycleById } from 'hooks/services';
