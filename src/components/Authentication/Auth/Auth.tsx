@@ -2,22 +2,46 @@
 /* eslint-disable react/no-danger */
 /* eslint-disable react/no-unstable-nested-components */
 import { Authenticator, Button, useAuthenticator } from '@aws-amplify/ui-react';
-import { Auth } from 'aws-amplify';
+import { Hub } from 'aws-amplify';
 import { usePostHog } from 'posthog-js/react';
-
 import { Habitat } from 'models';
-
+import { useEffect } from 'react';
+import useHabitat from 'hooks/utils/useHabitat';
 import styles from './styles.module.css';
 
 interface AuthProps {
   type: 'applicant' | 'affiliate';
-  header: string;
-  habitat: Habitat;
 }
 
-const AuthComponent = ({ habitat, type, header }: AuthProps) => {
+const AuthComponent = ({ type }: AuthProps) => {
+  const { habitat } = useHabitat();
+
+  const header = habitat?.authenticationHeader || '';
+
   const posthog = usePostHog();
+
   const auth = useAuthenticator();
+
+  useEffect(() => {
+    const cancelListen = Hub.listen('auth', (data) => {
+      const { payload } = data;
+      if (payload.event === 'signIn') {
+        const { data: user } = payload;
+        posthog?.identify(user?.attributes?.email, {
+          ...user,
+          type,
+          habitat,
+        });
+        posthog?.group('habitat', habitat?.name || 'unknown');
+        posthog?.group('type', type || 'unknown');
+        posthog?.capture('clicked_sign_in');
+      }
+    });
+
+    return () => {
+      cancelListen();
+    };
+  }, [habitat, posthog, type]);
 
   const formFields = {
     signIn: {
@@ -114,31 +138,7 @@ const AuthComponent = ({ habitat, type, header }: AuthProps) => {
     },
   };
 
-  return (
-    <Authenticator
-      formFields={formFields}
-      components={components}
-      services={{
-        async handleSignIn({ username, password }) {
-          try {
-            if (!username || !password) return;
-            const user = await Auth.signIn(username, password);
-            posthog?.identify(user?.attributes?.email, {
-              ...user,
-              type,
-              habitat
-            });
-            posthog?.group('habitat', habitat?.name || 'unknown');
-            posthog?.group('type', type || 'unknown');
-            posthog?.capture('clicked_sign_in');
-            return user;
-          } catch (error) {
-            console.error(error);
-          }
-        },
-      }}
-    />
-  );
+  return <Authenticator formFields={formFields} components={components} />;
 };
 
 export default AuthComponent;

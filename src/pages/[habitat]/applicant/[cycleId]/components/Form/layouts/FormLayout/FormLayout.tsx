@@ -6,6 +6,7 @@ import { formatHabitatCycleApplicationData } from 'utils/formatters';
 import { Header, Footer, Loading } from 'components';
 import { DataStore } from 'aws-amplify';
 import { TestApplication } from 'models';
+import useHabitat from 'hooks/utils/useHabitat';
 import getPage from './utils/getPage';
 
 import FormLayoutProps from './FormLayout.types';
@@ -13,11 +14,12 @@ import styles from './FormLayout.module.css';
 
 const FormLayout = ({
   formReady,
-  habitat,
   children,
   application,
   cycle,
 }: FormLayoutProps) => {
+  const { habitat } = useHabitat();
+
   const posthog = usePostHog();
 
   const [currentPage, setCurrentPage] = useState(0);
@@ -168,7 +170,7 @@ const FormLayout = ({
       {!formReady && <Loading />}
       {formReady && (
         <div ref={headerRef}>
-          <Header current={currentPage} pages={pages} habitat={habitat} />
+          <Header current={currentPage} pages={pages} />
         </div>
       )}
       <div className={styles.body}>{children}</div>

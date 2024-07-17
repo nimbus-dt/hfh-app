@@ -24,14 +24,16 @@ const ExpandableCardWithGradient = ({ children }: IProperties) => {
   );
 
   useEffect(() => {
-    if (cardRef.current) {
-      const resizeObserver = new ResizeObserver((entries) =>
-        setHeight(entries[0].target.clientHeight)
-      );
-      resizeObserver.observe(cardRef.current);
+    if (!cardRef.current) {
+      return;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cardRef.current]);
+
+    const resizeObserver = new ResizeObserver((entries) =>
+      requestAnimationFrame(() => setHeight(entries[0].target.clientHeight))
+    );
+
+    resizeObserver.observe(cardRef.current);
+  }, []);
 
   return (
     <Card

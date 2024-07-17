@@ -6,7 +6,7 @@ import {
   MdOutlineNoteAlt,
   MdOutlineTextSnippet,
 } from 'react-icons/md';
-import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   useDecisionsQuery,
   useFormAnswersQuery,
@@ -23,7 +23,6 @@ import {
   TestApplication,
   TestCycle,
   ReviewStatus,
-  Habitat,
   LazyDecision,
   ApplicationTypes,
   SubmissionStatus,
@@ -40,6 +39,7 @@ import { EditorState } from 'lexical';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import Loading from 'components/Loading';
 import { usePostHog } from 'posthog-js/react';
+import useHabitat from 'hooks/utils/useHabitat';
 import style from './AffiliateApplicationDetailsPage.module.css';
 import LocalNavigation from './components/LocalNavigation';
 import ApplicationTab from './components/ApplicationTab';
@@ -64,7 +64,7 @@ const AffiliateApplicationDetailsPage = () => {
 
   const { applicationId } = useParams();
 
-  const { habitat }: { habitat?: Habitat } = useOutletContext();
+  const { habitat } = useHabitat();
 
   const { user } = useAuthenticator((context) => [context.user]);
 
@@ -341,9 +341,7 @@ const AffiliateApplicationDetailsPage = () => {
               handleOnSaveNote={handleOnSaveNote}
             />
           )}
-          {activeTab === 2 && (
-            <DecisionsTab decisions={decisions} habitat={habitat} />
-          )}
+          {activeTab === 2 && <DecisionsTab decisions={decisions} />}
           {activeTab === 3 && <CalculationsTab formAnswers={formAnswers} />}
         </div>
       </div>

@@ -21,9 +21,11 @@ import {
 } from 'models';
 import CustomButton from 'components/CustomButton/CustomButton';
 import { stringToHumanReadable } from 'utils/strings';
+import useHabitat from 'hooks/utils/useHabitat';
 import { newPaperApplicationSchema } from './NewApplicationModal.schema';
 
-const NewApplicationModal = ({ open, onClose, setTrigger, habitat, cycle }) => {
+const NewApplicationModal = ({ open, onClose, setTrigger, cycle }) => {
+  const { habitat } = useHabitat();
   const [showError, setShowError] = useState(false);
   const [loading, setLoading] = useState(0);
   const {
@@ -218,7 +220,6 @@ NewApplicationModal.propTypes = {
   open: PropTypes.bool,
   onClose: PropTypes.func,
   setTrigger: PropTypes.func,
-  habitat: PropTypes.object,
   cycle: PropTypes.object,
 };
 

@@ -18,8 +18,10 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { MdAdd, MdCheck, MdClose, MdDelete, MdEdit } from 'react-icons/md';
 import { DEFAULT_REVIEW_STATUS } from 'utils/constants';
 import PropTypes from 'prop-types';
+import useHabitat from 'hooks/utils/useHabitat';
 
-const StatusModal = ({ open, onClose, habitat, setHabitat, setTrigger }) => {
+const StatusModal = ({ open, onClose, setTrigger }) => {
+  const { habitat, setHabitat } = useHabitat();
   const [editingStatus, setEditingStatus] = useState();
   const [editingAlert, setEditingAlert] = useState(false);
   const [deletingStatus, setDeletingStatus] = useState();
@@ -345,8 +347,6 @@ const StatusModal = ({ open, onClose, habitat, setHabitat, setTrigger }) => {
 StatusModal.propTypes = {
   open: PropTypes.bool,
   onClose: PropTypes.func,
-  habitat: PropTypes.object,
-  setHabitat: PropTypes.func,
   setTrigger: PropTypes.func,
 };
 

@@ -23,12 +23,12 @@ import { RecursiveModelPredicate } from '@aws-amplify/datastore';
 import { useTranslation } from 'react-i18next';
 import useAsync from 'hooks/utils/useAsync/useAsync';
 import { Status } from 'utils/enums';
+import useHabitat from 'hooks/utils/useHabitat';
 import uploadSubmission from './services/uploadSubmission';
 import style from './Form.module.css';
 import FormLayout from './layouts/FormLayout';
 
 interface IProperties {
-  habitat?: Habitat;
   application?: TestApplication;
   cycle?: TestCycle;
   formContainer?: boolean;
@@ -36,13 +36,9 @@ interface IProperties {
 
 const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
-const Form = ({
-  habitat,
-  application,
-  cycle,
-  formContainer = true,
-}: IProperties) => {
+const Form = ({ application, cycle, formContainer = true }: IProperties) => {
   const { i18n } = useTranslation();
+  const { habitat } = useHabitat();
   const [reviewMode, setReviewMode] = useState(false);
   const [formReady, setFormReady] = useState<typeof Wizard>();
   const posthog = usePostHog();
@@ -236,7 +232,6 @@ const Form = ({
           ) : (
             <FormLayout
               formReady={formReady}
-              habitat={habitat}
               application={application}
               cycle={cycle}
             >
