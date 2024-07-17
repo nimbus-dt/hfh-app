@@ -26,7 +26,7 @@ const Translate = () => {
           }}
         >
           <IconButton variation="not-outlined">
-            <CiGlobe size="24px" color="var(--amplify-colors-neutral-90)" />
+            <CiGlobe />
           </IconButton>
         </div>
       }
