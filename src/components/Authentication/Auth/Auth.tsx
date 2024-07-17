@@ -46,7 +46,7 @@ const AuthComponent = ({ type }: AuthProps) => {
   useEffect(() => {
     const cancelListen = Hub.listen('auth', (data) => {
       const { payload } = data;
-      if (payload.event === 'signedIn') {
+      if (payload.event === 'signedIn' && habitat) {
         const { data: user } = payload;
 
         identifyUser(posthog, user, type, habitat);
