@@ -1,6 +1,10 @@
 import { useTranslation } from 'react-i18next';
 
-const useRoutes = () => {
+interface useRoutesProps {
+  [key: string]: { title: string; route?: string };
+}
+
+const useRoutes = (): useRoutesProps => {
   const { t } = useTranslation();
   return {
     applicantApplications: {
@@ -48,5 +52,7 @@ const useRoutes = () => {
     },
   };
 };
+
+export { type useRoutesProps };
 
 export default useRoutes;

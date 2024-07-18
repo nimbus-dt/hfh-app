@@ -3,6 +3,19 @@
   "language": "Español",
   "English": "Inglés",
   "Spanish": "Español",
+  "layouts": {
+    "baseLayout": {
+      "components": {
+        "topBar": {
+          "components": {
+            "profileBadge": {
+              "logOut": "Cerrar sesión"
+            }
+          }
+        }
+      }
+    }
+  },
   "components": {
     "authentication": {
       "auth": {

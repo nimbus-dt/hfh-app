@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import useRoutes from 'hooks/utils/useRoutes/useRoutes';
 import { useAuthenticator, useBreakpointValue } from '@aws-amplify/ui-react';
 import { getRouteTitle } from 'utils/routes';
 import { useUserQuery } from 'hooks/services';
@@ -17,8 +18,9 @@ interface IProperties {
 
 const BaseLayout = ({ variation, children, hideSideBar }: IProperties) => {
   const location = useLocation();
+  const ROUTES = useRoutes();
 
-  const title = getRouteTitle(location.pathname);
+  const title = getRouteTitle(location.pathname, ROUTES);
 
   const isMobile = useBreakpointValue({
     base: true,
