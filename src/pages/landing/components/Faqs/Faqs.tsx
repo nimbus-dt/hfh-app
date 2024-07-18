@@ -56,7 +56,7 @@ function Faqs() {
         </Text>
       </Flex>
       <Flex width={{ base: '100%', large: '780px' }} padding="0px">
-        <Accordion.Container width="100%">
+        <Accordion.Container width="100%" boxShadow="large">
           {faqs.map((faq) => (
             <Accordion.Item value={faq.key}>
               <Accordion.Trigger padding="16px 24px">
