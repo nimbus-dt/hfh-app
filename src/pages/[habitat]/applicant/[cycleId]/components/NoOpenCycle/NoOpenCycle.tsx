@@ -29,7 +29,11 @@ const NoOpenCycle = ({ cycle, onReview, showReview }: IProperties) => {
             {t('pages.habitat.applicant.cycle.components.noOpenCycle.goBack')}
           </CustomButton>
         </Link>
-        {showReview && <CustomButton onClick={onReview}>Review</CustomButton>}
+        {showReview && (
+          <CustomButton onClick={onReview}>
+            {t('pages.habitat.applicant.cycle.components.noOpenCycle.review')}
+          </CustomButton>
+        )}
       </div>
     </CustomCard>
   );

@@ -96,7 +96,8 @@
         "cycle": {
           "components": {
             "noOpenCycle": {
-              "goBack": "Volver"
+              "goBack": "Volver",
+              "review": "Revisión"
             }
           }
         },
