@@ -93,6 +93,13 @@
     },
     "habitat": {
       "applicant": {
+        "cycle": {
+          "components": {
+            "noOpenCycle": {
+              "goBack": "Go back"
+            }
+          }
+        },
         "applications": {
           "title": "Applications Dashboard",
           "subtitle": "Select the type of application",

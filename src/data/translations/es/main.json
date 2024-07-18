@@ -93,6 +93,13 @@
     },
     "habitat": {
       "applicant": {
+        "cycle": {
+          "components": {
+            "noOpenCycle": {
+              "goBack": "Volver"
+            }
+          }
+        },
         "applications": {
           "title": "Panel de aplicaciones",
           "subtitle": "Selecciona el tipo de aplicación",
