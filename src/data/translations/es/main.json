@@ -74,6 +74,9 @@
         }
       }
     },
+    "decisionsTab": {
+      "noDecisions": "No hay decisiones para esta aplicación"
+    },
     "decisionCard": {
       "button": "Actualizar ahora"
     },
@@ -94,7 +97,25 @@
     "habitat": {
       "applicant": {
         "cycle": {
+          "application": "Aplicación",
+          "decisions": "Decisiones",
           "components": {
+            "form": {
+              "alert": {
+                "title": "Alerta",
+                "message": "¿Estás seguro de que deseas enviar tu solicitud? Una vez enviada, no podrás volver a enviarla.",
+                "accept": "Aceptar",
+                "cancel": "Cancelar"
+              },
+              "goBackToEdit": "Volver a editar",
+              "submit": "Enviar",
+              "goBack": "Volver"
+            },
+            "tabs": {
+              "decisions": {
+                "noDecisions": "No hay decisiones para esta aplicación"
+              }
+            },
             "noOpenCycle": {
               "goBack": "Volver",
               "review": "Revisión"

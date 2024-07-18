@@ -74,6 +74,9 @@
         }
       }
     },
+    "decisionsTab": {
+      "noDecisions": "There are no decisions for this application"
+    },
     "decisionCard": {
       "button": "Update Now"
     },
@@ -94,7 +97,25 @@
     "habitat": {
       "applicant": {
         "cycle": {
+          "application": "Application",
+          "decisions": "Decisions",
           "components": {
+            "form": {
+              "alert": {
+                "title": "Alert",
+                "message": "Are you sure you want to submit your application? Once submited you won't be able to resubmit.",
+                "accept": "Accept",
+                "cancel": "Cancel"
+              },
+              "goBackToEdit": "Go back to edit",
+              "submit": "Submit",
+              "goBack": "Go back"
+            },
+            "tabs": {
+              "decisions": {
+                "noDecisions": "There are no decisions for this application"
+              }
+            },
             "noOpenCycle": {
               "goBack": "Go back",
               "review": "Review"

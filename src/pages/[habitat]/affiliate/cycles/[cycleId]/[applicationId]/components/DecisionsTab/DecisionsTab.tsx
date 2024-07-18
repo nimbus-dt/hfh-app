@@ -1,8 +1,10 @@
-import DecisionCard from 'components/DecisionCard';
-import { ReviewStatus, Decision, Habitat } from 'models';
-import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Text } from '@aws-amplify/ui-react';
+
+import DecisionCard from 'components/DecisionCard';
 import useHabitat from 'hooks/utils/useHabitat';
+import { ReviewStatus, Decision } from 'models';
+
 import style from './DecisionsTab.module.css';
 
 interface IProperties {
@@ -10,6 +12,7 @@ interface IProperties {
 }
 
 const DecisionsTab = ({ decisions }: IProperties) => {
+  const { t } = useTranslation();
   const { habitat } = useHabitat();
 
   return (
@@ -27,7 +30,7 @@ const DecisionsTab = ({ decisions }: IProperties) => {
         ))
       ) : (
         <Text textAlign="center" fontWeight="bold">
-          There are no decisions for this application
+          {t('components.decisionsTab.noDecisions')}
         </Text>
       )}
     </div>

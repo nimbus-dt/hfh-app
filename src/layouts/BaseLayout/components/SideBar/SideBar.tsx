@@ -81,7 +81,7 @@ const SideBar = ({
                   label={ROUTES.affiliateHome.title}
                   active={isCurrentRouteActive(
                     pathname,
-                    ROUTES.affiliateHome.route
+                    ROUTES.affiliateHome.route || ''
                   )}
                   expanded={isHoveredOrExpanded}
                 />
@@ -92,7 +92,7 @@ const SideBar = ({
                   expanded={isHoveredOrExpanded}
                   active={isCurrentRouteActive(
                     pathname,
-                    ROUTES.affiliateForms.route
+                    ROUTES.affiliateForms.route || ''
                   )}
                 />
                 <MenuItem
@@ -102,7 +102,7 @@ const SideBar = ({
                   expanded={isHoveredOrExpanded}
                   active={isCurrentRouteActive(
                     pathname,
-                    ROUTES.affiliateAnalytics.route
+                    ROUTES.affiliateAnalytics.route || ''
                   )}
                 />
                 <MenuItem
@@ -112,7 +112,7 @@ const SideBar = ({
                   expanded={isHoveredOrExpanded}
                   active={isCurrentRouteActive(
                     pathname,
-                    ROUTES.affiliateUsers.route
+                    ROUTES.affiliateUsers.route || ''
                   )}
                 />
               </>
@@ -125,7 +125,7 @@ const SideBar = ({
                   label={ROUTES.applicantApplications.title}
                   active={isCurrentRouteActive(
                     pathname,
-                    ROUTES.applicantApplications.route
+                    ROUTES.applicantApplications.route || ''
                   )}
                   expanded={isHoveredOrExpanded}
                 />
@@ -136,7 +136,7 @@ const SideBar = ({
                   expanded={isHoveredOrExpanded}
                   active={isCurrentRouteActive(
                     pathname,
-                    ROUTES.applicantDecisions.route
+                    ROUTES.applicantDecisions.route || ''
                   )}
                 />
               </>

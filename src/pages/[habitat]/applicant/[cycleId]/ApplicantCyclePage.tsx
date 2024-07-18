@@ -1,4 +1,5 @@
 import { Loader, useAuthenticator } from '@aws-amplify/ui-react';
+import { useTranslation } from 'react-i18next';
 import { useLocation, useParams } from 'react-router-dom';
 import {
   SubmissionStatus,
@@ -21,6 +22,7 @@ import Decisions from './components/Tabs/Decisions';
 
 const ApplicantCyclePage = () => {
   const { habitat } = useHabitat();
+  const { t } = useTranslation();
 
   const { cycleId } = useParams();
 
@@ -174,8 +176,14 @@ const ApplicantCyclePage = () => {
         <div className={style.detailsContainer}>
           <LocalNavigation
             items={[
-              { label: 'Application', icon: <MdOutlineNoteAlt /> },
-              { label: 'Decisions', icon: <MdOutlineLibraryAddCheck /> },
+              {
+                label: t('pages.habitat.applicant.cycle.application'),
+                icon: <MdOutlineNoteAlt />,
+              },
+              {
+                label: t('pages.habitat.applicant.cycle.decisions'),
+                icon: <MdOutlineLibraryAddCheck />,
+              },
             ]}
             current={activeTab}
             onChange={(newCurrent) => setActiveTab(newCurrent)}
