@@ -140,6 +140,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "verified": {
+                    "name": "verified",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -820,6 +827,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "lastPage": {
+                    "name": "lastPage",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -1263,5 +1277,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "334970308e1d4fa0c92444614c0bd6a6"
+    "version": "a4ded4833af9f1511301b4d1a1c48132"
 };

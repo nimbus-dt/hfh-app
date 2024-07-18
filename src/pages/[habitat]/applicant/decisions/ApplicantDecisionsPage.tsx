@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useOutletContext } from 'react-router-dom';
 import {
   Flex,
   Heading,
@@ -8,22 +7,16 @@ import {
   useAuthenticator,
 } from '@aws-amplify/ui-react';
 import { DataStore } from '@aws-amplify/datastore';
-
 import DecisionCard from 'components/DecisionCard';
 import {
   Decision,
-  Habitat,
   ReviewStatus,
   RootForm,
   TestApplication,
   TestCycle,
 } from 'models';
-
+import useHabitat from 'hooks/utils/useHabitat';
 import style from './ApplicantDecisionsPage.module.css';
-
-interface IOutletContext {
-  habitat?: Habitat;
-}
 
 type DataProps =
   | {
@@ -34,7 +27,7 @@ type DataProps =
 
 const ApplicantDecisionsPage = () => {
   const { user } = useAuthenticator((context) => [context.user]);
-  const { habitat }: IOutletContext = useOutletContext();
+  const { habitat } = useHabitat();
   const [data, setData] = useState<DataProps>(undefined);
 
   useEffect(() => {
@@ -104,9 +97,10 @@ const ApplicantDecisionsPage = () => {
           </Text>
         </View>
       </Flex>
-      <Flex className={`${style.decisionsContainer}`}>
-        {data &&
-          data?.decisions.map((decision) => (
+
+      {data?.decisions.length ? (
+        <Flex className={`${style.decisionsContainer}`}>
+          {data?.decisions.map((decision) => (
             <DecisionCard
               key={decision.id}
               date={decision.updatedAt || ''}
@@ -125,7 +119,14 @@ const ApplicantDecisionsPage = () => {
               }
             />
           ))}
-      </Flex>
+        </Flex>
+      ) : (
+        <View className={`theme-body-medium ${style.subtitle}`}>
+          <Text style={{ textAlign: 'center' }} color="inherit">
+            You have no decision records.
+          </Text>
+        </View>
+      )}
     </View>
   );
 };

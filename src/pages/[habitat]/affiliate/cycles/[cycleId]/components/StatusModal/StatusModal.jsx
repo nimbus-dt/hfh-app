@@ -13,21 +13,15 @@ import {
 } from '@aws-amplify/ui-react';
 import { DataStore } from 'aws-amplify';
 import Modal from 'components/Modal';
-import { TestApplication } from 'models';
-import React, { useMemo, useState } from 'react';
+import { Habitat, TestApplication } from 'models';
+import React, { useCallback, useMemo, useState } from 'react';
 import { MdAdd, MdCheck, MdClose, MdDelete, MdEdit } from 'react-icons/md';
 import { DEFAULT_REVIEW_STATUS } from 'utils/constants';
 import PropTypes from 'prop-types';
+import useHabitat from 'hooks/utils/useHabitat';
 
-const StatusModal = ({
-  open,
-  onClose,
-  habitat,
-  addCustomStatusToHabitat,
-  removeCustomStatusToHabitat,
-  updateCustomStatusToHabitat,
-  setTrigger,
-}) => {
+const StatusModal = ({ open, onClose, setTrigger }) => {
+  const { habitat, setHabitat } = useHabitat();
   const [editingStatus, setEditingStatus] = useState();
   const [editingAlert, setEditingAlert] = useState(false);
   const [deletingStatus, setDeletingStatus] = useState();
@@ -51,6 +45,77 @@ const StatusModal = ({
     [habitat, newStatus]
   );
 
+  const addCustomStatusToHabitat = useCallback(
+    async (newCustomStatus) => {
+      try {
+        const original = await DataStore.query(Habitat, habitat);
+        const persistedHabitat = await DataStore.save(
+          Habitat.copyOf(original, (originalHabitat) => {
+            if (
+              !(
+                originalHabitat.props.customStatus
+                  ? originalHabitat.props.customStatus
+                  : []
+              ).includes(newCustomStatus) &&
+              newCustomStatus !== DEFAULT_REVIEW_STATUS
+            ) {
+              originalHabitat.props.customStatus = originalHabitat.props
+                .customStatus
+                ? [...originalHabitat.props.customStatus, newCustomStatus]
+                : [newCustomStatus];
+            }
+          })
+        );
+        setHabitat(persistedHabitat);
+      } catch (error) {
+        console.log(`Error updating the habitat's custom status.`);
+      }
+    },
+    [habitat, setHabitat]
+  );
+
+  const removeCustomStatusToHabitat = useCallback(
+    async (customStatus) => {
+      try {
+        const original = await DataStore.query(Habitat, habitat);
+        const persistedHabitat = await DataStore.save(
+          Habitat.copyOf(original, (originalHabitat) => {
+            originalHabitat.props.customStatus =
+              originalHabitat.props.customStatus.filter(
+                (customStatusIntem) => customStatusIntem !== customStatus
+              );
+          })
+        );
+        setHabitat(persistedHabitat);
+      } catch (error) {
+        console.log(`Error removing a custom status from the habitat.`);
+      }
+    },
+    [habitat, setHabitat]
+  );
+
+  const updateCustomStatusToHabitat = useCallback(
+    async (oldCustomStatus, newCustomStatus) => {
+      try {
+        const original = await DataStore.query(Habitat, habitat);
+        const persistedHabitat = await DataStore.save(
+          Habitat.copyOf(original, (originalHabitat) => {
+            originalHabitat.props.customStatus = [
+              ...originalHabitat.props.customStatus.filter(
+                (customStatusIntem) => customStatusIntem !== oldCustomStatus
+              ),
+              newCustomStatus,
+            ];
+          })
+        );
+        setHabitat(persistedHabitat);
+      } catch (error) {
+        console.log(`Error updating a custom status from the habitat.`);
+      }
+    },
+    [habitat, setHabitat]
+  );
+
   const handleAddStatus = async () => {
     try {
       if (!statusAlreadyExists) {
@@ -62,33 +127,56 @@ const StatusModal = ({
     }
   };
 
+  const updateExistingApplicationsCustomStatus = async (
+    oldStatus,
+    newStatusToSet
+  ) => {
+    try {
+      const habitatRootForms = await habitat?.RootForms.toArray();
+
+      for (const rootForm of habitatRootForms) {
+        const rootFormsCycles = await rootForm.Cycles.toArray();
+
+        const applicationsToUpdate = await DataStore.query(
+          TestApplication,
+          (c) =>
+            c.and((c2) => [
+              c2.customStatus.eq(oldStatus),
+              c2.or((c3) =>
+                rootFormsCycles.map((cycle) => c3.testcycleID.eq(cycle.id))
+              ),
+            ])
+        );
+
+        for (const applicationToUpdate of applicationsToUpdate) {
+          await DataStore.save(
+            TestApplication.copyOf(
+              applicationToUpdate,
+              (originalApplication) => {
+                originalApplication.customStatus = newStatusToSet;
+              }
+            )
+          );
+        }
+      }
+    } catch (error) {
+      console.log('Error while updating applications status.', error);
+    }
+  };
+
   const handleDeleteCustomStatus = async () => {
     try {
       await removeCustomStatusToHabitat(deletingStatus);
 
-      const habitatCycles = await habitat?.TestCycles.toArray();
-
-      const applicationsToUpdate = await DataStore.query(TestApplication, (c) =>
-        c.and((c2) => [
-          c2.reviewStatus.eq(deletingStatus),
-          c2.or((c3) =>
-            habitatCycles.map((cycle) => c3.testcycleID.eq(cycle.id))
-          ),
-        ])
+      await updateExistingApplicationsCustomStatus(
+        deletingStatus,
+        DEFAULT_REVIEW_STATUS
       );
-
-      for (const applicationToUpdate of applicationsToUpdate) {
-        await DataStore.save(
-          TestApplication.copyOf(applicationToUpdate, (originalApplication) => {
-            originalApplication.reviewStatus = DEFAULT_REVIEW_STATUS;
-          })
-        );
-      }
 
       setTrigger((previousTrigger) => previousTrigger + 1);
       setDeletingStatus(undefined);
     } catch (error) {
-      console.log('Error while updating applications status.');
+      console.log('Error while updating applications status.', error);
     }
   };
 
@@ -96,31 +184,14 @@ const StatusModal = ({
     try {
       await updateCustomStatusToHabitat(editingStatus, newStatus);
 
-      const habitatCycles = await habitat?.TestCycles.toArray();
-
-      const applicationsToUpdate = await DataStore.query(TestApplication, (c) =>
-        c.and((c2) => [
-          c2.reviewStatus.eq(editingStatus),
-          c2.or((c3) =>
-            habitatCycles.map((cycle) => c3.testcycleID.eq(cycle.id))
-          ),
-        ])
-      );
-
-      for (const applicationToUpdate of applicationsToUpdate) {
-        await DataStore.save(
-          TestApplication.copyOf(applicationToUpdate, (originalApplication) => {
-            originalApplication.reviewStatus = newStatus;
-          })
-        );
-      }
+      await updateExistingApplicationsCustomStatus(editingStatus, newStatus);
 
       setTrigger((previousTrigger) => previousTrigger + 1);
-      setEditingStatus(undefined);
+      setEditingStatus(false);
       setNewStatus('');
       setEditingAlert(false);
     } catch (error) {
-      console.log('Error while updating applications status.');
+      console.log('Error while updating applications status.', error);
     }
   };
 
@@ -276,10 +347,6 @@ const StatusModal = ({
 StatusModal.propTypes = {
   open: PropTypes.bool,
   onClose: PropTypes.func,
-  habitat: PropTypes.object,
-  addCustomStatusToHabitat: PropTypes.func,
-  removeCustomStatusToHabitat: PropTypes.func,
-  updateCustomStatusToHabitat: PropTypes.func,
   setTrigger: PropTypes.func,
 };
 

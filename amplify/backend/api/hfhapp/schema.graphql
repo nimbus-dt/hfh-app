@@ -59,6 +59,7 @@ type User @model @auth(rules: [{allow: public}]) {
   applicantProps: ApplicantProps
   type: UserTypes!
   owner: ID!
+  verified: Boolean
 }
 
 enum RootFormStatusTypes {
@@ -150,6 +151,7 @@ type TestApplication @model @auth(rules: [{allow: public}]) {
   FormAnswers: [FormAnswer] @hasMany(indexName: "byTestApplication", fields: ["id"])
   Decisions: [Decision] @hasMany(indexName: "byTestApplication", fields: ["id"])
   customStatus: String
+  lastPage: Int
 }
 
 type Habitat @model @auth(rules: [{allow: public}]) {

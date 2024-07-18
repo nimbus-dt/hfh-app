@@ -8,8 +8,9 @@ import { PostHogProvider } from 'posthog-js/react';
 import theme from 'styles/theme';
 
 import 'styles';
-import 'components';
+import 'components/Formio';
 
+import HabitatProvider from 'components/HabitatProvider';
 import App from './App';
 import awsExports from './aws-exports';
 
@@ -31,7 +32,9 @@ if (rootElement) {
             apiKey={process.env.REACT_APP_PUBLIC_POSTHOG_KEY}
             options={options}
           >
-            <App />
+            <HabitatProvider>
+              <App />
+            </HabitatProvider>
           </PostHogProvider>
         </ThemeProvider>
       </BrowserRouter>

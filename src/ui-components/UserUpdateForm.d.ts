@@ -5,7 +5,7 @@
  **************************************************************************/
 
 import * as React from "react";
-import { GridProps, SelectFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
+import { GridProps, SelectFieldProps, SwitchFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
 import { User } from "../models";
 export declare type EscapeHatchProps = {
     [elementHierarchy: string]: Record<string, unknown>;
@@ -30,6 +30,7 @@ export declare type UserUpdateFormInputValues = {
     phoneNumber?: string;
     type?: string;
     owner?: string;
+    verified?: boolean;
 };
 export declare type UserUpdateFormValidationValues = {
     firstName?: ValidationFunction<string>;
@@ -39,6 +40,7 @@ export declare type UserUpdateFormValidationValues = {
     phoneNumber?: ValidationFunction<string>;
     type?: ValidationFunction<string>;
     owner?: ValidationFunction<string>;
+    verified?: ValidationFunction<boolean>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type UserUpdateFormOverridesProps = {
@@ -50,6 +52,7 @@ export declare type UserUpdateFormOverridesProps = {
     phoneNumber?: PrimitiveOverrideProps<TextFieldProps>;
     type?: PrimitiveOverrideProps<SelectFieldProps>;
     owner?: PrimitiveOverrideProps<TextFieldProps>;
+    verified?: PrimitiveOverrideProps<SwitchFieldProps>;
 } & EscapeHatchProps;
 export declare type UserUpdateFormProps = React.PropsWithChildren<{
     overrides?: UserUpdateFormOverridesProps | undefined | null;

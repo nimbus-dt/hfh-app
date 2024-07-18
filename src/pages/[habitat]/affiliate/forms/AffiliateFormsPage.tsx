@@ -7,11 +7,11 @@ import TableWithPaginator from 'components/TableWithPaginator';
 import Chip from 'components/Chip';
 import { stringToHumanReadable } from 'utils/strings';
 import Toggle from 'components/Toggle';
-import { Habitat } from 'models';
 import { useRootFormsQuery } from 'hooks/services';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { dateOnly } from 'utils/dates';
 import { throttle } from 'lodash';
+import useHabitat from 'hooks/utils/useHabitat';
 import style from './AffiliateFormsPage.module.css';
 import NewFormButton from './components/NewFormButton';
 
@@ -31,13 +31,11 @@ const AffiliateFormsPage = () => {
   const [latestForms, setLatestForms] = useState([]);
   const [trigger, setTrigger] = useState(true);
 
-  // Get context
-  interface OutletContextType {
-    habitat: Habitat;
-  }
+  localStorage.removeItem('goto');
 
-  const context = useOutletContext<OutletContextType>();
-  const { habitat } = context;
+  // Get context
+
+  const { habitat } = useHabitat();
 
   // Get Forms
   const { data: forms } = useRootFormsQuery({

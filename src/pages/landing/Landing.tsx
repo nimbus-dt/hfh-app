@@ -5,6 +5,7 @@ import Hero from './components/Hero';
 import Faqs from './components/Faqs';
 import Footer from './components/Footer';
 import Client from './components/Client';
+import Pricing from './components/Pricing';
 
 function Landing() {
   return (
@@ -13,6 +14,7 @@ function Landing() {
       <Hero />
       <Features />
       <Client />
+      <Pricing />
       <Faqs />
       <Footer />
     </Flex>

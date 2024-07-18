@@ -1,8 +1,7 @@
 import { useState } from 'react';
-
 import Header from 'components/Header';
 import Loading from 'components/Loading';
-
+import useHabitat from 'hooks/utils/useHabitat';
 import styles from './SignUpQuestions.module.css';
 import General from './General';
 import Affiliate from './Affiliate';
@@ -14,12 +13,10 @@ const initialData: dataProps = {
   current: 0,
 };
 
-const SignUpQuestions = ({
-  habitat,
-  user,
-  setUserData,
-}: SignUpQuestionsProps) => {
+const SignUpQuestions = ({ user, isUserAllowed }: SignUpQuestionsProps) => {
   const [data, setData] = useState<dataProps>(initialData);
+
+  const { habitat } = useHabitat();
 
   const goBack = () => {
     setData((prev) => ({
@@ -30,23 +27,21 @@ const SignUpQuestions = ({
 
   const body = [
     <General data={data} setData={setData} />,
-    <Affiliate
-      data={data}
-      setData={setData}
-      goBack={goBack}
-      habitat={habitat}
-      user={user}
+    <Affiliate data={data} setData={setData} goBack={goBack} user={user} />,
+    <Confirmation
+      name={habitat?.urlName}
+      longName={habitat?.longName}
+      isUserAllowed={isUserAllowed}
     />,
-    <Confirmation name={habitat?.longName} />,
   ];
 
-  if (!habitat || !user) {
+  if (!user) {
     return <Loading />;
   }
 
   return (
     <div className={styles.page}>
-      <Header habitat={habitat} current={data.current} pages={pages} />
+      <Header current={data.current} pages={pages} />
       {body[data.current]}
     </div>
   );

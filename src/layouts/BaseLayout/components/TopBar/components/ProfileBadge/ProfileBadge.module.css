@@ -14,3 +14,13 @@
 .profileBadge:active {
   border-color: var(--amplify-colors-secondary-110);
 }
+
+.relative {
+  position: relative;
+}
+
+.menu {
+  position: absolute;
+  top: 1rem;
+  right: 0;
+}

@@ -100,6 +100,7 @@ export const getUser = /* GraphQL */ `
       }
       type
       owner
+      verified
       createdAt
       updatedAt
       _version
@@ -125,6 +126,7 @@ export const listUsers = /* GraphQL */ `
         phoneNumber
         type
         owner
+        verified
         createdAt
         updatedAt
         _version
@@ -160,6 +162,7 @@ export const syncUsers = /* GraphQL */ `
         phoneNumber
         type
         owner
+        verified
         createdAt
         updatedAt
         _version
@@ -772,6 +775,7 @@ export const getTestApplication = /* GraphQL */ `
         __typename
       }
       customStatus
+      lastPage
       createdAt
       updatedAt
       _version
@@ -803,6 +807,7 @@ export const listTestApplications = /* GraphQL */ `
         type
         testcycleID
         customStatus
+        lastPage
         createdAt
         updatedAt
         _version
@@ -840,6 +845,7 @@ export const syncTestApplications = /* GraphQL */ `
         type
         testcycleID
         customStatus
+        lastPage
         createdAt
         updatedAt
         _version
@@ -879,6 +885,7 @@ export const testApplicationsByTestcycleID = /* GraphQL */ `
         type
         testcycleID
         customStatus
+        lastPage
         createdAt
         updatedAt
         _version

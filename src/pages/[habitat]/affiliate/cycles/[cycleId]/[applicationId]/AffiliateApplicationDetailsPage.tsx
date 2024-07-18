@@ -1,19 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import BreadCrumbs from 'components/BreadCrumbs/BreadCrumbs';
-import IconButton from 'components/IconButton';
 import {
-  MdOutlineArrowBack,
   MdOutlineCalculate,
   MdOutlineLibraryAddCheck,
   MdOutlineNoteAlt,
   MdOutlineTextSnippet,
 } from 'react-icons/md';
-import {
-  Link,
-  useNavigate,
-  useOutletContext,
-  useParams,
-} from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   useDecisionsQuery,
   useFormAnswersQuery,
@@ -30,7 +23,6 @@ import {
   TestApplication,
   TestCycle,
   ReviewStatus,
-  Habitat,
   LazyDecision,
   ApplicationTypes,
   SubmissionStatus,
@@ -43,6 +35,7 @@ import { API, Storage } from 'aws-amplify';
 import { v4 } from 'uuid';
 import { FileNode } from 'components/LexicalEditor/nodes/FileNode';
 import { ImageNode } from 'components/LexicalEditor/nodes/ImageNode';
+import GoBack from 'components/GoBack';
 import { removeFiles } from 'utils/files';
 import { EditorState } from 'lexical';
 import { useAuthenticator } from '@aws-amplify/ui-react';
@@ -52,6 +45,7 @@ import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import JSZIP from 'jszip';
 import { saveAs } from 'file-saver';
 import { flattenObject, getValueFromPath } from 'utils/objects';
+import useHabitat from 'hooks/utils/useHabitat';
 import style from './AffiliateApplicationDetailsPage.module.css';
 import LocalNavigation from './components/LocalNavigation';
 import ApplicationTab from './components/ApplicationTab';
@@ -71,7 +65,7 @@ const s3client = new S3Client({
 
 const AffiliateApplicationDetailsPage = () => {
   const posthog = usePostHog();
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(1);
   const [triggerApplication, setTriggerApplication] = useState(false);
   const [triggerNotes, setTriggerNotes] = useState(false);
   const [loading, setLoading] = useState(0);
@@ -85,7 +79,7 @@ const AffiliateApplicationDetailsPage = () => {
 
   const { applicationId } = useParams();
 
-  const { habitat }: { habitat?: Habitat } = useOutletContext();
+  const { habitat } = useHabitat();
 
   const { user } = useAuthenticator((context) => [context.user]);
 
@@ -361,23 +355,19 @@ const AffiliateApplicationDetailsPage = () => {
 
   if (!cycle) return <Loading />;
 
+  const breadCrumbsItems = [
+    { label: 'Active Forms', to: '../../../forms' },
+    { label: 'Cycles', to: '../..' },
+    { label: 'Applications', to: '..' },
+    { label: 'Detail' },
+  ];
+
   return (
     <div className={`${style.page}`}>
-      <BreadCrumbs
-        items={[
-          { label: 'Active Forms', to: '../../../forms' },
-          { label: 'Cycles', to: '../../' },
-          { label: 'Applications', to: '../' },
-          { label: 'Detail' },
-        ]}
-      />
+      <BreadCrumbs items={breadCrumbsItems} />
       <div className={`${style.ctaContainer}`}>
         <div className={`${style.cta}`}>
-          <Link to="../">
-            <IconButton variation="not-outlined">
-              <MdOutlineArrowBack />
-            </IconButton>
-          </Link>
+          <GoBack />
           <span className={`theme-headline-medium ${style.title}`}>
             Application Details
           </span>
@@ -429,9 +419,7 @@ const AffiliateApplicationDetailsPage = () => {
               handleOnSaveNote={handleOnSaveNote}
             />
           )}
-          {activeTab === 2 && (
-            <DecisionsTab decisions={decisions} habitat={habitat} />
-          )}
+          {activeTab === 2 && <DecisionsTab decisions={decisions} />}
           {activeTab === 3 && <CalculationsTab formAnswers={formAnswers} />}
         </div>
       </div>

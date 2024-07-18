@@ -1,18 +1,19 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Outlet, useParams, useOutlet, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Outlet, useOutlet, useNavigate, Navigate } from 'react-router-dom';
 import { DataStore } from 'aws-amplify';
 import { Flex, Text, useAuthenticator } from '@aws-amplify/ui-react';
 import Authentication from 'components/Authentication';
-import { Habitat, User } from 'models';
-import { DEFAULT_REVIEW_STATUS, AUTHENTICATION_STATUS } from 'utils/constants';
 import BaseLayout from 'layouts/BaseLayout';
+import { User } from 'models';
+import { AUTHENTICATION_STATUS } from 'utils/constants';
+import useHabitat from 'hooks/utils/useHabitat';
 import SignUpQuestions from './SignUpQuestions';
 import style from './NewAffiliateLayout.module.css';
 
 const NewAffiliateLayout = () => {
-  const [habitat, setHabitat] = useState(null);
-  const [isUserAllowed, setIsUserAllowed] = useState(false); // New state to track user access
-  const [isLoading, setIsLoading] = useState(0); // New state to track loading status
+  const { habitat, setHabitat } = useHabitat();
+  const [isUserAllowed, setIsUserAllowed] = useState(false);
+  const [isLoading, setIsLoading] = useState(0);
   const { authStatus, user } = useAuthenticator((context) => [
     context.authStatus,
     context.user,
@@ -21,101 +22,19 @@ const NewAffiliateLayout = () => {
   const outlet = useOutlet();
   const navigate = useNavigate();
 
-  const habitatUrlName = useParams('habitat').habitat;
-
   useEffect(() => {
     if (!outlet) {
-      navigate(`./forms`);
+      navigate(`./home`);
     }
-  }, [outlet, navigate, habitatUrlName]);
+  }, [outlet, navigate]);
 
-  const addCustomStatusToHabitat = useCallback(
-    async (newCustomStatus) => {
-      try {
-        const original = await DataStore.query(Habitat, habitat);
-        const persistedHabitat = await DataStore.save(
-          Habitat.copyOf(original, (originalHabitat) => {
-            if (
-              !(
-                originalHabitat.props.customStatus
-                  ? originalHabitat.props.customStatus
-                  : []
-              ).includes(newCustomStatus) &&
-              newCustomStatus !== DEFAULT_REVIEW_STATUS
-            ) {
-              originalHabitat.props.customStatus = originalHabitat.props
-                .customStatus
-                ? [...originalHabitat.props.customStatus, newCustomStatus]
-                : [newCustomStatus];
-            }
-          })
-        );
-        setHabitat(persistedHabitat);
-      } catch (error) {
-        console.log(`Error updating the habitat's custom status.`);
-      }
-    },
-    [habitat]
-  );
-
-  const removeCustomStatusToHabitat = useCallback(
-    async (customStatus) => {
-      try {
-        const original = await DataStore.query(Habitat, habitat);
-        const persistedHabitat = await DataStore.save(
-          Habitat.copyOf(original, (originalHabitat) => {
-            originalHabitat.props.customStatus =
-              originalHabitat.props.customStatus.filter(
-                (customStatusIntem) => customStatusIntem !== customStatus
-              );
-          })
-        );
-        setHabitat(persistedHabitat);
-      } catch (error) {
-        console.log(`Error removing a custom status from the habitat.`);
-      }
-    },
-    [habitat]
-  );
-
-  const updateCustomStatusToHabitat = useCallback(
-    async (oldCustomStatus, newCustomStatus) => {
-      try {
-        const original = await DataStore.query(Habitat, habitat);
-        const persistedHabitat = await DataStore.save(
-          Habitat.copyOf(original, (originalHabitat) => {
-            originalHabitat.props.customStatus = [
-              ...originalHabitat.props.customStatus.filter(
-                (customStatusIntem) => customStatusIntem !== oldCustomStatus
-              ),
-              newCustomStatus,
-            ];
-          })
-        );
-        setHabitat(persistedHabitat);
-      } catch (error) {
-        console.log(`Error updating a custom status from the habitat.`);
-      }
-    },
-    [habitat]
-  );
-
-  // fetch habitat on mount
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading((previousIsLoading) => previousIsLoading + 1);
       try {
-        const habitatsResponse = await DataStore.query(Habitat, (c) =>
-          c.urlName.eq(habitatUrlName)
-        );
+        const allowedUsers = habitat.users || [];
 
-        const habitatObject = habitatsResponse[0];
-
-        setHabitat(habitatObject);
-
-        const allowedUsers = habitatObject.users || [];
-
-        if (allowedUsers.includes(user.username)) {
+        if (user && allowedUsers.includes(user.username)) {
           setIsUserAllowed(true);
         } else {
           setIsUserAllowed(false);
@@ -127,7 +46,7 @@ const NewAffiliateLayout = () => {
     };
 
     fetchData();
-  }, [habitatUrlName, user, authStatus]);
+  }, [user, authStatus, setHabitat, habitat]);
 
   useEffect(() => {
     const getUserData = async () => {
@@ -157,34 +76,23 @@ const NewAffiliateLayout = () => {
   }
 
   if (AUTHENTICATION_STATUS.AUTHENTICATED !== authStatus) {
-    return <Authentication type="affiliate" habitat={habitat} />;
+    return <Authentication type="affiliate" />;
   }
 
   if (!userData) {
     return (
       <SignUpQuestions
-        habitat={habitat}
         user={user}
         setUserData={setUserData}
+        isUserAllowed={isUserAllowed}
       />
     );
   }
 
-  return (
-    <div>
-      {isUserAllowed ? (
-        <BaseLayout variation="affiliate" hideSideBar={!isUserAllowed}>
-          <Outlet
-            context={{
-              habitat,
-              setHabitat,
-              addCustomStatusToHabitat,
-              removeCustomStatusToHabitat,
-              updateCustomStatusToHabitat,
-            }}
-          />
-        </BaseLayout>
-      ) : (
+  if (!isUserAllowed) {
+    localStorage.setItem('goto', 'forms');
+    return (
+      <div>
         <div className={style.notAllowedContainer}>
           <Text>
             Sorry,{' '}
@@ -196,7 +104,25 @@ const NewAffiliateLayout = () => {
             for more information.
           </Text>
         </div>
-      )}
+      </div>
+    );
+  }
+
+  const path = window.location.pathname.split('/').pop();
+  if (localStorage.getItem('goto') === 'forms' && path !== 'forms') {
+    return <Navigate to={`/${habitat.urlName}/affiliate/forms`} />;
+  }
+
+  return (
+    <div>
+      <BaseLayout variation="affiliate" hideSideBar={!isUserAllowed}>
+        <Outlet
+          context={{
+            habitat,
+            setHabitat,
+          }}
+        />
+      </BaseLayout>
     </div>
   );
 };

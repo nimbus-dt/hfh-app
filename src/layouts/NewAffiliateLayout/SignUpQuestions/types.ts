@@ -1,5 +1,3 @@
-import { type Habitat, type User } from 'models';
-
 interface dataProps {
   current: number;
   general?: {
@@ -18,11 +16,10 @@ interface dataProps {
 }
 
 export interface SignUpQuestionsProps {
-  habitat: Habitat;
+  isUserAllowed: boolean;
   user: {
     username: string;
   };
-  setUserData: React.Dispatch<React.SetStateAction<User>>;
 }
 
 export default dataProps;

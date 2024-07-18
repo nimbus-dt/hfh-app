@@ -3,6 +3,7 @@ import { MdOutlineMenu } from 'react-icons/md';
 
 import NotificationButton from './components/NotificationButton';
 import ProfileBadge from './components/ProfileBadge';
+import Translate from './components/Translate';
 
 import style from './TopBar.module.css';
 
@@ -25,6 +26,7 @@ const TopBar = ({ title, initials, mobile, onExpand }: IProperties) => (
     </Flex>
     <Flex gap="12px">
       <NotificationButton />
+      <Translate />
       <ProfileBadge initials={initials} />
     </Flex>
   </div>

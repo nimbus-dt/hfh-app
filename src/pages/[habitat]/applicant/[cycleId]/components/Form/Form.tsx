@@ -1,4 +1,4 @@
-import { type ReactNode, useMemo, useState, useRef } from 'react';
+import { useCallback, useState } from 'react';
 import { Form as FormioForm, Wizard } from '@formio/react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -10,7 +10,6 @@ import {
   ReviewStatus,
   LazyFormAnswer,
 } from 'models';
-import { throttle } from 'lodash';
 import { DataStore } from 'aws-amplify';
 import { generateSubmission } from 'utils/formio';
 import { Options } from '@formio/react/lib/components/Form';
@@ -21,14 +20,15 @@ import { usePostHog } from 'posthog-js/react';
 import { Button, Flex, Text } from '@aws-amplify/ui-react';
 import CustomButton from 'components/CustomButton/CustomButton';
 import { RecursiveModelPredicate } from '@aws-amplify/datastore';
-import Header from 'components/Header';
-import Footer from 'components/Footer';
-import Loading from 'components/Loading';
-import { formatHabitatCycleApplicationData } from 'utils/formatters';
+import { useTranslation } from 'react-i18next';
+import useAsync from 'hooks/utils/useAsync/useAsync';
+import { Status } from 'utils/enums';
+import useHabitat from 'hooks/utils/useHabitat';
+import uploadSubmission from './services/uploadSubmission';
 import style from './Form.module.css';
+import FormLayout from './layouts/FormLayout';
 
 interface IProperties {
-  habitat?: Habitat;
   application?: TestApplication;
   cycle?: TestCycle;
   formContainer?: boolean;
@@ -36,160 +36,9 @@ interface IProperties {
 
 const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const getPage = (formReady: any) => {
-  const pagesCount = formReady?.components;
-  if (!pagesCount) return 0;
-  const lastPageComponents =
-    pagesCount[pagesCount.length - 1]?.components[0]?.components;
-  if (!lastPageComponents) return 0;
-  return lastPageComponents[lastPageComponents.length - 1].component.value;
-};
-
-const Layout = ({
-  formReady,
-  habitat,
-  children,
-  application,
-  cycle,
-}: {
-  formReady?: typeof Wizard;
-  habitat?: Habitat;
-  children: ReactNode;
-  application?: TestApplication;
-  cycle?: TestCycle;
-}) => {
-  const posthog = usePostHog();
-
-  const [currentPage, setCurrentPage] = useState(0);
-  const pages = getPage(formReady);
-  const headerRef = useRef<HTMLDivElement>(null);
-  return (
-    <div style={{ width: '100%' }}>
-      {!formReady && <Loading />}
-      {formReady && (
-        <div ref={headerRef}>
-          <Header current={currentPage} pages={pages} habitat={habitat} />
-        </div>
-      )}
-      {children}
-      {formReady && (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Footer
-            goBack={
-              currentPage === 0
-                ? undefined
-                : () => {
-                    headerRef.current?.scrollIntoView();
-                    setCurrentPage((prev) => prev - 1);
-                    formReady
-                      .prevPage()
-                      .then(() => {
-                        posthog?.capture(
-                          `form_previous_from_page_${
-                            currentPage + 1
-                          }_to_page_${currentPage}`,
-                          formatHabitatCycleApplicationData({
-                            habitat,
-                            cycle,
-                            application,
-                          })
-                        );
-                      })
-                      .catch((error: unknown) => {
-                        console.log(error);
-                        posthog?.capture(
-                          `form_previous_error_from_page_${
-                            currentPage + 1
-                          }_to_page_${currentPage}`,
-                          formatHabitatCycleApplicationData({
-                            habitat,
-                            cycle,
-                            application,
-                            error,
-                          })
-                        );
-                      });
-                  }
-            }
-            onNext={() => {
-              headerRef.current?.scrollIntoView();
-              if (
-                formReady?.componentComponents &&
-                currentPage === formReady.componentComponents.length - 1
-              ) {
-                formReady
-                  .submit()
-                  .then(() => {
-                    posthog?.capture(
-                      `form_submit_from_page_${currentPage + 1}`,
-                      formatHabitatCycleApplicationData({
-                        habitat,
-                        cycle,
-                        application,
-                      })
-                    );
-                  })
-                  .catch((error: unknown) => {
-                    posthog?.capture(
-                      `form_submit_error_from_page_${currentPage + 1}`,
-                      formatHabitatCycleApplicationData({
-                        habitat,
-                        cycle,
-                        application,
-                        error,
-                      })
-                    );
-                  });
-                return;
-              }
-              setCurrentPage((prev) => prev + 1);
-              formReady
-                .nextPage()
-                .then(() => {
-                  posthog?.capture(
-                    `form_next_from_page_${currentPage + 1}_to_page_${
-                      currentPage + 2
-                    }`,
-                    formatHabitatCycleApplicationData({
-                      habitat,
-                      cycle,
-                      application,
-                    })
-                  );
-                })
-                .catch((error: unknown) => {
-                  posthog?.capture(
-                    `form_next_error_from_page_${currentPage + 1}_to_page_${
-                      currentPage + 2
-                    }`,
-                    formatHabitatCycleApplicationData({
-                      habitat,
-                      cycle,
-                      application,
-                      error,
-                    })
-                  );
-                  setCurrentPage((prev) => prev - 1);
-                });
-            }}
-            submit={
-              formReady?.componentComponents &&
-              currentPage === formReady.componentComponents.length - 1
-            }
-          />
-        </div>
-      )}
-    </div>
-  );
-};
-
-const Form = ({
-  habitat,
-  application,
-  cycle,
-  formContainer = true,
-}: IProperties) => {
+const Form = ({ application, cycle, formContainer = true }: IProperties) => {
+  const { i18n } = useTranslation();
+  const { habitat } = useHabitat();
   const [reviewMode, setReviewMode] = useState(false);
   const [formReady, setFormReady] = useState<typeof Wizard>();
   const posthog = usePostHog();
@@ -202,6 +51,32 @@ const Form = ({
     dependencyArray: [application, reviewMode],
     paginationProducer: undefined,
   });
+  const { language } = i18n;
+
+  const fetchI18n = useCallback(async (): Promise<{
+    [key: string]: unknown;
+  }> => {
+    const response = await fetch(
+      `${FORMIO_URL}/language/submission?data.language=${language}&data.form=${cycle?.formUrl}`
+    );
+    const array = await response.json();
+    const { data } = array[0];
+    const { translation } = data;
+    Object.keys(translation).forEach((key) => {
+      const newKey = key.replace(/__DOT__/g, '.');
+      translation[newKey] = translation[key];
+      if (newKey !== key) {
+        delete translation[key];
+      }
+    });
+    return {
+      [`${language}`]: translation,
+    };
+  }, [cycle?.formUrl, language]);
+
+  const { value, status } = useAsync({
+    asyncFunction: fetchI18n,
+  });
 
   const navigate = useNavigate();
 
@@ -210,64 +85,10 @@ const Form = ({
     dependencyArray: [cycle],
   });
 
-  const persistSubmission = useMemo(
-    () =>
-      throttle(
-        async (submission, nextPage?: number) => {
-          try {
-            if (application) {
-              const submissionEntries = Object.entries(submission.data);
-
-              const [page, values] =
-                submissionEntries[
-                  nextPage ? nextPage - 1 : submissionEntries.length - 1
-                ];
-
-              const persistedFormAnswer = await DataStore.query(
-                FormAnswer,
-                (c1) =>
-                  c1.and((c2) => {
-                    const criteriaArray = [
-                      c2.testapplicationID.eq(application.id),
-                      c2.page.eq(page),
-                    ];
-
-                    return criteriaArray;
-                  })
-              );
-
-              if (persistedFormAnswer.length > 0) {
-                await DataStore.save(
-                  FormAnswer.copyOf(persistedFormAnswer[0], (original) => {
-                    original.values = JSON.stringify(values);
-                  })
-                );
-              } else {
-                await DataStore.save(
-                  new FormAnswer({
-                    testapplicationID: application.id,
-                    page,
-                    values: JSON.stringify(values),
-                  })
-                );
-              }
-            }
-
-            console.log('submission persisted');
-          } catch (error) {
-            console.log('Error persisting submission', error);
-          }
-        },
-        50,
-        { leading: true, trailing: false }
-      ),
-    [application]
-  );
-
   const handleOnReview = async (submission: unknown) => {
     try {
       if (application && cycle) {
-        await persistSubmission(submission);
+        await uploadSubmission({ submission, application });
         setReviewMode(true);
       }
     } catch (error) {
@@ -308,7 +129,21 @@ const Form = ({
     }
   };
 
-  const handleOnClickGoBack = () => {
+  const handleOnClickGoBack = async () => {
+    if (application) {
+      const currentApplication = await DataStore.query(TestApplication, (c1) =>
+        c1.id.eq(application.id)
+      );
+
+      if (currentApplication) {
+        await DataStore.save(
+          TestApplication.copyOf(currentApplication[0], (original) => {
+            original.lastPage = 0;
+          })
+        );
+      }
+    }
+
     setReviewMode(false);
   };
 
@@ -319,6 +154,10 @@ const Form = ({
   const handleOnClickSubmitModalClose = () => {
     setShowSubmitModal(false);
   };
+
+  if (status === Status.PENDING) {
+    return <div>Loading...</div>;
+  }
 
   return (
     form && (
@@ -334,12 +173,16 @@ const Form = ({
               }
             >
               <FormioForm
-                key="review"
+                key={`review-${language}`}
                 src={`${FORMIO_URL}/${cycle?.formUrl}`}
-                options={{
-                  readOnly: true,
-                  renderMode: 'flat',
-                }}
+                options={
+                  {
+                    readOnly: true,
+                    renderMode: 'flat',
+                    language,
+                    i18n: value,
+                  } as Options
+                }
                 submission={generateSubmission(formAnswers)}
               />
               <Modal
@@ -387,9 +230,8 @@ const Form = ({
               </Flex>
             </div>
           ) : (
-            <Layout
+            <FormLayout
               formReady={formReady}
-              habitat={habitat}
               application={application}
               cycle={cycle}
             >
@@ -398,7 +240,7 @@ const Form = ({
                 style={{ padding: '2rem 1rem' }}
               >
                 <FormioForm
-                  key="real"
+                  key={`real-${language}`}
                   src={`${FORMIO_URL}/${cycle?.formUrl}`}
                   onSubmit={handleOnReview}
                   formReady={(f: typeof Wizard) => setFormReady(f)}
@@ -409,6 +251,8 @@ const Form = ({
                         habitat,
                         openCycle: cycle,
                       },
+                      language,
+                      i18n: value,
                     } as Options
                   }
                   submission={generateSubmission(formAnswers)}
@@ -419,11 +263,15 @@ const Form = ({
                     submission: unknown;
                     page: number;
                   }) => {
-                    persistSubmission(submission, page);
+                    uploadSubmission({
+                      submission,
+                      application,
+                      nextPage: page,
+                    });
                   }}
                 />
               </div>
-            </Layout>
+            </FormLayout>
           )}
         </div>
       </div>

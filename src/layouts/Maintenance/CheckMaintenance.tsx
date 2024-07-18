@@ -10,10 +10,12 @@ interface CheckMaintenanceProps {
 const CheckMaintenance = ({ children }: CheckMaintenanceProps) => {
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchMaintenance = async () => {
+      setLoading(true);
+
       const response = await DataStore.query(Maintenance);
       if (response.length < 0) return;
 

@@ -11,6 +11,7 @@ export interface MetricsProps {
       type?: 'percentage' | 'currency' | 'number';
       label?: string;
       value?: string | number;
+      weight?: number;
     };
   };
 }
@@ -39,9 +40,10 @@ const formatValue = (
 const Metrics = ({ data }: MetricsProps) => {
   const metrics = [];
   for (const key in data) {
-    const { label, value, type, header } = data[key];
+    const { label, value, type, header, weight } = data[key];
     metrics.push({
       header,
+      weight,
       label: label || camelCaseToTitle(key),
       value: formatValue(value, type),
     });
@@ -49,21 +51,27 @@ const Metrics = ({ data }: MetricsProps) => {
 
   return (
     <div className={styles.cards}>
-      {metrics?.map((metric, index) => (
-        <div key={index} className={styles.card}>
-          {metric.header ? (
-            <div
-              // eslint-disable-next-line react/no-danger
-              dangerouslySetInnerHTML={{
-                __html: metric.header,
-              }}
-            />
-          ) : (
-            <p>{metric.label}</p>
-          )}
-          <p style={{ fontWeight: 'bold' }}>{metric.value}</p>
-        </div>
-      ))}
+      {metrics
+        ?.sort((first, second) =>
+          first.weight === undefined || second.weight === undefined
+            ? 0
+            : first.weight - second.weight
+        )
+        .map((metric, index) => (
+          <div key={index} className={styles.card}>
+            {metric.header ? (
+              <div
+                // eslint-disable-next-line react/no-danger
+                dangerouslySetInnerHTML={{
+                  __html: metric.header,
+                }}
+              />
+            ) : (
+              <p>{metric.label}</p>
+            )}
+            <p style={{ fontWeight: 'bold' }}>{metric.value}</p>
+          </div>
+        ))}
     </div>
   );
 };
