@@ -83,6 +83,11 @@
     "tableWithPaginator": {
       "rowsPerPage": "Filas por página",
       "noData": "Sin datos"
+    },
+    "footer": {
+      "continue": "Continuar",
+      "submit": "Enviar",
+      "goBack": "Volver"
     }
   },
   "pages": {
