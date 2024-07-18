@@ -102,6 +102,31 @@
     "habitat": {
       "affiliate": {
         "forms": {
+          "components": {
+            "newFormButton": {
+              "text": "New Form",
+              "title": "Create a new form 📝",
+              "description": "Creating a form is the first step to take your paper applications online. Please take some time to answer the following questions.",
+              "form": {
+                "name": {
+                  "label": "What is your form's name?",
+                  "placeholder": "Homeownership Program Application",
+                  "error": "Please enter a name for your form."
+                },
+                "description": {
+                  "label": "Can you describe your form in a couple of words?",
+                  "placeholder": "The form is an application that determines if a family is fit to participate in Habitat for Humanity's Homeownership Program. These are received twice a year and reviewed by Habitat workers.",
+                  "error": "Please enter a description for your form."
+                },
+                "file": {
+                  "label": "Please upload your paper application",
+                  "error": "Please upload at least one file."
+                },
+                "submit": "Submit",
+                "uploading": "Uploading files"
+              }
+            }
+          },
           "title": "Forms Dashboard",
           "toogle": {
             "active": "Active",

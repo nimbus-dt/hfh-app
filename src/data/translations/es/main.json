@@ -102,6 +102,31 @@
     "habitat": {
       "affiliate": {
         "forms": {
+          "components": {
+            "newFormButton": {
+              "text": "Nuevo formulario",
+              "title": "Crea un nuevo formulario 📝",
+              "description": "Crear un formulario es el primer paso para llevar tus solicitudes en papel en línea. Por favor, tómate un tiempo para responder las siguientes preguntas.",
+              "form": {
+                "name": {
+                  "label": "¿Cuál es el nombre de tu formulario?",
+                  "placeholder": "Solicitud de Programa de Vivienda",
+                  "error": "Por favor, introduce un nombre para tu formulario."
+                },
+                "description": {
+                  "label": "¿Puedes describir tu formulario en un par de palabras?",
+                  "placeholder": "El formulario es una solicitud que determina si una familia es apta para participar en el Programa de Vivienda de Habitat for Humanity. Estas se reciben dos veces al año y son revisadas por los trabajadores de Habitat.",
+                  "error": "Por favor, introduce una descripción para tu formulario."
+                },
+                "file": {
+                  "label": "Por favor, sube tu solicitud en papel",
+                  "error": "Por favor, sube al menos un archivo."
+                },
+                "submit": "Enviar",
+                "uploading": "Subiendo archivos"
+              }
+            }
+          },
           "title": "Tablero de formularios",
           "toogle": {
             "active": "Activo",
