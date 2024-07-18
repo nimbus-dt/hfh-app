@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { DataStore } from 'aws-amplify';
+
 import { Image } from '@aws-amplify/ui-react';
 
 import MaintenanceLogo from 'assets/images/maintenance.png';
@@ -9,6 +11,7 @@ import { Maintenance } from 'models';
 import styles from './Maintenance.module.css';
 
 const MaintenancePage = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   useEffect(() => {
     const fetchMaintenance = async () => {
@@ -34,15 +37,11 @@ const MaintenancePage = () => {
       </header>
       <div className={styles.body}>
         <h1 className={`theme-subtitle-s1 ${styles.title}`}>
-          We are currently improving Habitat App 🔨
+          {t('pages.maintenance.title')}
         </h1>
         <div className={`theme-body-medium ${styles.content}`}>
-          <p>
-            We apologize for the inconvenience, but we&apos;re performing some
-            maintenance. You can still contact us at support@habitat-app.org.
-            We&apos;ll be back soon!
-          </p>
-          <p>- The Habitat App Team</p>
+          <p>{t('pages.maintenance.message')}</p>
+          <p>{t('pages.maintenance.from')}</p>
         </div>
       </div>
     </div>

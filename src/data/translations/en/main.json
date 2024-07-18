@@ -61,5 +61,12 @@
         }
       }
     }
+  },
+  "pages": {
+    "maintenance": {
+      "title": "We are currently improving Habitat App 🔨",
+      "message": "We apologize for the inconvenience, but we're performing some maintenance. You can still contact us at support@habitat-app.org. We'll be back soon!",
+      "from": "- The Habitat App Team"
+    }
   }
 }
