@@ -21,6 +21,7 @@ import CheckMaintenance from 'layouts/Maintenance/CheckMaintenance';
 import Landing from 'pages/landing';
 import useRedirectToLegacy from 'hooks/utils/useRedirectToLegacy';
 import './lib/i18n';
+import Print from 'pages/print/page';
 
 function App() {
   useRedirectToLegacy();
@@ -104,6 +105,8 @@ function App() {
       />
 
       <Route path={ROUTES.maintenance} element={<MaintenancePage />} />
+
+      <Route path={ROUTES.PRINT} element={<Print />} />
     </Routes>
   );
 }
