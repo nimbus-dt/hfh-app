@@ -1,5 +1,6 @@
 import './assets/styles/App.css';
 import { Routes, Route } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import AffiliatePortalRepairsPage from 'pages/[habitat]/affiliate/repairs';
 import AffiliatePortalVolunteersPage from 'pages/[habitat]/affiliate/volunteers';
 import AffiliatePortalSettingsPage from 'pages/[habitat]/affiliate/settings';
@@ -24,6 +25,7 @@ import './lib/i18n';
 
 function App() {
   useRedirectToLegacy();
+  const { t } = useTranslation();
 
   return (
     <Routes>
@@ -56,7 +58,7 @@ function App() {
         <Route path={ROUTES.HABITAT_AFFILIATE} element={<NewAffiliateLayout />}>
           <Route
             path={ROUTES.HABITAT_AFFILIATE_HOME}
-            element={<h1>This page is under construction</h1>}
+            element={<h1>{t('pages.underConstruction.message')}</h1>}
           />
           <Route
             path={ROUTES.HABITAT_AFFILIATE_REPAIRS}
@@ -76,11 +78,11 @@ function App() {
           />
           <Route
             path={ROUTES.HABITAT_AFFILIATE_ANALYTICS}
-            element={<p>This page is under construction</p>}
+            element={<p>{t('pages.underConstruction.message')}</p>}
           />
           <Route
             path={ROUTES.HABITAT_AFFILIATE_USERS}
-            element={<p>This page is under construction</p>}
+            element={<p>{t('pages.underConstruction.message')}</p>}
           />
           <Route path=":formId">
             <Route index element={<CyclesPage />} />

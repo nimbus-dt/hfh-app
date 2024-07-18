@@ -67,6 +67,22 @@
       "title": "Actualmente estamos mejorando la aplicación de Habitat 🔨",
       "message": "Pedimos disculpas por las molestias, pero estamos realizando un mantenimiento. Todavía puedes contactarnos en support@habitat-app.org. ¡Volveremos pronto!",
       "from": "- El equipo de Habitat App"
+    },
+    "underConstruction": {
+      "message": "Esta página está actualmente en construcción"
     }
+  },
+  "routes": {
+    "applicantApplications": "Applicaciones",
+    "applicantDecisions": "Decisiones",
+    "applicantForm": "Formulario",
+    "affiliateHome": "Inicio",
+    "affiliateForms": "Formularios",
+    "affiliateCycles": "Ciclos",
+    "affiliateApplications": "Aplicaciones",
+    "affiliateApplicationDetail": "Detalle de la aplicación",
+    "affiliateAnalytics": "Analíticas",
+    "affiliateUsers": "Usuarios",
+    "settings": "Configuraciones"
   }
 }
