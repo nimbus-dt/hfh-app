@@ -60,6 +60,9 @@
           }
         }
       }
+    },
+    "decisionCard": {
+      "button": "Update Now"
     }
   },
   "pages": {
@@ -70,6 +73,15 @@
     },
     "underConstruction": {
       "message": "This page is currently under construction"
+    },
+    "habitat": {
+      "applicant": {
+        "decisions": {
+          "title": "Decisions Dashboard",
+          "description": "Exchange information with affiliates and revise your submissions",
+          "empty": "You have no decision records."
+        }
+      }
     }
   },
   "routes": {

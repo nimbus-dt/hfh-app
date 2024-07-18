@@ -60,6 +60,9 @@
           }
         }
       }
+    },
+    "decisionCard": {
+      "button": "Actualizar ahora"
     }
   },
   "pages": {
@@ -70,6 +73,15 @@
     },
     "underConstruction": {
       "message": "Esta página está actualmente en construcción"
+    },
+    "habitat": {
+      "applicant": {
+        "decisions": {
+          "title": "Panel de decisiones",
+          "description": "Intercambia información con los afiliados y revisa tus envíos",
+          "empty": "No tienes registros de decisiones."
+        }
+      }
     }
   },
   "routes": {
