@@ -76,6 +76,10 @@
     },
     "decisionCard": {
       "button": "Update Now"
+    },
+    "tableWithPaginator": {
+      "rowsPerPage": "Rows per page",
+      "noData": "No data"
     }
   },
   "pages": {
@@ -89,6 +93,23 @@
     },
     "habitat": {
       "applicant": {
+        "applications": {
+          "title": "Applications Dashboard",
+          "subtitle": "Select the type of application",
+          "toogle": {
+            "incomplete": "Incomplete",
+            "complete": "Complete"
+          },
+          "table": {
+            "title": "Current Applications",
+            "name": "Name",
+            "dateStarted": "Date Started",
+            "dateCompleted": "Date Completed",
+            "status": "Status",
+            "reviewStatus": "Review Status",
+            "view": "View"
+          }
+        },
         "decisions": {
           "title": "Decisions Dashboard",
           "description": "Exchange information with affiliates and revise your submissions",

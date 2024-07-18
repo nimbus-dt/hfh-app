@@ -76,6 +76,10 @@
     },
     "decisionCard": {
       "button": "Actualizar ahora"
+    },
+    "tableWithPaginator": {
+      "rowsPerPage": "Filas por página",
+      "noData": "Sin datos"
     }
   },
   "pages": {
@@ -89,6 +93,23 @@
     },
     "habitat": {
       "applicant": {
+        "applications": {
+          "title": "Panel de aplicaciones",
+          "subtitle": "Selecciona el tipo de aplicación",
+          "toogle": {
+            "incomplete": "Incompleto",
+            "complete": "Completo"
+          },
+          "table": {
+            "title": "Aplicaciones actuales",
+            "name": "Nombre",
+            "dateStarted": "Fecha de inicio",
+            "dateCompleted": "Fecha de finalización",
+            "status": "Estado",
+            "reviewStatus": "Estado de revisión",
+            "view": "Ver"
+          }
+        },
         "decisions": {
           "title": "Panel de decisiones",
           "description": "Intercambia información con los afiliados y revisa tus envíos",
