@@ -98,6 +98,10 @@
             "noOpenCycle": {
               "goBack": "Volver",
               "review": "Revisión"
+            },
+            "succesfullySubmitted": {
+              "goToApplications": "Ir a aplicaciones",
+              "review": "Revisión"
             }
           }
         },

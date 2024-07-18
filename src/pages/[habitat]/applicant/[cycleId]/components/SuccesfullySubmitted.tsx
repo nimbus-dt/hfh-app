@@ -1,12 +1,15 @@
-import { Link } from 'react-router-dom';
-import { Flex, Text } from '@aws-amplify/ui-react';
-import { RootForm, TestApplication, TestCycle } from 'models';
-import CustomButton from 'components/CustomButton/CustomButton';
-import CustomCard from 'components/CustomCard';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { DataStore } from 'aws-amplify';
 import { unknown } from 'zod';
+import { Flex, Text } from '@aws-amplify/ui-react';
+
+import CustomButton from 'components/CustomButton/CustomButton';
+import CustomCard from 'components/CustomCard';
 import useHabitat from 'hooks/utils/useHabitat';
+import { RootForm, TestApplication, TestCycle } from 'models';
+
 import styles from './SuccesfullySubmitted.module.css';
 
 interface IProperties {
@@ -16,6 +19,7 @@ interface IProperties {
 
 const SuccesfullySubmitted = ({ onReview, application }: IProperties) => {
   const { habitat } = useHabitat();
+  const { t } = useTranslation();
 
   const [rootForm, setRootForm] = useState<RootForm | undefined>(undefined);
 
@@ -52,11 +56,15 @@ const SuccesfullySubmitted = ({ onReview, application }: IProperties) => {
         <div className={styles.buttons}>
           <Link to="../applications">
             <CustomButton variation="secondary">
-              Go to applications
+              {t(
+                'pages.habitat.applicant.cycle.components.succesfullySubmitted.goToApplications'
+              )}
             </CustomButton>
           </Link>
           <CustomButton onClick={onReview} variation="primary">
-            Review
+            {t(
+              'pages.habitat.applicant.cycle.components.succesfullySubmitted.review'
+            )}
           </CustomButton>
         </div>
       </Flex>
