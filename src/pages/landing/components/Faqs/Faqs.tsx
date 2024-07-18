@@ -69,7 +69,11 @@ function Faqs() {
                   transition={{ duration: 1, delay: random(0.1, 0.5) }}
                   className={style.accordionTriggerContainer}
                 >
-                  <Flex width="100%" justifyContent="space-between">
+                  <Flex
+                    width="100%"
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
                     <Text>{faq.question}</Text>
 
                     <Accordion.Icon />
