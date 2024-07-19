@@ -80,6 +80,33 @@
     "decisionCard": {
       "button": "Actualizar ahora"
     },
+    "newApplicationModal": {
+      "title": "Nueva aplicación en papel",
+      "description": "Al crear un registro de solicitud en papel, estás creando un registro que rastrea la información de una solicitud que has recibido en papel, físicamente. Por favor, asegúrate de introducir los datos correctamente, ya que una vez que hayas añadido una solicitud no podrás editar esta información.",
+      "error": "No se pudo guardar la nueva solicitud.",
+      "name": {
+        "label": "Nombre",
+        "descriptiveText": "Nombre del solicitante principal en la solicitud",
+        "errorMessage": "Nombre inválido"
+      },
+      "date": {
+        "label": "Fecha de envío",
+        "errorMessage": "Fecha inválida"
+      },
+      "reviewStatus": {
+        "label": "Estado de revisión",
+        "pending": "Pendiente",
+        "accepted": "Aceptado",
+        "denied": "Rechazado",
+        "errorMessage": "Estado de revisión inválido"
+      },
+      "uploadApplication": {
+        "label": "Subir solicitud"
+      },
+      "uploading": "Subiendo nueva solicitud",
+      "cancel": "Cancelar",
+      "submit": "Enviar"
+    },
     "tableWithPaginator": {
       "rowsPerPage": "Filas por página",
       "noData": "Sin datos"

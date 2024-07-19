@@ -80,6 +80,33 @@
     "decisionCard": {
       "button": "Update Now"
     },
+    "newApplicationModal": {
+      "title": "New Paper Application",
+      "description": "By creating a paper application record, you are creating a record that tracks the information of an application you have received on paper, physically. Please make sure that you enter data correctly, as once you have added an application you can not edit this information.",
+      "error": "Couldn't save the new application.",
+      "name": {
+        "label": "Name",
+        "descriptiveText": "Name of the main applicant in the application",
+        "errorMessage": "Invalid name"
+      },
+      "date": {
+        "label": "Date submitted",
+        "errorMessage": "Invalid date"
+      },
+      "reviewStatus": {
+        "label": "Review status",
+        "pending": "Pending",
+        "accepted": "Accepted",
+        "denied": "Denied",
+        "errorMessage": "Invalid review status"
+      },
+      "uploadApplication": {
+        "label": "Upload application"
+      },
+      "uploading": "Uploading new application",
+      "cancel": "Cancel",
+      "submit": "Submit"
+    },
     "tableWithPaginator": {
       "rowsPerPage": "Rows per page",
       "noData": "No data"
