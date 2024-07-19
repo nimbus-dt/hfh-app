@@ -141,6 +141,23 @@
             "status": "Estado",
             "view": "Ver"
           }
+        },
+        "cycles": {
+          "name": "Ciclos",
+          "title": "Tablero de ciclos",
+          "status": {
+            "open": "Abierto",
+            "closed": "Cerrado"
+          },
+          "table": {
+            "title": "Ciclos",
+            "results": "resultados",
+            "name": "Nombre",
+            "startDate": "Fecha de inicio",
+            "endDate": "Fecha de finalización",
+            "status": "Estado",
+            "view": "Ver"
+          }
         }
       },
       "applicant": {

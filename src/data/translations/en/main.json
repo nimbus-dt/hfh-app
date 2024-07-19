@@ -141,6 +141,23 @@
             "status": "Status",
             "view": "View"
           }
+        },
+        "cycles": {
+          "name": "Cycles",
+          "title": "Cycles Dashboard",
+          "status": {
+            "open": "Open",
+            "closed": "Closed"
+          },
+          "table": {
+            "title": "Cycles",
+            "results": "results",
+            "name": "Name",
+            "startDate": "Start Date",
+            "endDate": "End Date",
+            "status": "Status",
+            "view": "View"
+          }
         }
       },
       "applicant": {
