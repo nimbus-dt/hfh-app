@@ -129,6 +129,7 @@
     "habitat": {
       "affiliate": {
         "forms": {
+          "name": "Active Forms",
           "components": {
             "newFormButton": {
               "text": "New Form",
@@ -260,6 +261,14 @@
               "reviewStatus": "Review Status",
               "customStatus": "Custom Status",
               "view": "View"
+            },
+            "application": {
+              "name": "Detail",
+              "title": "Application Details",
+              "tabs": {
+                "applications": "Applications",
+                "notes": "Notes"
+              }
             }
           }
         }

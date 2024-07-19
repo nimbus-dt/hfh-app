@@ -129,6 +129,7 @@
     "habitat": {
       "affiliate": {
         "forms": {
+          "name": "Formularios Activos",
           "components": {
             "newFormButton": {
               "text": "Nuevo formulario",
@@ -260,6 +261,14 @@
               "reviewStatus": "Estado de revisión",
               "customStatus": "Estado personalizado",
               "view": "Ver"
+            },
+            "application": {
+              "name": "Detalle",
+              "title": "Detalles de la aplicación",
+              "tabs": {
+                "applications": "Aplicaciones",
+                "notes": "Notas"
+              }
             }
           }
         }
