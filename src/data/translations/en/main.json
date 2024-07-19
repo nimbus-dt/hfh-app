@@ -278,6 +278,54 @@
                       "files": "Files"
                     }
                   }
+                },
+                "buttons": {
+                  "components": {
+                    "decideModal": {
+                      "title": "Decide",
+                      "description": "When you make a decision, we notify applicants via email and store the decision in the application's Decision tab.",
+                      "status": {
+                        "label": "What is the type of decision you want to make?",
+                        "error": "Invalid status",
+                        "return": "Return",
+                        "accept": "Accept",
+                        "deny": "Deny"
+                      },
+                      "placeholders": {
+                        "return": {
+                          "1": "Dear John Doe",
+                          "2": "Thank you for taking the time to complete your application. After a thorough review, we are excited to continue the application process with you. However, we need you to revise the following sections of your application:",
+                          "3": "Income: Please include consecutive pay stubs for the last 60 days. Currently, you have only included pay stubs for the last 30 days.",
+                          "4": "U.S. Citizenship: Please provide correct proof of legal residence. The file you submitted does not verify your residency status.",
+                          "5": "Once you have made the necessary revisions, please resubmit your application for further review.",
+                          "6": "Thank you for your cooperation.",
+                          "7": "Best regards,",
+                          "8": "The Habitat for Humanity Team"
+                        },
+                        "accept": {
+                          "1": "Dear John Doe,",
+                          "2": "Thank you for completing your application. We are pleased to inform you that your application has been accepted.",
+                          "3": "We will be in touch soon with the next steps in the process. If you have any questions or need further assistance, please do not hesitate to contact us.",
+                          "4": "Welcome to the Habitat for Humanity community!",
+                          "5": "Best regards,",
+                          "6": "The Habitat for Humanity Team"
+                        },
+                        "reject": {
+                          "1": "Dear John Doe,",
+                          "2": "Thank you for your interest in Habitat for Humanity and for taking the time to complete your application. After a thorough review, we regret to inform you that we are unable to proceed with your application at this time.",
+                          "3": "We understand this may be disappointing news. Please feel free to contact us if you have any questions or if you would like feedback on your application.",
+                          "4": "Thank you for your understanding and support of our mission.",
+                          "5": "Best regards,",
+                          "6": "The Habitat for Humanity Team"
+                        }
+                      },
+                      "warning": "By returning an application, you are allowing an applicant to enter their application and fix mistakes. Once they have fixed them, they can submit the application.",
+                      "message": "Include here the decision message you want to send to the applicant. You can attach files, links and images.",
+                      "sending": "Updating application and sending email to applicant.",
+                      "cancel": "Cancel",
+                      "send": "Send"
+                    }
+                  }
                 }
               }
             }

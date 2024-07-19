@@ -278,6 +278,54 @@
                       "files": "Archivos"
                     }
                   }
+                },
+                "buttons": {
+                  "components": {
+                    "decideModal": {
+                      "title": "Decidir",
+                      "description": "Cuando tomas una decisión, notificamos a los solicitantes por correo electrónico y almacenamos la decisión en la pestaña de Decisiones de la solicitud.",
+                      "status": {
+                        "label": "¿Cuál es el tipo de decisión que deseas tomar?",
+                        "error": "Estado inválido",
+                        "return": "Devolver",
+                        "accept": "Aceptar",
+                        "deny": "Denegar"
+                      },
+                      "placeholders": {
+                        "return": {
+                          "1": "Estimado John Doe",
+                          "2": "Gracias por tomarse el tiempo para completar su solicitud. Después de una revisión exhaustiva, estamos emocionados de continuar el proceso de solicitud con usted. Sin embargo, necesitamos que revise las siguientes secciones de su solicitud:",
+                          "3": "Ingresos: Por favor incluya recibos de pago consecutivos de los últimos 60 días. Actualmente, solo ha incluido recibos de pago de los últimos 30 días.",
+                          "4": "Ciudadanía de EE.UU.: Por favor proporcione la prueba correcta de residencia legal. El archivo que envió no verifica su estatus de residencia.",
+                          "5": "Una vez que haya hecho las revisiones necesarias, por favor envíe su solicitud nuevamente para una revisión adicional.",
+                          "6": "Gracias por su cooperación.",
+                          "7": "Atentamente,",
+                          "8": "El equipo de Habitat for Humanity"
+                        },
+                        "accept": {
+                          "1": "Estimado John Doe,",
+                          "2": "Gracias por completar su solicitud. Nos complace informarle que su solicitud ha sido aceptada.",
+                          "3": "Nos pondremos en contacto pronto con los próximos pasos del proceso. Si tiene alguna pregunta o necesita más asistencia, no dude en contactarnos.",
+                          "4": "¡Bienvenido a la comunidad de Habitat for Humanity!",
+                          "5": "Atentamente,",
+                          "6": "El equipo de Habitat for Humanity"
+                        },
+                        "reject": {
+                          "1": "Estimado John Doe,",
+                          "2": "Gracias por su interés en Habitat for Humanity y por tomarse el tiempo para completar su solicitud. Después de una revisión exhaustiva, lamentamos informarle que no podemos proceder con su solicitud en este momento.",
+                          "3": "Entendemos que esta puede ser una noticia decepcionante. No dude en contactarnos si tiene alguna pregunta o si desea recibir comentarios sobre su solicitud.",
+                          "4": "Gracias por su comprensión y apoyo a nuestra misión.",
+                          "5": "Atentamente,",
+                          "6": "El equipo de Habitat for Humanity"
+                        }
+                      },
+                      "warning": "Al devolver una solicitud, está permitiendo que un solicitante ingrese a su solicitud y corrija los errores. Una vez que los haya corregido, puede enviar la solicitud.",
+                      "message": "Incluya aquí el mensaje de decisión que desea enviar al solicitante. Puede adjuntar archivos, enlaces e imágenes.",
+                      "sending": "Actualizando solicitud y enviando correo electrónico al solicitante.",
+                      "cancel": "Cancelar",
+                      "send": "Enviar"
+                    }
+                  }
                 }
               }
             }
