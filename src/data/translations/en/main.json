@@ -281,6 +281,20 @@
                     }
                   }
                 },
+                "notesTab": {
+                  "components": {
+                    "notePreview": {
+                      "by": "Note by:",
+                      "delete": {
+                        "title": "Delete note",
+                        "warning": "Are you sure you want to delete this note?",
+                        "accept": "Accept",
+                        "cancel": "Cancel",
+                        "deleting": "Deleting"
+                      }
+                    }
+                  }
+                },
                 "buttons": {
                   "components": {
                     "decideModal": {
