@@ -1,14 +1,20 @@
+import { TFunction } from 'i18next';
+
 import { ApplicationTypes } from 'models';
 
-const typeInputsData = [
+const typeInputsData = (t: TFunction<'translation', undefined>) => [
   {
     name: '',
-    label: 'Online',
+    label: t(
+      'pages.habitat.affiliate.cycles.cycle.components.filters.data.typeInputsData.online'
+    ),
     type: ApplicationTypes.ONLINE,
   },
   {
     name: '',
-    label: 'Paper',
+    label: t(
+      'pages.habitat.affiliate.cycles.cycle.components.filters.data.typeInputsData.paper'
+    ),
     type: ApplicationTypes.PAPER,
   },
 ];

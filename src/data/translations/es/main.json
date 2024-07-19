@@ -197,6 +197,33 @@
             "incompleteApplications": "Solicitudes incompletas:",
             "clipboard": "Copiar enlace para los solicitantes al portapapeles",
             "newApplication": "Nueva aplicación",
+            "components": {
+              "filters": {
+                "title": "Opciones de filtro",
+                "dates": "Fechas",
+                "startDate": "Fecha de inicio de envío",
+                "endDate": "Fecha de finalización de envío",
+                "data": {
+                  "checkboxes": {
+                    "type": "Tipo",
+                    "status": "Estado"
+                  },
+                  "typeInputsData": {
+                    "online": "En línea",
+                    "paper": "Papel"
+                  },
+                  "reviewStatusData": {
+                    "pending": "Pendiente",
+                    "accepted": "Aceptado",
+                    "denied": "Rechazado",
+                    "returned": "Devuelto"
+                  }
+                },
+                "customStatus": "Estado personalizado",
+                "clearFilters": "Limpiar filtros",
+                "save": "Guardar"
+              }
+            },
             "table": {
               "title": "Aplicaciones",
               "results": "resultados",

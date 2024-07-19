@@ -197,6 +197,33 @@
             "incompleteApplications": "Incomplete Applications:",
             "clipboard": "Copy link for applicants to clipboard",
             "newApplication": "New Application",
+            "components": {
+              "filters": {
+                "title": "Filter Options",
+                "dates": "Dates",
+                "startDate": "Start Date Submitted",
+                "endDate": "End Date Submitted",
+                "data": {
+                  "checkboxes": {
+                    "type": "Type",
+                    "status": "Status"
+                  },
+                  "typeInputsData": {
+                    "online": "Online",
+                    "paper": "Paper"
+                  },
+                  "reviewStatusData": {
+                    "pending": "Pending",
+                    "accepted": "Accepted",
+                    "denied": "Denied",
+                    "returned": "Returned"
+                  }
+                },
+                "customStatus": "Custom Status",
+                "clearFilters": "Clear Filters",
+                "save": "Save"
+              }
+            },
             "table": {
               "title": "Applications",
               "results": "results",
