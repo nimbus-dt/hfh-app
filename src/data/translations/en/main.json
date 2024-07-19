@@ -145,6 +145,10 @@
         "cycles": {
           "name": "Cycles",
           "title": "Cycles Dashboard",
+          "button": {
+            "newCycle": "New Cycle +",
+            "closeCycle": "Close Cycle"
+          },
           "components": {
             "filters": {
               "title": "Filter Options",
@@ -156,6 +160,22 @@
               "close": "Close",
               "clearFilters": "Clear Filters",
               "save": "Save"
+            },
+            "newCycle": {
+              "closeApplicationCycle": "Close Application Cycle",
+              "createApplicationCycle": "Create Application Cycle",
+              "openCycle": {
+                "title": "Are you sure you want to close your current application cycle?",
+                "description": "Once closed, applicants can no longer submit applications to your form.",
+                "confirm": "Confirm",
+                "cancel": "Cancel"
+              },
+              "closeCycle": {
+                "name": "Please enter a name for your new application cycle below",
+                "error": "This field is required",
+                "confirm": "Confirm",
+                "cancel": "Cancel"
+              }
             }
           },
           "status": {

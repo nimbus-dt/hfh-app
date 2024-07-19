@@ -145,6 +145,10 @@
         "cycles": {
           "name": "Ciclos",
           "title": "Tablero de ciclos",
+          "button": {
+            "newCycle": "Nuevo ciclo +",
+            "closeCycle": "Cerrar ciclo"
+          },
           "components": {
             "filters": {
               "title": "Opciones de filtro",
@@ -156,6 +160,22 @@
               "close": "Cerrado",
               "clearFilters": "Limpiar filtros",
               "save": "Guardar"
+            },
+            "newCycle": {
+              "closeApplicationCycle": "Cerrar ciclo de aplicación",
+              "createApplicationCycle": "Crear ciclo de aplicación",
+              "openCycle": {
+                "title": "¿Estás seguro de que deseas cerrar tu ciclo de aplicación actual?",
+                "description": "Una vez cerrado, los solicitantes ya no podrán enviar solicitudes a tu formulario.",
+                "confirm": "Confirmar",
+                "cancel": "Cancelar"
+              },
+              "closeCycle": {
+                "name": "Por favor, introduce un nombre para tu nuevo ciclo de aplicación a continuación",
+                "error": "Este campo es obligatorio",
+                "confirm": "Confirmar",
+                "cancel": "Cancelar"
+              }
             }
           },
           "status": {

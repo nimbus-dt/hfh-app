@@ -130,9 +130,7 @@ const CyclesPage = () => {
       name,
       startDate: convertDateYYYYMMDDtoDDMMYYYY(startDate.split('T')[0]),
       endDate: endDate ? convertDateYYYYMMDDtoDDMMYYYY(endDate) : '',
-      status: isOpen
-        ? t('pages.habitat.affiliate.cycles.status.open')
-        : t('pages.habitat.affiliate.cycles.status.closed'),
+      status: isOpen,
       createdAt,
     })
   );
@@ -184,7 +182,9 @@ const CyclesPage = () => {
               }, 500)}
               variation="primary"
             >
-              {value.openCycles.length > 0 ? 'Close Cycle' : 'New Cycle +'}
+              {value.openCycles.length > 0
+                ? t('pages.habitat.affiliate.cycles.button.closeCycle')
+                : t('pages.habitat.affiliate.cycles.button.newCycle')}
             </Button>
           </div>
         </div>
@@ -220,8 +220,12 @@ const CyclesPage = () => {
               {
                 value: (
                   <Chip
-                    variation={data.status === 'Open' ? 'success' : 'danger'}
-                    text={data.status}
+                    variation={data.status ? 'success' : 'danger'}
+                    text={
+                      data.status
+                        ? t('pages.habitat.affiliate.cycles.status.open')
+                        : t('pages.habitat.affiliate.cycles.status.closed')
+                    }
                   />
                 ),
                 id: 'status',
