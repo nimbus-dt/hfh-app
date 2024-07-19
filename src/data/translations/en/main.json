@@ -190,6 +190,23 @@
             "endDate": "End Date",
             "status": "Status",
             "view": "View"
+          },
+          "cycle": {
+            "name": "Applications",
+            "title": "Applications Dashboard",
+            "incompleteApplications": "Incomplete Applications:",
+            "clipboard": "Copy link for applicants to clipboard",
+            "newApplication": "New Application",
+            "table": {
+              "title": "Applications",
+              "results": "results",
+              "name": "Name",
+              "type": "Type",
+              "dateSubmitted": "Date Submitted",
+              "reviewStatus": "Review Status",
+              "customStatus": "Custom Status",
+              "view": "View"
+            }
           }
         }
       },

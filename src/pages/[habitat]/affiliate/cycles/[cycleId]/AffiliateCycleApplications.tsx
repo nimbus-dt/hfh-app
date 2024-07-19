@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
   DataStore,
   RecursiveModelPredicate,
@@ -41,6 +42,7 @@ import { handleCopyToClipboard } from './utils';
 
 const AffiliateCycleApplications = () => {
   const { pathname } = useLocation();
+  const { t } = useTranslation();
 
   const isSmall = useBreakpointValue({
     base: true,
@@ -173,8 +175,8 @@ const AffiliateCycleApplications = () => {
 
   const breadCrumbsItems = [
     { label: 'Homeownership Form', to: '../../forms' },
-    { label: 'Cycles', to: '..' },
-    { label: 'Applications' },
+    { label: t('pages.habitat.affiliate.cycles.name'), to: '..' },
+    { label: t('pages.habitat.affiliate.cycles.cycle.name') },
   ];
 
   return (
@@ -182,28 +184,31 @@ const AffiliateCycleApplications = () => {
       <div className={style.firstRow}>
         {!isSmall && <BreadCrumbs items={breadCrumbsItems} />}
         <p className={`theme-body-medium ${style.incompleteApplications}`}>
-          Incomplete Applications: {applicationsPending.length}
+          {t('pages.habitat.affiliate.cycles.cycle.incompleteApplications')}{' '}
+          {applicationsPending.length}
         </p>
       </div>
       <div className={`${style.titleContainer}`}>
         <GoBack />
         <span className={`theme-headline-medium ${style.title}`}>
-          Applications Dashboard
+          {t('pages.habitat.affiliate.cycles.cycle.title')}
         </span>
       </div>
       <div className={`${style.tableOptions}`}>
         <div className={`${style.resultsContainer}`}>
-          <span className="theme-subtitle-s2">Applications</span>
-          <span
-            className={`${style.results}`}
-          >{`${applicationsCompleted.length} results`}</span>
+          <span className="theme-subtitle-s2">
+            {t('pages.habitat.affiliate.cycles.cycle.table.title')}
+          </span>
+          <span className={`${style.results}`}>{`${
+            applicationsCompleted.length
+          } ${t('pages.habitat.affiliate.cycles.cycle.table.results')}`}</span>
         </div>
         <div className={`${style.options}`}>
           <div className={`${style.suboptions}`}>
             <IconButton
               type="button"
               onClick={() => handleCopyToClipboard({ cycleId, pathname })}
-              title="Copy link for applicants to clipboard"
+              title={t('pages.habitat.affiliate.cycles.cycle.clipboard')}
             >
               <MdOutlineLink />
             </IconButton>
@@ -230,7 +235,11 @@ const AffiliateCycleApplications = () => {
             onClick={handleAddNewApplicationOnClick}
             icon={isSmall ? undefined : <MdOutlineAdd />}
           >
-            {isSmall ? <MdOutlineAdd size="24px" /> : 'New Application'}
+            {isSmall ? (
+              <MdOutlineAdd size="24px" />
+            ) : (
+              t('pages.habitat.affiliate.cycles.cycle.newApplication')
+            )}
           </CustomButton>
         </div>
       </div>
@@ -243,20 +252,22 @@ const AffiliateCycleApplications = () => {
         headers={[
           {
             id: 'name',
-            value: 'Name',
+            value: t('pages.habitat.affiliate.cycles.cycle.table.name'),
             width: '100%',
           },
           {
             id: 'type',
-            value: 'Type',
+            value: t('pages.habitat.affiliate.cycles.cycle.table.type'),
           },
           {
             id: 'dateSubmitted',
-            value: 'Date Submitted',
+            value: t(
+              'pages.habitat.affiliate.cycles.cycle.table.dateSubmitted'
+            ),
           },
           {
             id: 'reviewStatus',
-            value: 'Review Status',
+            value: t('pages.habitat.affiliate.cycles.cycle.table.reviewStatus'),
           },
           {
             id: 'customStatus',
@@ -266,13 +277,13 @@ const AffiliateCycleApplications = () => {
                 onClick={handleStatusOnClick}
                 aria-hidden="true"
               >
-                Custom Status
+                {t('pages.habitat.affiliate.cycles.cycle.table.customStatus')}
               </span>
             ),
           },
           {
             id: 'view',
-            value: 'View',
+            value: t('pages.habitat.affiliate.cycles.cycle.table.view'),
           },
         ]}
         data={applicationsCompleted.map((application, index) => {

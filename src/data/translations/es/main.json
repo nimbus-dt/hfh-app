@@ -190,6 +190,23 @@
             "endDate": "Fecha de finalización",
             "status": "Estado",
             "view": "Ver"
+          },
+          "cycle": {
+            "name": "Aplicaciones",
+            "title": "Tablero de aplicaciones",
+            "incompleteApplications": "Solicitudes incompletas:",
+            "clipboard": "Copiar enlace para los solicitantes al portapapeles",
+            "newApplication": "Nueva aplicación",
+            "table": {
+              "title": "Aplicaciones",
+              "results": "resultados",
+              "name": "Nombre",
+              "type": "Tipo",
+              "dateSubmitted": "Fecha de envío",
+              "reviewStatus": "Estado de revisión",
+              "customStatus": "Estado personalizado",
+              "view": "Ver"
+            }
           }
         }
       },
