@@ -267,7 +267,9 @@
               "title": "Application Details",
               "tabs": {
                 "applications": "Applications",
-                "notes": "Notes"
+                "notes": "Notes",
+                "decisions": "Decisions",
+                "calculations": "Calculations"
               },
               "components": {
                 "applicationTab": {

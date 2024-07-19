@@ -326,8 +326,18 @@ const AffiliateApplicationDetailsPage = () => {
             },
             ...(application?.type === ApplicationTypes.ONLINE
               ? [
-                  { label: 'Decisions', icon: <MdOutlineLibraryAddCheck /> },
-                  { label: 'Calculations', icon: <MdOutlineCalculate /> },
+                  {
+                    label: t(
+                      'pages.habitat.affiliate.cycles.cycle.application.tabs.decisions'
+                    ),
+                    icon: <MdOutlineLibraryAddCheck />,
+                  },
+                  {
+                    label: t(
+                      'pages.habitat.affiliate.cycles.cycle.application.tabs.calculations'
+                    ),
+                    icon: <MdOutlineCalculate />,
+                  },
                 ]
               : []),
           ]}
