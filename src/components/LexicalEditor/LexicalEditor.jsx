@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
@@ -24,6 +25,7 @@ import ExportToHtmlPlugin from './plugins/ExportToHtmlPlugin';
 
 // eslint-disable-next-line react/display-name
 const Placeholder = ({ text, updateHeight }) => {
+  const { t } = useTranslation();
   const textRef = useRef(null);
   useEffect(() => {
     if (!textRef.current) return;
@@ -55,7 +57,7 @@ const Placeholder = ({ text, updateHeight }) => {
       as="p"
       ref={textRef}
     >
-      {text || 'Enter some text...'}
+      {text || t('components.lexicalEditor.placeholder')}
     </Text>
   );
 };

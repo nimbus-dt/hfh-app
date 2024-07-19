@@ -80,6 +80,9 @@
     "decisionCard": {
       "button": "Actualizar ahora"
     },
+    "lexicalEditor": {
+      "placeholder": "Introduce un texto..."
+    },
     "newApplicationModal": {
       "title": "Nueva aplicación en papel",
       "description": "Al crear un registro de solicitud en papel, estás creando un registro que rastrea la información de una solicitud que has recibido en papel, físicamente. Por favor, asegúrate de introducir los datos correctamente, ya que una vez que hayas añadido una solicitud no podrás editar esta información.",
@@ -282,6 +285,8 @@
                   }
                 },
                 "notesTab": {
+                  "createNote": "Crear nota",
+                  "noNotes": "No hay notas para esta aplicación",
                   "components": {
                     "notePreview": {
                       "by": "Nota de:",
@@ -292,6 +297,11 @@
                         "cancel": "Cancelar",
                         "deleting": "Eliminando"
                       }
+                    },
+                    "noteModal": {
+                      "title": "Crear nota",
+                      "uploading": "Subiendo",
+                      "save": "Guardar"
                     }
                   }
                 },

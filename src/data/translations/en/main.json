@@ -80,6 +80,9 @@
     "decisionCard": {
       "button": "Update Now"
     },
+    "lexicalEditor": {
+      "placeholder": "Enter some text..."
+    },
     "newApplicationModal": {
       "title": "New Paper Application",
       "description": "By creating a paper application record, you are creating a record that tracks the information of an application you have received on paper, physically. Please make sure that you enter data correctly, as once you have added an application you can not edit this information.",
@@ -282,6 +285,8 @@
                   }
                 },
                 "notesTab": {
+                  "createNote": "Create Note",
+                  "noNotes": "There are no notes for this application",
                   "components": {
                     "notePreview": {
                       "by": "Note by:",
@@ -292,6 +297,11 @@
                         "cancel": "Cancel",
                         "deleting": "Deleting"
                       }
+                    },
+                    "noteModal": {
+                      "title": "Create Note",
+                      "uploading": "Uploading",
+                      "save": "Save"
                     }
                   }
                 },

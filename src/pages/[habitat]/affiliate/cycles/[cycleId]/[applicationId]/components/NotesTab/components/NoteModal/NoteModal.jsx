@@ -1,10 +1,12 @@
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import LexicalEditor from 'components/LexicalEditor';
 import Modal from 'components/Modal';
-import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Flex, Loader } from '@aws-amplify/ui-react';
 
 const NoteModal = ({ open, onClose, onSave, uploading }) => {
+  const { t } = useTranslation();
   const [editorState, setEditorState] = useState();
 
   const handleOnChange = (state) => {
@@ -17,7 +19,14 @@ const NoteModal = ({ open, onClose, onSave, uploading }) => {
   };
 
   return (
-    <Modal title="Note" open={open} onClickClose={onClose} width="45rem">
+    <Modal
+      title={t(
+        'pages.habitat.affiliate.cycles.cycle.application.components.notesTab.components.noteModal.title'
+      )}
+      open={open}
+      onClickClose={onClose}
+      width="45rem"
+    >
       <LexicalEditor
         editorState={editorState}
         onChange={handleOnChange}
@@ -32,10 +41,14 @@ const NoteModal = ({ open, onClose, onSave, uploading }) => {
           {uploading ? (
             <Flex alignItems="center">
               <Loader />
-              Uploading
+              {t(
+                'pages.habitat.affiliate.cycles.cycle.application.components.notesTab.components.noteModal.uploading'
+              )}
             </Flex>
           ) : (
-            'Save'
+            t(
+              'pages.habitat.affiliate.cycles.cycle.application.components.notesTab.components.noteModal.save'
+            )
           )}
         </Button>
       </Flex>
