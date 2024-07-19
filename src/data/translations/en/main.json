@@ -145,6 +145,19 @@
         "cycles": {
           "name": "Cycles",
           "title": "Cycles Dashboard",
+          "components": {
+            "filters": {
+              "title": "Filter Options",
+              "dates": "Dates",
+              "startDate": "Start Date",
+              "endDate": "End Date",
+              "status": "Status",
+              "open": "Open",
+              "close": "Close",
+              "clearFilters": "Clear Filters",
+              "save": "Save"
+            }
+          },
           "status": {
             "open": "Open",
             "closed": "Closed"

@@ -145,6 +145,19 @@
         "cycles": {
           "name": "Ciclos",
           "title": "Tablero de ciclos",
+          "components": {
+            "filters": {
+              "title": "Opciones de filtro",
+              "dates": "Fechas",
+              "startDate": "Fecha de inicio",
+              "endDate": "Fecha de finalización",
+              "status": "Estado",
+              "open": "Abierto",
+              "close": "Cerrado",
+              "clearFilters": "Limpiar filtros",
+              "save": "Guardar"
+            }
+          },
           "status": {
             "open": "Abierto",
             "closed": "Cerrado"
