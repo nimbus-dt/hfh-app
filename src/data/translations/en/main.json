@@ -268,6 +268,17 @@
               "tabs": {
                 "applications": "Applications",
                 "notes": "Notes"
+              },
+              "components": {
+                "applicationTab": {
+                  "components": {
+                    "paperApplicationTable": {
+                      "title": "Paper Application Information",
+                      "name": "Name",
+                      "files": "Files"
+                    }
+                  }
+                }
               }
             }
           }

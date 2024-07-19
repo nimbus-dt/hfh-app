@@ -1,6 +1,7 @@
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import DataTable from 'components/DataTable';
-import { useEffect, useState } from 'react';
 import { Storage } from 'aws-amplify';
 import { Loader } from '@aws-amplify/ui-react';
 
@@ -25,6 +26,7 @@ Links.propTypes = {
 
 const PaperApplicationTable = ({ application }) => {
   const [links, setLinks] = useState([]);
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(0);
 
   useEffect(() => {
@@ -57,16 +59,22 @@ const PaperApplicationTable = ({ application }) => {
 
   return (
     <DataTable
-      heading="Paper Application Information"
+      heading={t(
+        'pages.habitat.affiliate.cycles.cycle.application.components.applicationTab.components.paperApplicationTable.title'
+      )}
       headingTextAlign="left"
       divider
       data={[
         {
-          header: 'Name',
+          header: t(
+            'pages.habitat.affiliate.cycles.cycle.application.components.applicationTab.components.paperApplicationTable.name'
+          ),
           value: application.props.name,
         },
         {
-          header: 'Files',
+          header: t(
+            'pages.habitat.affiliate.cycles.cycle.application.components.applicationTab.components.paperApplicationTable.files'
+          ),
           value: (
             <ul>
               <Links links={links} loading={loading} />
