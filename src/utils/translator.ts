@@ -8,7 +8,6 @@ interface translatorProps {
 const translator =
   ({ language, translations }: translatorProps) =>
   (key?: string) => {
-    console.log('key', key);
     if (!key) return '';
     if (!translations) return key;
     return translations[language]?.[key] || key;
