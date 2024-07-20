@@ -27,12 +27,20 @@ import useHabitat from 'hooks/utils/useHabitat';
 import { useTranslation } from 'react-i18next';
 import style from './ApplicantApplicationsPage.module.css';
 
-const ReviewStatusChip = ({ status }: { status: keyof typeof ReviewStatus }) =>
+const ReviewStatusChip = ({
+  status,
+  translate,
+}: {
+  status: keyof typeof ReviewStatus;
+  translate: (s: string) => string;
+}) =>
   status === ReviewStatus.PENDING ? (
-    <StatusChip status={status} />
+    <Chip variation="warning" text={translate(stringToHumanReadable(status))} />
   ) : (
     <Chip text="Reviewed" variation="active" />
   );
+
+const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
 type DataProps =
   | {
@@ -46,14 +54,23 @@ const ApplicantApplicationsPage = () => {
   const [submissionStatusFilter, setSubmissionStatusFilter] = useState<
     keyof typeof SubmissionStatus
   >(SubmissionStatus.INCOMPLETE);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { language } = i18n;
   const { habitat } = useHabitat();
   const { user } = useAuthenticator((context) => [context.user]);
   const [data, setData] = useState<DataProps>(undefined);
+  const [translations, setTranslations] = useState<
+    Record<string, Record<string, string>>
+  >({});
+
+  const translate = (key: string) => {
+    console.log(key);
+    return translations[language]?.[key] || key;
+  };
 
   useEffect(() => {
     if (habitat) {
-      const fetch = async () => {
+      const fetchData = async () => {
         const rootFormsResponse = await DataStore.query(RootForm, (c) =>
           c.habitatID.eq(habitat.id)
         );
@@ -80,15 +97,32 @@ const ApplicantApplicationsPage = () => {
           );
           newApplications = newApplications.concat(applicationsResponse);
         }
+        const response = await fetch(
+          `${FORMIO_URL}/language/submission?data.language=${language}&data.form=app`
+        );
+        const array = await response.json();
+
+        const { translation } = array[0].data;
+        Object.keys(translation).forEach((key) => {
+          const newKey = key.replace(/__DOT__/g, '.');
+          translation[newKey] = translation[key];
+          if (newKey !== key) {
+            delete translation[key];
+          }
+        });
+        setTranslations({
+          [`${language}`]: translation,
+        });
+        console.log(newApplications);
         setData({
           applications: newApplications,
           rootForms: rootFormsResponse,
           cycles: newCycles,
         });
       };
-      fetch();
+      fetchData();
     }
-  }, [habitat, user?.username]);
+  }, [habitat, language, user?.username]);
 
   if (!data) return null;
 
@@ -193,13 +227,16 @@ const ApplicantApplicationsPage = () => {
                   <Flex width="100%" justifyContent="center">
                     {submissionStatusFilter === SubmissionStatus.INCOMPLETE ? (
                       <Chip
-                        text={stringToHumanReadable(
-                          application.submissionStatus
+                        text={translate(
+                          stringToHumanReadable(application.submissionStatus)
                         )}
                         variation="danger"
                       />
                     ) : (
-                      <ReviewStatusChip status={application.reviewStatus} />
+                      <ReviewStatusChip
+                        translate={translate}
+                        status={application.reviewStatus}
+                      />
                     )}
                   </Flex>
                 ),

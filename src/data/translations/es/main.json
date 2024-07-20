@@ -390,7 +390,7 @@
           }
         },
         "applications": {
-          "title": "Panel de aplicaciones",
+          "title": "Tablero de aplicaciones",
           "subtitle": "Selecciona el tipo de aplicación",
           "toogle": {
             "incomplete": "Incompleto",
