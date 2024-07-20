@@ -9,7 +9,6 @@ const getPage = (formReady: any, translate: (key?: string) => string) => {
   const pages =
     lastPageComponents[lastPageComponents.length - 1].component.value;
 
-  console.log(pages);
   for (let i = 0; i < pages.length; i++) {
     pages[i].section = translate(pages[i].section);
   }
