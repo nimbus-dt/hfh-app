@@ -384,6 +384,11 @@
               "review": "Review"
             },
             "succesfullySubmitted": {
+              "message": {
+                "1": "You have succesfully submitted your",
+                "2": "application for",
+                "3": ". You will receive an email with updates on your application."
+              },
               "goToApplications": "Go to applications",
               "review": "Review"
             }

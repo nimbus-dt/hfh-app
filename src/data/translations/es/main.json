@@ -384,6 +384,11 @@
               "review": "Revisión"
             },
             "succesfullySubmitted": {
+              "message": {
+                "1": "Has enviado con éxito tu",
+                "2": "solicitud para",
+                "3": ". Recibirás un correo electrónico con actualizaciones sobre tu solicitud."
+              },
               "goToApplications": "Ir a aplicaciones",
               "review": "Revisión"
             }

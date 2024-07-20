@@ -3,8 +3,11 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { TestCycle } from 'models';
 
+import { useContext } from 'react';
 import CustomButton from 'components/CustomButton';
 import CustomCard from 'components/CustomCard';
+import TranslationContext from 'contexts/TranslationsContext';
+import translator from 'utils/translator';
 
 import style from './NoOpenCycle.module.css';
 
@@ -15,12 +18,17 @@ interface IProperties {
 }
 
 const NoOpenCycle = ({ cycle, onReview, showReview }: IProperties) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { language } = i18n;
+  const translations = useContext(TranslationContext);
+  const translate = translator({ language, translations });
   return (
     <CustomCard width={{ base: '100%', medium: '100%' }}>
       <div // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
-          __html: DOMPurify.sanitize(cycle?.closedCycleMessage || ''),
+          __html: DOMPurify.sanitize(
+            translate(cycle?.closedCycleMessage) || ''
+          ),
         }}
       />
       <div className={`${style.buttonContainer}`}>

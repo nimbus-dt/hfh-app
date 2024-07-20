@@ -45,13 +45,13 @@ const SuccesfullySubmitted = ({ onReview, application }: IProperties) => {
     <CustomCard width={{ base: '100%', medium: '100%' }}>
       <Flex direction="column">
         <Text fontWeight="bold">
-          {`You have succesfully submitted your ${
-            rootForm?.name || unknown
-          } application
-            for ${
-              habitat?.longName
-            }. You will receive an email with updates on your
-            application.`}
+          {`${t(
+            'pages.habitat.applicant.cycle.components.succesfullySubmitted.message.1'
+          )} ${rootForm?.name || unknown} ${t(
+            'pages.habitat.applicant.cycle.components.succesfullySubmitted.message.2'
+          )} ${habitat?.longName}${t(
+            'pages.habitat.applicant.cycle.components.succesfullySubmitted.message.3'
+          )}`}
         </Text>
         <div className={styles.buttons}>
           <Link to="../applications">

@@ -13,11 +13,10 @@ import {
   TestApplication,
   TestCycle,
 } from 'models';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { MdOutlineOpenInNew } from 'react-icons/md';
 import TableWithPaginator from 'components/TableWithPaginator';
 import Toggle from 'components/Toggle';
-import StatusChip from 'components/StatusChip';
 import { DataStore } from '@aws-amplify/datastore';
 import { Link } from 'react-router-dom';
 import { dateOnly } from 'utils/dates';
@@ -25,6 +24,8 @@ import Chip from 'components/Chip';
 import { stringToHumanReadable } from 'utils/strings';
 import useHabitat from 'hooks/utils/useHabitat';
 import { useTranslation } from 'react-i18next';
+import TranslationContext from 'contexts/TranslationsContext';
+import translator from 'utils/translator';
 import style from './ApplicantApplicationsPage.module.css';
 
 const ReviewStatusChip = ({
@@ -39,8 +40,6 @@ const ReviewStatusChip = ({
   ) : (
     <Chip text="Reviewed" variation="active" />
   );
-
-const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
 type DataProps =
   | {
@@ -59,14 +58,9 @@ const ApplicantApplicationsPage = () => {
   const { habitat } = useHabitat();
   const { user } = useAuthenticator((context) => [context.user]);
   const [data, setData] = useState<DataProps>(undefined);
-  const [translations, setTranslations] = useState<
-    Record<string, Record<string, string>>
-  >({});
+  const translations = useContext(TranslationContext);
 
-  const translate = (key: string) => {
-    console.log(key);
-    return translations[language]?.[key] || key;
-  };
+  const translate = translator({ language, translations });
 
   useEffect(() => {
     if (habitat) {
@@ -97,23 +91,6 @@ const ApplicantApplicationsPage = () => {
           );
           newApplications = newApplications.concat(applicationsResponse);
         }
-        const response = await fetch(
-          `${FORMIO_URL}/language/submission?data.language=${language}&data.form=app`
-        );
-        const array = await response.json();
-
-        const { translation } = array[0].data;
-        Object.keys(translation).forEach((key) => {
-          const newKey = key.replace(/__DOT__/g, '.');
-          translation[newKey] = translation[key];
-          if (newKey !== key) {
-            delete translation[key];
-          }
-        });
-        setTranslations({
-          [`${language}`]: translation,
-        });
-        console.log(newApplications);
         setData({
           applications: newApplications,
           rootForms: rootFormsResponse,
@@ -122,7 +99,7 @@ const ApplicantApplicationsPage = () => {
       };
       fetchData();
     }
-  }, [habitat, language, user?.username]);
+  }, [habitat, user?.username]);
 
   if (!data) return null;
 
