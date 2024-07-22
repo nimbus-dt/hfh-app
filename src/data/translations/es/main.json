@@ -253,6 +253,27 @@
                 "customStatus": "Estado personalizado",
                 "clearFilters": "Limpiar filtros",
                 "save": "Guardar"
+              },
+              "statusModal": {
+                "title": "Estado",
+                "name": "Nombre",
+                "actions": "Acciones",
+                "newStatus": {
+                  "label": "Nuevo estado: ",
+                  "error": "Estado inválido"
+                },
+                "edit": {
+                  "title": "Alerta",
+                  "text": "¿Quieres editar el estado? Esto actualizaría todas las aplicaciones con este estado.",
+                  "accept": "Aceptar",
+                  "cancel": "Cancelar"
+                },
+                "delete": {
+                  "title": "Alerta",
+                  "text": "¿Quieres eliminar el estado? Esto actualizaría todas las aplicaciones con este estado para tener un estado Pendiente.",
+                  "accept": "Aceptar",
+                  "cancel": "Cancelar"
+                }
               }
             },
             "table": {

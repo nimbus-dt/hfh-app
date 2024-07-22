@@ -253,6 +253,27 @@
                 "customStatus": "Custom Status",
                 "clearFilters": "Clear Filters",
                 "save": "Save"
+              },
+              "statusModal": {
+                "title": "Status",
+                "name": "Name",
+                "actions": "Actions",
+                "newStatus": {
+                  "label": "New Status: ",
+                  "error": "Invalid status"
+                },
+                "edit": {
+                  "title": "Alert",
+                  "text": "You want to edit the status? This would update all the applications with this status.",
+                  "accept": "Accept",
+                  "cancel": "Cancel"
+                },
+                "delete": {
+                  "title": "Alert",
+                  "text": "You want to delete the status? This would update all the applications with this status to have an Pending status.",
+                  "accept": "Accept",
+                  "cancel": "Cancel"
+                }
               }
             },
             "table": {
