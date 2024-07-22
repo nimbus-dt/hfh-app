@@ -7,7 +7,7 @@ import { Status } from 'utils/enums';
 
 declare global {
   interface Window {
-    hfhForm: typeof Wizard;
+    hfhSetSubmission: typeof Wizard;
   }
 }
 
@@ -60,7 +60,10 @@ const Print = () => {
           i18n: value,
         } as Options
       }
-      formReady={(form: typeof Wizard) => (window.hfhForm = form)}
+      formReady={(form: typeof Wizard) =>
+        (window.hfhSetSubmission = (submission: unknown) =>
+          (form.submission = submission))
+      }
     />
   );
 };
