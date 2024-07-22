@@ -80,6 +80,12 @@
     "decisionCard": {
       "button": "Actualizar ahora"
     },
+    "fileInput": {
+      "addFiles": "Añadir archivos",
+      "oneByOne": "uno por uno",
+      "filesMax": "archivos máximos",
+      "selectedFiles": "Archivos seleccionados:"
+    },
     "lexicalEditor": {
       "placeholder": "Introduce un texto...",
       "plugins": {
