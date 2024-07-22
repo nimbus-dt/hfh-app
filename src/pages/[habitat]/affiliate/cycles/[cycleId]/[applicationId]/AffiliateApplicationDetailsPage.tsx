@@ -32,11 +32,10 @@ import {
 import { DataStore, RecursiveModelPredicate } from 'aws-amplify/datastore';
 import { getEditorStateWithFilesInBucket } from 'utils/lexicalEditor';
 import { uploadData } from 'aws-amplify/storage';
-import { post } from 'aws-amplify/api';
+import { get, post } from 'aws-amplify/api';
 import { v4 } from 'uuid';
 import { FileNode } from 'components/LexicalEditor/nodes/FileNode';
 import { ImageNode } from 'components/LexicalEditor/nodes/ImageNode';
-import GoBack from 'components/GoBack';
 import GoBack from 'components/GoBack';
 import { removeFiles } from 'utils/files';
 import { EditorState } from 'lexical';
@@ -291,15 +290,21 @@ const AffiliateApplicationDetailsPage = () => {
       setDownloadingFiles((prevDownloadingFiles) => prevDownloadingFiles + 1);
       const zip = new JSZIP();
 
-      const pdfBase64 = await API.get('habitat', `/application-pdf`, {
-        headers: {
-          Accept: 'application/pdf',
+      const pdfBase64Response = await get({
+        apiName: 'habitat',
+        path: `/application-pdf`,
+        options: {
+          headers: {
+            Accept: 'application/pdf',
+          },
+          queryParams: {
+            applicationId: application.id,
+            language: 'en',
+          },
         },
-        queryStringParameters: {
-          applicationId: application.id,
-          language: 'en',
-        },
-      });
+      }).response;
+
+      const pdfBase64 = await pdfBase64Response.body.text();
 
       const pdfArrayBuffer = Uint8Array.from(atob(pdfBase64), (c) =>
         c.charCodeAt(0)
