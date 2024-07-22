@@ -5,12 +5,7 @@ import {
   type TestApplication,
 } from 'models';
 import CustomButton from 'components/CustomButton/CustomButton';
-import {
-  MdOutlineDownload,
-  MdOutlineMail,
-  MdOutlinePrint,
-} from 'react-icons/md';
-import { printElement } from 'utils/print';
+import { MdOutlineMail, MdOutlinePrint } from 'react-icons/md';
 import DecideModal from './components/DecideModal';
 import { TDecideSchema } from '../../AffiliateApplicationDetailsPage.schema';
 
@@ -40,14 +35,6 @@ const Buttons = ({
   if (!(application?.submissionStatus === SubmissionStatus.COMPLETED))
     return null;
 
-  const handlePrintOnClick = () => {
-    const formioForm = document.querySelector(
-      '#application-tab'
-    ) as HTMLElement;
-
-    printElement(formioForm);
-  };
-
   return (
     <Flex justifyContent="end">
       <DecideModal
@@ -58,18 +45,17 @@ const Buttons = ({
       />
       <CustomButton
         variation="primary"
-        title="Download all files of application"
+        title="Download application"
         onClick={handleDownloadFilesOnClick}
         disabled={downloading}
       >
-        {downloading ? <Loader /> : <MdOutlineDownload size="24px" />}
-      </CustomButton>
-      <CustomButton
-        variation="primary"
-        onClick={handlePrintOnClick}
-        title="Print application"
-      >
-        <MdOutlinePrint size="24px" />
+        <Flex justifyContent="center" alignContent="center">
+          {downloading ? (
+            <Loader size="large" />
+          ) : (
+            <MdOutlinePrint size="24px" />
+          )}
+        </Flex>
       </CustomButton>
       <CustomButton
         variation="primary"
