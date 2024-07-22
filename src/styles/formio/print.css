@@ -4,9 +4,7 @@
 
 @media print {
   .formio-form > div {
-    break-before: always;
-    border-width: 2rem;
-    border-style: double;
+    break-after: always;
   }
 
   .hfh_formio_show_on_print {
