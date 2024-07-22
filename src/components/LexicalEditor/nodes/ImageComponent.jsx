@@ -92,10 +92,9 @@ const ImageComponent = ({ src, nodeKey, altText, s3key }) => {
           className={`image-node ${editor.isEditable() ? 'editable' : ''} ${
             isSelected ? 'selected' : ''
           }`}
-          imgKey={s3key}
+          path={s3key.startsWith('public/') ? s3key : `public/${s3key}`}
           alt={altText}
           itemRef={imageRef}
-          accessLevel="public"
         />
       ) : (
         <img

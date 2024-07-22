@@ -4,7 +4,7 @@ import { RootForm, TestApplication, TestCycle } from 'models';
 import CustomButton from 'components/CustomButton/CustomButton';
 import CustomCard from 'components/CustomCard';
 import { useEffect, useState } from 'react';
-import { DataStore } from 'aws-amplify';
+import { DataStore } from 'aws-amplify/datastore';
 import { unknown } from 'zod';
 import useHabitat from 'hooks/utils/useHabitat';
 import styles from './SuccesfullySubmitted.module.css';

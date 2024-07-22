@@ -4,7 +4,7 @@ import { usePostHog } from 'posthog-js/react';
 import { formatHabitatCycleApplicationData } from 'utils/formatters';
 
 import { Header, Footer, Loading } from 'components';
-import { DataStore } from 'aws-amplify';
+import { DataStore } from 'aws-amplify/datastore';
 import { TestApplication } from 'models';
 import useHabitat from 'hooks/utils/useHabitat';
 import getPage from './utils/getPage';

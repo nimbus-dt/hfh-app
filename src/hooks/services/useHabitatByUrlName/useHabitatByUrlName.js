@@ -1,6 +1,6 @@
 import { Habitat } from 'models';
 import useDataStoreQuery from 'hooks/services/useDataStoreQuery';
-import { SortDirection } from 'aws-amplify';
+import { SortDirection } from 'aws-amplify/datastore';
 
 /**
  * Wrapper to fetch Habitat by urlName

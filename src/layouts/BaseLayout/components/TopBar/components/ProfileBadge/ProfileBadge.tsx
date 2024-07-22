@@ -1,6 +1,5 @@
-import { Auth } from 'aws-amplify';
+import { signOut } from 'aws-amplify/auth';
 import { Button, Menu, MenuItem } from '@aws-amplify/ui-react';
-
 import style from './ProfileBadge.module.css';
 
 interface IProperties {
@@ -9,7 +8,7 @@ interface IProperties {
 
 const ProfileBadge = ({ initials }: IProperties) => {
   const onLogOut = () => {
-    Auth.signOut();
+    signOut();
   };
 
   return (

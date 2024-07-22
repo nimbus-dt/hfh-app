@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import { DataStore, SortDirection } from 'aws-amplify';
+import { DataStore, SortDirection } from 'aws-amplify/datastore';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import Authentication from 'components/Authentication';
 import useScrollToTopOnRouteChange from 'hooks/utils/useScrollToTopOnRouteChange';

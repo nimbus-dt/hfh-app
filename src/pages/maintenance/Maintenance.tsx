@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DataStore } from 'aws-amplify';
+import { DataStore } from 'aws-amplify/datastore';
 import { Image } from '@aws-amplify/ui-react';
 
 import MaintenanceLogo from 'assets/images/maintenance.png';
