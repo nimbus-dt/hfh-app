@@ -81,7 +81,49 @@
       "button": "Actualizar ahora"
     },
     "lexicalEditor": {
-      "placeholder": "Introduce un texto..."
+      "placeholder": "Introduce un texto...",
+      "plugins": {
+        "ToolbarPlugin": {
+          "undo": "Deshacer",
+          "redo": "Rehacer",
+          "paragraph": "Normal",
+          "h1": "Encabezado 1",
+          "h2": "Encabezado 2",
+          "h3": "Encabezado 3",
+          "bullet": "Lista de viñetas",
+          "number": "Lista numerada",
+          "bold": "Negrita",
+          "italic": "Cursiva",
+          "underline": "Subrayado",
+          "strikethrough": "Tachado",
+          "leftAlign": "Alinear a la izquierda",
+          "centerAlign": "Alinear al centro",
+          "rightAlign": "Alinear a la derecha",
+          "justifyAlign": "Justificar",
+          "components": {
+            "InsertImageButton": {
+              "insertImage": "Insertar imagen",
+              "imageUrl": "URL de la imagen",
+              "uploading": "Subiendo",
+              "add": "Añadir",
+              "altText": "Texto alternativo",
+              "url": "URL",
+              "uploadImage": "Subir imagen",
+              "uploadImageFile": "Subir archivo de imagen",
+              "or": "o",
+              "cancel": "Cancelar",
+              "submit": "Enviar"
+            },
+            "InsertFileButton": {
+              "insertFile": "Insertar archivo",
+              "uploadFile": "Subir archivo",
+              "uploading": "Subiendo",
+              "add": "Añadir",
+              "cancel": "Cancelar"
+            }
+          }
+        }
+      }
     },
     "newApplicationModal": {
       "title": "Nueva aplicación en papel",
