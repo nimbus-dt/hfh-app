@@ -282,7 +282,7 @@ const AffiliateApplicationDetailsPage = () => {
     }
   };
 
-  const handleDownloadFiles = async () => {
+  const handleDownloadApplication = async () => {
     try {
       setDownloadingFiles((prevDownloadingFiles) => prevDownloadingFiles + 1);
       const zip = new JSZIP();
@@ -405,7 +405,7 @@ const AffiliateApplicationDetailsPage = () => {
           handleDecideModalOnClose={handleDecideModalOnClose}
           handleOnValidDecide={handleOnValidDecide}
           handleDecideOnClick={handleDecideOnClick}
-          handleDownloadFilesOnClick={handleDownloadFiles}
+          handleDownloadApplicationOnClick={handleDownloadApplication}
           loading={loading}
           downloading={downloadingFiles > 0}
         />

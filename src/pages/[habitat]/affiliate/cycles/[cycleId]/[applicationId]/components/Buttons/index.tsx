@@ -15,7 +15,7 @@ interface ButtonsProps {
   handleDecideModalOnClose: () => void;
   handleOnValidDecide: (data: TDecideSchema) => void;
   handleDecideOnClick: () => void;
-  handleDownloadFilesOnClick: () => void;
+  handleDownloadApplicationOnClick: () => void;
   loading: number;
   downloading: boolean;
 }
@@ -27,7 +27,7 @@ const Buttons = ({
   handleDecideModalOnClose,
   handleOnValidDecide,
   handleDecideOnClick,
-  handleDownloadFilesOnClick,
+  handleDownloadApplicationOnClick,
   downloading,
 }: ButtonsProps) => {
   if (!application) return null;
@@ -46,7 +46,7 @@ const Buttons = ({
       <CustomButton
         variation="primary"
         title="Download application"
-        onClick={handleDownloadFilesOnClick}
+        onClick={handleDownloadApplicationOnClick}
         disabled={downloading}
       >
         <Flex justifyContent="center" alignContent="center">
