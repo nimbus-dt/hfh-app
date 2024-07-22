@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import DataTable from 'components/DataTable';
-import { Storage } from 'aws-amplify';
+import { getUrl } from 'aws-amplify/storage';
 import { Loader } from '@aws-amplify/ui-react';
 
 const Links = ({ loading, links }) => {
@@ -36,15 +36,21 @@ const PaperApplicationTable = ({ application }) => {
 
       if (application.props.paperApplicationKeys) {
         for (const s3key of application.props.paperApplicationKeys) {
-          const getUrlResult = await Storage.get(s3key, {
-            expires: 3600,
-            validateObjectExistence: true,
+          const getUrlResult = await getUrl({
+            path: s3key.startsWith('public/') ? s3key : `public/${s3key}`,
+            options: {
+              expiresIn: 3600,
+              validateObjectExistence: true,
+            },
           });
+
+          const { url } = getUrlResult;
+
           const fileNameArray = s3key.split('/');
           arrayOfLinks = [
             ...arrayOfLinks,
             {
-              link: getUrlResult,
+              link: url,
               fileName: fileNameArray[fileNameArray.length - 1],
             },
           ];

@@ -16,7 +16,7 @@ import {
 import { Button, Flex, Text } from '@aws-amplify/ui-react';
 import { MdDownload } from 'react-icons/md';
 import { downloadWithUrl } from 'utils/files';
-import { Storage } from 'aws-amplify';
+import { getUrl } from 'aws-amplify/storage';
 import { $isFileNode } from './FileNode';
 
 const FileComponent = ({ nodeKey, name, s3key, path }) => {
@@ -30,11 +30,17 @@ const FileComponent = ({ nodeKey, name, s3key, path }) => {
     if (isSelected || !editor.isEditable()) {
       try {
         if (s3key) {
-          const getUrlResult = await Storage.get(s3key, {
-            expires: 600,
-            validateObjectExistence: true,
+          const getUrlResult = await getUrl({
+            path: s3key.startsWith('public/') ? s3key : `public/${s3key}`,
+            options: {
+              expiresIn: 600,
+              validateObjectExistence: true,
+            },
           });
-          downloadWithUrl(getUrlResult, name);
+
+          const { url } = getUrlResult;
+
+          downloadWithUrl(url, name);
         } else {
           downloadWithUrl(path, name);
         }

@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MdDelete } from 'react-icons/md';
 import { Button, Flex, Loader, Text } from '@aws-amplify/ui-react';
-import { API } from 'aws-amplify';
+import { get } from 'aws-amplify/api';
 import LexicalEditor from 'components/LexicalEditor';
 import Modal from 'components/Modal';
 import dayjs from 'dayjs';
@@ -29,13 +29,23 @@ const NotePreview = ({
 
   useEffect(() => {
     const getEmail = async () => {
-      const response = await API.get('userAPI', '/email', {
-        queryStringParameters: {
-          sub: ownerID,
-        },
-      });
+      try {
+        const response = await get({
+          apiName: 'userAPI',
+          path: '/email',
+          options: {
+            queryParams: {
+              sub: ownerID,
+            },
+          },
+        }).response;
 
-      setEmail(response.email);
+        const body = await response.body.json();
+
+        setEmail(body.email);
+      } catch (error) {
+        console.log('error', error);
+      }
     };
     getEmail();
   }, [ownerID]);

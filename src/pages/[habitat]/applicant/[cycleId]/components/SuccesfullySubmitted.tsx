@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { DataStore } from 'aws-amplify';
 import { unknown } from 'zod';
 import { Flex, Text } from '@aws-amplify/ui-react';
 
 import CustomButton from 'components/CustomButton/CustomButton';
 import CustomCard from 'components/CustomCard';
+import { DataStore } from 'aws-amplify/datastore';
 import useHabitat from 'hooks/utils/useHabitat';
 import { RootForm, TestApplication, TestCycle } from 'models';
 

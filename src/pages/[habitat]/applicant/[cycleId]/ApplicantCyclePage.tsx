@@ -10,7 +10,7 @@ import {
 } from 'models';
 import { MdOutlineNoteAlt, MdOutlineLibraryAddCheck } from 'react-icons/md';
 import { useCallback, useEffect, useState } from 'react';
-import { DataStore, SortDirection } from 'aws-amplify';
+import { DataStore, SortDirection } from 'aws-amplify/datastore';
 import { useTestCycleById } from 'hooks/services';
 import LocalNavigation from 'pages/[habitat]/affiliate/cycles/[cycleId]/[applicationId]/components/LocalNavigation';
 import useHabitat from 'hooks/utils/useHabitat';

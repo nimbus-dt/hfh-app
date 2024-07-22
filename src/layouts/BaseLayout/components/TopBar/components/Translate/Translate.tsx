@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { CiGlobe } from 'react-icons/ci';
-import { I18n } from 'aws-amplify';
+import { I18n } from 'aws-amplify/utils';
 
 import { Menu, MenuItem } from '@aws-amplify/ui-react';
 

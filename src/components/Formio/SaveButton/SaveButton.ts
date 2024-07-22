@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { Components } from 'formiojs';
-import { DataStore } from 'aws-amplify';
+import { DataStore } from 'aws-amplify/datastore';
 import { FormAnswer, TestApplication } from 'models';
 import { isElement } from 'utils/type';
 

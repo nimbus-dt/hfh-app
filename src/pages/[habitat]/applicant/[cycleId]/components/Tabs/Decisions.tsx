@@ -5,8 +5,7 @@ import {
   RecursiveModelPredicate,
   SortDirection,
   SortPredicate,
-} from '@aws-amplify/datastore';
-
+} from 'aws-amplify/datastore';
 import DecisionCard from 'components/DecisionCard';
 import { useDecisionsQuery } from 'hooks/services';
 import useHabitat from 'hooks/utils/useHabitat';

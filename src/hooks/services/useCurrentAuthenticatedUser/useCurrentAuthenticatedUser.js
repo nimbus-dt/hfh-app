@@ -1,4 +1,4 @@
-import { Auth } from 'aws-amplify';
+import { getCurrentUser } from 'aws-amplify/auth';
 import { useEffect, useState } from 'react';
 
 /**
@@ -21,7 +21,7 @@ export function useCurrentAuthenticatedUser({
 
     async function fetchData() {
       try {
-        const currentUserResponse = await Auth.currentAuthenticatedUser({
+        const currentUserResponse = await getCurrentUser({
           bypassCache,
         });
 

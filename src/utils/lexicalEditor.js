@@ -61,9 +61,12 @@ export const getEditorStateWithFilesInBucket = async (
     if (children.type === FileNode.getType() && children.path !== undefined) {
       const file = await fileFromObjectURL(children.path, children.name);
       const result = await uploadFile(file);
+
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { path, ...newChildren } = children;
-      newChildren.s3Key = result.key;
+
+      newChildren.s3Key = result.path;
+
       newChildrens.push(newChildren);
     } else if (
       children.type === ImageNode.getType() &&
@@ -77,7 +80,7 @@ export const getEditorStateWithFilesInBucket = async (
       const result = await uploadFile(file);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { src, ...newChildren } = children;
-      newChildren.s3Key = result.key;
+      newChildren.s3Key = result.path;
       newChildrens.push(newChildren);
     } else {
       newChildrens.push(children);

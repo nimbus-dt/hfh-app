@@ -3,7 +3,7 @@ import { Authenticator, Flex, Text } from '@aws-amplify/ui-react';
 import CheckMaintenance from 'layouts/Maintenance/CheckMaintenance';
 import useHabitat from 'hooks/utils/useHabitat';
 import { useEffect, useState } from 'react';
-import { DataStore } from 'aws-amplify';
+import { DataStore } from 'aws-amplify/datastore';
 import { Habitat } from 'models';
 
 const HabitatLayout = () => {

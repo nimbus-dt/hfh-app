@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Outlet, useOutlet, useNavigate, Navigate } from 'react-router-dom';
-import { DataStore } from 'aws-amplify';
+import { DataStore } from 'aws-amplify/datastore';
 import { Flex, Text, useAuthenticator } from '@aws-amplify/ui-react';
 import Authentication from 'components/Authentication';
 import BaseLayout from 'layouts/BaseLayout';

@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { DataStore, SortDirection } from 'aws-amplify';
+import { DataStore, SortDirection } from 'aws-amplify/datastore';
 import { Button } from '@aws-amplify/ui-react';
 import { MdOutlineOpenInNew, MdFilterList } from 'react-icons/md';
 import { throttle } from 'lodash';

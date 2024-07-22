@@ -13,7 +13,8 @@ import PropTypes from 'prop-types';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import FileInput from 'components/FileInput';
-import { DataStore, Storage } from 'aws-amplify';
+import { DataStore } from 'aws-amplify/datastore';
+import { uploadData } from 'aws-amplify/storage';
 import {
   TestApplication,
   SubmissionStatus,
@@ -43,14 +44,12 @@ const NewApplicationModal = ({ open, onClose, setTrigger, cycle }) => {
   });
 
   const uploadFiles = async (applicationId, files) => {
-    const promisesArr = files.map((file) =>
-      Storage.put(
-        `application/${habitat?.urlName}/${cycle.id}/${applicationId}/${file.name}`,
-        file,
-        {
-          level: 'public',
-        }
-      )
+    const promisesArr = files.map(
+      (file) =>
+        uploadData({
+          path: `public/application/${habitat?.urlName}/${cycle.id}/${applicationId}/${file.name}`,
+          data: file,
+        }).result
     );
 
     const results = await Promise.all(promisesArr);
@@ -77,7 +76,7 @@ const NewApplicationModal = ({ open, onClose, setTrigger, cycle }) => {
 
       const results = await uploadFiles(newApplication.id, data.application);
 
-      const resultsArray = results.map((result) => result.key);
+      const resultsArray = results.map((result) => result.path);
 
       const applicationToUpdate = await DataStore.query(
         TestApplication,

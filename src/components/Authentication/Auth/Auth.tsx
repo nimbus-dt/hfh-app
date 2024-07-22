@@ -3,11 +3,15 @@
 /* eslint-disable react/no-unstable-nested-components */
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Hub, I18n } from 'aws-amplify';
+import { Hub, I18n } from 'aws-amplify/utils';
 import { usePostHog } from 'posthog-js/react';
 
 import { Authenticator, Button, useAuthenticator } from '@aws-amplify/ui-react';
 
+import { AuthUser, fetchUserAttributes } from 'aws-amplify/auth';
+import { Habitat } from 'models';
+
+import { PostHog } from 'posthog-js';
 import useHabitat from 'hooks/utils/useHabitat';
 
 import styles from './styles.module.css';
@@ -15,6 +19,25 @@ import styles from './styles.module.css';
 interface AuthProps {
   type: 'applicant' | 'affiliate';
 }
+
+const identifyUser = async (
+  posthog: PostHog,
+  user: AuthUser,
+  type: AuthProps['type'],
+  habitat: Habitat
+) => {
+  const userAttributes = await fetchUserAttributes();
+
+  posthog?.identify(userAttributes?.email, {
+    ...user,
+    attributes: userAttributes,
+    type,
+    habitat,
+  });
+  posthog?.group('habitat', habitat?.name || 'unknown');
+  posthog?.group('type', type || 'unknown');
+  posthog?.capture('clicked_sign_in');
+};
 
 const AuthComponent = ({ type }: AuthProps) => {
   const { t } = useTranslation();
@@ -29,16 +52,10 @@ const AuthComponent = ({ type }: AuthProps) => {
   useEffect(() => {
     const cancelListen = Hub.listen('auth', (data) => {
       const { payload } = data;
-      if (payload.event === 'signIn') {
+      if (payload.event === 'signedIn' && habitat) {
         const { data: user } = payload;
-        posthog?.identify(user?.attributes?.email, {
-          ...user,
-          type,
-          habitat,
-        });
-        posthog?.group('habitat', habitat?.name || 'unknown');
-        posthog?.group('type', type || 'unknown');
-        posthog?.capture('clicked_sign_in');
+
+        identifyUser(posthog, user, type, habitat);
       }
     });
 
@@ -142,7 +159,7 @@ const AuthComponent = ({ type }: AuthProps) => {
           <div className={styles.options}>
             <div className={styles['reset-password']}>
               <Button
-                onClick={auth.toResetPassword}
+                onClick={auth.toForgotPassword}
                 variation="link"
                 isFullWidth
               >
