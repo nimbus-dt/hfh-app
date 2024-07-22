@@ -3,12 +3,8 @@
 }
 
 @media print {
-  .formio-form {
-    break-inside: auto;
-  }
-
   .formio-form > div {
-    break-before: always !important;
+    break-before: always;
     border-width: 2rem;
     border-style: double;
   }
