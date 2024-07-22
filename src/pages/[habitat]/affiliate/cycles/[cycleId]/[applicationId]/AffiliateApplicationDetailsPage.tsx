@@ -283,64 +283,89 @@ const AffiliateApplicationDetailsPage = () => {
   };
 
   const handleDownloadFiles = async () => {
-    setDownloadingFiles((prevDownloadingFiles) => prevDownloadingFiles + 1);
-    const zip = new JSZIP();
+    try {
+      setDownloadingFiles((prevDownloadingFiles) => prevDownloadingFiles + 1);
+      const zip = new JSZIP();
 
-    for (const formAnswer of formAnswers) {
-      const { page, values } = formAnswer;
-      const stringValues = JSON.stringify(values);
-      const objectValues = JSON.parse(stringValues);
-      const flatValues = flattenObject(values);
-      const fileValuesPath = flatValues.filter((flatValue) =>
-        flatValue.path.endsWith('.originalName')
+      const pdfBase64 = await API.get('habitat', `/application-pdf`, {
+        headers: {
+          Accept: 'application/pdf',
+        },
+        queryStringParameters: {
+          applicationId: application.id,
+          language: 'en',
+        },
+      });
+
+      const pdfArrayBuffer = Uint8Array.from(atob(pdfBase64), (c) =>
+        c.charCodeAt(0)
       );
-      if (fileValuesPath.length > 0 && values) {
-        for (const fileValuePath of fileValuesPath) {
-          const path = fileValuePath.path.replace('.originalName', '');
 
-          const fileValue = getValueFromPath(objectValues, path);
+      zip.file('Application.pdf', pdfArrayBuffer);
 
-          const { originalName, key, bucket } = fileValue as {
-            originalName: string;
-            key: string;
-            bucket: string;
-          };
+      for (const formAnswer of formAnswers) {
+        const { page, values } = formAnswer;
 
-          const command = new GetObjectCommand({
-            Bucket: bucket,
-            Key: key,
-          });
+        const stringValues = JSON.stringify(values);
 
-          const response = await s3client.send(command);
+        const objectValues = JSON.parse(stringValues);
 
-          const byteArr = await response.Body?.transformToByteArray();
+        const flatValues = flattenObject(values);
 
-          if (!byteArr) {
-            return;
+        const fileValuesPath = flatValues.filter((flatValue) =>
+          flatValue.path.endsWith('.originalName')
+        );
+
+        if (fileValuesPath.length > 0 && values) {
+          for (const fileValuePath of fileValuesPath) {
+            const path = fileValuePath.path.replace('.originalName', '');
+
+            const fileValue = getValueFromPath(objectValues, path);
+
+            const { originalName, key, bucket } = fileValue as {
+              originalName: string;
+              key: string;
+              bucket: string;
+            };
+
+            const command = new GetObjectCommand({
+              Bucket: bucket,
+              Key: key,
+            });
+
+            const response = await s3client.send(command);
+
+            const byteArr = await response.Body?.transformToByteArray();
+
+            if (!byteArr) {
+              return;
+            }
+
+            zip.file(
+              `files/${page}/${path.replaceAll('.', '/')}/${originalName}`,
+              byteArr
+            );
           }
-
-          zip.file(
-            `${page}/${path.replaceAll('.', '/')}/${originalName}`,
-            byteArr
-          );
         }
       }
-    }
 
-    const rootForm = await DataStore.query(RootForm, cycle?.rootformID);
+      const rootForm = await DataStore.query(RootForm, cycle?.rootformID);
 
-    const userData = await DataStore.query(User, (c) =>
-      c.owner.eq(application?.ownerID || '')
-    );
-
-    zip.generateAsync({ type: 'blob' }).then((content) => {
-      saveAs(
-        content,
-        `${rootForm?.name}-${cycle?.name}-${userData[0].firstName} ${userData[0].lastName}.zip`
+      const userData = await DataStore.query(User, (c) =>
+        c.owner.eq(application?.ownerID || '')
       );
-    });
 
-    setDownloadingFiles((prevDownloadingFiles) => prevDownloadingFiles - 1);
+      zip.generateAsync({ type: 'blob' }).then((content) => {
+        saveAs(
+          content,
+          `${rootForm?.name}-${cycle?.name}-${userData[0].firstName} ${userData[0].lastName}.zip`
+        );
+      });
+    } catch (error) {
+      console.log('Error downloading files');
+    } finally {
+      setDownloadingFiles((prevDownloadingFiles) => prevDownloadingFiles - 1);
+    }
   };
 
   useEffect(() => {
