@@ -3,8 +3,14 @@
 }
 
 @media print {
+  .formio-form {
+    break-inside: auto;
+  }
+
   .formio-form > div {
-    break-after: always !important;
+    break-before: always !important;
+    border-width: 2rem;
+    border-style: double;
   }
 
   .hfh_formio_show_on_print {
