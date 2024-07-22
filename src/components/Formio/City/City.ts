@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { API } from 'aws-amplify';
+import { get } from 'aws-amplify/api';
 import { Components } from 'formiojs';
 import { debounce } from 'lodash';
 
@@ -9,11 +9,12 @@ interface getCityProps {
 }
 
 const getCities = async ({ cityNameQuery, state }: getCityProps) => {
-  const newCities = await API.get(
-    'public',
-    `/cities?cityNameQuery=${cityNameQuery}&state=${state}`,
-    {}
-  );
+  const citiesResponse = await get({
+    apiName: 'public',
+    path: `/cities?cityNameQuery=${cityNameQuery}&state=${state}`,
+  }).response;
+
+  const newCities = (await citiesResponse.body.json()) as { city: string }[];
 
   return newCities.map((city: { city: string }) => ({
     value: city.city,

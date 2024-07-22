@@ -6,7 +6,7 @@ import {
   View,
   useAuthenticator,
 } from '@aws-amplify/ui-react';
-import { DataStore } from '@aws-amplify/datastore';
+import { DataStore } from 'aws-amplify/datastore';
 import DecisionCard from 'components/DecisionCard';
 import {
   Decision,

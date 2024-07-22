@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { DataStore } from 'aws-amplify';
+import { DataStore } from 'aws-amplify/datastore';
 import { throttle } from 'lodash';
 import Footer from 'components/Footer';
 import { User, Sexs, UserTypes } from 'models';

@@ -18,7 +18,7 @@ import { MdOutlineOpenInNew } from 'react-icons/md';
 import TableWithPaginator from 'components/TableWithPaginator';
 import Toggle from 'components/Toggle';
 import StatusChip from 'components/StatusChip';
-import { DataStore } from '@aws-amplify/datastore';
+import { DataStore } from 'aws-amplify/datastore';
 import { Link } from 'react-router-dom';
 import { dateOnly } from 'utils/dates';
 import Chip from 'components/Chip';

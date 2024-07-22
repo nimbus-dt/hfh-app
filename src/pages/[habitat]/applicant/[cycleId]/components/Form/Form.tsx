@@ -3,14 +3,13 @@ import { Form as FormioForm, Wizard } from '@formio/react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   FormAnswer,
-  Habitat,
   TestApplication,
   TestCycle,
   SubmissionStatus,
   ReviewStatus,
   LazyFormAnswer,
 } from 'models';
-import { DataStore } from 'aws-amplify';
+import { DataStore, RecursiveModelPredicate } from 'aws-amplify/datastore';
 import { generateSubmission } from 'utils/formio';
 import { Options } from '@formio/react/lib/components/Form';
 import { useFormAnswersQuery, useFormById } from 'hooks/services';
@@ -19,7 +18,6 @@ import dayjs from 'dayjs';
 import { usePostHog } from 'posthog-js/react';
 import { Button, Flex, Text } from '@aws-amplify/ui-react';
 import CustomButton from 'components/CustomButton/CustomButton';
-import { RecursiveModelPredicate } from '@aws-amplify/datastore';
 import { useTranslation } from 'react-i18next';
 import useAsync from 'hooks/utils/useAsync/useAsync';
 import { Status } from 'utils/enums';

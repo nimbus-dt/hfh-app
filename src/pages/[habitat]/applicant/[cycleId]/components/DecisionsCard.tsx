@@ -1,6 +1,9 @@
-import { RecursiveModelPredicate, SortPredicate } from '@aws-amplify/datastore';
+import {
+  RecursiveModelPredicate,
+  SortPredicate,
+  SortDirection,
+} from 'aws-amplify/datastore';
 import { Flex, Text } from '@aws-amplify/ui-react';
-import { SortDirection } from 'aws-amplify';
 import CustomCard from 'components/CustomCard';
 import ExpandableCardWithGradient from 'components/ExpandableCardWithGradient';
 import LexicalEditor from 'components/LexicalEditor';
