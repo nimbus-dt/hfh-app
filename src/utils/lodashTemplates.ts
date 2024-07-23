@@ -46,7 +46,7 @@ const rowTemplate = `
   {% util.eachComponent(components, function(component) { %}
     <div class="row p-3">
       <div class="col-12">
-        {{ component.label }}: {{ getView(component, row[component.key]) }}
+        {{ component.label }}: {{ hfhPrintGetView(component, row[component.key], getView) }}
       </div>
     </div>
   {% }) %}
@@ -82,22 +82,22 @@ const templateWithEditGridChildExample = `
 <div class="row hfh_formio_show_on_print">
   <div class="row p-3">
     <div class="col-12">
-      {{ components[0].label }}: {{ getView(components[0], row[components[0].key]) }}
+      {{ components[0].label }}: {{ hfhPrintGetView(components[0], row[components[0].key], getView) }}
     </div>
   </div>
   <div class="row p-3">
     <div class="col-12">
-      {{ components[1].label }}: {{ getView(components[1], row[components[1].key]) }}
+      {{ components[1].label }}: {{ hfhPrintGetView(components[1], row[components[1].key], getView) }}
     </div>
   </div>
   <div class="row p-3">
     <div class="col-12">
-      {{ components[2].label }}: {{ getView(components[2], row[components[2].key]) }}
+      {{ components[2].label }}: {{ hfhPrintGetView(components[2], row[components[2].key], getView) }}
     </div>
   </div>
   <div class="row p-3">
     <div class="col-12">
-      {{ components[3].label }}: {{ getView(components[3], row[components[3].key]) }}
+      {{ components[3].label }}: {{ hfhPrintGetView(components[3], row[components[3].key], getView) }}
     </div>
   </div>
   <ul class="list-group p-3">
@@ -109,7 +109,7 @@ const templateWithEditGridChildExample = `
         {% util.eachComponent(components[4].components, function(component) { %}
         <div class="row p-3">
           <div class="col-12">
-            {{ component.label }}: {{ getView(component, income[component.key]) }}
+            {{ component.label }}: {{ hfhPrintGetView(component, income[component.key], getView) }}
           </div>
         </div>
         {% }) %}
@@ -125,7 +125,7 @@ const templateWithEditGridChildExample = `
         {% util.eachComponent(components[5].components, function(component) { %}
         <div class="row p-3">
           <div class="col-12">
-            {{ component.label }}: {{ getView(component, debt[component.key]) }}
+            {{ component.label }}: {{ hfhPrintGetView(component, debt[component.key], getView) }}
           </div>
         </div>
         {% }) %}
@@ -141,7 +141,7 @@ const templateWithEditGridChildExample = `
         {% util.eachComponent(components[6].components, function(component) { %}
         <div class="row p-3">
           <div class="col-12">
-            {{ component.label }}: {{ getView(component, asset[component.key]) }}
+            {{ component.label }}: {{ hfhPrintGetView(component, asset[component.key], getView) }}
           </div>
         </div>
         {% }) %}
