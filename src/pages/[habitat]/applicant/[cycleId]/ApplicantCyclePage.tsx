@@ -227,7 +227,6 @@ const ApplicantCyclePage = () => {
 
   return (
     <Form
-      habitat={habitat}
       application={value?.data?.application}
       cycle={value?.data?.cycle}
       formContainer={false}
