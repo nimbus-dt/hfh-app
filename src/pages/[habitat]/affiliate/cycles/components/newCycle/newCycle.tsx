@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { DataStore } from 'aws-amplify/datastore';
 import { Button } from '@aws-amplify/ui-react';
@@ -27,6 +28,7 @@ const NewCycle = ({
   refetch,
   rootForm,
 }: NewCycleProps) => {
+  const { t } = useTranslation();
   const { habitat } = useHabitat();
 
   const {
@@ -73,28 +75,43 @@ const NewCycle = ({
 
   return (
     <Modal
-      title={openCycle ? 'Close Application Cycle' : 'Create Application Cycle'}
+      title={
+        openCycle
+          ? t(
+              'pages.habitat.affiliate.cycles.components.newCycle.closeApplicationCycle'
+            )
+          : t(
+              'pages.habitat.affiliate.cycles.components.newCycle.createApplicationCycle'
+            )
+      }
       open={open}
       onClickClose={close}
     >
       {openCycle ? (
         <div className={styles.background}>
           <p className="theme-subtitle-s2">
-            Are you sure you want to close your current application cycle?
+            {t(
+              'pages.habitat.affiliate.cycles.components.newCycle.openCycle.title'
+            )}
           </p>
           <p className="theme-body-medium">
-            Once closed, applicants can no longer submit applications to your
-            form.
+            {t(
+              'pages.habitat.affiliate.cycles.components.newCycle.openCycle.description'
+            )}
           </p>
           <div className={styles.buttons}>
             <Button
               variation="destructive"
               onClick={throttle(onCloseCycle, 500)}
             >
-              Confirm
+              {t(
+                'pages.habitat.affiliate.cycles.components.newCycle.openCycle.confirm'
+              )}
             </Button>
             <Button variation="link" onClick={throttle(close, 500)}>
-              Cancel
+              {t(
+                'pages.habitat.affiliate.cycles.components.newCycle.openCycle.cancel'
+              )}
             </Button>
           </div>
         </div>
@@ -107,7 +124,9 @@ const NewCycle = ({
             htmlFor="name"
             className={`${styles.text_label} theme-body-medium`}
           >
-            Please enter a name for your new application cycle below
+            {t(
+              'pages.habitat.affiliate.cycles.components.newCycle.closeCycle.name'
+            )}
             <input
               type="name"
               id="name"
@@ -116,16 +135,22 @@ const NewCycle = ({
             />
             {errors.name && (
               <span className={`${styles.error} theme-body-small`}>
-                This field is required
+                {t(
+                  'pages.habitat.affiliate.cycles.components.newCycle.closeCycle.error'
+                )}
               </span>
             )}
           </label>
           <div className={styles.buttons}>
             <Button variation="link" onClick={throttle(close, 500)}>
-              Cancel
+              {t(
+                'pages.habitat.affiliate.cycles.components.newCycle.closeCycle.cancel'
+              )}
             </Button>
             <Button variation="primary" type="submit">
-              Confirm
+              {t(
+                'pages.habitat.affiliate.cycles.components.newCycle.closeCycle.confirm'
+              )}
             </Button>
           </div>
         </form>

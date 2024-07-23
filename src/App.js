@@ -1,7 +1,8 @@
 import './assets/styles/App.css';
-import { Routes, Route } from 'react-router-dom';
 // eslint-disable-next-line import/no-unresolved
 import '@aws-amplify/ui-react/styles.css';
+import { Routes, Route } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import ApplicantCyclePage from 'pages/[habitat]/applicant/[cycleId]';
 import HabitatLayout from 'layouts/HabitatLayout';
 import ApplicantLayout from 'layouts/ApplicantLayout';
@@ -21,6 +22,7 @@ import './lib/i18n';
 
 function App() {
   useRedirectToLegacy();
+  const { t } = useTranslation();
 
   return (
     <Routes>
@@ -53,7 +55,7 @@ function App() {
         <Route path={ROUTES.HABITAT_AFFILIATE} element={<NewAffiliateLayout />}>
           <Route
             path={ROUTES.HABITAT_AFFILIATE_HOME}
-            element={<h1>This page is under construction</h1>}
+            element={<h1>{t('pages.underConstruction.message')}</h1>}
           />
           <Route
             path={ROUTES.HABITAT_AFFILIATE_FORMS}
@@ -61,11 +63,11 @@ function App() {
           />
           <Route
             path={ROUTES.HABITAT_AFFILIATE_ANALYTICS}
-            element={<p>This page is under construction</p>}
+            element={<p>{t('pages.underConstruction.message')}</p>}
           />
           <Route
             path={ROUTES.HABITAT_AFFILIATE_USERS}
-            element={<p>This page is under construction</p>}
+            element={<p>{t('pages.underConstruction.message')}</p>}
           />
           <Route path=":formId">
             <Route index element={<CyclesPage />} />

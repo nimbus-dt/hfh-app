@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { Flex, Text } from '@aws-amplify/ui-react';
 import {
   RecursiveModelPredicate,
@@ -6,8 +8,9 @@ import {
 } from 'aws-amplify/datastore';
 import DecisionCard from 'components/DecisionCard';
 import { useDecisionsQuery } from 'hooks/services';
-import { Decision, ReviewStatus, TestApplication } from 'models';
 import useHabitat from 'hooks/utils/useHabitat';
+import { Decision, ReviewStatus, TestApplication } from 'models';
+
 import style from './Decisions.module.css';
 
 interface DecisionsProps {
@@ -16,6 +19,7 @@ interface DecisionsProps {
 
 const Decisions = ({ application }: DecisionsProps) => {
   const { habitat } = useHabitat();
+  const { t } = useTranslation();
 
   const { data: decisions }: { data: Decision[] } = useDecisionsQuery({
     criteria: (c1: RecursiveModelPredicate<Decision>) =>
@@ -41,7 +45,9 @@ const Decisions = ({ application }: DecisionsProps) => {
         ))
       ) : (
         <Text textAlign="center" fontWeight="bold">
-          There are no decisions for this application
+          {t(
+            'pages.habitat.applicant.cycle.components.tabs.decisions.noDecisions'
+          )}
         </Text>
       )}
     </Flex>

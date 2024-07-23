@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { MdOutlineNoteAlt, MdOutlineLibraryAddCheck } from 'react-icons/md';
 import LocalNavigation from 'pages/[habitat]/affiliate/cycles/[cycleId]/[applicationId]/components/LocalNavigation';
 
@@ -14,9 +15,16 @@ const Reviewed = ({
   activeTab,
   setActiveTab,
 }: ReviewedProps) => {
+  const { t } = useTranslation();
   const items = [
-    { label: 'Application', icon: <MdOutlineNoteAlt /> },
-    { label: 'Decisions', icon: <MdOutlineLibraryAddCheck /> },
+    {
+      label: t('pages.habitat.applicant.cycle.application'),
+      icon: <MdOutlineNoteAlt />,
+    },
+    {
+      label: t('pages.habitat.applicant.cycle.decisions'),
+      icon: <MdOutlineLibraryAddCheck />,
+    },
   ];
 
   const Tab = {

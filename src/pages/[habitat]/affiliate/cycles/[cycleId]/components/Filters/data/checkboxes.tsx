@@ -1,3 +1,4 @@
+import { TFunction } from 'i18next';
 import reviewStatusInputsData from './reviewStatusData';
 import typeInputsData from './typeInputsData';
 
@@ -7,14 +8,22 @@ interface CheckboxProps {
   data: { name: string; label: string; type: string }[];
 }
 
-export const typeCheckbox: CheckboxProps = {
-  title: 'Type',
+export const typeCheckbox = (
+  t: TFunction<'translation', undefined>
+): CheckboxProps => ({
+  title: t(
+    'pages.habitat.affiliate.cycles.cycle.components.filters.data.checkboxes.type'
+  ),
   name: 'type',
-  data: typeInputsData,
-};
+  data: typeInputsData(t),
+});
 
-export const reviewStatusCheckbox: CheckboxProps = {
-  title: 'Status',
+export const reviewStatusCheckbox = (
+  t: TFunction<'translation', undefined>
+): CheckboxProps => ({
+  title: t(
+    'pages.habitat.affiliate.cycles.cycle.components.filters.data.checkboxes.status'
+  ),
   name: 'reviewStatus',
-  data: reviewStatusInputsData,
-};
+  data: reviewStatusInputsData(t),
+});

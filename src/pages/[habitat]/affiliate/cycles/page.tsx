@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { DataStore, SortDirection } from 'aws-amplify/datastore';
 import { Button } from '@aws-amplify/ui-react';
@@ -19,11 +20,11 @@ import useHabitat from 'hooks/utils/useHabitat';
 import Filters from './components/filters';
 import NewCycle from './components/newCycle';
 import styles from './styles.module.css';
-import headers from './utils/headers';
 import { Inputs } from './types';
 
 const CyclesPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const { formId } = useParams();
 
@@ -129,7 +130,7 @@ const CyclesPage = () => {
       name,
       startDate: convertDateYYYYMMDDtoDDMMYYYY(startDate.split('T')[0]),
       endDate: endDate ? convertDateYYYYMMDDtoDDMMYYYY(endDate) : '',
-      status: isOpen ? 'Open' : 'Closed',
+      status: isOpen,
       createdAt,
     })
   );
@@ -139,7 +140,7 @@ const CyclesPage = () => {
   const breadCrumbsItems = [
     { label: `${formName}`, to: '../forms' },
     {
-      label: 'Cycles',
+      label: t('pages.habitat.affiliate.cycles.name'),
     },
   ];
 
@@ -149,15 +150,20 @@ const CyclesPage = () => {
         <BreadCrumbs items={breadCrumbsItems} />
         <div className={styles.title}>
           <GoBack to="../forms" />
-          <p className="theme-headline-medium">Cycles Dashboard</p>
+          <p className="theme-headline-medium">
+            {t('pages.habitat.affiliate.cycles.title')}
+          </p>
         </div>
       </div>
       <div className={styles.applications}>
         <div className={styles.table_options}>
           <div className={styles.table_title}>
-            <p className={`${styles.neutral_100} theme-subtitle-s2`}>Cycles</p>
+            <p className={`${styles.neutral_100} theme-subtitle-s2`}>
+              {t('pages.habitat.affiliate.cycles.table.title')}
+            </p>
             <p className={`${styles.neutral_80} theme-body-small`}>
-              {cycles.length} results
+              {cycles.length}{' '}
+              {t('pages.habitat.affiliate.cycles.table.results')}
             </p>
           </div>
           <div className={styles.options}>
@@ -176,12 +182,35 @@ const CyclesPage = () => {
               }, 500)}
               variation="primary"
             >
-              {value.openCycles.length > 0 ? 'Close Cycle' : 'New Cycle +'}
+              {value.openCycles.length > 0
+                ? t('pages.habitat.affiliate.cycles.button.closeCycle')
+                : t('pages.habitat.affiliate.cycles.button.newCycle')}
             </Button>
           </div>
         </div>
         <TableWithPaginator
-          headers={headers}
+          headers={[
+            {
+              id: 'name',
+              value: t('pages.habitat.affiliate.cycles.table.name'),
+            },
+            {
+              id: 'startDate',
+              value: t('pages.habitat.affiliate.cycles.table.startDate'),
+            },
+            {
+              id: 'endDate',
+              value: t('pages.habitat.affiliate.cycles.table.endDate'),
+            },
+            {
+              id: 'status',
+              value: t('pages.habitat.affiliate.cycles.table.status'),
+            },
+            {
+              id: 'view',
+              value: t('pages.habitat.affiliate.cycles.table.view'),
+            },
+          ]}
           data={cycles.map((data) => ({
             id: data.id,
             cells: [
@@ -191,8 +220,12 @@ const CyclesPage = () => {
               {
                 value: (
                   <Chip
-                    variation={data.status === 'Open' ? 'success' : 'danger'}
-                    text={data.status}
+                    variation={data.status ? 'success' : 'danger'}
+                    text={
+                      data.status
+                        ? t('pages.habitat.affiliate.cycles.status.open')
+                        : t('pages.habitat.affiliate.cycles.status.closed')
+                    }
                   />
                 ),
                 id: 'status',

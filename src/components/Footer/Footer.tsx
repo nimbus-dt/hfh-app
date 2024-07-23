@@ -1,10 +1,13 @@
-import { Button } from '@aws-amplify/ui-react';
 import { MdArrowBack, MdHelpOutline } from 'react-icons/md';
+import { useTranslation } from 'react-i18next';
+import { Button } from '@aws-amplify/ui-react';
 
 import styles from './Footer.module.css';
 import FooterProps from './Footer.types';
 
 const Footer = ({ goBack, onNext, submit = false }: FooterProps) => {
+  const { t } = useTranslation();
+
   const classname = {
     background: `${styles.background} ${
       !goBack && styles.background_without_back
@@ -14,7 +17,9 @@ const Footer = ({ goBack, onNext, submit = false }: FooterProps) => {
     help: `${styles.help_icon} ${!goBack && styles.help_icon_without_back}`,
   };
 
-  const nextText = submit ? 'Submit' : 'Continue';
+  const nextText = submit
+    ? t('components.footer.submit')
+    : t('components.footer.continue');
 
   return (
     <div className={classname.background}>
@@ -26,7 +31,7 @@ const Footer = ({ goBack, onNext, submit = false }: FooterProps) => {
               size="24px"
               style={{ marginRight: '1rem' }}
             />
-            Go Back
+            {t('components.footer.goBack')}
           </>
         )}
       </Button>

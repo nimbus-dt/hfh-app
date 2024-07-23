@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
 import { useAuthenticator } from '@aws-amplify/ui-react';
+import { useTranslation } from 'react-i18next';
+import { useLocation, useParams } from 'react-router-dom';
 import {
   SubmissionStatus,
   TestApplication,
@@ -23,6 +24,8 @@ import Reviewed from './components/Reviewed/Reviewed';
 
 const ApplicantCyclePage = () => {
   const { habitat } = useHabitat();
+  const { t } = useTranslation();
+
   const { cycleId } = useParams();
 
   const { user } = useAuthenticator((context) => [context.user]);

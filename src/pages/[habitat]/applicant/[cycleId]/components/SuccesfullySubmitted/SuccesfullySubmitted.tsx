@@ -1,12 +1,15 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { unknown } from 'zod';
 import { Flex, Text } from '@aws-amplify/ui-react';
-import { RootForm, TestApplication, TestCycle } from 'models';
+
 import CustomButton from 'components/CustomButton/CustomButton';
 import CustomCard from 'components/CustomCard';
-import { useEffect, useState } from 'react';
 import { DataStore } from 'aws-amplify/datastore';
-import { unknown } from 'zod';
 import useHabitat from 'hooks/utils/useHabitat';
+import { RootForm, TestApplication, TestCycle } from 'models';
+
 import styles from './SuccesfullySubmitted.module.css';
 
 interface IProperties {
@@ -16,6 +19,7 @@ interface IProperties {
 
 const SuccesfullySubmitted = ({ onReview, application }: IProperties) => {
   const { habitat } = useHabitat();
+  const { t } = useTranslation();
 
   const [rootForm, setRootForm] = useState<RootForm | undefined>(undefined);
 
@@ -41,22 +45,26 @@ const SuccesfullySubmitted = ({ onReview, application }: IProperties) => {
     <CustomCard width={{ base: '100%', medium: '100%' }}>
       <Flex direction="column">
         <Text fontWeight="bold">
-          {`You have succesfully submitted your ${
-            rootForm?.name || unknown
-          } application
-            for ${
-              habitat?.longName
-            }. You will receive an email with updates on your
-            application.`}
+          {`${t(
+            'pages.habitat.applicant.cycle.components.succesfullySubmitted.message.1'
+          )} ${rootForm?.name || unknown} ${t(
+            'pages.habitat.applicant.cycle.components.succesfullySubmitted.message.2'
+          )} ${habitat?.longName}${t(
+            'pages.habitat.applicant.cycle.components.succesfullySubmitted.message.3'
+          )}`}
         </Text>
         <div className={styles.buttons}>
           <Link to="../applications">
             <CustomButton variation="secondary">
-              Go to applications
+              {t(
+                'pages.habitat.applicant.cycle.components.succesfullySubmitted.goToApplications'
+              )}
             </CustomButton>
           </Link>
           <CustomButton onClick={onReview} variation="primary">
-            Review
+            {t(
+              'pages.habitat.applicant.cycle.components.succesfullySubmitted.review'
+            )}
           </CustomButton>
         </div>
       </Flex>
