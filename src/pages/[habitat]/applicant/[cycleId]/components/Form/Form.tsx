@@ -32,7 +32,8 @@ const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 const Form = ({ application, cycle, formContainer = true }: FormProps) => {
   const { i18n } = useTranslation();
   const { habitat } = useHabitat();
-  const [reviewMode, setReviewMode] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [reviewSubmission, setReviewSubmission] = useState<any>(undefined);
   const [formReady, setFormReady] = useState<typeof Wizard>();
   const posthog = usePostHog();
   const navigate = useNavigate();
@@ -54,6 +55,7 @@ const Form = ({ application, cycle, formContainer = true }: FormProps) => {
       const response = await fetch(
         `${FORMIO_URL}/language/submission?data.language=${language}&data.form=${cycle?.formUrl}`
       );
+
       const array = await response.json();
       const { data } = array[0];
       const { translation } = data;
@@ -64,6 +66,7 @@ const Form = ({ application, cycle, formContainer = true }: FormProps) => {
           delete translation[key];
         }
       });
+
       const translations = {
         [`${language}`]: translation,
       };
@@ -110,7 +113,7 @@ const Form = ({ application, cycle, formContainer = true }: FormProps) => {
     try {
       if (application && cycle) {
         await uploadSubmission({ submission, application });
-        setReviewMode(true);
+        setReviewSubmission(submission);
       }
     } catch (error) {
       console.log('Error updating application');
@@ -165,7 +168,7 @@ const Form = ({ application, cycle, formContainer = true }: FormProps) => {
       }
     }
 
-    setReviewMode(false);
+    setReviewSubmission(undefined);
   };
 
   const handleOnClickSubmit = () => {
@@ -210,7 +213,7 @@ const Form = ({ application, cycle, formContainer = true }: FormProps) => {
   const src = `${FORMIO_URL}/${cycle?.formUrl}`;
 
   if (
-    reviewMode ||
+    reviewSubmission ||
     application?.submissionStatus === SubmissionStatus.COMPLETED
   ) {
     const reviewOptions = {
@@ -234,7 +237,7 @@ const Form = ({ application, cycle, formContainer = true }: FormProps) => {
               key={`review-${language}`}
               src={src}
               options={reviewOptions}
-              submission={submission}
+              submission={reviewSubmission || submission}
             />
             <Modal
               title="Alert"
