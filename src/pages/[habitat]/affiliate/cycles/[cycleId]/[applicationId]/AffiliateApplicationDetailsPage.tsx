@@ -288,6 +288,7 @@ const AffiliateApplicationDetailsPage = () => {
   const handleDownloadApplication = async () => {
     try {
       setDownloadingFiles((prevDownloadingFiles) => prevDownloadingFiles + 1);
+
       const zip = new JSZIP();
 
       const pdfBase64Response = await get({
@@ -304,16 +305,12 @@ const AffiliateApplicationDetailsPage = () => {
         },
       }).response;
 
-      const pdfBase64 = await pdfBase64Response.body.text();
+      const pdfBlob = await pdfBase64Response.body.blob();
 
-      const pdfArrayBuffer = Uint8Array.from(atob(pdfBase64), (c) =>
-        c.charCodeAt(0)
-      );
-
-      zip.file('Application.pdf', pdfArrayBuffer);
+      zip.file('Application.pdf', pdfBlob);
 
       for (const formAnswer of formAnswers) {
-        const { page, values } = formAnswer;
+        const { values } = formAnswer;
 
         const stringValues = JSON.stringify(values);
 
@@ -337,6 +334,8 @@ const AffiliateApplicationDetailsPage = () => {
               bucket: string;
             };
 
+            const s3Name = key.split('/').at(-1);
+
             const command = new GetObjectCommand({
               Bucket: bucket,
               Key: key,
@@ -350,10 +349,7 @@ const AffiliateApplicationDetailsPage = () => {
               return;
             }
 
-            zip.file(
-              `files/${page}/${path.replaceAll('.', '/')}/${originalName}`,
-              byteArr
-            );
+            zip.file(`files/${s3Name}`, byteArr);
           }
         }
       }
@@ -371,7 +367,7 @@ const AffiliateApplicationDetailsPage = () => {
         );
       });
     } catch (error) {
-      console.log('Error downloading files');
+      console.log('Error downloading files', error);
     } finally {
       setDownloadingFiles((prevDownloadingFiles) => prevDownloadingFiles - 1);
     }
