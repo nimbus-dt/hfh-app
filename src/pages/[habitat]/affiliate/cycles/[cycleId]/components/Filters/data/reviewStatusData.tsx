@@ -1,24 +1,33 @@
+import { TFunction } from 'i18next';
 import { ReviewStatus } from 'models';
 
-const reviewStatusInputsData = [
+const reviewStatusInputsData = (t: TFunction<'translation', undefined>) => [
   {
     name: '',
-    label: 'Pending',
+    label: t(
+      'pages.habitat.affiliate.cycles.cycle.components.filters.data.reviewStatusData.pending'
+    ),
     type: ReviewStatus.PENDING,
   },
   {
     name: '',
-    label: 'Accepted',
+    label: t(
+      'pages.habitat.affiliate.cycles.cycle.components.filters.data.reviewStatusData.accepted'
+    ),
     type: ReviewStatus.ACCEPTED,
   },
   {
     name: '',
-    label: 'Denied',
+    label: t(
+      'pages.habitat.affiliate.cycles.cycle.components.filters.data.reviewStatusData.denied'
+    ),
     type: ReviewStatus.DENIED,
   },
   {
     name: '',
-    label: 'Returned',
+    label: t(
+      'pages.habitat.affiliate.cycles.cycle.components.filters.data.reviewStatusData.returned'
+    ),
     type: ReviewStatus.RETURNED,
   },
 ];

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
   Alert,
   Flex,
@@ -26,6 +27,7 @@ import useHabitat from 'hooks/utils/useHabitat';
 import { newPaperApplicationSchema } from './NewApplicationModal.schema';
 
 const NewApplicationModal = ({ open, onClose, setTrigger, cycle }) => {
+  const { t } = useTranslation();
   const { habitat } = useHabitat();
   const [showError, setShowError] = useState(false);
   const [loading, setLoading] = useState(0);
@@ -107,7 +109,7 @@ const NewApplicationModal = ({ open, onClose, setTrigger, cycle }) => {
 
   return (
     <Modal
-      title="New Paper Application"
+      title={t('components.newApplicationModal.title')}
       open={open}
       onClickClose={() => loading === 0 && onClose()}
       width="35rem"
@@ -120,23 +122,20 @@ const NewApplicationModal = ({ open, onClose, setTrigger, cycle }) => {
           onDismiss={() => setShowError()}
           marginBottom="1rem"
         >
-          Couldn't save the new application.
+          {t('components.newApplicationModal.error')}
         </Alert>
       )}
-      <Text>
-        By creating a paper application record, you are creating a record that
-        tracks the information of an application you have received on paper,
-        physically. Please make sure that you enter data correctly, as once you
-        have added an application you can not edit this information.
-      </Text>
+      <Text>{t('components.newApplicationModal.description')}</Text>
       <br />
       <form onSubmit={handleSubmit(handleOnValid)}>
         <Flex direction="column">
           <TextField
             {...register('name')}
-            label="Name"
-            descriptiveText="Name of the main applicant in the application"
-            errorMessage="Invalid name"
+            label={t('components.newApplicationModal.name.label')}
+            descriptiveText={t(
+              'components.newApplicationModal.name.descriptiveText'
+            )}
+            errorMessage={t('components.newApplicationModal.name.error')}
             hasError={errors.name}
             isRequired
             disabled={loading > 0}
@@ -144,28 +143,30 @@ const NewApplicationModal = ({ open, onClose, setTrigger, cycle }) => {
           <TextField
             {...register('submittedDate')}
             type="date"
-            label="Date submitted"
-            errorMessage="Invalid date"
+            label={t('components.newApplicationModal.date.label')}
+            errorMessage={t('components.newApplicationModal.date.error')}
             hasError={errors.date}
             isRequired
             disabled={loading > 0}
           />
           <SelectField
             {...register('reviewStatus')}
-            label="Review status"
-            errorMessage="Invalid review status"
+            label={t('components.newApplicationModal.reviewStatus.label')}
+            errorMessage={t(
+              'components.newApplicationModal.reviewStatus.error'
+            )}
             hasError={errors.reviewStatus}
             isRequired
             disabled={loading > 0}
           >
             <option value={ReviewStatus.PENDING}>
-              {stringToHumanReadable(ReviewStatus.PENDING)}
+              {t('components.newApplicationModal.reviewStatus.pending')}
             </option>
             <option value={ReviewStatus.ACCEPTED}>
-              {stringToHumanReadable(ReviewStatus.ACCEPTED)}
+              {t('components.newApplicationModal.reviewStatus.accepted')}
             </option>
             <option value={ReviewStatus.DENIED}>
-              {stringToHumanReadable(ReviewStatus.DENIED)}
+              {t('components.newApplicationModal.reviewStatus.denied')}
             </option>
           </SelectField>
           <Controller
@@ -178,7 +179,9 @@ const NewApplicationModal = ({ open, onClose, setTrigger, cycle }) => {
               };
               return (
                 <FileInput
-                  label="Upload application"
+                  label={t(
+                    'components.newApplicationModal.uploadApplication.label'
+                  )}
                   onChange={handleOnChange}
                   isRequired
                   files={value}
@@ -189,7 +192,7 @@ const NewApplicationModal = ({ open, onClose, setTrigger, cycle }) => {
           />
           {loading > 0 && (
             <Flex direction="column">
-              <Text>Uploading new application</Text>
+              <Text>{t('components.newApplicationModal.uploading')}</Text>
               <Loader variation="linear" />
             </Flex>
           )}
@@ -199,14 +202,14 @@ const NewApplicationModal = ({ open, onClose, setTrigger, cycle }) => {
               onClick={() => loading === 0 && onClose()}
               disabled={loading > 0}
             >
-              Cancel
+              {t('components.newApplicationModal.cancel')}
             </CustomButton>
             <CustomButton
               variation="primary"
               type="submit"
               disabled={loading > 0}
             >
-              Submit
+              {t('components.newApplicationModal.submit')}
             </CustomButton>
           </Flex>
         </Flex>

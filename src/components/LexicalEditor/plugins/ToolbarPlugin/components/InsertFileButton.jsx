@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button, Flex } from '@aws-amplify/ui-react';
 import React, { useState } from 'react';
 import { MdInsertDriveFile } from 'react-icons/md';
@@ -12,6 +13,7 @@ const InsertFileButton = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [editor] = useLexicalComposerContext();
   const [files, setFiles] = useState([]);
+  const { t } = useTranslation();
 
   const handleOpenClose = () => {
     setFiles([]);
@@ -31,14 +33,18 @@ const InsertFileButton = () => {
   return (
     <>
       <Modal
-        title="Insert file"
+        title={t(
+          'components.lexicalEditor.plugins.ToolbarPlugin.components.InsertFileButton.insertFile'
+        )}
         open={modalIsOpen}
         onClickClose={handleOpenClose}
         width="35rem"
       >
         <Flex direction="column" alignItems="stretch">
           <FileInput
-            label="Upload file"
+            label={t(
+              'components.lexicalEditor.plugins.ToolbarPlugin.components.InsertFileButton.uploadFile'
+            )}
             maxFileCount={1}
             multiple={false}
             files={files}
@@ -46,17 +52,27 @@ const InsertFileButton = () => {
           />
           <Flex justifyContent="end">
             <Button variation="primary" onClick={handleAddFileOnClick}>
-              Add
+              {t(
+                'components.lexicalEditor.plugins.ToolbarPlugin.components.InsertFileButton.add'
+              )}
             </Button>
-            <Button onClick={handleOpenClose}>Cancel</Button>
+            <Button onClick={handleOpenClose}>
+              {t(
+                'components.lexicalEditor.plugins.ToolbarPlugin.components.InsertFileButton.cancel'
+              )}
+            </Button>
           </Flex>
         </Flex>
       </Modal>
       <CustomButton
         variation="text-only"
         onClick={handleOpenClose}
-        aria-label="Insert File"
-        title="Insert File"
+        aria-label={t(
+          'components.lexicalEditor.plugins.ToolbarPlugin.components.InsertFileButton.insertFile'
+        )}
+        title={t(
+          'components.lexicalEditor.plugins.ToolbarPlugin.components.InsertFileButton.insertFile'
+        )}
         className={style.toolbarButton}
       >
         <MdInsertDriveFile />

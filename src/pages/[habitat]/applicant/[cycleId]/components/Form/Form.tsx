@@ -36,6 +36,7 @@ const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
 const Form = ({ application, cycle, formContainer = true }: IProperties) => {
   const { i18n } = useTranslation();
+  const { t } = useTranslation();
   const { habitat } = useHabitat();
   const [reviewMode, setReviewMode] = useState(false);
   const [formReady, setFormReady] = useState<typeof Wizard>();
@@ -184,22 +185,29 @@ const Form = ({ application, cycle, formContainer = true }: IProperties) => {
                 submission={generateSubmission(formAnswers)}
               />
               <Modal
-                title="Alert"
+                title={t(
+                  'pages.habitat.applicant.cycle.components.form.alert.title'
+                )}
                 width={{ base: '95%', medium: '30rem' }}
                 open={showSubmitModal}
                 onClickClose={handleOnClickSubmitModalClose}
               >
                 <Text>
-                  Are you sure you want to submit your application? Once
-                  submited you won't be able to resubmit.
+                  {t(
+                    'pages.habitat.applicant.cycle.components.form.alert.message'
+                  )}
                 </Text>
                 <br />
                 <Flex width="100%" justifyContent="end">
                   <Button variation="primary" onClick={handleOnSubmit}>
-                    Accept
+                    {t(
+                      'pages.habitat.applicant.cycle.components.form.alert.accept'
+                    )}
                   </Button>
                   <Button onClick={handleOnClickSubmitModalClose}>
-                    Cancel
+                    {t(
+                      'pages.habitat.applicant.cycle.components.form.alert.cancel'
+                    )}
                   </Button>
                 </Flex>
               </Modal>
@@ -211,18 +219,26 @@ const Form = ({ application, cycle, formContainer = true }: IProperties) => {
                       onClick={handleOnClickGoBack}
                       variation="secondary"
                     >
-                      Go back to edit
+                      {t(
+                        'pages.habitat.applicant.cycle.components.form.goBackToEdit'
+                      )}
                     </CustomButton>
                     <CustomButton
                       onClick={handleOnClickSubmit}
                       variation="primary"
                     >
-                      Submit
+                      {t(
+                        'pages.habitat.applicant.cycle.components.form.submit'
+                      )}
                     </CustomButton>
                   </>
                 ) : (
                   <Link to="../applications">
-                    <CustomButton variation="primary">Go back</CustomButton>
+                    <CustomButton variation="primary">
+                      {t(
+                        'pages.habitat.applicant.cycle.components.form.goBack'
+                      )}
+                    </CustomButton>
                   </Link>
                 )}
               </Flex>

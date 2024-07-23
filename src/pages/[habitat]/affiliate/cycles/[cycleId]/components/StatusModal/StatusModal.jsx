@@ -19,6 +19,7 @@ import { MdAdd, MdCheck, MdClose, MdDelete, MdEdit } from 'react-icons/md';
 import { DEFAULT_REVIEW_STATUS } from 'utils/constants';
 import PropTypes from 'prop-types';
 import useHabitat from 'hooks/utils/useHabitat';
+import { useTranslation } from 'react-i18next';
 
 const StatusModal = ({ open, onClose, setTrigger }) => {
   const { habitat, setHabitat } = useHabitat();
@@ -26,6 +27,7 @@ const StatusModal = ({ open, onClose, setTrigger }) => {
   const [editingAlert, setEditingAlert] = useState(false);
   const [deletingStatus, setDeletingStatus] = useState();
   const [newStatus, setNewStatus] = useState('');
+  const { t } = useTranslation();
 
   const responsiveBool = useBreakpointValue({
     base: true,
@@ -204,60 +206,85 @@ const StatusModal = ({ open, onClose, setTrigger }) => {
     setNewStatus('');
   };
   return (
-    <Modal title="Status" open={open} onClickClose={onClose} width="30rem">
+    <Modal
+      title={t(
+        'pages.habitat.affiliate.cycles.cycle.components.statusModal.title'
+      )}
+      open={open}
+      onClickClose={onClose}
+      width="30rem"
+    >
       <>
         <Modal
-          title="Alert"
+          title={t(
+            'pages.habitat.affiliate.cycles.cycle.components.statusModal.edit.title'
+          )}
           open={editingAlert}
           onClickClose={handleOnCloseEditingAlert}
           width="25rem"
         >
           <View>
             <Text as="p">
-              You want to edit the status? This would update all the
-              applications with this status.
+              {t(
+                'pages.habitat.affiliate.cycles.cycle.components.statusModal.edit.text'
+              )}
             </Text>
             <Flex marginTop="1rem" justifyContent="center">
               <Button variation="primary" onClick={handleUpdateCustomStatus}>
-                Accept
+                {t(
+                  'pages.habitat.affiliate.cycles.cycle.components.statusModal.edit.accept'
+                )}
               </Button>
               <Button
                 variation="destructive"
                 onClick={handleOnCloseEditingAlert}
               >
-                Cancel
+                {t(
+                  'pages.habitat.affiliate.cycles.cycle.components.statusModal.edit.cancel'
+                )}
               </Button>
             </Flex>
           </View>
         </Modal>
         <Modal
-          title="Alert"
+          title={t(
+            'pages.habitat.affiliate.cycles.cycle.components.statusModal.delete.title'
+          )}
           open={deletingStatus !== undefined}
           onClickClose={handleOnCloseDelete}
           width="25rem"
         >
           <View>
             <Text as="p">
-              You want to delete the status? This would update all the
-              applications with this status to have an Pending status.
+              {t(
+                'pages.habitat.affiliate.cycles.cycle.components.statusModal.delete.text'
+              )}
             </Text>
             <Flex marginTop="1rem" justifyContent="center">
               <Button variation="primary" onClick={handleDeleteCustomStatus}>
-                Accept
+                {t(
+                  'pages.habitat.affiliate.cycles.cycle.components.statusModal.delete.accept'
+                )}
               </Button>
               <Button variation="destructive" onClick={handleOnCloseDelete}>
-                Cancel
+                {t(
+                  'pages.habitat.affiliate.cycles.cycle.components.statusModal.delete.cancel'
+                )}
               </Button>
             </Flex>
           </View>
         </Modal>
         <Flex width="100%" justifyContent="space-between" alignItems="end">
           <TextField
-            label="New status:"
+            label={t(
+              'pages.habitat.affiliate.cycles.cycle.components.statusModal.newStatus.label'
+            )}
             value={newStatus}
             onChange={handleNewStatusOnChange}
             hasError={statusAlreadyExists || newStatus === ''}
-            errorMessage="Invalid status"
+            errorMessage={t(
+              'pages.habitat.affiliate.cycles.cycle.components.statusModal.newStatus.error'
+            )}
           />
           {editingStatus ? (
             <Flex>
@@ -304,10 +331,14 @@ const StatusModal = ({ open, onClose, setTrigger }) => {
           <TableHead>
             <TableRow>
               <TableCell as="th" width="70%">
-                Name
+                {t(
+                  'pages.habitat.affiliate.cycles.cycle.components.statusModal.name'
+                )}
               </TableCell>
               <TableCell as="th" width="30%">
-                Actions
+                {t(
+                  'pages.habitat.affiliate.cycles.cycle.components.statusModal.actions'
+                )}
               </TableCell>
             </TableRow>
           </TableHead>

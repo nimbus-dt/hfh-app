@@ -1,4 +1,505 @@
 {
+  "langCode": "en",
+  "language": "English",
   "English": "English",
-  "Spanish": "Spanish"
+  "Spanish": "Spanish",
+  "layouts": {
+    "baseLayout": {
+      "components": {
+        "topBar": {
+          "components": {
+            "profileBadge": {
+              "logOut": "Log Out"
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "authentication": {
+      "auth": {
+        "vocabularies": {
+          "signIn": "Sign In",
+          "signingIn": "Signing In",
+          "signInToYourAccount": "Sign in to your account",
+          "username": "Enter your username",
+          "password": "Enter your password",
+          "signUp": "Sign Up",
+          "forgotPassword": "Forgot Password?",
+          "resetPassword": "Forgot your password?",
+          "enterYourEmail": "Enter your email",
+          "sendCode": "Send code",
+          "backToSignIn": "Back to Sign In",
+          "createAccount": "Create Account"
+        },
+        "errors": {
+          "usernameCannotBeEmpty": "Incorrect username or password.",
+          "customAuthLambdaTriggerIsNotConfiguredForTheUserPool": "Incorrect username or password.",
+          "userDoesNotExist": "User does not exist.",
+          "incorrectUsernameOrPassword": "Incorrect username or password."
+        },
+        "signIn": {
+          "username": {
+            "label": "Email",
+            "placeholder": "Enter your email"
+          },
+          "password": {
+            "label": "Password",
+            "placeholder": "Enter your Password:"
+          },
+          "footer": {
+            "forgotPassword": "Forgot Password?",
+            "doNotHaveAnAccount": "Do not have an account?",
+            "signUp": "Sign Up"
+          }
+        },
+        "signUp": {
+          "email": {
+            "label": "Email",
+            "placeholder": "Enter your email"
+          },
+          "password": {
+            "label": "Password",
+            "placeholder": "Enter your Password"
+          },
+          "confirmPassword": {
+            "label": "Confirm Password",
+            "placeholder": "Confirm your password"
+          },
+          "footer": {
+            "haveAnAccountAlready": "Have an account already?",
+            "backToSignIn": "Back to Sign In"
+          }
+        }
+      }
+    },
+    "decisionsTab": {
+      "noDecisions": "There are no decisions for this application"
+    },
+    "decisionCard": {
+      "button": "Update Now"
+    },
+    "fileInput": {
+      "addFiles": "Add files",
+      "oneByOne": "one by one",
+      "filesMax": "files max",
+      "selectedFiles": "Selected files:",
+      "noFileChosen": "No files chosen22"
+    },
+    "lexicalEditor": {
+      "placeholder": "Enter some text...",
+      "plugins": {
+        "ToolbarPlugin": {
+          "undo": "Undo",
+          "redo": "Redo",
+          "paragraph": "Normal",
+          "h1": "Heading 1",
+          "h2": "Heading 2",
+          "h3": "Heading 3",
+          "bullet": "Bullet List",
+          "number": "Numbered List",
+          "bold": "Bold",
+          "italic": "Italic",
+          "underline": "Underline",
+          "strikethrough": "Strikethrough",
+          "leftAlign": "Left Align",
+          "centerAlign": "Center Align",
+          "rightAlign": "Right Align",
+          "justifyAlign": "Justify Align",
+          "components": {
+            "InsertImageButton": {
+              "insertImage": "Insert Image",
+              "imageUrl": "Image URL",
+              "uploading": "Uploading",
+              "add": "Add",
+              "altText": "Alt Text",
+              "url": "URL",
+              "uploadImage": "Upload image",
+              "uploadImageFile": "Upload image file",
+              "or": "or",
+              "cancel": "Cancel",
+              "submit": "Submit"
+            },
+            "InsertFileButton": {
+              "insertFile": "Insert File",
+              "uploadFile": "Upload file",
+              "uploading": "Uploading",
+              "add": "Add",
+              "cancel": "Cancel"
+            }
+          }
+        }
+      }
+    },
+    "newApplicationModal": {
+      "title": "New Paper Application",
+      "description": "By creating a paper application record, you are creating a record that tracks the information of an application you have received on paper, physically. Please make sure that you enter data correctly, as once you have added an application you can not edit this information.",
+      "error": "Couldn't save the new application.",
+      "name": {
+        "label": "Name",
+        "descriptiveText": "Name of the main applicant in the application",
+        "errorMessage": "Invalid name"
+      },
+      "date": {
+        "label": "Date submitted",
+        "errorMessage": "Invalid date"
+      },
+      "reviewStatus": {
+        "label": "Review status",
+        "pending": "Pending",
+        "accepted": "Accepted",
+        "denied": "Denied",
+        "errorMessage": "Invalid review status"
+      },
+      "uploadApplication": {
+        "label": "Upload application"
+      },
+      "uploading": "Uploading new application",
+      "cancel": "Cancel",
+      "submit": "Submit"
+    },
+    "tableWithPaginator": {
+      "rowsPerPage": "Rows per page",
+      "noData": "No data"
+    },
+    "footer": {
+      "continue": "Continue",
+      "submit": "Submit",
+      "goBack": "Go back"
+    }
+  },
+  "pages": {
+    "maintenance": {
+      "title": "We are currently improving Habitat App 🔨",
+      "message": "We apologize for the inconvenience, but we're performing some maintenance. You can still contact us at support@habitat-app.org. We'll be back soon!",
+      "from": "- The Habitat App Team"
+    },
+    "underConstruction": {
+      "message": "This page is currently under construction"
+    },
+    "habitat": {
+      "affiliate": {
+        "forms": {
+          "name": "Active Forms",
+          "components": {
+            "newFormButton": {
+              "text": "New Form",
+              "title": "Create a new form 📝",
+              "description": "Creating a form is the first step to take your paper applications online. Please take some time to answer the following questions.",
+              "form": {
+                "name": {
+                  "label": "What is your form's name?",
+                  "placeholder": "Homeownership Program Application",
+                  "error": "Please enter a name for your form."
+                },
+                "description": {
+                  "label": "Can you describe your form in a couple of words?",
+                  "placeholder": "The form is an application that determines if a family is fit to participate in Habitat for Humanity's Homeownership Program. These are received twice a year and reviewed by Habitat workers.",
+                  "error": "Please enter a description for your form."
+                },
+                "file": {
+                  "label": "Please upload your paper application",
+                  "error": "Please upload at least one file."
+                },
+                "submit": "Submit",
+                "uploading": "Uploading files"
+              }
+            }
+          },
+          "title": "Forms Dashboard",
+          "toogle": {
+            "active": "Active",
+            "pending": "Pending"
+          },
+          "table": {
+            "activeTitle": "Active Forms",
+            "pendingTitle": "Pending Forms",
+            "results": "results",
+            "name": "Name",
+            "dateCreated": "Date Created",
+            "status": "Status",
+            "view": "View"
+          }
+        },
+        "cycles": {
+          "name": "Cycles",
+          "title": "Cycles Dashboard",
+          "button": {
+            "newCycle": "New Cycle +",
+            "closeCycle": "Close Cycle"
+          },
+          "components": {
+            "filters": {
+              "title": "Filter Options",
+              "dates": "Dates",
+              "startDate": "Start Date",
+              "endDate": "End Date",
+              "status": "Status",
+              "open": "Open",
+              "close": "Close",
+              "clearFilters": "Clear Filters",
+              "save": "Save"
+            },
+            "newCycle": {
+              "closeApplicationCycle": "Close Application Cycle",
+              "createApplicationCycle": "Create Application Cycle",
+              "openCycle": {
+                "title": "Are you sure you want to close your current application cycle?",
+                "description": "Once closed, applicants can no longer submit applications to your form.",
+                "confirm": "Confirm",
+                "cancel": "Cancel"
+              },
+              "closeCycle": {
+                "name": "Please enter a name for your new application cycle below",
+                "error": "This field is required",
+                "confirm": "Confirm",
+                "cancel": "Cancel"
+              }
+            }
+          },
+          "status": {
+            "open": "Open",
+            "closed": "Closed"
+          },
+          "table": {
+            "title": "Cycles",
+            "results": "results",
+            "name": "Name",
+            "startDate": "Start Date",
+            "endDate": "End Date",
+            "status": "Status",
+            "view": "View"
+          },
+          "cycle": {
+            "name": "Applications",
+            "title": "Applications Dashboard",
+            "incompleteApplications": "Incomplete Applications:",
+            "clipboard": "Copy link for applicants to clipboard",
+            "newApplication": "New Application",
+            "components": {
+              "filters": {
+                "title": "Filter Options",
+                "dates": "Dates",
+                "startDate": "Start Date Submitted",
+                "endDate": "End Date Submitted",
+                "data": {
+                  "checkboxes": {
+                    "type": "Type",
+                    "status": "Status"
+                  },
+                  "typeInputsData": {
+                    "online": "Online",
+                    "paper": "Paper"
+                  },
+                  "reviewStatusData": {
+                    "pending": "Pending",
+                    "accepted": "Accepted",
+                    "denied": "Denied",
+                    "returned": "Returned"
+                  }
+                },
+                "customStatus": "Custom Status",
+                "clearFilters": "Clear Filters",
+                "save": "Save"
+              },
+              "statusModal": {
+                "title": "Status",
+                "name": "Name",
+                "actions": "Actions",
+                "newStatus": {
+                  "label": "New Status: ",
+                  "error": "Invalid status"
+                },
+                "edit": {
+                  "title": "Alert",
+                  "text": "You want to edit the status? This would update all the applications with this status.",
+                  "accept": "Accept",
+                  "cancel": "Cancel"
+                },
+                "delete": {
+                  "title": "Alert",
+                  "text": "You want to delete the status? This would update all the applications with this status to have an Pending status.",
+                  "accept": "Accept",
+                  "cancel": "Cancel"
+                }
+              }
+            },
+            "table": {
+              "title": "Applications",
+              "results": "results",
+              "name": "Name",
+              "type": "Type",
+              "dateSubmitted": "Date Submitted",
+              "reviewStatus": "Review Status",
+              "customStatus": "Custom Status",
+              "view": "View"
+            },
+            "application": {
+              "name": "Detail",
+              "title": "Application Details",
+              "tabs": {
+                "applications": "Applications",
+                "notes": "Notes",
+                "decisions": "Decisions",
+                "calculations": "Calculations"
+              },
+              "components": {
+                "applicationTab": {
+                  "components": {
+                    "paperApplicationTable": {
+                      "title": "Paper Application Information",
+                      "name": "Name",
+                      "files": "Files"
+                    }
+                  }
+                },
+                "notesTab": {
+                  "createNote": "Create Note",
+                  "noNotes": "There are no notes for this application",
+                  "components": {
+                    "notePreview": {
+                      "by": "Note by:",
+                      "delete": {
+                        "title": "Delete note",
+                        "warning": "Are you sure you want to delete this note?",
+                        "accept": "Accept",
+                        "cancel": "Cancel",
+                        "deleting": "Deleting"
+                      }
+                    },
+                    "noteModal": {
+                      "title": "Create Note",
+                      "uploading": "Uploading",
+                      "save": "Save"
+                    }
+                  }
+                },
+                "buttons": {
+                  "components": {
+                    "decideModal": {
+                      "title": "Decide",
+                      "description": "When you make a decision, we notify applicants via email and store the decision in the application's Decision tab.",
+                      "status": {
+                        "label": "What is the type of decision you want to make?",
+                        "error": "Invalid status",
+                        "return": "Return",
+                        "accept": "Accept",
+                        "deny": "Deny"
+                      },
+                      "placeholders": {
+                        "return": {
+                          "1": "Dear John Doe",
+                          "2": "Thank you for taking the time to complete your application. After a thorough review, we are excited to continue the application process with you. However, we need you to revise the following sections of your application:",
+                          "3": "Income: Please include consecutive pay stubs for the last 60 days. Currently, you have only included pay stubs for the last 30 days.",
+                          "4": "U.S. Citizenship: Please provide correct proof of legal residence. The file you submitted does not verify your residency status.",
+                          "5": "Once you have made the necessary revisions, please resubmit your application for further review.",
+                          "6": "Thank you for your cooperation.",
+                          "7": "Best regards,",
+                          "8": "The Habitat for Humanity Team"
+                        },
+                        "accept": {
+                          "1": "Dear John Doe,",
+                          "2": "Thank you for completing your application. We are pleased to inform you that your application has been accepted.",
+                          "3": "We will be in touch soon with the next steps in the process. If you have any questions or need further assistance, please do not hesitate to contact us.",
+                          "4": "Welcome to the Habitat for Humanity community!",
+                          "5": "Best regards,",
+                          "6": "The Habitat for Humanity Team"
+                        },
+                        "reject": {
+                          "1": "Dear John Doe,",
+                          "2": "Thank you for your interest in Habitat for Humanity and for taking the time to complete your application. After a thorough review, we regret to inform you that we are unable to proceed with your application at this time.",
+                          "3": "We understand this may be disappointing news. Please feel free to contact us if you have any questions or if you would like feedback on your application.",
+                          "4": "Thank you for your understanding and support of our mission.",
+                          "5": "Best regards,",
+                          "6": "The Habitat for Humanity Team"
+                        }
+                      },
+                      "warning": "By returning an application, you are allowing an applicant to enter their application and fix mistakes. Once they have fixed them, they can submit the application.",
+                      "message": "Include here the decision message you want to send to the applicant. You can attach files, links and images.",
+                      "sending": "Updating application and sending email to applicant.",
+                      "cancel": "Cancel",
+                      "send": "Send"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "applicant": {
+        "cycle": {
+          "application": "Application",
+          "decisions": "Decisions",
+          "components": {
+            "form": {
+              "alert": {
+                "title": "Alert",
+                "message": "Are you sure you want to submit your application? Once submited you won't be able to resubmit.",
+                "accept": "Accept",
+                "cancel": "Cancel"
+              },
+              "goBackToEdit": "Go back to edit",
+              "submit": "Submit",
+              "goBack": "Go back"
+            },
+            "tabs": {
+              "decisions": {
+                "noDecisions": "There are no decisions for this application"
+              }
+            },
+            "noOpenCycle": {
+              "goBack": "Go back",
+              "review": "Review"
+            },
+            "succesfullySubmitted": {
+              "message": {
+                "1": "You have succesfully submitted your",
+                "2": "application for",
+                "3": ". You will receive an email with updates on your application."
+              },
+              "goToApplications": "Go to applications",
+              "review": "Review"
+            }
+          }
+        },
+        "applications": {
+          "title": "Applications Dashboard",
+          "subtitle": "Select the type of application",
+          "toogle": {
+            "incomplete": "Incomplete",
+            "complete": "Complete"
+          },
+          "table": {
+            "title": "Current Applications",
+            "name": "Name",
+            "dateStarted": "Date Started",
+            "dateCompleted": "Date Completed",
+            "status": "Status",
+            "reviewStatus": "Review Status",
+            "view": "View"
+          }
+        },
+        "decisions": {
+          "title": "Decisions Dashboard",
+          "description": "Exchange information with affiliates and revise your submissions",
+          "empty": "You have no decision records."
+        }
+      }
+    }
+  },
+  "routes": {
+    "applicantApplications": "Applications",
+    "applicantDecisions": "Decisions",
+    "applicantForm": "Form",
+    "affiliateHome": "Home",
+    "affiliateForms": "Forms",
+    "affiliateCycles": "Cycles",
+    "affiliateApplications": "Applications",
+    "affiliateApplicationDetail": "Application Details",
+    "affiliateAnalytics": "Analytics",
+    "affiliateUsers": "Users",
+    "settings": "Settings"
+  }
 }

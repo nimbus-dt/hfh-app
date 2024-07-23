@@ -41,6 +41,7 @@ import { useAuthenticator } from '@aws-amplify/ui-react';
 import Loading from 'components/Loading';
 import { usePostHog } from 'posthog-js/react';
 import useHabitat from 'hooks/utils/useHabitat';
+import { useTranslation } from 'react-i18next';
 import style from './AffiliateApplicationDetailsPage.module.css';
 import LocalNavigation from './components/LocalNavigation';
 import ApplicationTab from './components/ApplicationTab';
@@ -52,6 +53,7 @@ import Buttons from './components/Buttons';
 
 const AffiliateApplicationDetailsPage = () => {
   const posthog = usePostHog();
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState(1);
   const [triggerApplication, setTriggerApplication] = useState(false);
   const [triggerNotes, setTriggerNotes] = useState(false);
@@ -283,10 +285,10 @@ const AffiliateApplicationDetailsPage = () => {
   if (!cycle) return <Loading />;
 
   const breadCrumbsItems = [
-    { label: 'Active Forms', to: '../../../forms' },
-    { label: 'Cycles', to: '../..' },
-    { label: 'Applications', to: '..' },
-    { label: 'Detail' },
+    { label: t('pages.habitat.affiliate.forms.name'), to: '../../../forms' },
+    { label: t('pages.habitat.affiliate.cycles.name'), to: '../..' },
+    { label: t('pages.habitat.affiliate.cycles.cycle.name'), to: '..' },
+    { label: t('pages.habitat.affiliate.cycles.cycle.application.name') },
   ];
 
   return (
@@ -296,7 +298,7 @@ const AffiliateApplicationDetailsPage = () => {
         <div className={`${style.cta}`}>
           <GoBack />
           <span className={`theme-headline-medium ${style.title}`}>
-            Application Details
+            {t('pages.habitat.affiliate.cycles.cycle.application.title')}
           </span>
         </div>
       </div>
@@ -313,12 +315,32 @@ const AffiliateApplicationDetailsPage = () => {
       <div className={`${style.detailsContainer}`}>
         <LocalNavigation
           items={[
-            { label: 'Applications', icon: <MdOutlineNoteAlt /> },
-            { label: 'Notes', icon: <MdOutlineTextSnippet /> },
+            {
+              label: t(
+                'pages.habitat.affiliate.cycles.cycle.application.tabs.applications'
+              ),
+              icon: <MdOutlineNoteAlt />,
+            },
+            {
+              label: t(
+                'pages.habitat.affiliate.cycles.cycle.application.tabs.notes'
+              ),
+              icon: <MdOutlineTextSnippet />,
+            },
             ...(application?.type === ApplicationTypes.ONLINE
               ? [
-                  { label: 'Decisions', icon: <MdOutlineLibraryAddCheck /> },
-                  { label: 'Calculations', icon: <MdOutlineCalculate /> },
+                  {
+                    label: t(
+                      'pages.habitat.affiliate.cycles.cycle.application.tabs.decisions'
+                    ),
+                    icon: <MdOutlineLibraryAddCheck />,
+                  },
+                  {
+                    label: t(
+                      'pages.habitat.affiliate.cycles.cycle.application.tabs.calculations'
+                    ),
+                    icon: <MdOutlineCalculate />,
+                  },
                 ]
               : []),
           ]}

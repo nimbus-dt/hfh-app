@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { dateOnly } from 'utils/dates';
 import { throttle } from 'lodash';
 import useHabitat from 'hooks/utils/useHabitat';
+import { useTranslation } from 'react-i18next';
 import style from './AffiliateFormsPage.module.css';
 import NewFormButton from './components/NewFormButton';
 
@@ -28,6 +29,7 @@ const StatusChip = ({ status }: { status: string }) => {
 
 const AffiliateFormsPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [latestForms, setLatestForms] = useState([]);
   const [trigger, setTrigger] = useState(true);
 
@@ -76,12 +78,20 @@ const AffiliateFormsPage = () => {
         alignItems="center"
       >
         <Flex direction="column">
-          <Heading level={3}>Forms Dashboard</Heading>
+          <Heading level={3}>
+            {t('pages.habitat.affiliate.forms.title')}
+          </Heading>
         </Flex>
         <Flex className={`${style.toggleContainer}`}>
           <Toggle
-            option1={{ value: 'ACTIVE', label: 'Active' }}
-            option2={{ value: 'PENDING', label: 'Pending' }}
+            option1={{
+              value: 'ACTIVE',
+              label: t('pages.habitat.affiliate.forms.toogle.active'),
+            }}
+            option2={{
+              value: 'PENDING',
+              label: t('pages.habitat.affiliate.forms.toogle.pending'),
+            }}
             active={view}
             onChange={(newValue) => {
               if (newValue === 'ACTIVE' || newValue === 'PENDING') {
@@ -100,11 +110,14 @@ const AffiliateFormsPage = () => {
           <Flex direction="row" alignItems="center">
             <View className="theme-subtitle-s2">
               <Text as="span" alignSelf="center">
-                {view === 'ACTIVE' ? 'Active Forms' : 'Pending Forms'}
+                {view === 'ACTIVE'
+                  ? t('pages.habitat.affiliate.forms.table.activeTitle')
+                  : t('pages.habitat.affiliate.forms.table.pendingTitle')}
               </Text>
             </View>
             <Text className={`theme-subtitle-s2 ${style.subtitle}`}>
-              {latestForms.length} results
+              {latestForms.length}{' '}
+              {t('pages.habitat.affiliate.forms.table.results')}
             </Text>
           </Flex>
           <NewFormButton triggerUpdate={triggerUpdate} />
@@ -114,17 +127,17 @@ const AffiliateFormsPage = () => {
             headers={[
               {
                 id: 'name',
-                value: 'Name',
+                value: t('pages.habitat.affiliate.forms.table.name'),
                 width: '70%',
               },
               {
                 id: 'dateCreated',
-                value: 'Date Created',
+                value: t('pages.habitat.affiliate.forms.table.dateCreated'),
                 width: '15%',
               },
               {
                 id: 'status',
-                value: 'Status',
+                value: t('pages.habitat.affiliate.forms.table.status'),
                 textAlign: 'center',
                 width: '15%',
               },
@@ -150,23 +163,23 @@ const AffiliateFormsPage = () => {
             headers={[
               {
                 id: 'name',
-                value: 'Name',
+                value: t('pages.habitat.affiliate.forms.table.name'),
                 width: '55%',
               },
               {
                 id: 'dateCreated',
-                value: 'Date Created',
+                value: t('pages.habitat.affiliate.forms.table.dateCreated'),
                 width: '15%',
               },
               {
                 id: 'status',
-                value: 'Status',
+                value: t('pages.habitat.affiliate.forms.table.status'),
                 textAlign: 'center',
                 width: '15%',
               },
               {
                 id: 'view',
-                value: 'View',
+                value: t('pages.habitat.affiliate.forms.table.view'),
                 textAlign: 'center',
                 width: '15%',
               },

@@ -14,6 +14,7 @@ import {
   useBreakpointValue,
 } from '@aws-amplify/ui-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import FileInput from 'components/FileInput';
 import { DataStore } from 'aws-amplify/datastore';
 import { RootForm, RootFormStatusTypes } from 'models';
@@ -28,6 +29,7 @@ interface IProperties {
 }
 
 function NewFormButton({ triggerUpdate }: IProperties) {
+  const { t } = useTranslation();
   const [modalOpen, setModalOpen] = useState(false);
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -135,7 +137,7 @@ function NewFormButton({ triggerUpdate }: IProperties) {
 
   const newFormModal = (
     <Modal
-      title="Create a new form 📝"
+      title={t('pages.habitat.affiliate.forms.components.newFormButton.title')}
       open={modalOpen}
       onClickClose={() => {
         setModalOpen(!modalOpen);
@@ -145,34 +147,49 @@ function NewFormButton({ triggerUpdate }: IProperties) {
       <Flex direction="column" gap="30px">
         <View className="theme-subtitle-s2">
           <Text as="span" alignSelf="center">
-            Creating a form is the first step to take your paper applications
-            online. Please take some time to answer the following questions.
+            {t(
+              'pages.habitat.affiliate.forms.components.newFormButton.description'
+            )}
           </Text>
         </View>
         <form onSubmit={handleSubmit}>
           <Flex direction="column" gap="40px">
             <TextField
               name="name"
-              label="What is your form's name?"
-              placeholder="Homeownership Program Application"
+              label={t(
+                'pages.habitat.affiliate.forms.components.newFormButton.form.name.label'
+              )}
+              placeholder={t(
+                'pages.habitat.affiliate.forms.components.newFormButton.form.name.placeholder'
+              )}
               required
               onInvalid={() => setInvalidName(true)}
-              errorMessage="Please enter a name for your form."
+              errorMessage={t(
+                'pages.habitat.affiliate.forms.components.newFormButton.form.name.error'
+              )}
               hasError={invalidName}
               onBlur={() => setInvalidName(false)}
             />
             <TextAreaField
               name="description"
-              label="Can you describe your form in a couple of words?"
-              placeholder="The form is an application that determines if a family is fit to participate in Habitat for Humanity's Homeownership Program. These are received twice a year and reviewed by Habitat workers."
+              label={t(
+                'pages.habitat.affiliate.forms.components.newFormButton.form.description.label'
+              )}
+              placeholder={t(
+                'pages.habitat.affiliate.forms.components.newFormButton.form.description.placeholder'
+              )}
               required
               onInvalid={() => setInvalidDescription(true)}
-              errorMessage="Please enter a description for your form."
+              errorMessage={t(
+                'pages.habitat.affiliate.forms.components.newFormButton.form.description.error'
+              )}
               hasError={invalidDescription}
               onBlur={() => setInvalidDescription(false)}
             />
             <FileInput
-              label="Please upload your paper application"
+              label={t(
+                'pages.habitat.affiliate.forms.components.newFormButton.form.file.label'
+              )}
               onChange={handleOnChange}
               isRequired
               multiple
@@ -180,20 +197,28 @@ function NewFormButton({ triggerUpdate }: IProperties) {
               maxFileCount={20}
               files={files}
               onInvalid={() => setInvalidFiles(true)}
-              errorMessage="Please upload at least one file."
+              errorMessage={t(
+                'pages.habitat.affiliate.forms.components.newFormButton.form.file.error'
+              )}
               hasError={invalidFiles}
               onBlur={() => setInvalidFiles(false)}
             />
             <Flex direction="row" justifyContent="end">
               <CustomButton disabled={loading} type="submit">
-                Submit
+                {t(
+                  'pages.habitat.affiliate.forms.components.newFormButton.form.submit'
+                )}
               </CustomButton>
             </Flex>
           </Flex>
         </form>
         {loading && (
           <View>
-            <Text>Uploading files</Text>
+            <Text>
+              {t(
+                'pages.habitat.affiliate.forms.components.newFormButton.form.uploading'
+              )}
+            </Text>
             <Loader variation="linear" />
           </View>
         )}
@@ -205,7 +230,7 @@ function NewFormButton({ triggerUpdate }: IProperties) {
     <>
       {newFormModal}
       <CustomButton icon={<MdAdd />} onClick={() => setModalOpen(!modalOpen)}>
-        New Form
+        {t('pages.habitat.affiliate.forms.components.newFormButton.text')}
       </CustomButton>
     </>
   );
