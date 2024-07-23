@@ -117,6 +117,11 @@ async function getPDF(formUrl, submission, language) {
 
     await page.evaluate((submission) => window.hfhSetSubmission(submission), submission);
 
+    await page.waitForSelector('a[href^="https://formio-bucket.s3.amazonaws.com/"]', {
+        timeout: 300_000,
+        hidden: true
+    })
+
     const pdf = await page.pdf({ 
         format: 'A4', 
         margin: { top: 36, right: 48, bottom: 36, left: 48 },
