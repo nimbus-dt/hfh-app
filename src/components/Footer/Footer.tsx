@@ -3,27 +3,27 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@aws-amplify/ui-react';
 
 import styles from './Footer.module.css';
-
-interface FooterProps {
-  goBack?: () => void;
-  submit?: boolean;
-  onNext?: () => void;
-}
+import FooterProps from './Footer.types';
 
 const Footer = ({ goBack, onNext, submit = false }: FooterProps) => {
   const { t } = useTranslation();
 
+  const classname = {
+    background: `${styles.background} ${
+      !goBack && styles.background_without_back
+    }`,
+    back: goBack ? styles.previous : styles.no_interaction,
+    next: `${styles.next} ${!goBack && styles.next_without_back}`,
+    help: `${styles.help_icon} ${!goBack && styles.help_icon_without_back}`,
+  };
+
+  const nextText = submit
+    ? t('components.footer.submit')
+    : t('components.footer.continue');
+
   return (
-    <div
-      className={`${styles.background} ${
-        !goBack && styles.background_without_back
-      }`}
-    >
-      <Button
-        variation="link"
-        className={goBack ? styles.previous : styles.no_interaction}
-        onClick={goBack}
-      >
+    <div className={classname.background}>
+      <Button variation="link" className={classname.back} onClick={goBack}>
         {goBack && (
           <>
             <MdArrowBack
@@ -39,17 +39,11 @@ const Footer = ({ goBack, onNext, submit = false }: FooterProps) => {
         onClick={onNext}
         type="submit"
         variation="primary"
-        className={`${styles.next} ${!goBack && styles.next_without_back}`}
+        className={classname.next}
       >
-        {submit
-          ? t('components.footer.submit')
-          : t('components.footer.continue')}
+        {nextText}
       </Button>
-      <div
-        className={`${styles.help_icon} ${
-          !goBack && styles.help_icon_without_back
-        }`}
-      >
+      <div className={classname.help}>
         <MdHelpOutline size="1.5rem" color="#757575" />
       </div>
     </div>

@@ -25,7 +25,8 @@
     "guard-for-in": "off",
     "no-restricted-exports": "off",
     "no-plusplus": "off",
-    "no-extraneous-dependencies": "off"
+    "no-extraneous-dependencies": "off",
+    "no-shadow": "off"
   },
   "root": true
 }

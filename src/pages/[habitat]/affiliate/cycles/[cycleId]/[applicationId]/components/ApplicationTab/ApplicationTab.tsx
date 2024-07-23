@@ -2,24 +2,23 @@ import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Form } from '@formio/react';
 
-import { ApplicationTypes, FormAnswer, TestApplication } from 'models';
+import { ApplicationTypes, FormAnswer } from 'models';
 import { generateSubmission } from 'utils/formio';
 import useAsync from 'hooks/utils/useAsync/useAsync';
 
 import { Status } from 'utils/enums';
 import { Options } from '@formio/react/lib/components/Form';
+import { ApplicationTabProps } from './ApplicationTab.types';
 import PaperApplicationTable from './components/PaperApplicationTable';
 import style from './ApplicationTab.module.css';
 
-interface IProperties {
-  application?: TestApplication;
-  formAnswers: unknown[];
-  formUrl: string;
-}
-
 const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
-const ApplicationTab = ({ application, formAnswers, formUrl }: IProperties) => {
+const ApplicationTab = ({
+  application,
+  formAnswers,
+  formUrl,
+}: ApplicationTabProps) => {
   const { i18n } = useTranslation();
   const { language } = i18n;
 
@@ -52,26 +51,36 @@ const ApplicationTab = ({ application, formAnswers, formUrl }: IProperties) => {
     return <div>Loading...</div>;
   }
 
+  if (status === Status.REJECTED) {
+    return <div>Error</div>;
+  }
+
+  const render = {
+    [ApplicationTypes.ONLINE]: (
+      <Form
+        key={`review-${language}`}
+        src={`${FORMIO_URL}/${formUrl}`}
+        options={
+          {
+            readOnly: true,
+            renderMode: 'flat',
+            language,
+            i18n: value,
+          } as Options
+        }
+        submission={generateSubmission(formAnswers as FormAnswer[])}
+      />
+    ),
+    [ApplicationTypes.PAPER]: (
+      <PaperApplicationTable application={application} />
+    ),
+    loading: <p>Loading</p>,
+  }[application?.type || 'loading'];
+
   return (
     <div className={style.formContainer}>
       <br />
-      {application?.type === ApplicationTypes.ONLINE ? (
-        <Form
-          key={`review-${language}`}
-          src={`${FORMIO_URL}/${formUrl}`}
-          options={
-            {
-              readOnly: true,
-              renderMode: 'flat',
-              language,
-              i18n: value,
-            } as Options
-          }
-          submission={generateSubmission(formAnswers as FormAnswer[])}
-        />
-      ) : (
-        <PaperApplicationTable application={application} />
-      )}
+      {render}
     </div>
   );
 };
