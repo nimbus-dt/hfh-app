@@ -1,8 +1,13 @@
 import { useCallback, useState } from 'react';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { DataStore, SortDirection } from 'aws-amplify';
-import { Button } from '@aws-amplify/ui-react';
-import { MdOutlineOpenInNew, MdFilterList } from 'react-icons/md';
+import { Button, useBreakpointValue } from '@aws-amplify/ui-react';
+import {
+  MdOutlineOpenInNew,
+  MdFilterList,
+  MdOutlineClear,
+  MdOutlineAdd,
+} from 'react-icons/md';
 import { throttle } from 'lodash';
 
 import BreadCrumbs from 'components/BreadCrumbs/BreadCrumbs';
@@ -17,6 +22,7 @@ import { Habitat, RootForm, TestCycle } from 'models';
 import { convertDateYYYYMMDDtoDDMMYYYY } from 'utils/dates';
 import { Status } from 'utils/enums';
 
+import CustomButton from 'components/CustomButton';
 import Filters from './components/filters';
 import NewCycle from './components/newCycle';
 import styles from './styles.module.css';
@@ -38,6 +44,11 @@ const CyclesPage = () => {
     startDate: '',
     endDate: '',
     status: null,
+  });
+
+  const isSmall = useBreakpointValue({
+    base: true,
+    medium: false,
   });
 
   const { data: rootForm }: { data: RootForm | null } = useRootFormById({
@@ -144,6 +155,27 @@ const CyclesPage = () => {
     },
   ];
 
+  const cycleButton =
+    value.openCycles.length > 0 ? (
+      <CustomButton
+        onClick={throttle(() => {
+          setShowModal(true);
+        }, 500)}
+        icon={isSmall ? undefined : <MdOutlineClear />}
+      >
+        {isSmall ? <MdOutlineClear size="24px" /> : 'Close Cycle'}
+      </CustomButton>
+    ) : (
+      <CustomButton
+        onClick={throttle(() => {
+          setShowModal(true);
+        }, 500)}
+        icon={isSmall ? undefined : <MdOutlineAdd />}
+      >
+        {isSmall ? <MdOutlineAdd size="24px" /> : 'New Cycle'}
+      </CustomButton>
+    );
+
   return (
     <div className={styles.page}>
       <div className={styles.cta}>
@@ -162,23 +194,15 @@ const CyclesPage = () => {
             </p>
           </div>
           <div className={styles.options}>
-            <div
-              className={styles.filters}
+            <CustomButton
               onClick={throttle(() => {
                 setShowFilters((prev) => !prev);
               }, 500)}
-              aria-hidden="true"
+              icon={isSmall ? undefined : <MdFilterList />}
             >
-              <MdFilterList size="24px" />
-            </div>
-            <Button
-              onClick={throttle(() => {
-                setShowModal(true);
-              }, 500)}
-              variation="primary"
-            >
-              {value.openCycles.length > 0 ? 'Close Cycle' : 'New Cycle +'}
-            </Button>
+              {isSmall ? <MdFilterList size="24px" /> : 'Filter'}
+            </CustomButton>
+            {cycleButton}
           </div>
         </div>
         <TableWithPaginator
