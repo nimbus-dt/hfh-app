@@ -99,20 +99,7 @@ const CyclesPage = () => {
         })
       );
 
-      const formResponse = await DataStore.query(RootForm, (c1) =>
-        c1.and((c2) => {
-          const criteriaArray = [c2.habitatID.eq(habitat.id)];
-
-          if (formId) {
-            criteriaArray.push(c2.id.eq(formId));
-          }
-
-          return criteriaArray;
-        })
-      );
-
       return {
-        formName: formResponse[0].name,
         cycles: cyclesResponse,
         openCycles: openCyclesResponse,
       };
@@ -146,10 +133,8 @@ const CyclesPage = () => {
     })
   );
 
-  const { formName } = value;
-
   const breadCrumbsItems = [
-    { label: `${formName}`, to: '../forms' },
+    { label: `Forms`, to: '../forms' },
     {
       label: 'Cycles',
     },
