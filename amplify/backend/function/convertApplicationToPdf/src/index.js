@@ -117,10 +117,19 @@ async function getPDF(formUrl, submission, language) {
 
     await page.evaluate((submission) => window.hfhSetSubmission(submission), submission);
 
-    await page.waitForSelector('a[href^="https://formio-bucket.s3.amazonaws.com/"]', {
-        timeout: 300_000,
-        hidden: true
-    })
+    await page.evaluate(() => {
+        const aElements = document.querySelectorAll('a');
+
+        for (const a of aElements) {
+          if (a.href.startsWith('https://formio-bucket.s3.amazonaws.com/')) {
+            const newInnerText = decodeURI(a.href.split('/').at(-1));
+            if (newInnerText) {
+              a.innerText = newInnerText;
+              a.setAttribute('href', '#')
+            }
+          }
+        }
+    });
 
     const pdf = await page.pdf({ 
         format: 'A4', 
