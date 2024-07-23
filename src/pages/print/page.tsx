@@ -65,18 +65,6 @@ const Print = () => {
           form.submission = submission;
         })
       }
-      onChange={() => {
-        const aElements = document.querySelectorAll('a');
-
-        for (const a of aElements) {
-          if (a.href.startsWith('https://formio-bucket.s3.amazonaws.com/')) {
-            const newHref = `./files/${a.href.split('/').at(-1)}`;
-            a.href = newHref;
-            a.setAttribute('target', '_blank');
-            a.setAttribute('download', '');
-          }
-        }
-      }}
     />
   );
 };
