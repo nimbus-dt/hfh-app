@@ -3,7 +3,7 @@ import {
   RecursiveModelPredicate,
   SortDirection,
   SortPredicate,
-} from '@aws-amplify/datastore';
+} from 'aws-amplify/datastore';
 import CustomButton from 'components/CustomButton/CustomButton';
 import TableWithPaginator from 'components/TableWithPaginator';
 import { useTestApplicationsQuery, useTestCycleById } from 'hooks/services';
@@ -11,7 +11,6 @@ import {
   SubmissionStatus,
   LazyTestApplication,
   TestApplication,
-  Habitat,
   ApplicationTypes,
 } from 'models';
 import { useState } from 'react';
@@ -21,12 +20,7 @@ import {
   MdOutlineLink,
   MdOutlineOpenInNew,
 } from 'react-icons/md';
-import {
-  Link,
-  useLocation,
-  useOutletContext,
-  useParams,
-} from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { stringToHumanReadable } from 'utils/strings';
 import IconButton from 'components/IconButton';
 import BreadCrumbs from 'components/BreadCrumbs/BreadCrumbs';
@@ -34,9 +28,9 @@ import DropdownMenu from 'components/DropdownMenu';
 import GoBack from 'components/GoBack';
 import { DEFAULT_REVIEW_STATUS } from 'utils/constants';
 import { useBreakpointValue } from '@aws-amplify/ui-react';
-
 import { convertDateYYYYMMDDtoDDMMYYYY } from 'utils/dates';
 import StatusChip from 'components/StatusChip';
+import useHabitat from 'hooks/utils/useHabitat';
 import style from './AffiliateCycleApplications.module.css';
 import NewApplicationModal from './components/NewApplicationModal';
 import StatusModal from './components/StatusModal';
@@ -45,31 +39,25 @@ import Filters from './components/Filters';
 import Username from './components/Username';
 import { handleCopyToClipboard } from './utils';
 
-interface IOutletContext {
-  habitat?: Habitat;
-  addCustomStatusToHabitat: (status: string) => void;
-  removeCustomStatusToHabitat: (status: string) => void;
-  updateCustomStatusToHabitat: (status: string) => void;
-}
-
 const AffiliateCycleApplications = () => {
   const { pathname } = useLocation();
+
   const isSmall = useBreakpointValue({
     base: true,
     medium: false,
   });
   const { cycleId } = useParams();
-  const {
-    habitat,
-    addCustomStatusToHabitat,
-    removeCustomStatusToHabitat,
-    updateCustomStatusToHabitat,
-  } = useOutletContext<IOutletContext>();
+
+  const { habitat } = useHabitat();
+
   const [statusModalOpen, setStatusModalOpen] = useState(false);
+
   const [newApplicationOpen, setNewApplicationOpen] = useState(false);
+
   const [trigger, setTrigger] = useState(0);
 
   const [filterModal, setFilterModal] = useState(false);
+
   const [filters, setFilters] = useState<Inputs>({
     startDateSubmitted: '',
     endDateSubmitted: '',
@@ -77,6 +65,7 @@ const AffiliateCycleApplications = () => {
     reviewStatus: null,
     customStatus: '',
   });
+
   const { data: applications }: { data: TestApplication[] } =
     useTestApplicationsQuery({
       criteria: (c1: RecursiveModelPredicate<LazyTestApplication>) =>
@@ -233,7 +222,6 @@ const AffiliateCycleApplications = () => {
           <NewApplicationModal
             open={newApplicationOpen}
             onClose={handleOnCloseNewApplicationModal}
-            habitat={habitat}
             cycle={cycle}
             setTrigger={setTrigger}
           />
@@ -249,10 +237,6 @@ const AffiliateCycleApplications = () => {
       <StatusModal
         open={statusModalOpen}
         onClose={handleOnCloseStatusModal}
-        habitat={habitat}
-        addCustomStatusToHabitat={addCustomStatusToHabitat}
-        removeCustomStatusToHabitat={removeCustomStatusToHabitat}
-        updateCustomStatusToHabitat={updateCustomStatusToHabitat}
         setTrigger={setTrigger}
       />
       <TableWithPaginator

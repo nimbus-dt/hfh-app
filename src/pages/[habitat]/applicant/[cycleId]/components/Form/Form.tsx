@@ -9,7 +9,7 @@ import {
   LazyFormAnswer,
   RootForm,
 } from 'models';
-import { DataStore } from 'aws-amplify';
+import { DataStore, RecursiveModelPredicate } from 'aws-amplify/datastore';
 import { generateSubmission } from 'utils/formio';
 import { Options } from '@formio/react/lib/components/Form';
 import Modal from 'components/Modal';
@@ -17,27 +17,27 @@ import dayjs from 'dayjs';
 import { usePostHog } from 'posthog-js/react';
 import { Button, Flex, Text } from '@aws-amplify/ui-react';
 import CustomButton from 'components/CustomButton/CustomButton';
+
+import { useTranslation } from 'react-i18next';
 import useAsync from 'hooks/utils/useAsync/useAsync';
-import { RecursiveModelPredicate } from '@aws-amplify/datastore';
 import { Status } from 'utils/enums';
+import useHabitat from 'hooks/utils/useHabitat';
+import FormProps, { DataProps, DISPLAY, ERROR } from './Form.types';
 import uploadSubmission from './services/uploadSubmission';
 import style from './Form.module.css';
 import FormLayout from './layouts/FormLayout';
-import FormProps, { DataProps, DISPLAY, ERROR } from './Form.types';
 
 const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
-const Form = ({
-  habitat,
-  application,
-  cycle,
-  formContainer = true,
-}: FormProps) => {
+const Form = ({ application, cycle, formContainer = true }: FormProps) => {
+  const { i18n } = useTranslation();
+  const { habitat } = useHabitat();
+  const [reviewMode, setReviewMode] = useState(false);
+  const [formReady, setFormReady] = useState<typeof Wizard>();
   const posthog = usePostHog();
   const navigate = useNavigate();
-  const [formReady, setFormReady] = useState<typeof Wizard>();
-  const [reviewMode, setReviewMode] = useState(false);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
+  const { language } = i18n;
 
   const getData = useCallback(async (): Promise<DataProps> => {
     try {
@@ -48,7 +48,25 @@ const Form = ({
             error: ERROR.CYCLE_NOT_FOUND,
           },
         };
+
       const form = await DataStore.query(RootForm, cycle?.rootformID || '');
+
+      const response = await fetch(
+        `${FORMIO_URL}/language/submission?data.language=${language}&data.form=${cycle?.formUrl}`
+      );
+      const array = await response.json();
+      const { data } = array[0];
+      const { translation } = data;
+      Object.keys(translation).forEach((key) => {
+        const newKey = key.replace(/__DOT__/g, '.');
+        translation[newKey] = translation[key];
+        if (newKey !== key) {
+          delete translation[key];
+        }
+      });
+      const translations = {
+        [`${language}`]: translation,
+      };
 
       const formAnswers = await DataStore.query(
         FormAnswer,
@@ -71,6 +89,7 @@ const Form = ({
         data: {
           form,
           formAnswers,
+          translations,
         },
       };
     } catch (error) {
@@ -81,7 +100,7 @@ const Form = ({
         },
       };
     }
-  }, [cycle, application]);
+  }, [cycle?.rootformID, cycle?.formUrl, language, application?.id]);
 
   const { value, status } = useAsync({
     asyncFunction: getData,
@@ -175,19 +194,6 @@ const Form = ({
     });
   };
 
-  const options = {
-    additional: {
-      application,
-      habitat,
-      openCycle: cycle,
-    },
-  } as Options;
-
-  const reviewOptions = {
-    readOnly: true,
-    renderMode: 'flat',
-  };
-
   if (status === Status.PENDING || !value) {
     return null;
   }
@@ -207,6 +213,13 @@ const Form = ({
     reviewMode ||
     application?.submissionStatus === SubmissionStatus.COMPLETED
   ) {
+    const reviewOptions = {
+      readOnly: true,
+      renderMode: 'flat',
+      language,
+      i18n: value.data.translations,
+    } as Options;
+
     return (
       <div style={{ padding: 0 }}>
         <div>
@@ -218,7 +231,7 @@ const Form = ({
             }
           >
             <FormioForm
-              key="review"
+              key={`review-${language}`}
               src={src}
               options={reviewOptions}
               submission={submission}
@@ -269,12 +282,21 @@ const Form = ({
     );
   }
 
+  const options = {
+    additional: {
+      application,
+      habitat,
+      openCycle: cycle,
+    },
+    language,
+    i18n: value.data.translations,
+  } as Options;
+
   return (
     <div style={{ padding: 0 }}>
       <div>
         <FormLayout
           formReady={formReady}
-          habitat={habitat}
           application={application}
           cycle={cycle}
         >
@@ -283,12 +305,12 @@ const Form = ({
             style={{ padding: '2rem 1rem' }}
           >
             <FormioForm
-              key="real"
+              key={`real-${language}`}
               src={src}
-              submission={submission}
-              options={options}
-              onNextPage={handleNextPage}
               onSubmit={handleOnReview}
+              options={options}
+              submission={submission}
+              onNextPage={handleNextPage}
               formReady={handleFormReady}
             />
           </div>

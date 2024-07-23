@@ -53,7 +53,7 @@ function Hero() {
             height="fit-content"
             textAlign="center"
           >
-            Less paperwork. More builds.
+            Less paperwork. More homes.
           </Text>
           <Text
             as={motion.p}
@@ -85,7 +85,7 @@ function Hero() {
               className={styles.signUp}
               onClick={() => {
                 window.location.href =
-                  'https://share.hsforms.com/1lqoUQWsfRm2AJVquaEMNCwqw1cl';
+                  'https://form-interface-0ce5ae.zapier.app/affiliate-form';
               }}
             >
               Sign up

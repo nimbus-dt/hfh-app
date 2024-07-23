@@ -9,7 +9,7 @@ import * as React from "react";
 import { Button, Flex, Grid, SwitchField } from "@aws-amplify/ui-react";
 import { Maintenance } from "../models";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
-import { DataStore } from "aws-amplify";
+import { DataStore } from "aws-amplify/datastore";
 export default function MaintenanceUpdateForm(props) {
   const {
     id: idProp,

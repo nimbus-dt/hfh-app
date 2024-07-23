@@ -1,9 +1,6 @@
 import { useCallback, useState } from 'react';
-import { useLocation, useOutletContext, useParams } from 'react-router-dom';
-import { DataStore, SortDirection } from 'aws-amplify';
-
+import { useLocation, useParams } from 'react-router-dom';
 import { useAuthenticator } from '@aws-amplify/ui-react';
-
 import {
   SubmissionStatus,
   TestApplication,
@@ -11,11 +8,11 @@ import {
   ReviewStatus,
   ApplicationTypes,
 } from 'models';
-import { OutletContextProps } from 'types';
 import useAsync from 'hooks/utils/useAsync/useAsync';
 import { Status } from 'utils/enums';
-
-import Form from './components/Form/Form';
+import { DataStore, SortDirection } from 'aws-amplify/datastore';
+import useHabitat from 'hooks/utils/useHabitat';
+import Form from './components/Form';
 import NoOpenCycle from './components/NoOpenCycle';
 import SuccesfullySubmitted from './components/SuccesfullySubmitted';
 import Loading from './components/Loading';
@@ -25,7 +22,7 @@ import { DataProps, DISPLAY, ERROR } from './ApplicantCyclePage.types';
 import Reviewed from './components/Reviewed/Reviewed';
 
 const ApplicantCyclePage = () => {
-  const { habitat }: OutletContextProps = useOutletContext();
+  const { habitat } = useHabitat();
   const { cycleId } = useParams();
 
   const { user } = useAuthenticator((context) => [context.user]);
@@ -221,7 +218,6 @@ const ApplicantCyclePage = () => {
     return (
       <div className={`${style.page}`}>
         <SuccesfullySubmitted
-          habitat={habitat}
           onReview={onReview}
           application={value.data.application}
         />

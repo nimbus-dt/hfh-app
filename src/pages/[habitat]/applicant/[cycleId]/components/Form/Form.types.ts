@@ -29,6 +29,7 @@ interface DisplayFormProps {
   data: {
     form: LazyRootForm;
     formAnswers: LazyFormAnswer[];
+    translations: Record<string, Record<string, string>>;
   };
 }
 

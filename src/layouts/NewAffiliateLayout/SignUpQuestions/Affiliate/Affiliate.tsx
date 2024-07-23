@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { DataStore } from 'aws-amplify';
+import { DataStore } from 'aws-amplify/datastore';
 import { throttle } from 'lodash';
-
 import Footer from 'components/Footer';
-import { Habitat as HabitatModel, Sexs, User, UserTypes } from 'models';
-
+import { Sexs, User, UserTypes } from 'models';
 import { MdArrowDropDown } from 'react-icons/md';
+import useHabitat from 'hooks/utils/useHabitat';
 import styles from '../SignUpQuestions.module.css';
 import dataProps from '../types';
 import months from '../utils/months';
@@ -23,25 +22,21 @@ interface AffiliateProps {
   data: dataProps;
   setData: React.Dispatch<React.SetStateAction<dataProps>>;
   goBack: () => void;
-  habitat: HabitatModel;
   user: {
     username: string;
   };
 }
 
-const Affiliate = ({
-  data,
-  setData,
-  goBack,
-  habitat,
-  user,
-}: AffiliateProps) => {
+const Affiliate = ({ data, setData, goBack, user }: AffiliateProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
+
   const [error, setError] = useState<string | null>(null);
+
+  const { habitat } = useHabitat();
 
   const onSubmit: SubmitHandler<Inputs> = async (affiliateData) => {
     try {

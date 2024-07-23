@@ -1,4 +1,4 @@
-import { DataStore, SortDirection } from 'aws-amplify';
+import { DataStore, SortDirection } from 'aws-amplify/datastore';
 import { TestCycle } from 'models';
 import states from '../assets/jsons/states.json';
 

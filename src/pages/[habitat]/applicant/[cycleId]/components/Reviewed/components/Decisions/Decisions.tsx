@@ -1,26 +1,21 @@
-import { useOutletContext } from 'react-router-dom';
-
 import { Flex, Text } from '@aws-amplify/ui-react';
 import {
   RecursiveModelPredicate,
   SortDirection,
   SortPredicate,
-} from '@aws-amplify/datastore';
+} from 'aws-amplify/datastore';
 import DecisionCard from 'components/DecisionCard';
 import { useDecisionsQuery } from 'hooks/services';
-import { Decision, Habitat, ReviewStatus, TestApplication } from 'models';
+import { Decision, ReviewStatus, TestApplication } from 'models';
+import useHabitat from 'hooks/utils/useHabitat';
 import style from './Decisions.module.css';
-
-interface IOutletContext {
-  habitat?: Habitat;
-}
 
 interface DecisionsProps {
   application: TestApplication;
 }
 
 const Decisions = ({ application }: DecisionsProps) => {
-  const { habitat }: IOutletContext = useOutletContext();
+  const { habitat } = useHabitat();
 
   const { data: decisions }: { data: Decision[] } = useDecisionsQuery({
     criteria: (c1: RecursiveModelPredicate<Decision>) =>

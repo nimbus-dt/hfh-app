@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { DataStore } from '@aws-amplify/datastore';
+import { DataStore } from 'aws-amplify/datastore';
 
 /**
  * Wrapper for DataStore.query for quering for a single item

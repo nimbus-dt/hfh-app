@@ -80,7 +80,7 @@
   letter-spacing: 0.5px;
 }
 
-[data-amplify-authenticator] .amplify-tabs[data-indicator-position='top'] {
+[data-amplify-authenticator] div[role='tablist'] {
   display: none;
 }
 
@@ -101,4 +101,10 @@
 [data-amplify-authenticator]
   .amplify-button.amplify-field-group__control.amplify-field__show-password:focus {
   border: 1px solid var(--amplify-colors-neutral-100);
+}
+
+.amplify-menu-content .amplify-menu-content__item:hover {
+  background-color: var(--amplify-colors-neutral-40);
+  color: var(--amplify-colors-neutral-100);
+  border-radius: inherit;
 }

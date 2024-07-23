@@ -2,7 +2,7 @@ import { Components } from 'formiojs';
 import { isElement } from 'utils/type';
 import { getCheckOrExEmoji } from 'utils/misc';
 import { FormAnswer, TestApplication } from 'models';
-import { DataStore } from 'aws-amplify';
+import { DataStore } from 'aws-amplify/datastore';
 import style from './CustomContainer.module.css';
 
 const saveSection = async ({

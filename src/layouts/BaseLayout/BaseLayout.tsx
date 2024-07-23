@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useAuthenticator, useBreakpointValue } from '@aws-amplify/ui-react';
 import { getRouteTitle } from 'utils/routes';
 import { useUserQuery } from 'hooks/services';
-import useHabitatByUrlName from 'hooks/services/useHabitatByUrlName';
-import { Habitat, LazyUser } from 'models';
-import { RecursiveModelPredicate } from '@aws-amplify/datastore';
+import { LazyUser } from 'models';
+import { RecursiveModelPredicate } from 'aws-amplify/datastore';
 import TopBar from './components/TopBar';
 import SideBar from './components/SideBar';
 import styles from './BaseLayout.module.css';
@@ -17,14 +16,9 @@ interface IProperties {
 }
 
 const BaseLayout = ({ variation, children, hideSideBar }: IProperties) => {
-  const { habitat: habitatUrlName } = useParams();
-
   const location = useLocation();
-  const title = getRouteTitle(location.pathname);
 
-  const { habitat } = useHabitatByUrlName({
-    habitatUrlName: habitatUrlName || '',
-  });
+  const title = getRouteTitle(location.pathname);
 
   const isMobile = useBreakpointValue({
     base: true,
@@ -72,7 +66,6 @@ const BaseLayout = ({ variation, children, hideSideBar }: IProperties) => {
           expanded={expandSideBar}
           onExpand={handleOnExpand}
           variation={variation}
-          habitat={habitat as unknown as Habitat}
         />
       )}
       <div className={styles.rightSide}>

@@ -49,11 +49,6 @@ import style from './ToolbarPlugin.module.css';
 
 const LowPriority = 1;
 
-const buttonProps = {
-  padding: '.5rem',
-  borderStyle: 'none',
-};
-
 const VerticalDivider = () => (
   <Divider orientation="vertical" opacity={1} alignSelf="stretch" />
 );
@@ -282,7 +277,6 @@ const ToolbarPlugin = ({ disableFiles }) => {
           onClick={() => {
             editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic');
           }}
-          {...buttonProps}
           className={`${style.toolbarButton} ${isItalic ? style.selected : ''}`}
           aria-label="Format Italics"
           title="Format Italics"
@@ -294,7 +288,6 @@ const ToolbarPlugin = ({ disableFiles }) => {
           onClick={() => {
             editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline');
           }}
-          {...buttonProps}
           className={`${style.toolbarButton} ${
             isUnderline ? style.selected : ''
           }`}
@@ -308,7 +301,6 @@ const ToolbarPlugin = ({ disableFiles }) => {
           onClick={() => {
             editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough');
           }}
-          {...buttonProps}
           className={`${style.toolbarButton} ${
             isStrikethrough ? style.selected : ''
           }`}
@@ -323,7 +315,6 @@ const ToolbarPlugin = ({ disableFiles }) => {
           onClick={() => {
             editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left');
           }}
-          {...buttonProps}
           aria-label="Left Align"
           title="Left Align"
           className={`${style.toolbarButton}`}
@@ -335,7 +326,6 @@ const ToolbarPlugin = ({ disableFiles }) => {
           onClick={() => {
             editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'center');
           }}
-          {...buttonProps}
           aria-label="Center Align"
           title="Center Align"
           className={`${style.toolbarButton}`}
@@ -347,7 +337,6 @@ const ToolbarPlugin = ({ disableFiles }) => {
           onClick={() => {
             editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'right');
           }}
-          {...buttonProps}
           aria-label="Right Align"
           title="Right Align"
           className={`${style.toolbarButton}`}
@@ -359,7 +348,6 @@ const ToolbarPlugin = ({ disableFiles }) => {
           onClick={() => {
             editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'justify');
           }}
-          {...buttonProps}
           aria-label="Justify Align"
           title="Justify Align"
           className={`${style.toolbarButton}`}
@@ -367,8 +355,8 @@ const ToolbarPlugin = ({ disableFiles }) => {
           <MdFormatAlignJustify />
         </CustomButton>
         <VerticalDivider />
-        <InsertImageButton buttonProps={buttonProps} />
-        {!disableFiles && <InsertFileButton buttonProps={buttonProps} />}
+        <InsertImageButton />
+        {!disableFiles && <InsertFileButton />}
       </Flex>
       <Divider opacity={1} />
     </View>

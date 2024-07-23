@@ -12,7 +12,8 @@ import PropTypes from 'prop-types';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import FileInput from 'components/FileInput';
-import { DataStore, Storage } from 'aws-amplify';
+import { DataStore } from 'aws-amplify/datastore';
+import { uploadData } from 'aws-amplify/storage';
 import {
   TestApplication,
   SubmissionStatus,
@@ -21,9 +22,11 @@ import {
 } from 'models';
 import CustomButton from 'components/CustomButton/CustomButton';
 import { stringToHumanReadable } from 'utils/strings';
+import useHabitat from 'hooks/utils/useHabitat';
 import { newPaperApplicationSchema } from './NewApplicationModal.schema';
 
-const NewApplicationModal = ({ open, onClose, setTrigger, habitat, cycle }) => {
+const NewApplicationModal = ({ open, onClose, setTrigger, cycle }) => {
+  const { habitat } = useHabitat();
   const [showError, setShowError] = useState(false);
   const [loading, setLoading] = useState(0);
   const {
@@ -39,14 +42,12 @@ const NewApplicationModal = ({ open, onClose, setTrigger, habitat, cycle }) => {
   });
 
   const uploadFiles = async (applicationId, files) => {
-    const promisesArr = files.map((file) =>
-      Storage.put(
-        `application/${habitat?.urlName}/${cycle.id}/${applicationId}/${file.name}`,
-        file,
-        {
-          level: 'public',
-        }
-      )
+    const promisesArr = files.map(
+      (file) =>
+        uploadData({
+          path: `public/application/${habitat?.urlName}/${cycle.id}/${applicationId}/${file.name}`,
+          data: file,
+        }).result
     );
 
     const results = await Promise.all(promisesArr);
@@ -73,7 +74,7 @@ const NewApplicationModal = ({ open, onClose, setTrigger, habitat, cycle }) => {
 
       const results = await uploadFiles(newApplication.id, data.application);
 
-      const resultsArray = results.map((result) => result.key);
+      const resultsArray = results.map((result) => result.path);
 
       const applicationToUpdate = await DataStore.query(
         TestApplication,
@@ -163,9 +164,6 @@ const NewApplicationModal = ({ open, onClose, setTrigger, habitat, cycle }) => {
             <option value={ReviewStatus.ACCEPTED}>
               {stringToHumanReadable(ReviewStatus.ACCEPTED)}
             </option>
-            <option value={ReviewStatus.RETURNED}>
-              {stringToHumanReadable(ReviewStatus.RETURNED)}
-            </option>
             <option value={ReviewStatus.DENIED}>
               {stringToHumanReadable(ReviewStatus.DENIED)}
             </option>
@@ -221,7 +219,6 @@ NewApplicationModal.propTypes = {
   open: PropTypes.bool,
   onClose: PropTypes.func,
   setTrigger: PropTypes.func,
-  habitat: PropTypes.object,
   cycle: PropTypes.object,
 };
 

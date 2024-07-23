@@ -2,11 +2,9 @@ import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { MdArrowDropDown } from 'react-icons/md';
 import { throttle } from 'lodash';
-
 import Footer from 'components/Footer';
 import states from 'assets/jsons/states.json';
-
-import { API } from 'aws-amplify';
+import { get } from 'aws-amplify/api';
 import styles from '../SignUpQuestions.module.css';
 import dataProps from '../types';
 
@@ -48,12 +46,14 @@ const General = ({ data, setData }: GeneralProps) => {
   const handleCityChange = async () => {
     if (selectedCity.length > 0) {
       try {
-        const response = await API.get(
-          'public',
-          `/cities?cityNameQuery=${selectedCity}&state=${watchState}`,
-          {}
-        );
-        setCities(response);
+        const response = await get({
+          apiName: 'public',
+          path: `/cities?cityNameQuery=${selectedCity}&state=${watchState}`,
+        }).response;
+
+        const newCities = (await response.body.json()) as unknown as City[];
+
+        setCities(newCities);
       } catch (error) {
         console.error('Error fetching cities:', error);
       }

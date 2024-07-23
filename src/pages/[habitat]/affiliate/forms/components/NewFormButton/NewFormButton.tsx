@@ -15,10 +15,11 @@ import {
 } from '@aws-amplify/ui-react';
 import { useState } from 'react';
 import FileInput from 'components/FileInput';
-import { DataStore } from '@aws-amplify/datastore';
-import { Habitat, RootForm, RootFormStatusTypes } from 'models';
-import { useOutletContext } from 'react-router-dom';
-import { API, Storage } from 'aws-amplify';
+import { DataStore } from 'aws-amplify/datastore';
+import { RootForm, RootFormStatusTypes } from 'models';
+import { post } from 'aws-amplify/api';
+import { uploadData } from 'aws-amplify/storage';
+import useHabitat from 'hooks/utils/useHabitat';
 
 const EMAIL_S3_BUCKET = process.env.REACT_APP_EMAIL_S3_BUCKET;
 
@@ -39,12 +40,8 @@ function NewFormButton({ triggerUpdate }: IProperties) {
   });
 
   // Get context
-  interface OutletContextType {
-    habitat: Habitat;
-  }
 
-  const context = useOutletContext<OutletContextType>();
-  const { habitat } = context;
+  const { habitat } = useHabitat();
 
   // onChange
   const handleOnChange = (newFiles: any) => {
@@ -53,14 +50,12 @@ function NewFormButton({ triggerUpdate }: IProperties) {
 
   // file uploader
   const uploadFiles = async (upFiles: [File], rootForm: RootForm) => {
-    const promisesArr = upFiles.map((file) =>
-      Storage.put(
-        `rootForms/${habitat?.urlName}/${rootForm?.id}/${file.name}`,
-        file,
-        {
-          level: 'public',
-        }
-      )
+    const promisesArr = upFiles.map(
+      (file) =>
+        uploadData({
+          path: `public/rootForms/${habitat?.urlName}/${rootForm?.id}/${file.name}`,
+          data: file,
+        }).result
     );
 
     const results = await Promise.all(promisesArr);
@@ -71,6 +66,11 @@ function NewFormButton({ triggerUpdate }: IProperties) {
   // Submit handler
   async function handleSubmit(event: any) {
     event.preventDefault();
+
+    if (!habitat) {
+      return;
+    }
+
     setLoading(true);
     const formData = new FormData(event.target);
     const formDataObject = Object.fromEntries(formData.entries());
@@ -100,10 +100,13 @@ function NewFormButton({ triggerUpdate }: IProperties) {
         })
       );
 
-      await API.post('public', '/email-admin', {
-        body: {
-          subject: `Action Required: Set Up New Form for ${habitat?.name} habitat`,
-          body: `
+      await post({
+        apiName: 'public',
+        path: '/email-admin',
+        options: {
+          body: {
+            subject: `Action Required: Set Up New Form for ${habitat?.name} habitat`,
+            body: `
             <div>
               <p>A new form needs to be set up for ${habitat?.longName}</p>
               <ul>
@@ -116,8 +119,9 @@ function NewFormButton({ triggerUpdate }: IProperties) {
               </ul>
             </div>
           `,
+          },
         },
-      });
+      }).response;
 
       triggerUpdate();
     } catch (error) {

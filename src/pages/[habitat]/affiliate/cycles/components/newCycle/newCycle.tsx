@@ -1,17 +1,17 @@
 import { type SubmitHandler, useForm } from 'react-hook-form';
-import { DataStore } from 'aws-amplify';
+import { DataStore } from 'aws-amplify/datastore';
 import { Button } from '@aws-amplify/ui-react';
 import { throttle } from 'lodash';
 import dayjs from 'dayjs';
 import Modal from 'components/Modal';
-import { Habitat, RootForm, TestCycle } from 'models';
+import { RootForm, TestCycle } from 'models';
+import useHabitat from 'hooks/utils/useHabitat';
 import styles from './newCycle.module.css';
 
 interface NewCycleProps {
   open: boolean;
   close: () => void;
   openCycle?: TestCycle;
-  habitat?: Habitat;
   refetch: () => void;
   rootForm: RootForm | null;
 }
@@ -24,15 +24,17 @@ const NewCycle = ({
   open,
   close,
   openCycle,
-  habitat,
   refetch,
   rootForm,
 }: NewCycleProps) => {
+  const { habitat } = useHabitat();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
+
   const onCloseCycle = async () => {
     if (openCycle) {
       const originalOpenCycle = await DataStore.query(TestCycle, openCycle.id);
@@ -48,6 +50,7 @@ const NewCycle = ({
       }
     }
   };
+
   const onCreateCycle: SubmitHandler<Inputs> = async (data) => {
     if (habitat && rootForm && rootForm.formUrls.length > 0) {
       await DataStore.save(
@@ -67,6 +70,7 @@ const NewCycle = ({
       close();
     }
   };
+
   return (
     <Modal
       title={openCycle ? 'Close Application Cycle' : 'Create Application Cycle'}
