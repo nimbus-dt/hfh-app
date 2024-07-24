@@ -1,5 +1,10 @@
 export type AmplifyDependentResourcesAttributes = {
   "api": {
+    "habitat": {
+      "ApiId": "string",
+      "ApiName": "string",
+      "RootUrl": "string"
+    },
     "hfhapp": {
       "GraphQLAPIEndpointOutput": "string",
       "GraphQLAPIIdOutput": "string",
@@ -33,6 +38,13 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
+    "convertApplicationToPdf": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "getCitiesByNameAndState": {
       "Arn": "string",
       "LambdaExecutionRole": "string",

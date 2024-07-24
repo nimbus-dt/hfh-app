@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "paths": {
+    "/application-pdf": {
+      "name": "/application-pdf",
+      "lambdaFunction": "convertApplicationToPdf",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "read"
+        ]
+      }
+    }
+  }
+}

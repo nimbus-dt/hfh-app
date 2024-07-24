@@ -376,6 +376,8 @@
                   }
                 },
                 "buttons": {
+                  "decide": "Make a decision",
+                  "download": "Download application",
                   "components": {
                     "decideModal": {
                       "title": "Decide",

@@ -26,11 +26,13 @@ import {
   LazyDecision,
   ApplicationTypes,
   SubmissionStatus,
+  RootForm,
+  User,
 } from 'models';
 import { DataStore, RecursiveModelPredicate } from 'aws-amplify/datastore';
 import { getEditorStateWithFilesInBucket } from 'utils/lexicalEditor';
 import { uploadData } from 'aws-amplify/storage';
-import { post } from 'aws-amplify/api';
+import { get, post } from 'aws-amplify/api';
 import { v4 } from 'uuid';
 import { FileNode } from 'components/LexicalEditor/nodes/FileNode';
 import { ImageNode } from 'components/LexicalEditor/nodes/ImageNode';
@@ -40,6 +42,10 @@ import { EditorState } from 'lexical';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import Loading from 'components/Loading';
 import { usePostHog } from 'posthog-js/react';
+import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import JSZIP from 'jszip';
+import { saveAs } from 'file-saver';
+import { flattenObject, getValueFromPath } from 'utils/objects';
 import useHabitat from 'hooks/utils/useHabitat';
 import { useTranslation } from 'react-i18next';
 import style from './AffiliateApplicationDetailsPage.module.css';
@@ -50,6 +56,14 @@ import DecisionsTab from './components/DecisionsTab';
 import CalculationsTab from './components/Calculations';
 import { TDecideSchema } from './AffiliateApplicationDetailsPage.schema';
 import Buttons from './components/Buttons';
+
+const s3client = new S3Client({
+  region: 'us-east-1',
+  credentials: {
+    accessKeyId: process.env.REACT_APP_PUBLIC_S3_IDKEY || '',
+    secretAccessKey: process.env.REACT_APP_PUBLIC_S3_SECRETKEY || '',
+  },
+});
 
 const AffiliateApplicationDetailsPage = () => {
   const posthog = usePostHog();
@@ -62,6 +76,7 @@ const AffiliateApplicationDetailsPage = () => {
   const [noteModal, setNoteModal] = useState(false);
   const [uploadingNote, setUploadingNote] = useState(false);
   const [deletingNote, setDeletingNote] = useState(false);
+  const [downloadingFiles, setDownloadingFiles] = useState(0);
 
   const navigate = useNavigate();
 
@@ -272,6 +287,92 @@ const AffiliateApplicationDetailsPage = () => {
     }
   };
 
+  const handleDownloadApplication = async () => {
+    try {
+      setDownloadingFiles((prevDownloadingFiles) => prevDownloadingFiles + 1);
+
+      const zip = new JSZIP();
+
+      const pdfBase64Response = await get({
+        apiName: 'habitat',
+        path: `/application-pdf`,
+        options: {
+          headers: {
+            Accept: 'application/pdf',
+          },
+          queryParams: {
+            applicationId: application.id,
+            language: 'en',
+          },
+        },
+      }).response;
+
+      const pdfBlob = await pdfBase64Response.body.blob();
+
+      zip.file('Application.pdf', pdfBlob);
+
+      for (const formAnswer of formAnswers) {
+        const { values } = formAnswer;
+
+        const flatValues = flattenObject(values);
+
+        const fileValuesPath = flatValues.filter((flatValue) =>
+          flatValue.path.endsWith('.originalName')
+        );
+
+        if (fileValuesPath.length > 0 && values) {
+          for (const fileValuePath of fileValuesPath) {
+            const path = fileValuePath.path.replace('.originalName', '');
+
+            const fileValue = getValueFromPath(
+              values as unknown as object,
+              path
+            );
+
+            const { key, bucket } = fileValue as {
+              key: string;
+              bucket: string;
+            };
+
+            const s3Name = key.split('/').at(-1);
+
+            const command = new GetObjectCommand({
+              Bucket: bucket,
+              Key: key,
+            });
+
+            const response = await s3client.send(command);
+
+            const byteArr = await response.Body?.transformToByteArray();
+
+            if (!byteArr) {
+              return;
+            }
+
+            zip.file(`files/${s3Name}`, byteArr);
+          }
+        }
+      }
+
+      const rootForm = await DataStore.query(RootForm, cycle?.rootformID);
+
+      const userData = await DataStore.query(User, (c) =>
+        c.owner.eq(application?.ownerID || '')
+      );
+
+      zip.generateAsync({ type: 'blob' }).then((content) => {
+        saveAs(
+          content,
+          `${rootForm?.name}-${cycle?.name}-${userData[0].firstName} ${userData[0].lastName}.zip`
+        );
+      });
+    } catch (error) {
+      console.log('Error downloading files', error);
+    } finally {
+      setDownloadingFiles((prevDownloadingFiles) => prevDownloadingFiles - 1);
+    }
+  };
+
   useEffect(() => {
     if (application && cycle && habitat && posthog) {
       posthog?.capture('application_opened', {
@@ -309,7 +410,9 @@ const AffiliateApplicationDetailsPage = () => {
           handleDecideModalOnClose={handleDecideModalOnClose}
           handleOnValidDecide={handleOnValidDecide}
           handleDecideOnClick={handleDecideOnClick}
+          handleDownloadApplicationOnClick={handleDownloadApplication}
           loading={loading}
+          downloading={downloadingFiles > 0}
         />
       </div>
       <div className={`${style.detailsContainer}`}>

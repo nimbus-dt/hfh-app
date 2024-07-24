@@ -95,6 +95,7 @@ export const AUTHENTICATION_STATUS = {
 };
 
 export const ROUTES = {
+  PRINT: 'print',
   maintenance: 'maintenance',
   HABITAT: ':habitat',
   HABITAT_APPLICANT: 'applicant',

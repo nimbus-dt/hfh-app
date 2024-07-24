@@ -1,5 +1,19 @@
 {
   "api": {
+    "habitat": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "convertApplicationToPdf"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
     "hfhapp": {
       "dependsOn": [],
       "output": {
@@ -107,6 +121,22 @@
     }
   },
   "function": {
+    "convertApplicationToPdf": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "hfhapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "getCitiesByNameAndState": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -233,6 +263,30 @@
   },
   "hosting": {},
   "parameters": {
+    "AMPLIFY_function_convertApplicationToPdf_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "convertApplicationToPdf"
+        }
+      ]
+    },
+    "AMPLIFY_function_convertApplicationToPdf_prodDomain": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "convertApplicationToPdf"
+        }
+      ]
+    },
+    "AMPLIFY_function_convertApplicationToPdf_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "convertApplicationToPdf"
+        }
+      ]
+    },
     "AMPLIFY_function_getCitiesByNameAndState_deploymentBucketName": {
       "usedBy": [
         {
