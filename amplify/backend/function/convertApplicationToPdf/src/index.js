@@ -117,6 +117,10 @@ async function getPDF(formUrl, submission, language) {
 
     await page.evaluate((submission) => window.hfhSetSubmission(submission), submission);
 
+    await page.waitForFunction(() => window.hfhIsSubmissionSet(), {
+        timeout: 120_000
+    })
+
     await page.evaluate(() => {
         const aElements = document.querySelectorAll('a');
 
