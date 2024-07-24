@@ -280,10 +280,10 @@ const AffiliateApplicationDetailsPage = () => {
   if (!cycle) return <Loading />;
 
   const breadCrumbsItems = [
-    { label: 'Active Forms', to: '../../../forms' },
+    { label: 'Forms', to: '../../../forms' },
     { label: 'Cycles', to: '../..' },
     { label: 'Applications', to: '..' },
-    { label: 'Detail' },
+    { label: 'Details' },
   ];
 
   return (
@@ -310,7 +310,7 @@ const AffiliateApplicationDetailsPage = () => {
       <div className={`${style.detailsContainer}`}>
         <LocalNavigation
           items={[
-            { label: 'Applications', icon: <MdOutlineNoteAlt /> },
+            { label: 'Submission', icon: <MdOutlineNoteAlt /> },
             { label: 'Notes', icon: <MdOutlineTextSnippet /> },
             ...(application?.type === ApplicationTypes.ONLINE
               ? [

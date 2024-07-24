@@ -1,7 +1,9 @@
 import React from 'react';
-import { Button, Flex, Text } from '@aws-amplify/ui-react';
+import { Flex, Text } from '@aws-amplify/ui-react';
 import { Note } from 'models';
-import { EditorState, SerializedEditorState } from 'lexical';
+import { EditorState } from 'lexical';
+import CustomButton from 'components/CustomButton';
+import { MdOutlineAdd } from 'react-icons/md';
 import NoteModal from './components/NoteModal';
 import NotePreview from './components/NotePreview';
 
@@ -32,9 +34,9 @@ const NotesTab = ({
         onSave={handleOnSaveNote}
         uploading={uploadingNote}
       />
-      <Button variation="primary" onClick={handleNoteOpenClose}>
+      <CustomButton onClick={handleNoteOpenClose} icon={<MdOutlineAdd />}>
         Create Note
-      </Button>
+      </CustomButton>
     </Flex>
     <Flex marginTop="1rem" direction="column">
       {notes.length > 0 ? (

@@ -39,11 +39,15 @@ const Buttons = ({
         onValid={handleOnValidDecide}
         loading={loading}
       />
-      <CustomButton variation="primary">
-        <MdOutlinePrint size="24px" />
+      <CustomButton icon={<MdOutlinePrint />} variation="primary">
+        Print
       </CustomButton>
-      <CustomButton variation="primary" onClick={handleDecideOnClick}>
-        <MdOutlineMail size="24px" />
+      <CustomButton
+        onClick={handleDecideOnClick}
+        icon={<MdOutlineMail />}
+        variation="primary"
+      >
+        Send Decision
       </CustomButton>
     </Flex>
   );
