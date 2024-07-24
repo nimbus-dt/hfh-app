@@ -6,9 +6,9 @@ import { Wizard } from '@formio/react';
 
 interface FormLayoutProps {
   formReady?: typeof Wizard;
+  cycle: TestCycle;
+  application: TestApplication;
   children: ReactNode;
-  application?: TestApplication;
-  cycle?: TestCycle;
 }
 
 export default FormLayoutProps;

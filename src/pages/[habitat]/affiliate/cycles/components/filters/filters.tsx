@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslation } from 'react-i18next';
 import { MdCheck, MdClose } from 'react-icons/md';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Button } from '@aws-amplify/ui-react';
@@ -10,6 +11,7 @@ import styles from './filters.module.css';
 import { Inputs, FilterProps } from '../../types';
 
 const Filters = ({ close, filters, setFilters }: FilterProps) => {
+  const { t } = useTranslation();
   const { register, handleSubmit, reset, watch } = useForm<Inputs>({
     values: {
       startDate: filters.startDate,
@@ -33,14 +35,16 @@ const Filters = ({ close, filters, setFilters }: FilterProps) => {
     >
       <div className={styles.header}>
         <p className={`theme-subtitle-s2 ${styles.color_neutral_100}`}>
-          Filter Options
+          {t('pages.habitat.affiliate.cycles.components.filters.title')}
         </p>
         <div className={styles.close}>
           <MdClose size="1.5rem" cursor="pointer" onClick={close} />
         </div>
       </div>
       <div className={styles.inputs}>
-        <p className={`${styles.dates_title} theme-body-small`}>Dates</p>
+        <p className={`${styles.dates_title} theme-body-small`}>
+          {t('pages.habitat.affiliate.cycles.components.filters.dates')}
+        </p>
         <div className={styles.dateInput}>
           <div className={styles.input_date_text}>
             {watchStartDate
@@ -51,7 +55,7 @@ const Filters = ({ close, filters, setFilters }: FilterProps) => {
             htmlFor="startDate"
             className={`theme-body-medium ${styles.label}`}
           >
-            Start Date
+            {t('pages.habitat.affiliate.cycles.components.filters.startDate')}
           </label>
           <input
             className={`theme-body-medium ${styles.input_date}`}
@@ -70,7 +74,7 @@ const Filters = ({ close, filters, setFilters }: FilterProps) => {
             htmlFor="endDate"
             className={`theme-body-medium ${styles.label}`}
           >
-            End Date
+            {t('pages.habitat.affiliate.cycles.components.filters.endDate')}
           </label>
           <input
             className={`theme-body-medium ${styles.input_date}`}
@@ -81,7 +85,9 @@ const Filters = ({ close, filters, setFilters }: FilterProps) => {
         </div>
       </div>
       <div className={styles.inputs}>
-        <p className={`${styles.dates_title} theme-body-small`}>Status</p>
+        <p className={`${styles.dates_title} theme-body-small`}>
+          {t('pages.habitat.affiliate.cycles.components.filters.status')}
+        </p>
         <label htmlFor="status-open" className={styles.radio_label}>
           <input
             className={styles.radio_input}
@@ -93,7 +99,7 @@ const Filters = ({ close, filters, setFilters }: FilterProps) => {
           <span className={styles.radio_circle} />
           <span className={styles.radio_checkmark} />
           <MdCheck className={styles.radio_icon} />
-          Open
+          {t('pages.habitat.affiliate.cycles.components.filters.open')}
         </label>
         <label htmlFor="status-close" className={styles.radio_label}>
           <input
@@ -106,7 +112,7 @@ const Filters = ({ close, filters, setFilters }: FilterProps) => {
           <span className={styles.radio_circle} />
           <span className={styles.radio_checkmark} />
           <MdCheck className={styles.radio_icon} />
-          Close
+          {t('pages.habitat.affiliate.cycles.components.filters.close')}
         </label>
       </div>
       <div className={styles.buttons}>
@@ -121,10 +127,10 @@ const Filters = ({ close, filters, setFilters }: FilterProps) => {
             reset();
           }, 500)}
         >
-          Clear Filters
+          {t('pages.habitat.affiliate.cycles.components.filters.clearFilters')}
         </Button>
         <Button variation="primary" type="submit">
-          Save
+          {t('pages.habitat.affiliate.cycles.components.filters.save')}
         </Button>
       </div>
     </form>

@@ -1,5 +1,5 @@
 import Modal from 'components/Modal';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -13,6 +13,7 @@ import {
 } from '@aws-amplify/ui-react';
 import LexicalEditor from 'components/LexicalEditor';
 import { ReviewStatus } from 'models';
+import { useTranslation } from 'react-i18next';
 import { decideSchema } from '../../../../AffiliateApplicationDetailsPage.schema';
 
 const DecideModal = ({ open, onClose, onValid, loading }) => {
@@ -27,45 +28,88 @@ const DecideModal = ({ open, onClose, onValid, loading }) => {
     shouldUnregister: true,
     shouldFocusError: true,
   });
+  const { t } = useTranslation();
 
   const status = watch('status');
 
   const placeholder = useMemo(() => {
-    const returnPlaceholder = `Dear John Doe,
+    const returnPlaceholder = `${t(
+      'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.placeholders.return.1'
+    )}
 
-Thank you for taking the time to complete your application. After a thorough review, we are excited to continue the application process with you. However, we need you to revise the following sections of your application:
+${t(
+  'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.placeholders.return.2'
+)}
 
-Income: Please include consecutive pay stubs for the last 60 days. Currently, you have only included pay stubs for the last 30 days.
-U.S. Citizenship: Please provide correct proof of legal residence. The file you submitted does not verify your residency status.
-Once you have made the necessary revisions, please resubmit your application for further review.
+${t(
+  'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.placeholders.return.3'
+)}
+${t(
+  'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.placeholders.return.4'
+)}
+${t(
+  'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.placeholders.return.5'
+)}
 
-Thank you for your cooperation.
+${t(
+  'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.placeholders.return.6'
+)}
 
-Best regards,
-The Habitat for Humanity Team
-    `;
+${t(
+  'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.placeholders.return.7'
+)}
+${t(
+  'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.placeholders.return.8'
+)}
+`;
 
-    const acceptPlaceholder = `Dear John Doe,
+    const acceptPlaceholder = `${t(
+      'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.placeholders.accept.1'
+    )}
 
-Thank you for completing your application. We are pleased to inform you that your application has been accepted.
+${t(
+  'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.placeholders.accept.2'
+)}
 
-We will be in touch soon with the next steps in the process. If you have any questions or need further assistance, please do not hesitate to contact us.
+${t(
+  'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.placeholders.accept.3'
+)}
 
-Welcome to the Habitat for Humanity community!
+${t(
+  'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.placeholders.accept.4'
+)}
 
-Best regards,
-The Habitat for Humanity Team`;
+${t(
+  'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.placeholders.accept.5'
+)}
+${t(
+  'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.placeholders.accept.6'
+)}
+`;
 
-    const rejectedPlaceholder = `Dear John Doe,
+    const rejectedPlaceholder = `${t(
+      'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.placeholders.reject.1'
+    )}
 
-Thank you for your interest in Habitat for Humanity and for taking the time to complete your application. After a thorough review, we regret to inform you that we are unable to proceed with your application at this time.
+${t(
+  'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.placeholders.reject.2'
+)}
 
-We understand this may be disappointing news. Please feel free to contact us if you have any questions or if you would like feedback on your application.
+${t(
+  'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.placeholders.reject.3'
+)}
 
-Thank you for your understanding and support of our mission.
+${t(
+  'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.placeholders.reject.4'
+)}
 
-Best regards,
-The Habitat for Humanity Team`;
+${t(
+  'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.placeholders.reject.5'
+)}
+${t(
+  'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.placeholders.reject.6'
+)}
+`;
 
     switch (status) {
       case ReviewStatus.RETURNED: {
@@ -90,34 +134,52 @@ The Habitat for Humanity Team`;
     <Modal title="Decide" open={open} onClickClose={onClose} width="45rem">
       <form onSubmit={handleSubmitDecide(onValid)}>
         <Text>
-          When you make a decision, we notify applicants via email and store the
-          decision in the application's Decision tab.
+          {t(
+            'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.description'
+          )}
         </Text>
         <br />
         <SelectField
           {...registerDecide('status')}
-          label="What is the type of decision you want to make?"
+          label={t(
+            'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.status.label'
+          )}
           hasError={errorsDecide?.status}
-          errorMessage="Invalid status"
+          errorMessage={t(
+            'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.status.error'
+          )}
         >
-          <option value={ReviewStatus.RETURNED}>Return</option>
-          <option value={ReviewStatus.ACCEPTED}>Accept</option>
-          <option value={ReviewStatus.DENIED}>Deny</option>
+          <option value={ReviewStatus.RETURNED}>
+            {t(
+              'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.status.return'
+            )}
+          </option>
+          <option value={ReviewStatus.ACCEPTED}>
+            {t(
+              'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.status.accept'
+            )}
+          </option>
+          <option value={ReviewStatus.DENIED}>
+            {t(
+              'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.status.deny'
+            )}
+          </option>
         </SelectField>
         <br />
         {status === ReviewStatus.RETURNED && (
           <>
             <Text>
-              By returning an application, you are allowing an applicant to
-              enter their application and fix mistakes. Once they have fixed
-              them, they can submit the application.
+              {t(
+                'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.warning'
+              )}
             </Text>
             <br />
           </>
         )}
         <Text>
-          Include here the decision message you want to send to the applicant.
-          You can attach files, links and images.
+          {t(
+            'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.message'
+          )}
         </Text>
         <br />
         <Controller
@@ -136,7 +198,12 @@ The Habitat for Humanity Team`;
           <>
             <br />
             <View>
-              <Text>Updating application and sending email to applicant.</Text>
+              <Text>
+                {' '}
+                {t(
+                  'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.sending'
+                )}
+              </Text>
               <Loader variation="linear" />
             </View>
           </>
@@ -147,10 +214,14 @@ The Habitat for Humanity Team`;
             onClick={onClose}
             isDisabled={loading > 0}
           >
-            Cancel
+            {t(
+              'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.cancel'
+            )}
           </Button>
           <Button type="submit" isDisabled={loading > 0}>
-            Send
+            {t(
+              'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.send'
+            )}
           </Button>
         </Flex>
       </form>

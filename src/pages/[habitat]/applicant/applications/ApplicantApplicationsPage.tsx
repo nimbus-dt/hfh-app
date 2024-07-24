@@ -13,7 +13,7 @@ import {
   TestApplication,
   TestCycle,
 } from 'models';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { MdOutlineOpenInNew } from 'react-icons/md';
 import TableWithPaginator from 'components/TableWithPaginator';
 import Toggle from 'components/Toggle';
@@ -24,11 +24,20 @@ import { dateOnly } from 'utils/dates';
 import Chip from 'components/Chip';
 import { stringToHumanReadable } from 'utils/strings';
 import useHabitat from 'hooks/utils/useHabitat';
+import { useTranslation } from 'react-i18next';
+import TranslationContext from 'contexts/TranslationsContext';
+import translator from 'utils/translator';
 import style from './ApplicantApplicationsPage.module.css';
 
-const ReviewStatusChip = ({ status }: { status: keyof typeof ReviewStatus }) =>
+const ReviewStatusChip = ({
+  status,
+  translate,
+}: {
+  status: keyof typeof ReviewStatus;
+  translate: (s: string) => string;
+}) =>
   status === ReviewStatus.PENDING ? (
-    <StatusChip status={status} />
+    <Chip variation="warning" text={translate(stringToHumanReadable(status))} />
   ) : (
     <Chip text="Reviewed" variation="active" />
   );
@@ -45,13 +54,18 @@ const ApplicantApplicationsPage = () => {
   const [submissionStatusFilter, setSubmissionStatusFilter] = useState<
     keyof typeof SubmissionStatus
   >(SubmissionStatus.INCOMPLETE);
+  const { t, i18n } = useTranslation();
+  const { language } = i18n;
   const { habitat } = useHabitat();
   const { user } = useAuthenticator((context) => [context.user]);
   const [data, setData] = useState<DataProps>(undefined);
+  const translations = useContext(TranslationContext);
+
+  const translate = translator({ language, translations });
 
   useEffect(() => {
     if (habitat) {
-      const fetch = async () => {
+      const fetchData = async () => {
         const rootFormsResponse = await DataStore.query(RootForm, (c) =>
           c.habitatID.eq(habitat.id)
         );
@@ -84,7 +98,7 @@ const ApplicantApplicationsPage = () => {
           cycles: newCycles,
         });
       };
-      fetch();
+      fetchData();
     }
   }, [habitat, user?.username]);
 
@@ -102,19 +116,24 @@ const ApplicantApplicationsPage = () => {
       >
         <Flex direction="column">
           <Heading level={3} style={{ lineHeight: '56px' }}>
-            Application Dashboard
+            {t('pages.habitat.applicant.applications.title')}
           </Heading>
           <Text className={`theme-subtitle-s1 ${style.subtitle}`}>
-            Select the type of application
+            {t('pages.habitat.applicant.applications.subtitle')}
           </Text>
         </Flex>
         <Flex className={`${style.toggleContainer}`}>
           <Toggle
             option1={{
               value: SubmissionStatus.INCOMPLETE,
-              label: 'Incomplete',
+              label: t(
+                'pages.habitat.applicant.applications.toogle.incomplete'
+              ),
             }}
-            option2={{ value: SubmissionStatus.COMPLETED, label: 'Complete' }}
+            option2={{
+              value: SubmissionStatus.COMPLETED,
+              label: t('pages.habitat.applicant.applications.toogle.complete'),
+            }}
             active={submissionStatusFilter}
             onChange={(newValue) => {
               setSubmissionStatusFilter(newValue);
@@ -123,33 +142,35 @@ const ApplicantApplicationsPage = () => {
         </Flex>
       </Flex>
       <View className="theme-subtitle-s2">
-        <Text as="span">Current Applications</Text>
+        <Text as="span">
+          {t('pages.habitat.applicant.applications.table.title')}
+        </Text>
       </View>
       <TableWithPaginator
         headers={[
           {
             id: 'name',
-            value: 'Name',
+            value: t('pages.habitat.applicant.applications.table.name'),
           },
 
           {
             id: 'date',
             value:
               submissionStatusFilter === SubmissionStatus.INCOMPLETE
-                ? 'Date Started'
-                : 'Date Completed',
+                ? t('pages.habitat.applicant.applications.table.dateStarted')
+                : t('pages.habitat.applicant.applications.table.dateCompleted'),
           },
           {
             id: 'status',
             value:
               submissionStatusFilter === SubmissionStatus.INCOMPLETE
-                ? 'Status'
-                : 'Review Status',
+                ? t('pages.habitat.applicant.applications.table.status')
+                : t('pages.habitat.applicant.applications.table.reviewStatus'),
             textAlign: 'center',
           },
           {
             id: 'view',
-            value: 'View',
+            value: t('pages.habitat.applicant.applications.table.view'),
             textAlign: 'center',
           },
         ]}
@@ -184,13 +205,16 @@ const ApplicantApplicationsPage = () => {
                   <Flex width="100%" justifyContent="center">
                     {submissionStatusFilter === SubmissionStatus.INCOMPLETE ? (
                       <Chip
-                        text={stringToHumanReadable(
-                          application.submissionStatus
+                        text={translate(
+                          stringToHumanReadable(application.submissionStatus)
                         )}
                         variation="danger"
                       />
                     ) : (
-                      <ReviewStatusChip status={application.reviewStatus} />
+                      <ReviewStatusChip
+                        translate={translate}
+                        status={application.reviewStatus}
+                      />
                     )}
                   </Flex>
                 ),

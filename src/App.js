@@ -1,10 +1,8 @@
 import './assets/styles/App.css';
-import { Routes, Route } from 'react-router-dom';
-import AffiliatePortalRepairsPage from 'pages/[habitat]/affiliate/repairs';
-import AffiliatePortalVolunteersPage from 'pages/[habitat]/affiliate/volunteers';
-import AffiliatePortalSettingsPage from 'pages/[habitat]/affiliate/settings';
 // eslint-disable-next-line import/no-unresolved
 import '@aws-amplify/ui-react/styles.css';
+import { Routes, Route } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import ApplicantCyclePage from 'pages/[habitat]/applicant/[cycleId]';
 import HabitatLayout from 'layouts/HabitatLayout';
 import ApplicantLayout from 'layouts/ApplicantLayout';
@@ -25,6 +23,7 @@ import Print from 'pages/print/page';
 
 function App() {
   useRedirectToLegacy();
+  const { t } = useTranslation();
 
   return (
     <Routes>
@@ -57,19 +56,7 @@ function App() {
         <Route path={ROUTES.HABITAT_AFFILIATE} element={<NewAffiliateLayout />}>
           <Route
             path={ROUTES.HABITAT_AFFILIATE_HOME}
-            element={<h1>This page is under construction</h1>}
-          />
-          <Route
-            path={ROUTES.HABITAT_AFFILIATE_REPAIRS}
-            element={<AffiliatePortalRepairsPage />}
-          />
-          <Route
-            path={ROUTES.HABITAT_AFFILIATE_VOLUNTEERS}
-            element={<AffiliatePortalVolunteersPage />}
-          />
-          <Route
-            path={ROUTES.HABITAT_AFFILIATE_SETTINGS}
-            element={<AffiliatePortalSettingsPage />}
+            element={<h1>{t('pages.underConstruction.message')}</h1>}
           />
           <Route
             path={ROUTES.HABITAT_AFFILIATE_FORMS}
@@ -77,11 +64,11 @@ function App() {
           />
           <Route
             path={ROUTES.HABITAT_AFFILIATE_ANALYTICS}
-            element={<p>This page is under construction</p>}
+            element={<p>{t('pages.underConstruction.message')}</p>}
           />
           <Route
             path={ROUTES.HABITAT_AFFILIATE_USERS}
-            element={<p>This page is under construction</p>}
+            element={<p>{t('pages.underConstruction.message')}</p>}
           />
           <Route path=":formId">
             <Route index element={<CyclesPage />} />

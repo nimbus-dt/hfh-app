@@ -1,5 +1,6 @@
 import { View, TextField, Flex, Button, Text } from '@aws-amplify/ui-react';
 import React, { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { HiTrash } from 'react-icons/hi2';
 import PropTypes from 'prop-types';
 
@@ -17,6 +18,7 @@ const FileInput = ({
   onInvalid,
   onBlur,
 }) => {
+  const { t } = useTranslation();
   const filesInputRef = useRef();
 
   const handleOnChange = (event) => {
@@ -59,8 +61,12 @@ const FileInput = ({
     >
       <TextField
         label={label}
-        descriptiveText={`Add files${!multiple ? ' one by one' : ''} ${
-          maxFileCount !== undefined ? `(${maxFileCount} files max.)` : ''
+        descriptiveText={`${t('components.fileInput.addFiles')}${
+          !multiple ? ` ${t('components.fileInput.oneByOne')}` : ''
+        } ${
+          maxFileCount !== undefined
+            ? `(${maxFileCount} ${t('components.fileInput.filesMax')}.)`
+            : ''
         }`}
         type="file"
         accept={accept}
@@ -87,7 +93,7 @@ const FileInput = ({
             marginTop="0.5rem"
             variation="secondary"
           >
-            Selected files:
+            {t('components.fileInput.selectedFiles')}
           </Text>
 
           <Flex

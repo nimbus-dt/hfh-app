@@ -1,4 +1,504 @@
 {
+  "langCode": "es",
+  "language": "Español",
   "English": "Inglés",
-  "Spanish": "Español"
+  "Spanish": "Español",
+  "layouts": {
+    "baseLayout": {
+      "components": {
+        "topBar": {
+          "components": {
+            "profileBadge": {
+              "logOut": "Cerrar sesión"
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "authentication": {
+      "auth": {
+        "vocabularies": {
+          "signIn": "Iniciar sesión",
+          "signingIn": "Iniciando sesión",
+          "signInToYourAccount": "Inicia sesión en tu cuenta",
+          "username": "Introduce tu nombre de usuario",
+          "password": "Introduce tu contraseña",
+          "signUp": "Regístrate",
+          "forgotPassword": "¿Olvidaste tu contraseña?",
+          "resetPassword": "Restablecer contraseña",
+          "enterYourEmail": "Introduce tu correo electrónico",
+          "sendCode": "Enviar código",
+          "backToSignIn": "Volver a iniciar sesión",
+          "createAccount": "Crear cuenta"
+        },
+        "errors": {
+          "usernameCannotBeEmpty": "Nombre de usuario o contraseña incorrectos",
+          "customAuthLambdaTriggerIsNotConfiguredForTheUserPool": "Nombre de usuario o contraseña incorrectos",
+          "userDoesNotExist": "El usuario no existe",
+          "incorrectUsernameOrPassword": "Nombre de usuario o contraseña incorrectos"
+        },
+        "signIn": {
+          "username": {
+            "label": "Correo electrónico",
+            "placeholder": "Introduce tu correo electrónico"
+          },
+          "password": {
+            "label": "Contraseña",
+            "placeholder": "Ingresa tu contraseña:"
+          },
+          "footer": {
+            "forgotPassword": "¿Olvidaste tu contraseña?",
+            "doNotHaveAnAccount": "¿No tienes una cuenta?",
+            "signUp": "Regístrate"
+          }
+        },
+        "signUp": {
+          "email": {
+            "label": "Correo electrónico",
+            "placeholder": "Introduce tu correo electrónico"
+          },
+          "password": {
+            "label": "Contraseña",
+            "placeholder": "Ingresa tu contraseña"
+          },
+          "confirmPassword": {
+            "label": "Confirmar contraseña",
+            "placeholder": "Confirma tu contraseña"
+          },
+          "footer": {
+            "haveAnAccountAlready": "¿Ya tienes una cuenta?",
+            "backToSignIn": "Volver a iniciar sesión"
+          }
+        }
+      }
+    },
+    "decisionsTab": {
+      "noDecisions": "No hay decisiones para esta aplicación"
+    },
+    "decisionCard": {
+      "button": "Actualizar ahora"
+    },
+    "fileInput": {
+      "addFiles": "Añadir archivos",
+      "oneByOne": "uno por uno",
+      "filesMax": "archivos máximos",
+      "selectedFiles": "Archivos seleccionados:"
+    },
+    "lexicalEditor": {
+      "placeholder": "Introduce un texto...",
+      "plugins": {
+        "ToolbarPlugin": {
+          "undo": "Deshacer",
+          "redo": "Rehacer",
+          "paragraph": "Normal",
+          "h1": "Encabezado 1",
+          "h2": "Encabezado 2",
+          "h3": "Encabezado 3",
+          "bullet": "Lista de viñetas",
+          "number": "Lista numerada",
+          "bold": "Negrita",
+          "italic": "Cursiva",
+          "underline": "Subrayado",
+          "strikethrough": "Tachado",
+          "leftAlign": "Alinear a la izquierda",
+          "centerAlign": "Alinear al centro",
+          "rightAlign": "Alinear a la derecha",
+          "justifyAlign": "Justificar",
+          "components": {
+            "InsertImageButton": {
+              "insertImage": "Insertar imagen",
+              "imageUrl": "URL de la imagen",
+              "uploading": "Subiendo",
+              "add": "Añadir",
+              "altText": "Texto alternativo",
+              "url": "URL",
+              "uploadImage": "Subir imagen",
+              "uploadImageFile": "Subir archivo de imagen",
+              "or": "o",
+              "cancel": "Cancelar",
+              "submit": "Enviar"
+            },
+            "InsertFileButton": {
+              "insertFile": "Insertar archivo",
+              "uploadFile": "Subir archivo",
+              "uploading": "Subiendo",
+              "add": "Añadir",
+              "cancel": "Cancelar"
+            }
+          }
+        }
+      }
+    },
+    "newApplicationModal": {
+      "title": "Nueva aplicación en papel",
+      "description": "Al crear un registro de solicitud en papel, estás creando un registro que rastrea la información de una solicitud que has recibido en papel, físicamente. Por favor, asegúrate de introducir los datos correctamente, ya que una vez que hayas añadido una solicitud no podrás editar esta información.",
+      "error": "No se pudo guardar la nueva solicitud.",
+      "name": {
+        "label": "Nombre",
+        "descriptiveText": "Nombre del solicitante principal en la solicitud",
+        "errorMessage": "Nombre inválido"
+      },
+      "date": {
+        "label": "Fecha de envío",
+        "errorMessage": "Fecha inválida"
+      },
+      "reviewStatus": {
+        "label": "Estado de revisión",
+        "pending": "Pendiente",
+        "accepted": "Aceptado",
+        "denied": "Rechazado",
+        "errorMessage": "Estado de revisión inválido"
+      },
+      "uploadApplication": {
+        "label": "Subir solicitud"
+      },
+      "uploading": "Subiendo nueva solicitud",
+      "cancel": "Cancelar",
+      "submit": "Enviar"
+    },
+    "tableWithPaginator": {
+      "rowsPerPage": "Filas por página",
+      "noData": "Sin datos"
+    },
+    "footer": {
+      "continue": "Continuar",
+      "submit": "Enviar",
+      "goBack": "Volver"
+    }
+  },
+  "pages": {
+    "maintenance": {
+      "title": "Actualmente estamos mejorando la aplicación de Habitat 🔨",
+      "message": "Pedimos disculpas por las molestias, pero estamos realizando un mantenimiento. Todavía puedes contactarnos en support@habitat-app.org. ¡Volveremos pronto!",
+      "from": "- El equipo de Habitat App"
+    },
+    "underConstruction": {
+      "message": "Esta página está actualmente en construcción"
+    },
+    "habitat": {
+      "affiliate": {
+        "forms": {
+          "name": "Formularios Activos",
+          "components": {
+            "newFormButton": {
+              "text": "Nuevo formulario",
+              "title": "Crea un nuevo formulario 📝",
+              "description": "Crear un formulario es el primer paso para llevar tus solicitudes en papel en línea. Por favor, tómate un tiempo para responder las siguientes preguntas.",
+              "form": {
+                "name": {
+                  "label": "¿Cuál es el nombre de tu formulario?",
+                  "placeholder": "Solicitud de Programa de Vivienda",
+                  "error": "Por favor, introduce un nombre para tu formulario."
+                },
+                "description": {
+                  "label": "¿Puedes describir tu formulario en un par de palabras?",
+                  "placeholder": "El formulario es una solicitud que determina si una familia es apta para participar en el Programa de Vivienda de Habitat for Humanity. Estas se reciben dos veces al año y son revisadas por los trabajadores de Habitat.",
+                  "error": "Por favor, introduce una descripción para tu formulario."
+                },
+                "file": {
+                  "label": "Por favor, sube tu solicitud en papel",
+                  "error": "Por favor, sube al menos un archivo."
+                },
+                "submit": "Enviar",
+                "uploading": "Subiendo archivos"
+              }
+            }
+          },
+          "title": "Tablero de formularios",
+          "toogle": {
+            "active": "Activo",
+            "pending": "Pendiente"
+          },
+          "table": {
+            "activeTitle": "Formularios activos",
+            "pendingTitle": "Formularios pendientes",
+            "results": "resultados",
+            "name": "Nombre",
+            "dateCreated": "Fecha de creación",
+            "status": "Estado",
+            "view": "Ver"
+          }
+        },
+        "cycles": {
+          "name": "Ciclos",
+          "title": "Tablero de ciclos",
+          "button": {
+            "newCycle": "Nuevo ciclo +",
+            "closeCycle": "Cerrar ciclo"
+          },
+          "components": {
+            "filters": {
+              "title": "Opciones de filtro",
+              "dates": "Fechas",
+              "startDate": "Fecha de inicio",
+              "endDate": "Fecha de finalización",
+              "status": "Estado",
+              "open": "Abierto",
+              "close": "Cerrado",
+              "clearFilters": "Limpiar filtros",
+              "save": "Guardar"
+            },
+            "newCycle": {
+              "closeApplicationCycle": "Cerrar ciclo de aplicación",
+              "createApplicationCycle": "Crear ciclo de aplicación",
+              "openCycle": {
+                "title": "¿Estás seguro de que deseas cerrar tu ciclo de aplicación actual?",
+                "description": "Una vez cerrado, los solicitantes ya no podrán enviar solicitudes a tu formulario.",
+                "confirm": "Confirmar",
+                "cancel": "Cancelar"
+              },
+              "closeCycle": {
+                "name": "Por favor, introduce un nombre para tu nuevo ciclo de aplicación a continuación",
+                "error": "Este campo es obligatorio",
+                "confirm": "Confirmar",
+                "cancel": "Cancelar"
+              }
+            }
+          },
+          "status": {
+            "open": "Abierto",
+            "closed": "Cerrado"
+          },
+          "table": {
+            "title": "Ciclos",
+            "results": "resultados",
+            "name": "Nombre",
+            "startDate": "Fecha de inicio",
+            "endDate": "Fecha de finalización",
+            "status": "Estado",
+            "view": "Ver"
+          },
+          "cycle": {
+            "name": "Aplicaciones",
+            "title": "Tablero de aplicaciones",
+            "incompleteApplications": "Solicitudes incompletas:",
+            "clipboard": "Copiar enlace para los solicitantes al portapapeles",
+            "newApplication": "Nueva aplicación",
+            "components": {
+              "filters": {
+                "title": "Opciones de filtro",
+                "dates": "Fechas",
+                "startDate": "Fecha de inicio de envío",
+                "endDate": "Fecha de finalización de envío",
+                "data": {
+                  "checkboxes": {
+                    "type": "Tipo",
+                    "status": "Estado"
+                  },
+                  "typeInputsData": {
+                    "online": "En línea",
+                    "paper": "Papel"
+                  },
+                  "reviewStatusData": {
+                    "pending": "Pendiente",
+                    "accepted": "Aceptado",
+                    "denied": "Rechazado",
+                    "returned": "Devuelto"
+                  }
+                },
+                "customStatus": "Estado personalizado",
+                "clearFilters": "Limpiar filtros",
+                "save": "Guardar"
+              },
+              "statusModal": {
+                "title": "Estado",
+                "name": "Nombre",
+                "actions": "Acciones",
+                "newStatus": {
+                  "label": "Nuevo estado: ",
+                  "error": "Estado inválido"
+                },
+                "edit": {
+                  "title": "Alerta",
+                  "text": "¿Quieres editar el estado? Esto actualizaría todas las aplicaciones con este estado.",
+                  "accept": "Aceptar",
+                  "cancel": "Cancelar"
+                },
+                "delete": {
+                  "title": "Alerta",
+                  "text": "¿Quieres eliminar el estado? Esto actualizaría todas las aplicaciones con este estado para tener un estado Pendiente.",
+                  "accept": "Aceptar",
+                  "cancel": "Cancelar"
+                }
+              }
+            },
+            "table": {
+              "title": "Aplicaciones",
+              "results": "resultados",
+              "name": "Nombre",
+              "type": "Tipo",
+              "dateSubmitted": "Fecha de envío",
+              "reviewStatus": "Estado de revisión",
+              "customStatus": "Estado personalizado",
+              "view": "Ver"
+            },
+            "application": {
+              "name": "Detalle",
+              "title": "Detalles de la aplicación",
+              "tabs": {
+                "applications": "Aplicaciones",
+                "notes": "Notas",
+                "decisions": "Decisiones",
+                "calculations": "Cálculos"
+              },
+              "components": {
+                "applicationTab": {
+                  "components": {
+                    "paperApplicationTable": {
+                      "title": "Información de la solicitud en papel",
+                      "name": "Nombre",
+                      "files": "Archivos"
+                    }
+                  }
+                },
+                "notesTab": {
+                  "createNote": "Crear nota",
+                  "noNotes": "No hay notas para esta aplicación",
+                  "components": {
+                    "notePreview": {
+                      "by": "Nota de:",
+                      "delete": {
+                        "title": "Eliminar nota",
+                        "warning": "¿Estás seguro de que deseas eliminar esta nota?",
+                        "accept": "Aceptar",
+                        "cancel": "Cancelar",
+                        "deleting": "Eliminando"
+                      }
+                    },
+                    "noteModal": {
+                      "title": "Crear nota",
+                      "uploading": "Subiendo",
+                      "save": "Guardar"
+                    }
+                  }
+                },
+                "buttons": {
+                  "components": {
+                    "decideModal": {
+                      "title": "Decidir",
+                      "description": "Cuando tomas una decisión, notificamos a los solicitantes por correo electrónico y almacenamos la decisión en la pestaña de Decisiones de la solicitud.",
+                      "status": {
+                        "label": "¿Cuál es el tipo de decisión que deseas tomar?",
+                        "error": "Estado inválido",
+                        "return": "Devolver",
+                        "accept": "Aceptar",
+                        "deny": "Denegar"
+                      },
+                      "placeholders": {
+                        "return": {
+                          "1": "Estimado John Doe",
+                          "2": "Gracias por tomarse el tiempo para completar su solicitud. Después de una revisión exhaustiva, estamos emocionados de continuar el proceso de solicitud con usted. Sin embargo, necesitamos que revise las siguientes secciones de su solicitud:",
+                          "3": "Ingresos: Por favor incluya recibos de pago consecutivos de los últimos 60 días. Actualmente, solo ha incluido recibos de pago de los últimos 30 días.",
+                          "4": "Ciudadanía de EE.UU.: Por favor proporcione la prueba correcta de residencia legal. El archivo que envió no verifica su estatus de residencia.",
+                          "5": "Una vez que haya hecho las revisiones necesarias, por favor envíe su solicitud nuevamente para una revisión adicional.",
+                          "6": "Gracias por su cooperación.",
+                          "7": "Atentamente,",
+                          "8": "El equipo de Habitat for Humanity"
+                        },
+                        "accept": {
+                          "1": "Estimado John Doe,",
+                          "2": "Gracias por completar su solicitud. Nos complace informarle que su solicitud ha sido aceptada.",
+                          "3": "Nos pondremos en contacto pronto con los próximos pasos del proceso. Si tiene alguna pregunta o necesita más asistencia, no dude en contactarnos.",
+                          "4": "¡Bienvenido a la comunidad de Habitat for Humanity!",
+                          "5": "Atentamente,",
+                          "6": "El equipo de Habitat for Humanity"
+                        },
+                        "reject": {
+                          "1": "Estimado John Doe,",
+                          "2": "Gracias por su interés en Habitat for Humanity y por tomarse el tiempo para completar su solicitud. Después de una revisión exhaustiva, lamentamos informarle que no podemos proceder con su solicitud en este momento.",
+                          "3": "Entendemos que esta puede ser una noticia decepcionante. No dude en contactarnos si tiene alguna pregunta o si desea recibir comentarios sobre su solicitud.",
+                          "4": "Gracias por su comprensión y apoyo a nuestra misión.",
+                          "5": "Atentamente,",
+                          "6": "El equipo de Habitat for Humanity"
+                        }
+                      },
+                      "warning": "Al devolver una solicitud, está permitiendo que un solicitante ingrese a su solicitud y corrija los errores. Una vez que los haya corregido, puede enviar la solicitud.",
+                      "message": "Incluya aquí el mensaje de decisión que desea enviar al solicitante. Puede adjuntar archivos, enlaces e imágenes.",
+                      "sending": "Actualizando solicitud y enviando correo electrónico al solicitante.",
+                      "cancel": "Cancelar",
+                      "send": "Enviar"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "applicant": {
+        "cycle": {
+          "application": "Aplicación",
+          "decisions": "Decisiones",
+          "components": {
+            "form": {
+              "alert": {
+                "title": "Alerta",
+                "message": "¿Estás seguro de que deseas enviar tu solicitud? Una vez enviada, no podrás volver a enviarla.",
+                "accept": "Aceptar",
+                "cancel": "Cancelar"
+              },
+              "goBackToEdit": "Volver a editar",
+              "submit": "Enviar",
+              "goBack": "Volver"
+            },
+            "tabs": {
+              "decisions": {
+                "noDecisions": "No hay decisiones para esta aplicación"
+              }
+            },
+            "noOpenCycle": {
+              "goBack": "Volver",
+              "review": "Revisión"
+            },
+            "succesfullySubmitted": {
+              "message": {
+                "1": "Has enviado con éxito tu",
+                "2": "solicitud para",
+                "3": ". Recibirás un correo electrónico con actualizaciones sobre tu solicitud."
+              },
+              "goToApplications": "Ir a aplicaciones",
+              "review": "Revisión"
+            }
+          }
+        },
+        "applications": {
+          "title": "Tablero de aplicaciones",
+          "subtitle": "Selecciona el tipo de aplicación",
+          "toogle": {
+            "incomplete": "Incompleto",
+            "complete": "Completo"
+          },
+          "table": {
+            "title": "Aplicaciones actuales",
+            "name": "Nombre",
+            "dateStarted": "Fecha de inicio",
+            "dateCompleted": "Fecha de finalización",
+            "status": "Estado",
+            "reviewStatus": "Estado de revisión",
+            "view": "Ver"
+          }
+        },
+        "decisions": {
+          "title": "Panel de decisiones",
+          "description": "Intercambia información con los afiliados y revisa tus envíos",
+          "empty": "No tienes registros de decisiones."
+        }
+      }
+    }
+  },
+  "routes": {
+    "applicantApplications": "Applicaciones",
+    "applicantDecisions": "Decisiones",
+    "applicantForm": "Formulario",
+    "affiliateHome": "Inicio",
+    "affiliateForms": "Formularios",
+    "affiliateCycles": "Ciclos",
+    "affiliateApplications": "Aplicaciones",
+    "affiliateApplicationDetail": "Detalle de la aplicación",
+    "affiliateAnalytics": "Analíticas",
+    "affiliateUsers": "Usuarios",
+    "settings": "Configuraciones"
+  }
 }

@@ -1,3 +1,5 @@
+import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Flex,
   Table,
@@ -9,11 +11,12 @@ import {
   TableRow,
   Text,
 } from '@aws-amplify/ui-react';
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+
 import DropdownMenu from 'components/DropdownMenu';
-import style from './TableWithPaginator.module.css';
+
 import Paginator from './components/Paginator';
 import { TPerPage } from './components/Paginator/Paginator';
+import style from './TableWithPaginator.module.css';
 
 interface ICell {
   value: ReactNode;
@@ -43,6 +46,7 @@ const TableWithPaginator = ({
   hasMoreData,
   loadMoreData,
 }: IProperties) => {
+  const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage, setPerPage] = useState<TPerPage>(10);
 
@@ -112,7 +116,7 @@ const TableWithPaginator = ({
                 textAlign="center"
                 color="var(--amplify-colors-neutral-80)"
               >
-                No data
+                {t('components.tableWithPaginator.noData')}
               </TableCell>
             </TableRow>
           )}
@@ -122,7 +126,7 @@ const TableWithPaginator = ({
             <TableCell colSpan={'100%' as unknown as number}>
               <Flex justifyContent="end" alignItems="center" padding="0">
                 <Text color="var(--amplify-colors-neutral-90)">
-                  Rows per page
+                  {t('components.tableWithPaginator.rowsPerPage')}
                 </Text>
                 <DropdownMenu
                   value={`${perPage}`}

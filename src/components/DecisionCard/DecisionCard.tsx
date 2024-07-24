@@ -7,6 +7,7 @@ import StatusChip from 'components/StatusChip';
 import { ReviewStatus } from 'models';
 import { dateOnly, timeOnly } from 'utils/dates';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import style from './DecisionCard.module.css';
 
 interface IProperties {
@@ -25,33 +26,38 @@ const DecisionCard = ({
   editorState,
   applicationRoute: applicantionRoute,
   shouldRenderStatusChip,
-}: IProperties) => (
-  <ExpandableCard>
-    <div className={style.container}>
-      <div className={style.dateTimeContainer}>
-        <View className="theme-subtitle-s2">
-          <Text>{dateOnly(date)}</Text>
+}: IProperties) => {
+  const { t } = useTranslation();
+  return (
+    <ExpandableCard>
+      <div className={style.container}>
+        <div className={style.dateTimeContainer}>
+          <View className="theme-subtitle-s2">
+            <Text>{dateOnly(date)}</Text>
+          </View>
+          <Text as="span" className={style.time}>
+            {timeOnly(date)}
+          </Text>
+        </div>
+        <View flex="1">
+          <View className={`theme-subtitle-s1 ${style.habitat}`}>
+            <Text>{habitat}</Text>
+          </View>
+          {shouldRenderStatusChip && <StatusChip status={status} />}
+          <LexicalEditor serializedEditorState={editorState} />
+          {applicantionRoute && (
+            <Flex justifyContent="right">
+              <Link to={applicantionRoute}>
+                <CustomButton>
+                  {t('components.decisionCard.button')}
+                </CustomButton>
+              </Link>
+            </Flex>
+          )}
         </View>
-        <Text as="span" className={style.time}>
-          {timeOnly(date)}
-        </Text>
       </div>
-      <View flex="1">
-        <View className={`theme-subtitle-s1 ${style.habitat}`}>
-          <Text>{habitat}</Text>
-        </View>
-        {shouldRenderStatusChip && <StatusChip status={status} />}
-        <LexicalEditor serializedEditorState={editorState} />
-        {applicantionRoute && (
-          <Flex justifyContent="right">
-            <Link to={applicantionRoute}>
-              <CustomButton>Update Now</CustomButton>
-            </Link>
-          </Flex>
-        )}
-      </View>
-    </div>
-  </ExpandableCard>
-);
+    </ExpandableCard>
+  );
+};
 
 export default DecisionCard;
