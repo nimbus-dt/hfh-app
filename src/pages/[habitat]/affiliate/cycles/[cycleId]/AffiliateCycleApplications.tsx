@@ -28,7 +28,6 @@ import {
   useParams,
 } from 'react-router-dom';
 import { stringToHumanReadable } from 'utils/strings';
-import IconButton from 'components/IconButton';
 import BreadCrumbs from 'components/BreadCrumbs/BreadCrumbs';
 import DropdownMenu from 'components/DropdownMenu';
 import GoBack from 'components/GoBack';
@@ -43,7 +42,7 @@ import StatusModal from './components/StatusModal';
 import { Inputs } from './types';
 import Filters from './components/Filters';
 import Username from './components/Username';
-import { handleCopyToClipboard } from './utils';
+import { redirectToApplicant } from './utils';
 
 interface IOutletContext {
   habitat?: Habitat;
@@ -183,7 +182,7 @@ const AffiliateCycleApplications = () => {
   const handleOnCloseNewApplicationModal = () => setNewApplicationOpen(false);
 
   const breadCrumbsItems = [
-    { label: 'Homeownership Form', to: '../../forms' },
+    { label: 'Forms', to: '../../forms' },
     { label: 'Cycles', to: '..' },
     { label: 'Applications' },
   ];
@@ -211,16 +210,18 @@ const AffiliateCycleApplications = () => {
         </div>
         <div className={`${style.options}`}>
           <div className={`${style.suboptions}`}>
-            <IconButton
-              type="button"
-              onClick={() => handleCopyToClipboard({ cycleId, pathname })}
-              title="Copy link for applicants to clipboard"
+            <CustomButton
+              onClick={() => redirectToApplicant({ cycleId, pathname })}
+              icon={isSmall ? undefined : <MdOutlineLink />}
             >
-              <MdOutlineLink />
-            </IconButton>
-            <IconButton type="button" onClick={() => setFilterModal(true)}>
-              <MdOutlineFilterList />
-            </IconButton>
+              {isSmall ? <MdOutlineLink size="24px" /> : 'Applicant Link'}
+            </CustomButton>
+            <CustomButton
+              onClick={() => setFilterModal(true)}
+              icon={isSmall ? undefined : <MdOutlineFilterList />}
+            >
+              {isSmall ? <MdOutlineFilterList size="24px" /> : 'Filter'}
+            </CustomButton>
           </div>
           {filterModal && (
             <Filters
@@ -242,7 +243,7 @@ const AffiliateCycleApplications = () => {
             onClick={handleAddNewApplicationOnClick}
             icon={isSmall ? undefined : <MdOutlineAdd />}
           >
-            {isSmall ? <MdOutlineAdd size="24px" /> : 'New Application'}
+            {isSmall ? <MdOutlineAdd size="24px" /> : 'Paper Application'}
           </CustomButton>
         </div>
       </div>
