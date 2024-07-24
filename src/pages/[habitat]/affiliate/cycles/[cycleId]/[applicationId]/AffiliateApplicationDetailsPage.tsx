@@ -312,10 +312,6 @@ const AffiliateApplicationDetailsPage = () => {
       for (const formAnswer of formAnswers) {
         const { values } = formAnswer;
 
-        const stringValues = JSON.stringify(values);
-
-        const objectValues = JSON.parse(stringValues);
-
         const flatValues = flattenObject(values);
 
         const fileValuesPath = flatValues.filter((flatValue) =>
@@ -326,10 +322,12 @@ const AffiliateApplicationDetailsPage = () => {
           for (const fileValuePath of fileValuesPath) {
             const path = fileValuePath.path.replace('.originalName', '');
 
-            const fileValue = getValueFromPath(objectValues, path);
+            const fileValue = getValueFromPath(
+              values as unknown as object,
+              path
+            );
 
-            const { originalName, key, bucket } = fileValue as {
-              originalName: string;
+            const { key, bucket } = fileValue as {
               key: string;
               bucket: string;
             };
