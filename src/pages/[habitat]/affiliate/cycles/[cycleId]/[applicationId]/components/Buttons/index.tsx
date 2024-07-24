@@ -6,6 +6,7 @@ import {
 } from 'models';
 import CustomButton from 'components/CustomButton/CustomButton';
 import { MdOutlineMail, MdOutlinePrint } from 'react-icons/md';
+import { useTranslation } from 'react-i18next';
 import DecideModal from './components/DecideModal';
 import { TDecideSchema } from '../../AffiliateApplicationDetailsPage.schema';
 
@@ -30,6 +31,8 @@ const Buttons = ({
   handleDownloadApplicationOnClick,
   downloading,
 }: ButtonsProps) => {
+  const { t } = useTranslation();
+
   if (!application) return null;
   if (application?.type === ApplicationTypes.PAPER) return null;
   if (!(application?.submissionStatus === SubmissionStatus.COMPLETED))
@@ -45,7 +48,9 @@ const Buttons = ({
       />
       <CustomButton
         variation="primary"
-        title="Download application"
+        title={t(
+          'pages.habitat.affiliate.cycles.cycle.application.components.buttons.download'
+        )}
         onClick={handleDownloadApplicationOnClick}
         disabled={downloading}
       >
@@ -60,7 +65,9 @@ const Buttons = ({
       <CustomButton
         variation="primary"
         onClick={handleDecideOnClick}
-        title="Make a decision"
+        title={t(
+          'pages.habitat.affiliate.cycles.cycle.application.components.buttons.decide'
+        )}
       >
         <MdOutlineMail size="24px" />
       </CustomButton>
