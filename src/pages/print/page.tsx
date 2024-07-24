@@ -61,7 +61,9 @@ const Print = () => {
         } as Options
       }
       formReady={(form: typeof Wizard) =>
-        (window.hfhSetSubmission = form.setSubmission)
+        (window.hfhSetSubmission = (submission: unknown) => {
+          form.submission = submission;
+        })
       }
     />
   );
