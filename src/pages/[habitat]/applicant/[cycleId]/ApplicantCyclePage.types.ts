@@ -2,6 +2,7 @@ import { TestApplication, TestCycle } from 'models';
 
 /* eslint-disable no-shadow */
 export const enum DISPLAY {
+  LOADING = 'loading',
   ERROR = 'error',
   NO_OPEN_CYCLE = 'noOpenCycle',
   APPLICATION = 'application',
@@ -14,6 +15,10 @@ export const enum ERROR {
   CYCLE_NOT_FOUND = 'Cycle not found',
   CYCLE_NOT_OPEN = 'Cycle not open',
   UNEXPECTED_ERROR = 'Unexpected error',
+}
+
+interface DisplayLoadingProps {
+  display: DISPLAY.LOADING;
 }
 
 interface DisplayErrorProps {
@@ -57,6 +62,7 @@ interface DisplayCompletedProps {
 }
 
 export type DataProps =
+  | DisplayLoadingProps
   | DisplayErrorProps
   | DisplayApplicationProps
   | DisplayReviewProps

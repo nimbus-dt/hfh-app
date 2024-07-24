@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react';
 import { useAuthenticator } from '@aws-amplify/ui-react';
-import { useTranslation } from 'react-i18next';
 import { useLocation, useParams } from 'react-router-dom';
 import {
   SubmissionStatus,
@@ -24,7 +23,6 @@ import Reviewed from './components/Reviewed/Reviewed';
 
 const ApplicantCyclePage = () => {
   const { habitat } = useHabitat();
-  const { t } = useTranslation();
 
   const { cycleId } = useParams();
 
@@ -83,7 +81,7 @@ const ApplicantCyclePage = () => {
 
       let [application] = applications;
 
-      if (!application) {
+      if (applications.length === 0) {
         if (!cycle.isOpen) {
           return {
             display: DISPLAY.NO_OPEN_CYCLE,
@@ -93,6 +91,14 @@ const ApplicantCyclePage = () => {
             },
           };
         }
+        if (sessionStorage.getItem('creatingApplication')) {
+          return {
+            display: DISPLAY.LOADING,
+          };
+        }
+
+        sessionStorage.setItem('creatingApplication', 'true');
+
         const newApplication = await DataStore.save(
           new TestApplication({
             ownerID: user.username,
@@ -106,6 +112,7 @@ const ApplicantCyclePage = () => {
           })
         );
         application = newApplication;
+        sessionStorage.removeItem('creatingApplication');
         return {
           display: DISPLAY.APPLICATION,
           data: {
@@ -178,6 +185,10 @@ const ApplicantCyclePage = () => {
 
   if (status === Status.REJECTED) {
     return <Error />;
+  }
+
+  if (value?.display === DISPLAY.LOADING) {
+    return <Loading />;
   }
 
   if (value?.display === DISPLAY.ERROR) {
