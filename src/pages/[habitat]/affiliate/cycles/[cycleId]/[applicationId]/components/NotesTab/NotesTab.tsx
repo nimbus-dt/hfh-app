@@ -1,5 +1,8 @@
-import { Button, Flex, Text } from '@aws-amplify/ui-react';
+import React from 'react';
+import { Flex, Text } from '@aws-amplify/ui-react';
 import { Note } from 'models';
+import CustomButton from 'components/CustomButton';
+import { MdOutlineAdd } from 'react-icons/md';
 import { EditorState } from 'lexical';
 import { useTranslation } from 'react-i18next';
 import NoteModal from './components/NoteModal';
@@ -34,11 +37,15 @@ const NotesTab = ({
           onSave={handleOnSaveNote}
           uploading={uploadingNote}
         />
-        <Button variation="primary" onClick={handleNoteOpenClose}>
+        <CustomButton
+          variation="primary"
+          onClick={handleNoteOpenClose}
+          icon={<MdOutlineAdd />}
+        >
           {t(
             'pages.habitat.affiliate.cycles.cycle.application.components.notesTab.createNote'
           )}
-        </Button>
+        </CustomButton>
       </Flex>
       <Flex marginTop="1rem" direction="column">
         {notes.length > 0 ? (

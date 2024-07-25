@@ -181,7 +181,7 @@
     "habitat": {
       "affiliate": {
         "forms": {
-          "name": "Active Forms",
+          "name": "Forms",
           "components": {
             "newFormButton": {
               "text": "New Form",
@@ -213,8 +213,7 @@
             "pending": "Pending"
           },
           "table": {
-            "activeTitle": "Active Forms",
-            "pendingTitle": "Pending Forms",
+            "title": "Forms",
             "results": "results",
             "name": "Name",
             "dateCreated": "Date Created",
@@ -226,8 +225,9 @@
           "name": "Cycles",
           "title": "Cycles Dashboard",
           "button": {
-            "newCycle": "New Cycle +",
-            "closeCycle": "Close Cycle"
+            "newCycle": "New Cycle",
+            "closeCycle": "Close Cycle",
+            "filter": "Filter"
           },
           "components": {
             "filters": {
@@ -275,8 +275,8 @@
             "name": "Applications",
             "title": "Applications Dashboard",
             "incompleteApplications": "Incomplete Applications:",
-            "clipboard": "Copy link for applicants to clipboard",
-            "newApplication": "New Application",
+            "applicantLink": "Applicant Link",
+            "newApplication": "Paper Application",
             "components": {
               "filters": {
                 "title": "Filter Options",
@@ -336,10 +336,10 @@
               "view": "View"
             },
             "application": {
-              "name": "Detail",
+              "name": "Details",
               "title": "Application Details",
               "tabs": {
-                "applications": "Applications",
+                "submission": "Submission",
                 "notes": "Notes",
                 "decisions": "Decisions",
                 "calculations": "Calculations"
@@ -377,7 +377,7 @@
                 },
                 "buttons": {
                   "decide": "Make a decision",
-                  "download": "Download application",
+                  "download": "Print",
                   "components": {
                     "decideModal": {
                       "title": "Decide",

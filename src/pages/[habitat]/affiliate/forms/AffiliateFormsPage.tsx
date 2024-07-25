@@ -1,12 +1,9 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Flex, Heading, Text, View } from '@aws-amplify/ui-react';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { MdOutlineOpenInNew } from 'react-icons/md';
 import TableWithPaginator from 'components/TableWithPaginator';
-import Chip from 'components/Chip';
-import { stringToHumanReadable } from 'utils/strings';
-import Toggle from 'components/Toggle';
 import { useRootFormsQuery } from 'hooks/services';
 import { useNavigate } from 'react-router-dom';
 import { dateOnly } from 'utils/dates';
@@ -14,24 +11,10 @@ import { throttle } from 'lodash';
 import useHabitat from 'hooks/utils/useHabitat';
 import { useTranslation } from 'react-i18next';
 import style from './AffiliateFormsPage.module.css';
-import NewFormButton from './components/NewFormButton';
-
-const StatusChip = ({ status }: { status: string }) => {
-  switch (status) {
-    case 'ACTIVE':
-      return <Chip variation="success" text={stringToHumanReadable(status)} />;
-    case 'PENDING':
-      return <Chip variation="warning" text={stringToHumanReadable(status)} />;
-    default:
-      return <Chip variation="disabled" text={stringToHumanReadable(status)} />;
-  }
-};
 
 const AffiliateFormsPage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [latestForms, setLatestForms] = useState([]);
-  const [trigger, setTrigger] = useState(true);
 
   localStorage.removeItem('goto');
 
@@ -47,21 +30,8 @@ const AffiliateFormsPage = () => {
         return criteriaArr;
       }),
     paginationProducer: {},
-    dependencyArray: [habitat, trigger],
+    dependencyArray: [habitat],
   });
-
-  const [view, setView] = useState<'ACTIVE' | 'PENDING'>('ACTIVE');
-
-  const triggerUpdate = () => setTrigger((prevTrigger) => !prevTrigger);
-
-  // Change forms according on view
-  useEffect(() => {
-    function filterForms() {
-      const filteredForms = forms.filter((form: any) => form.status === view);
-      setLatestForms(filteredForms);
-    }
-    filterForms();
-  }, [view, forms]);
 
   const onClickView = (id: string) => {
     navigate(`../${id}`);
@@ -82,24 +52,6 @@ const AffiliateFormsPage = () => {
             {t('pages.habitat.affiliate.forms.title')}
           </Heading>
         </Flex>
-        <Flex className={`${style.toggleContainer}`}>
-          <Toggle
-            option1={{
-              value: 'ACTIVE',
-              label: t('pages.habitat.affiliate.forms.toogle.active'),
-            }}
-            option2={{
-              value: 'PENDING',
-              label: t('pages.habitat.affiliate.forms.toogle.pending'),
-            }}
-            active={view}
-            onChange={(newValue) => {
-              if (newValue === 'ACTIVE' || newValue === 'PENDING') {
-                setView(newValue);
-              }
-            }}
-          />
-        </Flex>
       </Flex>
       <Flex direction="column" gap="20px">
         <Flex
@@ -110,114 +62,60 @@ const AffiliateFormsPage = () => {
           <Flex direction="row" alignItems="center">
             <View className="theme-subtitle-s2">
               <Text as="span" alignSelf="center">
-                {view === 'ACTIVE'
-                  ? t('pages.habitat.affiliate.forms.table.activeTitle')
-                  : t('pages.habitat.affiliate.forms.table.pendingTitle')}
+                {t('pages.habitat.affiliate.forms.table.title')}
               </Text>
             </View>
             <Text className={`theme-subtitle-s2 ${style.subtitle}`}>
-              {latestForms.length}{' '}
-              {t('pages.habitat.affiliate.forms.table.results')}
+              {forms.length} {t('pages.habitat.affiliate.forms.table.results')}
             </Text>
           </Flex>
-          <NewFormButton triggerUpdate={triggerUpdate} />
         </Flex>
-        {view === 'PENDING' ? (
-          <TableWithPaginator
-            headers={[
+
+        <TableWithPaginator
+          headers={[
+            {
+              id: 'name',
+              value: t('pages.habitat.affiliate.forms.table.name'),
+              width: '70%',
+            },
+            {
+              id: 'dateCreated',
+              value: t('pages.habitat.affiliate.forms.table.dateCreated'),
+              width: '15%',
+            },
+
+            {
+              id: 'view',
+              value: t('pages.habitat.affiliate.forms.table.view'),
+              textAlign: 'center',
+              width: '15%',
+            },
+          ]}
+          data={forms.map((data: any, index: any) => ({
+            id: index,
+            cells: [
+              { value: data.name, id: 'name' },
+              { value: dateOnly(data.createdAt), id: 'dateCreated' },
               {
-                id: 'name',
-                value: t('pages.habitat.affiliate.forms.table.name'),
-                width: '70%',
-              },
-              {
-                id: 'dateCreated',
-                value: t('pages.habitat.affiliate.forms.table.dateCreated'),
-                width: '15%',
-              },
-              {
-                id: 'status',
-                value: t('pages.habitat.affiliate.forms.table.status'),
-                textAlign: 'center',
-                width: '15%',
-              },
-            ]}
-            data={latestForms.map((data: any, index: any) => ({
-              id: index,
-              cells: [
-                { value: data.name, id: 'name' },
-                { value: dateOnly(data.createdAt), id: 'dateCreated' },
-                {
-                  value: (
-                    <Flex width="100%" justifyContent="center">
-                      <StatusChip status={data.status} />
-                    </Flex>
-                  ),
-                  id: 'status',
-                },
-              ],
-            }))}
-          />
-        ) : (
-          <TableWithPaginator
-            headers={[
-              {
-                id: 'name',
-                value: t('pages.habitat.affiliate.forms.table.name'),
-                width: '55%',
-              },
-              {
-                id: 'dateCreated',
-                value: t('pages.habitat.affiliate.forms.table.dateCreated'),
-                width: '15%',
-              },
-              {
-                id: 'status',
-                value: t('pages.habitat.affiliate.forms.table.status'),
-                textAlign: 'center',
-                width: '15%',
-              },
-              {
+                value: (
+                  <Flex width="100%" justifyContent="center">
+                    <Button
+                      variation="link"
+                      padding="0"
+                      onClick={throttle(() => onClickView(data.id), 500)}
+                    >
+                      <MdOutlineOpenInNew
+                        size="24px"
+                        color="var(--amplify-colors-neutral-90)"
+                      />
+                    </Button>
+                  </Flex>
+                ),
                 id: 'view',
-                value: t('pages.habitat.affiliate.forms.table.view'),
-                textAlign: 'center',
-                width: '15%',
               },
-            ]}
-            data={latestForms.map((data: any, index: any) => ({
-              id: index,
-              cells: [
-                { value: data.name, id: 'name' },
-                { value: dateOnly(data.createdAt), id: 'dateCreated' },
-                {
-                  value: (
-                    <Flex width="100%" justifyContent="center">
-                      <StatusChip status={data.status} />
-                    </Flex>
-                  ),
-                  id: 'status',
-                },
-                {
-                  value: (
-                    <Flex width="100%" justifyContent="center">
-                      <Button
-                        variation="link"
-                        padding="0"
-                        onClick={throttle(() => onClickView(data.id), 500)}
-                      >
-                        <MdOutlineOpenInNew
-                          size="24px"
-                          color="var(--amplify-colors-neutral-90)"
-                        />
-                      </Button>
-                    </Flex>
-                  ),
-                  id: 'view',
-                },
-              ],
-            }))}
-          />
-        )}
+            ],
+          }))}
+        />
       </Flex>
     </Flex>
   );

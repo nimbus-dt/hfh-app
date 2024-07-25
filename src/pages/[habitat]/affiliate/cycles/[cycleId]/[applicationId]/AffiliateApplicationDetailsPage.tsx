@@ -420,7 +420,7 @@ const AffiliateApplicationDetailsPage = () => {
           items={[
             {
               label: t(
-                'pages.habitat.affiliate.cycles.cycle.application.tabs.applications'
+                'pages.habitat.affiliate.cycles.cycle.application.tabs.submission'
               ),
               icon: <MdOutlineNoteAlt />,
             },

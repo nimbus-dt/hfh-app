@@ -47,29 +47,23 @@ const Buttons = ({
         loading={loading}
       />
       <CustomButton
+        icon={downloading ? <Loader size="large" /> : <MdOutlinePrint />}
         variation="primary"
-        title={t(
-          'pages.habitat.affiliate.cycles.cycle.application.components.buttons.download'
-        )}
         onClick={handleDownloadApplicationOnClick}
         disabled={downloading}
       >
-        <Flex justifyContent="center" alignContent="center">
-          {downloading ? (
-            <Loader size="large" />
-          ) : (
-            <MdOutlinePrint size="24px" />
-          )}
-        </Flex>
+        {t(
+          'pages.habitat.affiliate.cycles.cycle.application.components.buttons.download'
+        )}
       </CustomButton>
       <CustomButton
         variation="primary"
         onClick={handleDecideOnClick}
-        title={t(
+        icon={<MdOutlineMail />}
+      >
+        {t(
           'pages.habitat.affiliate.cycles.cycle.application.components.buttons.decide'
         )}
-      >
-        <MdOutlineMail size="24px" />
       </CustomButton>
     </Flex>
   );

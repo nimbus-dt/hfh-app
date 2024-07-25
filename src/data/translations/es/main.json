@@ -180,7 +180,7 @@
     "habitat": {
       "affiliate": {
         "forms": {
-          "name": "Formularios Activos",
+          "name": "Formularios",
           "components": {
             "newFormButton": {
               "text": "Nuevo formulario",
@@ -212,8 +212,7 @@
             "pending": "Pendiente"
           },
           "table": {
-            "activeTitle": "Formularios activos",
-            "pendingTitle": "Formularios pendientes",
+            "title": "Formularios",
             "results": "resultados",
             "name": "Nombre",
             "dateCreated": "Fecha de creación",
@@ -225,8 +224,9 @@
           "name": "Ciclos",
           "title": "Tablero de ciclos",
           "button": {
-            "newCycle": "Nuevo ciclo +",
-            "closeCycle": "Cerrar ciclo"
+            "newCycle": "Nuevo ciclo",
+            "closeCycle": "Cerrar ciclo",
+            "filter": "Filtro"
           },
           "components": {
             "filters": {
@@ -274,8 +274,8 @@
             "name": "Aplicaciones",
             "title": "Tablero de aplicaciones",
             "incompleteApplications": "Solicitudes incompletas:",
-            "clipboard": "Copiar enlace para los solicitantes al portapapeles",
-            "newApplication": "Nueva aplicación",
+            "applicantLink": "Enlace para los solicitantes",
+            "newApplication": "Aplicación en papel",
             "components": {
               "filters": {
                 "title": "Opciones de filtro",
@@ -335,10 +335,10 @@
               "view": "Ver"
             },
             "application": {
-              "name": "Detalle",
+              "name": "Detalles",
               "title": "Detalles de la aplicación",
               "tabs": {
-                "applications": "Aplicaciones",
+                "submission": "Respuesta",
                 "notes": "Notas",
                 "decisions": "Decisiones",
                 "calculations": "Cálculos"
@@ -376,7 +376,7 @@
                 },
                 "buttons": {
                   "decide": "Haz una decisión",
-                  "download": "Descargar aplicación",
+                  "download": "Imprimir",
                   "components": {
                     "decideModal": {
                       "title": "Decidir",

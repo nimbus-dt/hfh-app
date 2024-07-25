@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { DataStore, SortDirection } from 'aws-amplify/datastore';
-import { Button } from '@aws-amplify/ui-react';
+import { Button, useBreakpointValue } from '@aws-amplify/ui-react';
 import { MdOutlineOpenInNew, MdFilterList } from 'react-icons/md';
 import { throttle } from 'lodash';
 import BreadCrumbs from 'components/BreadCrumbs/BreadCrumbs';
@@ -17,10 +17,12 @@ import { RootForm, TestCycle } from 'models';
 import { convertDateYYYYMMDDtoDDMMYYYY } from 'utils/dates';
 import { Status } from 'utils/enums';
 import useHabitat from 'hooks/utils/useHabitat';
+import CustomButton from 'components/CustomButton';
 import Filters from './components/filters';
 import NewCycle from './components/newCycle';
 import styles from './styles.module.css';
 import { Inputs } from './types';
+import CycleButton from './components/CycleButton';
 
 const CyclesPage = () => {
   const navigate = useNavigate();
@@ -39,6 +41,11 @@ const CyclesPage = () => {
     endDate: '',
     status: null,
   });
+
+  const isSmall = useBreakpointValue({
+    base: true,
+    medium: false,
+  }) as boolean;
 
   const { data: rootForm }: { data: RootForm | null } = useRootFormById({
     id: formId,
@@ -88,20 +95,7 @@ const CyclesPage = () => {
         })
       );
 
-      const formResponse = await DataStore.query(RootForm, (c1) =>
-        c1.and((c2) => {
-          const criteriaArray = [c2.habitatID.eq(habitat.id)];
-
-          if (formId) {
-            criteriaArray.push(c2.id.eq(formId));
-          }
-
-          return criteriaArray;
-        })
-      );
-
       return {
-        formName: formResponse[0].name,
         cycles: cyclesResponse,
         openCycles: openCyclesResponse,
       };
@@ -135,10 +129,8 @@ const CyclesPage = () => {
     })
   );
 
-  const { formName } = value;
-
   const breadCrumbsItems = [
-    { label: `${formName}`, to: '../forms' },
+    { label: t('pages.habitat.affiliate.forms.name'), to: '../forms' },
     {
       label: t('pages.habitat.affiliate.cycles.name'),
     },
@@ -167,25 +159,25 @@ const CyclesPage = () => {
             </p>
           </div>
           <div className={styles.options}>
-            <div
-              className={styles.filters}
+            <CustomButton
               onClick={throttle(() => {
                 setShowFilters((prev) => !prev);
               }, 500)}
-              aria-hidden="true"
+              icon={isSmall ? undefined : <MdFilterList />}
             >
-              <MdFilterList size="24px" />
-            </div>
-            <Button
+              {isSmall ? (
+                <MdFilterList size="24px" />
+              ) : (
+                t('pages.habitat.affiliate.cycles.button.filter')
+              )}
+            </CustomButton>
+            <CycleButton
+              isSmall={isSmall}
+              isACycleOpen={value.openCycles.length > 0}
               onClick={throttle(() => {
                 setShowModal(true);
               }, 500)}
-              variation="primary"
-            >
-              {value.openCycles.length > 0
-                ? t('pages.habitat.affiliate.cycles.button.closeCycle')
-                : t('pages.habitat.affiliate.cycles.button.newCycle')}
-            </Button>
+            />
           </div>
         </div>
         <TableWithPaginator
