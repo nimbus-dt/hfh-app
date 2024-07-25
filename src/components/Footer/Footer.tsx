@@ -18,7 +18,7 @@ const Footer = ({ goBack, onNext, submit = false }: FooterProps) => {
   };
 
   const nextText = submit
-    ? t('components.footer.submit')
+    ? t('components.footer.review')
     : t('components.footer.continue');
 
   return (
