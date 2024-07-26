@@ -1,24 +1,27 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useCallback } from 'react';
 import { Outlet, useOutlet, useNavigate, Navigate } from 'react-router-dom';
 import { DataStore } from 'aws-amplify/datastore';
+
 import { Flex, Text, useAuthenticator } from '@aws-amplify/ui-react';
+
 import Authentication from 'components/Authentication';
+import useAsync from 'hooks/utils/useAsync';
+import useHabitat from 'hooks/utils/useHabitat';
 import BaseLayout from 'layouts/BaseLayout';
 import { User } from 'models';
 import { AUTHENTICATION_STATUS } from 'utils/constants';
-import useHabitat from 'hooks/utils/useHabitat';
-import SignUpQuestions from './SignUpQuestions';
-import style from './NewAffiliateLayout.module.css';
+import { Status } from 'utils/enums';
 
-const NewAffiliateLayout = () => {
-  const { habitat, setHabitat } = useHabitat();
-  const [isUserAllowed, setIsUserAllowed] = useState(false);
-  const [isLoading, setIsLoading] = useState(0);
+import SignUpQuestions from './SignUpQuestions';
+import style from './AffiliateLayout.module.css';
+
+const AffiliateLayout = () => {
+  const { habitat } = useHabitat();
   const { authStatus, user } = useAuthenticator((context) => [
     context.authStatus,
     context.user,
   ]);
-  const [userData, setUserData] = useState();
+
   const outlet = useOutlet();
   const navigate = useNavigate();
 
@@ -28,46 +31,39 @@ const NewAffiliateLayout = () => {
     }
   }, [outlet, navigate]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading((previousIsLoading) => previousIsLoading + 1);
-      try {
-        const allowedUsers = habitat.users || [];
-
-        if (user && allowedUsers.includes(user.username)) {
-          setIsUserAllowed(true);
-        } else {
-          setIsUserAllowed(false);
-        }
-      } catch (error) {
-        console.log(`Error fetching habitat: ${error}`);
-      }
-      setIsLoading((previousIsLoading) => previousIsLoading - 1);
-    };
-
-    fetchData();
-  }, [user, authStatus, setHabitat, habitat]);
-
-  useEffect(() => {
-    const getUserData = async () => {
-      try {
-        const persistUserDatas = await DataStore.query(User, (c) =>
+  const getData = useCallback(async () => {
+    try {
+      if (user && habitat) {
+        const response = await DataStore.query(User, (c) =>
           c.owner.eq(user.username)
         );
-        if (persistUserDatas.length > 0) {
-          setUserData(persistUserDatas[0]);
+        if (response.length <= 0) {
+          return undefined;
         }
-      } catch (error) {
-        console.log('Error fetching user data.');
-      }
-    };
 
-    if (user && !userData) {
-      getUserData();
+        return {
+          userData: response[0],
+          userAllow: habitat.users.includes(user.username),
+        };
+      }
+    } catch (error) {
+      console.log('Error fetching user data.');
     }
+  }, [habitat, user]);
+
+  const {
+    value,
+    setValue: setUserData,
+    status,
+  } = useAsync({
+    asyncFunction: getData,
   });
 
-  if (isLoading) {
+  if (
+    !habitat ||
+    authStatus === AUTHENTICATION_STATUS.CONFIGURING ||
+    status === Status.PENDING
+  ) {
     return (
       <Flex direction="column" height="100vh" alignItems="center">
         <Text>Loading...</Text>
@@ -75,21 +71,31 @@ const NewAffiliateLayout = () => {
     );
   }
 
-  if (AUTHENTICATION_STATUS.AUTHENTICATED !== authStatus) {
+  if (authStatus !== AUTHENTICATION_STATUS.AUTHENTICATED) {
     return <Authentication type="affiliate" />;
   }
+
+  if (!value || !user) {
+    return (
+      <Flex direction="column" height="100vh" alignItems="center">
+        <Text>Loading...</Text>
+      </Flex>
+    );
+  }
+
+  const { userData, userAllow } = value;
 
   if (!userData) {
     return (
       <SignUpQuestions
         user={user}
         setUserData={setUserData}
-        isUserAllowed={isUserAllowed}
+        isUserAllowed={userAllow}
       />
     );
   }
 
-  if (!isUserAllowed) {
+  if (!userAllow) {
     localStorage.setItem('goto', 'forms');
     return (
       <div>
@@ -115,16 +121,11 @@ const NewAffiliateLayout = () => {
 
   return (
     <div>
-      <BaseLayout variation="affiliate" hideSideBar={!isUserAllowed}>
-        <Outlet
-          context={{
-            habitat,
-            setHabitat,
-          }}
-        />
+      <BaseLayout variation="affiliate" hideSideBar={!userAllow}>
+        <Outlet />
       </BaseLayout>
     </div>
   );
 };
 
-export default NewAffiliateLayout;
+export default AffiliateLayout;

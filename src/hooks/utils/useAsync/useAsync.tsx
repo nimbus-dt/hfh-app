@@ -37,7 +37,7 @@ const useAsync = <T,>({
       execute();
     }
   }, [execute, immediate]);
-  return { execute, status, value, error };
+  return { execute, status, value, setValue, error };
 };
 
 export default useAsync;

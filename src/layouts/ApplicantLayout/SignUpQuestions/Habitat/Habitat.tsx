@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { DataStore } from 'aws-amplify/datastore';
 import { throttle } from 'lodash';
 import Footer from 'components/Footer';
-import { User, Sexs, UserTypes } from 'models';
+import { User, Sexs, UserTypes, LazyUser } from 'models';
 import useHabitat from 'hooks/utils/useHabitat';
 import styles from '../SignUpQuestions.module.css';
 import dataProps from '../types';
@@ -21,7 +21,7 @@ interface HabitatProps {
   user: {
     username: string;
   };
-  setUserData: React.Dispatch<React.SetStateAction<User>>;
+  setUserData: Dispatch<SetStateAction<LazyUser | undefined>>;
 }
 
 const Habitat = ({

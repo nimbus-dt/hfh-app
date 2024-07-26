@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import Header from 'components/Header';
 import Loading from 'components/Loading';
-import { User } from 'models';
+import { LazyUser } from 'models';
 import styles from './SignUpQuestions.module.css';
 import General from './General';
 import Household from './Household';
@@ -17,7 +17,7 @@ interface SignUpQuestionsProps {
   user: {
     username: string;
   };
-  setUserData: React.Dispatch<React.SetStateAction<User>>;
+  setUserData: Dispatch<SetStateAction<LazyUser | undefined>>;
 }
 
 const pages = [
