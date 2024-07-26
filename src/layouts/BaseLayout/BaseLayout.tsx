@@ -12,16 +12,11 @@ import { RecursiveModelPredicate } from 'aws-amplify/datastore';
 import TopBar from './components/TopBar';
 import SideBar from './components/SideBar';
 import styles from './BaseLayout.module.css';
-
-interface IProperties {
-  variation: 'applicant' | 'affiliate';
-  children: React.ReactNode;
-  hideSideBar?: boolean;
-}
+import BaseLayoutProps from './BaseLayout.types';
 
 const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
-const BaseLayout = ({ variation, children, hideSideBar }: IProperties) => {
+const BaseLayout = ({ variation, children, hideSideBar }: BaseLayoutProps) => {
   const location = useLocation();
   const ROUTES = useRoutes();
   const { i18n } = useTranslation();
