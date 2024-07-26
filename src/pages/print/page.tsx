@@ -28,18 +28,26 @@ const Print = () => {
       `${FORMIO_URL}/language/submission?data.language=${language}&data.form=${formUrl}`
     );
     const array = await response.json();
-    const { data } = array[0];
-    const { translation } = data;
-    Object.keys(translation).forEach((key) => {
-      const newKey = key.replace(/__DOT__/g, '.');
-      translation[newKey] = translation[key];
-      if (newKey !== key) {
-        delete translation[key];
-      }
-    });
-    return {
-      [`${language}`]: translation,
-    };
+
+    let translations = {};
+
+    if (array.length > 0) {
+      const { data } = array[0];
+      const { translation } = data;
+      Object.keys(translation).forEach((key) => {
+        const newKey = key.replace(/__DOT__/g, '.');
+        translation[newKey] = translation[key];
+        if (newKey !== key) {
+          delete translation[key];
+        }
+      });
+
+      translations = {
+        [`${language}`]: translation,
+      };
+    }
+
+    return translations;
   }, [formUrl, language]);
 
   const { value, status } = useAsync({
