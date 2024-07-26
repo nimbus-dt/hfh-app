@@ -1,14 +1,16 @@
 import { useCallback, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import useRoutes from 'hooks/utils/useRoutes/useRoutes';
-import { useAuthenticator, useBreakpointValue } from '@aws-amplify/ui-react';
-import { getRouteTitle } from 'utils/routes';
-import { useUserQuery } from 'hooks/services';
-import { LazyUser } from 'models';
-import TranslationContext from 'contexts/TranslationsContext';
 import { useTranslation } from 'react-i18next';
-import useAsync from 'hooks/utils/useAsync/useAsync';
+import { useLocation } from 'react-router-dom';
 import { RecursiveModelPredicate } from 'aws-amplify/datastore';
+
+import { useAuthenticator, useBreakpointValue } from '@aws-amplify/ui-react';
+
+import TranslationContext from 'contexts/TranslationsContext';
+import { useUserQuery } from 'hooks/services';
+import useRoutes, { getTitle } from 'utils/routes';
+import useAsync from 'hooks/utils/useAsync/useAsync';
+import { LazyUser } from 'models';
+
 import TopBar from './components/TopBar';
 import SideBar from './components/SideBar';
 import styles from './BaseLayout.module.css';
@@ -17,12 +19,12 @@ import BaseLayoutProps from './BaseLayout.types';
 const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
 const BaseLayout = ({ variation, children, hideSideBar }: BaseLayoutProps) => {
-  const location = useLocation();
-  const ROUTES = useRoutes();
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { language } = i18n;
 
-  const title = getRouteTitle(location.pathname, ROUTES);
+  const location = useLocation();
+  const routes = useRoutes(t);
+  const title = getTitle(location.pathname, routes);
 
   const isMobile = useBreakpointValue({
     base: true,
