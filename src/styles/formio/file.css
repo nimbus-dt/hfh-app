@@ -67,12 +67,16 @@
 
 .hfh_formio_file_video_container {
   position: relative;
-  width: fit-content;
+  container: videoContainer / size;
+  border-style: dashed;
+  border-width: 0.25rem;
+  border-color: green !important;
+  box-sizing: content-box;
 }
 
 .hfh_formio_file_video_frame {
   position: absolute;
-  height: 85%;
+  width: 85%;
   aspect-ratio: 8.5/11;
   top: 50%;
   left: 50%;
@@ -83,4 +87,11 @@
   opacity: 0.25;
   box-sizing: border-box;
   pointer-events: none;
+}
+
+@container videoContainer (orientation: landscape) {
+  .hfh_formio_file_video_frame {
+    height: 85%;
+    width: auto;
+  }
 }
