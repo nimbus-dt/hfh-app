@@ -43,6 +43,44 @@
   border-color: var(--amplify-colors-neutral-40);
 }
 
-.hfh_formio_file i.fa-cloud-upload {
+.hfh_formio_file i.fa-cloud-upload,
+.hfh_formio_file i.fa-camera {
   vertical-align: middle;
+}
+
+.hfh_formio_file > div:first-of-type {
+  display: flex;
+  justify-content: left;
+  gap: 16px;
+  align-items: center;
+}
+
+.hfh_formio_file > div:first-of-type > div > span {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.hfh_formio_file img {
+  width: 120px;
+}
+
+.hfh_formio_file_video_container {
+  position: relative;
+  width: fit-content;
+}
+
+.hfh_formio_file_video_frame {
+  position: absolute;
+  height: 85%;
+  aspect-ratio: 8.5/11;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-color: rgba(255, 255, 255);
+  border-style: solid;
+  border-width: 0.25rem;
+  opacity: 0.25;
+  box-sizing: border-box;
+  pointer-events: none;
 }
