@@ -53,6 +53,11 @@ const routes = (t: TFunction<'translation', undefined>): useRoutesProps => ({
 export const isActive = (pathname: string, route = '') => {
   const pathnameArray = pathname.split('/');
   const routeArray = route.split('/');
+
+  if (routeArray.length > pathnameArray.length) {
+    return false;
+  }
+
   return pathnameArray.every((path, index) => {
     if (routeArray[index] === ':habitat') return true;
     return path === routeArray[index];
