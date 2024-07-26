@@ -20,6 +20,7 @@ import Landing from 'pages/landing';
 import useRedirectToLegacy from 'hooks/utils/useRedirectToLegacy';
 import './lib/i18n';
 import Print from 'pages/print/page';
+import { Form } from '@formio/react';
 
 function App() {
   useRedirectToLegacy();
@@ -94,6 +95,70 @@ function App() {
       <Route path={ROUTES.maintenance} element={<MaintenancePage />} />
 
       <Route path={ROUTES.PRINT} element={<Print />} />
+      <Route
+        path="test"
+        element={
+          <Form
+            src="https://form.habitat-app.org/jcxuakumlexxzla/test/camera-frame"
+            onRender={() => {
+              const form = document.querySelector('div.formio-component-form');
+
+              const observer = new MutationObserver(
+                (mutationList, observer) => {
+                  console.log('mutationList', mutationList);
+                  for (const mutation of mutationList) {
+                    if (mutation.type === 'childList') {
+                      for (const addedNode of mutation.addedNodes) {
+                        console.log('addedNode', addedNode);
+                        if (addedNode instanceof HTMLElement) {
+                          const videoContainer = addedNode.querySelector(
+                            'div.video-container'
+                          );
+                          if (
+                            videoContainer &&
+                            videoContainer instanceof HTMLElement
+                          ) {
+                            const div = document.createElement('div');
+
+                            div.classList.add('hfh_formio_file_video_frame');
+
+                            videoContainer.classList.add(
+                              'hfh_formio_file_video_container'
+                            );
+
+                            videoContainer.appendChild(div);
+
+                            const video =
+                              addedNode.querySelector('video.video');
+
+                            video.classList.add('hfh_formio_file_video');
+                          }
+                        }
+                      }
+                    }
+
+                    if (
+                      mutation.type === 'attributes' &&
+                      mutation.target instanceof HTMLImageElement
+                    ) {
+                      mutation.target.onerror = () => {
+                        mutation.target.src =
+                          'https://public-bucket-hfh.s3.amazonaws.com/app/file_icon.png';
+                      };
+                    }
+                  }
+                }
+              );
+
+              observer.observe(form, {
+                attributes: true,
+                childList: true,
+                subtree: true,
+              });
+            }}
+          />
+        }
+      />
     </Routes>
   );
 }
