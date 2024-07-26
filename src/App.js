@@ -103,52 +103,59 @@ function App() {
             onRender={() => {
               const form = document.querySelector('div.formio-component-form');
 
-              const observer = new MutationObserver(
-                (mutationList, observer) => {
-                  console.log('mutationList', mutationList);
-                  for (const mutation of mutationList) {
-                    if (mutation.type === 'childList') {
-                      for (const addedNode of mutation.addedNodes) {
-                        console.log('addedNode', addedNode);
-                        if (addedNode instanceof HTMLElement) {
-                          const videoContainer = addedNode.querySelector(
-                            'div.video-container'
+              const observer = new MutationObserver((mutationList) => {
+                for (const mutation of mutationList) {
+                  if (mutation.type === 'childList') {
+                    for (const addedNode of mutation.addedNodes) {
+                      if (addedNode instanceof HTMLElement) {
+                        const videoContainer = addedNode.querySelector(
+                          'div.video-container'
+                        );
+
+                        if (
+                          videoContainer &&
+                          videoContainer instanceof HTMLElement
+                        ) {
+                          const div = document.createElement('div');
+
+                          div.classList.add('hfh_formio_file_video_frame');
+
+                          videoContainer.classList.add(
+                            'hfh_formio_file_video_container'
                           );
-                          if (
-                            videoContainer &&
-                            videoContainer instanceof HTMLElement
-                          ) {
-                            const div = document.createElement('div');
 
-                            div.classList.add('hfh_formio_file_video_frame');
+                          videoContainer.appendChild(div);
 
-                            videoContainer.classList.add(
-                              'hfh_formio_file_video_container'
-                            );
+                          const video = addedNode.querySelector('video.video');
 
-                            videoContainer.appendChild(div);
+                          video.addEventListener('loadeddata', (event) => {
+                            if (videoContainer) {
+                              videoContainer.style.width = `${
+                                event.target.clientWidth || 0
+                              }px`;
+                              videoContainer.style.height = `${
+                                event.target.clientHeight || 0
+                              }px`;
+                            }
+                          });
 
-                            const video =
-                              addedNode.querySelector('video.video');
-
-                            video.classList.add('hfh_formio_file_video');
-                          }
+                          video.classList.add('hfh_formio_file_video');
                         }
                       }
                     }
+                  }
 
-                    if (
-                      mutation.type === 'attributes' &&
-                      mutation.target instanceof HTMLImageElement
-                    ) {
-                      mutation.target.onerror = () => {
-                        mutation.target.src =
-                          'https://public-bucket-hfh.s3.amazonaws.com/app/file_icon.png';
-                      };
-                    }
+                  if (
+                    mutation.type === 'attributes' &&
+                    mutation.target instanceof HTMLImageElement
+                  ) {
+                    mutation.target.onerror = () => {
+                      mutation.target.src =
+                        'https://public-bucket-hfh.s3.amazonaws.com/app/file_icon.png';
+                    };
                   }
                 }
-              );
+              });
 
               observer.observe(form, {
                 attributes: true,
