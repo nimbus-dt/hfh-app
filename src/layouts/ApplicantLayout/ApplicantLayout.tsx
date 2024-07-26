@@ -7,7 +7,6 @@ import { useAuthenticator } from '@aws-amplify/ui-react';
 import Authentication from 'components/Authentication';
 import useAsync from 'hooks/utils/useAsync';
 import useHabitat from 'hooks/utils/useHabitat';
-import useScrollToTopOnRouteChange from 'hooks/utils/useScrollToTopOnRouteChange';
 import BaseLayout from 'layouts/BaseLayout';
 import { User } from 'models';
 import { Status } from 'utils/enums';
@@ -17,8 +16,6 @@ import { AUTHENTICATION_STATUS } from './utils';
 import SignUpQuestions from './SignUpQuestions';
 
 const ApplicantLayout = () => {
-  useScrollToTopOnRouteChange();
-
   const { habitat } = useHabitat();
 
   const { authStatus, user } = useAuthenticator((context) => [
@@ -39,7 +36,6 @@ const ApplicantLayout = () => {
         return undefined;
       }
     } catch (error) {
-      console.log(error);
       console.log('Error fetching user data.');
     }
   }, [user]);

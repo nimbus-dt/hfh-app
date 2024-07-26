@@ -11,7 +11,7 @@ import ApplicantApplicationsPage from 'pages/[habitat]/applicant/applications';
 import ApplicantDecisionsPage from 'pages/[habitat]/applicant/decisions/ApplicantDecisionsPage';
 import AffiliateFormsPage from 'pages/[habitat]/affiliate/forms';
 import CyclesPage from 'pages/[habitat]/affiliate/cycles';
-import NewAffiliateLayout from 'layouts/NewAffiliateLayout';
+import AffiliateLayout from 'layouts/AffiliateLayout';
 import AffiliateCycleApplications from 'pages/[habitat]/affiliate/cycles/[cycleId]/AffiliateCycleApplications';
 import AffiliateApplicationDetailsPage from 'pages/[habitat]/affiliate/cycles/[cycleId]/[applicationId]/AffiliateApplicationDetailsPage';
 import MaintenancePage from 'pages/maintenance/Maintenance';
@@ -53,7 +53,7 @@ function App() {
             element={<ApplicantCyclePage />}
           />
         </Route>
-        <Route path={ROUTES.HABITAT_AFFILIATE} element={<NewAffiliateLayout />}>
+        <Route path={ROUTES.HABITAT_AFFILIATE} element={<AffiliateLayout />}>
           <Route
             path={ROUTES.HABITAT_AFFILIATE_HOME}
             element={<h1>{t('pages.underConstruction.message')}</h1>}
