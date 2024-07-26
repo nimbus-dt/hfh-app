@@ -277,6 +277,7 @@
             "title": "Applications Dashboard",
             "incompleteApplications": "Incomplete Applications:",
             "applicantLink": "Applicant Link",
+            "filter": "Filter",
             "newApplication": "Paper Application",
             "components": {
               "filters": {

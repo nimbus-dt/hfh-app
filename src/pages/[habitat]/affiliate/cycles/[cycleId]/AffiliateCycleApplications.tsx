@@ -219,7 +219,11 @@ const AffiliateCycleApplications = () => {
               onClick={() => setFilterModal(true)}
               icon={isSmall ? undefined : <MdOutlineFilterList />}
             >
-              {isSmall ? <MdOutlineFilterList size="24px" /> : 'Filter'}
+              {isSmall ? (
+                <MdOutlineFilterList size="24px" />
+              ) : (
+                t('pages.habitat.affiliate.cycles.cycle.filter')
+              )}
             </CustomButton>
           </div>
           {filterModal && (

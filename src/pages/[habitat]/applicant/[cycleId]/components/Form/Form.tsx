@@ -58,19 +58,24 @@ const Form = ({ application, cycle, formContainer = true }: FormProps) => {
       );
 
       const array = await response.json();
-      const { data } = array[0];
-      const { translation } = data;
-      Object.keys(translation).forEach((key) => {
-        const newKey = key.replace(/__DOT__/g, '.');
-        translation[newKey] = translation[key];
-        if (newKey !== key) {
-          delete translation[key];
-        }
-      });
 
-      const translations = {
-        [`${language}`]: translation,
-      };
+      let translations = {};
+
+      if (array.length > 0) {
+        const { data } = array[0];
+        const { translation } = data;
+        Object.keys(translation).forEach((key) => {
+          const newKey = key.replace(/__DOT__/g, '.');
+          translation[newKey] = translation[key];
+          if (newKey !== key) {
+            delete translation[key];
+          }
+        });
+
+        translations = {
+          [`${language}`]: translation,
+        };
+      }
 
       const formAnswers = await DataStore.query(
         FormAnswer,

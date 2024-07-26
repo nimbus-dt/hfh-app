@@ -276,6 +276,7 @@
             "title": "Tablero de aplicaciones",
             "incompleteApplications": "Solicitudes incompletas:",
             "applicantLink": "Enlace para los solicitantes",
+            "filter": "Filtro",
             "newApplication": "Aplicación en papel",
             "components": {
               "filters": {
