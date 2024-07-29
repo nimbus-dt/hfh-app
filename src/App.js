@@ -95,12 +95,6 @@ function App() {
       <Route path={ROUTES.maintenance} element={<MaintenancePage />} />
 
       <Route path={ROUTES.PRINT} element={<Print />} />
-      <Route
-        path="test"
-        element={
-          <Form src="https://form.habitat-app.org/jcxuakumlexxzla/test/camera-frame" />
-        }
-      />
     </Routes>
   );
 }
