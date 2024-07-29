@@ -98,72 +98,7 @@ function App() {
       <Route
         path="test"
         element={
-          <Form
-            src="https://form.habitat-app.org/jcxuakumlexxzla/test/camera-frame"
-            onRender={() => {
-              const form = document.querySelector('div.formio-component-form');
-
-              const observer = new MutationObserver((mutationList) => {
-                for (const mutation of mutationList) {
-                  if (mutation.type === 'childList') {
-                    for (const addedNode of mutation.addedNodes) {
-                      if (addedNode instanceof HTMLElement) {
-                        const videoContainer = addedNode.querySelector(
-                          'div.video-container'
-                        );
-
-                        if (
-                          videoContainer &&
-                          videoContainer instanceof HTMLElement
-                        ) {
-                          const div = document.createElement('div');
-
-                          div.classList.add('hfh_formio_file_video_frame');
-
-                          videoContainer.classList.add(
-                            'hfh_formio_file_video_container'
-                          );
-
-                          videoContainer.appendChild(div);
-
-                          const video = addedNode.querySelector('video.video');
-
-                          video.addEventListener('loadeddata', (event) => {
-                            if (videoContainer) {
-                              videoContainer.style.width = `${
-                                event.target.clientWidth || 0
-                              }px`;
-                              videoContainer.style.height = `${
-                                event.target.clientHeight || 0
-                              }px`;
-                            }
-                          });
-
-                          video.classList.add('hfh_formio_file_video');
-                        }
-                      }
-                    }
-                  }
-
-                  if (
-                    mutation.type === 'attributes' &&
-                    mutation.target instanceof HTMLImageElement
-                  ) {
-                    mutation.target.onerror = () => {
-                      mutation.target.src =
-                        'https://public-bucket-hfh.s3.amazonaws.com/app/file_icon.png';
-                    };
-                  }
-                }
-              });
-
-              observer.observe(form, {
-                attributes: true,
-                childList: true,
-                subtree: true,
-              });
-            }}
-          />
+          <Form src="https://form.habitat-app.org/jcxuakumlexxzla/test/camera-frame" />
         }
       />
     </Routes>
