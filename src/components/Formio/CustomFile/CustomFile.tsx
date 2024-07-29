@@ -88,7 +88,6 @@ class CustomFile extends Components.components.file {
   }
 }
 
-// Add the 'browseFiles' method to the 'Field' class
 declare module 'formiojs/types/components/_classes/field/field' {
   interface Field {
     browseFiles(attrs?: object): Promise<unknown>;
