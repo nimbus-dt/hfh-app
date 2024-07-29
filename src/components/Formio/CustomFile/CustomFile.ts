@@ -9,14 +9,12 @@ class CustomFile extends Components.components.file {
       for (const mutation of mutations) {
         const image = mutation.target;
         if (image instanceof HTMLImageElement) {
-          image.addEventListener('error', () => {
-            const aElement = document.createElement('a');
-            aElement.href = image.src;
-            aElement.target = '_blank';
-            aElement.innerText = image.alt;
-            aElement.classList.add('hfh_formio_file_link');
-            image.replaceWith(aElement);
-          });
+          const aElement = document.createElement('a');
+          aElement.href = image.src;
+          aElement.target = '_blank';
+          aElement.innerText = image.alt;
+          aElement.classList.add('hfh_formio_file_link');
+          image.replaceWith(aElement);
         }
       }
     });
