@@ -82,12 +82,17 @@ class CustomFile extends Components.components.file {
 
     return super.browseFiles(attrs);
   }
+
+  getVideoStream(constraints: MediaTrackConstraints) {
+    return super.getVideoStream({ facingMode: 'environment', ...constraints });
+  }
 }
 
 // Add the 'browseFiles' method to the 'Field' class
 declare module 'formiojs/types/components/_classes/field/field' {
   interface Field {
     browseFiles(attrs?: object): Promise<unknown>;
+    getVideoStream(constraints: MediaTrackConstraints): Promise<MediaStream>;
   }
 }
 
