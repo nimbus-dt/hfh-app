@@ -2,8 +2,30 @@ import { Components } from 'formiojs';
 import { isElement } from 'utils/type';
 
 class CustomFile extends Components.components.file {
+  __hfhImgObserver: MutationObserver | null = null;
+
+  init() {
+    this.__hfhImgObserver = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        const image = mutation.target;
+        if (image instanceof HTMLImageElement) {
+          image.addEventListener('error', () => {
+            const aElement = document.createElement('a');
+            aElement.href = image.src;
+            aElement.target = '_blank';
+            aElement.innerText = image.alt;
+            aElement.classList.add('hfh_formio_file_link');
+            image.replaceWith(aElement);
+          });
+        }
+      }
+    });
+
+    return super.init();
+  }
+
   attach(element: unknown) {
-    console.log(element);
+    this.__hfhImgObserver?.disconnect();
     if (isElement(element)) {
       const videoContainer = element.querySelector('div.video-container');
 
@@ -38,14 +60,7 @@ class CustomFile extends Components.components.file {
 
       for (const image of images) {
         if (image instanceof HTMLImageElement) {
-          image.addEventListener('error', () => {
-            const aElement = document.createElement('a');
-            aElement.href = image.src;
-            aElement.target = '_blank';
-            aElement.innerText = image.alt;
-            aElement.classList.add('hfh_formio_file_link');
-            image.replaceWith(aElement);
-          });
+          this.__hfhImgObserver?.observe(image, { attributes: true });
         }
       }
 
@@ -74,8 +89,12 @@ class CustomFile extends Components.components.file {
     return super.attach(element);
   }
 
+  detach() {
+    this.__hfhImgObserver?.disconnect();
+    return super.detach();
+  }
+
   browseFiles(attrs = {}) {
-    console.log(attrs);
     if ('accept' in attrs) {
       attrs.accept = this.component.filePattern.trim() || '';
     }
