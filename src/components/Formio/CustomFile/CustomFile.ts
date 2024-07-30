@@ -26,16 +26,7 @@ class CustomFile extends Components.components.file {
     this.__hfhImgObserver?.disconnect();
     if (isElement(element)) {
       const videoContainer = element.querySelector('div.video-container');
-
       if (videoContainer && videoContainer instanceof HTMLElement) {
-        const div = document.createElement('div');
-
-        div.classList.add('hfh_formio_file_video_frame');
-
-        videoContainer.classList.add('hfh_formio_file_video_container');
-
-        videoContainer.appendChild(div);
-
         const video = element.querySelector('video.video');
 
         if (video && video instanceof HTMLVideoElement) {
@@ -49,8 +40,6 @@ class CustomFile extends Components.components.file {
               }px`;
             }
           });
-
-          video.classList.add('hfh_formio_file_video');
         }
       }
 
@@ -60,27 +49,6 @@ class CustomFile extends Components.components.file {
         if (image instanceof HTMLImageElement) {
           this.__hfhImgObserver?.observe(image, { attributes: true });
         }
-      }
-
-      const takePictureButton = element.querySelector(
-        'button[ref="takePictureButton"]'
-      );
-
-      const switchToFileUploadButton = element.querySelector(
-        'button[ref="toggleCameraMode"]'
-      );
-
-      if (
-        takePictureButton &&
-        takePictureButton instanceof HTMLButtonElement &&
-        switchToFileUploadButton &&
-        switchToFileUploadButton instanceof HTMLButtonElement
-      ) {
-        const div = document.createElement('div');
-        div.classList.add('hfh_formio_file_camera_buttons');
-        element.insertBefore(div, takePictureButton);
-        div.appendChild(takePictureButton);
-        div.appendChild(switchToFileUploadButton);
       }
     }
 
