@@ -1,5 +1,6 @@
 import { Utils } from 'formiojs';
 import { template } from 'lodash';
+import { isMobileBrowser } from 'utils/browser';
 
 const CustomFileTemplate = (ctx: unknown) =>
   template(
@@ -70,7 +71,7 @@ const CustomFileTemplate = (ctx: unknown) =>
   {% } else if (!ctx.self.cameraMode) { %}
     <div class="fileSelector" ref="fileDrop" {{ctx.fileDropHidden ? 'hidden' : ''}}>
       <i class="{{ctx.iconClass('cloud-upload')}}"></i> {{ctx.t('Drop files to attach,')}}
-        {% if (ctx.component.webcam) { %}
+        {% if (ctx.component.webcam && isMobile) { %}
           <a href="#" ref="toggleCameraMode"><i class="fa fa-camera"></i> {{ctx.t('Use Camera,')}}</a>
         {% } %}
         {{ctx.t('or')}} <a href="#" ref="fileBrowse" class="browse">{{ctx.t('browse')}}</a>
@@ -126,6 +127,6 @@ const CustomFileTemplate = (ctx: unknown) =>
   </div>
 {% } %}`,
     Utils.Evaluator.templateSettings
-  )({ ctx });
+  )({ ctx, isMobile: isMobileBrowser() });
 
 export default CustomFileTemplate;
