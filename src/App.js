@@ -20,7 +20,6 @@ import Landing from 'pages/landing';
 import useRedirectToLegacy from 'hooks/utils/useRedirectToLegacy';
 import './lib/i18n';
 import Print from 'pages/print/page';
-import { Form } from '@formio/react';
 
 function App() {
   useRedirectToLegacy();
