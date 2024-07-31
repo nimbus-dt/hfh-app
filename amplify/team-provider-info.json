@@ -115,6 +115,11 @@
         "verifyUsers": {
           "deploymentBucketName": "amplify-hfhapp-prod-160335-deployment",
           "s3Key": "amplify-builds/verifyUsers-76383655646a68713752-build.zip"
+        },
+        "convertApplicationToPdf": {
+          "prodDomain": "https://www.habitat-app.org",
+          "deploymentBucketName": "amplify-hfhapp-prod-160335-deployment",
+          "s3Key": "amplify-builds/convertApplicationToPdf-4f346457426c2f544e41-build.zip"
         }
       },
       "auth": {
@@ -127,7 +132,8 @@
         "hfhapp": {},
         "public": {},
         "sendEmailToApplicantAPI": {},
-        "userAPI": {}
+        "userAPI": {},
+        "habitat": {}
       }
     }
   },
