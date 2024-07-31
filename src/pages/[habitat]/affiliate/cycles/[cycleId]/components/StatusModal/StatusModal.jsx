@@ -11,27 +11,23 @@ import {
   View,
   useBreakpointValue,
 } from '@aws-amplify/ui-react';
-import { DataStore } from 'aws-amplify';
+import { DataStore } from 'aws-amplify/datastore';
 import Modal from 'components/Modal';
-import { TestApplication } from 'models';
-import React, { useMemo, useState } from 'react';
+import { Habitat, TestApplication } from 'models';
+import React, { useCallback, useMemo, useState } from 'react';
 import { MdAdd, MdCheck, MdClose, MdDelete, MdEdit } from 'react-icons/md';
 import { DEFAULT_REVIEW_STATUS } from 'utils/constants';
 import PropTypes from 'prop-types';
+import useHabitat from 'hooks/utils/useHabitat';
+import { useTranslation } from 'react-i18next';
 
-const StatusModal = ({
-  open,
-  onClose,
-  habitat,
-  addCustomStatusToHabitat,
-  removeCustomStatusToHabitat,
-  updateCustomStatusToHabitat,
-  setTrigger,
-}) => {
+const StatusModal = ({ open, onClose, setTrigger }) => {
+  const { habitat, setHabitat } = useHabitat();
   const [editingStatus, setEditingStatus] = useState();
   const [editingAlert, setEditingAlert] = useState(false);
   const [deletingStatus, setDeletingStatus] = useState();
   const [newStatus, setNewStatus] = useState('');
+  const { t } = useTranslation();
 
   const responsiveBool = useBreakpointValue({
     base: true,
@@ -51,6 +47,77 @@ const StatusModal = ({
     [habitat, newStatus]
   );
 
+  const addCustomStatusToHabitat = useCallback(
+    async (newCustomStatus) => {
+      try {
+        const original = await DataStore.query(Habitat, habitat);
+        const persistedHabitat = await DataStore.save(
+          Habitat.copyOf(original, (originalHabitat) => {
+            if (
+              !(
+                originalHabitat.props.customStatus
+                  ? originalHabitat.props.customStatus
+                  : []
+              ).includes(newCustomStatus) &&
+              newCustomStatus !== DEFAULT_REVIEW_STATUS
+            ) {
+              originalHabitat.props.customStatus = originalHabitat.props
+                .customStatus
+                ? [...originalHabitat.props.customStatus, newCustomStatus]
+                : [newCustomStatus];
+            }
+          })
+        );
+        setHabitat(persistedHabitat);
+      } catch (error) {
+        console.log(`Error updating the habitat's custom status.`);
+      }
+    },
+    [habitat, setHabitat]
+  );
+
+  const removeCustomStatusToHabitat = useCallback(
+    async (customStatus) => {
+      try {
+        const original = await DataStore.query(Habitat, habitat);
+        const persistedHabitat = await DataStore.save(
+          Habitat.copyOf(original, (originalHabitat) => {
+            originalHabitat.props.customStatus =
+              originalHabitat.props.customStatus.filter(
+                (customStatusIntem) => customStatusIntem !== customStatus
+              );
+          })
+        );
+        setHabitat(persistedHabitat);
+      } catch (error) {
+        console.log(`Error removing a custom status from the habitat.`);
+      }
+    },
+    [habitat, setHabitat]
+  );
+
+  const updateCustomStatusToHabitat = useCallback(
+    async (oldCustomStatus, newCustomStatus) => {
+      try {
+        const original = await DataStore.query(Habitat, habitat);
+        const persistedHabitat = await DataStore.save(
+          Habitat.copyOf(original, (originalHabitat) => {
+            originalHabitat.props.customStatus = [
+              ...originalHabitat.props.customStatus.filter(
+                (customStatusIntem) => customStatusIntem !== oldCustomStatus
+              ),
+              newCustomStatus,
+            ];
+          })
+        );
+        setHabitat(persistedHabitat);
+      } catch (error) {
+        console.log(`Error updating a custom status from the habitat.`);
+      }
+    },
+    [habitat, setHabitat]
+  );
+
   const handleAddStatus = async () => {
     try {
       if (!statusAlreadyExists) {
@@ -62,33 +129,56 @@ const StatusModal = ({
     }
   };
 
+  const updateExistingApplicationsCustomStatus = async (
+    oldStatus,
+    newStatusToSet
+  ) => {
+    try {
+      const habitatRootForms = await habitat?.RootForms.toArray();
+
+      for (const rootForm of habitatRootForms) {
+        const rootFormsCycles = await rootForm.Cycles.toArray();
+
+        const applicationsToUpdate = await DataStore.query(
+          TestApplication,
+          (c) =>
+            c.and((c2) => [
+              c2.customStatus.eq(oldStatus),
+              c2.or((c3) =>
+                rootFormsCycles.map((cycle) => c3.testcycleID.eq(cycle.id))
+              ),
+            ])
+        );
+
+        for (const applicationToUpdate of applicationsToUpdate) {
+          await DataStore.save(
+            TestApplication.copyOf(
+              applicationToUpdate,
+              (originalApplication) => {
+                originalApplication.customStatus = newStatusToSet;
+              }
+            )
+          );
+        }
+      }
+    } catch (error) {
+      console.log('Error while updating applications status.', error);
+    }
+  };
+
   const handleDeleteCustomStatus = async () => {
     try {
       await removeCustomStatusToHabitat(deletingStatus);
 
-      const habitatCycles = await habitat?.TestCycles.toArray();
-
-      const applicationsToUpdate = await DataStore.query(TestApplication, (c) =>
-        c.and((c2) => [
-          c2.reviewStatus.eq(deletingStatus),
-          c2.or((c3) =>
-            habitatCycles.map((cycle) => c3.testcycleID.eq(cycle.id))
-          ),
-        ])
+      await updateExistingApplicationsCustomStatus(
+        deletingStatus,
+        DEFAULT_REVIEW_STATUS
       );
-
-      for (const applicationToUpdate of applicationsToUpdate) {
-        await DataStore.save(
-          TestApplication.copyOf(applicationToUpdate, (originalApplication) => {
-            originalApplication.reviewStatus = DEFAULT_REVIEW_STATUS;
-          })
-        );
-      }
 
       setTrigger((previousTrigger) => previousTrigger + 1);
       setDeletingStatus(undefined);
     } catch (error) {
-      console.log('Error while updating applications status.');
+      console.log('Error while updating applications status.', error);
     }
   };
 
@@ -96,31 +186,14 @@ const StatusModal = ({
     try {
       await updateCustomStatusToHabitat(editingStatus, newStatus);
 
-      const habitatCycles = await habitat?.TestCycles.toArray();
-
-      const applicationsToUpdate = await DataStore.query(TestApplication, (c) =>
-        c.and((c2) => [
-          c2.reviewStatus.eq(editingStatus),
-          c2.or((c3) =>
-            habitatCycles.map((cycle) => c3.testcycleID.eq(cycle.id))
-          ),
-        ])
-      );
-
-      for (const applicationToUpdate of applicationsToUpdate) {
-        await DataStore.save(
-          TestApplication.copyOf(applicationToUpdate, (originalApplication) => {
-            originalApplication.reviewStatus = newStatus;
-          })
-        );
-      }
+      await updateExistingApplicationsCustomStatus(editingStatus, newStatus);
 
       setTrigger((previousTrigger) => previousTrigger + 1);
-      setEditingStatus(undefined);
+      setEditingStatus(false);
       setNewStatus('');
       setEditingAlert(false);
     } catch (error) {
-      console.log('Error while updating applications status.');
+      console.log('Error while updating applications status.', error);
     }
   };
 
@@ -133,60 +206,85 @@ const StatusModal = ({
     setNewStatus('');
   };
   return (
-    <Modal title="Status" open={open} onClickClose={onClose} width="30rem">
+    <Modal
+      title={t(
+        'pages.habitat.affiliate.cycles.cycle.components.statusModal.title'
+      )}
+      open={open}
+      onClickClose={onClose}
+      width="30rem"
+    >
       <>
         <Modal
-          title="Alert"
+          title={t(
+            'pages.habitat.affiliate.cycles.cycle.components.statusModal.edit.title'
+          )}
           open={editingAlert}
           onClickClose={handleOnCloseEditingAlert}
           width="25rem"
         >
           <View>
             <Text as="p">
-              You want to edit the status? This would update all the
-              applications with this status.
+              {t(
+                'pages.habitat.affiliate.cycles.cycle.components.statusModal.edit.text'
+              )}
             </Text>
             <Flex marginTop="1rem" justifyContent="center">
               <Button variation="primary" onClick={handleUpdateCustomStatus}>
-                Accept
+                {t(
+                  'pages.habitat.affiliate.cycles.cycle.components.statusModal.edit.accept'
+                )}
               </Button>
               <Button
                 variation="destructive"
                 onClick={handleOnCloseEditingAlert}
               >
-                Cancel
+                {t(
+                  'pages.habitat.affiliate.cycles.cycle.components.statusModal.edit.cancel'
+                )}
               </Button>
             </Flex>
           </View>
         </Modal>
         <Modal
-          title="Alert"
+          title={t(
+            'pages.habitat.affiliate.cycles.cycle.components.statusModal.delete.title'
+          )}
           open={deletingStatus !== undefined}
           onClickClose={handleOnCloseDelete}
           width="25rem"
         >
           <View>
             <Text as="p">
-              You want to delete the status? This would update all the
-              applications with this status to have an Pending status.
+              {t(
+                'pages.habitat.affiliate.cycles.cycle.components.statusModal.delete.text'
+              )}
             </Text>
             <Flex marginTop="1rem" justifyContent="center">
               <Button variation="primary" onClick={handleDeleteCustomStatus}>
-                Accept
+                {t(
+                  'pages.habitat.affiliate.cycles.cycle.components.statusModal.delete.accept'
+                )}
               </Button>
               <Button variation="destructive" onClick={handleOnCloseDelete}>
-                Cancel
+                {t(
+                  'pages.habitat.affiliate.cycles.cycle.components.statusModal.delete.cancel'
+                )}
               </Button>
             </Flex>
           </View>
         </Modal>
         <Flex width="100%" justifyContent="space-between" alignItems="end">
           <TextField
-            label="New status:"
+            label={t(
+              'pages.habitat.affiliate.cycles.cycle.components.statusModal.newStatus.label'
+            )}
             value={newStatus}
             onChange={handleNewStatusOnChange}
             hasError={statusAlreadyExists || newStatus === ''}
-            errorMessage="Invalid status"
+            errorMessage={t(
+              'pages.habitat.affiliate.cycles.cycle.components.statusModal.newStatus.error'
+            )}
           />
           {editingStatus ? (
             <Flex>
@@ -233,10 +331,14 @@ const StatusModal = ({
           <TableHead>
             <TableRow>
               <TableCell as="th" width="70%">
-                Name
+                {t(
+                  'pages.habitat.affiliate.cycles.cycle.components.statusModal.name'
+                )}
               </TableCell>
               <TableCell as="th" width="30%">
-                Actions
+                {t(
+                  'pages.habitat.affiliate.cycles.cycle.components.statusModal.actions'
+                )}
               </TableCell>
             </TableRow>
           </TableHead>
@@ -276,10 +378,6 @@ const StatusModal = ({
 StatusModal.propTypes = {
   open: PropTypes.bool,
   onClose: PropTypes.func,
-  habitat: PropTypes.object,
-  addCustomStatusToHabitat: PropTypes.func,
-  removeCustomStatusToHabitat: PropTypes.func,
-  updateCustomStatusToHabitat: PropTypes.func,
   setTrigger: PropTypes.func,
 };
 

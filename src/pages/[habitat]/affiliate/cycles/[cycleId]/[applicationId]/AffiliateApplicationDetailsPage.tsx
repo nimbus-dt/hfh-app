@@ -6,7 +6,7 @@ import {
   MdOutlineNoteAlt,
   MdOutlineTextSnippet,
 } from 'react-icons/md';
-import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   useDecisionsQuery,
   useFormAnswersQuery,
@@ -23,14 +23,16 @@ import {
   TestApplication,
   TestCycle,
   ReviewStatus,
-  Habitat,
   LazyDecision,
   ApplicationTypes,
   SubmissionStatus,
+  RootForm,
+  User,
 } from 'models';
-import { DataStore, RecursiveModelPredicate } from '@aws-amplify/datastore';
+import { DataStore, RecursiveModelPredicate } from 'aws-amplify/datastore';
 import { getEditorStateWithFilesInBucket } from 'utils/lexicalEditor';
-import { API, Storage } from 'aws-amplify';
+import { uploadData } from 'aws-amplify/storage';
+import { get, post } from 'aws-amplify/api';
 import { v4 } from 'uuid';
 import { FileNode } from 'components/LexicalEditor/nodes/FileNode';
 import { ImageNode } from 'components/LexicalEditor/nodes/ImageNode';
@@ -40,6 +42,12 @@ import { EditorState } from 'lexical';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import Loading from 'components/Loading';
 import { usePostHog } from 'posthog-js/react';
+import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import JSZIP from 'jszip';
+import { saveAs } from 'file-saver';
+import { flattenObject, getValueFromPath } from 'utils/objects';
+import useHabitat from 'hooks/utils/useHabitat';
+import { useTranslation } from 'react-i18next';
 import style from './AffiliateApplicationDetailsPage.module.css';
 import LocalNavigation from './components/LocalNavigation';
 import ApplicationTab from './components/ApplicationTab';
@@ -49,9 +57,18 @@ import CalculationsTab from './components/Calculations';
 import { TDecideSchema } from './AffiliateApplicationDetailsPage.schema';
 import Buttons from './components/Buttons';
 
+const s3client = new S3Client({
+  region: 'us-east-1',
+  credentials: {
+    accessKeyId: process.env.REACT_APP_PUBLIC_S3_IDKEY || '',
+    secretAccessKey: process.env.REACT_APP_PUBLIC_S3_SECRETKEY || '',
+  },
+});
+
 const AffiliateApplicationDetailsPage = () => {
   const posthog = usePostHog();
-  const [activeTab, setActiveTab] = useState(0);
+  const { t } = useTranslation();
+  const [activeTab, setActiveTab] = useState(1);
   const [triggerApplication, setTriggerApplication] = useState(false);
   const [triggerNotes, setTriggerNotes] = useState(false);
   const [loading, setLoading] = useState(0);
@@ -59,12 +76,13 @@ const AffiliateApplicationDetailsPage = () => {
   const [noteModal, setNoteModal] = useState(false);
   const [uploadingNote, setUploadingNote] = useState(false);
   const [deletingNote, setDeletingNote] = useState(false);
+  const [downloadingFiles, setDownloadingFiles] = useState(0);
 
   const navigate = useNavigate();
 
   const { applicationId } = useParams();
 
-  const { habitat }: { habitat?: Habitat } = useOutletContext();
+  const { habitat } = useHabitat();
 
   const { user } = useAuthenticator((context) => [context.user]);
 
@@ -107,13 +125,12 @@ const AffiliateApplicationDetailsPage = () => {
     setTriggerNotes((prevTriggerNotes) => !prevTriggerNotes);
 
   const uploadDecisionFile = async (file: File) => {
-    const result = await Storage.put(
-      `decision/${habitat?.urlName}/${application.id}/${v4()}_${file.name}`,
-      file,
-      {
-        level: 'public',
-      }
-    );
+    const result = await uploadData({
+      path: `public/decision/${habitat?.urlName}/${application.id}/${v4()}_${
+        file.name
+      }`,
+      data: file,
+    }).result;
 
     return result;
   };
@@ -174,14 +191,18 @@ const AffiliateApplicationDetailsPage = () => {
         posthogAction: 'application_reviewed',
       });
 
-      await API.post('sendEmailToApplicantAPI', '/notify', {
-        body: {
-          subject: 'Status update on your Habitat for Humanity application',
-          body: '<p>A decision has been made on your application. Please log in to your application portal to see this.</p>',
-          sub: persistedApplication.ownerID,
-          habitat: habitat?.name,
+      await post({
+        apiName: 'sendEmailToApplicantAPI',
+        path: '/notify',
+        options: {
+          body: {
+            subject: 'Status update on your Habitat for Humanity application',
+            body: '<p>A decision has been made on your application. Please log in to your application portal to see this.</p>',
+            sub: persistedApplication.ownerID || '',
+            habitat: habitat?.name || '',
+          },
         },
-      });
+      }).response;
 
       setDecideModalOpen(false);
       triggerApplicationRefetch();
@@ -218,7 +239,7 @@ const AffiliateApplicationDetailsPage = () => {
       await deleteFilesOfNote(note);
       await DataStore.delete(Note, note.id);
     } catch (error) {
-      console.log('Error deleting note');
+      console.log('Error deleting note', error);
     } finally {
       setDeletingNote(false);
       triggerNotesRefetch();
@@ -226,13 +247,12 @@ const AffiliateApplicationDetailsPage = () => {
   };
 
   const uploadNoteFile = async (file: File) => {
-    const result = await Storage.put(
-      `notes/${habitat?.urlName}/${application.id}/${v4()}_${file.name}`,
-      file,
-      {
-        level: 'public',
-      }
-    );
+    const result = await uploadData({
+      path: `public/notes/${habitat?.urlName}/${application.id}/${v4()}_${
+        file.name
+      }`,
+      data: file,
+    }).result;
 
     return result;
   };
@@ -267,6 +287,92 @@ const AffiliateApplicationDetailsPage = () => {
     }
   };
 
+  const handleDownloadApplication = async () => {
+    try {
+      setDownloadingFiles((prevDownloadingFiles) => prevDownloadingFiles + 1);
+
+      const zip = new JSZIP();
+
+      const pdfBase64Response = await get({
+        apiName: 'habitat',
+        path: `/application-pdf`,
+        options: {
+          headers: {
+            Accept: 'application/pdf',
+          },
+          queryParams: {
+            applicationId: application.id,
+            language: 'en',
+          },
+        },
+      }).response;
+
+      const pdfBlob = await pdfBase64Response.body.blob();
+
+      zip.file('Application.pdf', pdfBlob);
+
+      for (const formAnswer of formAnswers) {
+        const { values } = formAnswer;
+
+        const flatValues = flattenObject(values);
+
+        const fileValuesPath = flatValues.filter((flatValue) =>
+          flatValue.path.endsWith('.originalName')
+        );
+
+        if (fileValuesPath.length > 0 && values) {
+          for (const fileValuePath of fileValuesPath) {
+            const path = fileValuePath.path.replace('.originalName', '');
+
+            const fileValue = getValueFromPath(
+              values as unknown as object,
+              path
+            );
+
+            const { key, bucket } = fileValue as {
+              key: string;
+              bucket: string;
+            };
+
+            const s3Name = key.split('/').at(-1);
+
+            const command = new GetObjectCommand({
+              Bucket: bucket,
+              Key: key,
+            });
+
+            const response = await s3client.send(command);
+
+            const byteArr = await response.Body?.transformToByteArray();
+
+            if (!byteArr) {
+              return;
+            }
+
+            zip.file(`files/${s3Name}`, byteArr);
+          }
+        }
+      }
+
+      const rootForm = await DataStore.query(RootForm, cycle?.rootformID);
+
+      const userData = await DataStore.query(User, (c) =>
+        c.owner.eq(application?.ownerID || '')
+      );
+
+      zip.generateAsync({ type: 'blob' }).then((content) => {
+        saveAs(
+          content,
+          `${rootForm?.name}-${cycle?.name}-${userData[0].firstName} ${userData[0].lastName}.zip`
+        );
+      });
+    } catch (error) {
+      console.log('Error downloading files', error);
+    } finally {
+      setDownloadingFiles((prevDownloadingFiles) => prevDownloadingFiles - 1);
+    }
+  };
+
   useEffect(() => {
     if (application && cycle && habitat && posthog) {
       posthog?.capture('application_opened', {
@@ -280,10 +386,10 @@ const AffiliateApplicationDetailsPage = () => {
   if (!cycle) return <Loading />;
 
   const breadCrumbsItems = [
-    { label: 'Forms', to: '../../../forms' },
-    { label: 'Cycles', to: '../..' },
-    { label: 'Applications', to: '..' },
-    { label: 'Details' },
+    { label: t('pages.habitat.affiliate.forms.name'), to: '../../../forms' },
+    { label: t('pages.habitat.affiliate.cycles.name'), to: '../..' },
+    { label: t('pages.habitat.affiliate.cycles.cycle.name'), to: '..' },
+    { label: t('pages.habitat.affiliate.cycles.cycle.application.name') },
   ];
 
   return (
@@ -293,7 +399,7 @@ const AffiliateApplicationDetailsPage = () => {
         <div className={`${style.cta}`}>
           <GoBack />
           <span className={`theme-headline-medium ${style.title}`}>
-            Application Details
+            {t('pages.habitat.affiliate.cycles.cycle.application.title')}
           </span>
         </div>
       </div>
@@ -304,18 +410,40 @@ const AffiliateApplicationDetailsPage = () => {
           handleDecideModalOnClose={handleDecideModalOnClose}
           handleOnValidDecide={handleOnValidDecide}
           handleDecideOnClick={handleDecideOnClick}
+          handleDownloadApplicationOnClick={handleDownloadApplication}
           loading={loading}
+          downloading={downloadingFiles > 0}
         />
       </div>
       <div className={`${style.detailsContainer}`}>
         <LocalNavigation
           items={[
-            { label: 'Submission', icon: <MdOutlineNoteAlt /> },
-            { label: 'Notes', icon: <MdOutlineTextSnippet /> },
+            {
+              label: t(
+                'pages.habitat.affiliate.cycles.cycle.application.tabs.submission'
+              ),
+              icon: <MdOutlineNoteAlt />,
+            },
+            {
+              label: t(
+                'pages.habitat.affiliate.cycles.cycle.application.tabs.notes'
+              ),
+              icon: <MdOutlineTextSnippet />,
+            },
             ...(application?.type === ApplicationTypes.ONLINE
               ? [
-                  { label: 'Decisions', icon: <MdOutlineLibraryAddCheck /> },
-                  { label: 'Calculations', icon: <MdOutlineCalculate /> },
+                  {
+                    label: t(
+                      'pages.habitat.affiliate.cycles.cycle.application.tabs.decisions'
+                    ),
+                    icon: <MdOutlineLibraryAddCheck />,
+                  },
+                  {
+                    label: t(
+                      'pages.habitat.affiliate.cycles.cycle.application.tabs.calculations'
+                    ),
+                    icon: <MdOutlineCalculate />,
+                  },
                 ]
               : []),
           ]}
@@ -341,9 +469,7 @@ const AffiliateApplicationDetailsPage = () => {
               handleOnSaveNote={handleOnSaveNote}
             />
           )}
-          {activeTab === 2 && (
-            <DecisionsTab decisions={decisions} habitat={habitat} />
-          )}
+          {activeTab === 2 && <DecisionsTab decisions={decisions} />}
           {activeTab === 3 && <CalculationsTab formAnswers={formAnswers} />}
         </div>
       </div>

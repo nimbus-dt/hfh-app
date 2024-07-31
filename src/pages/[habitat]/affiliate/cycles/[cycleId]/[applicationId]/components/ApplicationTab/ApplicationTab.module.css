@@ -17,3 +17,9 @@
     max-width: 586px;
   }
 }
+
+@media print {
+  .formContainer {
+    max-width: 100%;
+  }
+}

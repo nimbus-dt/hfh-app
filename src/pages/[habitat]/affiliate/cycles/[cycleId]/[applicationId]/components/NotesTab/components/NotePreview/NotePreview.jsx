@@ -1,12 +1,12 @@
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { MdDelete } from 'react-icons/md';
 import { Button, Flex, Loader, Text } from '@aws-amplify/ui-react';
-import { API } from 'aws-amplify';
+import { get } from 'aws-amplify/api';
 import LexicalEditor from 'components/LexicalEditor';
 import Modal from 'components/Modal';
 import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
-import { MdDelete } from 'react-icons/md';
-import ExpandableCardWithGradient from 'components/ExpandableCardWithGradient';
 import ExpandableCard from 'components/ExpandableCard';
 
 const NotePreview = ({
@@ -16,6 +16,7 @@ const NotePreview = ({
   onDelete,
   deleting,
 }) => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
 
   const [confirmModal, setConfirmModal] = useState(false);
@@ -28,13 +29,23 @@ const NotePreview = ({
 
   useEffect(() => {
     const getEmail = async () => {
-      const response = await API.get('userAPI', '/email', {
-        queryStringParameters: {
-          sub: ownerID,
-        },
-      });
+      try {
+        const response = await get({
+          apiName: 'userAPI',
+          path: '/email',
+          options: {
+            queryParams: {
+              sub: ownerID,
+            },
+          },
+        }).response;
 
-      setEmail(response.email);
+        const body = await response.body.json();
+
+        setEmail(body.email);
+      } catch (error) {
+        console.log('error', error);
+      }
     };
     getEmail();
   }, [ownerID]);
@@ -44,18 +55,29 @@ const NotePreview = ({
       <>
         <Flex justifyContent="space-between" alignItems="center">
           <Text>
-            <b>Note by:</b> {email}
+            <b>
+              {t(
+                'pages.habitat.affiliate.cycles.cycle.application.components.notesTab.components.notePreview.by'
+              )}
+            </b>{' '}
+            {email}
           </Text>
           <Flex alignItems="center">
             <Text>{dayjs(createdAt || undefined).format('YYYY-MM-DD')}</Text>
             <Modal
-              title="Delete note"
+              title={t(
+                'pages.habitat.affiliate.cycles.cycle.application.components.notesTab.components.notePreview.delete.title'
+              )}
               onClickClose={handleOpenCloseConfirmModal}
               width="25rem"
               open={confirmModal}
             >
               <Flex direction="column">
-                <Text>Are you sure you want to delete this note?</Text>
+                <Text>
+                  {t(
+                    'pages.habitat.affiliate.cycles.cycle.application.components.notesTab.components.notePreview.delete.warning'
+                  )}
+                </Text>
                 <Flex justifyContent="end">
                   <Button
                     variation="primary"
@@ -65,10 +87,14 @@ const NotePreview = ({
                     {deleting ? (
                       <Flex alignItems="center">
                         <Loader />
-                        Deleting
+                        {t(
+                          'pages.habitat.affiliate.cycles.cycle.application.components.notesTab.components.notePreview.delete.deleting'
+                        )}
                       </Flex>
                     ) : (
-                      'Accept'
+                      t(
+                        'pages.habitat.affiliate.cycles.cycle.application.components.notesTab.components.notePreview.delete.accept'
+                      )
                     )}
                   </Button>
 
@@ -77,7 +103,9 @@ const NotePreview = ({
                     onClick={handleOpenCloseConfirmModal}
                     isDisabled={deleting}
                   >
-                    Cancel
+                    {t(
+                      'pages.habitat.affiliate.cycles.cycle.application.components.notesTab.components.notePreview.delete.cancel'
+                    )}
                   </Button>
                 </Flex>
               </Flex>

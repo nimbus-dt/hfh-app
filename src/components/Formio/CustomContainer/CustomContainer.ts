@@ -2,7 +2,7 @@ import { Components } from 'formiojs';
 import { isElement } from 'utils/type';
 import { getCheckOrExEmoji } from 'utils/misc';
 import { FormAnswer, TestApplication } from 'models';
-import { DataStore } from 'aws-amplify';
+import { DataStore } from 'aws-amplify/datastore';
 import style from './CustomContainer.module.css';
 
 const saveSection = async ({
@@ -30,14 +30,13 @@ const saveSection = async ({
     );
 
     if (persistedFormAnswer.length > 0) {
-      const response = await DataStore.save(
+      await DataStore.save(
         FormAnswer.copyOf(persistedFormAnswer[0], (original) => {
           original.values = JSON.stringify(data);
         })
       );
-      console.log('update response', response);
     } else {
-      const response = await DataStore.save(
+      await DataStore.save(
         new FormAnswer({
           testapplicationID: application.id,
           page,
@@ -45,7 +44,6 @@ const saveSection = async ({
           values: JSON.stringify(data),
         })
       );
-      console.log('save response', response);
     }
     return true;
   } catch (error) {

@@ -1,60 +1,72 @@
-/**
- * This constant is used to store the routes and their titles
- * Things to consider: dynamic parths should start with a colon,
- * this way the getRouteTitle function can replace the dynamic part with the route part
- */
+import { TFunction } from 'i18next';
 
-export const ROUTES = {
+interface useRoutesProps {
+  [key: string]: { title: string; route?: string };
+}
+
+const routes = (t: TFunction<'translation', undefined>): useRoutesProps => ({
   applicantApplications: {
-    title: 'Applications',
+    title: t('routes.applicantApplications'),
     route: '/:habitat/applicant/applications',
   },
   applicantDecisions: {
-    title: 'Decisions',
+    title: t('routes.applicantDecisions'),
     route: '/:habitat/applicant/decisions',
   },
   applicantForm: {
-    title: 'Form',
+    title: t('routes.applicantForm'),
     route: '/:habitat/applicant/:cycleId',
   },
   affiliateHome: {
-    title: 'Home',
+    title: t('routes.affiliateHome'),
     route: '/:habitat/affiliate/home',
   },
   affiliateForms: {
-    title: 'Forms',
+    title: t('routes.affiliateForms'),
     route: '/:habitat/affiliate/forms',
   },
   affiliateCycles: {
-    title: 'Cycles',
+    title: t('routes.affiliateCycles'),
     route: '/:habitat/affiliate/:formid',
   },
   affiliateApplications: {
-    title: 'Applications',
+    title: t('routes.affiliateApplications'),
     route: '/:habitat/affiliate/:formid/:cycleid',
   },
   affiliateApplicationDetail: {
-    title: 'Application Details',
+    title: t('routes.affiliateApplicationDetail'),
     route: '/:habitat/affiliate/:formid/:cycleid/:applicationid',
   },
   affiliateAnalytics: {
-    title: 'Analytics',
+    title: t('routes.affiliateAnalytics'),
     route: '/:habitat/affiliate/analytics',
   },
   affiliateUsers: {
-    title: 'Users',
+    title: t('routes.affiliateUsers'),
     route: '/:habitat/affiliate/users',
   },
+  settings: {
+    title: t('routes.settings'),
+  },
+});
+
+export const isActive = (pathname: string, route = '') => {
+  const pathnameArray = pathname.split('/');
+  const routeArray = route.split('/');
+
+  if (routeArray.length > pathnameArray.length) {
+    return false;
+  }
+
+  return pathnameArray.every((path, index) => {
+    if (routeArray[index] === ':habitat') return true;
+    return path === routeArray[index];
+  });
 };
 
-/**
- * Get the title of the route based on the ROUTES constant
- * @param route
- * @returns
- */
-
-export const getRouteTitle = (route: string) => {
+export const getTitle = (route: string, ROUTES: useRoutesProps) => {
   const title = Object.entries(ROUTES).find(([, value]) => {
+    if (!value.route) return false;
     const routeArray = value.route.split('/');
     const realRouteArray = route.split('/');
     for (let i = 0; i < routeArray.length; i += 1) {
@@ -62,29 +74,11 @@ export const getRouteTitle = (route: string) => {
         realRouteArray[i] = routeArray[i];
       }
     }
-    return routeArray.join('/') === realRouteArray.join('/');
+    return realRouteArray.join('/') === routeArray.join('/');
   });
-
-  return title ? title[1].title : undefined;
+  return title ? title[1].title : '';
 };
 
-/**
- * Check if the current route is active comparing the current route with the route from a item in ROUTES constant
- * @param currentRoute
- * @param routeToCompare
- * @returns
- */
+export { type useRoutesProps };
 
-export const isCurrentRouteActive = (
-  currentRoute: string,
-  routeToCompare: string
-) => {
-  const routeArray = routeToCompare.split('/');
-  const realRouteArray = currentRoute.split('/');
-  for (let i = 0; i < routeArray.length; i += 1) {
-    if (routeArray[i].startsWith(':')) {
-      realRouteArray[i] = routeArray[i];
-    }
-  }
-  return routeArray.join('/') === realRouteArray.join('/');
-};
+export default routes;

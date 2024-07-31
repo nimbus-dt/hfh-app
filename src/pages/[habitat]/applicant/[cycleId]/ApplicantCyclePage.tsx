@@ -1,47 +1,34 @@
-import { Loader, useAuthenticator } from '@aws-amplify/ui-react';
-import { useLocation, useOutletContext, useParams } from 'react-router-dom';
+import { useCallback, useState } from 'react';
+import { useAuthenticator } from '@aws-amplify/ui-react';
+import { useLocation, useParams } from 'react-router-dom';
 import {
-  Habitat,
   SubmissionStatus,
   TestApplication,
   TestCycle,
   ReviewStatus,
   ApplicationTypes,
-  User,
 } from 'models';
-import { MdOutlineNoteAlt, MdOutlineLibraryAddCheck } from 'react-icons/md';
-import { useCallback, useEffect, useState } from 'react';
-import { DataStore, SortDirection } from 'aws-amplify';
-import { useTestCycleById } from 'hooks/services';
-import LocalNavigation from 'pages/[habitat]/affiliate/cycles/[cycleId]/[applicationId]/components/LocalNavigation';
-import Form from './components/Form/Form';
-import SuccesfullySubmitted from './components/SuccesfullySubmitted';
+import useAsync from 'hooks/utils/useAsync/useAsync';
+import { Status } from 'utils/enums';
+import { DataStore, SortDirection } from 'aws-amplify/datastore';
+import useHabitat from 'hooks/utils/useHabitat';
+import Form from './components/Form';
 import NoOpenCycle from './components/NoOpenCycle';
+import SuccesfullySubmitted from './components/SuccesfullySubmitted';
+import Loading from './components/Loading';
+import Error from './components/Error';
 import style from './ApplicantCyclePage.module.css';
-import Decisions from './components/Tabs/Decisions';
-
-interface IOutletContext {
-  habitat?: Habitat;
-}
+import { DataProps, DISPLAY, ERROR } from './ApplicantCyclePage.types';
+import Reviewed from './components/Reviewed/Reviewed';
 
 const ApplicantCyclePage = () => {
-  const { habitat }: IOutletContext = useOutletContext();
+  const { habitat } = useHabitat();
 
   const { cycleId } = useParams();
 
-  const { authStatus, user } = useAuthenticator((context) => [
-    context.authStatus,
-    context.user,
-  ]);
+  const { user } = useAuthenticator((context) => [context.user]);
 
   const location = useLocation();
-
-  const { data: cycle }: { data: TestCycle | undefined } = useTestCycleById({
-    id: cycleId || '',
-    dependencyArray: [cycleId],
-  });
-
-  const [application, setApplication] = useState<TestApplication>();
   const [activeTab, setActiveTab] = useState(1);
   const [review, setReview] = useState(false);
 
@@ -50,162 +37,212 @@ const ApplicantCyclePage = () => {
     setReview(true);
   };
 
-  const getApplication = useCallback(
-    async (username: string) => {
-      try {
-        if (cycleId) {
-          const existingApplication = await DataStore.query(
-            TestApplication,
-            (c1) =>
-              c1.and((c2) => [
-                c2.ownerID.eq(username),
-                c2.testcycleID.eq(cycleId),
-              ]),
-            {
-              sort: (c) => c.createdAt(SortDirection.DESCENDING),
-            }
-          );
-          return existingApplication[0];
-        }
-      } catch (error) {
-        console.log(`Error fetching the application data. ${error}`);
+  const getData = useCallback(async (): Promise<DataProps> => {
+    try {
+      if (!habitat) {
+        return {
+          display: DISPLAY.ERROR,
+          data: {
+            error: ERROR.HABITAT_NOT_FOUND,
+          },
+        };
       }
-    },
-    [cycleId]
-  );
-
-  const createNewApplication = useCallback(
-    async (username: string) => {
-      try {
-        if (cycle) {
-          const newApplication = await DataStore.save(
-            new TestApplication({
-              ownerID: username,
-              lastPage: 0,
-              lastSection: location.pathname,
-              members: [],
-              submissionStatus: SubmissionStatus.INCOMPLETE,
-              reviewStatus: ReviewStatus.PENDING,
-              submittedDate: '0001-01-01',
-              testcycleID: cycle.id,
-              type: ApplicationTypes.ONLINE,
-            })
-          );
-
-          return newApplication;
-        }
-      } catch (error) {
-        console.log('Error creating new application.');
+      if (!cycleId) {
+        return {
+          display: DISPLAY.ERROR,
+          data: {
+            error: ERROR.CYCLE_NOT_FOUND,
+          },
+        };
       }
-    },
-    [location.pathname, cycle]
-  );
 
-  useEffect(() => {
-    const getOrCreateApplication = async () => {
-      if (user && user.username) {
-        const existingApplication = await getApplication(user.username);
-        if (existingApplication !== undefined) {
-          setApplication(existingApplication);
-        } else if (cycle) {
-          const newApplication = await createNewApplication(user.username);
-          setApplication(newApplication);
-        }
+      const cycle = await DataStore.query(TestCycle, cycleId);
+
+      if (!cycle) {
+        return {
+          display: DISPLAY.ERROR,
+          data: {
+            error: ERROR.CYCLE_NOT_FOUND,
+          },
+        };
       }
-    };
 
-    if (
-      authStatus === 'authenticated' &&
-      application === undefined &&
-      user !== undefined &&
-      habitat
-    ) {
-      getOrCreateApplication();
+      const applications = await DataStore.query(
+        TestApplication,
+        (c1) =>
+          c1.and((c2) => [
+            c2.testcycleID.eq(cycleId),
+            c2.ownerID.eq(user.username),
+          ]),
+        {
+          sort: (c) => c.createdAt(SortDirection.DESCENDING),
+        }
+      );
+
+      let [application] = applications;
+
+      if (applications.length === 0) {
+        if (!cycle.isOpen) {
+          return {
+            display: DISPLAY.NO_OPEN_CYCLE,
+            data: {
+              error: ERROR.CYCLE_NOT_OPEN,
+              cycle,
+            },
+          };
+        }
+        if (sessionStorage.getItem('creatingApplication')) {
+          return {
+            display: DISPLAY.LOADING,
+          };
+        }
+
+        sessionStorage.setItem('creatingApplication', 'true');
+
+        const newApplication = await DataStore.save(
+          new TestApplication({
+            ownerID: user.username,
+            lastPage: 0,
+            lastSection: location.pathname,
+            submissionStatus: SubmissionStatus.INCOMPLETE,
+            reviewStatus: ReviewStatus.PENDING,
+            submittedDate: '0001-01-01',
+            testcycleID: cycleId,
+            type: ApplicationTypes.ONLINE,
+          })
+        );
+        application = newApplication;
+        sessionStorage.removeItem('creatingApplication');
+        return {
+          display: DISPLAY.APPLICATION,
+          data: {
+            cycle,
+            application,
+          },
+        };
+      }
+
+      const reviewed =
+        application.reviewStatus === ReviewStatus.ACCEPTED ||
+        application.reviewStatus === ReviewStatus.DENIED ||
+        application.reviewStatus === ReviewStatus.RETURNED;
+
+      if (reviewed || review) {
+        return {
+          display: DISPLAY.REVIEWED,
+          data: {
+            cycle,
+            application,
+          },
+        };
+      }
+
+      if (application.submissionStatus === SubmissionStatus.COMPLETED) {
+        return {
+          display: DISPLAY.COMPLETED,
+          data: {
+            cycle,
+            application,
+          },
+        };
+      }
+
+      if (!cycle.isOpen) {
+        return {
+          display: DISPLAY.NO_OPEN_CYCLE,
+          data: {
+            error: ERROR.CYCLE_NOT_OPEN,
+            cycle,
+            application,
+          },
+        };
+      }
+
+      return {
+        display: DISPLAY.APPLICATION,
+        data: {
+          cycle,
+          application,
+        },
+      };
+    } catch (error) {
+      return {
+        display: DISPLAY.ERROR,
+        data: {
+          error: ERROR.UNEXPECTED_ERROR,
+        },
+      };
     }
+  }, [habitat, cycleId, review, user.username, location.pathname]);
 
-    if (authStatus === 'unauthenticated') {
-      setApplication(undefined);
-    }
-  }, [
-    authStatus,
-    application,
-    user,
-    habitat,
-    cycle,
-    getApplication,
-    createNewApplication,
-  ]);
+  const { value, status } = useAsync({
+    asyncFunction: getData,
+  });
 
-  if (!cycle || !application)
+  if (status === Status.PENDING) {
+    return <Loading />;
+  }
+
+  if (status === Status.REJECTED) {
+    return <Error />;
+  }
+
+  if (value?.display === DISPLAY.LOADING) {
+    return <Loading />;
+  }
+
+  if (value?.display === DISPLAY.ERROR) {
+    return <Error error={value.data.error} />;
+  }
+
+  if (!habitat) {
+    return <Error error={ERROR.HABITAT_NOT_FOUND} />;
+  }
+
+  if (value?.display === DISPLAY.REVIEWED) {
     return (
       <div className={`${style.page}`}>
-        <Loader />
-        <span>Loading</span>
-      </div>
-    );
-
-  const reviewed =
-    application.reviewStatus === ReviewStatus.ACCEPTED ||
-    application.reviewStatus === ReviewStatus.DENIED ||
-    application.reviewStatus === ReviewStatus.RETURNED;
-
-  if (!cycle.isOpen && !review && !reviewed)
-    return (
-      <div className={`${style.page}`}>
-        <NoOpenCycle
-          cycle={cycle}
-          onReview={onReview}
-          showReview={
-            application.submissionStatus === SubmissionStatus.COMPLETED
-          }
-        />
-      </div>
-    );
-
-  if (
-    application.submissionStatus === SubmissionStatus.COMPLETED &&
-    !review &&
-    !reviewed
-  ) {
-    return (
-      <div className={`${style.page}`}>
-        <SuccesfullySubmitted
+        <Reviewed
           habitat={habitat}
-          onReview={onReview}
-          application={application}
+          cycle={value.data.cycle}
+          application={value.data.application}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
         />
       </div>
     );
   }
 
-  if (review || reviewed) {
+  if (value?.display === DISPLAY.NO_OPEN_CYCLE) {
     return (
       <div className={`${style.page}`}>
-        <div className={style.detailsContainer}>
-          <LocalNavigation
-            items={[
-              { label: 'Application', icon: <MdOutlineNoteAlt /> },
-              { label: 'Decisions', icon: <MdOutlineLibraryAddCheck /> },
-            ]}
-            current={activeTab}
-            onChange={(newCurrent) => setActiveTab(newCurrent)}
-          />
-          <div className={style.tabContainer}>
-            {activeTab === 0 && (
-              <Form habitat={habitat} application={application} cycle={cycle} />
-            )}
-            {activeTab === 1 && <Decisions application={application} />}
-          </div>
-        </div>
+        <NoOpenCycle
+          cycle={value?.data?.cycle}
+          onReview={onReview}
+          showReview={
+            value?.data?.application?.submissionStatus ===
+            SubmissionStatus.COMPLETED
+          }
+        />
+      </div>
+    );
+  }
+
+  if (value?.display === DISPLAY.COMPLETED) {
+    return (
+      <div className={`${style.page}`}>
+        <SuccesfullySubmitted
+          onReview={onReview}
+          application={value.data.application}
+        />
       </div>
     );
   }
 
   return (
     <Form
-      habitat={habitat}
-      application={application}
-      cycle={cycle}
+      application={value?.data?.application}
+      cycle={value?.data?.cycle}
       formContainer={false}
     />
   );

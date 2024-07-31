@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   Flex,
   Heading,
@@ -7,23 +7,17 @@ import {
   View,
   useAuthenticator,
 } from '@aws-amplify/ui-react';
-import { DataStore } from '@aws-amplify/datastore';
-
+import { DataStore } from 'aws-amplify/datastore';
 import DecisionCard from 'components/DecisionCard';
 import {
   Decision,
-  Habitat,
   ReviewStatus,
   RootForm,
   TestApplication,
   TestCycle,
 } from 'models';
-
+import useHabitat from 'hooks/utils/useHabitat';
 import style from './ApplicantDecisionsPage.module.css';
-
-interface IOutletContext {
-  habitat?: Habitat;
-}
 
 type DataProps =
   | {
@@ -34,8 +28,9 @@ type DataProps =
 
 const ApplicantDecisionsPage = () => {
   const { user } = useAuthenticator((context) => [context.user]);
-  const { habitat }: IOutletContext = useOutletContext();
+  const { habitat } = useHabitat();
   const [data, setData] = useState<DataProps>(undefined);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (habitat) {
@@ -96,11 +91,11 @@ const ApplicantDecisionsPage = () => {
     <View padding="32px">
       <Flex className={`${style.cta}`} direction="column">
         <Heading level={3} className="theme-headline-medium">
-          Decisions Dashboard
+          {t('pages.habitat.applicant.decisions.title')}
         </Heading>
         <View className={`theme-body-medium ${style.subtitle}`}>
           <Text color="inherit">
-            Exchange information with affiliates and revise your submissions
+            {t('pages.habitat.applicant.decisions.description')}
           </Text>
         </View>
       </Flex>
@@ -130,7 +125,7 @@ const ApplicantDecisionsPage = () => {
       ) : (
         <View className={`theme-body-medium ${style.subtitle}`}>
           <Text style={{ textAlign: 'center' }} color="inherit">
-            You have no decision records.
+            {t('pages.habitat.applicant.decisions.empty')}
           </Text>
         </View>
       )}

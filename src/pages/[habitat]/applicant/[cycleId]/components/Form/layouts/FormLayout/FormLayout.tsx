@@ -1,11 +1,15 @@
-import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { usePostHog } from 'posthog-js/react';
 
 import { formatHabitatCycleApplicationData } from 'utils/formatters';
 
 import { Header, Footer, Loading } from 'components';
-import { DataStore } from 'aws-amplify';
+import { DataStore } from 'aws-amplify/datastore';
 import { TestApplication } from 'models';
+import useHabitat from 'hooks/utils/useHabitat';
+import translator from 'utils/translator';
+import TranslationsContext from 'contexts/TranslationsContext';
 import getPage from './utils/getPage';
 
 import FormLayoutProps from './FormLayout.types';
@@ -13,15 +17,20 @@ import styles from './FormLayout.module.css';
 
 const FormLayout = ({
   formReady,
-  habitat,
   children,
   application,
   cycle,
 }: FormLayoutProps) => {
+  const { habitat } = useHabitat();
+
   const posthog = usePostHog();
 
   const [currentPage, setCurrentPage] = useState(0);
-  const pages = getPage(formReady);
+  const { i18n } = useTranslation();
+  const translations = useContext(TranslationsContext);
+  const { language } = i18n;
+  const translate = translator({ language, translations });
+  const pages = getPage(formReady, translate);
   const headerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -66,7 +75,6 @@ const FormLayout = ({
         );
       })
       .catch((error: unknown) => {
-        console.log(error);
         posthog?.capture(
           `form_previous_error_from_page_${
             currentPage + 1
@@ -159,8 +167,6 @@ const FormLayout = ({
       });
   };
 
-  console.log(currentPage);
-
   const submit =
     formReady?.componentComponents &&
     currentPage === formReady.componentComponents.length - 1;
@@ -170,7 +176,7 @@ const FormLayout = ({
       {!formReady && <Loading />}
       {formReady && (
         <div ref={headerRef}>
-          <Header current={currentPage} pages={pages} habitat={habitat} />
+          <Header current={currentPage} pages={pages} />
         </div>
       )}
       <div className={styles.body}>{children}</div>

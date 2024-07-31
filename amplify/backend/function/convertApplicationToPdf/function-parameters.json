@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "api": {
+      "hfhapp": [
+        "Query"
+      ]
+    }
+  },
+  "lambdaLayers": [],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "prodDomain",
+      "environmentVariableName": "PROD_DOMAIN"
+    }
+  ]
+}

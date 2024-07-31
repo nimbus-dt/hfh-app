@@ -1,6 +1,6 @@
 /* eslint-disable react/style-prop-object */
 import React from 'react';
-import { Button, Flex } from '@aws-amplify/ui-react';
+import { useTranslation } from 'react-i18next';
 import {
   MdAutoGraph,
   MdOutlineAssignmentTurnedIn,
@@ -11,10 +11,12 @@ import {
   MdOutlinePeopleOutline,
   MdOutlineSettings,
 } from 'react-icons/md';
-import useIsHovered from 'hooks/utils/useIsHovered';
+import { Button, Flex } from '@aws-amplify/ui-react';
+
 import useCloseContextMenu from 'hooks/utils/useCloseContextMenu';
-import { isCurrentRouteActive, ROUTES } from 'utils/routes';
-import { Habitat } from 'models';
+import useIsHovered from 'hooks/utils/useIsHovered';
+import useRoutes, { isActive } from 'utils/routes';
+
 import MenuItem from './components/MenuItem/MenuItem';
 import style from './SideBar.module.css';
 import HabitatHeader from './components/HabitatHeader';
@@ -25,7 +27,6 @@ interface IProperties {
   onExpand: () => void;
   pathname: string;
   variation: 'applicant' | 'affiliate';
-  habitat: Habitat;
 }
 
 const SideBar = ({
@@ -34,10 +35,13 @@ const SideBar = ({
   onExpand,
   pathname,
   variation,
-  habitat,
 }: IProperties) => {
   const sideBarRef = React.useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
+  const routes = useRoutes(t);
+
   const isHovered = useIsHovered(sideBarRef);
+
   useCloseContextMenu(sideBarRef, onExpand);
 
   const isHoveredOrExpanded = isHovered || (mobile && expanded);
@@ -69,48 +73,36 @@ const SideBar = ({
             </Button>
           )}
           <Flex direction="column" gap="16px" justifyContent="space-between">
-            <HabitatHeader habitat={habitat as unknown as Habitat} />
+            <HabitatHeader />
             {variation === 'affiliate' && (
               <>
                 <MenuItem
                   to="home"
                   icon={<MdOutlineHome />}
-                  label="Home"
-                  active={isCurrentRouteActive(
-                    pathname,
-                    ROUTES.affiliateHome.route
-                  )}
+                  label={routes.affiliateHome.title}
+                  active={isActive(pathname, routes.affiliateHome.route)}
                   expanded={isHoveredOrExpanded}
                 />
                 <MenuItem
                   to="forms"
                   icon={<MdOutlineFeed />}
-                  label="Forms"
+                  label={routes.affiliateForms.title}
                   expanded={isHoveredOrExpanded}
-                  active={isCurrentRouteActive(
-                    pathname,
-                    ROUTES.affiliateForms.route
-                  )}
+                  active={isActive(pathname, routes.affiliateForms.route)}
                 />
                 <MenuItem
                   to="analytics"
                   icon={<MdAutoGraph />}
-                  label="Analytics"
+                  label={routes.affiliateAnalytics.title}
                   expanded={isHoveredOrExpanded}
-                  active={isCurrentRouteActive(
-                    pathname,
-                    ROUTES.affiliateAnalytics.route
-                  )}
+                  active={isActive(pathname, routes.affiliateAnalytics.route)}
                 />
                 <MenuItem
                   to="users"
                   icon={<MdOutlinePeopleOutline />}
-                  label="Users"
+                  label={routes.affiliateUsers.title}
                   expanded={isHoveredOrExpanded}
-                  active={isCurrentRouteActive(
-                    pathname,
-                    ROUTES.affiliateUsers.route
-                  )}
+                  active={isActive(pathname, routes.affiliateUsers.route)}
                 />
               </>
             )}
@@ -119,22 +111,19 @@ const SideBar = ({
                 <MenuItem
                   to="applications"
                   icon={<MdOutlineFolderCopy />}
-                  label="Applications"
-                  active={isCurrentRouteActive(
+                  label={routes.applicantApplications.title}
+                  active={isActive(
                     pathname,
-                    ROUTES.applicantApplications.route
+                    routes.applicantApplications.route
                   )}
                   expanded={isHoveredOrExpanded}
                 />
                 <MenuItem
                   to="decisions"
                   icon={<MdOutlineAssignmentTurnedIn />}
-                  label="Decisions"
+                  label={routes.applicantDecisions.title}
                   expanded={isHoveredOrExpanded}
-                  active={isCurrentRouteActive(
-                    pathname,
-                    ROUTES.applicantDecisions.route
-                  )}
+                  active={isActive(pathname, routes.applicantDecisions.route)}
                 />
               </>
             )}
@@ -143,7 +132,7 @@ const SideBar = ({
             <MenuItem
               to=""
               icon={<MdOutlineSettings />}
-              label="Settings"
+              label={routes.settings.title}
               expanded={isHoveredOrExpanded}
             />
           </Flex>

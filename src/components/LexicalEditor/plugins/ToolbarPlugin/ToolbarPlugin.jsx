@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Divider, Flex, View } from '@aws-amplify/ui-react';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import {
@@ -49,11 +50,6 @@ import style from './ToolbarPlugin.module.css';
 
 const LowPriority = 1;
 
-const buttonProps = {
-  padding: '.5rem',
-  borderStyle: 'none',
-};
-
 const VerticalDivider = () => (
   <Divider orientation="vertical" opacity={1} alignSelf="stretch" />
 );
@@ -68,6 +64,7 @@ const ToolbarPlugin = ({ disableFiles }) => {
   const [isUnderline, setIsUnderline] = useState(false);
   const [isStrikethrough, setIsStrikethrough] = useState(false);
   const [blockType, setBlockType] = useState('paragraph');
+  const { t } = useTranslation();
 
   const updateToolbar = useCallback(() => {
     const selection = $getSelection();
@@ -234,8 +231,8 @@ const ToolbarPlugin = ({ disableFiles }) => {
           onClick={() => {
             editor.dispatchCommand(UNDO_COMMAND, undefined);
           }}
-          aria-label="Undo"
-          title="Undo"
+          aria-label={t('components.lexicalEditor.plugins.ToolbarPlugin.undo')}
+          title={t('components.lexicalEditor.plugins.ToolbarPlugin.undo')}
           className={style.toolbarButton}
         >
           <MdUndo />
@@ -245,8 +242,8 @@ const ToolbarPlugin = ({ disableFiles }) => {
           onClick={() => {
             editor.dispatchCommand(REDO_COMMAND, undefined);
           }}
-          aria-label="Redo"
-          title="Redo"
+          aria-label={t('components.lexicalEditor.plugins.ToolbarPlugin.redo')}
+          title={t('components.lexicalEditor.plugins.ToolbarPlugin.redo')}
           variation="text-only"
           className={style.toolbarButton}
         >
@@ -258,20 +255,32 @@ const ToolbarPlugin = ({ disableFiles }) => {
           value={blockType}
           onChange={handleTextTypeOnChange}
         >
-          <option value="paragraph">Normal</option>
-          <option value="h1">Heading 1</option>
-          <option value="h2">Heading 2</option>
-          <option value="h3">Heading 3</option>
-          <option value="bullet">Bullet List</option>
-          <option value="number">Numbered List</option>
+          <option value="paragraph">
+            {t('components.lexicalEditor.plugins.ToolbarPlugin.paragraph')}
+          </option>
+          <option value="h1">
+            {t('components.lexicalEditor.plugins.ToolbarPlugin.h1')}
+          </option>
+          <option value="h2">
+            {t('components.lexicalEditor.plugins.ToolbarPlugin.h2')}
+          </option>
+          <option value="h3">
+            {t('components.lexicalEditor.plugins.ToolbarPlugin.h3')}
+          </option>
+          <option value="bullet">
+            {t('components.lexicalEditor.plugins.ToolbarPlugin.bullet')}
+          </option>
+          <option value="number">
+            {t('components.lexicalEditor.plugins.ToolbarPlugin.number')}
+          </option>
         </CustomSelect>
         <VerticalDivider />
         <CustomButton
           onClick={() => {
             editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold');
           }}
-          aria-label="Format Bold"
-          title="Format Bold"
+          aria-label={t('components.lexicalEditor.plugins.ToolbarPlugin.bold')}
+          title={t('components.lexicalEditor.plugins.ToolbarPlugin.bold')}
           variation="text-only"
           className={`${style.toolbarButton} ${isBold ? style.selected : ''}`}
         >
@@ -282,10 +291,11 @@ const ToolbarPlugin = ({ disableFiles }) => {
           onClick={() => {
             editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic');
           }}
-          {...buttonProps}
           className={`${style.toolbarButton} ${isItalic ? style.selected : ''}`}
-          aria-label="Format Italics"
-          title="Format Italics"
+          aria-label={t(
+            'components.lexicalEditor.plugins.ToolbarPlugin.italic'
+          )}
+          title={t('components.lexicalEditor.plugins.ToolbarPlugin.italic')}
         >
           <MdFormatItalic />
         </CustomButton>
@@ -294,12 +304,13 @@ const ToolbarPlugin = ({ disableFiles }) => {
           onClick={() => {
             editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline');
           }}
-          {...buttonProps}
           className={`${style.toolbarButton} ${
             isUnderline ? style.selected : ''
           }`}
-          aria-label="Format Underline"
-          title="Format Underline"
+          aria-label={t(
+            'components.lexicalEditor.plugins.ToolbarPlugin.underline'
+          )}
+          title={t('components.lexicalEditor.plugins.ToolbarPlugin.underline')}
         >
           <MdFormatUnderlined />
         </CustomButton>
@@ -308,12 +319,15 @@ const ToolbarPlugin = ({ disableFiles }) => {
           onClick={() => {
             editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough');
           }}
-          {...buttonProps}
           className={`${style.toolbarButton} ${
             isStrikethrough ? style.selected : ''
           }`}
-          aria-label="Format Strikethrough"
-          title="Format Strikethrough"
+          aria-label={t(
+            'components.lexicalEditor.plugins.ToolbarPlugin.strikethrough'
+          )}
+          title={t(
+            'components.lexicalEditor.plugins.ToolbarPlugin.strikethrough'
+          )}
         >
           <MdFormatStrikethrough />
         </CustomButton>
@@ -323,9 +337,10 @@ const ToolbarPlugin = ({ disableFiles }) => {
           onClick={() => {
             editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'left');
           }}
-          {...buttonProps}
-          aria-label="Left Align"
-          title="Left Align"
+          aria-label={t(
+            'components.lexicalEditor.plugins.ToolbarPlugin.leftAlign'
+          )}
+          title={t('components.lexicalEditor.plugins.ToolbarPlugin.leftAlign')}
           className={`${style.toolbarButton}`}
         >
           <MdFormatAlignLeft />
@@ -335,9 +350,12 @@ const ToolbarPlugin = ({ disableFiles }) => {
           onClick={() => {
             editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'center');
           }}
-          {...buttonProps}
-          aria-label="Center Align"
-          title="Center Align"
+          aria-label={t(
+            'components.lexicalEditor.plugins.ToolbarPlugin.centerAlign'
+          )}
+          title={t(
+            'components.lexicalEditor.plugins.ToolbarPlugin.centerAlign'
+          )}
           className={`${style.toolbarButton}`}
         >
           <MdFormatAlignCenter />
@@ -347,9 +365,10 @@ const ToolbarPlugin = ({ disableFiles }) => {
           onClick={() => {
             editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'right');
           }}
-          {...buttonProps}
-          aria-label="Right Align"
-          title="Right Align"
+          aria-label={t(
+            'components.lexicalEditor.plugins.ToolbarPlugin.rightAlign'
+          )}
+          title={t('components.lexicalEditor.plugins.ToolbarPlugin.rightAlign')}
           className={`${style.toolbarButton}`}
         >
           <MdFormatAlignRight />
@@ -359,16 +378,19 @@ const ToolbarPlugin = ({ disableFiles }) => {
           onClick={() => {
             editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'justify');
           }}
-          {...buttonProps}
-          aria-label="Justify Align"
-          title="Justify Align"
+          aria-label={t(
+            'components.lexicalEditor.plugins.ToolbarPlugin.justifyAlign'
+          )}
+          title={t(
+            'components.lexicalEditor.plugins.ToolbarPlugin.justifyAlign'
+          )}
           className={`${style.toolbarButton}`}
         >
           <MdFormatAlignJustify />
         </CustomButton>
         <VerticalDivider />
-        <InsertImageButton buttonProps={buttonProps} />
-        {!disableFiles && <InsertFileButton buttonProps={buttonProps} />}
+        <InsertImageButton />
+        {!disableFiles && <InsertFileButton />}
       </Flex>
       <Divider opacity={1} />
     </View>

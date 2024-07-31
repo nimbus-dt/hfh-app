@@ -1,9 +1,10 @@
+import { useTranslation } from 'react-i18next';
 import {
   DataStore,
   RecursiveModelPredicate,
   SortDirection,
   SortPredicate,
-} from '@aws-amplify/datastore';
+} from 'aws-amplify/datastore';
 import CustomButton from 'components/CustomButton/CustomButton';
 import TableWithPaginator from 'components/TableWithPaginator';
 import { useTestApplicationsQuery, useTestCycleById } from 'hooks/services';
@@ -11,7 +12,6 @@ import {
   SubmissionStatus,
   LazyTestApplication,
   TestApplication,
-  Habitat,
   ApplicationTypes,
 } from 'models';
 import { useState } from 'react';
@@ -21,21 +21,16 @@ import {
   MdOutlineLink,
   MdOutlineOpenInNew,
 } from 'react-icons/md';
-import {
-  Link,
-  useLocation,
-  useOutletContext,
-  useParams,
-} from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { stringToHumanReadable } from 'utils/strings';
 import BreadCrumbs from 'components/BreadCrumbs/BreadCrumbs';
 import DropdownMenu from 'components/DropdownMenu';
 import GoBack from 'components/GoBack';
 import { DEFAULT_REVIEW_STATUS } from 'utils/constants';
 import { useBreakpointValue } from '@aws-amplify/ui-react';
-
 import { convertDateYYYYMMDDtoDDMMYYYY } from 'utils/dates';
 import StatusChip from 'components/StatusChip';
+import useHabitat from 'hooks/utils/useHabitat';
 import style from './AffiliateCycleApplications.module.css';
 import NewApplicationModal from './components/NewApplicationModal';
 import StatusModal from './components/StatusModal';
@@ -44,31 +39,26 @@ import Filters from './components/Filters';
 import Username from './components/Username';
 import { redirectToApplicant } from './utils';
 
-interface IOutletContext {
-  habitat?: Habitat;
-  addCustomStatusToHabitat: (status: string) => void;
-  removeCustomStatusToHabitat: (status: string) => void;
-  updateCustomStatusToHabitat: (status: string) => void;
-}
-
 const AffiliateCycleApplications = () => {
   const { pathname } = useLocation();
+  const { t } = useTranslation();
+
   const isSmall = useBreakpointValue({
     base: true,
     medium: false,
   });
   const { cycleId } = useParams();
-  const {
-    habitat,
-    addCustomStatusToHabitat,
-    removeCustomStatusToHabitat,
-    updateCustomStatusToHabitat,
-  } = useOutletContext<IOutletContext>();
+
+  const { habitat } = useHabitat();
+
   const [statusModalOpen, setStatusModalOpen] = useState(false);
+
   const [newApplicationOpen, setNewApplicationOpen] = useState(false);
+
   const [trigger, setTrigger] = useState(0);
 
   const [filterModal, setFilterModal] = useState(false);
+
   const [filters, setFilters] = useState<Inputs>({
     startDateSubmitted: '',
     endDateSubmitted: '',
@@ -76,6 +66,7 @@ const AffiliateCycleApplications = () => {
     reviewStatus: null,
     customStatus: '',
   });
+
   const { data: applications }: { data: TestApplication[] } =
     useTestApplicationsQuery({
       criteria: (c1: RecursiveModelPredicate<LazyTestApplication>) =>
@@ -182,9 +173,9 @@ const AffiliateCycleApplications = () => {
   const handleOnCloseNewApplicationModal = () => setNewApplicationOpen(false);
 
   const breadCrumbsItems = [
-    { label: 'Forms', to: '../../forms' },
-    { label: 'Cycles', to: '..' },
-    { label: 'Applications' },
+    { label: t('pages.habitat.affiliate.forms.name'), to: '../../forms' },
+    { label: t('pages.habitat.affiliate.cycles.name'), to: '..' },
+    { label: t('pages.habitat.affiliate.cycles.cycle.name') },
   ];
 
   return (
@@ -192,35 +183,47 @@ const AffiliateCycleApplications = () => {
       <div className={style.firstRow}>
         {!isSmall && <BreadCrumbs items={breadCrumbsItems} />}
         <p className={`theme-body-medium ${style.incompleteApplications}`}>
-          Incomplete Applications: {applicationsPending.length}
+          {t('pages.habitat.affiliate.cycles.cycle.incompleteApplications')}{' '}
+          {applicationsPending.length}
         </p>
       </div>
       <div className={`${style.titleContainer}`}>
         <GoBack />
         <span className={`theme-headline-medium ${style.title}`}>
-          Applications Dashboard
+          {t('pages.habitat.affiliate.cycles.cycle.title')}
         </span>
       </div>
       <div className={`${style.tableOptions}`}>
         <div className={`${style.resultsContainer}`}>
-          <span className="theme-subtitle-s2">Applications</span>
-          <span
-            className={`${style.results}`}
-          >{`${applicationsCompleted.length} results`}</span>
+          <span className="theme-subtitle-s2">
+            {t('pages.habitat.affiliate.cycles.cycle.table.title')}
+          </span>
+          <span className={`${style.results}`}>{`${
+            applicationsCompleted.length
+          } ${t('pages.habitat.affiliate.cycles.cycle.table.results')}`}</span>
         </div>
         <div className={`${style.options}`}>
           <div className={`${style.suboptions}`}>
             <CustomButton
               onClick={() => redirectToApplicant({ cycleId, pathname })}
               icon={isSmall ? undefined : <MdOutlineLink />}
+              title={t('pages.habitat.affiliate.cycles.cycle.applicantLink')}
             >
-              {isSmall ? <MdOutlineLink size="24px" /> : 'Applicant Link'}
+              {isSmall ? (
+                <MdOutlineLink size="24px" />
+              ) : (
+                t('pages.habitat.affiliate.cycles.cycle.applicantLink')
+              )}
             </CustomButton>
             <CustomButton
               onClick={() => setFilterModal(true)}
               icon={isSmall ? undefined : <MdOutlineFilterList />}
             >
-              {isSmall ? <MdOutlineFilterList size="24px" /> : 'Filter'}
+              {isSmall ? (
+                <MdOutlineFilterList size="24px" />
+              ) : (
+                t('pages.habitat.affiliate.cycles.cycle.filter')
+              )}
             </CustomButton>
           </div>
           {filterModal && (
@@ -234,7 +237,6 @@ const AffiliateCycleApplications = () => {
           <NewApplicationModal
             open={newApplicationOpen}
             onClose={handleOnCloseNewApplicationModal}
-            habitat={habitat}
             cycle={cycle}
             setTrigger={setTrigger}
           />
@@ -243,37 +245,39 @@ const AffiliateCycleApplications = () => {
             onClick={handleAddNewApplicationOnClick}
             icon={isSmall ? undefined : <MdOutlineAdd />}
           >
-            {isSmall ? <MdOutlineAdd size="24px" /> : 'Paper Application'}
+            {isSmall ? (
+              <MdOutlineAdd size="24px" />
+            ) : (
+              t('pages.habitat.affiliate.cycles.cycle.newApplication')
+            )}
           </CustomButton>
         </div>
       </div>
       <StatusModal
         open={statusModalOpen}
         onClose={handleOnCloseStatusModal}
-        habitat={habitat}
-        addCustomStatusToHabitat={addCustomStatusToHabitat}
-        removeCustomStatusToHabitat={removeCustomStatusToHabitat}
-        updateCustomStatusToHabitat={updateCustomStatusToHabitat}
         setTrigger={setTrigger}
       />
       <TableWithPaginator
         headers={[
           {
             id: 'name',
-            value: 'Name',
+            value: t('pages.habitat.affiliate.cycles.cycle.table.name'),
             width: '100%',
           },
           {
             id: 'type',
-            value: 'Type',
+            value: t('pages.habitat.affiliate.cycles.cycle.table.type'),
           },
           {
             id: 'dateSubmitted',
-            value: 'Date Submitted',
+            value: t(
+              'pages.habitat.affiliate.cycles.cycle.table.dateSubmitted'
+            ),
           },
           {
             id: 'reviewStatus',
-            value: 'Review Status',
+            value: t('pages.habitat.affiliate.cycles.cycle.table.reviewStatus'),
           },
           {
             id: 'customStatus',
@@ -283,13 +287,13 @@ const AffiliateCycleApplications = () => {
                 onClick={handleStatusOnClick}
                 aria-hidden="true"
               >
-                Custom Status
+                {t('pages.habitat.affiliate.cycles.cycle.table.customStatus')}
               </span>
             ),
           },
           {
             id: 'view',
-            value: 'View',
+            value: t('pages.habitat.affiliate.cycles.cycle.table.view'),
           },
         ]}
         data={applicationsCompleted.map((application, index) => {

@@ -8,3 +8,4 @@ import './file.css';
 import './editGrid.css';
 import './select.css';
 import './spacing.css';
+import './print.css';

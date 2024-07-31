@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DataStore } from 'aws-amplify';
+import { DataStore } from 'aws-amplify/datastore';
 import { Maintenance } from 'models';
 
 interface CheckMaintenanceProps {

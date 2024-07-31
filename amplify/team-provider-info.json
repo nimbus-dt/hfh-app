@@ -48,6 +48,11 @@
         "verifyUsers": {
           "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
           "s3Key": "amplify-builds/verifyUsers-33445435695a79345238-build.zip"
+        },
+        "convertApplicationToPdf": {
+          "deploymentBucketName": "amplify-hfhapp-dev-183905-deployment",
+          "s3Key": "amplify-builds/convertApplicationToPdf-4f346457426c2f544e41-build.zip",
+          "prodDomain": "https://feature-print-to-pdf.dgfg84wx7ntah.amplifyapp.com"
         }
       },
       "auth": {
@@ -60,7 +65,8 @@
         "hfhapp": {},
         "public": {},
         "sendEmailToApplicantAPI": {},
-        "userAPI": {}
+        "userAPI": {},
+        "habitat": {}
       }
     }
   },

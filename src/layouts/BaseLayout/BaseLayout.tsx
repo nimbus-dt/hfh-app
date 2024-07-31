@@ -1,90 +1,81 @@
-import { useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
-import { useAuthenticator, useBreakpointValue } from '@aws-amplify/ui-react';
-import { getRouteTitle } from 'utils/routes';
-import { useUserQuery } from 'hooks/services';
-import useHabitatByUrlName from 'hooks/services/useHabitatByUrlName';
-import { Habitat, LazyUser } from 'models';
-import { RecursiveModelPredicate } from '@aws-amplify/datastore';
-import TopBar from './components/TopBar';
+import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
+
+import { useBreakpointValue } from '@aws-amplify/ui-react';
+
+import TranslationContext from 'contexts/TranslationsContext';
+import useAsync from 'hooks/utils/useAsync/useAsync';
+
 import SideBar from './components/SideBar';
+import TopBar from './components/TopBar';
 import styles from './BaseLayout.module.css';
+import BaseLayoutProps from './BaseLayout.types';
 
-interface IProperties {
-  variation: 'applicant' | 'affiliate';
-  children: React.ReactNode;
-  hideSideBar?: boolean;
-}
+const FORMIO_URL = process.env.REACT_APP_FORMIO_URL;
 
-const BaseLayout = ({ variation, children, hideSideBar }: IProperties) => {
-  const { habitat: habitatUrlName } = useParams();
+const BaseLayout = ({ variation, children, hideSideBar }: BaseLayoutProps) => {
+  const { i18n } = useTranslation();
+  const { language } = i18n;
 
   const location = useLocation();
-  const title = getRouteTitle(location.pathname);
 
-  const { habitat } = useHabitatByUrlName({
-    habitatUrlName: habitatUrlName || '',
-  });
+  const [expand, setExpand] = useState(false);
 
-  const isMobile = useBreakpointValue({
+  const base = useBreakpointValue({
     base: true,
     medium: false,
   });
 
-  const { user } = useAuthenticator((context) => [
-    context.authStatus,
-    context.user,
-  ]);
-
-  const { data: userData } = useUserQuery({
-    criteria: (c1: RecursiveModelPredicate<LazyUser>) =>
-      c1.and((c2) => {
-        const criteriaArr = user ? [c2.owner.eq(user.username as string)] : [];
-        return criteriaArr;
-      }),
-    paginationProducer: {},
-    dependencyArray: [user],
-  });
-
-  const [expandSideBar, setExpandSideBar] = useState(false);
+  const mobile = typeof base === 'boolean' && base;
 
   const handleOnExpand = () => {
-    if (isMobile) {
-      setExpandSideBar((prevExpandSideBar) => !prevExpandSideBar);
+    if (base) {
+      setExpand((prevExpandSideBar) => !prevExpandSideBar);
     }
   };
 
-  let initials = '';
+  const fetchTranslations = useCallback(async () => {
+    const response = await fetch(
+      `${FORMIO_URL}/language/submission?data.language=${language}&data.form=app`
+    );
+    const array = await response.json();
 
-  if (userData) {
-    const tempUser = userData[0];
-    const firstNameInit = tempUser?.firstName.charAt(0);
-    const lastNameInit = tempUser?.lastName.charAt(0);
-    initials = firstNameInit + lastNameInit;
-  }
+    const { translation } = array[0].data;
+    Object.keys(translation).forEach((key) => {
+      const newKey = key.replace(/__DOT__/g, '.');
+      translation[newKey] = translation[key];
+      if (newKey !== key) {
+        delete translation[key];
+      }
+    });
+    return {
+      [`${language}`]: translation,
+    };
+  }, [language]);
+
+  const { value } = useAsync({
+    asyncFunction: fetchTranslations,
+  });
 
   return (
-    <div className={styles.layout}>
-      {!hideSideBar && (
-        <SideBar
-          pathname={location.pathname}
-          mobile={typeof isMobile === 'boolean' && isMobile}
-          expanded={expandSideBar}
-          onExpand={handleOnExpand}
-          variation={variation}
-          habitat={habitat as unknown as Habitat}
-        />
-      )}
-      <div className={styles.rightSide}>
-        <TopBar
-          title={title || ''}
-          initials={initials}
-          mobile={typeof isMobile === 'boolean' && isMobile}
-          onExpand={handleOnExpand}
-        />
-        <div className={styles.content}>{children}</div>
+    <TranslationContext.Provider value={value}>
+      <div className={styles.layout}>
+        {!hideSideBar && (
+          <SideBar
+            pathname={location.pathname}
+            mobile={mobile}
+            expanded={expand}
+            onExpand={handleOnExpand}
+            variation={variation}
+          />
+        )}
+        <div className={styles.rightSide}>
+          <TopBar mobile={mobile} onExpand={handleOnExpand} />
+          <div className={styles.content}>{children}</div>
+        </div>
       </div>
-    </div>
+    </TranslationContext.Provider>
   );
 };
 

@@ -1,0 +1,17 @@
+.hfh_formio_show_on_print {
+  display: none !important;
+}
+
+@media print {
+  .formio-form > div {
+    break-after: always;
+  }
+
+  .hfh_formio_show_on_print {
+    display: initial !important;
+  }
+
+  .hfh_formio_hide_on_print {
+    display: none !important;
+  }
+}

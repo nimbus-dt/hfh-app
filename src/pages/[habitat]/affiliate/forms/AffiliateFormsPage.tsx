@@ -4,25 +4,23 @@ import { Button, Flex, Heading, Text, View } from '@aws-amplify/ui-react';
 import React from 'react';
 import { MdOutlineOpenInNew } from 'react-icons/md';
 import TableWithPaginator from 'components/TableWithPaginator';
-import { Habitat } from 'models';
 import { useRootFormsQuery } from 'hooks/services';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { dateOnly } from 'utils/dates';
 import { throttle } from 'lodash';
+import useHabitat from 'hooks/utils/useHabitat';
+import { useTranslation } from 'react-i18next';
 import style from './AffiliateFormsPage.module.css';
 
 const AffiliateFormsPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   localStorage.removeItem('goto');
 
   // Get context
-  interface OutletContextType {
-    habitat: Habitat;
-  }
 
-  const context = useOutletContext<OutletContextType>();
-  const { habitat } = context;
+  const { habitat } = useHabitat();
 
   // Get Forms
   const { data: forms } = useRootFormsQuery({
@@ -50,7 +48,9 @@ const AffiliateFormsPage = () => {
         alignItems="center"
       >
         <Flex direction="column">
-          <Heading level={3}>Forms Dashboard</Heading>
+          <Heading level={3}>
+            {t('pages.habitat.affiliate.forms.title')}
+          </Heading>
         </Flex>
       </Flex>
       <Flex direction="column" gap="20px">
@@ -62,11 +62,11 @@ const AffiliateFormsPage = () => {
           <Flex direction="row" alignItems="center">
             <View className="theme-subtitle-s2">
               <Text as="span" alignSelf="center">
-                Forms
+                {t('pages.habitat.affiliate.forms.table.title')}
               </Text>
             </View>
             <Text className={`theme-subtitle-s2 ${style.subtitle}`}>
-              {forms.length} results
+              {forms.length} {t('pages.habitat.affiliate.forms.table.results')}
             </Text>
           </Flex>
         </Flex>
@@ -75,17 +75,18 @@ const AffiliateFormsPage = () => {
           headers={[
             {
               id: 'name',
-              value: 'Name',
+              value: t('pages.habitat.affiliate.forms.table.name'),
               width: '70%',
             },
             {
               id: 'dateCreated',
-              value: 'Date Created',
+              value: t('pages.habitat.affiliate.forms.table.dateCreated'),
               width: '15%',
             },
+
             {
               id: 'view',
-              value: 'View',
+              value: t('pages.habitat.affiliate.forms.table.view'),
               textAlign: 'center',
               width: '15%',
             },

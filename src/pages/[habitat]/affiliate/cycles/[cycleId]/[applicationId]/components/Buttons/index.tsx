@@ -1,4 +1,4 @@
-import { Flex } from '@aws-amplify/ui-react';
+import { Flex, Loader } from '@aws-amplify/ui-react';
 import {
   ApplicationTypes,
   SubmissionStatus,
@@ -6,6 +6,7 @@ import {
 } from 'models';
 import CustomButton from 'components/CustomButton/CustomButton';
 import { MdOutlineMail, MdOutlinePrint } from 'react-icons/md';
+import { useTranslation } from 'react-i18next';
 import DecideModal from './components/DecideModal';
 import { TDecideSchema } from '../../AffiliateApplicationDetailsPage.schema';
 
@@ -15,7 +16,9 @@ interface ButtonsProps {
   handleDecideModalOnClose: () => void;
   handleOnValidDecide: (data: TDecideSchema) => void;
   handleDecideOnClick: () => void;
+  handleDownloadApplicationOnClick: () => void;
   loading: number;
+  downloading: boolean;
 }
 
 const Buttons = ({
@@ -25,7 +28,11 @@ const Buttons = ({
   handleDecideModalOnClose,
   handleOnValidDecide,
   handleDecideOnClick,
+  handleDownloadApplicationOnClick,
+  downloading,
 }: ButtonsProps) => {
+  const { t } = useTranslation();
+
   if (!application) return null;
   if (application?.type === ApplicationTypes.PAPER) return null;
   if (!(application?.submissionStatus === SubmissionStatus.COMPLETED))
@@ -39,15 +46,24 @@ const Buttons = ({
         onValid={handleOnValidDecide}
         loading={loading}
       />
-      <CustomButton icon={<MdOutlinePrint />} variation="primary">
-        Print
+      <CustomButton
+        icon={downloading ? <Loader size="large" /> : <MdOutlinePrint />}
+        variation="primary"
+        onClick={handleDownloadApplicationOnClick}
+        disabled={downloading}
+      >
+        {t(
+          'pages.habitat.affiliate.cycles.cycle.application.components.buttons.download'
+        )}
       </CustomButton>
       <CustomButton
+        variation="primary"
         onClick={handleDecideOnClick}
         icon={<MdOutlineMail />}
-        variation="primary"
       >
-        Send Decision
+        {t(
+          'pages.habitat.affiliate.cycles.cycle.application.components.buttons.decide'
+        )}
       </CustomButton>
     </Flex>
   );

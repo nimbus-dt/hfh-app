@@ -1,5 +1,6 @@
 import { Button, Flex, Text, TextField } from '@aws-amplify/ui-react';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MdInsertPhoto } from 'react-icons/md';
 import PropTypes from 'prop-types';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
@@ -9,13 +10,14 @@ import CustomButton from 'components/CustomButton/CustomButton';
 import { INSERT_IMAGE_COMMAND } from '../../ImagePlugin';
 import style from '../ToolbarPlugin.module.css';
 
-const InsertImageButton = ({ buttonProps }) => {
+const InsertImageButton = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [editor] = useLexicalComposerContext();
   const [type, setType] = useState();
   const [url, setUrl] = useState('');
   const [files, setFiles] = useState([]);
   const [altText, setAltText] = useState('');
+  const { t } = useTranslation();
 
   const handleOpenClose = () => {
     setType();
@@ -49,7 +51,9 @@ const InsertImageButton = ({ buttonProps }) => {
   return (
     <>
       <Modal
-        title="Insert image"
+        title={t(
+          'components.lexicalEditor.plugins.ToolbarPlugin.components.InsertImageButton.insertImage'
+        )}
         open={modalIsOpen}
         onClickClose={handleOpenClose}
         width={type ? '35rem' : '20rem'}
@@ -57,7 +61,9 @@ const InsertImageButton = ({ buttonProps }) => {
         {type === 'url' && (
           <Flex direction="column" alignItems="stretch">
             <TextField
-              label="Image url"
+              label={t(
+                'components.lexicalEditor.plugins.ToolbarPlugin.components.InsertImageButton.imageUrl'
+              )}
               alignSelf="stretch"
               id="image-url"
               type="url"
@@ -65,35 +71,56 @@ const InsertImageButton = ({ buttonProps }) => {
               onChange={(event) => setUrl(event.currentTarget.value)}
             />
             <TextField
-              label="Alt text"
+              label={t(
+                'components.lexicalEditor.plugins.ToolbarPlugin.components.InsertImageButton.altText'
+              )}
               id="image-alt"
               value={altText}
               onChange={(event) => setAltText(event.currentTarget.value)}
             />
             <Flex justifyContent="end">
               <Button variation="primary" onClick={handleAddUrlOnClick}>
-                Add
+                {t(
+                  'components.lexicalEditor.plugins.ToolbarPlugin.components.InsertImageButton.add'
+                )}
               </Button>
-              <Button onClick={handleOpenClose}>Cancel</Button>
+              <Button onClick={handleOpenClose}>
+                {t(
+                  'components.lexicalEditor.plugins.ToolbarPlugin.components.InsertImageButton.cancel'
+                )}
+              </Button>
             </Flex>
           </Flex>
         )}
         {type === 'file' && (
           <Flex direction="column" alignItems="stretch">
             <FileInput
-              label="Upload image file"
+              label={t(
+                'components.lexicalEditor.plugins.ToolbarPlugin.components.InsertImageButton.uploadImageFile'
+              )}
               maxFileCount={1}
               multiple={false}
               files={files}
               onChange={(newFiles) => setFiles(newFiles)}
               accept="image/*"
             />
-            <TextField label="Alt text" id="image-alt" />
+            <TextField
+              label={t(
+                'components.lexicalEditor.plugins.ToolbarPlugin.components.InsertImageButton.altText'
+              )}
+              id="image-alt"
+            />
             <Flex justifyContent="end">
               <Button variation="primary" onClick={handleAddFileOnClick}>
-                Add
+                {t(
+                  'components.lexicalEditor.plugins.ToolbarPlugin.components.InsertImageButton.add'
+                )}
               </Button>
-              <Button onClick={handleOpenClose}>Cancel</Button>
+              <Button onClick={handleOpenClose}>
+                {t(
+                  'components.lexicalEditor.plugins.ToolbarPlugin.components.InsertImageButton.cancel'
+                )}
+              </Button>
             </Flex>
           </Flex>
         )}
@@ -101,11 +128,19 @@ const InsertImageButton = ({ buttonProps }) => {
         {type === undefined && (
           <Flex direction="column" alignItems="stretch">
             <Button variation="primary" onClick={() => setType('url')}>
-              URL
+              {t(
+                'components.lexicalEditor.plugins.ToolbarPlugin.components.InsertImageButton.url'
+              )}
             </Button>
-            <Text alignSelf="center">or</Text>
+            <Text alignSelf="center">
+              {t(
+                'components.lexicalEditor.plugins.ToolbarPlugin.components.InsertImageButton.or'
+              )}
+            </Text>
             <Button variation="primary" onClick={() => setType('file')}>
-              Upload image
+              {t(
+                'components.lexicalEditor.plugins.ToolbarPlugin.components.InsertImageButton.uploadImage'
+              )}
             </Button>
           </Flex>
         )}
@@ -113,19 +148,18 @@ const InsertImageButton = ({ buttonProps }) => {
       <CustomButton
         variation="text-only"
         onClick={handleOpenClose}
-        {...buttonProps}
-        aria-label="Insert Image"
-        title="Insert Image"
+        aria-label={t(
+          'components.lexicalEditor.plugins.ToolbarPlugin.components.InsertImageButton.insertImage'
+        )}
+        title={t(
+          'components.lexicalEditor.plugins.ToolbarPlugin.components.InsertImageButton.insertImage'
+        )}
         className={style.toolbarButton}
       >
         <MdInsertPhoto />
       </CustomButton>
     </>
   );
-};
-
-InsertImageButton.propTypes = {
-  buttonProps: PropTypes.object,
 };
 
 export default InsertImageButton;

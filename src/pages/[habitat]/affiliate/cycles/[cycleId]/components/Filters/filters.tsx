@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { MdOutlineClose } from 'react-icons/md';
 
@@ -32,12 +33,12 @@ const Filters = ({
     },
     resolver: zodResolver(applicationsFilterSchema),
   });
+  const { t } = useTranslation();
 
   const watchStartDateSubmitted = watch('startDateSubmitted');
   const watchEndDateSubmitted = watch('endDateSubmitted');
 
   const onSubmit = (data: Inputs) => {
-    console.log(data);
     setFilters(data);
     close();
   };
@@ -66,17 +67,24 @@ const Filters = ({
     })),
   ];
 
+  const checkbox1 = typeCheckbox(t);
+  const checkbox2 = reviewStatusCheckbox(t);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={style.filterModal}>
       <div className={style.filterModalTitleContainer}>
-        <span className="theme-subtitle-s2">Filter Options</span>
+        <span className="theme-subtitle-s2">
+          {t('pages.habitat.affiliate.cycles.cycle.components.filters.title')}
+        </span>
         <IconButton variation="not-outlined" onClick={close}>
           <MdOutlineClose />
         </IconButton>
       </div>
       <div className={style.inputContainer}>
         <div className={`theme-body-small ${style.inputTitle}`}>
-          <span>Dates</span>
+          <span>
+            {t('pages.habitat.affiliate.cycles.cycle.components.filters.dates')}
+          </span>
         </div>
         <div style={{ position: 'relative' }}>
           <span
@@ -93,7 +101,9 @@ const Filters = ({
           </span>
           <TextField
             id="startDate"
-            label="Start Date Submitted"
+            label={t(
+              'pages.habitat.affiliate.cycles.cycle.components.filters.startDate'
+            )}
             type="date"
             className={`${style.customDateInput}`}
             {...register('startDateSubmitted')}
@@ -114,7 +124,9 @@ const Filters = ({
           </span>
           <TextField
             id="endDate"
-            label="End Date Submitted"
+            label={t(
+              'pages.habitat.affiliate.cycles.cycle.components.filters.endDate'
+            )}
             type="date"
             className={style.customDateInput}
             {...register('endDateSubmitted')}
@@ -122,28 +134,34 @@ const Filters = ({
         </div>
       </div>
       <Checkboxes
-        title={typeCheckbox.title}
+        title={checkbox1.title}
         control={control}
-        name={typeCheckbox.name}
-        data={typeCheckbox.data}
+        name={checkbox1.name}
+        data={checkbox1.data}
       />
       <Checkboxes
         control={control}
-        title={reviewStatusCheckbox.title}
-        name={reviewStatusCheckbox.name}
-        data={reviewStatusCheckbox.data}
+        title={checkbox2.title}
+        name={checkbox2.name}
+        data={checkbox2.data}
       />
       <Checkboxes
         control={control}
-        title="Custom Status"
+        title={t(
+          'pages.habitat.affiliate.cycles.cycle.components.filters.customStatus'
+        )}
         name="customStatus"
         data={customStatusCheckboxData}
       />
       <div className={style.filterModalButtonsContainer}>
         <CustomButton variation="text-only" onClick={handleResetFilters}>
-          Clear Filters
+          {t(
+            'pages.habitat.affiliate.cycles.cycle.components.filters.clearFilters'
+          )}
         </CustomButton>
-        <CustomButton type="submit">Save</CustomButton>
+        <CustomButton type="submit">
+          {t('pages.habitat.affiliate.cycles.cycle.components.filters.save')}
+        </CustomButton>
       </div>
     </form>
   );

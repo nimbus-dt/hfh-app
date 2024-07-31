@@ -1,4 +1,4 @@
-import { Storage } from 'aws-amplify';
+import { remove } from 'aws-amplify/storage';
 
 /**
  * Downloads a file from a valid URL
@@ -24,12 +24,9 @@ export const downloadWithUrl = (url, name) => {
  * @param {string} level
  * @returns {Array}
  */
-export const removeFiles = async (keys, level = 'public') => {
-  const promisesArr = keys.map((key) =>
-    Storage.remove(key, {
-      level,
-    })
-  );
+export const removeFiles = async (keys) => {
+  console.log('keys', keys);
+  const promisesArr = keys.map((key) => remove({ path: key }));
   const results = await Promise.all(promisesArr);
   return results;
 };

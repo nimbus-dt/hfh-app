@@ -1,15 +1,10 @@
 import { useCallback, useState } from 'react';
-import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
-import { DataStore, SortDirection } from 'aws-amplify';
+import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
+import { DataStore, SortDirection } from 'aws-amplify/datastore';
 import { Button, useBreakpointValue } from '@aws-amplify/ui-react';
-import {
-  MdOutlineOpenInNew,
-  MdFilterList,
-  MdOutlineClear,
-  MdOutlineAdd,
-} from 'react-icons/md';
+import { MdOutlineOpenInNew, MdFilterList } from 'react-icons/md';
 import { throttle } from 'lodash';
-
 import BreadCrumbs from 'components/BreadCrumbs/BreadCrumbs';
 import Chip from 'components/Chip';
 import Loading from 'components/Loading';
@@ -18,28 +13,29 @@ import GoBack from 'components/GoBack';
 import TableWithPaginator from 'components/TableWithPaginator';
 import { useRootFormById } from 'hooks/services';
 import useAsync from 'hooks/utils/useAsync/useAsync';
-import { Habitat, RootForm, TestCycle } from 'models';
+import { RootForm, TestCycle } from 'models';
 import { convertDateYYYYMMDDtoDDMMYYYY } from 'utils/dates';
 import { Status } from 'utils/enums';
-
+import useHabitat from 'hooks/utils/useHabitat';
 import CustomButton from 'components/CustomButton';
 import Filters from './components/filters';
 import NewCycle from './components/newCycle';
 import styles from './styles.module.css';
-import headers from './utils/headers';
 import { Inputs } from './types';
-
-interface OutletContextProps {
-  habitat?: Habitat;
-}
+import CycleButton from './components/CycleButton';
 
 const CyclesPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
   const { formId } = useParams();
-  const context = useOutletContext<OutletContextProps>();
-  const habitat = context?.habitat;
+
+  const { habitat } = useHabitat();
+
   const [showFilters, setShowFilters] = useState(false);
+
   const [showModal, setShowModal] = useState(false);
+
   const [filters, setFilters] = useState<Inputs>({
     startDate: '',
     endDate: '',
@@ -49,7 +45,7 @@ const CyclesPage = () => {
   const isSmall = useBreakpointValue({
     base: true,
     medium: false,
-  });
+  }) as boolean;
 
   const { data: rootForm }: { data: RootForm | null } = useRootFormById({
     id: formId,
@@ -128,38 +124,17 @@ const CyclesPage = () => {
       name,
       startDate: convertDateYYYYMMDDtoDDMMYYYY(startDate.split('T')[0]),
       endDate: endDate ? convertDateYYYYMMDDtoDDMMYYYY(endDate) : '',
-      status: isOpen ? 'Open' : 'Closed',
+      status: isOpen,
       createdAt,
     })
   );
 
   const breadCrumbsItems = [
-    { label: `Forms`, to: '../forms' },
+    { label: t('pages.habitat.affiliate.forms.name'), to: '../forms' },
     {
-      label: 'Cycles',
+      label: t('pages.habitat.affiliate.cycles.name'),
     },
   ];
-
-  const cycleButton =
-    value.openCycles.length > 0 ? (
-      <CustomButton
-        onClick={throttle(() => {
-          setShowModal(true);
-        }, 500)}
-        icon={isSmall ? undefined : <MdOutlineClear />}
-      >
-        {isSmall ? <MdOutlineClear size="24px" /> : 'Close Cycle'}
-      </CustomButton>
-    ) : (
-      <CustomButton
-        onClick={throttle(() => {
-          setShowModal(true);
-        }, 500)}
-        icon={isSmall ? undefined : <MdOutlineAdd />}
-      >
-        {isSmall ? <MdOutlineAdd size="24px" /> : 'New Cycle'}
-      </CustomButton>
-    );
 
   return (
     <div className={styles.page}>
@@ -167,15 +142,20 @@ const CyclesPage = () => {
         <BreadCrumbs items={breadCrumbsItems} />
         <div className={styles.title}>
           <GoBack to="../forms" />
-          <p className="theme-headline-medium">Cycles Dashboard</p>
+          <p className="theme-headline-medium">
+            {t('pages.habitat.affiliate.cycles.title')}
+          </p>
         </div>
       </div>
       <div className={styles.applications}>
         <div className={styles.table_options}>
           <div className={styles.table_title}>
-            <p className={`${styles.neutral_100} theme-subtitle-s2`}>Cycles</p>
+            <p className={`${styles.neutral_100} theme-subtitle-s2`}>
+              {t('pages.habitat.affiliate.cycles.table.title')}
+            </p>
             <p className={`${styles.neutral_80} theme-body-small`}>
-              {cycles.length} results
+              {cycles.length}{' '}
+              {t('pages.habitat.affiliate.cycles.table.results')}
             </p>
           </div>
           <div className={styles.options}>
@@ -185,13 +165,44 @@ const CyclesPage = () => {
               }, 500)}
               icon={isSmall ? undefined : <MdFilterList />}
             >
-              {isSmall ? <MdFilterList size="24px" /> : 'Filter'}
+              {isSmall ? (
+                <MdFilterList size="24px" />
+              ) : (
+                t('pages.habitat.affiliate.cycles.button.filter')
+              )}
             </CustomButton>
-            {cycleButton}
+            <CycleButton
+              isSmall={isSmall}
+              isACycleOpen={value.openCycles.length > 0}
+              onClick={throttle(() => {
+                setShowModal(true);
+              }, 500)}
+            />
           </div>
         </div>
         <TableWithPaginator
-          headers={headers}
+          headers={[
+            {
+              id: 'name',
+              value: t('pages.habitat.affiliate.cycles.table.name'),
+            },
+            {
+              id: 'startDate',
+              value: t('pages.habitat.affiliate.cycles.table.startDate'),
+            },
+            {
+              id: 'endDate',
+              value: t('pages.habitat.affiliate.cycles.table.endDate'),
+            },
+            {
+              id: 'status',
+              value: t('pages.habitat.affiliate.cycles.table.status'),
+            },
+            {
+              id: 'view',
+              value: t('pages.habitat.affiliate.cycles.table.view'),
+            },
+          ]}
           data={cycles.map((data) => ({
             id: data.id,
             cells: [
@@ -201,8 +212,12 @@ const CyclesPage = () => {
               {
                 value: (
                   <Chip
-                    variation={data.status === 'Open' ? 'success' : 'danger'}
-                    text={data.status}
+                    variation={data.status ? 'success' : 'danger'}
+                    text={
+                      data.status
+                        ? t('pages.habitat.affiliate.cycles.status.open')
+                        : t('pages.habitat.affiliate.cycles.status.closed')
+                    }
                   />
                 ),
                 id: 'status',
@@ -240,7 +255,6 @@ const CyclesPage = () => {
             value.openCycles.length > 0 ? value.openCycles[0] : undefined
           }
           rootForm={rootForm}
-          habitat={habitat}
           open={showModal}
           close={() => setShowModal(false)}
         />
