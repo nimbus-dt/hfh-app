@@ -407,6 +407,22 @@
         }
       ]
     },
+    "AMPLIFY_function_verifyUser_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "verifyUser"
+        }
+      ]
+    },
+    "AMPLIFY_function_verifyUser_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "verifyUser"
+        }
+      ]
+    },
     "AMPLIFY_function_verifyUsers_deploymentBucketName": {
       "usedBy": [
         {
