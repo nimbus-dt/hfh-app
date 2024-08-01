@@ -152,7 +152,7 @@ const AffiliateApplicationDetailsPage = () => {
       const persistedApplication = await DataStore.save(
         TestApplication.copyOf(original, (originalApplication) => {
           originalApplication.reviewStatus = data.status;
-          if (data.status === ReviewStatus.RETURNED) {
+          if (data.status === ReviewStatus.RETURNED && original.ownerID) {
             originalApplication.submissionStatus = SubmissionStatus.INCOMPLETE;
           }
         })
@@ -191,18 +191,20 @@ const AffiliateApplicationDetailsPage = () => {
         posthogAction: 'application_reviewed',
       });
 
-      await post({
-        apiName: 'sendEmailToApplicantAPI',
-        path: '/notify',
-        options: {
-          body: {
-            subject: 'Status update on your Habitat for Humanity application',
-            body: '<p>A decision has been made on your application. Please log in to your application portal to see this.</p>',
-            sub: persistedApplication.ownerID || '',
-            habitat: habitat?.name || '',
+      if (original.ownerID) {
+        await post({
+          apiName: 'sendEmailToApplicantAPI',
+          path: '/notify',
+          options: {
+            body: {
+              subject: 'Status update on your Habitat for Humanity application',
+              body: '<p>A decision has been made on your application. Please log in to your application portal to see this.</p>',
+              sub: persistedApplication.ownerID || '',
+              habitat: habitat?.name || '',
+            },
           },
-        },
-      }).response;
+        }).response;
+      }
 
       setDecideModalOpen(false);
       triggerApplicationRefetch();
