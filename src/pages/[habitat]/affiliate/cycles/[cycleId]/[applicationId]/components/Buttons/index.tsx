@@ -46,6 +46,7 @@ const Buttons = ({
         onClose={handleDecideModalOnClose}
         onValid={handleOnValidDecide}
         loading={loading}
+        isOnline={isOnline}
       />
 
       {isOnline && (
