@@ -18,7 +18,7 @@ import { MdOutlineOpenInNew } from 'react-icons/md';
 import TableWithPaginator from 'components/TableWithPaginator';
 import Toggle from 'components/Toggle';
 import StatusChip from 'components/StatusChip';
-import { DataStore } from 'aws-amplify/datastore';
+import { DataStore, SortDirection } from 'aws-amplify/datastore';
 import { Link } from 'react-router-dom';
 import { dateOnly } from 'utils/dates';
 import Chip from 'components/Chip';
@@ -70,32 +70,30 @@ const ApplicantApplicationsPage = () => {
           c.habitatID.eq(habitat.id)
         );
 
-        let newCycles: TestCycle[] = [];
+        const cyclesResponse = await DataStore.query(TestCycle, (c) =>
+          c.or((c2) =>
+            rootFormsResponse.map((rootForm) => c2.rootformID.eq(rootForm.id))
+          )
+        );
 
-        for (const rootFormResponse of rootFormsResponse) {
-          const cyclesResponse = await DataStore.query(TestCycle, (c) =>
-            c.rootformID.eq(rootFormResponse.id)
-          );
-          newCycles = newCycles.concat(cyclesResponse);
-        }
+        const applicationsResponse = await DataStore.query(
+          TestApplication,
+          (c) =>
+            c.and((c1) => [
+              c.or((c3) =>
+                cyclesResponse.map((newCycle) => c3.testcycleID.eq(newCycle.id))
+              ),
+              c1.ownerID.eq(user?.username),
+            ]),
+          {
+            sort: (s) => s.createdAt(SortDirection.DESCENDING),
+          }
+        );
 
-        let newApplications: TestApplication[] = [];
-
-        for (const newCycle of newCycles) {
-          const applicationsResponse = await DataStore.query(
-            TestApplication,
-            (c) =>
-              c.and((c1) => [
-                c1.testcycleID.eq(newCycle.id),
-                c1.ownerID.eq(user?.username),
-              ])
-          );
-          newApplications = newApplications.concat(applicationsResponse);
-        }
         setData({
-          applications: newApplications,
+          applications: applicationsResponse,
           rootForms: rootFormsResponse,
-          cycles: newCycles,
+          cycles: cyclesResponse,
         });
       };
       fetchData();
