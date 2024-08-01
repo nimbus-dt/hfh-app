@@ -6,6 +6,7 @@ import Footer from 'components/Footer';
 
 import styles from '../SignUpQuestions.module.css';
 import dataProps from '../types';
+import Explanation from '../Explanation/Explanation';
 
 interface Inputs {
   unemployed: 'Yes' | 'No';
@@ -43,6 +44,7 @@ const Employment = ({ data, setData, goBack }: EmploymentProps) => {
       onSubmit={throttle(handleSubmit(onSubmit), 500)}
     >
       <div className={styles.body}>
+        <Explanation />
         <div>
           <label
             htmlFor="unemployed"

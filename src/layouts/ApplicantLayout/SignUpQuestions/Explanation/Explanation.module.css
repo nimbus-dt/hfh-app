@@ -1,0 +1,7 @@
+.subtitle {
+  color: var(--amplify-colors-neutral-90);
+}
+
+.strong {
+  font-weight: var(--amplify-font-weights-bold);
+}

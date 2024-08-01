@@ -7,6 +7,7 @@ import { User, Sexs, UserTypes, LazyUser } from 'models';
 import useHabitat from 'hooks/utils/useHabitat';
 import styles from '../SignUpQuestions.module.css';
 import dataProps from '../types';
+import Explanation from '../Explanation/Explanation';
 
 interface Inputs {
   source: string;
@@ -85,6 +86,7 @@ const Habitat = ({
       onSubmit={throttle(handleSubmit(onSubmit), 500)}
     >
       <div className={styles.body}>
+        <Explanation />
         <div>
           <label
             htmlFor="source"

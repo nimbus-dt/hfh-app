@@ -5,6 +5,7 @@ import Footer from 'components/Footer';
 
 import styles from '../SignUpQuestions.module.css';
 import dataProps from '../types';
+import Explanation from '../Explanation/Explanation';
 
 interface Inputs {
   members: string;
@@ -41,6 +42,7 @@ const Household = ({ data, setData, goBack }: HouseholdProps) => {
       onSubmit={throttle(handleSubmit(onSubmit), 500)}
     >
       <div className={styles.body}>
+        <Explanation />
         <div>
           <label
             htmlFor="members"
