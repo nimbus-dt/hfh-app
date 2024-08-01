@@ -33,8 +33,9 @@ const Buttons = ({
 }: ButtonsProps) => {
   const { t } = useTranslation();
 
+  const isOnline = application?.type === ApplicationTypes.ONLINE;
+
   if (!application) return null;
-  if (application?.type === ApplicationTypes.PAPER) return null;
   if (!(application?.submissionStatus === SubmissionStatus.COMPLETED))
     return null;
 
@@ -46,16 +47,19 @@ const Buttons = ({
         onValid={handleOnValidDecide}
         loading={loading}
       />
-      <CustomButton
-        icon={downloading ? <Loader size="large" /> : <MdOutlinePrint />}
-        variation="primary"
-        onClick={handleDownloadApplicationOnClick}
-        disabled={downloading}
-      >
-        {t(
-          'pages.habitat.affiliate.cycles.cycle.application.components.buttons.download'
-        )}
-      </CustomButton>
+
+      {isOnline && (
+        <CustomButton
+          icon={downloading ? <Loader size="large" /> : <MdOutlinePrint />}
+          variation="primary"
+          onClick={handleDownloadApplicationOnClick}
+          disabled={downloading}
+        >
+          {t(
+            'pages.habitat.affiliate.cycles.cycle.application.components.buttons.download'
+          )}
+        </CustomButton>
+      )}
       <CustomButton
         variation="primary"
         onClick={handleDecideOnClick}
