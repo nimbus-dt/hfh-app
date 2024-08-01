@@ -7,6 +7,7 @@ import states from 'assets/jsons/states.json';
 import { get } from 'aws-amplify/api';
 import styles from '../SignUpQuestions.module.css';
 import dataProps from '../types';
+import Explanation from '../Explanation/Explanation';
 
 interface Inputs {
   firstName: string;
@@ -84,6 +85,7 @@ const General = ({ data, setData }: GeneralProps) => {
       onSubmit={throttle(handleSubmit(onSubmit), 500)}
     >
       <div className={styles.body}>
+        <Explanation />
         <div>
           <label
             htmlFor="firstName"
