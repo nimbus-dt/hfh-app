@@ -38,7 +38,7 @@ const AffiliateFormsPage = () => {
   };
 
   return (
-    <Flex padding="32px" direction="column" gap="60px">
+    <Flex padding="32px" direction="column" gap="95px">
       <Flex
         direction={{
           base: 'column',
@@ -53,7 +53,7 @@ const AffiliateFormsPage = () => {
           </Heading>
         </Flex>
       </Flex>
-      <Flex direction="column" gap="20px">
+      <Flex direction="column" gap="16px">
         <Flex
           direction="row"
           alignItems="center"
