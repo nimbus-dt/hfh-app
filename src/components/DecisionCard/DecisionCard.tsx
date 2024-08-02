@@ -39,7 +39,7 @@ const DecisionCard = ({
             {timeOnly(date)}
           </Text>
         </div>
-        <View flex="1">
+        <View flex="1" width="100%">
           <View className={`theme-subtitle-s1 ${style.habitat}`}>
             <Text>{habitat}</Text>
           </View>
