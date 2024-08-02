@@ -1,5 +1,5 @@
 /* eslint-disable react/style-prop-object */
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   MdAutoGraph,
@@ -12,9 +12,7 @@ import {
   MdOutlineSettings,
 } from 'react-icons/md';
 import { Button, Flex } from '@aws-amplify/ui-react';
-
 import useCloseContextMenu from 'hooks/utils/useCloseContextMenu';
-import useIsHovered from 'hooks/utils/useIsHovered';
 import useRoutes, { isActive } from 'utils/routes';
 
 import MenuItem from './components/MenuItem/MenuItem';
@@ -36,15 +34,20 @@ const SideBar = ({
   pathname,
   variation,
 }: IProperties) => {
+  console.log('mobile:', mobile);
   const sideBarRef = React.useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
   const routes = useRoutes(t);
 
-  const isHovered = useIsHovered(sideBarRef);
+  const [isHovered, setIsHovered] = useState(false);
 
   useCloseContextMenu(sideBarRef, onExpand);
 
   const isHoveredOrExpanded = isHovered || (mobile && expanded);
+
+  const handleHover = () => setIsHovered(true);
+
+  const handleLeave = () => setIsHovered(false);
 
   if (!mobile || (mobile && expanded)) {
     return (
@@ -52,6 +55,10 @@ const SideBar = ({
         ref={sideBarRef}
         className={`${style.sideBar}`}
         style={{ position: mobile ? 'absolute' : undefined }}
+        onFocus={handleHover}
+        onBlur={handleLeave}
+        onMouseOver={handleHover}
+        onMouseLeave={handleLeave}
       >
         <Flex
           justifyContent="space-between"
