@@ -16,7 +16,7 @@ import { ReviewStatus } from 'models';
 import { useTranslation } from 'react-i18next';
 import { decideSchema } from '../../../../AffiliateApplicationDetailsPage.schema';
 
-const DecideModal = ({ open, onClose, onValid, loading }) => {
+const DecideModal = ({ open, onClose, onValid, loading, isOnline }) => {
   const {
     control,
     register: registerDecide,
@@ -128,7 +128,7 @@ ${t(
         return '';
       }
     }
-  }, [status]);
+  }, [status, t]);
 
   return (
     <Modal title="Decide" open={open} onClickClose={onClose} width="45rem">
@@ -149,11 +149,13 @@ ${t(
             'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.status.error'
           )}
         >
-          <option value={ReviewStatus.RETURNED}>
-            {t(
-              'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.status.return'
-            )}
-          </option>
+          {isOnline && (
+            <option value={ReviewStatus.RETURNED}>
+              {t(
+                'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.status.return'
+              )}
+            </option>
+          )}
           <option value={ReviewStatus.ACCEPTED}>
             {t(
               'pages.habitat.affiliate.cycles.cycle.application.components.buttons.components.decideModal.status.accept'
@@ -235,6 +237,7 @@ DecideModal.propTypes = {
   onValid: PropTypes.func,
   loading: PropTypes.number,
   customStatus: PropTypes.array,
+  isOnline: PropTypes.bool,
 };
 
 export default DecideModal;
