@@ -28,6 +28,7 @@
 .title {
   display: flex;
   align-items: center;
+  gap: 8px;
 }
 
 .applications > * + * {
@@ -46,12 +47,11 @@
 }
 
 .table_title {
+  align-self: flex-end;
   display: flex;
-  align-items: center;
-}
-
-.table_title > * + * {
-  margin-left: 0.75rem;
+  align-items: start;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .options {
@@ -112,9 +112,7 @@
     margin-top: 0;
     margin-left: 0.5rem;
   }
-  .title > * + * {
-    margin-left: 1.25rem;
-  }
+
   .table_options {
     flex-direction: row;
     justify-content: space-between;
