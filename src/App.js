@@ -5,6 +5,7 @@ import { Routes, Route } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import ApplicantCyclePage from 'pages/[habitat]/applicant/[cycleId]';
 import HabitatLayout from 'layouts/HabitatLayout';
+import { Authenticator } from '@aws-amplify/ui-react';
 import ApplicantLayout from 'layouts/ApplicantLayout';
 import { ROUTES } from 'utils/constants';
 import ApplicantApplicationsPage from 'pages/[habitat]/applicant/applications';
@@ -38,7 +39,14 @@ function App() {
         }
       />
 
-      <Route path={ROUTES.HABITAT} element={<HabitatLayout />}>
+      <Route
+        path={ROUTES.HABITAT}
+        element={
+          <Authenticator.Provider>
+            <HabitatLayout />
+          </Authenticator.Provider>
+        }
+      >
         <Route path={ROUTES.HABITAT_APPLICANT} element={<ApplicantLayout />}>
           <Route
             path={ROUTES.HABITAT_APPLICANT_APPLICATIONS}
