@@ -25,6 +25,7 @@ const HabitatLayout = () => {
 
             const habitatObject = habitatsResponse[0];
 
+            console.log(habitatObject);
             setHabitat(habitatObject);
             setIsLoading(false);
           }
