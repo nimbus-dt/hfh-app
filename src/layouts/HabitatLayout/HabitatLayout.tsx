@@ -14,24 +14,24 @@ const HabitatLayout = () => {
   const { habitat: habitatUrlName } = useParams();
 
   useEffect(() => {
-    try {
-      setIsLoading((prevIsLoading) => prevIsLoading + 1);
+    const fetchData = async () => {
+      try {
+        setIsLoading((prevIsLoading) => prevIsLoading + 1);
+        const habitatsResponse = await DataStore.query(Habitat, (c) =>
+          c.urlName.eq(habitatUrlName)
+        );
 
-      const sub = DataStore.observeQuery(Habitat, (c) =>
-        c.urlName.eq(habitatUrlName)
-      ).subscribe(({ items }) => setHabitat(items[0]));
+        const habitatObject = habitatsResponse[0];
 
-      setIsLoading((prevIsLoading) => prevIsLoading - 1);
+        setHabitat(habitatObject);
+        setIsLoading((prevIsLoading) => prevIsLoading - 1);
+      } catch (error) {
+        console.log(`Error fetching habitat: ${error}`);
+      }
+    };
 
-      console.log(sub);
-
-      return () => {
-        sub.unsubscribe();
-      };
-    } catch (error) {
-      console.log(`Error fetching habitat: ${error}`);
-    }
-  }, [habitatUrlName]);
+    fetchData();
+  }, [habitatUrlName, setHabitat]);
 
   if (isLoading) {
     return (
@@ -42,6 +42,19 @@ const HabitatLayout = () => {
         padding="16px"
       >
         <Text>Loading...</Text>
+      </Flex>
+    );
+  }
+
+  if (!habitat) {
+    return (
+      <Flex
+        direction="column"
+        height="100vh"
+        alignItems="center"
+        padding="16px"
+      >
+        <Text>Habitat not found.</Text>
       </Flex>
     );
   }
