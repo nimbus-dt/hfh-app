@@ -167,6 +167,9 @@
       "submit": "Enviar",
       "review": "Revisar",
       "goBack": "Volver"
+    },
+    "resultsCounter": {
+      "results": "resultados"
     }
   },
   "pages": {
@@ -214,7 +217,7 @@
           },
           "table": {
             "title": "Formularios",
-            "results": "resultados",
+
             "name": "Nombre",
             "dateCreated": "Fecha de creación",
             "status": "Estado",
@@ -264,7 +267,7 @@
           },
           "table": {
             "title": "Ciclos",
-            "results": "resultados",
+
             "name": "Nombre",
             "startDate": "Fecha de inicio",
             "endDate": "Fecha de finalización",
@@ -328,7 +331,6 @@
             },
             "table": {
               "title": "Aplicaciones",
-              "results": "resultados",
               "name": "Nombre",
               "type": "Tipo",
               "dateSubmitted": "Fecha de envío",

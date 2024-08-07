@@ -31,6 +31,7 @@ import { useBreakpointValue } from '@aws-amplify/ui-react';
 import { convertDateYYYYMMDDtoDDMMYYYY } from 'utils/dates';
 import StatusChip from 'components/StatusChip';
 import useHabitat from 'hooks/utils/useHabitat';
+import ResultsCounter from 'components/ResultsCounter';
 import style from './AffiliateCycleApplications.module.css';
 import NewApplicationModal from './components/NewApplicationModal';
 import StatusModal from './components/StatusModal';
@@ -198,9 +199,7 @@ const AffiliateCycleApplications = () => {
           <span className="theme-subtitle-s2">
             {t('pages.habitat.affiliate.cycles.cycle.table.title')}
           </span>
-          <span className={`${style.results}`}>{`${
-            applicationsCompleted.length
-          } ${t('pages.habitat.affiliate.cycles.cycle.table.results')}`}</span>
+          <ResultsCounter number={applicationsCompleted.length} />
         </div>
         <div className={`${style.options}`}>
           <div className={`${style.suboptions}`}>

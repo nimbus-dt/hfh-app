@@ -168,6 +168,9 @@
       "submit": "Submit",
       "review": "Review",
       "goBack": "Go back"
+    },
+    "resultsCounter": {
+      "results": "results"
     }
   },
   "pages": {
@@ -215,7 +218,6 @@
           },
           "table": {
             "title": "Forms",
-            "results": "results",
             "name": "Name",
             "dateCreated": "Date Created",
             "status": "Status",
@@ -265,7 +267,6 @@
           },
           "table": {
             "title": "Cycles",
-            "results": "results",
             "name": "Name",
             "startDate": "Start Date",
             "endDate": "End Date",
@@ -329,7 +330,6 @@
             },
             "table": {
               "title": "Applications",
-              "results": "results",
               "name": "Name",
               "type": "Type",
               "dateSubmitted": "Date Submitted",

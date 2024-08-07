@@ -10,6 +10,7 @@ import { dateOnly } from 'utils/dates';
 import { throttle } from 'lodash';
 import useHabitat from 'hooks/utils/useHabitat';
 import { useTranslation } from 'react-i18next';
+import ResultsCounter from 'components/ResultsCounter';
 import style from './AffiliateFormsPage.module.css';
 
 const AffiliateFormsPage = () => {
@@ -53,21 +54,19 @@ const AffiliateFormsPage = () => {
           </Heading>
         </Flex>
       </Flex>
-      <Flex direction="column" gap="20px">
+      <Flex direction="column" gap="16px">
         <Flex
           direction="row"
           alignItems="center"
           justifyContent="space-between"
         >
-          <Flex direction="row" alignItems="center">
+          <Flex direction="column" alignItems="start" gap="12px">
             <View className="theme-subtitle-s2">
               <Text as="span" alignSelf="center">
                 {t('pages.habitat.affiliate.forms.table.title')}
               </Text>
             </View>
-            <Text className={`theme-subtitle-s2 ${style.subtitle}`}>
-              {forms.length} {t('pages.habitat.affiliate.forms.table.results')}
-            </Text>
+            <ResultsCounter number={forms.length} />
           </Flex>
         </Flex>
 

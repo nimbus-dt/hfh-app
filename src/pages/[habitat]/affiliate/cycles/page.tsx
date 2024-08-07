@@ -18,6 +18,7 @@ import { convertDateYYYYMMDDtoDDMMYYYY } from 'utils/dates';
 import { Status } from 'utils/enums';
 import useHabitat from 'hooks/utils/useHabitat';
 import CustomButton from 'components/CustomButton';
+import ResultsCounter from 'components/ResultsCounter';
 import Filters from './components/filters';
 import NewCycle from './components/newCycle';
 import styles from './styles.module.css';
@@ -153,10 +154,7 @@ const CyclesPage = () => {
             <p className={`${styles.neutral_100} theme-subtitle-s2`}>
               {t('pages.habitat.affiliate.cycles.table.title')}
             </p>
-            <p className={`${styles.neutral_80} theme-body-small`}>
-              {cycles.length}{' '}
-              {t('pages.habitat.affiliate.cycles.table.results')}
-            </p>
+            <ResultsCounter number={cycles.length} />
           </div>
           <div className={styles.options}>
             <CustomButton
