@@ -1,0 +1,5 @@
+.text {
+  font-weight: var(--amplify-font-weights-normal);
+  font-size: var(--amplify-font-sizes-normal);
+  color: var(--amplify-colors-neutral-90);
+}
