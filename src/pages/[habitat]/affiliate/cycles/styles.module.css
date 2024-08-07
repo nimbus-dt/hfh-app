@@ -47,7 +47,7 @@
 }
 
 .table_title {
-  align-self: flex-end;
+  align-self: flex-start;
   display: flex;
   align-items: start;
   flex-direction: column;
@@ -120,5 +120,9 @@
   }
   .table_options > * + * {
     margin-left: 1rem;
+  }
+
+  .table_title {
+    align-self: flex-end;
   }
 }
