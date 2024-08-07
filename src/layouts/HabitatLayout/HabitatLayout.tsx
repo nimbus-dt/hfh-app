@@ -1,5 +1,5 @@
 import { Outlet, useParams } from 'react-router-dom';
-import { Flex, Text } from '@aws-amplify/ui-react';
+import { Authenticator, Flex, Text } from '@aws-amplify/ui-react';
 import CheckMaintenance from 'layouts/Maintenance/CheckMaintenance';
 import useHabitat from 'hooks/utils/useHabitat';
 import { useEffect, useState } from 'react';
@@ -9,27 +9,22 @@ import { Habitat } from 'models';
 const HabitatLayout = () => {
   const { habitat, setHabitat } = useHabitat();
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(0);
 
   const { habitat: habitatUrlName } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setIsLoading(true);
-        DataStore.observeQuery(Habitat).subscribe(({ items, isSynced }) => {
-          if (isSynced) {
-            const habitatsResponse = items.filter(
-              (item) => item.urlName === habitatUrlName
-            );
+        setIsLoading((prevIsLoading) => prevIsLoading + 1);
+        const habitatsResponse = await DataStore.query(Habitat, (c) =>
+          c.urlName.eq(habitatUrlName)
+        );
 
-            const habitatObject = habitatsResponse[0];
+        const habitatObject = habitatsResponse[0];
 
-            console.log(habitatObject);
-            setHabitat(habitatObject);
-            setIsLoading(false);
-          }
-        });
+        setHabitat(habitatObject);
+        setIsLoading((prevIsLoading) => prevIsLoading - 1);
       } catch (error) {
         console.log(`Error fetching habitat: ${error}`);
       }
@@ -66,7 +61,9 @@ const HabitatLayout = () => {
 
   return (
     <CheckMaintenance>
-      <Outlet />
+      <Authenticator.Provider>
+        <Outlet />
+      </Authenticator.Provider>
     </CheckMaintenance>
   );
 };
