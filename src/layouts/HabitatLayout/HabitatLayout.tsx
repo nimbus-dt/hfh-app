@@ -14,9 +14,7 @@ const HabitatLayout = () => {
 
   return (
     <CheckMaintenance>
-      <Authenticator.Provider>
-        <Outlet />
-      </Authenticator.Provider>
+      <Outlet />
     </CheckMaintenance>
   );
 };

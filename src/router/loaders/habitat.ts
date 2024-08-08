@@ -4,9 +4,17 @@ import { LoaderFunction } from 'react-router-dom';
 
 const habitatLoader: LoaderFunction = async ({ params }) => {
   const { habitat } = params;
-  const habitatsResponse = await DataStore.query(Habitat, (c) =>
-    c.urlName.eq(habitat)
-  );
+
+  const habitatPromise = new Promise<Habitat[]>((resolve) => {
+    const observerQuery = DataStore.observeQuery(Habitat, (c) =>
+      c.urlName.eq(habitat)
+    ).subscribe(({ items }) => {
+      observerQuery.unsubscribe();
+      resolve(items);
+    });
+  });
+
+  const habitatsResponse = await habitatPromise;
 
   if (habitatsResponse.length === 0) {
     throw new Response('Habitat not Found', { status: 404 });
