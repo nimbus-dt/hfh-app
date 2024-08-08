@@ -7,35 +7,30 @@ import { DataStore } from 'aws-amplify/datastore';
 import { Habitat } from 'models';
 
 const HabitatLayout = () => {
-  const { habitat, setHabitat } = useHabitat();
+  const { setHabitat } = useHabitat();
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(0);
 
   const { habitat: habitatUrlName } = useParams();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        DataStore.observeQuery(Habitat).subscribe(({ items, isSynced }) => {
-          if (isSynced) {
-            const habitatsResponse = items.filter(
-              (item) => item.urlName === habitatUrlName
-            );
+    try {
+      setIsLoading((prevIsLoading) => prevIsLoading + 1);
 
-            const habitatObject = habitatsResponse[0];
+      const sub = DataStore.observeQuery(Habitat, (c) =>
+        c.urlName.eq(habitatUrlName)
+      ).subscribe(({ items }) => setHabitat(items[0]));
 
-            console.log(habitatObject);
-            setHabitat(habitatObject);
-            setIsLoading(false);
-          }
-        });
-      } catch (error) {
-        console.log(`Error fetching habitat: ${error}`);
-      }
-    };
+      setIsLoading((prevIsLoading) => prevIsLoading - 1);
 
-    fetchData();
+      console.log(sub);
+
+      return () => {
+        sub.unsubscribe();
+      };
+    } catch (error) {
+      console.log(`Error fetching habitat: ${error}`);
+    }
   }, [habitatUrlName, setHabitat]);
 
   if (isLoading) {
@@ -47,19 +42,6 @@ const HabitatLayout = () => {
         padding="16px"
       >
         <Text>Loading...</Text>
-      </Flex>
-    );
-  }
-
-  if (!habitat) {
-    return (
-      <Flex
-        direction="column"
-        height="100vh"
-        alignItems="center"
-        padding="16px"
-      >
-        <Text>Habitat not found.</Text>
       </Flex>
     );
   }
