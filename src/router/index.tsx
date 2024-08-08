@@ -17,6 +17,8 @@ import AffiliateCycleApplications from 'pages/[habitat]/affiliate/cycles/[cycleI
 import AffiliateApplicationDetailsPage from 'pages/[habitat]/affiliate/cycles/[cycleId]/[applicationId]';
 import MaintenancePage from 'pages/maintenance/Maintenance';
 import Print from 'pages/print/page';
+import HabitatError from 'pages/[habitat]/HabitatError';
+import habitatLoader from './loaders/habitat';
 
 const router = createBrowserRouter([
   {
@@ -32,6 +34,8 @@ const router = createBrowserRouter([
   {
     path: ROUTES.HABITAT,
     element: <HabitatLayout />,
+    loader: habitatLoader,
+    errorElement: <HabitatError />,
     children: [
       {
         path: ROUTES.HABITAT_APPLICANT,
