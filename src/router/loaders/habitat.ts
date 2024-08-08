@@ -8,9 +8,11 @@ const habitatLoader: LoaderFunction = async ({ params }) => {
   const habitatPromise = new Promise<Habitat[]>((resolve) => {
     const observerQuery = DataStore.observeQuery(Habitat, (c) =>
       c.urlName.eq(habitat)
-    ).subscribe(({ items }) => {
-      observerQuery.unsubscribe();
-      resolve(items);
+    ).subscribe(({ items, isSynced }) => {
+      if (isSynced) {
+        observerQuery.unsubscribe();
+        resolve(items);
+      }
     });
   });
 
