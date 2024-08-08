@@ -12,7 +12,7 @@ const cycleLoader: LoaderFunction = async ({ params }) => {
   const cycle = await DataStore.query(TestCycle, cycleId);
 
   if (!cycle) {
-    throw new Response('Root form not found.', { status: 404 });
+    throw new Response('Cycle not found.', { status: 404 });
   }
 
   return { cycle };
