@@ -1,4 +1,4 @@
-import { TestApplication, TestCycle } from 'models';
+import { TestApplication } from 'models';
 
 /* eslint-disable no-shadow */
 export const enum DISPLAY {
@@ -31,7 +31,6 @@ interface DisplayErrorProps {
 interface DisplayApplicationProps {
   display: DISPLAY.APPLICATION;
   data: {
-    cycle: TestCycle;
     application: TestApplication;
   };
 }
@@ -39,7 +38,6 @@ interface DisplayApplicationProps {
 interface DisplayReviewProps {
   display: DISPLAY.REVIEWED;
   data: {
-    cycle: TestCycle;
     application: TestApplication;
   };
 }
@@ -48,7 +46,6 @@ interface DisplayNoOpenCycleProps {
   display: DISPLAY.NO_OPEN_CYCLE;
   data: {
     error: ERROR;
-    cycle: TestCycle;
     application?: TestApplication;
   };
 }
@@ -56,7 +53,6 @@ interface DisplayNoOpenCycleProps {
 interface DisplayCompletedProps {
   display: DISPLAY.COMPLETED;
   data: {
-    cycle: TestCycle;
     application: TestApplication;
   };
 }

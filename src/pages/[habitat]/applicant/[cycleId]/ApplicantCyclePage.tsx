@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useAuthenticator } from '@aws-amplify/ui-react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLoaderData, useLocation } from 'react-router-dom';
 import {
   SubmissionStatus,
   TestApplication,
@@ -24,7 +24,7 @@ import Reviewed from './components/Reviewed/Reviewed';
 const ApplicantCyclePage = () => {
   const { habitat } = useHabitat();
 
-  const { cycleId } = useParams();
+  const { cycle } = useLoaderData() as { cycle: TestCycle };
 
   const { user } = useAuthenticator((context) => [context.user]);
 
@@ -47,31 +47,12 @@ const ApplicantCyclePage = () => {
           },
         };
       }
-      if (!cycleId) {
-        return {
-          display: DISPLAY.ERROR,
-          data: {
-            error: ERROR.CYCLE_NOT_FOUND,
-          },
-        };
-      }
-
-      const cycle = await DataStore.query(TestCycle, cycleId);
-
-      if (!cycle) {
-        return {
-          display: DISPLAY.ERROR,
-          data: {
-            error: ERROR.CYCLE_NOT_FOUND,
-          },
-        };
-      }
 
       const applications = await DataStore.query(
         TestApplication,
         (c1) =>
           c1.and((c2) => [
-            c2.testcycleID.eq(cycleId),
+            c2.testcycleID.eq(cycle.id),
             c2.ownerID.eq(user.username),
           ]),
         {
@@ -87,7 +68,6 @@ const ApplicantCyclePage = () => {
             display: DISPLAY.NO_OPEN_CYCLE,
             data: {
               error: ERROR.CYCLE_NOT_OPEN,
-              cycle,
             },
           };
         }
@@ -107,7 +87,7 @@ const ApplicantCyclePage = () => {
             submissionStatus: SubmissionStatus.INCOMPLETE,
             reviewStatus: ReviewStatus.PENDING,
             submittedDate: '0001-01-01',
-            testcycleID: cycleId,
+            testcycleID: cycle.id,
             type: ApplicationTypes.ONLINE,
           })
         );
@@ -116,7 +96,6 @@ const ApplicantCyclePage = () => {
         return {
           display: DISPLAY.APPLICATION,
           data: {
-            cycle,
             application,
           },
         };
@@ -131,7 +110,6 @@ const ApplicantCyclePage = () => {
         return {
           display: DISPLAY.REVIEWED,
           data: {
-            cycle,
             application,
           },
         };
@@ -141,7 +119,6 @@ const ApplicantCyclePage = () => {
         return {
           display: DISPLAY.COMPLETED,
           data: {
-            cycle,
             application,
           },
         };
@@ -152,7 +129,6 @@ const ApplicantCyclePage = () => {
           display: DISPLAY.NO_OPEN_CYCLE,
           data: {
             error: ERROR.CYCLE_NOT_OPEN,
-            cycle,
             application,
           },
         };
@@ -161,7 +137,6 @@ const ApplicantCyclePage = () => {
       return {
         display: DISPLAY.APPLICATION,
         data: {
-          cycle,
           application,
         },
       };
@@ -173,7 +148,7 @@ const ApplicantCyclePage = () => {
         },
       };
     }
-  }, [habitat, cycleId, review, user.username, location.pathname]);
+  }, [habitat, cycle, review, user.username, location.pathname]);
 
   const { value, status } = useAsync({
     asyncFunction: getData,
@@ -204,7 +179,7 @@ const ApplicantCyclePage = () => {
       <div className={`${style.page}`}>
         <Reviewed
           habitat={habitat}
-          cycle={value.data.cycle}
+          cycle={cycle}
           application={value.data.application}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
@@ -217,7 +192,7 @@ const ApplicantCyclePage = () => {
     return (
       <div className={`${style.page}`}>
         <NoOpenCycle
-          cycle={value?.data?.cycle}
+          cycle={cycle}
           onReview={onReview}
           showReview={
             value?.data?.application?.submissionStatus ===
@@ -242,7 +217,7 @@ const ApplicantCyclePage = () => {
   return (
     <Form
       application={value?.data?.application}
-      cycle={value?.data?.cycle}
+      cycle={cycle}
       formContainer={false}
     />
   );
