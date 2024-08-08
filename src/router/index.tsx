@@ -20,9 +20,11 @@ import Print from 'pages/print/page';
 import HabitatError from 'pages/[habitat]/HabitatError';
 import RootFormError from 'pages/[habitat]/affiliate/cycles/page.error';
 import AffiliateCycleApplicationsError from 'pages/[habitat]/affiliate/cycles/[cycleId]/AffiliateCycleApplications.error';
+import AffiliateApplicationDetailsPageError from 'pages/[habitat]/affiliate/cycles/[cycleId]/[applicationId]/AffiliateApplicationDetailsPage.error';
 import habitatLoader from './loaders/habitat';
 import rootFormLoader from './loaders/rootForm';
 import cycleLoader from './loaders/cycle';
+import applicationLoader from './loaders/application';
 
 const router = createBrowserRouter([
   {
@@ -101,6 +103,8 @@ const router = createBrowserRouter([
                   },
                   {
                     path: ROUTES.HABITAT_AFFILIATE_CYCLES_CYCLE_APPLICATION,
+                    loader: applicationLoader,
+                    errorElement: <AffiliateApplicationDetailsPageError />,
                     element: <AffiliateApplicationDetailsPage />,
                   },
                 ],
