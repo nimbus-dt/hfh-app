@@ -431,6 +431,14 @@
                     }
                   }
                 }
+              },
+              "errors": {
+                "404": {
+                  "message": "The application you are looking for does not exist."
+                },
+                "default": {
+                  "message": "An error occurred while fetching application data."
+                }
               }
             },
             "errors": {

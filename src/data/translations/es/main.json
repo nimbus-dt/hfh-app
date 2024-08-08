@@ -430,6 +430,14 @@
                     }
                   }
                 }
+              },
+              "errors": {
+                "404": {
+                  "message": "La aplicación que estás buscando no existe."
+                },
+                "default": {
+                  "message": "Ocurrió un error mientras se obtenían los datos de la aplicación."
+                }
               }
             },
             "errors": {
