@@ -19,8 +19,10 @@ import MaintenancePage from 'pages/maintenance/Maintenance';
 import Print from 'pages/print/page';
 import HabitatError from 'pages/[habitat]/HabitatError';
 import RootFormError from 'pages/[habitat]/affiliate/cycles/page.error';
+import AffiliateCycleApplicationsError from 'pages/[habitat]/affiliate/cycles/[cycleId]/AffiliateCycleApplications.error';
 import habitatLoader from './loaders/habitat';
 import rootFormLoader from './loaders/rootForm';
+import cycleLoader from './loaders/cycle';
 
 const router = createBrowserRouter([
   {
@@ -89,6 +91,9 @@ const router = createBrowserRouter([
               },
               {
                 path: ROUTES.HABITAT_AFFILIATE_CYCLES_CYCLE,
+                id: 'cycle',
+                loader: cycleLoader,
+                errorElement: <AffiliateCycleApplicationsError />,
                 children: [
                   {
                     index: true,
