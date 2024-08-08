@@ -18,7 +18,9 @@ import AffiliateApplicationDetailsPage from 'pages/[habitat]/affiliate/cycles/[c
 import MaintenancePage from 'pages/maintenance/Maintenance';
 import Print from 'pages/print/page';
 import HabitatError from 'pages/[habitat]/HabitatError';
+import RootFormError from 'pages/[habitat]/affiliate/cycles/page.error';
 import habitatLoader from './loaders/habitat';
+import rootFormLoader from './loaders/rootForm';
 
 const router = createBrowserRouter([
   {
@@ -77,6 +79,9 @@ const router = createBrowserRouter([
           },
           {
             path: ':formId',
+            loader: rootFormLoader,
+            errorElement: <RootFormError />,
+            id: 'rootForm',
             children: [
               {
                 index: true,
