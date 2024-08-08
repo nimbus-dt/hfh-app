@@ -19,7 +19,7 @@ import MaintenancePage from 'pages/maintenance/Maintenance';
 import Print from 'pages/print/page';
 import HabitatError from 'pages/[habitat]/HabitatError';
 import RootFormError from 'pages/[habitat]/affiliate/cycles/page.error';
-import AffiliateCycleApplicationsError from 'pages/[habitat]/affiliate/cycles/[cycleId]/AffiliateCycleApplications.error';
+import CycleLoaderError from 'components/CycleLoaderError/CycleLoaderError';
 import AffiliateApplicationDetailsPageError from 'pages/[habitat]/affiliate/cycles/[cycleId]/[applicationId]/AffiliateApplicationDetailsPage.error';
 import habitatLoader from './loaders/habitat';
 import rootFormLoader from './loaders/rootForm';
@@ -57,6 +57,8 @@ const router = createBrowserRouter([
           },
           {
             path: ROUTES.HABITAT_APPLICANT_CYCLE,
+            loader: cycleLoader,
+            errorElement: <CycleLoaderError />,
             element: <ApplicantCyclePage />,
           },
         ],
@@ -95,7 +97,7 @@ const router = createBrowserRouter([
                 path: ROUTES.HABITAT_AFFILIATE_CYCLES_CYCLE,
                 id: 'cycle',
                 loader: cycleLoader,
-                errorElement: <AffiliateCycleApplicationsError />,
+                errorElement: <CycleLoaderError />,
                 children: [
                   {
                     index: true,
