@@ -167,6 +167,10 @@
       "submit": "Enviar",
       "review": "Revisar",
       "goBack": "Volver"
+    },
+    "loaderError": {
+      "goBack": "Volver",
+      "retry": "Intentar de nuevo"
     }
   },
   "pages": {
@@ -428,6 +432,14 @@
                 }
               }
             }
+          },
+          "errors": {
+            "404": {
+              "message": "El formulario que estás buscando no existe."
+            },
+            "default": {
+              "message": "Ocurrió un error mientras se obtenían los datos del formulario."
+            }
           }
         }
       },
@@ -488,6 +500,14 @@
           "title": "Panel de decisiones",
           "description": "Intercambia información con los afiliados y revisa tus envíos",
           "empty": "No tienes registros de decisiones."
+        }
+      },
+      "errors": {
+        "404": {
+          "message": "El habitat que estás buscando no existe."
+        },
+        "default": {
+          "message": "Ocurrió un error mientras se obtenían los datos del habitat."
         }
       }
     }

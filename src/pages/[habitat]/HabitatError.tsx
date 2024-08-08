@@ -1,9 +1,12 @@
 import { Flex } from '@aws-amplify/ui-react';
 import LoaderError from 'components/LoaderError';
+import { useTranslation } from 'react-i18next';
 import { isRouteErrorResponse, useRouteError } from 'react-router-dom';
 
 const HabitatError = () => {
   const error = useRouteError();
+
+  const { t } = useTranslation();
 
   const containerProps = {
     direction: 'column',
@@ -12,17 +15,17 @@ const HabitatError = () => {
     justifyContent: 'center',
   };
 
+  let message = t('pages.habitat.errors.default.message');
+  let hideRetry = false;
+
   if (isRouteErrorResponse(error) && error.status === 404) {
-    return (
-      <Flex {...containerProps}>
-        <LoaderError message="Habitat not found." hideRetry />
-      </Flex>
-    );
+    message = t('pages.habitat.errors.404.message');
+    hideRetry = true;
   }
 
   return (
     <Flex {...containerProps}>
-      <LoaderError message="An error ocurred while fetching habitat data." />
+      <LoaderError message={message} hideRetry={hideRetry} />
     </Flex>
   );
 };

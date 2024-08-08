@@ -168,6 +168,10 @@
       "submit": "Submit",
       "review": "Review",
       "goBack": "Go back"
+    },
+    "loaderError": {
+      "goBack": "Go back",
+      "retry": "Retry"
     }
   },
   "pages": {
@@ -429,6 +433,14 @@
                 }
               }
             }
+          },
+          "errors": {
+            "404": {
+              "message": "The form you are looking for does not exist."
+            },
+            "default": {
+              "message": "An error occurred while fetching form data."
+            }
           }
         }
       },
@@ -489,6 +501,14 @@
           "title": "Decisions Dashboard",
           "description": "Exchange information with affiliates and revise your submissions",
           "empty": "You have no decision records."
+        }
+      },
+      "errors": {
+        "404": {
+          "message": "The habitat you are looking for does not exist."
+        },
+        "default": {
+          "message": "An error occurred while fetching habitat data."
         }
       }
     }
