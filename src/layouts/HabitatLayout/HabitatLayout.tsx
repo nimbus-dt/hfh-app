@@ -1,8 +1,7 @@
-import { Await, Outlet, useLoaderData, useParams } from 'react-router-dom';
-import { Authenticator, Flex, Text } from '@aws-amplify/ui-react';
+import { Outlet, useLoaderData } from 'react-router-dom';
 import CheckMaintenance from 'layouts/Maintenance/CheckMaintenance';
 import useHabitat from 'hooks/utils/useHabitat';
-import { Suspense, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Habitat } from 'models';
 
 const HabitatLayout = () => {
