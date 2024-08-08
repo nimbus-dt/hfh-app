@@ -6,24 +6,20 @@ import {
   MdOutlineNoteAlt,
   MdOutlineTextSnippet,
 } from 'react-icons/md';
-import { useNavigate, useParams } from 'react-router-dom';
 import {
-  useDecisionsQuery,
-  useFormAnswersQuery,
-  useNotesQuery,
-  useTestApplicationById,
-  useTestCycleById,
-} from 'hooks/services';
+  useLoaderData,
+  useNavigate,
+  useRouteLoaderData,
+} from 'react-router-dom';
+import { useNotesQuery } from 'hooks/services';
 import {
   Decision,
   FormAnswer,
-  LazyFormAnswer,
   LazyNote,
   Note,
   TestApplication,
   TestCycle,
   ReviewStatus,
-  LazyDecision,
   ApplicationTypes,
   SubmissionStatus,
   RootForm,
@@ -69,7 +65,6 @@ const AffiliateApplicationDetailsPage = () => {
   const posthog = usePostHog();
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState(1);
-  const [triggerApplication, setTriggerApplication] = useState(false);
   const [triggerNotes, setTriggerNotes] = useState(false);
   const [loading, setLoading] = useState(0);
   const [decideModalOpen, setDecideModalOpen] = useState(false);
@@ -80,46 +75,24 @@ const AffiliateApplicationDetailsPage = () => {
 
   const navigate = useNavigate();
 
-  const { applicationId } = useParams();
+  const { cycle } = useRouteLoaderData('cycle') as { cycle: TestCycle };
+
+  const { application, formAnswers, decisions } = useLoaderData() as {
+    application: TestApplication;
+    formAnswers: FormAnswer[];
+    decisions: Decision[];
+  };
 
   const { habitat } = useHabitat();
 
   const { user } = useAuthenticator((context) => [context.user]);
 
-  const { data: application }: { data: TestApplication } =
-    useTestApplicationById({
-      id: applicationId,
-      dependencyArray: [triggerApplication],
-    });
-
-  const { data: formAnswers }: { data: FormAnswer[] } = useFormAnswersQuery({
-    criteria: (c1: RecursiveModelPredicate<LazyFormAnswer>) =>
-      c1.testapplicationID.eq(application?.id || ''),
-    dependencyArray: [application],
-    paginationProducer: undefined,
-  });
-
-  const { data: decisions }: { data: Decision[] } = useDecisionsQuery({
-    criteria: (c1: RecursiveModelPredicate<LazyDecision>) =>
-      c1.testapplicationID.eq(application?.id || ''),
-    dependencyArray: [application],
-    paginationProducer: undefined,
-  });
-
-  const { data: cycle }: { data: TestCycle } = useTestCycleById({
-    id: application?.testcycleID || '',
-    dependencyArray: [application],
-  });
-
   const { data: notes }: { data: Note[] } = useNotesQuery({
     criteria: (c: RecursiveModelPredicate<LazyNote>) =>
-      c.testapplicationID.eq(applicationId || ''),
-    dependencyArray: [applicationId, triggerNotes],
+      c.testapplicationID.eq(application.id),
+    dependencyArray: [application, triggerNotes],
     paginationProducer: undefined,
   });
-
-  const triggerApplicationRefetch = () =>
-    setTriggerApplication((prevTriggerApplication) => !prevTriggerApplication);
 
   const triggerNotesRefetch = () =>
     setTriggerNotes((prevTriggerNotes) => !prevTriggerNotes);
@@ -165,7 +138,7 @@ const AffiliateApplicationDetailsPage = () => {
 
       await DataStore.save(
         new Decision({
-          testapplicationID: applicationId || '',
+          testapplicationID: application.id,
           status: data.status,
           serializedEditorState: JSON.stringify(editorStateWithFilesInS3),
         })
@@ -205,7 +178,7 @@ const AffiliateApplicationDetailsPage = () => {
       }).response;
 
       setDecideModalOpen(false);
-      triggerApplicationRefetch();
+
       navigate('..');
     } catch (error) {
       console.log('An error ocurred while returning the application');
@@ -273,7 +246,7 @@ const AffiliateApplicationDetailsPage = () => {
       const newNote = new Note({
         ownerID: user.username,
         serializedEditorState,
-        testapplicationID: applicationId || '',
+        testapplicationID: application.id,
       });
 
       await DataStore.save(newNote);
