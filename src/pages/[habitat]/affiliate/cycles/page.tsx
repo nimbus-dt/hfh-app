@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useRouteLoaderData } from 'react-router-dom';
 import { DataStore, SortDirection } from 'aws-amplify/datastore';
 import { Button, useBreakpointValue } from '@aws-amplify/ui-react';
 import { MdOutlineOpenInNew, MdFilterList } from 'react-icons/md';
@@ -11,7 +11,6 @@ import Loading from 'components/Loading';
 import Error from 'components/Error';
 import GoBack from 'components/GoBack';
 import TableWithPaginator from 'components/TableWithPaginator';
-import { useRootFormById } from 'hooks/services';
 import useAsync from 'hooks/utils/useAsync/useAsync';
 import { RootForm, TestCycle } from 'models';
 import { convertDateYYYYMMDDtoDDMMYYYY } from 'utils/dates';
@@ -28,7 +27,7 @@ const CyclesPage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const { formId } = useParams();
+  // const { formId } = useParams();
 
   const { habitat } = useHabitat();
 
@@ -47,10 +46,7 @@ const CyclesPage = () => {
     medium: false,
   }) as boolean;
 
-  const { data: rootForm }: { data: RootForm | null } = useRootFormById({
-    id: formId,
-    dependencyArray: [formId],
-  });
+  const { rootForm } = useRouteLoaderData('rootForm') as { rootForm: RootForm };
 
   const getCycles = useCallback(async () => {
     if (habitat) {
@@ -60,9 +56,7 @@ const CyclesPage = () => {
           c1.and((c2) => {
             const criteriaArray = [];
 
-            if (formId) {
-              criteriaArray.push(c2.rootformID.eq(formId));
-            }
+            criteriaArray.push(c2.rootformID.eq(rootForm.id));
 
             if (filters?.status === 'open' || filters.status === 'close') {
               criteriaArray.push(c2.isOpen.eq(filters.status === 'open'));
@@ -87,9 +81,7 @@ const CyclesPage = () => {
         c1.and((c2) => {
           const criteriaArray = [c2.isOpen.eq(true)];
 
-          if (formId) {
-            criteriaArray.push(c2.rootformID.eq(formId));
-          }
+          criteriaArray.push(c2.rootformID.eq(rootForm.id));
 
           return criteriaArray;
         })
@@ -100,7 +92,7 @@ const CyclesPage = () => {
         openCycles: openCyclesResponse,
       };
     }
-  }, [filters, habitat, formId]);
+  }, [filters, habitat, rootForm]);
 
   const { execute, value, status } = useAsync({
     asyncFunction: getCycles,
