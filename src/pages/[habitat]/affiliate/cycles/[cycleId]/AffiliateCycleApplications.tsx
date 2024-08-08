@@ -7,12 +7,13 @@ import {
 } from 'aws-amplify/datastore';
 import CustomButton from 'components/CustomButton/CustomButton';
 import TableWithPaginator from 'components/TableWithPaginator';
-import { useTestApplicationsQuery, useTestCycleById } from 'hooks/services';
+import { useTestApplicationsQuery } from 'hooks/services';
 import {
   SubmissionStatus,
   LazyTestApplication,
   TestApplication,
   ApplicationTypes,
+  TestCycle,
 } from 'models';
 import { useState } from 'react';
 import {
@@ -21,7 +22,7 @@ import {
   MdOutlineLink,
   MdOutlineOpenInNew,
 } from 'react-icons/md';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useRouteLoaderData } from 'react-router-dom';
 import { stringToHumanReadable } from 'utils/strings';
 import BreadCrumbs from 'components/BreadCrumbs/BreadCrumbs';
 import DropdownMenu from 'components/DropdownMenu';
@@ -47,7 +48,8 @@ const AffiliateCycleApplications = () => {
     base: true,
     medium: false,
   });
-  const { cycleId } = useParams();
+
+  const { cycle } = useRouteLoaderData('cycle') as { cycle: TestCycle };
 
   const { habitat } = useHabitat();
 
@@ -71,7 +73,7 @@ const AffiliateCycleApplications = () => {
     useTestApplicationsQuery({
       criteria: (c1: RecursiveModelPredicate<LazyTestApplication>) =>
         c1.and((c2) => {
-          let criteriaArr = cycleId ? [c2.testcycleID.eq(cycleId)] : [];
+          let criteriaArr = [c2.testcycleID.eq(cycle.id)];
 
           if (filters.reviewStatus) {
             criteriaArr = [
@@ -125,7 +127,7 @@ const AffiliateCycleApplications = () => {
         sort: (s: SortPredicate<LazyTestApplication>) =>
           s.submittedDate(SortDirection.DESCENDING),
       },
-      dependencyArray: [cycleId, trigger, filters],
+      dependencyArray: [cycle, trigger, filters],
     });
 
   let applicationsCompleted: TestApplication[] = [];
@@ -142,11 +144,6 @@ const AffiliateCycleApplications = () => {
         application.submissionStatus === SubmissionStatus.INCOMPLETE
     );
   }
-
-  const { data: cycle } = useTestCycleById({
-    id: cycleId,
-    dependencyArray: [cycleId],
-  });
 
   const handleUpdateApplicationStatus = async (
     applicationId: string,
@@ -205,7 +202,9 @@ const AffiliateCycleApplications = () => {
         <div className={`${style.options}`}>
           <div className={`${style.suboptions}`}>
             <CustomButton
-              onClick={() => redirectToApplicant({ cycleId, pathname })}
+              onClick={() =>
+                redirectToApplicant({ cycleId: cycle.id, pathname })
+              }
               icon={isSmall ? undefined : <MdOutlineLink />}
               title={t('pages.habitat.affiliate.cycles.cycle.applicantLink')}
             >

@@ -432,6 +432,14 @@
                   }
                 }
               }
+            },
+            "errors": {
+              "404": {
+                "message": "The cycle you are looking for does not exist."
+              },
+              "default": {
+                "message": "An error occurred while fetching cycle data."
+              }
             }
           },
           "errors": {

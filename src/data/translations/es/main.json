@@ -431,6 +431,14 @@
                   }
                 }
               }
+            },
+            "errors": {
+              "404": {
+                "message": "El ciclo que estás buscando no existe."
+              },
+              "default": {
+                "message": "Ocurrió un error mientras se obtenían los datos del ciclo."
+              }
             }
           },
           "errors": {
