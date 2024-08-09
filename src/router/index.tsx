@@ -22,6 +22,7 @@ import RootFormError from 'pages/[habitat]/affiliate/cycles/page.error';
 import CycleLoaderError from 'components/CycleLoaderError/CycleLoaderError';
 import AffiliateApplicationDetailsPageError from 'pages/[habitat]/affiliate/cycles/[cycleId]/[applicationId]/AffiliateApplicationDetailsPage.error';
 import { Authenticator } from '@aws-amplify/ui-react';
+import AppError from 'pages/landing/Landing.error';
 import habitatLoader from './loaders/habitat';
 import rootFormLoader from './loaders/rootForm';
 import cycleLoader from './loaders/cycle';
@@ -37,6 +38,7 @@ const router = createBrowserRouter([
         </div>
       </CheckMaintenance>
     ),
+    errorElement: <AppError />,
   },
   {
     path: ROUTES.HABITAT,
