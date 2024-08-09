@@ -182,6 +182,13 @@
     "underConstruction": {
       "message": "Esta página está actualmente en construcción"
     },
+    "landing": {
+      "errors": {
+        "default": {
+          "message": "Se produjo un error."
+        }
+      }
+    },
     "habitat": {
       "affiliate": {
         "forms": {
