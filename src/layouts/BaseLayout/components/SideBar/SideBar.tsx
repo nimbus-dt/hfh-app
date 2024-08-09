@@ -34,7 +34,6 @@ const SideBar = ({
   pathname,
   variation,
 }: IProperties) => {
-  console.log('mobile:', mobile);
   const sideBarRef = React.useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
   const routes = useRoutes(t);

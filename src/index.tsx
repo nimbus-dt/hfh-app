@@ -24,18 +24,16 @@ if (rootElement) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <BrowserRouter>
-        <ThemeProvider theme={theme}>
-          <PostHogProvider
-            apiKey={process.env.REACT_APP_PUBLIC_POSTHOG_KEY}
-            options={options}
-          >
-            <HabitatProvider>
-              <App />
-            </HabitatProvider>
-          </PostHogProvider>
-        </ThemeProvider>
-      </BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <PostHogProvider
+          apiKey={process.env.REACT_APP_PUBLIC_POSTHOG_KEY}
+          options={options}
+        >
+          <HabitatProvider>
+            <App />
+          </HabitatProvider>
+        </PostHogProvider>
+      </ThemeProvider>
     </StrictMode>
   );
 }

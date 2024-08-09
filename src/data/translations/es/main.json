@@ -167,6 +167,11 @@
       "submit": "Enviar",
       "review": "Revisar",
       "goBack": "Volver"
+    },
+    "loaderError": {
+      "goBack": "Volver",
+      "retry": "Intentar de nuevo",
+      "defaultMessage": "Se produjo un error."
     }
   },
   "pages": {
@@ -177,6 +182,13 @@
     },
     "underConstruction": {
       "message": "Esta página está actualmente en construcción"
+    },
+    "landing": {
+      "errors": {
+        "default": {
+          "message": "Se produjo un error."
+        }
+      }
     },
     "habitat": {
       "affiliate": {
@@ -426,7 +438,31 @@
                     }
                   }
                 }
+              },
+              "errors": {
+                "404": {
+                  "message": "La aplicación que estás buscando no existe."
+                },
+                "default": {
+                  "message": "Ocurrió un error mientras se obtenían los datos de la aplicación."
+                }
               }
+            },
+            "errors": {
+              "404": {
+                "message": "El ciclo que estás buscando no existe."
+              },
+              "default": {
+                "message": "Ocurrió un error mientras se obtenían los datos del ciclo."
+              }
+            }
+          },
+          "errors": {
+            "404": {
+              "message": "El formulario que estás buscando no existe."
+            },
+            "default": {
+              "message": "Ocurrió un error mientras se obtenían los datos del formulario."
             }
           }
         }
@@ -488,6 +524,14 @@
           "title": "Panel de decisiones",
           "description": "Intercambia información con los afiliados y revisa tus envíos",
           "empty": "No tienes registros de decisiones."
+        }
+      },
+      "errors": {
+        "404": {
+          "message": "El habitat que estás buscando no existe."
+        },
+        "default": {
+          "message": "Ocurrió un error mientras se obtenían los datos del habitat."
         }
       }
     }

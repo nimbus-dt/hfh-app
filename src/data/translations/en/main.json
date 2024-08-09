@@ -168,6 +168,11 @@
       "submit": "Submit",
       "review": "Review",
       "goBack": "Go back"
+    },
+    "loaderError": {
+      "goBack": "Go back",
+      "retry": "Retry",
+      "defaultMessage": "Something went wrong."
     }
   },
   "pages": {
@@ -178,6 +183,13 @@
     },
     "underConstruction": {
       "message": "This page is currently under construction"
+    },
+    "landing": {
+      "errors": {
+        "default": {
+          "message": "Something went wrong."
+        }
+      }
     },
     "habitat": {
       "affiliate": {
@@ -427,7 +439,31 @@
                     }
                   }
                 }
+              },
+              "errors": {
+                "404": {
+                  "message": "The application you are looking for does not exist."
+                },
+                "default": {
+                  "message": "An error occurred while fetching application data."
+                }
               }
+            },
+            "errors": {
+              "404": {
+                "message": "The cycle you are looking for does not exist."
+              },
+              "default": {
+                "message": "An error occurred while fetching cycle data."
+              }
+            }
+          },
+          "errors": {
+            "404": {
+              "message": "The form you are looking for does not exist."
+            },
+            "default": {
+              "message": "An error occurred while fetching form data."
             }
           }
         }
@@ -489,6 +525,14 @@
           "title": "Decisions Dashboard",
           "description": "Exchange information with affiliates and revise your submissions",
           "empty": "You have no decision records."
+        }
+      },
+      "errors": {
+        "404": {
+          "message": "The habitat you are looking for does not exist."
+        },
+        "default": {
+          "message": "An error occurred while fetching habitat data."
         }
       }
     }
