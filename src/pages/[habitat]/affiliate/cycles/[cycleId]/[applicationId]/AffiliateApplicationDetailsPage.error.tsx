@@ -8,16 +8,19 @@ const AffiliateApplicationDetailsPageError = () => {
   const error = useRouteError();
   const { t } = useTranslation();
 
-  let message = t(
-    'pages.habitat.affiliate.cycles.cycle.application.errors.default.message'
-  );
+  let message: string | undefined;
   let hideRetry = false;
 
-  if (isRouteErrorResponse(error) && error.status === 404) {
+  if (isRouteErrorResponse(error)) {
     message = t(
-      'pages.habitat.affiliate.cycles.cycle.application.errors.404.message'
+      'pages.habitat.affiliate.cycles.cycle.application.errors.default.message'
     );
-    hideRetry = true;
+    if (error.status === 404) {
+      message = t(
+        'pages.habitat.affiliate.cycles.cycle.application.errors.404.message'
+      );
+      hideRetry = true;
+    }
   }
 
   return (
