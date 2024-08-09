@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import styles from './LoaderError.module.css';
 
 interface ILoaderErrorProps {
-  message: string;
+  message?: string;
   hideGoBack?: boolean;
   hideRetry?: boolean;
 }
@@ -20,7 +20,9 @@ const LoaderError = ({ message, hideGoBack, hideRetry }: ILoaderErrorProps) => {
     <div className={styles.container}>
       <div className={styles.messageContainer}>
         <MdError className={styles.icon} />
-        <span className={styles.message}>{message}</span>
+        <span className={styles.message}>
+          {message || t('components.loaderError.defaultMessage')}
+        </span>
       </div>
       <div className={styles.buttonsContainer}>
         {!hideGoBack && (

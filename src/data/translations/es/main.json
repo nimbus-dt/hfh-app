@@ -170,7 +170,8 @@
     },
     "loaderError": {
       "goBack": "Volver",
-      "retry": "Intentar de nuevo"
+      "retry": "Intentar de nuevo",
+      "defaultMessage": "Se produjo un error."
     }
   },
   "pages": {
